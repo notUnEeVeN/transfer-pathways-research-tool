@@ -39,13 +39,12 @@
    "residency": {
     "status": "required",
     "minimum_units": 30,
-    "rule": "At least 25 percent of the degree must be completed at JMU; at least 60 credits must come from four-year institutions including JMU; students must enroll at JMU for at least two regular semesters and attend the final semester.",
+    "rule": "At least 25 percent of the degree must be completed at JMU, and at least 60 credits must come from four-year institutions including JMU.",
     "source_refs": [
      "graduation"
     ]
    },
    "four_year_institution_units_minimum": 60,
-   "jmu_regular_semesters_minimum": 2,
    "minimum_cumulative_gpa": 2,
    "minimum_major_gpa": 2
   },
@@ -58,7 +57,7 @@
    {
     "code": "catalog_noninteractive_capture_challenge",
     "severity": "review",
-    "message": "The live catalog program, policy, and 2026-2027 PDF endpoints returned a JavaScript anti-bot challenge during research; use a browser-capable recapture and retain the current official-URL snapshot for comparison."
+    "message": "Some individual live CourseLeaf HTML endpoints return a JavaScript challenge, but the current official 2026-2027 undergraduate catalog PDF was retrieved, hashed, and used for the detailed General Education walk."
    },
    {
     "code": "university_upper_division_minimum_not_published",
@@ -179,6 +178,19 @@
    "sha256": "866d0306b8f7218bd74a04c390cdeb218f4f8499113f781c7822199894711a29",
    "official": true,
    "secure": true
+  },
+  {
+   "id": "general_education_detail",
+   "role": "ge_detail",
+   "kind": "general_education",
+   "label": "JMU 2026-2027 Undergraduate Catalog, General Education: The Human Community, pp. 109-115",
+   "url": "https://catalog.jmu.edu/pdf/JMU2026-2027UndergraduateCatalog.pdf",
+   "requested_url": "https://catalog.jmu.edu/pdf/JMU2026-2027UndergraduateCatalog.pdf",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T22:26:48Z",
+   "sha256": "1a62e25d4117107d671c310542c28a2bc6904835f76c6f08106e17170158569c",
+   "official": true,
+   "secure": true
   }
  ],
  "source_layers": {
@@ -192,8 +204,9 @@
   "general_education": {
    "status": "captured",
    "source_refs": [
-    "major",
-    "general_education"
+   "major",
+    "general_education",
+    "general_education_detail"
    ],
    "note": null
   },

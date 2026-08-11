@@ -1,0 +1,517 @@
+{
+  "schema_version": 1,
+  "slug": "radford-university",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S. (R, L)",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "canonical_variant": "Base Computer Science B.S. without a concentration, using MATH 171 and the published twelve-credit upper-level CS alternative",
+  "academic_unit": "School of Computing and Information Sciences",
+  "college": "Artis College of Science and Technology",
+  "ge_authority": "Radford University REAL Curriculum",
+  "excluded_variants": [
+    "Virginia Tech accelerated M.Eng. pathway"
+  ],
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "policy",
+    "course_catalog"
+  ],
+  "course_titles": {
+    "ASTR151": "Astronomy I",
+    "ASTR152": "Astronomy II",
+    "BIOL106": "Biology for Health Sciences (GE)",
+    "BIOL111": "Integrative Biology I (GE)",
+    "BIOL112": "Integrative Biology II (GE)",
+    "BIOL229": "Ecology (GE)",
+    "BIOL230": "Cell Biology (GE)",
+    "BIOL231": "Genetics",
+    "BIOL310": "Human Anatomy and Physiology I (GE)",
+    "BIOL311": "Human Anatomy and Physiology II (GE)",
+    "CHEM111": "General Chemistry I (GE)",
+    "CHEM112": "General Chemistry II (GE)",
+    "CS540": "Data Engineering",
+    "GEOL105": "Exploring Earth (GE)",
+    "GEOL120": "Earth Science and Society (GE)",
+    "GEOL206": "It’s About Time: A History of Earth, Life, and Global Change (GE)",
+    "PHYS111": "General Physics I",
+    "PHYS112": "General Physics II (GE)",
+    "PHYS221": "Physics I (GE)",
+    "PHYS222": "Physics II (GE)"
+  },
+  "requirement_layers": {
+    "major": {"status": "complete", "source_refs": ["major", "course_catalog"]},
+    "ge_college": {"status": "complete", "source_refs": ["major", "general_education", "college"]},
+    "university_graduation": {"status": "complete", "source_refs": ["major", "graduation", "policy"]}
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "canonical_major_units": 55,
+    "canonical_real_units_inside_major": 18,
+    "canonical_remaining_real_capacity": 30,
+    "canonical_unrestricted_capacity": 35,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The reviewed current catalog states the selected base path's twelve-credit upper-level CS requirement and a 300/400-level writing-intensive condition, but no aggregate university-wide upper-division-credit minimum.",
+      "source_refs": ["major", "general_education", "graduation"]
+    },
+    "base_path_upper_level_cs_units": 12,
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "rule": "No fewer than 30 bachelor-level credit hours must be earned at Radford University.",
+      "source_refs": ["graduation"]
+    },
+    "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+    "The current program explicitly permits a no-concentration path consisting of twelve approved upper-level CS credits; that broad base path is canonical.",
+    "All five current concentration blocks are preserved as separate alternate deltas and are never added together or added to the canonical twelve-credit base alternative.",
+    "The common canonical major arithmetic is 19 School + 6 B.S. science + 18 common CS + 12 base upper-level CS = 55 credits.",
+    "The REAL Curriculum is an integrated 48-credit framework. The CS major fulfills the R and L areas (18 credits); the canonical model reserves 30 additional REAL credits and then 35 unrestricted credits to close the 120-credit degree.",
+    "At least 30 credits in the complete degree must be GE-designated, the canonical major supplies 12 GE credits, and at least 15 credits excluding foundational math and writing must be outside the school housing the major. These are overlap constraints inside the remaining capacity, not additive blocks.",
+    "The catalog's 55-88 Major Requirements banner does not reconcile with its mutually exclusive named paths; the exact common and alternate arithmetic is retained instead of treating the banner as an additive subtotal."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "published_major_range_does_not_reconcile",
+      "severity": "review",
+      "message": "The program publishes 55-88 major credits, while the explicit common requirements plus each mutually exclusive alternative produce materially smaller path totals."
+    },
+    {
+      "code": "network_concentration_subtotal_conflict",
+      "severity": "review",
+      "message": "Advanced Networks is labeled 21 credits, but five fixed CS courses, six additional CS credits, and the required statistics choice total 24-25."
+    },
+    {
+      "code": "advanced_ai_science_requirement_not_named",
+      "severity": "review",
+      "message": "The B.S. science paragraph names the base CS major and three concentrations, plus a separate Advanced Computer Science rule, but does not name the newer Advanced Artificial Intelligence concentration."
+    },
+    {
+      "code": "published_open_credit_range_does_not_reconcile",
+      "severity": "review",
+      "message": "The page publishes 41-74 open credits, a 55-88 major range, and a 120-credit total, but those printed ranges do not arithmetically reconcile."
+    },
+    {
+      "code": "integrated_real_overlap",
+      "severity": "review",
+      "message": "REAL, GE-designated credits, Writing Intensive, major R/L coverage, and the outside-school rule overlap and require a constraint-aware evaluator."
+    },
+    {
+      "code": "program_listed_code_absent_from_course_catalog",
+      "severity": "block_analysis",
+      "message": "The current Computer Science program explicitly lists GEOL 121 in the Advanced Computer Science science menu, but the current official catoid 62 course-catalog filter returns no GEOL 121 course. Preserve the program-listed code without inventing a title."
+    }
+  ],
+  "requirement_variants": [
+    {
+      "key": "base_no_concentration",
+      "label": "Base Computer Science B.S. without a concentration",
+      "selected": true,
+      "source_refs": ["major"],
+      "canonical_major_units": 55,
+      "canonical_path_note": "Uses MATH 171 (four credits), six B.S. science credits, and the twelve-credit upper-level CS alternative.",
+      "requirement_groups_location": "top-level requirement_groups"
+    },
+    {
+      "key": "advanced_computer_science",
+      "label": "Advanced Computer Science Concentration",
+      "selected": false,
+      "source_refs": ["major"],
+      "published_concentration_units_minimum": 20,
+      "published_concentration_units_maximum": 20,
+      "substitutes_for": "Base upper-level Computer Science alternative and base six-credit B.S. science route",
+      "replaces_top_level_groups": [
+        "B.S. science requirement",
+        "Base path upper-level Computer Science alternative"
+      ],
+      "canonical_major_units": 64,
+      "canonical_major_arithmetic": "19 School + 7 concentration-specific B.S. science + 18 common CS + 20 concentration = 64",
+      "requirement_groups": [
+        {
+          "title": "Advanced Computer Science concentration-specific B.S. science requirement",
+          "requirement_layer": "major",
+          "tier": "breadth",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "source_refs": ["major", "course_catalog"],
+          "analysis_constraints": [
+            {
+              "kind": "two_sciences_seven_to_eight_credits_one_lab",
+              "status": "evaluator_not_implemented",
+              "description": "Choose at least two courses totaling seven to eight credits from the exact published BIOL, CHEM, GEOL, PHYS, and ASTR list, including at least one laboratory-based course."
+            }
+          ],
+          "sections": [
+            {
+              "select": 2,
+              "units": 7,
+              "units_max": 8,
+              "receivers": [
+                {"kind": "course", "code": "BIOL106"},
+                {"kind": "course", "code": "BIOL111"},
+                {"kind": "course", "code": "BIOL112"},
+                {"kind": "course", "code": "BIOL229"},
+                {"kind": "course", "code": "BIOL230"},
+                {"kind": "course", "code": "BIOL231"},
+                {"kind": "course", "code": "BIOL310"},
+                {"kind": "course", "code": "BIOL311"},
+                {"kind": "course", "code": "CHEM111"},
+                {"kind": "course", "code": "CHEM112"},
+                {"kind": "course", "code": "GEOL120"},
+                {"kind": "course", "code": "GEOL121"},
+                {"kind": "course", "code": "GEOL105"},
+                {"kind": "course", "code": "GEOL206"},
+                {"kind": "course", "code": "PHYS111"},
+                {"kind": "course", "code": "PHYS112"},
+                {"kind": "course", "code": "PHYS221"},
+                {"kind": "course", "code": "PHYS222"},
+                {"kind": "course", "code": "ASTR151"},
+                {"kind": "course", "code": "ASTR152"},
+                {"kind": "course", "code": "ASTR220"}
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Advanced Computer Science concentration delta",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major"],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS352", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS360", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS371", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS380", "units": 3}, {"kind": "course", "code": "CS420", "units": 3}]},
+            {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MATH172", "units": 4}]},
+            {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "STAT301", "units": 4}]}
+          ]
+        },
+        {
+          "title": "Advanced Computer Science concentration additional degree gates",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "administrative",
+          "cc_articulable": false,
+          "source_refs": ["major"],
+          "sections": [
+            {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Take the Major Field Test in Computer Science or department-approved equivalent during the last semester", "units": 0}]},
+            {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Earn C or better in every Computer Science course applied to the Advanced Computer Science concentration", "units": 0}]}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "advanced_database",
+      "label": "Advanced Database Concentration",
+      "selected": false,
+      "source_refs": ["major"],
+      "published_concentration_units_minimum": 22,
+      "published_concentration_units_maximum": 23,
+      "substitutes_for": "Base upper-level Computer Science alternative",
+      "canonical_major_units": 65,
+      "requirement_groups": [
+        {
+          "title": "Advanced Database concentration delta",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major"],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS441", "units": 3}, {"kind": "course", "code": "CS440", "units": 3}, {"kind": "course", "code": "CS540", "units": 3}, {"kind": "course", "code": "CS541", "units": 3}]},
+            {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CS442", "units": 4}, {"kind": "course", "code": "CS542", "units": 4}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS443", "units": 3}, {"kind": "course", "code": "CS543", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS445", "units": 3}, {"kind": "course", "code": "CS645", "units": 3}]},
+            {"select": 1, "units": 6, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "Six additional approved CS credits under the published 300/400 or director-approved 500/600 rule", "units": 6}]},
+            {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "course", "code": "STAT200", "units": 3}, {"kind": "course", "code": "STAT301", "units": 4}]}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "advanced_networks",
+      "label": "Advanced Networks Concentration",
+      "selected": false,
+      "source_refs": ["major"],
+      "published_concentration_units_minimum": 21,
+      "named_rows_units_minimum": 24,
+      "named_rows_units_maximum": 25,
+      "substitutes_for": "Base upper-level Computer Science alternative",
+      "canonical_major_units_from_named_rows": 67,
+      "source_conflict": "The printed 21-credit subtotal omits the separately printed three- or four-credit statistics choice from its arithmetic.",
+      "requirement_groups": [
+        {
+          "title": "Advanced Networks concentration delta",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major"],
+          "stated_credits": "21 (explicit named rows total 24-25)",
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS352", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS371", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS451", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS452", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS455", "units": 3}]},
+            {"select": 1, "units": 6, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "Six additional approved CS credits under the published 300/400 or chair-approved 500/600 rule", "units": 6}]},
+            {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "course", "code": "STAT200", "units": 3}, {"kind": "course", "code": "STAT301", "units": 4}]}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "advanced_software_engineering",
+      "label": "Advanced Software Engineering Concentration",
+      "selected": false,
+      "source_refs": ["major"],
+      "published_concentration_units_minimum": 15,
+      "published_concentration_units_maximum": 15,
+      "substitutes_for": "Base upper-level Computer Science alternative",
+      "canonical_major_units": 58,
+      "requirement_groups": [
+        {
+          "title": "Advanced Software Engineering concentration delta",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major"],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS380", "units": 3}, {"kind": "course", "code": "CS420", "units": 3}, {"kind": "course", "code": "CS445", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS471", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS472", "units": 3}]},
+            {"select": 1, "units": 6, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "Six additional approved CS credits under the published 300/400 or director-approved 500/600 rule", "units": 6}]}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "advanced_artificial_intelligence",
+      "label": "Advanced Artificial Intelligence Concentration",
+      "selected": false,
+      "source_refs": ["major"],
+      "published_concentration_units_minimum": 18,
+      "published_concentration_units_maximum": 19,
+      "substitutes_for": "Base upper-level Computer Science alternative",
+      "canonical_major_units": 61,
+      "science_requirement_note": "The current B.S. science paragraph does not name the Advanced Artificial Intelligence concentration; the general CS-major six-credit minimum is retained provisionally and the omission is flagged for advising confirmation.",
+      "requirement_groups": [
+        {
+          "title": "Advanced Artificial Intelligence concentration delta",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major"],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS481", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS482", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS440", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS489", "units": 3}]},
+            {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "course", "code": "STAT200", "units": 3}, {"kind": "course", "code": "STAT301", "units": 4}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "MATH260", "units": 3}, {"kind": "course", "code": "MATH440", "units": 3}]}
+          ]
+        }
+      ]
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "School Requirements: fixed computing courses",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CS120", "title": "Principles of Computer Science I", "units": 4}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CS220", "title": "Principles of Computer Science II", "units": 4}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS322", "title": "Discrete Mathematics for Computer Science", "units": 3}]},
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CS390", "title": "Career Preparation", "units": 1}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS411", "title": "Societal Security in Computing", "units": 3}]}
+      ]
+    },
+    {
+      "title": "School Requirements: calculus path",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "conjunction": "Or",
+      "canonical_section_index": 1,
+      "sections": [
+        {"select": 1, "units": 6, "receivers": [{"kind": "series", "codes": ["MATH168", "MATH169"], "units": 6}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MATH171", "title": "Calculus and Analytic Geometry I", "units": 4, "overlap_key": "radford-foundational-math"}]}
+      ]
+    },
+    {
+      "title": "B.S. science requirement",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "analysis_constraints": [
+        {
+          "kind": "two_sciences_one_laboratory",
+          "status": "evaluator_not_implemented",
+          "description": "The base CS B.S. requires two 3-4 credit courses in Astronomy, Biology, Chemistry, Geology, or Physics, with at least one laboratory course."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 6, "units_max": 8, "receivers": [{"kind": "ge_area", "code": "RADFORD-BS-SCIENCE-WITH-LAB", "name": "Two approved sciences, one with a laboratory", "units": 6}]}
+      ]
+    },
+    {
+      "title": "Common Computer Science courses",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS230", "title": "Foundations of Cloud Computing", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS252", "title": "Foundations of Computer Systems", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS340", "title": "Database I", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS345", "title": "Introduction to Information Security", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS350", "title": "Introduction to Computer Networking", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS370", "title": "Software Engineering I", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Base path upper-level Computer Science alternative",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "analysis_constraints": [
+        {
+          "kind": "prefix_level_exclusion_and_approval_rule",
+          "status": "evaluator_not_implemented",
+          "description": "Choose twelve credits of CS 300/400-level courses excluding CS 307, 398, 493, 498, 352, 371, 445, 455, 465, and 475; director-approved 500/600-level CS courses may substitute."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 12, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "Twelve approved upper-level CS credits under the published exclusions and director-approval rule", "units": 12}]}
+      ]
+    },
+    {
+      "title": "REAL Foundational Writing remaining after major overlap",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENGL111", "title": "Principles of College Composition", "units": 3}]}]
+    },
+    {
+      "title": "REAL Foundational Math satisfied by the canonical major path",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 0, "receivers": [{"kind": "course", "code": "MATH171", "units": 4, "overlap_key": "radford-foundational-math"}]}]
+    },
+    {
+      "title": "REAL R and L areas satisfied by the Computer Science major",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "analysis_constraints": [
+        {
+          "kind": "major_area_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "The CS major supplies the minimum nine unique R credits and nine unique L credits inside the major; these eighteen credits are not additive to 120."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "label": "Scientific and Quantitative Reasoning (R)", "receivers": [{"kind": "ge_area", "code": "RADFORD-REAL-R-MAJOR", "name": "R area fulfilled by the Computer Science major", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Applied Learning (L)", "receivers": [{"kind": "ge_area", "code": "RADFORD-REAL-L-MAJOR", "name": "L area fulfilled by the Computer Science major", "units": 0}]}
+      ]
+    },
+    {
+      "title": "REAL Humanistic or Artistic Expression (E)",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 9, "receivers": [{"kind": "ge_area", "code": "RADFORD-REAL-E", "name": "Humanistic or Artistic Expression", "units": 9}]}]
+    },
+    {
+      "title": "REAL Cultural or Behavioral Analysis (A)",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 9, "receivers": [{"kind": "ge_area", "code": "RADFORD-REAL-A", "name": "Cultural or Behavioral Analysis", "units": 9}]}]
+    },
+    {
+      "title": "REAL Writing Intensive coursework",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "analysis_constraints": [
+        {
+          "kind": "upper_level_writing_intensive_course",
+          "status": "evaluator_not_implemented",
+          "description": "Two Writing Intensive courses (six credits) are required and at least one must be numbered at the 300 or 400 level."
+        }
+      ],
+      "sections": [{"select": 1, "units": 6, "receivers": [{"kind": "ge_area", "code": "RADFORD-REAL-WI", "name": "Two Writing Intensive courses, one upper-level", "units": 6}]}]
+    },
+    {
+      "title": "Remaining REAL credit capacity and cross-cutting degree constraints",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "elective_capacity",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "graduation"],
+      "analysis_constraints": [
+        {
+          "kind": "ge_designated_credit_minimum",
+          "status": "evaluator_not_implemented",
+          "description": "At least 30 credits in the complete degree must be GE-designated; the canonical major contains twelve, so at least eighteen more must occur inside the remaining degree capacity."
+        },
+        {
+          "kind": "outside_school_credit_minimum",
+          "status": "evaluator_not_implemented",
+          "description": "At least fifteen credits, excluding Foundational Math and Writing, must be taught outside the department or school housing the first major."
+        },
+        {
+          "kind": "real_minimum_unique_credit_capacity",
+          "status": "evaluator_not_implemented",
+          "description": "This three-credit capacity closes the 30-credit post-major REAL budget after R and L major overlap while allowing WI and area-designation overlap to be audited."
+        }
+      ],
+      "sections": [{"select": 1, "units": 3, "receivers": [{"kind": "ge_area", "code": "RADFORD-REAL-REMAINING", "name": "Remaining applicable REAL credit", "units": 3}]}]
+    },
+    {
+      "title": "Open credit capacity after the canonical major and REAL minimum",
+      "requirement_layer": "university_graduation",
+      "tier": "breadth",
+      "course_level": "elective_capacity",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "graduation", "policy"],
+      "sections": [{"select": 1, "units": 35, "receivers": [{"kind": "ge_area", "code": "RADFORD-OPEN-CREDIT-CAPACITY", "name": "Additional courses, majors, minors, REAL requirements, or electives", "units": 35}]}]
+    }
+  ]
+}

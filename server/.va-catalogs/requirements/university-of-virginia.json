@@ -1,0 +1,1136 @@
+{
+ "slug": "university-of-virginia",
+ "name": "University of Virginia",
+ "level": "four_year",
+ "platform": "acalog",
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://records.ureg.virginia.edu/preview_program.php?catoid=72&poid=11700&print=1",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science in Computer Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "variant": "School of Engineering and Applied Science B.S.; the College of Arts & Sciences B.A. is a separate award",
+  "academic_unit": "Department of Computer Science",
+  "college": "School of Engineering and Applied Science",
+  "general_education_authority": "School of Engineering and Applied Science",
+  "unit_audit": {
+   "graduation_minimum": 127,
+   "modeled_units": 127,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "The reviewed 2026-2027 University and Engineering School rules state no aggregate upper-division-credit minimum; the named upper-level CS requirements remain explicit.",
+    "source_refs": [
+     "major",
+     "general_education",
+     "graduation"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 63.5,
+    "rule": "At least two academic years and 50 percent of the 127-credit primary degree program must be completed in residence at UVA, with registration in Engineering in the degree-conferral term.",
+    "source_refs": [
+     "general_education",
+     "graduation"
+    ]
+   },
+   "minimum_cumulative_gpa": 2,
+   "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+   "Use the current 2026-2027 Undergraduate Record as the official major and university-policy source, with the current Engineering School degree page as a separately captured detailed curriculum cross-check.",
+   "The B.A. in Computer Science belongs to the College of Arts & Sciences and is not collapsed into this Engineering B.S.",
+   "Example schedules and advising plans are excluded; only categorical degree requirements and university/school policies are composed."
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "ge"
+    ]
+   },
+   "college": {
+    "source_roles": [
+     "college"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "University of Virginia major and degree requirements",
+   "url": "https://records.ureg.virginia.edu/preview_program.php?catoid=72&poid=11700&print=1",
+   "requested_url": "https://records.ureg.virginia.edu/preview_program.php?catoid=72&poid=11700&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:49:55.377Z",
+   "sha256": "e9e4a11adcfa2c911d42ce428f8327866ed29139c91ee19a018938486580f60d",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "University of Virginia general education requirements",
+   "url": "https://records.ureg.virginia.edu/content.php?catoid=72&navoid=6621",
+   "requested_url": "https://records.ureg.virginia.edu/content.php?catoid=72&navoid=6621",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:49:55.377Z",
+   "sha256": "cbdaf1e74f0d48dd0285dac50ba5ab6614183d06823e2e6912f7dfb805232877",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "University of Virginia college or school requirements",
+   "url": "https://records.ureg.virginia.edu/content.php?catoid=72&navoid=6701",
+   "requested_url": "https://records.ureg.virginia.edu/content.php?catoid=72&navoid=6701",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:49:55.377Z",
+   "sha256": "ed269e85690c8d40617618f8b34f9e375465c06a1f3d2d4952caa561af0b2024",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "University of Virginia university graduation requirements",
+   "url": "https://records.ureg.virginia.edu/content.php?catoid=72&navoid=6592",
+   "requested_url": "https://records.ureg.virginia.edu/content.php?catoid=72&navoid=6592",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:49:55.377Z",
+   "sha256": "5e23b437ab804e37ff9066ee2346c6ba967e0925db2ede5bd1d67142e9e47964",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "University of Virginia course descriptions and credit values",
+   "url": "https://records.ureg.virginia.edu/content.php?catoid=72&navoid=6707",
+   "requested_url": "https://records.ureg.virginia.edu/content.php?catoid=72&navoid=6707",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:49:55.377Z",
+   "sha256": "28afb962949ce2822df297c13e7b4074dfd63903094efe3f50c49ef10e92ee7e",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T22:49:55.377Z",
+ "extracted_at": "2026-08-10T22:50:34.185Z",
+ "parser": "lines",
+ "pdf_window": null,
+ "source_role": "program",
+ "source_ref": "major",
+ "program_title": null,
+ "parse_error": null,
+ "total_credits": {
+  "min": 127,
+  "max": 127,
+  "raw": "127"
+ },
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Foundation Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Foundation Courses",
+    "These courses are the next set of courses students take after finishing Introduction to Programming and comprise the set of prerequisites for upper-level courses. The 2000-level courses should be taken before the 3000-level courses and note that there are other prerequisites that govern the order that these courses should be taken. Example schedules can be found on the Computer Science Department webpage. Students who transfer approved three-credit courses to UVA in place of CS 2100, CS 2130, or CS 3130 must replace the missing fourth credit with another 2000-level or higher CS credit.",
+    "CS 2100 - Data Structures and Algorithms 1 Credits: 4",
+    "CS 2120 - Discrete Mathematics and Theory 1 Credits: 3",
+    "CS 2130 - Computer Systems and Organization 1 Credits: 4",
+    "CS 3100 - Data Structures and Algorithms 2 Credits: 3",
+    "CS 3120 - Discrete Mathematics and Theory 2 Credits: 3",
+    "CS 3130 - Computer Systems and Organization 2 Credits: 4",
+    "CS 3140 - Software Development Essentials Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS2100",
+         "title": null
+        },
+        {
+         "code": "CS2130",
+         "title": ","
+        },
+        {
+         "code": "CS3130",
+         "title": "must replace the missing fourth credit with another 2000-level or higher CS credit."
+        }
+       ],
+       "conjunction": "or",
+       "text": "These courses are the next set of courses students take after finishing Introduction to Programming and comprise the set of prerequisites for upper-level courses. The 2000-level courses should be taken before the 3000-level courses and note that there are other prerequisites that govern the order that these courses should be taken. Example schedules can be found on the Computer Science Department webpage. Students who transfer approved three-credit courses to UVA in place of CS 2100, CS 2130, or CS 3130 must replace the missing fourth credit with another 2000-level or higher CS credit.",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS2100",
+         "title": "Data Structures and Algorithms 1"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 2100 - Data Structures and Algorithms 1",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS2120",
+         "title": "Discrete Mathematics and Theory 1"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 2120 - Discrete Mathematics and Theory 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS2130",
+         "title": "Computer Systems and Organization 1"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 2130 - Computer Systems and Organization 1",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS3100",
+         "title": "Data Structures and Algorithms 2"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3100 - Data Structures and Algorithms 2",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS3120",
+         "title": "Discrete Mathematics and Theory 2"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3120 - Discrete Mathematics and Theory 2",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS3130",
+         "title": "Computer Systems and Organization 2"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3130 - Computer Systems and Organization 2",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS3140",
+         "title": "Software Development Essentials"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3140 - Software Development Essentials",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Upper-Level Required Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Upper-Level Required Courses",
+    "BSCS majors must take one upper-level course in software engineering and one CS Capstone course to complete the SEAS senior thesis.",
+    "CS 3240 - Software Engineering Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "BSCS majors must take one upper-level course in software engineering and one CS Capstone course to complete the SEAS senior thesis.",
+       "category": "BSCS majors must take one upper-level course in software engineering and one CS Capstone course to complete the SEAS senior thesis."
+      },
+      {
+       "codes": [
+        {
+         "code": "CS3240",
+         "title": "Software Engineering"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 3240 - Software Engineering",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "CS Capstone",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Must have a CS mnemonic. (NOTE: Students that are interested in taking a course that is cross-listed with a CS section must enroll in the CS section and not the other department’s section as there may be different prerequisites and assessments for the course.)",
+   "source_text": [
+    "CS Capstone",
+    "The CS Capstone is comprised of a three-credit course and the creation of a technical report appropriate for publication. The capstone experience should be taken concurrently with the SEAS Senior Thesis STS courses (STS 4500 and STS 4600) during the student’s last year at UVA.",
+    "The options for the CS Capstone are:",
+    "CS 4980 - Capstone Research Credits: 1 to 3",
+    "(Note: Three total credits of CS 4980 must be completed if a student chooses this option, but the credits can be divided between multiple semesters if desired.)",
+    "CS 4971 - Capstone Practicum Credits: 3",
+    "CS 4991 - Capstone Technical Report Credits: 0 AND a three-credit, graded CS 4000 course not used to fulfill any other CS degree requirement.",
+    "Computer Science Electives",
+    "BSCS majors must take an additional fifteen (15) credits of CS courses at the 3000 level or higher beyond the Foundation courses.",
+    "Guidelines for CS Electives:",
+    "Must be 3000 level or higher.",
+    "Must not be a Foundation course or upper-level required course as defined above.",
+    "Second digit of course number must not be 0 or 9, except as noted below.",
+    "Two electives with significant overlap of material cannot both count toward the CS degree.",
+    "Up to three (3) credits of CS 4993: Independent Study may count toward the CS elective requirement. Credits beyond this limit may be applied to the unrestricted elective requirement."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "STS4500",
+         "title": null
+        },
+        {
+         "code": "STS4600",
+         "title": ") during the student’s last year at UVA."
+        }
+       ],
+       "conjunction": "and",
+       "text": "The CS Capstone is comprised of a three-credit course and the creation of a technical report appropriate for publication. The capstone experience should be taken concurrently with the SEAS Senior Thesis STS courses (STS 4500 and STS 4600) during the student’s last year at UVA.",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "The options for the CS Capstone are:",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS4980",
+         "title": "Capstone Research to 3"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4980 - Capstone Research to 3",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4980",
+         "title": "must be completed if a student chooses this option, but the credits can be divided between multiple semesters if desired.)"
+        }
+       ],
+       "conjunction": "and",
+       "text": "(Note: Three total credits of CS 4980 must be completed if a student chooses this option, but the credits can be divided between multiple semesters if desired.)",
+       "credits": null,
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4971",
+         "title": "Capstone Practicum"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4971 - Capstone Practicum",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4991",
+         "title": "Capstone Technical Report AND a three-credit, graded"
+        },
+        {
+         "code": "CS4000",
+         "title": "course not used to fulfill any other CS degree requirement."
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4991 - Capstone Technical Report AND a three-credit, graded CS 4000 course not used to fulfill any other CS degree requirement.",
+       "credits": {
+        "min": 0,
+        "max": 0,
+        "raw": "0"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Computer Science Electives",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "BSCS majors must take an additional fifteen (15) credits of CS courses at the 3000 level or higher beyond the Foundation courses.",
+       "category": "BSCS majors must take an additional fifteen credits of CS courses at the 3000 level or higher beyond the Foundation courses.",
+       "credits": {
+        "min": 15,
+        "max": 15,
+        "raw": "15"
+       }
+      }
+     ]
+    },
+    {
+     "label": "Must be 3000 level or higher.",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Must not be a Foundation course or upper-level required course as defined above.",
+       "category": "Must not be a Foundation course or upper-level required course as defined above."
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Second digit of course number must not be 0 or 9, except as noted below.",
+       "category": "Second digit of course number must not be 0 or 9, except as noted below."
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Two electives with significant overlap of material cannot both count toward the CS degree.",
+       "category": "Two electives with significant overlap of material cannot both count toward the CS degree."
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4993",
+         "title": "Independent Study may count toward the CS elective requirement. Credits beyond this limit may be applied to the unrestricted elective requirement."
+        }
+       ],
+       "conjunction": "and",
+       "text": "Up to three (3) credits of CS 4993: Independent Study may count toward the CS elective requirement. Credits beyond this limit may be applied to the unrestricted elective requirement.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Applied Mathematics Electives",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Choose two of these four:",
+   "source_text": [
+    "Applied Mathematics Electives",
+    "BSCS majors must take three (3) additional courses in Applied Mathematics beyond the SEAS General Requirements. Equivalent courses from the Department of Mathematics may be substituted for matching APMA courses.",
+    "APMA 3100 - Probability Credits: 3",
+    "Choose two of these four:",
+    "APMA 2130 - Ordinary Differential Equations Credits: 4",
+    "APMA 3080 - Linear Algebra Credits: 3",
+    "APMA 3120 - Statistics Credits: 3",
+    "APMA 3150 - From Data to Knowledge Credits: 3",
+    "(Note: APMA 3120 and APMA 3150 are both statistics courses with substantial overlap and thus cannot both count toward the BSCS degree. Students interested in taking these courses should choose one or the other. Also, APMA 3110: Applied Statistics and Probability does not count toward the BSCS degree. Students switching to the BSCS major who have already had this course should consult with their advisor on further APMA courses.)"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "BSCS majors must take three (3) additional courses in Applied Mathematics beyond the SEAS General Requirements. Equivalent courses from the Department of Mathematics may be substituted for matching APMA courses.",
+       "category": "BSCS majors must take three additional courses in Applied Mathematics beyond the SEAS General Requirements. Equivalent courses from the Department of Mathematics may be substituted for matching APMA courses.",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "APMA3100",
+         "title": "Probability"
+        }
+       ],
+       "conjunction": "and",
+       "text": "APMA 3100 - Probability",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 2,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "APMA2130",
+         "title": "Ordinary Differential Equations"
+        }
+       ],
+       "conjunction": "and",
+       "text": "APMA 2130 - Ordinary Differential Equations",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "APMA3080",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "APMA 3080 - Linear Algebra",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "APMA3120",
+         "title": "Statistics"
+        }
+       ],
+       "conjunction": "and",
+       "text": "APMA 3120 - Statistics",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "APMA3150",
+         "title": "From Data to Knowledge"
+        }
+       ],
+       "conjunction": "and",
+       "text": "APMA 3150 - From Data to Knowledge",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "APMA3120",
+         "title": null
+        },
+        {
+         "code": "APMA3150",
+         "title": "are both statistics courses with substantial overlap and thus cannot both count toward the BSCS degree. Students interested in taking these courses should choose one or the other. Also"
+        },
+        {
+         "code": "APMA3110",
+         "title": "Applied Statistics and Probability does not count toward the BSCS degree. Students switching to the BSCS major who have already had this course should consult with their advisor on further APMA courses.)"
+        }
+       ],
+       "conjunction": "or",
+       "text": "(Note: APMA 3120 and APMA 3150 are both statistics courses with substantial overlap and thus cannot both count toward the BSCS degree. Students interested in taking these courses should choose one or the other. Also, APMA 3110: Applied Statistics and Probability does not count toward the BSCS degree. Students switching to the BSCS major who have already had this course should consult with their advisor on further APMA courses.)",
+       "credits": null,
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Math and Science Elective",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Students must complete a Math and Science Elective chosen from the following list: BIOL 2100, BIOL 2200, CE 2001, CHEM 1420, EVSC 2800, EVSC 3200, EVSC 3300, MSE 2090, PHYS 2620, or an approved 2000-level or higher APMA course not already required by a student’s major and does not duplicate material from another APMA course. See the SEAS page regarding electives for more information.",
+   "source_text": [
+    "Math and Science Elective",
+    "Students must complete a Math and Science Elective chosen from the following list: BIOL 2100, BIOL 2200, CE 2001, CHEM 1420, EVSC 2800, EVSC 3200, EVSC 3300, MSE 2090, PHYS 2620, or an approved 2000-level or higher APMA course not already required by a student’s major and does not duplicate material from another APMA course. See the SEAS page regarding electives for more information.",
+    "Humanities and Social Science (HSS) Electives",
+    "BSCS majors must complete a total of fifteen (15) credits of HSS electives, which includes the nine (9) credits of HSS courses required by the general SEAS requirements. HSS electives are selected from an approved list (available in A122 Thornton Hall) of humanities and social science offerings. Communication courses in the student’s native or first language, regardless of their level, may not be used to satisfy this requirement. See the SEAS page regarding electives for more information."
+   ],
+   "sections": [
+    {
+     "label": "Humanities and Social Science (HSS) Electives",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "BSCS majors must complete a total of fifteen (15) credits of HSS electives, which includes the nine (9) credits of HSS courses required by the general SEAS requirements. HSS electives are selected from an approved list (available in A122 Thornton Hall) of humanities and social science offerings. Communication courses in the student’s native or first language, regardless of their level, may not be used to satisfy this requirement. See the SEAS page regarding electives for more information.",
+       "category": "BSCS majors must complete a total of fifteen (15) credits of HSS electives, which includes the nine credits of HSS courses required by the general SEAS requirements. HSS electives are selected from an approved list (available in A122 Thornton Hall) of humanities and social science offerings. Communication courses in the student’s native or first language, regardless of their level, may not be used to satisfy this requirement. See the SEAS page regarding electives for more information.",
+       "credits": {
+        "min": 9,
+        "max": 9,
+        "raw": "9"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Unrestricted Electives",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "Unrestricted Electives",
+    "BSCS majors must complete twelve (12) credits of unrestricted electives. Unrestricted electives may be chosen from any graded course in the University except mathematics courses below MATH 1310; courses that substantially duplicate any others offered for the degree, including PHYS 2010, PHYS 2020, CS 1010, CS 1020; any introductory programming course; or SCPS courses. See the SEAS page regarding electives for more information.",
+    "Concentration in Artificial Intelligence (AI)",
+    "For the concentration in Artificial Intelligence, students are required to complete four courses (12 credits) as described below."
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH1310",
+         "title": "; courses that substantially duplicate any others offered for the degree, including"
+        },
+        {
+         "code": "PHYS2010",
+         "title": null
+        },
+        {
+         "code": "PHYS2020",
+         "title": null
+        },
+        {
+         "code": "CS1010",
+         "title": null
+        },
+        {
+         "code": "CS1020",
+         "title": "; any introductory programming course; or SCPS courses. See the SEAS page regarding electives for more information."
+        }
+       ],
+       "conjunction": "and",
+       "text": "BSCS majors must complete twelve (12) credits of unrestricted electives. Unrestricted electives may be chosen from any graded course in the University except mathematics courses below MATH 1310; courses that substantially duplicate any others offered for the degree, including PHYS 2010, PHYS 2020, CS 1010, CS 1020; any introductory programming course; or SCPS courses. See the SEAS page regarding electives for more information.",
+       "credits": {
+        "min": 12,
+        "max": 12,
+        "raw": "12"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Concentration in Artificial Intelligence (AI)",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "For the concentration in Artificial Intelligence, students are required to complete four courses (12 credits) as described below.",
+       "category": "For the concentration in Artificial Intelligence, students are required to complete four courses as described below.",
+       "credits": {
+        "min": 12,
+        "max": 12,
+        "raw": "12"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Students must complete the following two courses:",
+   "source_text": [
+    "Required Courses",
+    "Students must complete the following two courses:",
+    "CS 4710 - Artificial Intelligence Credits: 3",
+    "CS 4774 - Machine Learning Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS4710",
+         "title": "Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4710 - Artificial Intelligence",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4774",
+         "title": "Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4774 - Machine Learning",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "AI Techniques Elective",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Students must complete one of the following:",
+   "source_text": [
+    "AI Techniques Elective (3 credits)",
+    "Students must complete one of the following:",
+    "CS 4501 - Special Topics in Computer Science Credits: 1 to 3",
+    "Approved Topic: Machine Learning in Image Analysis",
+    "Approved Topic: Autonomous Vehicles",
+    "Approved Topic: Computer Vision",
+    "CS 4770 - Natural Language Processing Credits: 3",
+    "CS 4771 - Reinforcement Learning Credits: 3"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS4501",
+         "title": "Special Topics in Computer Science to 3"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4501 - Special Topics in Computer Science to 3",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Approved Topic: Computer Vision",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS4770",
+         "title": "Natural Language Processing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4770 - Natural Language Processing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CS4771",
+         "title": "Reinforcement Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4771 - Reinforcement Learning",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "AI Applications & Impacts Elective",
+   "credits": {
+    "min": 3,
+    "max": 3,
+    "raw": "3"
+   },
+   "choose": 1,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Students must complete one of the following courses: For more information about the major or the Computer Science department, please see our website at http://www.cs.virginia.edu, email cs-office@virginia.edu, or call the CS office at 434.982.2200.",
+   "source_text": [
+    "AI Applications & Impacts Elective (3 credits)",
+    "Students must complete one of the following courses:",
+    "CS 4501 - Special Topics in Computer Science Credits: 1 to 3",
+    "Approved Topic: AI and Humanity",
+    "Approved Topic: Carbon Efficient Computing",
+    "Approved Topic: Law and AI",
+    "Approved Topic: AI-Powered Cybersecurity",
+    "Approved Topic: LLMs and Software Engineering",
+    "Approved Topic: Risks and Benfits of Generative AI and LLMs",
+    "COMM 4211 - The Ethics of Artificial Intelligence Credits: 3",
+    "ECON 4444 - Artificial Intelligence and the Future of Work Credits: 3",
+    "MDST 3510 - Topics in Media Research Credits: 3",
+    "Approved Topic: AI Policy and Society",
+    "Additional Information"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CS4501",
+         "title": "Special Topics in Computer Science to 3"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CS 4501 - Special Topics in Computer Science to 3",
+       "credits": {
+        "min": 1,
+        "max": 1,
+        "raw": "1"
+       },
+       "administrative": false
+      }
+     ]
+    },
+    {
+     "label": "Approved Topic: Risks and Benfits of Generative AI and LLMs",
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "COMM4211",
+         "title": "The Ethics of Artificial Intelligence"
+        }
+       ],
+       "conjunction": "and",
+       "text": "COMM 4211 - The Ethics of Artificial Intelligence",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "ECON4444",
+         "title": "Artificial Intelligence and the Future of Work"
+        }
+       ],
+       "conjunction": "and",
+       "text": "ECON 4444 - Artificial Intelligence and the Future of Work",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MDST3510",
+         "title": "Topics in Media Research"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MDST 3510 - Topics in Media Research",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "administrative": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [
+  "Program Objectives",
+  "Graduates of the Bachelor of Science in Computer Science program:"
+ ],
+ "unassigned": [
+  "All SEAS students (including CS majors) must complete one Introduction to Programming course as a part of their general SEAS requirements. Students may also complete this requirement through Advanced Placement (AP), International Baccalaureate (IB), or dual-enrollment credit. Some students with programming experience may wish to take the place-out test, which satisfies the requirement but does not award degree credit. Please contact the department for more information about place-out tests.",
+  "Must have a CS mnemonic. (NOTE: Students that are interested in taking a course that is cross-listed with a CS section must enroll in the CS section and not the other department’s section as there may be different prerequisites and assessments for the course.)",
+  "For more information about the major or the Computer Science department, please see our website at http://www.cs.virginia.edu, email cs-office@virginia.edu, or call the CS office at 434.982.2200."
+ ],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 34 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "9 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "34 distinct courses across 39 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "credits_partial",
+    "detail": "groups sum to 6–6 against a stated 127, but 7 of 9 groups print no figure — cannot reconcile"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "8 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 9,
+   "sections": 16,
+   "rows": 39,
+   "course_rows": 31,
+   "category_rows": 8,
+   "distinct_courses": 34,
+   "credit_span": {
+    "min": 6,
+    "max": 6,
+    "groups_with_credits": 2
+   },
+   "stated_total": "127"
+  }
+ }
+}

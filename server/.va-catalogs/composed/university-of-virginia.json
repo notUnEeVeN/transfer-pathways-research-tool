@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "slug": "university-of-virginia",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "award": "BS",
+  "total_units": 127,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Computer Science",
+  "college": "School of Engineering and Applied Science",
+  "ge_authority": "School of Engineering and Applied Science",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "course_catalog"
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": ["major", "course_catalog"]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": ["major", "general_education", "college"]
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": ["general_education", "graduation"]
+    }
+  },
+  "unit_audit": {
+    "graduation_minimum": 127,
+    "modeled_units": 127,
+    "engineering_fixed_general_units": 42,
+    "computer_science_foundation_units": 24,
+    "software_engineering_and_capstone_units": 6,
+    "upper_cs_elective_units": 15,
+    "canonical_applied_math_units": 10,
+    "math_science_elective_units": 3,
+    "hss_units": 15,
+    "unrestricted_units": 12,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The 2026-2027 Undergraduate Record states no aggregate university- or school-wide upper-division-credit minimum. Required upper-level CS work is represented directly.",
+      "source_refs": ["major", "general_education", "graduation"]
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 63.5,
+      "rule": "Complete at least two academic years and 50 percent of the 127-credit primary degree program in residence at UVA and register in Engineering in the degree-conferral semester.",
+      "source_refs": ["general_education", "graduation"]
+    },
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+    "This document models the School of Engineering and Applied Science B.S. only. The College of Arts & Sciences B.A. is a separate degree and is not merged into this tree.",
+    "The Undergraduate Record publishes a 127-credit minimum. The canonical path uses four-credit APMA 2130 plus one three-credit APMA choice. A path using two three-credit choices requires one additional unrestricted credit to retain the 127-credit minimum.",
+    "The optional Artificial Intelligence concentration is preserved as a non-additive overlay that uses eligible major/elective capacity; it is not required for the ordinary B.S.",
+    "The source's example schedules are excluded. Only its categorical Engineering, major, elective, GPA, and residence requirements are modeled."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "applied_math_credit_path_capacity",
+      "severity": "review",
+      "message": "Two allowed Applied Mathematics choices are three credits each while APMA 2130 is four. The degree remains 127 credits, so the unrestricted-capacity remainder varies by one credit."
+    },
+    {
+      "code": "open_upper_cs_elective_category",
+      "severity": "review",
+      "message": "The 15-credit CS elective requirement is rule-defined rather than a closed course menu and includes overlap, numbering, cross-listing, and independent-study restrictions."
+    },
+    {
+      "code": "capstone_route_with_zero_credit_report",
+      "severity": "review",
+      "message": "The CS 4991 route requires a zero-credit report plus a separate unused graded three-credit CS 4000-level course."
+    }
+  ],
+  "course_titles": {
+    "APMA1090": "Single Variable Calculus I",
+    "APMA1110": "Single Variable Calculus II",
+    "APMA2120": "Multivariable Calculus",
+    "APMA2130": "Ordinary Differential Equations",
+    "APMA3080": "Linear Algebra",
+    "APMA3100": "Probability",
+    "APMA3120": "Statistics",
+    "APMA3150": "From Data to Knowledge",
+    "CHEM1410": "Introductory College Chemistry I",
+    "CHEM1411": "Introductory College Chemistry I Laboratory",
+    "CHEM1420": "Introductory College Chemistry II",
+    "CS1110": "Introduction to Programming",
+    "CS1111": "Introduction to Programming",
+    "CS1112": "Introduction to Programming",
+    "CS1113": "Introduction to Programming",
+    "CS2100": "Data Structures and Algorithms 1",
+    "CS2120": "Discrete Mathematics and Theory 1",
+    "CS2130": "Computer Systems and Organization 1",
+    "CS3100": "Data Structures and Algorithms 2",
+    "CS3120": "Discrete Mathematics and Theory 2",
+    "CS3130": "Computer Systems and Organization 2",
+    "CS3140": "Software Development Essentials",
+    "CS3240": "Software Engineering",
+    "CS4501": "Special Topics in Computer Science",
+    "CS4710": "Artificial Intelligence",
+    "CS4770": "Natural Language Processing",
+    "CS4771": "Reinforcement Learning",
+    "CS4774": "Machine Learning",
+    "CS4971": "Capstone Practicum",
+    "CS4980": "Capstone Research",
+    "CS4991": "Capstone Technical Report",
+    "CS4993": "Independent Study",
+    "ECE2200": "Applied Physics",
+    "ENGR1010": "Engineering Foundations 1",
+    "ENGR1020": "Engineering Foundations 2",
+    "PHYS1425": "Introductory Physics 1 for Engineers",
+    "PHYS1429": "Introductory Physics 1 Workshop",
+    "PHYS2415": "Introductory Physics II",
+    "PHYS2419": "Introductory Physics II Workshop",
+    "PHYS2620": "Modern Physics",
+    "STS2600": "Introduction to Engineering Ethics",
+    "STS4500": "STS and Engineering Practice",
+    "STS4600": "The Engineer, Ethics, and Professional Responsibility",
+    "BIOL2100": "Introduction to Biology with Laboratory: Cell Biology and Genetics",
+    "BIOL2200": "Introduction to Biology with Laboratory: Organismal and Evolutionary Biology",
+    "CE2001": "Civil Engineering Techniques",
+    "EVSC2800": "Fundamentals of Geology",
+    "EVSC3200": "Fundamentals of Ecology",
+    "EVSC3300": "Atmosphere and Weather",
+    "MSE2090": "Introduction to Materials Science",
+    "COMM4211": "The Ethics of Artificial Intelligence",
+    "ECON4444": "Artificial Intelligence and the Future of Work",
+    "MDST3510": "Topics in Media Research"
+  },
+  "requirement_groups": [
+    {
+      "title": "School of Engineering fixed general requirements",
+      "requirement_layer": "ge_college",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "college", "course_catalog"],
+      "stated_credits": 42,
+      "analysis_constraints": [
+        {
+          "kind": "programming_placeout_credit_replacement",
+          "status": "evaluator_not_implemented",
+          "description": "The programming place-out test satisfies the requirement but awards no degree credit, so a student using it still needs replacement credit to reach 127."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "APMA1090", "units": 3}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "APMA1110", "units": 4}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "APMA2120", "units": 4}]},
+        {"select": 1, "units": 4, "label": "Introductory chemistry with laboratory", "receivers": [{"kind": "series", "codes": ["CHEM1410", "CHEM1411"], "units": 4}]},
+        {"select": 1, "units": 3, "label": "Introduction to programming", "receivers": [
+          {"kind": "course", "code": "CS1110", "units": 3},
+          {"kind": "course", "code": "CS1111", "units": 3},
+          {"kind": "course", "code": "CS1112", "units": 3},
+          {"kind": "course", "code": "CS1113", "units": 3}
+        ]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "ENGR1010", "units": 4}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENGR1020", "units": 3}]},
+        {"select": 1, "units": 4, "label": "Introductory Physics I with workshop", "receivers": [{"kind": "series", "codes": ["PHYS1425", "PHYS1429"], "units": 4}]},
+        {"select": 1, "units": 4, "label": "Physics II", "receivers": [
+          {"kind": "course", "code": "ECE2200", "units": 4},
+          {"kind": "series", "codes": ["PHYS2415", "PHYS2419"], "units": 4}
+        ]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "STS2600", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "STS4500", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "STS4600", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Computer Science foundation courses",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 24,
+      "analysis_constraints": [
+        {
+          "kind": "three_credit_transfer_substitution_makeup",
+          "status": "evaluator_not_implemented",
+          "description": "A transferred three-credit substitute for CS 2100, CS 2130, or CS 3130 requires an additional 2000-level-or-higher CS credit."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CS2100", "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CS2120", "units": 3}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CS2130", "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "receivers": [{"kind": "course", "code": "CS3100", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "receivers": [{"kind": "course", "code": "CS3120", "units": 3}]},
+        {"select": 1, "units": 4, "course_level": "upper_division", "receivers": [{"kind": "course", "code": "CS3130", "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "receivers": [{"kind": "course", "code": "CS3140", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Required upper-level software engineering",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 3,
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS3240", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Computer Science capstone",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 3,
+      "analysis_constraints": [
+        {
+          "kind": "zero_credit_report_plus_unused_upper_course",
+          "status": "evaluator_not_implemented",
+          "description": "The CS 4991 route is an AND requirement: the zero-credit technical report plus an unused graded three-credit CS 4000-level course."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "CS4980", "units": 3},
+          {"kind": "course", "code": "CS4971", "units": 3},
+          {"kind": "requirement", "name": "CS 4991 together with an unused graded three-credit CS 4000-level course", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Upper-level Computer Science electives",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 15,
+      "analysis_constraints": [
+        {
+          "kind": "open_cs_3000_plus_category_with_exclusions",
+          "status": "evaluator_not_implemented",
+          "description": "Complete 15 additional CS credits numbered 3000 or above, excluding foundation/required courses, most x0xx/x9xx courses, overlapping content, and non-CS cross-list sections; at most three CS 4993 credits count."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 15, "receivers": [{"kind": "ge_area", "code": "UVA-CS-UPPER-ELECTIVES", "name": "Fifteen eligible additional CS credits numbered 3000 or above", "units": 15}]}
+      ]
+    },
+    {
+      "title": "Applied Mathematics electives",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 10,
+      "analysis_constraints": [
+        {
+          "kind": "variable_credit_choose_two_with_exclusion",
+          "status": "evaluator_not_implemented",
+          "description": "Choose two of APMA 2130/3080/3120/3150; APMA 3120 and 3150 cannot both count. A six-credit pair increases unrestricted capacity by one credit so the degree remains 127."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "APMA3100", "units": 3}]},
+        {"select": 2, "units": 7, "label": "Two additional APMA courses", "receivers": [
+          {"kind": "course", "code": "APMA2130", "units": 4},
+          {"kind": "course", "code": "APMA3080", "units": 3},
+          {"kind": "course", "code": "APMA3120", "units": 3},
+          {"kind": "course", "code": "APMA3150", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Math and Science elective",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "course_catalog"],
+      "stated_credits": 3,
+      "analysis_constraints": [
+        {
+          "kind": "approved_math_science_menu_with_no_duplicate",
+          "status": "evaluator_not_implemented",
+          "description": "Choose one published science course or an approved APMA 2000-level-or-higher course not already required and not duplicating another APMA course."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "BIOL2100", "units": 3},
+          {"kind": "course", "code": "BIOL2200", "units": 3},
+          {"kind": "course", "code": "CE2001", "units": 3},
+          {"kind": "course", "code": "CHEM1420", "units": 3},
+          {"kind": "course", "code": "EVSC2800", "units": 3},
+          {"kind": "course", "code": "EVSC3200", "units": 3},
+          {"kind": "course", "code": "EVSC3300", "units": 3},
+          {"kind": "course", "code": "MSE2090", "units": 3},
+          {"kind": "course", "code": "PHYS2620", "units": 3},
+          {"kind": "ge_area", "code": "UVA-APMA-2000-PLUS-ELECTIVE", "name": "Approved nonduplicative APMA course numbered 2000 or above", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Humanities and Social Science electives",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": 15,
+      "analysis_constraints": [
+        {
+          "kind": "school_approved_hss_category",
+          "status": "evaluator_not_implemented",
+          "description": "Complete 15 credits from the Engineering School's approved HSS list; communication courses in the student's native or first language are excluded."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 15, "receivers": [{"kind": "ge_area", "code": "UVA-SEAS-HSS-15", "name": "Fifteen approved Humanities and Social Science credits", "units": 15}]}
+      ]
+    },
+    {
+      "title": "Unrestricted electives to the degree minimum",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": 12,
+      "analysis_constraints": [
+        {
+          "kind": "unrestricted_exclusions_and_capacity_reallocation",
+          "status": "evaluator_not_implemented",
+          "description": "The canonical 12-credit remainder excludes low-level math, specified duplicate courses, introductory programming, and SCPS courses; it increases to 13 when the Applied Mathematics choice totals only six credits."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 12, "receivers": [{"kind": "ge_area", "code": "UVA-BSCS-UNRESTRICTED", "name": "Twelve canonical unrestricted elective credits subject to the published exclusions", "units": 12}]}
+      ]
+    },
+    {
+      "title": "Engineering graduation and residence rules",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "policy",
+      "cc_articulable": false,
+      "source_refs": ["major", "general_education", "graduation"],
+      "sections": [
+        {"select": 1, "units": 0, "label": "Cumulative GPA", "receivers": [{"kind": "requirement", "name": "Earn a cumulative UVA grade point average of at least 2.000", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Computer Science GPA", "receivers": [{"kind": "requirement", "name": "Earn a Computer Science course grade point average of at least 2.000, including all repeated-course grades", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Residence", "receivers": [{"kind": "requirement", "name": "Complete two academic years and at least 50 percent of the primary degree in residence and enroll in Engineering in the conferral term", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Grading basis", "receivers": [{"kind": "requirement", "name": "Do not use Credit/No Credit or School of Continuing and Professional Studies courses for Engineering degree requirements", "units": 0}]}
+      ]
+    }
+  ],
+  "requirement_variants": [
+    {
+      "key": "standard_bscs",
+      "label": "Computer Science B.S. without an optional concentration",
+      "selected": true,
+      "published_total_units": 127,
+      "source_refs": ["major", "general_education", "college", "graduation", "course_catalog"],
+      "requirement_groups_location": "top-level requirement_groups"
+    },
+    {
+      "key": "artificial_intelligence_concentration",
+      "label": "Optional Artificial Intelligence concentration",
+      "selected": false,
+      "published_total_units": 127,
+      "source_refs": ["major", "course_catalog"],
+      "common_requirements": "This 12-credit concentration is an overlay within eligible major and elective capacity; it does not replace the full B.S. tree or increase the 127-credit degree minimum.",
+      "requirement_groups": [
+        {
+          "title": "Artificial Intelligence concentration",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major", "course_catalog"],
+          "stated_credits": 12,
+          "analysis_constraints": [
+            {"kind": "approved_special_topics_by_topic", "status": "evaluator_not_implemented", "description": "CS 4501 counts only when its catalog topic is one of the specifically approved AI techniques or applications/impacts topics."},
+            {"kind": "concentration_overlap_with_degree_capacity", "status": "evaluator_not_implemented", "description": "Concentration courses may satisfy eligible CS, HSS, or unrestricted capacity and are not twelve additive credits beyond 127."}
+          ],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS4710", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS4774", "units": 3}]},
+            {"select": 1, "units": 3, "label": "AI Techniques elective", "receivers": [
+              {"kind": "course", "code": "CS4501", "units": 3},
+              {"kind": "course", "code": "CS4770", "units": 3},
+              {"kind": "course", "code": "CS4771", "units": 3}
+            ]},
+            {"select": 1, "units": 3, "label": "AI Applications and Impacts elective", "receivers": [
+              {"kind": "course", "code": "CS4501", "units": 3},
+              {"kind": "course", "code": "COMM4211", "units": 3},
+              {"kind": "course", "code": "ECON4444", "units": 3},
+              {"kind": "course", "code": "MDST3510", "units": 3}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cs4991_capstone_route",
+      "label": "CS 4991 technical-report capstone route",
+      "selected": false,
+      "published_total_units": 3,
+      "source_refs": ["major", "course_catalog"],
+      "common_requirements": "This route replaces the canonical capstone choice: CS 4991 is completed together with an unused graded three-credit CS 4000-level course.",
+      "requirement_groups": [
+        {
+          "title": "CS 4991 capstone route",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major", "course_catalog"],
+          "analysis_constraints": [
+            {"kind": "unused_graded_cs4000_companion", "status": "evaluator_not_implemented", "description": "The companion CS 4000-level course must be graded, three credits, and unused by another CS degree requirement."}
+          ],
+          "sections": [
+            {"select": 1, "units": 0, "receivers": [{"kind": "course", "code": "CS4991", "units": 0}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "requirement", "name": "Unused graded three-credit CS 4000-level course", "units": 3}]}
+          ]
+        }
+      ]
+    },
+    {
+      "key": "cs4993_elective_allowance",
+      "label": "CS 4993 independent-study elective allowance",
+      "selected": false,
+      "published_total_units": 3,
+      "source_refs": ["major", "course_catalog"],
+      "common_requirements": "At most three CS 4993 credits may fill the existing 15-credit upper-CS elective category; this is not an additional requirement.",
+      "requirement_groups": [
+        {
+          "title": "CS 4993 elective allowance",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major", "course_catalog"],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS4993", "units": 3}]}
+          ]
+        }
+      ]
+    }
+  ]
+}

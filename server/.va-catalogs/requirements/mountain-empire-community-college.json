@@ -1,43 +1,66 @@
 {
- "slug": "mountain-empire-community-college",
- "name": "Mountain Empire Community College",
- "level": "community_college",
- "platform": "acalog",
- "outcome": "no_cs_program",
- "source_url": "https://catalog.mecc.edu/",
- "offers_cs": false,
- "program_title": null,
- "total_credits": null,
- "groups": [],
- "validation": {
-  "verdict": "n/a",
-  "needs_hand_read": false,
-  "checks": [],
-  "stats": {}
- },
- "evidence": {
-  "url": null,
-  "candidates": [],
-  "catoids": [
-   6
+  "slug": "mountain-empire-community-college",
+  "name": "Mountain Empire Community College",
+  "level": "community_college",
+  "platform": "acalog",
+  "outcome": "no_cs_program",
+  "offers_cs": false,
+  "hand_read": true,
+  "source_url": "https://catalog.mecc.edu/content.php?catoid=6&navoid=397",
+  "catalog_year": "2026-2027",
+  "program_title": null,
+  "total_credits": null,
+  "program_finding": {
+    "code": "broad_science_as_no_cs_specific_curriculum",
+    "summary": "The current 2026-2027 catalog has a broad Science A.S., but no source-prescribed Computer Science award, specialization, pathway, or curriculum.",
+    "evidence": [
+      "The current Programs A-Z index contains no Computer Science program entry.",
+      "The current Science A.S. is a broad transfer degree and does not name a Computer Science branch."
+    ],
+    "source_refs": ["catalog_index", "broad_science_program"],
+    "alternate_path": {
+      "title": "Science, AS",
+      "award": "AS",
+      "total_credits": "61-62",
+      "supports_cs_transfer_pathway": false,
+      "url": "https://catalog.mecc.edu/preview_program.php?catoid=6&poid=590&returnto=408"
+    }
+  },
+  "sources": [
+    {
+      "id": "catalog_index",
+      "role": "catalog_index",
+      "kind": "catalog",
+      "label": "Mountain Empire 2026-2027 Programs A-Z index",
+      "url": "https://catalog.mecc.edu/content.php?catoid=6&navoid=397",
+      "requested_url": "https://catalog.mecc.edu/content.php?catoid=6&navoid=397",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:33:11.395Z",
+      "sha256": "8839efc8ee1a1ca04b93cbca3853e8b39b085b74e2810c1ec3683d566c001f5b",
+      "official": true,
+      "secure": true
+    },
+    {
+      "id": "broad_science_program",
+      "role": "broad_science_program",
+      "kind": "alternate_path",
+      "label": "Mountain Empire 2026-2027 broad Science A.S.",
+      "url": "https://catalog.mecc.edu/preview_program.php?catoid=6&poid=590&returnto=408",
+      "requested_url": "https://catalog.mecc.edu/preview_program.php?catoid=6&poid=590&returnto=408",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:33:11.395Z",
+      "sha256": "a522f5d0c00a26c857d6ac257a1bc09bfdb9991cf06163892a78cecf8f0e9bf0",
+      "official": true,
+      "secure": true
+    }
   ],
-  "read": {
-   "navs_seen": 56,
-   "nav_pages_read": 6,
-   "program_links_seen": 291,
-   "via": "navigation"
+  "source_layers": {
+    "catalog_identity": {"status": "captured", "source_refs": ["catalog_index"], "note": "Current 2026-2027 program inventory."},
+    "major": {"status": "not_applicable", "source_refs": ["catalog_index", "broad_science_program"], "note": "No CS-specific associate curriculum is published."},
+    "general_education": {"status": "not_applicable", "source_refs": [], "note": "No CS-specific degree exists to compose."},
+    "graduation": {"status": "not_applicable", "source_refs": [], "note": "No CS-specific degree exists to compose."}
   },
-  "read_fetch": {
-   "navs_seen": 56,
-   "nav_pages_read": 0,
-   "program_links_seen": 0
-  },
-  "read_curl": {
-   "navs_seen": 56,
-   "nav_pages_read": 0,
-   "program_links_seen": 0,
-   "via": "curl"
-  }
- },
- "extracted_at": "2026-08-02T06:13:44.735Z"
+  "groups": [],
+  "validation": {"verdict": "n/a", "needs_hand_read": false, "checks": [], "stats": {}},
+  "extracted_at": "2026-08-10T23:50:00.000Z"
 }

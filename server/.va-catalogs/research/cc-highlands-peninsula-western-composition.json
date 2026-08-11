@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_community_college_cs_as_highlands_peninsula_western_full_composition",
+  "researched_at": "2026-08-10",
+  "scope": [
+    "virginia-highlands-community-college",
+    "virginia-peninsula-community-college",
+    "virginia-western-community-college"
+  ],
+  "methodology": [
+    "Use only the current official 2026-2027 college catalog, official catalog-owned option dictionaries, and official graduation-policy pages.",
+    "Treat term headings as organization for the published requirement inventory, not as prospective or recommended schedules; retain the requirements and discard term order.",
+    "Follow every category or pseudo-course link needed to enumerate a closed course menu. Preserve a source-owned category only when the official source genuinely does not publish a closed list.",
+    "Preserve AND sequences, OR choices, credit ranges, category-distinctness, prerequisite substitutions, and cross-slot no-double-count rules. Retain source arithmetic conflicts instead of silently repairing them."
+  ],
+  "summary": {
+    "institutions_composed": 3,
+    "current_standalone_cs_as": 3,
+    "catalog_acceptance_passed": 3,
+    "analysis_ready": 1,
+    "analysis_blockers": {
+      "virginia-highlands-community-college": ["constraint_support"],
+      "virginia-peninsula-community-college": ["constraint_support"],
+      "virginia-western-community-college": []
+    }
+  },
+  "institutions": [
+    {
+      "slug": "virginia-highlands-community-college",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog": {
+        "catalog_year": "2026-2027",
+        "label": "2026-2027 College Catalog v1.2",
+        "platform": "official machine-readable PDF",
+        "url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf",
+        "binary_sha256": "a3126a08f12390d358094695a87df51d81cbf0c90c80c7b51b949dc845735e3a",
+        "capture_text_sha256": "5c7a998f456a4093e6d97c170cc7c69d99d4e5b59a638a7d41c56e58c09d85b2",
+        "last_modified": "2026-06-25",
+        "pages": 266
+      },
+      "degree": {
+        "catalog_program_title": "Associate of Science (AS) in Computer Science",
+        "award": "Associate of Science",
+        "published_total_credits": "60-63",
+        "modeled_total_credits": "60-62",
+        "source_location": {
+          "program_pdf_pages": "62-63",
+          "ucgs_pdf_pages": "43-45",
+          "graduation_pdf_pages": "31-32",
+          "computer_science_course_descriptions_begin_pdf_page": 229
+        },
+        "requirement_logic": {
+          "fixed_courses": ["SDV 101", "ENG 111", "ENG 112", "CSC 221", "CSC 222", "CSC 205", "CSC 223", "CST 100"],
+          "fixed_choice_slots": [
+            "HIS 121 or HIS 122",
+            "CSC 208 or MTH 288",
+            "ENG 245 or ENG 246"
+          ],
+          "math_slots": [
+            "MTH 161 or MTH 263",
+            "MTH 162 or MTH 264",
+            "MTH 263 or MTH 265",
+            "MTH 264 or MTH 266"
+          ],
+          "general_education": [
+            "one UCGS Block III course",
+            "one UCGS Block II Art or Humanities course; Literature is excluded",
+            "two distinct UCGS Block IV natural-science courses"
+          ]
+        },
+        "arithmetic": "The non-math requirements total 47. The canonical distinct math route MTH 161 + MTH 162 + MTH 263 + MTH 266 contributes 13, closing at 60. Distinct math routes top out at 15, or 62 overall. The printed 63 maximum independently selects MTH 263 and MTH 264 twice and therefore cannot represent 63 distinct earned credits."
+      },
+      "graduation": {
+        "minimum_curriculum_gpa": 2,
+        "residency_minimum_percent": 25,
+        "other_rules": [
+          "Complete all course and credit-hour requirements.",
+          "Receive certification from the appropriate college official.",
+          "File the graduation application and resolve college obligations."
+        ]
+      },
+      "catalog_acceptance": {
+        "accepted": true,
+        "ready_for_analysis": false,
+        "analysis_blockers": ["constraint_support"]
+      }
+    },
+    {
+      "slug": "virginia-peninsula-community-college",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog": {
+        "catalog_year": "2026-2027",
+        "platform": "Modern Campus Catalog (Acalog)",
+        "catalog_id": 26,
+        "program_id": 6026,
+        "program_code": "246"
+      },
+      "sources": [
+        {
+          "id": "major",
+          "url": "https://catalog.vpcc.edu/preview_program.php?catoid=26&poid=6026&print=1",
+          "sha256": "b3cae389b811d2966d8e493b7c5dcdf82f4a0bc1b2a4421432db5ba69fd64134",
+          "evidence": "Current award identity, every fixed row, Computer Science 1 and 2 menus, prerequisite substitution, and published 60/63 total."
+        },
+        {
+          "id": "general_education",
+          "url": "https://catalog.vpcc.edu/content.php?catoid=26&navoid=5787",
+          "sha256": "82319784659568d0f6debf69c7a806b213b1225be92bf9971caf6762a1d87f63",
+          "evidence": "Current closed Block II, III, and VI UCGS menus and the different-category rule for the two Block II choices."
+        },
+        {
+          "id": "graduation",
+          "url": "https://catalog.vpcc.edu/content.php?catoid=26&navoid=5683",
+          "sha256": "6af7b37f839120c95a0e2a11489d255f2b1c6d2b928ee04146ecb24f1d2a646c",
+          "evidence": "Current 25-percent institutional-credit minimum and 2.0 curriculum GPA."
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.vpcc.edu/content.php?catoid=26&navoid=5687",
+          "sha256": "8961713b07af40a6fa5af413c7791bd283d00f7b6893ed07b14dac2545c53fde",
+          "evidence": "Current course identities, titles, credit values, and course-applicability policy."
+        }
+      ],
+      "degree": {
+        "catalog_program_title": "Computer Science (246) Associate of Science",
+        "award": "Associate of Science",
+        "published_total_credits": "60-63",
+        "modeled_total_credits": "60-63",
+        "requirement_logic": {
+          "fixed_courses": ["CSC 221", "CSC 208", "CSC 222", "CSC 223", "ENG 111", "SDV 100", "MTH 263"],
+          "choice_slots": [
+            "ENG 112 or ENG 113",
+            "MTH 264 or MTH 245",
+            "one of BIO 101, CHM 111, GOL 105, or PHY 241",
+            "one Computer Science 1 course from the sixteen-course menu",
+            "CSC 205 or MTH 265",
+            "7-10 Computer Science 2 credits from the seventeen-course menu"
+          ],
+          "general_education": [
+            "two three-credit UCGS Block II courses from different categories",
+            "one UCGS Block III course",
+            "one UCGS Block VI course"
+          ],
+          "prerequisite_credit_rule": "When MTH 161 and MTH 162 are required before MTH 263, they may fulfill Computer Science elective requirements."
+        },
+        "arithmetic": "The all-minimum route has 50 credits before Computer Science 2 and therefore allocates ten approved Computer Science 2 credits to close at 60. Three independent one-credit option increases produce the published 63 maximum; the Computer Science 2 source range allows its allocation to fall as other applicable credits rise."
+      },
+      "graduation": {
+        "minimum_curriculum_gpa": 2,
+        "residency_minimum_percent": 25
+      },
+      "catalog_acceptance": {
+        "accepted": true,
+        "ready_for_analysis": false,
+        "analysis_blockers": ["constraint_support"]
+      }
+    },
+    {
+      "slug": "virginia-western-community-college",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog": {
+        "catalog_year": "2026-2027",
+        "label": "2026-27 Virginia Western Academic Catalog and Student Handbook",
+        "platform": "Modern Campus Catalog (Acalog)",
+        "catalog_id": 25,
+        "program_id": 3520,
+        "program_code": "246"
+      },
+      "sources": [
+        {
+          "id": "major",
+          "url": "https://catalog.virginiawestern.edu/preview_program.php?catoid=25&poid=3520&returnto=2597&print=1",
+          "sha256": "cc92aa17fb0f2caf8aa2ff079fc4a2eacadd191f1f0183ade0a7f59ca6fccd55",
+          "evidence": "Current program identity, every fixed course, two pseudo-course slots, sequence footnote, and 60-credit minimum."
+        },
+        {
+          "id": "social_science_elective",
+          "url": "https://catalog.virginiawestern.edu/preview_course.php?catoid=25&coid=29546&print",
+          "sha256": "b97a5e89b6a44e7cd485e780eb4053ea83cc35a47732e05ceed8c919835ef884",
+          "evidence": "Closed seven-course Social Science ELE dictionary."
+        },
+        {
+          "id": "literature_elective",
+          "url": "https://catalog.virginiawestern.edu/preview_course.php?catoid=25&coid=29505&print",
+          "sha256": "bcfb8842aed95614088b7b2e72cc33b6a91aea77555e05c4e6a13966f6eb88e1",
+          "evidence": "Closed seven-course ENG LIT dictionary."
+        },
+        {
+          "id": "general_education",
+          "url": "https://catalog.virginiawestern.edu/content.php?catoid=25&navoid=2593",
+          "sha256": "431c2f3ccbcb2a629fec80c7f26d3b5f8c02c76299fe924d0c05e0ab9f553cf8",
+          "evidence": "Current AS general-education framework and cross-discipline breadth rules."
+        },
+        {
+          "id": "graduation",
+          "url": "https://www.virginiawestern.edu/graduation/requirements/",
+          "sha256": "572882a8a2968fcd93aeea60e97f479632742e812666c865304982ff3a33d8c4",
+          "evidence": "Current 25-percent institutional-credit minimum and 2.0 applicable-curriculum GPA."
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.virginiawestern.edu/content.php?catoid=25&navoid=2592",
+          "sha256": "f35f2cd5f7b614d9bcd3c23760875cd795379e9e900ff40e82b919832e683779",
+          "evidence": "Current course identities and titles."
+        }
+      ],
+      "degree": {
+        "catalog_program_title": "Computer Science, A.S.",
+        "award": "Associate of Science",
+        "published_total_credits_minimum": 60,
+        "modeled_total_credits": "60-61",
+        "requirement_logic": {
+          "fixed_credits": 43,
+          "social_science_elective": "choose one of the seven catalog-linked options for three credits",
+          "math_choice": "MTH 245 (3) or MTH 264 (4)",
+          "science_sequence": "CHM 111 and CHM 112, or PHY 241 and PHY 242",
+          "literature_elective": "choose one of the seven catalog-linked options for three credits"
+        },
+        "arithmetic": "43 fixed + 3 social science + 3-4 math + 8 science sequence + 3 literature = 60-61."
+      },
+      "excluded_variant": "The separate Engineering: Computer Science Major, A.S. is not merged into this non-engineering Computer Science A.S.",
+      "graduation": {
+        "minimum_curriculum_gpa": 2,
+        "residency_minimum_percent": 25
+      },
+      "catalog_acceptance": {
+        "accepted": true,
+        "ready_for_analysis": true,
+        "analysis_blockers": []
+      }
+    }
+  ]
+}

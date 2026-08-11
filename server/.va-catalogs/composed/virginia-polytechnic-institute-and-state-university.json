@@ -1,0 +1,558 @@
+{
+  "schema_version": 1,
+  "slug": "virginia-polytechnic-institute-and-state-university",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science Major, Bachelor of Science in Computer Science",
+  "award": "BS",
+  "total_units": 123,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Engineering",
+  "ge_authority": "Virginia Tech Pathways to General Education",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "policy",
+    "course_catalog"
+  ],
+  "selected_variant": "Computer Science major under the Bachelor of Science in Computer Science",
+  "excluded_variants": [
+    "Secure Computing major",
+    "Data-Centric Computing major",
+    "Accelerated undergraduate/graduate degree pathway"
+  ],
+  "capture_exclusions": [
+    "The Roadmap Plan of Study grid is scheduling guidance and is not imported as a requirement source.",
+    "Graduate-course options that the undergraduate curriculum explicitly excludes are not imported. Conditional, department-approved 5000-level undergraduate elective credit remains represented as the catalog publishes it."
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": ["major", "course_catalog"]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": ["major", "general_education", "college"],
+      "note": "The College of Engineering and Department sources establish ownership. The complete Pathways and engineering foundation requirements are embedded in the official program curriculum; no separate additional college-wide credit block is published for this program."
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": ["major", "graduation", "policy"]
+    }
+  },
+  "unit_audit": {
+    "graduation_minimum": 123,
+    "modeled_units": 123,
+    "degree_core_units": 24,
+    "major_requirement_units": 15,
+    "additional_course_units": 8,
+    "elective_subtotal_units": 37,
+    "net_pathways_units_after_natural_science_overlap": 39,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The reviewed current university and program policy sources prescribe upper-level coursework but do not publish a separate university-wide bachelor's upper-division-credit minimum.",
+      "source_refs": ["major", "graduation", "policy"]
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 31,
+      "rule": "At least 25 percent of degree credits must be completed at Virginia Tech; no more than 18 transfer credits may appear among the final 45 credits; and no more than 50 percent of degree requirements may transfer from two-year institutions.",
+      "source_refs": ["graduation", "policy"]
+    },
+    "residency_minimum_percent": 25,
+    "residency_exact_units_at_25_percent": 30.75,
+    "senior_residency_window_units": 45,
+    "senior_residency_transfer_units_maximum": 18,
+    "senior_residency_derived_institution_units_minimum": 27,
+    "two_year_transfer_maximum_percent": 50,
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+    "The authoritative Program Curriculum closes at 123 credits. The 37-credit elective subtotal includes the separately detailed eight-credit Natural Science Electives rule; those same eight credits satisfy Pathways Concept 4 and are removed once from the 47-credit gross Pathways subtotal, leaving 39 net Pathways credits.",
+    "Pathways Concept 7 is suspended effective fall 2025. The program table nevertheless preserves three credits needed to maintain the 123-credit minimum when Concept 7 is double-counted or suspended; this is modeled as three credits of minimum-total elective capacity, not as a current Concept 7 course requirement.",
+    "Pathways 1a is not an additional three-credit block: the program expressly requires it to be fulfilled through the Communications, Professional Writing, or Free Elective capacity.",
+    "The MATH 2405H plus MATH 2406H substitution consumes the two ordinary mathematics core slots and four free-elective credits. The pair is exposed in the relevant slots, with its cross-slot/free-credit dependency retained as an unsupported exact constraint.",
+    "Any eligible CS 3/4/5000 or 4/5000 course permitted by the published rule remains a real undergraduate elective option. The named graduate courses expressly barred by the program are absent, and use of a 5000-level course remains subject to the published two-semesters-to-graduation, GPA, and permission/accelerated-program conditions.",
+    "The program requires 30 credits of non-technical coursework as a distribution overlay. It is represented as a zero-additional-unit policy because the 30 credits come from already modeled Pathways, communications, writing, and elective coursework."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "cross_group_elective_distinctness",
+      "severity": "block_analysis",
+      "message": "Eligible courses overlap the 3/4/5XXX, 4/5XXX, capstone, and technical menus; a course cannot earn credit in more than one requirement."
+    },
+    {
+      "code": "pathways_attribute_and_overlap_evaluator_required",
+      "severity": "block_analysis",
+      "message": "Pathways 1a and Concept 4 are fulfilled inside other degree blocks, and Concept 7 is suspended while three credits of total-capacity remain."
+    },
+    {
+      "code": "variable_credit_and_conditional_5000_level_options",
+      "severity": "block_analysis",
+      "message": "Independent study, undergraduate research, field study, and conditional 5000-level eligibility require credit-limit, GPA, permission, and timing evaluators."
+    },
+    {
+      "code": "catalog_noninteractive_capture_challenge",
+      "severity": "review",
+      "message": "The live program and department URLs can return a JavaScript anti-bot challenge to noninteractive clients; compare future browser-capable recaptures with the current official-URL artifact."
+    },
+    {
+      "code": "program_listed_codes_absent_from_course_catalog",
+      "severity": "block_analysis",
+      "message": "The current CS program lists ENGE 2724 and ENGE 4724 as Career Bridge routes with an approved project, but the current official ENGE course-description catalog contains neither code nor a title. Their code identities and verbatim route notes are retained; no course title is invented."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Degree Core Requirements",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "24",
+      "analysis_constraints": [
+        {
+          "kind": "honors_math_substitution_and_free_credit_adjustment",
+          "status": "evaluator_not_implemented",
+          "description": "MATH 2405H may independently replace MATH 2114. If MATH 2406H is used, it must be paired with MATH 2405H; the ten-credit pair replaces MATH 2114, MATH 2204, and four free-elective credits. Exact surplus-credit adjustment for the standalone five-credit MATH 2405H option is not published as a separate rule."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "course_level": "lower_division", "receivers": [
+          {"kind": "course", "code": "CS1114", "title": "Introduction to Software Design", "units": 3},
+          {"kind": "course", "code": "CS2064", "title": "Intermediate Programming in Python", "units": 3, "note": "Published substitution for CS 1114."}
+        ]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "receivers": [
+          {"kind": "course", "code": "CS2505", "title": "Introduction to Computer Organization", "units": 3},
+          {"kind": "course", "code": "ECE2564", "title": "Embedded Systems", "units": 3, "note": "Published substitution for CS 2505."}
+        ]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CS2506", "title": "Introduction to Computer Organization", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS3214", "title": "Computer Systems", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS3604", "title": "Professionalism in Computing", "units": 3}]},
+        {"label": "Linear algebra slot", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "MATH2114", "title": "Introduction to Linear Algebra", "units": 3},
+          {"kind": "course", "code": "MATH2405H", "title": "Mathematics in a Computational Context", "units": 5, "note": "Conditional honors substitution; must pair with MATH 2406H to receive the combined substitution."}
+        ]},
+        {"label": "Multivariable or integrated quantitative slot", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "MATH2204", "title": "Introduction to Multivariable Calculus", "units": 3},
+          {"kind": "course", "code": "CMDA2005", "title": "Integrated Quantitative Sciences", "units": 3},
+          {"kind": "course", "code": "MATH2406H", "title": "Mathematics in a Computational Context", "units": 5, "note": "Conditional honors substitution; must pair with MATH 2405H and replaces four free-elective credits."}
+        ]},
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "MATH2534", "title": "Introduction to Discrete Mathematics", "units": 3},
+          {"kind": "course", "code": "MATH3034", "title": "Introduction to Proofs", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Major Requirements",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "15",
+      "analysis_constraints": [
+        {"kind": "no_double_count_across_cs_elective_groups", "status": "evaluator_not_implemented", "description": "A course used for theory, 4/5XXX elective, capstone, 3/4/5XXX elective, or technical elective credit cannot be used again in another requirement."},
+        {"kind": "conditional_5000_level_undergraduate_eligibility", "status": "evaluator_not_implemented", "description": "A 5000-level course requires the published proximity-to-graduation, 3.0 GPA, and instructor/department or accelerated-program authorization; it remains undergraduate degree credit and cannot also be placed on a nonaccelerated graduate plan."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [
+          {"kind": "course", "code": "CS2104", "title": "Introduction to Problem Solving in Computer Science", "units": 3},
+          {"kind": "course", "code": "CS2144", "title": "Competitive Problem Solving I", "units": 3, "note": "Published substitution for CS 2104."},
+          {"kind": "course", "code": "CS4144", "title": "Competitive Problem Solving II", "units": 3, "note": "Published substitution for CS 2104."}
+        ]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS3304", "title": "Comparative Languages", "units": 3}]},
+        {"label": "CS Theory Elective", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "CS4104", "title": "Data and Algorithm Analysis", "units": 3},
+          {"kind": "course", "code": "CS4114", "title": "Introduction to Formal Languages and Automata Theory", "units": 3},
+          {"kind": "course", "code": "CS4124", "title": "Theory of Computation", "units": 3},
+          {"kind": "course", "code": "CS4134", "title": "Quantum Computation and Information Processing", "units": 3},
+          {"kind": "course", "code": "CS5104", "title": "Computability and Formal Languages", "units": 3},
+          {"kind": "course", "code": "CS5114", "title": "Theory of Algorithms", "units": 3}
+        ]},
+        {"label": "CS 4/5XXX Elective", "select": 1, "units": 3, "receivers": [
+          {"kind": "requirement", "name": "One eligible three-credit CS 4000- or 5000-level course under the published rule, including CS 4974 or CS 4994 and excluding the named barred courses", "units": 3},
+          {"kind": "course", "code": "BIT4614", "title": "Cybersecurity Management II", "units": 3},
+          {"kind": "course", "code": "CMDA4654", "title": "Intermediate Data Analytics and Machine Learning", "units": 3},
+          {"kind": "course", "code": "ECE4424", "title": "Machine Learning", "units": 3},
+          {"kind": "course", "code": "ECE4504", "title": "Computer Organization", "units": 3},
+          {"kind": "course", "code": "MATH4414", "title": "Issues in Scientific Computing", "units": 3},
+          {"kind": "course", "code": "PSCI4164", "title": "Future of Security: Integrative Solutions for Complex Security Systems", "units": 3},
+          {"kind": "course", "code": "STAT4654", "title": "Intermediate Data Analytics and Machine Learning", "units": 3},
+          {"kind": "course", "code": "STS4014", "title": "Algorithms and Society", "units": 3}
+        ]},
+        {"label": "CS 4XXX Capstone", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "CS4094", "title": "Computer Science Capstone", "units": 3},
+          {"kind": "course", "code": "CS4274", "title": "Secure Computing Capstone", "units": 3},
+          {"kind": "course", "code": "CS4284", "title": "Systems and Networking Capstone", "units": 3},
+          {"kind": "course", "code": "CS4624", "title": "Multimedia, Hypertext and Information Access", "units": 3},
+          {"kind": "course", "code": "CS4634", "title": "Design of Information", "units": 3},
+          {"kind": "course", "code": "CS4644", "title": "Creative Computing Studio", "units": 3},
+          {"kind": "course", "code": "CS4664", "title": "Data-Centric Computing Capstone", "units": 3},
+          {"kind": "course", "code": "CS4704", "title": "Software Engineering Capstone", "units": 3},
+          {"kind": "course", "code": "CS4784", "title": "Human-Computer Interaction Capstone", "units": 3},
+          {"kind": "course", "code": "CS4884", "title": "Computational Biology and Bioinformatics Capstone", "units": 3},
+          {"kind": "course", "code": "ENGE4735", "title": "Interdisciplinary Design Capstone", "units": 3},
+          {"kind": "course", "code": "ENGE4736", "title": "Interdisciplinary Design Capstone", "units": 3},
+          {"kind": "requirement", "name": "Another 4000- or 5000-level CS course with prior approval as fulfilling the capstone requirement", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Career Bridge Experience",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "nonunit_experience",
+      "cc_articulable": false,
+      "source_refs": ["major", "college"],
+      "analysis_constraints": [
+        {"kind": "approved_experience_and_plan", "status": "evaluator_not_implemented", "description": "Participate in one approved Career Bridge Experience, obtain approval of a Career Bridge Plan, and enroll in ENGE 3900 during the experience; duration, client-project, leadership, travel, and approval conditions vary by route."}
+      ],
+      "sections": [
+        {"label": "Transcript tracking course", "select": 1, "units": 0, "receivers": [{"kind": "course", "code": "ENGE3900", "title": "Bridge Experience", "units": 0}]},
+        {"label": "Approved experience route", "select": 1, "units": 0, "receivers": [
+          {"kind": "requirement", "name": "Co-op or internship providing at least six weeks of full-time experience", "units": 0},
+          {"kind": "requirement", "name": "Three credits of undergraduate research or at least six weeks of full-time noncredit undergraduate research", "units": 0},
+          {"kind": "requirement", "name": "Three credits of international project-and-travel experience, a six-week international exchange, or semester study abroad including at least one three-credit CS course", "units": 0},
+          {"kind": "requirement", "name": "One senior-year semester in a qualifying Corps of Cadets or ROTC leadership role", "units": 0},
+          {"kind": "course", "code": "CS4094", "title": "Computer Science Capstone", "units": 0, "note": "Bridge route only when completed with a qualifying client-based capstone project; the course's three credits are counted in the capstone requirement."},
+          {"kind": "series", "codes": ["ENGE4735", "ENGE4736"], "units": 0, "note": "Bridge route only when completed with a qualifying client-based capstone project; course credit is counted in the capstone requirement."},
+          {"kind": "course", "code": "ENGE2724", "units": 0, "note": "Bridge route only with an approved project; course credit is counted elsewhere in the degree. The program's Bridge list publishes the code without a title."},
+          {"kind": "course", "code": "ENGE4724", "units": 0, "note": "Bridge route only with an approved project; course credit is counted elsewhere in the degree. The program's Bridge list publishes the code without a title."},
+          {"kind": "requirement", "name": "Three weeks of approved noncredit full-time field experience or another department-approved Bridge route", "units": 0}
+        ]}
+      ]
+    },
+    {
+      "title": "Additional Course Requirements",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "8",
+      "sections": [
+        {"select": 1, "units": 1, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "CS1944", "title": "Computer Science First Year Seminar", "units": 1}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "receivers": [
+          {"kind": "course", "code": "CS2114", "title": "Software Design and Data Structures", "units": 3},
+          {"kind": "course", "code": "ECE3514", "title": "Data Structures and Algorithms", "units": 3, "note": "Published substitution for CS 2114."}
+        ]},
+        {"select": 1, "units": 1, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS4944", "title": "Seminar", "units": 1}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [
+          {"kind": "course", "code": "MATH3134", "title": "Applied Combinatorics and Graph Theory", "units": 3},
+          {"kind": "course", "code": "MATH3124", "title": "Modern Algebra", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "CS 3/4/5XXX Electives",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "6",
+      "analysis_constraints": [
+        {"kind": "eligible_course_exclusions_and_distinctness", "status": "evaluator_not_implemented", "description": "Choose six credits of distinct eligible courses not used elsewhere; enforce the published barred-course list and the combined six-credit cap on CS 4974 and CS 4994."}
+      ],
+      "sections": [
+        {"select": 2, "units": 6, "assume_satisfiable": true, "receivers": [
+          {"kind": "requirement", "name": "An eligible three-credit CS 3000-, 4000-, or 5000-level course under the published rule, including CS 4974 or CS 4994 and excluding the named barred courses", "units": 3},
+          {"kind": "course", "code": "BIT4614", "title": "Cybersecurity Management II", "units": 3},
+          {"kind": "course", "code": "CMDA3654", "title": "Introductory Data Analytics and Visualization", "units": 3},
+          {"kind": "course", "code": "CMDA4654", "title": "Intermediate Data Analytics and Machine Learning", "units": 3},
+          {"kind": "course", "code": "ECE4424", "title": "Machine Learning", "units": 3},
+          {"kind": "course", "code": "ECE4504", "title": "Computer Organization", "units": 3},
+          {"kind": "course", "code": "MATH3414", "title": "Numerical Methods", "units": 3},
+          {"kind": "course", "code": "MATH4414", "title": "Issues in Scientific Computing", "units": 3},
+          {"kind": "course", "code": "PSCI4164", "title": "Future of Security: Integrative Solutions for Complex Security Systems", "units": 3},
+          {"kind": "course", "code": "STAT3654", "title": "Introductory Data Analytics and Visualization", "units": 3},
+          {"kind": "course", "code": "STAT4654", "title": "Intermediate Data Analytics and Machine Learning", "units": 3},
+          {"kind": "course", "code": "STS4014", "title": "Algorithms and Society", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "CS Technical Elective",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "3",
+      "analysis_constraints": [
+        {"kind": "department_approval_and_no_double_count", "status": "evaluator_not_implemented", "description": "An unlisted non-CS course needs advance syllabus approval, and a course used in another CS requirement cannot also satisfy this technical elective."}
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "requirement", "name": "Any eligible three-credit CS 3/4/5000-level course under the CS elective rule", "units": 3},
+          {"kind": "requirement", "name": "Another approved 3000- or 4000-level non-CS course with significant relevant technical content, approved from its syllabus before enrollment", "units": 3},
+          {"kind": "course", "code": "AOE4434", "title": "Introduction to Computational Fluid Dynamics", "units": 3},
+          {"kind": "course", "code": "ART3704", "title": "Topics in Computer Animation", "units": 3},
+          {"kind": "course", "code": "BIT4424", "title": "Business Information Visualization and Analytics", "units": 3},
+          {"kind": "course", "code": "BIT4434", "title": "Computer Simulation in Business", "units": 3},
+          {"kind": "course", "code": "BIT4444", "title": "Web-Based Decision Support Systems", "units": 3},
+          {"kind": "course", "code": "BIT4544", "title": "Artificial Intelligence, Machine Learning, and Deep Learning in BIT", "units": 3},
+          {"kind": "course", "code": "BIT4604", "title": "Data Governance, Privacy and Ethics", "units": 3},
+          {"kind": "course", "code": "BIT4614", "title": "Cybersecurity Management II", "units": 3},
+          {"kind": "course", "code": "BIT4624", "title": "Cybersecurity Analytics for Business", "units": 3},
+          {"kind": "course", "code": "CEM4624", "title": "Construction Robotics and Automation", "units": 3},
+          {"kind": "course", "code": "CEM4634", "title": "Data Analysis and Visualization for Construction and Facilities Management", "units": 3},
+          {"kind": "course", "code": "CMDA3606", "title": "Mathematical Modeling: Methods and Tools", "units": 3},
+          {"kind": "course", "code": "ECE3544", "title": "Digital Design I", "units": 4},
+          {"kind": "course", "code": "ECE3574", "title": "Applied Software Design", "units": 3},
+          {"kind": "course", "code": "ECE4524", "title": "Artificial Intelligence and Engineering Applications", "units": 4},
+          {"kind": "course", "code": "ECE4550", "title": "Real-Time Systems", "units": 3},
+          {"kind": "course", "code": "ECE4560", "title": "Computer and Network Security Fundamentals", "units": 3},
+          {"kind": "course", "code": "ECE4564", "title": "Network Application Design", "units": 3},
+          {"kind": "course", "code": "ECE4580", "title": "Digital Image Processing", "units": 3},
+          {"kind": "course", "code": "ECE4704", "title": "Principles of Robotics Systems", "units": 3},
+          {"kind": "course", "code": "ENGE4735", "title": "Interdisciplinary Design Capstone", "units": 3},
+          {"kind": "course", "code": "ENGE4736", "title": "Interdisciplinary Design Capstone", "units": 3},
+          {"kind": "course", "code": "ENGE4964", "title": "Field Study", "units": 1, "note": "Published for 1-19 credits; at least three applicable credits are needed."},
+          {"kind": "course", "code": "GEOG4084", "title": "Modeling with Geographic Information Systems", "units": 3, "note": "Cross-listed as GEOG/GEOS 4084."},
+          {"kind": "course", "code": "GEOS4084", "title": "Modeling with Geographic Information Systems", "units": 3, "note": "Cross-listed as GEOG/GEOS 4084."},
+          {"kind": "course", "code": "GEOG4314", "title": "Spatial Analysis in Geographic Information Systems", "units": 3},
+          {"kind": "course", "code": "GEOG4324", "title": "Algorithms in Geographic Information Systems", "units": 4},
+          {"kind": "course", "code": "MATH4175", "title": "Cryptography", "units": 3},
+          {"kind": "course", "code": "MATH4176", "title": "Cryptography", "units": 3},
+          {"kind": "course", "code": "MATH4445", "title": "Introduction to Numerical Analysis", "units": 3},
+          {"kind": "course", "code": "MATH4454", "title": "Applied Mathematical Modeling", "units": 3},
+          {"kind": "course", "code": "ME4524", "title": "Introduction to Robotics and Automation", "units": 3},
+          {"kind": "course", "code": "MUS3064", "title": "Digital Sound Manipulation", "units": 3},
+          {"kind": "course", "code": "MUS3065", "title": "Computer Music and Multimedia Design", "units": 3},
+          {"kind": "course", "code": "MUS3066", "title": "Computer Music and Multimedia Design", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Natural Science Electives",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "course_catalog"],
+      "stated_credits": "8; also fulfills Pathways Concept 4",
+      "sections": [
+        {"select": 2, "units": 8, "receivers": [
+          {"kind": "series", "codes": ["BIOL1105", "BIOL1115"], "units": 4, "note": "Principles of Biology and laboratory."},
+          {"kind": "series", "codes": ["CHEM1035", "CHEM1045"], "units": 4, "note": "General Chemistry and laboratory."},
+          {"kind": "course", "code": "PHYS2305", "title": "Foundations of Physics", "units": 4}
+        ]}
+      ]
+    },
+    {
+      "title": "Advanced Natural Science Elective",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "4",
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [
+          {"kind": "series", "codes": ["BIOL1106", "BIOL1116"], "units": 4, "note": "Principles of Biology and laboratory."},
+          {"kind": "series", "codes": ["CHEM1036", "CHEM1046"], "units": 4, "note": "General Chemistry and laboratory."},
+          {"kind": "course", "code": "PHYS2306", "title": "Foundations of Physics", "units": 4}
+        ]}
+      ]
+    },
+    {
+      "title": "Communications Elective",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "COMM2004", "title": "Public Speaking", "units": 3, "note": "Carries Pathways 1a."},
+          {"kind": "course", "code": "COMM2014", "title": "Communication Principles of Teamwork", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Professional Writing Elective",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "ENGL3764", "title": "Technical Writing", "units": 3, "note": "Carries Pathways 1a."},
+          {"kind": "course", "code": "ENGL3804", "title": "Technical Editing and Style", "units": 3},
+          {"kind": "course", "code": "ENGL3814", "title": "Creating User Documentation", "units": 3},
+          {"kind": "course", "code": "ENGL3824", "title": "Visual Rhetoric and Document Design", "units": 3},
+          {"kind": "course", "code": "ENGL3834", "title": "Intercultural Issues in Professional Writing", "units": 3},
+          {"kind": "course", "code": "ENGL3844", "title": "Writing and Digital Media", "units": 3},
+          {"kind": "course", "code": "ENGL4824", "title": "Science Writing", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Statistics Elective and path-adjusted Free Electives",
+      "requirement_layer": "electives",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "10 on each complete path: three Statistics plus seven Free Electives",
+      "conjunction": "Or",
+      "sections": [
+        {"label": "STAT 4705 path", "select": 2, "units": 10, "receivers": [{"kind": "course", "code": "STAT4705", "title": "Probability and Statistics for Engineers", "units": 3}, {"kind": "requirement", "name": "Seven credits of free electives", "units": 7}]},
+        {"label": "STAT 4105 path", "select": 2, "units": 10, "receivers": [{"kind": "course", "code": "STAT4105", "title": "Theoretical Statistics I", "units": 3}, {"kind": "requirement", "name": "Seven credits of free electives", "units": 7}]},
+        {"label": "STAT 4714 path", "select": 2, "units": 10, "receivers": [{"kind": "course", "code": "STAT4714", "title": "Probability and Statistics for Electrical Engineers", "units": 3}, {"kind": "requirement", "name": "Seven credits of free electives", "units": 7}]},
+        {"label": "STAT 4604 path", "select": 2, "units": 10, "receivers": [{"kind": "course", "code": "STAT4604", "title": "Statistical Methods for Engineers", "units": 3}, {"kind": "requirement", "name": "Seven credits of free electives", "units": 7}]},
+        {"label": "STAT 3704 path", "select": 2, "units": 10, "receivers": [{"kind": "course", "code": "STAT3704", "title": "Statistics for Engineering Applications", "units": 2}, {"kind": "requirement", "name": "Eight credits of free electives, including the published additional one-credit adjustment", "units": 8}]},
+        {"label": "CMDA 2006 path", "select": 2, "units": 10, "receivers": [{"kind": "course", "code": "CMDA2006", "title": "Integrated Quantitative Sciences", "units": 6}, {"kind": "requirement", "name": "Four remaining credits of free electives after the six-credit statistics choice", "units": 4}]}
+      ]
+    },
+    {
+      "title": "Pathways Concept 1: Foundational Discourse",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "6; Pathways 1a is fulfilled in another degree block",
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENGL1105", "title": "First-Year Writing", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENGL1106", "title": "First-Year Writing", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Pathways Concept 2: Critical Thinking in the Humanities",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 6, "receivers": [{"kind": "ge_area", "code": "VT-PATHWAYS-2", "name": "Six credits carrying Pathways Concept 2", "units": 6}]}
+      ]
+    },
+    {
+      "title": "Pathways Concept 3: Reasoning in the Social Sciences",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 6, "receivers": [{"kind": "ge_area", "code": "VT-PATHWAYS-3", "name": "Six credits carrying Pathways Concept 3", "units": 6}]}
+      ]
+    },
+    {
+      "title": "Pathways Concept 5: Quantitative and Computational Thinking",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "course_catalog"],
+      "stated_credits": "11",
+      "sections": [
+        {"select": 1, "units": 4, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "MATH1225", "title": "Calculus of a Single Variable", "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "MATH1226", "title": "Calculus of a Single Variable", "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS3114", "title": "Data Structures and Algorithms", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Pathways Concept 6: Critique and Practice in Design and the Arts",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "7",
+      "sections": [
+        {"label": "Pathways 6a", "select": 1, "units": 3, "receivers": [{"kind": "ge_area", "code": "VT-PATHWAYS-6A", "name": "Three credits carrying Pathways Concept 6a", "units": 3}]},
+        {"label": "Pathways 6D engineering foundation", "select": 1, "units": 4, "receivers": [
+          {"kind": "series", "codes": ["ENGE1215", "ENGE1216"], "units": 4},
+          {"kind": "course", "code": "ENGE1414", "title": "Foundations of Engineering Practice", "units": 4}
+        ]}
+      ]
+    },
+    {
+      "title": "Suspended Pathways Concept 7 and minimum-total capacity",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "3 credits retained to maintain the 123-credit degree minimum; Concept 7 itself is suspended effective fall 2025",
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "ge_area", "code": "VT-MINIMUM-TOTAL-CAPACITY", "name": "Three applicable elective credits maintaining the 123-credit minimum while Pathways Concept 7 is suspended", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Pathways overlap and distribution policies",
+      "requirement_layer": "general_education",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": ["major", "general_education"],
+      "analysis_constraints": [
+        {"kind": "pathways_1a_inside_existing_capacity", "status": "evaluator_not_implemented", "description": "At least three credits in Communications, Professional Writing, or Free Electives must carry Pathways 1a; COMM 2004 and ENGL 3764 are explicitly identified options."},
+        {"kind": "pathways_concept_4_natural_science_overlap", "status": "evaluator_not_implemented", "description": "The eight Natural Science Elective credits also satisfy Pathways Concept 4 and are counted only once in the 123-credit total."},
+        {"kind": "pathways_no_degree_core_overlap", "status": "evaluator_not_implemented", "description": "Pathways may overlap major and elective requirements but may not overlap Degree Core; CS 3114 cannot double-count with another requirement."}
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Satisfy Pathways 1a and Concept 4 inside the designated modeled degree blocks without prohibited Degree Core or CS 3114 overlap", "units": 0}]}
+      ]
+    },
+    {
+      "title": "CS non-technical-course distribution",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": ["major", "policy"],
+      "analysis_constraints": [
+        {"kind": "nontechnical_course_distribution", "status": "evaluator_not_implemented", "description": "Complete 30 credits classified as non-technical under the published department exclusions; the credits come from already modeled degree blocks and do not add 30 more credits."}
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete 30 credits of coursework meeting the CS non-technical classification rule", "units": 0}]}
+      ]
+    },
+    {
+      "title": "Program course-grade and GPA requirements",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": ["major", "graduation"],
+      "analysis_constraints": [
+        {"kind": "minimum_course_grades_and_gpas", "status": "evaluator_not_implemented", "description": "Earn C- or better in MATH 1225, C or better in CS 1114, 2104, 2114, 2505, 2506, and 3114, and maintain minimum 2.0 overall and in-major GPAs through graduation."}
+      ],
+      "sections": [
+        {"label": "Calculus grade", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Earn C- or better in MATH 1225", "units": 0}]},
+        {"label": "Gateway grades", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Earn C or better in the six published CS gateway courses or approved substitutions", "units": 0}]},
+        {"label": "Overall GPA", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Minimum 2.0 overall GPA", "units": 0}]},
+        {"label": "In-major GPA", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Minimum 2.0 in-major GPA through graduation", "units": 0}]}
+      ]
+    },
+    {
+      "title": "University residence, transfer, and foreign-language requirements",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": ["major", "graduation", "policy"],
+      "analysis_constraints": [
+        {"kind": "residency_and_transfer_caps", "status": "evaluator_not_implemented", "description": "Enforce the 25-percent Virginia Tech minimum, no more than 18 transfer credits among the final 45, and the 50-percent two-year-institution transfer cap."},
+        {"kind": "foreign_language_proficiency", "status": "evaluator_not_implemented", "description": "Complete two high-school years or one college year (six credits) of the same foreign language; college credits used solely for this requirement do not count toward the 123-credit degree."}
+      ],
+      "sections": [
+        {"label": "Residence and transfer", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Meet all published Virginia Tech residence and transfer-credit limits", "units": 0}]},
+        {"label": "Foreign language", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Demonstrate the published same-language high-school or college proficiency", "units": 0}]}
+      ]
+    }
+  ]
+}

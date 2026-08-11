@@ -2,53 +2,926 @@
  "slug": "william-mary",
  "name": "William & Mary",
  "level": "four_year",
- "platform": "web",
- "outcome": "url_only",
- "source_url": "https://cdsp.wm.edu/computerscience/undergraduate/bachelor-of-science-b.s-in-computer-science.php",
- "offers_cs": null,
- "program_title": null,
- "total_credits": null,
- "groups": [],
- "validation": {
-  "verdict": "n/a",
-  "needs_hand_read": true,
-  "checks": [],
-  "stats": {}
- },
- "evidence": {
-  "url": "https://cdsp.wm.edu/computerscience/undergraduate/bachelor-of-science-b.s-in-computer-science.php",
-  "candidates": [
-   {
-    "score": 15,
-    "title": "Bachelor of Science in Computer Science",
-    "href": "https://cdsp.wm.edu/computerscience/undergraduate/bachelor-of-science-b.s-in-computer-science.php"
+ "platform": "courseleaf",
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.wm.edu/programs/computer-science-bs-computer-science/index.html",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science (BS in Computer Science)",
+  "variant": "General concentration is the canonical broad B.S. path; Artificial Intelligence/Machine Learning and Cybersecurity concentration requirements are preserved as alternate variants",
+  "academic_unit": "Department of Computer Science",
+  "college": "School of Computing, Data Sciences & Physics",
+  "general_education_authority": "William & Mary College Curriculum (COLL)",
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "canonical_major_units": 48,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "The current catalog publishes no aggregate university-wide upper-division-credit minimum; the General concentration itself guarantees at least 27 credits numbered 300 or above.",
+    "source_refs": [
+     "major",
+     "general_education"
+    ]
    },
-   {
-    "score": 13,
-    "title": "Computer Science",
-    "href": "https://cdsp.wm.edu/computerscience/index.php"
+   "major_scoped_upper_division_units_minimum": 27,
+   "residency": {
+    "status": "required",
+    "minimum_units": 60,
+    "rule": "At least 60 credits overall and at least 15 credits in the major must be earned in residence at William & Mary; the Computer Science program additionally requires at least half of its minimum course count at William & Mary.",
+    "source_refs": [
+     "major",
+     "general_education"
+    ]
    },
-   {
-    "score": 13,
-    "title": "Computer Science",
-    "href": "https://cdsp.wm.edu/computerscience/index.php"
+   "minimum_cumulative_gpa": 2,
+   "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+   "The 2026-2027 catalog replaces the department-only placeholder used by the earlier capture.",
+   "All B.S. students select General, Artificial Intelligence/Machine Learning, or Cybersecurity. The broad 48-credit General path is canonical; the 51-credit AI/ML and 48-credit Cybersecurity paths remain explicit alternates.",
+   "COLL requirements and proficiencies can overlap one another and the major under published limits, so they must be retained as exact gates inside the post-major degree capacity rather than gross-summed on top of 120 credits.",
+   "Accelerated bachelor's-to-master's pathways, honors, and advising schedules are not ordinary B.S. requirements and are excluded."
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
    },
-   {
-    "score": 13,
-    "title": "Computer Science",
-    "href": "https://cdsp.wm.edu/computerscience/index.php"
+   "general_education": {
+    "source_roles": [
+     "ge"
+    ]
    },
-   {
-    "score": 10,
-    "title": "Support Computer Science",
-    "href": "https://cdsp.wm.edu/computerscience/support/index.php"
+   "college": {
+    "source_roles": [
+     "college"
+    ]
    },
-   {
-    "score": 10,
-    "title": "Bachelor of Arts in Computer Science",
-    "href": "https://cdsp.wm.edu/computerscience/undergraduate/bachelor-of-arts-b.a-in-computer-science.php"
+   "graduation": {
+    "source_roles": [
+     "ge",
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
    }
-  ]
+  }
  },
- "extracted_at": "2026-08-02T06:25:26.261Z"
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "William & Mary major and degree requirements",
+   "url": "https://catalog.wm.edu/programs/computer-science-bs-computer-science/index.html",
+   "requested_url": "https://catalog.wm.edu/programs/computer-science-bs-computer-science/index.html",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T22:22:41.726Z",
+   "sha256": "61508bd1e00785b92456b51c694a3cdeb3e187e99cfa4d0ebf7b06e0706c088f",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "William & Mary general education requirements",
+   "url": "https://catalog.wm.edu/undergraduate/requirements-degrees/",
+   "requested_url": "https://catalog.wm.edu/undergraduate/requirements-degrees/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T22:22:41.726Z",
+   "sha256": "c4096bde6c76f6c56e6799d02ab0fd979e634c020efa91564ade90e0237ab579",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "William & Mary college or school requirements",
+   "url": "https://catalog.wm.edu/undergraduate/computing-data-sciences-physics/",
+   "requested_url": "https://catalog.wm.edu/undergraduate/computing-data-sciences-physics/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T22:22:41.726Z",
+   "sha256": "1069ac471cd4f93387642686ef2aa3e187f7b9d39147ed00193fe544eec65539",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "William & Mary academic policies",
+   "url": "https://catalog.wm.edu/undergraduate/academic-regulations/",
+   "requested_url": "https://catalog.wm.edu/undergraduate/academic-regulations/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T22:22:41.726Z",
+   "sha256": "6f056eae90a36f2c88ab604394d0c3eb4b6bcb415c131c5eb99d439693b495b4",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "William & Mary course descriptions and credit values",
+   "url": "https://catalog.wm.edu/undergraduate/courses/csci/",
+   "requested_url": "https://catalog.wm.edu/undergraduate/courses/csci/",
+   "catalog_platform": "courseleaf",
+   "captured_at": "2026-08-10T22:22:41.726Z",
+   "sha256": "28ea797fb6cdb750e5b5cb7547e5441b7918dbb352611280400b32c9ba92812f",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "captured",
+   "source_refs": [
+    "college"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "general_education",
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T22:22:41.726Z",
+ "extracted_at": "2026-08-10T22:28:03.914Z",
+ "parser": "courseleaf",
+ "pdf_window": null,
+ "source_role": "program",
+ "source_ref": "major",
+ "program_title": "Computer Science (BS in Computer Science)",
+ "parse_error": null,
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [
+  {
+   "title": "Core Requirements",
+   "credits": {
+    "min": 48,
+    "max": 51,
+    "raw": "48-51"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following:",
+   "source_text": [
+    "CSCI 141 Modern Programming Fundamentals",
+    "CSCI 241 Data Structures",
+    "CSCI 243 Logic and Discrete Structures 1",
+    "CSCI 301 Software Development",
+    "CSCI 303 Algorithms",
+    "CSCI 304 Computer Organization",
+    "CSCI 312 Principles of Programming Languages",
+    "CSCI 423 Finite Automata and Theory of Computation",
+    "Proficiency in:",
+    "MATH 111 Calculus I",
+    "or MATH 131 Calculus I for Life Sciences",
+    "MATH 112 Calculus II",
+    "or MATH 132 Calculus II for Life Sciences",
+    "MATH 109 Linear Algebra 2",
+    "Concentration Requirement",
+    "Select one of the following:",
+    "General",
+    "Artificial Intelligence/Machine Learning",
+    "Cybersecurity"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI141",
+         "title": "Modern Programming Fundamentals"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 141 Modern Programming Fundamentals",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI241",
+         "title": "Data Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 241 Data Structures",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI243",
+         "title": "Logic and Discrete Structures"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 243 Logic and Discrete Structures 1",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI301",
+         "title": "Software Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 301 Software Development",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI303",
+         "title": "Algorithms"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 303 Algorithms",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI304",
+         "title": "Computer Organization"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 304 Computer Organization",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI312",
+         "title": "Principles of Programming Languages"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 312 Principles of Programming Languages",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI423",
+         "title": "Finite Automata and Theory of Computation"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 423 Finite Automata and Theory of Computation",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Proficiency in:",
+       "category": "Proficiency in:",
+       "credits": null
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH111",
+         "title": "Calculus I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 111 Calculus I",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH131",
+         "title": "Calculus I for Life Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or MATH 131 Calculus I for Life Sciences",
+       "credits": null,
+       "indented": false,
+       "alternative_to_previous": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH112",
+         "title": "Calculus II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 112 Calculus II",
+       "credits": {
+        "min": 4,
+        "max": 4,
+        "raw": "4"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH132",
+         "title": "Calculus II for Life Sciences"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or MATH 132 Calculus II for Life Sciences",
+       "credits": null,
+       "indented": false,
+       "alternative_to_previous": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH109",
+         "title": "Linear Algebra"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 109 Linear Algebra 2",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Concentration Requirement",
+       "category": "Concentration Requirement",
+       "credits": null
+      }
+     ]
+    },
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 12,
+      "max": 15,
+      "raw": "12-15"
+     },
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "General",
+       "category": "General",
+       "credits": null
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Artificial Intelligence/Machine Learning",
+       "category": "Artificial Intelligence/Machine Learning",
+       "credits": null
+      },
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "Cybersecurity",
+       "category": "Cybersecurity",
+       "credits": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": {
+    "min": 12,
+    "max": 12,
+    "raw": "12"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "12 credits chosen from any 300-400 level computer science courses. 1",
+    "MATH 413 Introduction to Numerical Analysis I",
+    "or MATH 414 Introduction to Numerical Analysis II"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [],
+       "conjunction": "and",
+       "text": "12 credits chosen from any 300-400 level computer science courses. 1",
+       "category": "12 credits chosen from any 300-400 level computer science courses. 1",
+       "credits": {
+        "min": 12,
+        "max": 12,
+        "raw": "12"
+       }
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH413",
+         "title": "Introduction to Numerical Analysis I"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 413 Introduction to Numerical Analysis I",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH414",
+         "title": "Introduction to Numerical Analysis II"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or MATH 414 Introduction to Numerical Analysis II",
+       "credits": null,
+       "indented": true,
+       "alternative_to_previous": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Required Courses",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "CSCI 444 Principles of Operating Systems",
+    "CSCI 454 Computer and Network Security",
+    "CSCI 464 Penetration Testing"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI444",
+         "title": "Principles of Operating Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 444 Principles of Operating Systems",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI454",
+         "title": "Computer and Network Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 454 Computer and Network Security",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI464",
+         "title": "Penetration Testing"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 464 Penetration Testing",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Additional Credits",
+   "credits": {
+    "min": 12,
+    "max": 12,
+    "raw": "12"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select one of the following:",
+   "source_text": [
+    "Select one of the following:",
+    "CSCI 324 Cybersecurity Fundamentals",
+    "CSCI 415 Systems Programming",
+    "CSCI 434 Network Systems and Design",
+    "CSCI 445 Mobile Application Security"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": 1,
+     "credits": {
+      "min": 3,
+      "max": 3,
+      "raw": "3"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI324",
+         "title": "Cybersecurity Fundamentals"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 324 Cybersecurity Fundamentals",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI415",
+         "title": "Systems Programming"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 415 Systems Programming",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI434",
+         "title": "Network Systems and Design"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 434 Network Systems and Design",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI445",
+         "title": "Mobile Application Security"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 445 Mobile Application Security",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Proficiency in",
+   "credits": null,
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": null,
+   "source_text": [
+    "MATH 351 Probability and Statistics for Scientists",
+    "or MATH 451 Probability"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": null,
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "MATH351",
+         "title": "Probability and Statistics for Scientists"
+        }
+       ],
+       "conjunction": "and",
+       "text": "MATH 351 Probability and Statistics for Scientists",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "indented": false
+      },
+      {
+       "codes": [
+        {
+         "code": "MATH451",
+         "title": "Probability"
+        }
+       ],
+       "conjunction": "and",
+       "text": "or MATH 451 Probability",
+       "credits": null,
+       "indented": false,
+       "alternative_to_previous": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Additional Credits",
+   "credits": {
+    "min": 15,
+    "max": 15,
+    "raw": "15"
+   },
+   "choose": null,
+   "choose_credits": null,
+   "distinct_sections": null,
+   "note": "Select 12 credits from the following: 1",
+   "source_text": [
+    "Select 12 credits from the following: 1",
+    "CSCI 356 Large Language Models",
+    "CSCI 416 Fundamentals of Artificial Intelligence/Machine Learning",
+    "CSCI 421 Database Systems",
+    "CSCI 436 Data Mining",
+    "CSCI 446 Neural Networks for Machine Learning",
+    "CSCI 455 Generative Artificial Intelligence for Software Development",
+    "CSCI 466 Applied Topology Data Science",
+    "DATA 441 Advanced Applications of AI"
+   ],
+   "sections": [
+    {
+     "label": null,
+     "choose": null,
+     "credits": {
+      "min": 12,
+      "max": 12,
+      "raw": "12"
+     },
+     "rows": [
+      {
+       "codes": [
+        {
+         "code": "CSCI356",
+         "title": "Large Language Models"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 356 Large Language Models",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI416",
+         "title": "Fundamentals of Artificial Intelligence/Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 416 Fundamentals of Artificial Intelligence/Machine Learning",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI421",
+         "title": "Database Systems"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 421 Database Systems",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI436",
+         "title": "Data Mining"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 436 Data Mining",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI446",
+         "title": "Neural Networks for Machine Learning"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 446 Neural Networks for Machine Learning",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI455",
+         "title": "Generative Artificial Intelligence for Software Development"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 455 Generative Artificial Intelligence for Software Development",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "CSCI466",
+         "title": "Applied Topology Data Science"
+        }
+       ],
+       "conjunction": "and",
+       "text": "CSCI 466 Applied Topology Data Science",
+       "credits": null,
+       "indented": true
+      },
+      {
+       "codes": [
+        {
+         "code": "DATA441",
+         "title": "Advanced Applications of AI"
+        }
+       ],
+       "conjunction": "and",
+       "text": "DATA 441 Advanced Applications of AI",
+       "credits": null,
+       "indented": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "narrative": [],
+ "unassigned": [],
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "pass",
+    "name": "codes_not_in_source",
+    "detail": "all 32 codes appear verbatim in the captured text"
+   },
+   {
+    "severity": "pass",
+    "name": "group_count",
+    "detail": "6 requirement groups"
+   },
+   {
+    "severity": "pass",
+    "name": "course_count",
+    "detail": "32 distinct courses across 38 rows"
+   },
+   {
+    "severity": "warn",
+    "name": "no_stated_total",
+    "detail": "the page states no total credit figure — nothing to reconcile against"
+   },
+   {
+    "severity": "pass",
+    "name": "categories",
+    "detail": "6 unenumerated requirement(s) kept as categories"
+   }
+  ],
+  "stats": {
+   "groups": 6,
+   "sections": 7,
+   "rows": 38,
+   "course_rows": 32,
+   "category_rows": 6,
+   "distinct_courses": 32,
+   "credit_span": {
+    "min": 87,
+    "max": 90,
+    "groups_with_credits": 4
+   },
+   "stated_total": null
+  }
+ }
 }

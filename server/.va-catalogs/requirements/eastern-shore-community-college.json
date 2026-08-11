@@ -1,43 +1,66 @@
 {
- "slug": "eastern-shore-community-college",
- "name": "Eastern Shore Community College",
- "level": "community_college",
- "platform": "acalog",
- "outcome": "no_cs_program",
- "source_url": "https://catalog.es.vccs.edu/",
- "offers_cs": false,
- "program_title": null,
- "total_credits": null,
- "groups": [],
- "validation": {
-  "verdict": "n/a",
-  "needs_hand_read": false,
-  "checks": [],
-  "stats": {}
- },
- "evidence": {
-  "url": null,
-  "candidates": [],
-  "catoids": [
-   16
+  "slug": "eastern-shore-community-college",
+  "name": "Eastern Shore Community College",
+  "level": "community_college",
+  "platform": "acalog",
+  "outcome": "no_cs_program",
+  "offers_cs": false,
+  "hand_read": true,
+  "source_url": "https://catalog.es.vccs.edu/content.php?catoid=16&navoid=1699",
+  "catalog_year": "2026-2027",
+  "program_title": null,
+  "total_credits": null,
+  "program_finding": {
+    "code": "broad_science_as_no_cs_specific_curriculum",
+    "summary": "The current 2026-2027 catalog has a broad Science A.S., but no source-prescribed Computer Science award, specialization, pathway, or curriculum.",
+    "evidence": [
+      "The current Programs of Study index contains no Computer Science program entry.",
+      "The current Science A.S. describes broad STEM and pre-professional transfer preparation and does not name a Computer Science branch."
+    ],
+    "source_refs": ["catalog_index", "broad_science_program"],
+    "alternate_path": {
+      "title": "Science, AS",
+      "award": "AS",
+      "total_credits": "60-63",
+      "supports_cs_transfer_pathway": false,
+      "url": "https://catalog.es.vccs.edu/preview_program.php?catoid=16&poid=1745&returnto=1699"
+    }
+  },
+  "sources": [
+    {
+      "id": "catalog_index",
+      "role": "catalog_index",
+      "kind": "catalog",
+      "label": "Eastern Shore 2026-2027 Programs of Study index",
+      "url": "https://catalog.es.vccs.edu/content.php?catoid=16&navoid=1699",
+      "requested_url": "https://catalog.es.vccs.edu/content.php?catoid=16&navoid=1699",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:33:02.867Z",
+      "sha256": "a6d0e3ad2a50ff5f4abda7a53cb92631cd22c869b5167ac6c423f60caeaddb3c",
+      "official": true,
+      "secure": true
+    },
+    {
+      "id": "broad_science_program",
+      "role": "broad_science_program",
+      "kind": "alternate_path",
+      "label": "Eastern Shore 2026-2027 broad Science A.S.",
+      "url": "https://catalog.es.vccs.edu/preview_program.php?catoid=16&poid=1745&returnto=1699",
+      "requested_url": "https://catalog.es.vccs.edu/preview_program.php?catoid=16&poid=1745&returnto=1699",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:33:02.867Z",
+      "sha256": "846f7bcc62f65240ba07f882c2fa39acf8a00b2a3bb676e4c945e49cfcfbe94e",
+      "official": true,
+      "secure": true
+    }
   ],
-  "read": {
-   "navs_seen": 8,
-   "nav_pages_read": 5,
-   "program_links_seen": 201,
-   "via": "navigation"
+  "source_layers": {
+    "catalog_identity": {"status": "captured", "source_refs": ["catalog_index"], "note": "Current 2026-2027 program inventory."},
+    "major": {"status": "not_applicable", "source_refs": ["catalog_index", "broad_science_program"], "note": "No CS-specific associate curriculum is published."},
+    "general_education": {"status": "not_applicable", "source_refs": [], "note": "No CS-specific degree exists to compose."},
+    "graduation": {"status": "not_applicable", "source_refs": [], "note": "No CS-specific degree exists to compose."}
   },
-  "read_fetch": {
-   "navs_seen": 8,
-   "nav_pages_read": 0,
-   "program_links_seen": 0
-  },
-  "read_curl": {
-   "navs_seen": 8,
-   "nav_pages_read": 0,
-   "program_links_seen": 0,
-   "via": "curl"
-  }
- },
- "extracted_at": "2026-08-02T06:13:44.723Z"
+  "groups": [],
+  "validation": {"verdict": "n/a", "needs_hand_read": false, "checks": [], "stats": {}},
+  "extracted_at": "2026-08-10T23:50:00.000Z"
 }

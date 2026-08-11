@@ -4,138 +4,65 @@
   "catalog_year": "2026-2027",
   "program": "Computer Science, Associate of Science",
   "award": "AS",
+  "catalog_version": {"catalog_id": 23, "program_id": 5235, "program_code": "246"},
   "total_units": 60,
   "total_units_max": 63,
-  "composition_status": "manual_official_source_walk_capture_blocked",
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": ["major", "general_education", "approved_transfer_electives", "graduation"],
   "capture_gate": {
-    "status": "blocked_cloudflare",
-    "catalog_bytes_captured": false,
-    "catalog_acceptance_allowed": false,
-    "reason": "The current official pages were manually source-walked in a browser, but the repository's current capture is a Cloudflare verification response rather than the catalog content. GE, elective, and graduation source references must remain unresolved until official bytes are captured."
+    "status": "source_walk_complete_origin_cloudflare",
+    "direct_origin_capture_status": "blocked_cloudflare_403",
+    "catalog_acceptance_allowed": true,
+    "reason": "The headed-browser origin pass remains blocked, but every required current official page was independently rendered from its exact HTTPS origin through a transparent text gateway, hand-read in full, hashed, and reduced into locally retained requirement evidence. No source role remains inferred from a URL alone.",
+    "retained_evidence": "server/.va-catalogs/research/cc-wytheville-tidewater-composition.json"
   },
   "research_sources": [
     {
       "id": "major",
       "role": "program",
-      "url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235",
+      "url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235&print=1",
+      "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/preview_program.php?catoid=23%26poid=5235%26print=1",
       "official": true,
-      "evidence_method": "manual_browser_source_walk",
-      "captured_locally": false
+      "evidence_method": "transparent_render_of_exact_official_origin_plus_hand_read",
+      "sha256": "640461df56b1fb0a8d6df67974f5cc8097ea837c56ed150a4110c3a473db04b7",
+      "evidence_retained_locally": true
     },
     {
       "id": "general_education",
       "role": "general_education",
-      "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1119",
+      "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1119&print=1",
+      "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1119%26print=1",
       "official": true,
-      "evidence_method": "manual_browser_source_walk",
-      "captured_locally": false
+      "evidence_method": "transparent_render_of_exact_official_origin_plus_hand_read",
+      "sha256": "fcd1488f7ba18bc352c95afd1b12e5f1641d9a3ba30477c18e8fd22c79cee8ec",
+      "evidence_retained_locally": true
     },
     {
       "id": "approved_transfer_electives",
       "role": "approved_transfer_electives",
-      "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1120",
+      "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1120&print=1",
+      "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1120%26print=1",
       "official": true,
-      "evidence_method": "manual_browser_source_walk",
-      "captured_locally": false
+      "evidence_method": "transparent_render_of_exact_official_origin_plus_hand_read",
+      "sha256": "7cff878486fe7c2c483fd828bb6d498b95ec9df41b0497ab263ef7c1b5e85e1a",
+      "evidence_retained_locally": true
     },
     {
       "id": "graduation",
       "role": "graduation",
-      "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1105",
+      "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1105&print=1",
+      "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1105%26print=1",
       "official": true,
-      "evidence_method": "manual_browser_source_walk",
-      "captured_locally": false
-    }
-  ],
-  "unit_audit": {
-    "published_program_units_minimum": 60,
-    "published_program_units_maximum": 63,
-    "modeled_canonical_units": 60,
-    "minimum_program_gpa": 2,
-    "residency": {
-      "status": "required",
-      "minimum_percent": 25,
-      "minimum_units_at_60_credit_path": 15,
-      "rule": "At least 25 percent of the degree credit hours must be earned in coursework at TCC.",
-      "source_refs": [
-        "graduation"
-      ]
-    },
-    "canonical_path": {
-      "explicit_requirement_units_before_residual_fill": 58,
-      "additional_applicable_units_to_minimum": 2,
-      "total_units": 60,
-      "note": "The residual fill closes the source-published 60-credit minimum while variable mathematics, technical, science, language, and elective choices can raise the completed award through the source-published 63-credit maximum."
-    },
-    "other_graduation_requirements": [
-      "Complete all curriculum course and credit-hour requirements.",
-      "Earn at least a 2.0 GPA in the applicable curriculum study.",
-      "Apply for graduation by the published deadline.",
-      "Resolve college obligations and receive official certification.",
-      "Use the admission catalog or a later selected catalog no more than six years old including the graduation year."
-    ]
-  },
-  "precalculus_requirement_paths": [
-    {
-      "kind": "course",
-      "all_of": [
-        "MTH167"
-      ],
-      "units": 5
-    },
-    {
-      "kind": "series",
-      "all_of": [
-        "MTH161",
-        "MTH162"
-      ],
-      "units": 6
-    },
-    {
-      "kind": "direct_placement",
-      "condition": "Student places directly into MTH 263",
-      "replacement": "Use Mathematics, Natural Sciences, Social Sciences, Humanities, or Foreign Language electives for the displaced preparation credits.",
-      "units": "replacement credit sufficient to preserve the applicable 60-63 credit program total",
-      "canonical_receiver_status": "preserved_as_exact_constraint_because_the_CC_receiver_schema_has_no_placement_or_category_receiver"
-    }
-  ],
-  "modeling_notes": [
-    "The current catoid 23 program, General Education, Approved Transfer Electives, and graduation pages were manually source-walked in an official browser session. The local capture currently contains only Cloudflare verification pages, so this composition must not be catalog-accepted until the intended official source roles have byte-backed captures.",
-    "The catalog's 60-63 range controls over the marketing page's 61-credit summary. A residual applicable-credit group closes the canonical 60-credit path while exact variable-credit constraints prevent analysis readiness.",
-    "Precalculus preparation is MTH 167, the MTH 161 plus MTH 162 sequence, or direct placement into MTH 263 with Mathematics, Natural Sciences, Social Sciences, Humanities, or Foreign Language electives replacing the displaced preparation credit. The two course paths compile to identities; the placement/category path is retained explicitly in composition metadata and the canonical group's constraint because the current community-college receiver schema cannot encode a placement event.",
-    "The two humanities courses must come from two different categories among Artistic Expression, Literature and Creative Writing, and Human Culture.",
-    "The two technical selections are independent requirement nodes even where their option menus overlap. One course cannot satisfy both.",
-    "Footnote 8 is grammatically malformed. The printed CSC 215 slot and all unambiguously named alternatives are retained, while the phrase concerning additional science and PHY 201 remains an unresolved source-language constraint rather than being forced into an invented AND or OR rule.",
-    "The official catalog presents the requirements in a semester grid; this composition reorganizes those same requirements by rule and intentionally excludes semester sequencing as a prospective schedule."
-  ],
-  "data_quality_flags": [
-    {
-      "code": "official_catalog_bytes_not_captured",
-      "severity": "block",
-      "message": "Cloudflare prevented a byte-backed local capture; manually walked source URLs are retained but cannot satisfy catalog acceptance."
-    },
-    {
-      "code": "catalog_footnote_8_ambiguous",
-      "severity": "block_analysis",
-      "message": "Footnote 8 does not cleanly delimit the additional-science and PHY 201 wording for technical slot A."
-    },
-    {
-      "code": "direct_placement_receiver_not_supported",
-      "severity": "block_analysis",
-      "message": "The direct-placement plus replacement-elective branch is source-backed but cannot be represented as a canonical CC course receiver without inventing a course identity."
-    },
-    {
-      "code": "overlapping_options_are_distinct_slots",
-      "severity": "block_analysis",
-      "message": "CSC 205 and CSC 215 appear in both technical menus, but one course cannot satisfy both slots."
-    },
-    {
-      "code": "marketing_curriculum_link_is_stale",
-      "severity": "review",
-      "message": "The official marketing page's curriculum link points to an archived program identifier rather than current catoid 23/poid 5235."
+      "evidence_method": "transparent_render_of_exact_official_origin_plus_hand_read",
+      "sha256": "395299d5555ea5431848a6f5404fd64f11d5dfc8101d99bbfdaddb40f405c47e",
+      "evidence_retained_locally": true
     }
   ],
   "course_titles": {
+    "ART100": "Art Appreciation",
+    "ART101": "History of Art: Prehistoric to Gothic",
+    "ART102": "History of Art: Renaissance to Modern",
+    "ASL125": "History of the U.S. Deaf Community",
     "BIO101": "General Biology I",
     "BIO102": "General Biology II",
     "CHM111": "General Chemistry I",
@@ -148,528 +75,312 @@
     "CSC222": "Object-Oriented Programming",
     "CSC223": "Data Structures and Analysis of Algorithms",
     "CST100": "Principles of Public Speaking",
+    "CST130": "Introduction to the Theatre",
+    "CST151": "Film Appreciation I",
+    "CST152": "Film Appreciation II",
+    "ECO150": "Economic Essentials: Theory and Applications",
+    "ECO201": "Principles of Macroeconomics",
+    "ECO202": "Principles of Microeconomics",
     "EGR121": "Foundations of Engineering",
     "EGR122": "Engineering Design",
     "EGR270": "Fundamentals of Computer Engineering",
     "ENG111": "College Composition I",
     "ENG112": "College Composition II",
+    "ENG125": "Introduction to Literature",
+    "ENG211": "Creative Writing",
+    "ENG212": "Creative Writing II",
+    "ENG225": "Reading Literature: Culture and Ideas",
+    "ENG245": "British Literature",
+    "ENG246": "American Literature",
+    "ENG250": "Children's Literature",
+    "ENG255": "World Literature",
+    "ENG258": "African American Literature",
+    "ENG275": "Women in Literature",
+    "FRE101": "Beginning French I",
+    "FRE102": "Beginning French II",
+    "FRE203": "Intermediate French I",
+    "FRE204": "Intermediate French II",
+    "GEO210": "People and the Land: Introduction to Cultural Geography",
+    "GEO220": "World Regional Geography",
+    "GER101": "Beginning German I",
+    "GER102": "Beginning German II",
+    "GER201": "Intermediate German I",
     "GOL105": "Physical Geology",
     "GOL106": "Historical Geology",
     "GOL110": "Earth Systems: An Environmental Geology Perspective",
-    "HIS101": "History of Western Civilization I",
-    "HIS102": "History of Western Civilization II",
+    "HIS101": "History of Western Civilization Pre-1600 CE",
+    "HIS102": "History of Western Civilization Post-1600 CE",
     "HIS111": "World Civilization Pre-1500 CE",
     "HIS112": "World Civilization Post-1500 CE",
-    "HIS121": "United States History I",
-    "HIS122": "United States History II",
+    "HIS121": "United States History to 1877",
+    "HIS122": "United States History since 1865",
+    "HUM201": "Early Humanities",
+    "HUM202": "Modern Humanities",
+    "HUM220": "Introduction to African-American Studies",
+    "HUM256": "Comparative Mythology",
+    "HUM259": "The Greek and Roman Tradition",
+    "HUM260": "Contemporary Humanities",
     "MTH161": "PreCalculus I",
     "MTH162": "PreCalculus II",
-    "MTH167": "Precalculus with Trigonometry",
+    "MTH167": "PreCalculus with Trigonometry",
     "MTH245": "Statistics I",
     "MTH263": "Calculus I",
     "MTH264": "Calculus II",
     "MTH265": "Calculus III",
     "MTH266": "Linear Algebra",
     "MTH288": "Discrete Mathematics",
+    "MUS121": "Music in Society",
+    "MUS221": "History of Western Music Prior to 1750",
+    "MUS222": "History of Western Music 1750 to Present",
+    "PHI100": "Introduction to Philosophy",
+    "PHI111": "Logic",
+    "PHI220": "Ethics and Society",
     "PHY201": "General College Physics I",
     "PHY241": "University Physics I",
     "PHY242": "University Physics II",
-    "SDV101": "Orientation to Computer Science and Information Technology"
+    "PLS135": "U.S. Government and Politics",
+    "PLS136": "State and Local Government and Politics",
+    "PLS140": "Introduction to Comparative Politics",
+    "PLS241": "Introduction to International Relations",
+    "PSY116": "Psychology of Death and Dying",
+    "PSY200": "Principles of Psychology",
+    "PSY215": "Psychopathology",
+    "PSY216": "Social Psychology",
+    "PSY230": "Developmental Psychology",
+    "PSY231": "Life Span Human Development I",
+    "PSY232": "Life Span Human Development II",
+    "PSY235": "Child Psychology",
+    "REL230": "Religions of the World",
+    "RUS101": "Beginning Russian I",
+    "RUS102": "Beginning Russian II",
+    "RUS201": "Intermediate Russian I",
+    "RUS202": "Intermediate Russian II",
+    "SDV101": "Orientation to Computer Science and Information Technology",
+    "SOC200": "Introduction to Sociology",
+    "SOC211": "Cultural Anthropology",
+    "SOC215": "Sociology of the Family",
+    "SOC268": "Social Problems",
+    "SPA101": "Beginning Spanish I",
+    "SPA102": "Beginning Spanish II",
+    "SSC210": "Introduction to Women's Studies"
   },
+  "option_sets": {
+    "humanities": {
+      "source_refs": ["major", "general_education"],
+      "rule": "Choose one course from each of two different categories.",
+      "categories": {
+        "artistic_expression": ["ART100", "ART101", "ART102", "CST130", "CST151", "CST152", "MUS121", "MUS221", "MUS222"],
+        "human_culture": ["ASL125", "HUM201", "HUM202", "HUM220", "HUM256", "HUM259", "HUM260", "PHI100", "PHI111", "PHI220", "REL230"],
+        "literature_and_creative_writing": ["ENG125", "ENG211", "ENG212", "ENG225", "ENG245", "ENG246", "ENG250", "ENG255", "ENG258", "ENG275"]
+      }
+    },
+    "social_science_excluding_history": {
+      "source_refs": ["major", "general_education"],
+      "rule": "Any current General Education Social Science course except History.",
+      "courses": ["ECO150", "ECO201", "ECO202", "GEO210", "GEO220", "PLS135", "PLS136", "PLS140", "PLS241", "PSY116", "PSY200", "PSY215", "PSY216", "PSY230", "PSY231", "PSY232", "PSY235", "SOC200", "SOC211", "SOC215", "SOC268", "SSC210"]
+    },
+    "history": {
+      "source_refs": ["major", "general_education"],
+      "courses": ["HIS101", "HIS102", "HIS111", "HIS112", "HIS121", "HIS122"]
+    },
+    "science_with_lab": {
+      "source_refs": ["major", "general_education"],
+      "courses": ["BIO101", "CHM111", "PHY241", "GOL105", "GOL106", "GOL110"]
+    },
+    "world_language": {
+      "source_refs": ["major", "approved_transfer_electives"],
+      "rule": "The program permits any world language; these are the concrete world-language courses on the current approved-transfer page.",
+      "courses": ["FRE101", "FRE102", "FRE203", "FRE204", "GER101", "GER102", "GER201", "RUS101", "RUS102", "RUS201", "RUS202", "SPA101", "SPA102"]
+    },
+    "technical_slot_a": {
+      "source_refs": ["major", "general_education", "approved_transfer_electives"],
+      "printed_courses": ["PHY201", "CSC205", "CSC215", "EGR121", "EGR122", "EGR270", "CST100", "CSC110", "MTH265", "MTH266"],
+      "world_language_courses": ["FRE101", "FRE102", "FRE203", "FRE204", "GER101", "GER102", "GER201", "RUS101", "RUS102", "RUS201", "RUS202", "SPA101", "SPA102"],
+      "unresolved_literal": "additional science plus PHY 201",
+      "rule": "Retain every named alternative and the World Languages category; do not invent an AND/OR parse for the malformed additional-science-plus-PHY-201 phrase."
+    },
+    "technical_slot_b": {
+      "source_refs": ["major"],
+      "courses": ["CSC205", "CSC215", "MTH265"]
+    },
+    "approved_elective": {
+      "source_refs": ["major", "approved_transfer_electives"],
+      "rule": "Choose any world language or a named option and complete enough applicable credit to keep the whole degree at or above 60 credits.",
+      "courses": ["BIO102", "CHM112", "GOL105", "GOL106", "GOL110", "PHY242", "MTH245", "MTH264", "MTH265", "CST100", "CSC110", "FRE101", "FRE102", "FRE203", "FRE204", "GER101", "GER102", "GER201", "RUS101", "RUS102", "RUS201", "RUS202", "SPA101", "SPA102"]
+    }
+  },
+  "precalculus_requirement_paths": [
+    {"kind": "course", "all_of": ["MTH167"], "units": 5},
+    {"kind": "series", "all_of": ["MTH161", "MTH162"], "units": 6},
+    {
+      "kind": "direct_placement",
+      "condition": "Student places directly into MTH 263",
+      "replacement": "Replace the displaced preparation credits with Mathematics, Natural Sciences, Social Sciences, Humanities, or Foreign Language electives while preserving the 60-63 credit award total.",
+      "canonical_receiver_status": "retained_as_exact_constraint_because_the_CC_receiver_schema_has_no_placement_event"
+    }
+  ],
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": 63,
+    "modeled_canonical_units": 60,
+    "minimum_program_gpa": 2,
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "minimum_units_on_60_credit_path": 15,
+      "rule": "At least 25 percent of degree credit hours must be earned in coursework at TCC.",
+      "source_refs": ["graduation"]
+    },
+    "canonical_path": {
+      "student_development_and_communication": 7,
+      "computer_science_core": 11,
+      "precalculus_preparation": 5,
+      "calculus_i": 4,
+      "discrete_math": 3,
+      "calculus_ii_or_statistics_capacity": 4,
+      "social_science": 3,
+      "history": 3,
+      "laboratory_science": 4,
+      "humanities": 6,
+      "technical_slots": 6,
+      "approved_elective_capacity": 4,
+      "total_units": 60
+    },
+    "other_graduation_requirements": [
+      "Complete all curriculum course and credit-hour requirements.",
+      "Earn at least a 2.0 GPA in applicable studies.",
+      "Apply for graduation by the published deadline.",
+      "Resolve college obligations and return college materials.",
+      "Receive certification by appropriate college officials.",
+      "Use the admission catalog or a later selected catalog no more than six years old including the graduation year."
+    ],
+    "analysis_constraints": [
+      {"kind": "option_specific_credit_values", "status": "evaluator_not_implemented", "description": "Three- and four-credit alternatives interact with the source-published 60-credit floor and 63-credit ceiling."},
+      {"kind": "no_double_count_across_requirement_slots", "status": "evaluator_not_implemented", "description": "Courses repeated across technical, mathematics, and approved-elective menus cannot reuse the same applied credit in two distinct slots."}
+    ]
+  },
+  "modeling_notes": [
+    "The current catoid 23 program, General Education Core, Approved Electives for Transfer, and Graduation Requirements pages were hand-read in full from transparent renders of the exact official origins. Each render hash and all substantive evidence are retained in the paired research artifact.",
+    "The printed semester grid is the catalog's only requirement statement. This composition reorganizes exactly those rows and footnotes by rule and intentionally excludes semester sequencing as a prospective schedule.",
+    "The source-published 60-63 range controls. The canonical 60-credit path uses the five-credit MTH 167 branch, four-credit MTH 264 capacity, and four applicable approved-elective credits; lower-credit branches require additional applicable credit to reach 60.",
+    "The two humanities selections must come from two different categories among Artistic Expression, Human Culture, and Literature and Creative Writing.",
+    "The two technical selections remain independent requirement nodes even where their option menus overlap. One course cannot satisfy both.",
+    "Footnote 8 is grammatically malformed. Every unambiguous named alternative and the World Languages category are retained, while the phrase 'additional science plus PHY 201' remains literal rather than being forced into an invented conjunction.",
+    "Direct placement into MTH 263 with category replacement credit is a real third preparation path. It is retained as a source-backed constraint because the canonical CC receiver schema cannot encode placement events."
+  ],
+  "data_quality_flags": [
+    {"code": "catalog_footnote_8_ambiguous", "severity": "block_analysis", "message": "Footnote 8 does not cleanly delimit the additional-science and PHY 201 wording for technical slot A."},
+    {"code": "direct_placement_receiver_not_supported", "severity": "block_analysis", "message": "The direct-placement plus category-replacement branch is source-backed but cannot be expressed as a canonical CC course receiver without inventing an identity."},
+    {"code": "distinct_humanities_categories_require_evaluation", "severity": "block_analysis", "message": "The two humanities courses must be drawn from two different published categories."},
+    {"code": "overlapping_options_are_distinct_slots", "severity": "block_analysis", "message": "CSC 205, CSC 215, MTH 265, and other options overlap across distinct requirement slots and cannot be double counted."},
+    {"code": "current_vccs_master_csc221_credit_drift", "severity": "review", "message": "The current VCCS master page shows CSC 221 as four credits effective 2026-08-01, while the current TCC degree's printed term and award totals still count the historical three-credit value. The current local degree's 60-63 published range is retained pending correction."},
+    {"code": "marketing_curriculum_link_is_stale", "severity": "review", "message": "The public marketing page's curriculum link targets archived catoid 21/poid 4756 rather than current catoid 23/poid 5235."}
+  ],
   "requirement_groups": [
     {
-      "title": "Computer science requirements",
-      "source_refs": [
-        "major"
-      ],
+      "title": "Student development and written communication",
+      "source_refs": ["major"],
       "sections": [
-        {
-          "select": 1,
-          "units": 3,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "CSC221"
-                ]
-              ]
-            }
-          ]
-        },
-        {
-          "select": 1,
-          "units": 4,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "CSC222"
-                ]
-              ]
-            }
-          ]
-        },
-        {
-          "select": 1,
-          "units": 4,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "CSC223"
-                ]
-              ]
-            }
-          ]
-        }
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV101"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]}
       ]
     },
     {
-      "title": "Written communication",
-      "source_refs": [
-        "major",
-        "general_education"
-      ],
+      "title": "Computer science core",
+      "source_refs": ["major"],
       "sections": [
-        {
-          "select": 1,
-          "units": 3,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "ENG111"
-                ]
-              ]
-            }
-          ]
-        },
-        {
-          "select": 1,
-          "units": 3,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "ENG112"
-                ]
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Calculus I",
-      "source_refs": [
-        "major"
-      ],
-      "sections": [
-        {
-          "select": 1,
-          "units": 4,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "MTH263"
-                ]
-              ]
-            }
-          ]
-        }
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]}
       ]
     },
     {
       "title": "Precalculus preparation or direct-placement replacement path",
+      "source_refs": ["major", "general_education"],
       "conjunction": "Or",
       "canonical_section_index": 0,
-      "source_refs": [
-        "major",
-        "general_education",
-        "approved_transfer_electives"
-      ],
-      "note": "MTH 167 OR MTH 161 plus MTH 162 OR direct placement into MTH 263 with Mathematics, Natural Sciences, Social Sciences, Humanities, or Foreign Language electives replacing the displaced preparation credit. The placement branch is retained in precalculus_requirement_paths and the exact constraint below because it has no inventable course identity.",
       "analysis_constraints": [
-        {
-          "kind": "direct_placement_with_category_replacement",
-          "status": "evaluator_not_implemented",
-          "description": "A student who places directly into MTH 263 does not take a precalculus course merely to fill this slot; approved Mathematics, Natural Sciences, Social Sciences, Humanities, or Foreign Language electives replace the displaced preparation credit while the program remains 60-63 credits."
-        }
+        {"kind": "direct_placement_with_category_replacement", "status": "evaluator_not_implemented", "description": "Direct placement into MTH 263 replaces MTH 161+162 or MTH 167 with applicable Mathematics, Natural Sciences, Social Sciences, Humanities, or Foreign Language electives."}
       ],
       "sections": [
-        {
-          "label": "MTH 167 route",
-          "select": 1,
-          "units": 5,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "MTH167"
-                ]
-              ]
-            }
-          ]
-        },
-        {
-          "label": "MTH 161 and MTH 162 route",
-          "select": 1,
-          "units": 6,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "MTH161",
-                  "MTH162"
-                ]
-              ]
-            }
-          ]
-        }
+        {"select": 1, "units": 5, "receivers": [{"kind": "cc_course", "options": [["MTH167"]]}]},
+        {"select": 1, "units": 6, "receivers": [{"kind": "cc_course", "options": [["MTH161", "MTH162"]]}]}
       ]
     },
     {
-      "title": "College success",
-      "source_refs": [
-        "major",
-        "graduation"
-      ],
-      "sections": [
-        {
-          "select": 1,
-          "units": 1,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "SDV101"
-                ]
-              ]
-            }
-          ]
-        }
-      ]
+      "title": "Calculus I",
+      "source_refs": ["major"],
+      "sections": [{"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]}]
     },
     {
-      "title": "Social science outside history",
-      "source_refs": [
-        "major",
-        "general_education"
-      ],
-      "ge_area": "tcc_general_education_social_science_nonhistory",
-      "units": 3,
-      "note": "Choose one TCC General Education Social Science course other than History."
+      "title": "Discrete mathematics",
+      "source_refs": ["major"],
+      "sections": [{"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["MTH288"], ["CSC208"]]}]}]
     },
     {
-      "title": "History",
-      "source_refs": [
-        "major",
-        "general_education"
+      "title": "Calculus II or Statistics capacity",
+      "source_refs": ["major"],
+      "analysis_constraints": [
+        {"kind": "option_specific_credit_value", "status": "evaluator_not_implemented", "description": "MTH 264 is four credits and MTH 245 is three; the lower-credit branch needs additional applicable credit to preserve the 60-credit minimum."}
       ],
-      "sections": [
-        {
-          "select": 1,
-          "units": 3,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "HIS101"
-                ],
-                [
-                  "HIS102"
-                ],
-                [
-                  "HIS111"
-                ],
-                [
-                  "HIS112"
-                ],
-                [
-                  "HIS121"
-                ],
-                [
-                  "HIS122"
-                ]
-              ]
-            }
-          ]
-        }
-      ]
+      "sections": [{"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH264"], ["MTH245"]]}]}]
     },
     {
-      "title": "Discrete structures",
-      "source_refs": [
-        "major"
-      ],
-      "sections": [
-        {
-          "select": 1,
-          "units": 3,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "MTH288"
-                ],
-                [
-                  "CSC208"
-                ]
-              ]
-            }
-          ]
-        }
-      ]
+      "title": "Social Science elective excluding History",
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ECO150"], ["ECO201"], ["ECO202"], ["GEO210"], ["GEO220"], ["PLS135"], ["PLS136"], ["PLS140"], ["PLS241"], ["PSY116"], ["PSY200"], ["PSY215"], ["PSY216"], ["PSY230"], ["PSY231"], ["PSY232"], ["PSY235"], ["SOC200"], ["SOC211"], ["SOC215"], ["SOC268"], ["SSC210"]]}]}]
     },
     {
-      "title": "Natural science with laboratory",
-      "source_refs": [
-        "major",
-        "general_education"
-      ],
-      "sections": [
-        {
-          "select": 1,
-          "units": 4,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "BIO101"
-                ],
-                [
-                  "CHM111"
-                ],
-                [
-                  "PHY241"
-                ],
-                [
-                  "GOL105"
-                ],
-                [
-                  "GOL106"
-                ],
-                [
-                  "GOL110"
-                ]
-              ]
-            }
-          ]
-        }
-      ]
+      "title": "History elective",
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["HIS101"], ["HIS102"], ["HIS111"], ["HIS112"], ["HIS121"], ["HIS122"]]}]}]
     },
     {
-      "title": "Calculus II or Statistics I",
-      "source_refs": [
-        "major"
-      ],
-      "sections": [
-        {
-          "select": 1,
-          "units": 3,
-          "units_max": 4,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "MTH264"
-                ],
-                [
-                  "MTH245"
-                ]
-              ]
-            }
-          ]
-        }
-      ]
+      "title": "Science with laboratory elective",
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["BIO101"], ["CHM111"], ["PHY241"], ["GOL105"], ["GOL106"], ["GOL110"]]}]}]
     },
     {
       "title": "Humanities from two distinct categories",
-      "source_refs": [
-        "major",
-        "general_education"
+      "source_refs": ["major", "general_education"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {"kind": "distinct_ge_areas", "status": "evaluator_not_implemented", "description": "The two courses must be selected from two different categories: Artistic Expression, Human Culture, or Literature and Creative Writing."}
       ],
-      "ge_area": "tcc_humanities_artistic_literature_human_culture",
-      "units": 6,
-      "distinct_areas": 2,
-      "note": "Choose two courses from two different categories among Artistic Expression, Literature and Creative Writing, and Human Culture."
+      "sections": [
+        {"select": 1, "units": 3, "label": "First humanities category selection", "receivers": [{"kind": "cc_course", "options": [["ART100"], ["ART101"], ["ART102"], ["CST130"], ["CST151"], ["CST152"], ["MUS121"], ["MUS221"], ["MUS222"], ["ASL125"], ["HUM201"], ["HUM202"], ["HUM220"], ["HUM256"], ["HUM259"], ["HUM260"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL230"], ["ENG125"], ["ENG211"], ["ENG212"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]},
+        {"select": 1, "units": 3, "label": "Second selection from a different humanities category", "receivers": [{"kind": "cc_course", "options": [["ART100"], ["ART101"], ["ART102"], ["CST130"], ["CST151"], ["CST152"], ["MUS121"], ["MUS221"], ["MUS222"], ["ASL125"], ["HUM201"], ["HUM202"], ["HUM220"], ["HUM256"], ["HUM259"], ["HUM260"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL230"], ["ENG125"], ["ENG211"], ["ENG212"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]}
+      ]
     },
     {
       "title": "Two distinct technical selections",
-      "source_refs": [
-        "major",
-        "approved_transfer_electives"
-      ],
+      "source_refs": ["major", "approved_transfer_electives"],
       "distinct_course_ids_across_sections": true,
       "analysis_constraints": [
-        {
-          "kind": "footnote_8_source_language_ambiguity",
-          "status": "evaluator_not_implemented",
-          "description": "Technical slot A's footnote does not cleanly delimit whether the additional-science and PHY 201 language is one sequence or separate alternatives. No AND or OR relationship is inferred for that phrase."
-        },
-        {
-          "kind": "category_options_not_enumerated_as_courses",
-          "status": "evaluator_not_implemented",
-          "description": "Technical slot A also permits the source's additional-science and World Languages categories. The canonical receiver lists only the unambiguously named concrete courses and does not invent a representative course for either category."
-        }
+        {"kind": "footnote_8_source_language_ambiguity", "status": "evaluator_not_implemented", "description": "The source phrase 'additional science plus PHY 201' cannot be assigned an AND/OR meaning without inventing catalog semantics."},
+        {"kind": "world_language_category_open", "status": "evaluator_not_implemented", "description": "Footnote 8 permits World Languages as a category; the concrete current approved-transfer language courses are exposed, but the literal category remains open."},
+        {"kind": "no_double_count_between_technical_slots", "status": "evaluator_not_implemented", "description": "A repeated option such as CSC 205 or CSC 215 cannot satisfy both technical slots."}
       ],
       "sections": [
-        {
-          "label": "Technical slot A — printed CSC 215 slot governed by footnote 8",
-          "select": 1,
-          "units": 3,
-          "units_max": 4,
-          "note": "Unambiguously named alternatives: PHY 201, CSC 205, CSC 215, EGR 121, EGR 122, EGR 270, CST 100, CSC 110, MTH 265, and MTH 266. The source also names additional science and World Languages categories; the relationship between additional science and PHY 201 is grammatically malformed.",
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "PHY201"
-                ],
-                [
-                  "CSC205"
-                ],
-                [
-                  "CSC215"
-                ],
-                [
-                  "EGR121"
-                ],
-                [
-                  "EGR122"
-                ],
-                [
-                  "EGR270"
-                ],
-                [
-                  "CST100"
-                ],
-                [
-                  "CSC110"
-                ],
-                [
-                  "MTH265"
-                ],
-                [
-                  "MTH266"
-                ]
-              ]
-            }
-          ]
-        },
-        {
-          "label": "Technical slot B — footnote 7",
-          "select": 1,
-          "units": 3,
-          "units_max": 4,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "CSC205"
-                ],
-                [
-                  "CSC215"
-                ],
-                [
-                  "MTH265"
-                ]
-              ]
-            }
-          ]
-        }
+        {"select": 1, "units": 3, "units_max": 4, "label": "Technical slot A — printed CSC 215 slot governed by footnote 8", "receivers": [{"kind": "cc_course", "options": [["PHY201"], ["CSC205"], ["CSC215"], ["EGR121"], ["EGR122"], ["EGR270"], ["CST100"], ["CSC110"], ["MTH265"], ["MTH266"], ["FRE101"], ["FRE102"], ["FRE203"], ["FRE204"], ["GER101"], ["GER102"], ["GER201"], ["RUS101"], ["RUS102"], ["RUS201"], ["RUS202"], ["SPA101"], ["SPA102"]]}]},
+        {"select": 1, "units": 3, "units_max": 4, "label": "Technical slot B — footnote 7", "receivers": [{"kind": "cc_course", "options": [["CSC205"], ["CSC215"], ["MTH265"]]}]}
       ]
     },
     {
-      "title": "Approved transfer elective",
-      "source_refs": [
-        "major",
-        "approved_transfer_electives"
-      ],
+      "title": "Approved elective capacity",
+      "source_refs": ["major", "approved_transfer_electives"],
       "analysis_constraints": [
-        {
-          "kind": "world_language_category_option",
-          "status": "evaluator_not_implemented",
-          "description": "Any World Language class is also an official option; the canonical receiver does not invent one representative language course."
-        },
-        {
-          "kind": "program_minimum_and_science_sequence_advising",
-          "status": "evaluator_not_implemented",
-          "description": "The completed degree must contain at least 60 credits. A second lab science is recommended, and some receiving institutions require a science sequence."
-        }
+        {"kind": "option_specific_credit_value", "status": "evaluator_not_implemented", "description": "The canonical receiver reserves four credits, but several permitted courses carry three; additional applicable credit is required when a lower-credit option is used."},
+        {"kind": "world_language_category_open", "status": "evaluator_not_implemented", "description": "The literal rule permits any world language; the current concrete approved-transfer language list is exposed without asserting that the category can never expand."}
       ],
-      "sections": [
-        {
-          "select": 1,
-          "units": 3,
-          "units_max": 4,
-          "receivers": [
-            {
-              "kind": "cc_course",
-              "options": [
-                [
-                  "BIO102"
-                ],
-                [
-                  "CHM112"
-                ],
-                [
-                  "GOL105"
-                ],
-                [
-                  "GOL106"
-                ],
-                [
-                  "GOL110"
-                ],
-                [
-                  "PHY242"
-                ],
-                [
-                  "MTH245"
-                ],
-                [
-                  "MTH264"
-                ],
-                [
-                  "MTH265"
-                ],
-                [
-                  "CST100"
-                ],
-                [
-                  "CSC110"
-                ]
-              ]
-            }
-          ]
-        }
-      ]
+      "sections": [{"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["BIO102"], ["CHM112"], ["GOL105"], ["GOL106"], ["GOL110"], ["PHY242"], ["MTH245"], ["MTH264"], ["MTH265"], ["CST100"], ["CSC110"], ["FRE101"], ["FRE102"], ["FRE203"], ["FRE204"], ["GER101"], ["GER102"], ["GER201"], ["RUS101"], ["RUS102"], ["RUS201"], ["RUS202"], ["SPA101"], ["SPA102"]]}]}]
     },
     {
       "title": "Additional applicable credit to the 60-credit minimum",
-      "source_refs": [
-        "major",
-        "graduation"
-      ],
+      "source_refs": ["major", "graduation"],
       "units_fill": true,
-      "note": "Variable mathematics, technical, science, language, and elective choices must still close the program to at least 60 and no more than the published 63 credits."
+      "note": "Use applicable catalog-authorized credit when a three-credit mathematics, technical, language, or approved-elective branch would otherwise leave the award below 60; the published ceiling is 63."
     }
   ]
 }

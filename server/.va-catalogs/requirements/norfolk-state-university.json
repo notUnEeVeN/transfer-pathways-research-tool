@@ -28,10 +28,10 @@
    "published_major_elective_menu_units_minimum": 15,
    "upper_division": {
     "status": "none_stated",
-    "reason": "The reviewed current non-schedule degree, graduation, and policy sources do not publish a separate university-wide upper-division-credit minimum. Do not infer one from the excluded Plan of Study grid.",
+    "reason": "The current degree, General Education, department, and academic-policy sources do not publish a separate university-wide upper-division-credit minimum. Upper-level courses are required inside the Standard Track curriculum, but that is not a university minimum.",
     "source_refs": [
      "major",
-     "graduation",
+     "general_education",
      "policy"
     ]
    },
@@ -40,7 +40,7 @@
     "minimum_units": 30,
     "rule": "Bachelor candidates must spend at least two semesters in residence and earn at least 30 semester hours during that period, including all senior-year curriculum courses.",
     "source_refs": [
-     "graduation"
+     "general_education"
     ]
    },
    "resident_semesters_minimum": 2,
@@ -48,9 +48,10 @@
   },
   "modeling_notes": [
    "The live NSU catalog is still the 2025-2026 edition as of 2026-08-09. Recapture and compare when a newer edition is published.",
-   "The authoritative scope is #curriculumtextcontainer, but most named fixed curriculum courses appear only in its labeled Plan of Study grid. Because prospective schedules are not requirement authority, the non-schedule sources are insufficient for a complete major composition.",
-   "Preserve the published 40 + 53 + 27 + 0 = 120 graduation summary and the separate at-least-15-credit Major Electives menu without inventing the missing allocation of the 27-credit Requirements Electives block.",
-   "Do not weaken exclude_plan_grids_when_course_lists to make the current extraction look complete. A complete model needs another official non-schedule requirement source or explicit human acceptance."
+   "The Standard Track page labels its course inventory Curriculum and provides no sample, suggested, recommended, or illustrative disclaimer. CourseLeaf applies a generic Plan of Study Grid table class, but the institution publishes this as the only course-level curriculum authority and its four annual totals close exactly to the 120-credit degree. The composition uses the required rows and discards the year/semester sequence.",
+   "The published summary is 40 General Education + 53 Core Major + 27 Requirements Electives + 0 Other = 120. The source composition reorganizes those same credits by requirement semantics so every named course and option remains inspectable.",
+   "The fixed named computing, mathematics, and technical-writing rows total 64; two laboratory-science selections total eight; the remaining explicit General Education rows total 27; upper-level CS/Math choices total 18; and free elective capacity is three.",
+   "The 18-credit upper-level elective block is reconciled with the adjacent Major Electives rule by requiring at least five three-credit choices from the enumerated CSC menu, with the sixth choice coming from that menu or MATH at the 300 level or above."
   ],
   "data_quality_flags": [
    {
@@ -59,14 +60,14 @@
     "message": "The current live catalog is 2025-2026 while the other CourseLeaf cohort catalogs have advanced to 2026-2027."
    },
    {
-    "code": "fixed_curriculum_only_in_plan_grid",
+    "code": "courseleaf_curriculum_grid_authority",
     "severity": "review",
-    "message": "Excluding the prospective Plan of Study grid leaves summary totals and an elective menu, but not the complete fixed curriculum required to compose the degree."
+    "message": "The required course inventory is published only in the degree page's Curriculum table; sequencing columns are excluded from the composition."
    },
    {
-    "code": "requirements_elective_summary_not_reconciled",
-    "severity": "review",
-    "message": "The 27-credit Requirements Electives summary is not fully explained by the non-schedule Major Electives list, which states at least 15 credits."
+    "code": "cross_section_science_and_elective_distinctness",
+    "severity": "block_analysis",
+    "message": "The evaluator does not yet enforce distinct laboratory-science sequences or prevent reuse between the 15-credit CSC menu and final three-credit CSC/MATH choice."
    },
    {
     "code": "catalog_navigation_under_construction_label",
@@ -214,11 +215,12 @@
    "note": null
   },
   "graduation": {
-   "status": "missing",
+   "status": "captured",
    "source_refs": [
-    "major"
+    "general_education",
+    "policy"
    ],
-   "note": null
+   "note": "The General Education authority embeds bachelor graduation, residency, GPA, and competency rules; the academic-policy source provides the companion institutional rules."
   },
   "academic_policy": {
    "status": "captured",

@@ -87,6 +87,12 @@ const verificationMaterialChanges = (before, after) => diffDocs(before, after).f
   && change.path !== 'collection_status'
 ));
 
+const sameUpdateToken = (left, right) => {
+  const leftTime = left == null ? null : Date.parse(left instanceof Date ? left.toISOString() : left);
+  const rightTime = right == null ? null : Date.parse(right instanceof Date ? right.toISOString() : right);
+  return leftTime != null && rightTime != null && leftTime === rightTime;
+};
+
 /** Add the public VCCS identity fields, including for pre-identity imports. */
 function withCourseIdentity(row) {
   if (!row) return row;
@@ -185,7 +191,8 @@ exports.summary = asyncHandler(async (req, res) => {
  *   full       — a degree document with a parsed course list
  *   url_only   — a verified catalog URL, but the institution publishes no
  *                machine-readable course list (a data gap)
- *   no_program — the institution offers no CS degree (not a gap)
+ *   no_program — no current source-prescribed CS-specific degree/path (not a
+ *                collection gap; a broad Science A.S. may still exist)
  *   alias      — a renamed duplicate; the degree is filed under the other name
  *   none       — no degree document at all
  */
@@ -210,7 +217,10 @@ exports.institutions = asyncHandler(async (req, res) => {
   }
 
   const degrees = await db.collection(REQUIREMENTS)
-    .find({ source: 'institution_catalog' },
+    .find({
+      source: 'institution_catalog',
+      status: { $nin: ['superseded', 'out_of_scope'] },
+    },
       { projection: { college_id: 1, school_id: 1, codes_seen: 1, total_units: 1, verification: 1, offers_cs: 1 } })
     .toArray();
   const byOwner = new Map(degrees.map((d) => [d.college_id || d.school_id, d]));
@@ -222,8 +232,8 @@ exports.institutions = asyncHandler(async (req, res) => {
         ? `va:cc:${i.institution_slug}` : `va:uni:${i.institution_slug}`;
       const d = byOwner.get(key);
       // Five distinct facts, because collapsing them answers the wrong
-      // question: "no published course list" is a data gap, "offers no CS
-      // degree" is a fact about the institution.
+      // question: "no published course list" is a data gap, while "no current
+      // source-prescribed CS-specific degree/path" is a catalog finding.
       const status = !d ? (i.catalog_offers_cs === false ? 'no_program' : i.alias_of ? 'alias' : 'none')
         : d.offers_cs === false ? 'no_program'
         : (d.codes_seen || []).length ? 'full'
@@ -919,6 +929,15 @@ exports.putDegree = asyncHandler(async (req, res) => {
   }
 
   const before = await db.collection(REQUIREMENTS).findOne({ _id: id });
+  // Documents returned by GET carry `updated_at`; treat it as an optimistic
+  // concurrency token. This prevents a stale browser save from restoring the
+  // pre-publication tree after an atomic catalog import has completed.
+  if (before && row.updated_at != null && !sameUpdateToken(before.updated_at, row.updated_at)) {
+    return res.status(409).json({
+      error: 'This degree changed after it was loaded. Refresh it before saving.',
+      current_updated_at: before.updated_at ?? null,
+    });
+  }
   const canonical = {
     ...row,
     _id: id,
@@ -992,7 +1011,24 @@ exports.putDegree = asyncHandler(async (req, res) => {
     }
   }
 
-  await db.collection(REQUIREMENTS).replaceOne({ _id: id }, canonical, { upsert: true });
+  const saveFilter = before
+    ? {
+      _id: id,
+      ...(before.updated_at != null
+        ? { updated_at: before.updated_at }
+        : { updated_at: { $exists: false } }),
+    }
+    : { _id: id };
+  const saveResult = await db.collection(REQUIREMENTS).replaceOne(
+    saveFilter,
+    canonical,
+    { upsert: !before },
+  );
+  if (before && saveResult.matchedCount !== 1) {
+    return res.status(409).json({
+      error: 'This degree changed while it was being saved. Refresh it and try again.',
+    });
+  }
 
   // A save that changed nothing human-meaningful writes no revision, so the
   // history stays a list of real edits rather than of save clicks.

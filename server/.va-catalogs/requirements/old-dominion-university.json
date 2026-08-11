@@ -29,9 +29,8 @@
    "upper_division_general_education_units_maximum": 12,
    "upper_level_computer_science_elective_units": 9,
    "upper_division": {
-    "status": "required",
-    "minimum_units": 6,
-    "rule": "The degree requires at least six upper-division General Education credits and separately requires nine credits of 300/400-level computer science electives; the catalog does not publish one aggregate university-wide upper-division minimum.",
+    "status": "none_stated",
+    "reason": "The degree requires at least six upper-division General Education credits and separately requires nine credits of 300/400-level computer science electives, but the catalog does not publish one aggregate university-wide upper-division minimum.",
     "source_refs": [
      "major",
      "general_education"
@@ -48,12 +47,15 @@
    },
    "major_upper_division_residency_minimum": 12,
    "minimum_cumulative_gpa": 2,
-   "minimum_major_gpa": 2
+   "minimum_major_gpa": 2,
+   "required_non_elective_cs_minimum_grade": "C",
+   "senior_assessment_required": true
   },
   "modeling_notes": [
    "The ordinary BSCS graduation minimum is 120 credits. The authoritative Requirements table displays 120-134 because language placement and option choices can add credits; preserve the range without changing the minimum award total.",
    "The Degree Program Guide is explicitly broad scheduling guidance and is outside #requirementstextcontainer; it must not supply or duplicate requirements.",
    "The Master's Degree Options tab contains Dual Dominion and other graduate pathways and must be excluded from the standard BSCS model.",
+   "Required non-elective CS courses, CS prerequisite courses, and the writing-intensive major course require C or better; the Senior Assessment is a zero-credit graduation gate.",
    "Upper-level constraints have distinct scopes: six credits of upper-division General Education, nine credits of 300/400-level CS electives, and 12 upper-level major credits in ODU residency. Do not sum them as a universal upper-division total without overlap analysis."
   ],
   "data_quality_flags": [

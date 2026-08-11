@@ -159,10 +159,11 @@ function OverviewTab({ summary }) {
 /**
  * Verification state for one institution, in California's status vocabulary.
  *
- * A document is verified or it is not. `URL only` and `No program` are settled
- * facts about what an institution publishes, not stages of review — they will
- * never carry a tick, and counting them as outstanding would leave the job
- * looking permanently unfinished.
+ * A document is verified or it is not. `URL only` and `No CS-specific degree`
+ * are settled facts about what an institution publishes, not stages of review
+ * — they will never carry a tick, and counting them as outstanding would leave
+ * the job looking permanently unfinished. The latter wording is deliberate:
+ * some colleges publish a broad Science A.S. but no source-prescribed CS path.
  *
  * There is deliberately no "flagged by the parser" state. Whether an extraction
  * tripped a validation rule is the machine's opinion of its own work, and
@@ -171,74 +172,14 @@ function OverviewTab({ summary }) {
  */
 const VA_STATE = {
   verified: { label: 'Verified', variant: 'success' },
-  in_review: { label: 'Needs verifying', variant: 'accent' },
+  in_review: { label: 'Unverified', variant: 'accent' },
   needs_collection: { label: 'Needs collecting', variant: 'conservative' },
   needs_composition: { label: 'Needs composing', variant: 'conservative' },
   url_only: { label: 'URL only', variant: 'conservative' },
-  no_program: { label: 'No program', variant: 'neutral' },
-}
-
-/**
- * Collection completeness is a machine gate, separate from the researcher's
- * signed verification verdict. In particular, a successful parser run is not
- * a complete degree: `major_only` is still missing its GE/college/graduation
- * layers, and a captured corroborating source may have no trustworthy tree at
- * all. Keep those distinctions visible wherever the document is reviewed.
- */
-const VA_COMPLETENESS = {
-  captured_only: {
-    label: 'Captured only',
-    variant: 'neutral',
-    type: 'info',
-    description: 'Official source material was captured, but no trustworthy requirement tree is available. This is not a complete degree.',
-  },
-  major_only: {
-    label: 'Major only',
-    variant: 'conservative',
-    type: 'info',
-    description: 'The major page was parsed, but general education, college, or university graduation layers are not yet composed. This is not a complete degree.',
-  },
-  catalog_accepted: {
-    label: 'Catalog accepted',
-    variant: 'accent',
-    type: 'info',
-    description: 'Identity, official sources, scope, source layers, and requirement structure passed catalog acceptance. It is eligible for human verification, but may not be analysis-ready.',
-  },
-  analysis_ready: {
-    label: 'Analysis ready',
-    variant: 'success',
-    type: 'success',
-    description: 'Catalog acceptance, course resolution, choice semantics, unit closure, and policy audits passed. It is eligible for human verification.',
-  },
-  composed_full_degree: {
-    label: 'Composed · acceptance pending',
-    variant: 'conservative',
-    type: 'info',
-    description: 'The source layers were composed, but the catalog-acceptance gate has not passed. Verification remains unavailable.',
-  },
-  unknown: {
-    label: 'Completeness not recorded',
-    variant: 'neutral',
-    type: 'info',
-    description: 'This legacy document has no catalog-completeness verdict. It may still be edited or reopened, but it cannot be newly verified.',
-  },
+  no_program: { label: 'No CS-specific degree', variant: 'neutral' },
 }
 
 const VERIFY_ELIGIBLE_COLLECTION_STATUSES = new Set(['catalog_accepted', 'analysis_ready'])
-
-function completenessFor(doc) {
-  const status = String(doc?.collection_status || '')
-  if (VA_COMPLETENESS[status]) return { status, ...VA_COMPLETENESS[status] }
-  // Older accepted records may carry the acceptance result but predate the
-  // denormalized collection_status field. Show the strongest recorded gate.
-  if (doc?.acceptance?.ready_for_analysis === true) {
-    return { status: 'analysis_ready', ...VA_COMPLETENESS.analysis_ready }
-  }
-  if (doc?.acceptance?.accepted === true) {
-    return { status: 'catalog_accepted', ...VA_COMPLETENESS.catalog_accepted }
-  }
-  return { status: 'unknown', ...VA_COMPLETENESS.unknown }
-}
 
 /** Coverage rows keyed by institution slug, so a rail can read its own state. */
 const coverageSlugOf = (row) => row?.institution_slug
@@ -276,6 +217,12 @@ function buildVerificationIndex(coverage = []) {
 const slugOf = (institution) => String(institution?._id || '').replace(/^va:inst:/, '')
   || String(institution?.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
+function coverageForInstitution(coverage, institution) {
+  if (!institution) return null
+  const wanted = slugOf(institution)
+  return (coverage?.coverage ?? []).find((row) => coverageSlugOf(row) === wanted) ?? null
+}
+
 /**
  * The overview states progress and stops there.
  *
@@ -303,7 +250,8 @@ function VerificationPanel() {
         label: level === 'community_college' ? 'A.S. degrees' : 'B.S. degrees',
         verified: readable.filter((s) => s.state === 'verified').length,
         readable: readable.length,
-        nothing: states.filter((s) => s && !s.readable).length,
+        needsRecord: states.filter((s) => s
+          && (s.state === 'needs_collection' || s.state === 'needs_composition')).length,
       }
     })
   }, [data])
@@ -324,7 +272,7 @@ function VerificationPanel() {
           <div key={l.level}>
             <ProgressBar label={`${l.label} verified`} value={l.verified} total={l.readable} tone='success' />
             <p className='text-tag text-ink-subtle mt-1.5'>
-              {l.nothing} still need a reviewable catalog record
+              {l.needsRecord} still need a reviewable catalog record
             </p>
           </div>
         ))}
@@ -337,7 +285,7 @@ function VerificationPanel() {
  * The status pills above a rail, as filters.
  *
  * They already stated the breakdown; making them clickable turns a caption into
- * the way through the work — pick "Needs verifying" and the rail below holds
+ * the way through the work — pick "Unverified" and the rail below holds
  * exactly the institutions still to do, in order.
  */
 function RailFilters({ counts, value, onChange, total }) {
@@ -473,6 +421,7 @@ function CollegesPane({ onRoute }) {
   const colleges = data?.institutions ?? []
   const { items, counts, total } = useRailItems(colleges, coverage.data, filter)
   const current = colleges.find((i) => i.name === selected) || null
+  const currentCoverage = coverageForInstitution(coverage.data, current)
 
   useEffect(() => {
     if (!selected) return onRoute({ path: '/api/va/institutions?level=community_college' })
@@ -481,7 +430,7 @@ function CollegesPane({ onRoute }) {
         ? `/api/va/courses?college=${encodeURIComponent(selected)}`
         : subTab === 'prerequisites'
           ? `/api/va/prerequisite-graph?college=${encodeURIComponent(selected)}`
-          : '/api/va/as-degrees',
+          : `/api/va/degrees?institution=${encodeURIComponent(selected)}`,
     })
   }, [onRoute, selected, subTab])
 
@@ -507,7 +456,8 @@ function CollegesPane({ onRoute }) {
             { value: 'prerequisites', label: 'Prerequisites' },
           ]} />
           {subTab === 'courses' && <CollegeCourses college={current.name} />}
-          {subTab === 'degrees' && <DegreesPane kind='associate' institution={current.name} />}
+          {subTab === 'degrees' && <DegreesPane kind='associate' institution={current.name}
+            coverageRow={currentCoverage} />}
           {subTab === 'prerequisites' && <VirginiaPrerequisiteView college={current.name} />}
         </Stack>
       )}
@@ -634,6 +584,7 @@ function UniversitiesPane({ onRoute }) {
     ?? (cohort === OTHER_VA_COHORT ? unis.length : 0)
   const { items, counts, total } = useRailItems(unis, coverage.data, filter)
   const current = unis.find((i) => i.name === selected) || null
+  const currentCoverage = coverageForInstitution(coverage.data, current)
 
   const changeCohort = (next) => {
     setCohort(next)
@@ -648,7 +599,7 @@ function UniversitiesPane({ onRoute }) {
         ? `/api/va/courses?receiver=${encodeURIComponent(selected)}`
         : subTab === 'prerequisites'
           ? `/api/va/prerequisite-graph?university=${encodeURIComponent(selected)}`
-          : '/api/va/degrees',
+          : `/api/va/degrees?institution=${encodeURIComponent(selected)}`,
     })
   }, [cohort, onRoute, selected, subTab])
 
@@ -685,7 +636,8 @@ function UniversitiesPane({ onRoute }) {
             { value: 'prerequisites', label: 'Prerequisites' },
           ]} />
           {subTab === 'courses' && <UniversityCourses university={current.name} />}
-          {subTab === 'requirements' && <DegreesPane kind='bachelor' institution={current.name} />}
+          {subTab === 'requirements' && <DegreesPane kind='bachelor' institution={current.name}
+            coverageRow={currentCoverage} />}
           {subTab === 'prerequisites' && <VirginiaPrerequisiteView university={current.name} />}
         </Stack>
       )}
@@ -725,12 +677,128 @@ function UniversityCourses({ university }) {
  * machine-readable course list at the configured official source, so the
  * verified URL is the deliverable and the pane says so.
  */
-function DegreesPane({ institution, kind }) {
+function findingSourceUrl(source) {
+  return source?.url || source?.final_url || source?.requested_url || source?.retrieval_url || null
+}
+
+function shortHash(value) {
+  const hash = String(value || '')
+  return hash.length > 16 ? `${hash.slice(0, 16)}…` : hash
+}
+
+function ProgramFindingPanel({ institution, coverageRow, kind }) {
+  const finding = coverageRow.program_finding
+  const sources = coverageRow.finding_sources ?? []
+  const evidence = Array.isArray(finding.evidence) ? finding.evidence : []
+  const alternate = finding.alternate_path ?? null
+  const alternateTitle = alternate?.title || alternate?.program
+  const alternateSource = sources.find((source) => alternate?.source_refs?.includes(source.id))
+  const alternateUrl = alternate?.url || findingSourceUrl(alternateSource)
+  const alternateDoesNotDefineCs = alternate?.supports_cs_transfer_pathway === false
+    || alternate?.computer_science_alignment === 'not_defined_by_current_catalog'
+
+  return (
+    <Panel
+      title={kind === 'associate' ? 'Associate-degree catalog finding' : 'Graduation-requirement catalog finding'}
+      action={<Badge variant={coverageRow.finding_complete ? 'success' : 'neutral'}>
+        {coverageRow.finding_complete ? 'Official evidence resolved' : 'Evidence review incomplete'}
+      </Badge>}
+    >
+      <Stack gap='cozy'>
+        <div className='flex flex-wrap items-center gap-2'>
+          <Badge variant='neutral'>No CS-specific degree</Badge>
+          {coverageRow.catalog_year && <span className='text-tag text-ink-subtle'>Catalog {coverageRow.catalog_year}</span>}
+        </div>
+
+        <Alert type='info'>
+          <div>
+            <p className='font-semibold text-ink'>Source-backed current catalog finding</p>
+            <p className='mt-1'>{finding.summary}</p>
+            <p className='mt-2 text-caption'>
+              This is a completed catalog outcome for {institution}, not a degree whose requirements
+              still need to be collected.
+            </p>
+          </div>
+        </Alert>
+
+        {evidence.length > 0 && (
+          <div>
+            <h3 className='text-label mb-2'>What the official catalog shows</h3>
+            <ul className='list-disc pl-5 space-y-1 text-body text-ink-muted'>
+              {evidence.map((item) => <li key={item}>{item}</li>)}
+            </ul>
+          </div>
+        )}
+
+        {alternate && (
+          <div className='surface-sunken rounded-[10px] p-4'>
+            <p className='text-tag text-ink-subtle'>Broad alternate path</p>
+            <div className='mt-1 flex flex-wrap items-center gap-x-3 gap-y-1'>
+              {alternateUrl ? (
+                <a href={alternateUrl} target='_blank' rel='noreferrer'
+                  className='inline-flex items-center gap-1 text-body font-semibold text-primary hover:underline'>
+                  {alternateTitle || 'Official alternate program'}
+                  <ArrowTopRightOnSquareIcon className='w-3.5 h-3.5' aria-hidden='true' />
+                </a>
+              ) : <span className='text-body font-semibold text-ink'>{alternateTitle || 'Official alternate program'}</span>}
+              {alternate.award && <span className='text-caption text-ink-subtle'>Award: {alternate.award}</span>}
+              {alternate.total_credits != null && (
+                <span className='text-caption text-ink-subtle'>{alternate.total_credits} credits</span>
+              )}
+            </div>
+            {alternateDoesNotDefineCs && (
+              <p className='mt-2 text-caption text-ink-muted'>
+                The current catalog does not define this broad degree as a Computer Science pathway.
+              </p>
+            )}
+          </div>
+        )}
+
+        <div>
+          <h3 className='text-label mb-2'>Official finding sources</h3>
+          {sources.length ? (
+            <ul className='divide-y divide-border border-y border-border'>
+              {sources.map((source) => {
+                const url = findingSourceUrl(source)
+                return (
+                  <li key={source.id || source.label} className='py-2.5 flex flex-wrap items-start justify-between gap-2'>
+                    <div className='min-w-0'>
+                      {url ? (
+                        <a href={url} target='_blank' rel='noreferrer'
+                          className='inline-flex items-center gap-1 text-caption font-semibold text-primary hover:underline'>
+                          {source.label || source.id || 'Official source'}
+                          <ArrowTopRightOnSquareIcon className='w-3.5 h-3.5 shrink-0' aria-hidden='true' />
+                        </a>
+                      ) : <span className='text-caption font-semibold text-ink'>{source.label || source.id || 'Official source'}</span>}
+                      {source.kind && <p className='text-tag text-ink-subtle mt-0.5'>{String(source.kind).replaceAll('_', ' ')}</p>}
+                    </div>
+                    {source.sha256 && (
+                      <span className='text-tag font-mono text-ink-subtle' title={`SHA-256 ${source.sha256}`}>
+                        SHA-256 {shortHash(source.sha256)}
+                      </span>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+          ) : (
+            <p className='text-caption text-ink-subtle'>The finding does not expose its source records yet.</p>
+          )}
+        </div>
+      </Stack>
+    </Panel>
+  )
+}
+
+function DegreesPane({ institution, kind, coverageRow = null }) {
   const { data, isLoading, isError } = useVaDegrees(institution)
   const docs = data?.degrees ?? []
 
   if (isLoading) return <div className='flex justify-center py-8'><Spinner /></div>
   if (isError) return <Alert type='error'>Failed to load degrees for {institution}.</Alert>
+  if (!docs.length && coverageRow?.program_finding) {
+    return <ProgramFindingPanel institution={institution} coverageRow={coverageRow} kind={kind} />
+  }
   if (!docs.length) {
     return (
       <Panel title={kind === 'associate' ? 'Associate degrees' : 'Graduation requirements'}>
@@ -788,11 +856,10 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
   const fromCatalog = doc.source === 'institution_catalog'
   const verified = !!doc.verification?.verified
   const dirty = notes !== (doc.verification?.notes ?? '')
-  const completeness = completenessFor(doc)
   // Read this from the stored record, never `editDoc`: typing a status into the
   // JSON editor must not unlock a signed verdict before the record is saved and
-  // accepted. Reopen stays independent so verified legacy documents are never
-  // trapped by a completeness field they predate.
+  // accepted. This machine gate stays deliberately separate from the only
+  // researcher-facing verdict: verified or unverified.
   const canVerify = doc.acceptance?.accepted === true
     || VERIFY_ELIGIBLE_COLLECTION_STATUSES.has(doc.collection_status)
 
@@ -825,16 +892,10 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
         </Badge>
         {doc.total_units != null && <Badge>{doc.total_units} credits</Badge>}
         {doc.status === 'url_only' && <Badge variant='conservative'>URL only</Badge>}
-        <Badge variant={completeness.variant}>{completeness.label}</Badge>
-        {!verified && <Badge variant='conservative'>unverified</Badge>}
+        <Badge variant={verified ? 'success' : 'conservative'}>
+          {verified ? 'Verified' : 'Unverified'}
+        </Badge>
       </div>
-
-      <Alert type={completeness.type} className='mb-3'>
-        <div>
-          <p className='text-label text-ink'>{completeness.label}</p>
-          <p className='text-caption ink-subtle mt-0.5'>{completeness.description}</p>
-        </div>
-      </Alert>
 
       {/* The same banner the California templates and the associate-degree
           review show, rather than a compact badge. A hand-verified Virginia
@@ -923,9 +984,7 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
         </div>
         {!canVerify && (
           <p className='text-caption ink-subtle mt-2'>
-            {verified
-              ? 'This legacy verdict may be reopened. Re-verification unlocks after catalog acceptance passes.'
-              : 'Verification unlocks after catalog acceptance passes; a capture or major-only parse is not enough.'}
+            Verification unavailable: this document has not passed catalog acceptance.
           </p>
         )}
 

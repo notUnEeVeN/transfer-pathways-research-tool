@@ -17,6 +17,12 @@ describe('Virginia course identities', () => {
     expect(courseKeyFor('CS 108')).toBe('va:CS108');
   });
 
+  it('supports concrete catalog courses with a two-letter suffix', () => {
+    expect(canonicalCourseCode('CIS 231WX')).toBe('CIS231WX');
+    expect(courseIdFor('CIS 231WX')).toBeTypeOf('number');
+    expect(courseKeyFor('CIS 231WX')).toBe('va:CIS231WX');
+  });
+
   it.each(['TRNS1XX', 'MATHElective', 'CS----', 'PE118+', 'XXXX0000', 'ELEC000']) (
     'does not mint an id for the non-course target %s',
     (identifier) => {

@@ -3,17 +3,232 @@
  "name": "Virginia Highlands Community College",
  "level": "community_college",
  "platform": "pdf",
- "parser": "pdf",
- "pdf_window": {
-  "found": true,
-  "lines": 71,
-  "reason": null
- },
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf",
- "captured_at": "2026-08-02T05:51:47.147Z",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "AS",
+  "award_name": "Associate of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Associate of Science",
+  "variant": "Current four-semester transfer-oriented Computer Science A.S.",
+  "catalog_version": {
+   "label": "2026-2027 College Catalog v1.2",
+   "sha256": "a3126a08f12390d358094695a87df51d81cbf0c90c80c7b51b949dc845735e3a",
+   "pdf_pages": 266,
+   "last_modified": "2026-06-25"
+  },
+  "academic_unit": "School of Arts & Sciences",
+  "college": "Virginia Highlands Community College",
+  "general_education_authority": "VHCC 2026-2027 catalog UCGS course roster",
+  "unit_audit": {
+   "published_program_units_minimum": 60,
+   "published_program_units_maximum": 63,
+   "modeled_units_minimum": 60,
+   "modeled_units_maximum": 62,
+   "residency": {
+    "status": "required",
+    "minimum_percent": 25,
+    "rule": "At least 25 percent of the degree credits must be acquired at Virginia Highlands.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "minimum_curriculum_gpa": 2
+  },
+  "modeling_notes": [
+   "The four semester headings organize the only official requirement table; semester placement is discarded after each requirement row and option is preserved.",
+   "The two natural-science rows are separate four-credit requirements drawn from UCGS Block IV; the same course cannot provide credit twice.",
+   "The humanities row excludes literature and therefore uses only the Art and Humanities categories from UCGS Block II.",
+   "The catalog prints a 60-63 range by summing independent row maxima, but a 63-credit route repeats MTH 263 and MTH 264 across separate slots. Distinct-course routes model at 60-62 credits."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "published_maximum_requires_duplicate_math_credit",
+    "severity": "review",
+    "message": "The printed 63-credit maximum is not reachable when the same MTH 263 or MTH 264 credits cannot be counted in two degree slots."
+   },
+   {
+    "code": "cross_slot_course_distinctness",
+    "severity": "review",
+    "message": "Math and science menus recur in separate slots and require a no-double-count evaluator."
+   }
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Virginia Highlands Community College major and degree requirements",
+   "url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf",
+   "requested_url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf#page=62",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T23:16:18.801Z",
+   "sha256": "5c7a998f456a4093e6d97c170cc7c69d99d4e5b59a638a7d41c56e58c09d85b2",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Virginia Highlands Community College general education requirements",
+   "url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf",
+   "requested_url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf#page=43",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T23:16:18.801Z",
+   "sha256": "5c7a998f456a4093e6d97c170cc7c69d99d4e5b59a638a7d41c56e58c09d85b2",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Virginia Highlands Community College university graduation requirements",
+   "url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf",
+   "requested_url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf#page=31",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T23:16:18.801Z",
+   "sha256": "5c7a998f456a4093e6d97c170cc7c69d99d4e5b59a638a7d41c56e58c09d85b2",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Virginia Highlands Community College course descriptions and credit values",
+   "url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf",
+   "requested_url": "https://www.vhcc.edu/sites/default/files/2026-06/2026-27%20VHCC%20Catalog%20-%20v1_2%20-%2020260415a1.pdf#page=229",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T23:16:18.801Z",
+   "sha256": "5c7a998f456a4093e6d97c170cc7c69d99d4e5b59a638a7d41c56e58c09d85b2",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T23:16:18.801Z",
+ "extracted_at": "2026-08-10T23:16:32.368Z",
+ "parser": "pdf",
+ "pdf_window": {
+  "found": true,
+  "mode": "configured_anchors",
+  "start": 3254,
+  "end": 3327,
+  "start_page": 62,
+  "end_page": 64,
+  "lines": 69,
+  "reason": null,
+  "evidence": {
+   "requirements_start": {
+    "anchor": "Associate of Science (AS) in Computer Science",
+    "index": 3254,
+    "page": 62,
+    "text": "Associate of Science (AS) in Computer Science"
+   },
+   "requirements_end": {
+    "anchor": "Criminal Justice Program",
+    "index": 3327,
+    "page": 64,
+    "text": "Criminal Justice Program"
+   },
+   "program_identity_start": {
+    "anchor": "Computer Science Program",
+    "index": 3250,
+    "page": 62,
+    "text": "Computer Science Program"
+   },
+   "program_identity_anchors": [],
+   "pages": {
+    "configured_pdf_pages": [
+     62,
+     64
+    ],
+    "configured_printed_pages": null,
+    "requirements_start_pdf_page": 62,
+    "requirements_end_pdf_page": 64,
+    "printed_folios": [
+     {
+      "pdf_page": 62,
+      "expected_printed_page": null,
+      "printed_page_found": null
+     },
+     {
+      "pdf_page": 63,
+      "expected_printed_page": null,
+      "printed_page_found": null
+     },
+     {
+      "pdf_page": 64,
+      "expected_printed_page": null,
+      "printed_page_found": null
+     }
+    ]
+   }
+  },
+  "missing_evidence": []
+ },
+ "source_role": "program",
+ "source_ref": "major",
  "program_title": null,
+ "parse_error": null,
  "total_credits": {
   "min": 60,
   "max": 63,
@@ -495,6 +710,5 @@
    },
    "stated_total": "60-63"
   }
- },
- "extracted_at": "2026-08-02T06:13:44.803Z"
+ }
 }

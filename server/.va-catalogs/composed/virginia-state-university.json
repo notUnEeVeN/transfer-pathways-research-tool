@@ -1,0 +1,561 @@
+{
+  "schema_version": 1,
+  "slug": "virginia-state-university",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science Major, Bachelor of Science (B.S.)",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "course_titles": {
+    "CHEM161": "Chemistry I",
+    "CHEM162": "Chemistry II",
+    "CHEM163": "Chemistry Laboratory I",
+    "CHEM164": "Chemistry Laboratory II"
+  },
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Engineering and Technology",
+  "ge_authority": "Virginia State University General Education Program",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "policy",
+    "course_catalog"
+  ],
+  "selected_variant": "Base Computer Science B.S. without a concentration",
+  "excluded_variants": [
+    "Information Security concentration"
+  ],
+  "capture_exclusions": [
+    "The sibling Plan of Study is a term-by-term schedule and is not used as requirement authority."
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": ["major", "course_catalog"]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": ["major", "general_education", "college"],
+      "note": "The College of Engineering and Technology source establishes ownership. The reviewed current college and department sources publish no additional college-wide credit block."
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": ["major", "graduation", "policy"],
+      "note": "The current program establishes the 120-credit graduation minimum. The reviewed university policy sources were searched for degree residency, universal upper-level minima, and undergraduate graduation GPA minima; none is numerically published there, so each is recorded as none_stated rather than zero."
+    }
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "general_education_units": 33,
+    "core_requirement_units": 54,
+    "required_course_units": 14,
+    "unrestricted_elective_units": 6,
+    "restricted_elective_units": 13,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The reviewed current Academic Regulations, Policy Statements, college, and program requirement pages do not publish a universal bachelor's upper-division-credit minimum. Course-number definitions and wording appearing only in the excluded Plan of Study are not a graduation minimum.",
+      "source_refs": ["major", "graduation", "policy"]
+    },
+    "residency": {
+      "status": "none_stated",
+      "reason": "The reviewed current Academic Regulations and Policy Statements pages do not publish a numeric bachelor's degree-completion residency rule. Honors eligibility and transfer-admission provisions are not degree residency requirements.",
+      "source_refs": ["graduation", "policy"]
+    },
+    "minimum_cumulative_gpa": {
+      "status": "none_stated",
+      "reason": "The reviewed current Academic Regulations, Policy Statements, college, and Computer Science program pages do not publish a universal undergraduate graduation GPA minimum or a Computer Science-specific GPA minimum. Admission, academic-honors, and transfer-admission GPA thresholds are not graduation requirements.",
+      "source_refs": ["major", "graduation", "policy"]
+    }
+  },
+  "modeling_notes": [
+    "The authoritative Summary of Requirements closes exactly at 120 credits: 33 General Education, 54 core, 14 required courses, six unrestricted electives, and 13 restricted electives.",
+    "The catalog publishes three restricted-elective menus but does not state how the 13 restricted credits must be distributed among the CSCI, MATH, and approved laboratory-science pools. This composition preserves the complete pooled menu and the 13-credit rule without importing distribution assumptions from the Plan of Study.",
+    "General Education is the current university-wide 33-credit rule: English 6, History 3, Humanities 3, Global Studies 3, Literature 3, Health/Wellness 2, Mathematics 6, Social Science 3, and Natural Science with lab 4. One course may overlap General Education and the major, but no course may satisfy two General Education areas.",
+    "The General Education science group exposes the complete university menu. The narrower BIOL/CHEM/PHYS laboratory list is separately retained inside the Computer Science restricted-elective pool; it is not used to erase otherwise valid General Education choices.",
+    "The Department of Computer Science requires at least C in all CSCI, MATH, and STAT courses; this is retained as a zero-additional-unit graduation constraint rather than omitted from the degree tree.",
+    "CSCI 471 is retained because it appears in the authoritative 54-credit core table and current official course catalog. The unlabeled CSCI 470 row appearing only in the excluded Plan of Study is not imported."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "restricted_elective_distribution_not_published",
+      "severity": "block_analysis",
+      "message": "The catalog publishes a 13-credit restricted pool and three complete option menus but no authoritative per-menu credit distribution."
+    },
+    {
+      "code": "general_education_cross_layer_overlap",
+      "severity": "block_analysis",
+      "message": "A course may satisfy General Education and a major requirement but may not satisfy two General Education areas; the current evaluator is not attribute- and overlap-aware."
+    },
+    {
+      "code": "general_education_science_variable_credit",
+      "severity": "block_analysis",
+      "message": "The complete General Education science menu includes variable-credit courses and lecture/laboratory combinations; fulfillment is a four-credit minimum rather than a universal one-course count."
+    },
+    {
+      "code": "major_subject_course_grade_requirement",
+      "severity": "block_analysis",
+      "message": "Graduation requires at least C in all CSCI, MATH, and STAT courses; the current unit solver does not evaluate transcript grades."
+    },
+    {
+      "code": "university_upper_division_residency_and_gpa_not_published",
+      "severity": "review",
+      "message": "The reviewed current university sources publish no numeric bachelor's upper-division minimum, degree-residency rule, or undergraduate graduation GPA minimum applicable to this program."
+    },
+    {
+      "code": "catalog_plan_core_conflict",
+      "severity": "review",
+      "message": "The authoritative summary requires CSCI 471, while the excluded Plan of Study contains an unlabeled CSCI 470 row. The summary and course catalog control this composition."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "General Education: English composition",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "6",
+      "analysis_constraints": [
+        {"kind": "minimum_course_grade", "status": "evaluator_not_implemented", "description": "Earn at least C in both English composition courses."}
+      ],
+      "sections": [
+        {"label": "Composition I", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "ENGL110", "title": "Composition I", "units": 3},
+          {"kind": "course", "code": "ENGL112", "title": "Honors Composition I", "units": 3}
+        ]},
+        {"label": "Composition II", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "ENGL111", "title": "Composition II", "units": 3},
+          {"kind": "course", "code": "ENGL113", "title": "Honors Composition II", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education: Global Studies",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "3",
+      "analysis_constraints": [
+        {"kind": "variable_credit_category", "status": "evaluator_not_implemented", "description": "GLST 202 is offered for 1-6 credits; a student using it must earn at least three applicable credits in the category."}
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "AGRI295", "title": "Contemporary Global Studies", "units": 3},
+          {"kind": "course", "code": "ARAB110", "title": "Elementary Arabic I", "units": 3},
+          {"kind": "course", "code": "ARAB111", "title": "Elementary Arabic II", "units": 3},
+          {"kind": "course", "code": "ARAB212", "title": "Intermediate Arabic I", "units": 3},
+          {"kind": "course", "code": "ARAB213", "title": "Intermediate Arabic II", "units": 3},
+          {"kind": "course", "code": "ENGL214", "title": "World Literature I", "units": 3},
+          {"kind": "course", "code": "ENGL215", "title": "World Literature II", "units": 3},
+          {"kind": "course", "code": "FREN110", "title": "Elementary French I", "units": 3},
+          {"kind": "course", "code": "FREN111", "title": "Elementary French II", "units": 3},
+          {"kind": "course", "code": "FREN212", "title": "Intermediate French I", "units": 3},
+          {"kind": "course", "code": "FREN213", "title": "Intermediate French II", "units": 3},
+          {"kind": "course", "code": "HIST114", "title": "World History to 1500", "units": 3},
+          {"kind": "course", "code": "HIST115", "title": "World History Since 1500", "units": 3},
+          {"kind": "course", "code": "GEOG210", "title": "World Geography", "units": 3},
+          {"kind": "course", "code": "GLST202", "title": "Global Studies Abroad: Topic", "units": 1, "note": "Published for 1-6 credits."},
+          {"kind": "course", "code": "IDUP270", "title": "Introduction to Africana Studies", "units": 3},
+          {"kind": "course", "code": "MUSI199", "title": "Music Appreciation", "units": 3},
+          {"kind": "course", "code": "POLI207", "title": "International Relations", "units": 3},
+          {"kind": "course", "code": "POLI210", "title": "Comparative Government", "units": 3},
+          {"kind": "course", "code": "SPAN110", "title": "Elementary Spanish I", "units": 3},
+          {"kind": "course", "code": "SPAN111", "title": "Elementary Spanish II", "units": 3},
+          {"kind": "course", "code": "SPAN212", "title": "Intermediate Spanish", "units": 3},
+          {"kind": "course", "code": "SPAN213", "title": "Intermediate Spanish II", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education: History",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "3",
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "HIST114", "title": "World History to 1500", "units": 3},
+          {"kind": "course", "code": "HIST115", "title": "World History Since 1500", "units": 3},
+          {"kind": "course", "code": "HIST122", "title": "U.S. History to 1865", "units": 3},
+          {"kind": "course", "code": "HIST123", "title": "U.S. History After 1865", "units": 3},
+          {"kind": "course", "code": "HIST240", "title": "African American History to 1865", "units": 3},
+          {"kind": "course", "code": "HIST241", "title": "African American History from 1865 to Present", "units": 3},
+          {"kind": "course", "code": "HIST245", "title": "HBCU History", "units": 3},
+          {"kind": "course", "code": "HIST274", "title": "History of Africa to 1800", "units": 3},
+          {"kind": "course", "code": "HIST275", "title": "History of Africa Since 1800", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education: Humanities",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "3",
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "ARTS199", "title": "Art Appreciation", "units": 3},
+          {"kind": "course", "code": "ARTS200", "title": "Art Crafts", "units": 3},
+          {"kind": "course", "code": "DANC100", "title": "Foundations of Dance", "units": 3},
+          {"kind": "course", "code": "DANC251", "title": "History of Dance and the Black Experience", "units": 3},
+          {"kind": "course", "code": "DRAM199", "title": "Drama Appreciation", "units": 3},
+          {"kind": "course", "code": "ENGL201", "title": "Introduction to Literature", "units": 3},
+          {"kind": "course", "code": "ENGL202", "title": "Introduction to African American Literature", "units": 3},
+          {"kind": "course", "code": "ENGL210", "title": "English Literature I", "units": 3},
+          {"kind": "course", "code": "ENGL211", "title": "English Literature II", "units": 3},
+          {"kind": "course", "code": "ENGL212", "title": "American Literature I", "units": 3},
+          {"kind": "course", "code": "ENGL213", "title": "American Literature II", "units": 3},
+          {"kind": "course", "code": "ENGL214", "title": "World Literature I", "units": 3},
+          {"kind": "course", "code": "ENGL215", "title": "World Literature II", "units": 3},
+          {"kind": "course", "code": "FREN110", "title": "Elementary French I", "units": 3},
+          {"kind": "course", "code": "FREN111", "title": "Elementary French II", "units": 3},
+          {"kind": "course", "code": "FREN212", "title": "Intermediate French I", "units": 3},
+          {"kind": "course", "code": "FREN213", "title": "Intermediate French II", "units": 3},
+          {"kind": "course", "code": "HIST122", "title": "U.S. History to 1865", "units": 3},
+          {"kind": "course", "code": "HIST123", "title": "U.S. History After 1865", "units": 3},
+          {"kind": "course", "code": "HIST240", "title": "African American History to 1865", "units": 3},
+          {"kind": "course", "code": "HIST241", "title": "African American History from 1865 to Present", "units": 3},
+          {"kind": "course", "code": "HIST245", "title": "HBCU History", "units": 3},
+          {"kind": "course", "code": "MUSI198", "title": "Jazz Appreciation", "units": 3},
+          {"kind": "course", "code": "MUSI199", "title": "Music Appreciation", "units": 3},
+          {"kind": "course", "code": "MUSI200", "title": "Blacks in American Music", "units": 3},
+          {"kind": "course", "code": "PHIL140", "title": "Philosophy", "units": 3},
+          {"kind": "course", "code": "PHIL180", "title": "Critical Thinking", "units": 3},
+          {"kind": "course", "code": "PHIL220", "title": "Introduction to Logic", "units": 3},
+          {"kind": "course", "code": "PHIL275", "title": "Ethics", "units": 3},
+          {"kind": "course", "code": "PHIL290", "title": "Business Ethics", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education: Literature",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "3",
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "ENGL201", "title": "Introduction to Literature", "units": 3},
+          {"kind": "course", "code": "ENGL202", "title": "Introduction to African American Literature", "units": 3},
+          {"kind": "course", "code": "ENGL210", "title": "English Literature I", "units": 3},
+          {"kind": "course", "code": "ENGL211", "title": "English Literature II", "units": 3},
+          {"kind": "course", "code": "ENGL212", "title": "American Literature I", "units": 3},
+          {"kind": "course", "code": "ENGL213", "title": "American Literature II", "units": 3},
+          {"kind": "course", "code": "ENGL214", "title": "World Literature I", "units": 3},
+          {"kind": "course", "code": "ENGL215", "title": "World Literature II", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education: Mathematics",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "6",
+      "analysis_constraints": [
+        {"kind": "minimum_credit_selection", "status": "evaluator_not_implemented", "description": "Earn at least six credits from the menu; four-credit courses can make the completed category exceed six credits."}
+      ],
+      "sections": [
+        {"select": 2, "units": 6, "receivers": [
+          {"kind": "course", "code": "MATH112", "title": "Basic Mathematics I", "units": 3},
+          {"kind": "course", "code": "MATH113", "title": "Basic Mathematics II", "units": 3},
+          {"kind": "course", "code": "MATH120", "title": "College Algebra", "units": 3},
+          {"kind": "course", "code": "MATH121", "title": "Trigonometry", "units": 3},
+          {"kind": "course", "code": "MATH122", "title": "Finite Mathematics", "units": 3},
+          {"kind": "course", "code": "MATH130", "title": "Number and Operations", "units": 3},
+          {"kind": "course", "code": "MATH131", "title": "Algebra and Functions", "units": 3},
+          {"kind": "course", "code": "MATH150", "title": "Precalculus", "units": 4},
+          {"kind": "course", "code": "MATH260", "title": "Calculus I", "units": 4},
+          {"kind": "course", "code": "MATH261", "title": "Calculus II", "units": 4},
+          {"kind": "course", "code": "PHIL220", "title": "Introduction to Logic", "units": 3},
+          {"kind": "course", "code": "STAT210", "title": "Elementary Statistics I", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education: Natural Science and lab",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "4",
+      "analysis_constraints": [
+        {
+          "kind": "credit_based_variable_science_and_lab_selection",
+          "status": "evaluator_not_implemented",
+          "description": "Earn four applicable science/laboratory credits from the complete published menu. Several courses are listed for variable credit and some chemistry routes require a paired laboratory, so one selection does not universally guarantee four credits."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 4, "assume_satisfiable": true, "receivers": [
+          {"kind": "course", "code": "AGRI100", "title": "General Earth Science", "units": 1, "note": "Published for 1-4 credits."},
+          {"kind": "course", "code": "AGRI150", "title": "Introduction to Environmental Science", "units": 4},
+          {"kind": "course", "code": "BIOL116", "title": "Biological Science", "units": 4},
+          {"kind": "course", "code": "BIOL120", "title": "Principles of Biology I", "units": 1, "note": "Published for 1-4 credits in the General Education menu."},
+          {"kind": "course", "code": "BIOL121", "title": "Principles of Biology II", "units": 1, "note": "Published for 1-4 credits in the General Education menu."},
+          {"kind": "course", "code": "CHEM100", "title": "Chemistry in Society", "units": 1, "note": "Published for 1-4 credits."},
+          {"kind": "series", "codes": ["CHEM151", "CHEM153"], "units": 4, "note": "General Chemistry I and laboratory."},
+          {"kind": "series", "codes": ["CHEM152", "CHEM154"], "units": 4, "note": "General Chemistry II and laboratory."},
+          {"kind": "series", "codes": ["CHEM161", "CHEM163"], "units": 4, "note": "Chemistry I and laboratory."},
+          {"kind": "series", "codes": ["CHEM162", "CHEM164"], "units": 4, "note": "Chemistry II and laboratory."},
+          {"kind": "course", "code": "DIET101", "title": "Nutrition: Contemporary Health Issues", "units": 3, "note": "A three-credit menu course; additional applicable science/laboratory credit is needed to reach four."},
+          {"kind": "course", "code": "PHYS100", "title": "Physical Science", "units": 1, "note": "Published for 1-4 credits."},
+          {"kind": "course", "code": "PHYS105", "title": "Introduction to Physics I", "units": 1, "note": "Published for 1-3 credits in the General Education menu."},
+          {"kind": "course", "code": "PHYS106", "title": "Introduction to Physics II", "units": 1, "note": "Published for 1-3 credits in the General Education menu."},
+          {"kind": "course", "code": "PHYS112", "title": "General Physics I", "units": 1, "note": "Published for 1-4 credits in the General Education menu."},
+          {"kind": "course", "code": "PHYS113", "title": "General Physics II", "units": 1, "note": "Published for 1-4 credits in the General Education menu."}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education: Social Science",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "3",
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "CJUS116", "title": "Introduction to Criminal Justice", "units": 3},
+          {"kind": "course", "code": "ECON100", "title": "Basic Economics", "units": 3},
+          {"kind": "course", "code": "ECON210", "title": "Principles of Microeconomics", "units": 3},
+          {"kind": "course", "code": "ECON211", "title": "Principles of Macroeconomics", "units": 3},
+          {"kind": "course", "code": "FACS201", "title": "Consumer Economics", "units": 3},
+          {"kind": "course", "code": "POLI150", "title": "United States Government", "units": 3},
+          {"kind": "course", "code": "POLI202", "title": "Contemporary Political Thought", "units": 3},
+          {"kind": "course", "code": "PSYC101", "title": "Introduction to Psychology", "units": 3},
+          {"kind": "course", "code": "PSYC212", "title": "Human Growth and Development", "units": 3},
+          {"kind": "course", "code": "SOCI101", "title": "Introduction to Sociology", "units": 3},
+          {"kind": "course", "code": "SOCI102", "title": "Introduction to Anthropology", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education: Health and Wellness",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "2",
+      "conjunction": "Or",
+      "sections": [
+        {"label": "One two-credit course", "select": 1, "units": 2, "receivers": [
+          {"kind": "course", "code": "HPER170", "title": "Health and Wellness", "units": 2}
+        ]},
+        {"label": "Two distinct one-credit courses", "select": 2, "units": 2, "receivers": [
+          {"kind": "course", "code": "HPER160", "title": "Team Sports/Wellness", "units": 1},
+          {"kind": "course", "code": "HPER165", "title": "Personal Fitness", "units": 1},
+          {"kind": "course", "code": "HPER166", "title": "Beginning Swimming/Wellness", "units": 1},
+          {"kind": "course", "code": "HPER169", "title": "Gymnastics Wellness", "units": 1},
+          {"kind": "course", "code": "HPER171", "title": "Lifetime Sports/Wellness", "units": 1}
+        ]}
+      ]
+    },
+    {
+      "title": "Computer Science core: lower-level requirements",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "19",
+      "sections": [
+        {"select": 1, "units": 2, "receivers": [{"kind": "course", "code": "CSCI101", "title": "Introduction to the Computer Science Profession", "units": 2}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI150", "title": "Programming I", "units": 3}]},
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CSCI151", "title": "Programming I Lab", "units": 1}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI250", "title": "Programming II", "units": 3}]},
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CSCI251", "title": "Programming II Lab", "units": 1}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI281", "title": "Discrete Structures", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI287", "title": "Data Structures", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI296", "title": "Web Programming", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Computer Science core: upper-level requirements",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "35",
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI303", "title": "Computer Organization and Architecture", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI356", "title": "Database Systems", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI358", "title": "Introduction to Information Assurance", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI392", "title": "Algorithms and Advanced Data Structures", "units": 3}]},
+        {"select": 1, "units": 2, "receivers": [{"kind": "course", "code": "CSCI400", "title": "Computer Science Seminar", "units": 2}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI445", "title": "Computer Communication Networks", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI471", "title": "Parallel and Distributed Programming", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI485", "title": "Programming Languages", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI487", "title": "Software Design and Development", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI489", "title": "Operating Systems", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI493", "title": "Senior Project I", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI494", "title": "Senior Project II", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Required mathematics and statistics",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "14",
+      "sections": [
+        {"select": 1, "units": 4, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "MATH260", "title": "Calculus I", "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "MATH261", "title": "Calculus II", "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "receivers": [{"kind": "course", "code": "MATH280", "title": "Discrete Mathematics for Computer Science", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "STAT340", "title": "Probability and Statistics for Computer Scientists", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Unrestricted electives",
+      "requirement_layer": "electives",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "stated_credits": "6",
+      "sections": [
+        {"select": 1, "units": 6, "receivers": [{"kind": "ge_area", "code": "VSU-UNRESTRICTED", "name": "Six credits of unrestricted electives", "units": 6}]}
+      ]
+    },
+    {
+      "title": "Restricted electives: complete published option pool",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "13",
+      "analysis_constraints": [
+        {
+          "kind": "credit_based_pool_with_unpublished_submenu_distribution",
+          "status": "evaluator_not_implemented",
+          "description": "Earn 13 restricted-elective credits from the published CSCI, MATH, and approved laboratory-science menus. The authoritative requirement container does not state a per-menu distribution, and variable-credit choices can change the course count."
+        },
+        {
+          "kind": "no_double_count_with_fixed_requirements_or_ge_areas",
+          "status": "evaluator_not_implemented",
+          "description": "The same course cannot earn degree credit twice; a course may satisfy General Education and the major but cannot satisfy two General Education areas."
+        }
+      ],
+      "sections": [
+        {
+          "label": "Canonical four-selection representation of the 13-credit pool",
+          "select": 4,
+          "units": 13,
+          "assume_satisfiable": true,
+          "receivers": [
+            {"kind": "course", "code": "CSCI312", "title": "Introduction to Robotics", "units": 3},
+            {"kind": "course", "code": "CSCI361", "title": "Embedded Systems: Design and Applications", "units": 3},
+            {"kind": "course", "code": "CSCI389", "title": "Human-Computer Interaction", "units": 3},
+            {"kind": "course", "code": "CSCI396", "title": "Advanced Web Programming", "units": 3},
+            {"kind": "course", "code": "CSCI298", "title": "Internship in Computer Science I", "units": 1},
+            {"kind": "course", "code": "CSCI398", "title": "Internship in Computer Science II", "units": 3},
+            {"kind": "course", "code": "CSCI402", "title": "Introduction to Artificial Intelligence", "units": 3},
+            {"kind": "course", "code": "CSCI450", "title": "Computer Forensics", "units": 3},
+            {"kind": "course", "code": "CSCI451", "title": "Computer Security", "units": 3},
+            {"kind": "course", "code": "CSCI452", "title": "Introduction to Cryptography", "units": 3},
+            {"kind": "course", "code": "CSCI453", "title": "Digital Image Processing", "units": 3},
+            {"kind": "course", "code": "CSCI456", "title": "Advanced Database Applications", "units": 3},
+            {"kind": "course", "code": "CSCI457", "title": "Introduction to Data Mining", "units": 3},
+            {"kind": "course", "code": "CSCI460", "title": "Computability and Formal Language Theory", "units": 3},
+            {"kind": "course", "code": "CSCI462", "title": "Compiler Construction", "units": 3},
+            {"kind": "course", "code": "CSCI480", "title": "Computer Graphics", "units": 3},
+            {"kind": "course", "code": "CSCI482", "title": "Matrix Computations", "units": 3},
+            {"kind": "course", "code": "CSCI488", "title": "Advanced Systems Architecture", "units": 3},
+            {"kind": "course", "code": "CSCI492", "title": "Algorithms and Complexity", "units": 3},
+            {"kind": "course", "code": "CSCI495", "title": "Topics in Computer Science", "units": 3},
+            {"kind": "course", "code": "CSCI496", "title": "Web Design and Cyber Security", "units": 3},
+            {"kind": "course", "code": "MATH292", "title": "Introduction to Number Theory", "units": 3},
+            {"kind": "course", "code": "MATH317", "title": "Stochastic Processes", "units": 3},
+            {"kind": "course", "code": "MATH321", "title": "Combinatorics", "units": 3},
+            {"kind": "course", "code": "MATH325", "title": "Linear Algebra", "units": 3},
+            {"kind": "course", "code": "MATH335", "title": "Mathematical Modeling", "units": 3},
+            {"kind": "course", "code": "MATH340", "title": "Euclidean and Non-Euclidean Geometry I", "units": 3},
+            {"kind": "course", "code": "MATH348", "title": "Introduction to Game Theory", "units": 3},
+            {"kind": "course", "code": "MATH350", "title": "Differential Equations", "units": 3},
+            {"kind": "course", "code": "MATH352", "title": "Introduction to Mathematical Biology", "units": 3},
+            {"kind": "course", "code": "MATH360", "title": "Calculus III", "units": 4},
+            {"kind": "course", "code": "MATH392", "title": "Introduction to Linear Programming", "units": 3},
+            {"kind": "course", "code": "MATH415", "title": "Matrix Theory", "units": 3},
+            {"kind": "course", "code": "MATH417", "title": "Numerical Linear Algebra", "units": 3},
+            {"kind": "course", "code": "MATH425", "title": "Abstract Algebra I", "units": 3},
+            {"kind": "course", "code": "MATH452", "title": "Numerical Analysis", "units": 3},
+            {"kind": "course", "code": "MATH473", "title": "Discrete Wavelet Transform and Applications", "units": 3},
+            {"kind": "course", "code": "MATH490", "title": "Graph Theory", "units": 3},
+            {"kind": "course", "code": "STAT380", "title": "Probability and Statistics II", "units": 3},
+            {"kind": "course", "code": "PHYS105", "title": "Introduction to Physics I (and lab)", "units": 4},
+            {"kind": "course", "code": "PHYS106", "title": "Introduction to Physics II (and lab)", "units": 4},
+            {"kind": "course", "code": "PHYS112", "title": "General Physics I (and lab)", "units": 4},
+            {"kind": "course", "code": "PHYS113", "title": "General Physics II (and lab)", "units": 4},
+            {"kind": "series", "codes": ["CHEM151", "CHEM153"], "units": 4},
+            {"kind": "series", "codes": ["CHEM152", "CHEM154"], "units": 4},
+            {"kind": "course", "code": "BIOL120", "title": "Principles of Biology I", "units": 4},
+            {"kind": "course", "code": "BIOL121", "title": "Principles of Biology II", "units": 4}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Computer Science subject-course grade requirement",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": ["major", "college"],
+      "analysis_constraints": [
+        {
+          "kind": "minimum_course_grade_by_subject",
+          "status": "evaluator_not_implemented",
+          "description": "Earn at least C in every CSCI, MATH, and STAT course applicable to the Computer Science program."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Earn at least C in all CSCI, MATH, and STAT courses", "units": 0}]}
+      ]
+    },
+    {
+      "title": "General Education and university nonunit policies",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": ["general_education", "graduation", "policy"],
+      "analysis_constraints": [
+        {
+          "kind": "general_education_single_area_and_major_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "One course may simultaneously fulfill General Education and the major, but no course may fulfill more than one General Education area."
+        },
+        {
+          "kind": "general_education_assessment",
+          "status": "evaluator_not_implemented",
+          "description": "Students must satisfy the University's General Education assessment requirements documenting achievement of the published learning outcomes."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Apply each course to no more than one General Education area", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Satisfy the University General Education assessment requirements", "units": 0}]}
+      ]
+    }
+  ]
+}

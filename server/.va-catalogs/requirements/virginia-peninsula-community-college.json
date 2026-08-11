@@ -3,13 +3,207 @@
  "name": "Virginia Peninsula Community College",
  "level": "community_college",
  "platform": "acalog",
- "parser": "lines",
- "pdf_window": null,
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.vpcc.edu/preview_program.php?catoid=26&poid=6026&print=1",
- "captured_at": "2026-08-02T05:51:49.449Z",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "AS",
+  "award_name": "Associate of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science (246), Associate of Science",
+  "variant": "Current statewide-common-curriculum Computer Science A.S.",
+  "program_code": "246",
+  "catalog_version": {
+   "catalog_id": 26,
+   "program_id": 6026,
+   "general_education_nav_id": 5787,
+   "academic_information_nav_id": 5683,
+   "course_information_nav_id": 5687
+  },
+  "academic_unit": "Science, Technology, Engineering and Mathematics",
+  "college": "Virginia Peninsula Community College",
+  "general_education_authority": "Virginia Peninsula 2026-2027 Approved UCGS and Passport Course Roster",
+  "unit_audit": {
+   "published_program_units_minimum": 60,
+   "published_program_units_maximum": 63,
+   "modeled_units_minimum": 60,
+   "modeled_units_maximum": 63,
+   "residency": {
+    "status": "required",
+    "minimum_percent": 25,
+    "rule": "At least 25 percent of the curriculum credit hours must be acquired at Virginia Peninsula.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "minimum_curriculum_gpa": 2
+  },
+  "modeling_notes": [
+   "The semester grid is the official degree-requirement inventory. Its term order is discarded while exact alternatives, option menus, and printed credit ranges are retained.",
+   "The two Block II slots must be selected from different Arts, Humanities, or Literature categories under the current UCGS roster.",
+   "Computer Science 2 is a seven-to-ten-credit approved menu that balances variable earlier choices and prerequisite-credit substitutions to the published 60-credit minimum; the canonical minimum path allocates ten credits to it.",
+   "Courses appearing in prerequisite, science, math, Computer Science 1, Computer Science 2, and the separate CSC 205/MTH 265 slot cannot supply the same credits twice."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "dynamic_computer_science_two_credit_allocation",
+    "severity": "review",
+    "message": "The program prints Computer Science 2 as 7-10 credits while the stated Spring 2 and degree minima require the selected amount to vary with earlier choices and prerequisite substitutions."
+   },
+   {
+    "code": "cross_requirement_overlap_requires_evaluation",
+    "severity": "review",
+    "message": "Several approved electives also occur in other degree slots; applied credits cannot be reused."
+   },
+   {
+    "code": "ucgs_category_distinctness_requires_evaluation",
+    "severity": "review",
+    "message": "The two Block II choices must come from different Arts, Humanities, or Literature categories."
+   }
+  ],
+  "layers": {
+   "catalog_identity": {
+    "source_roles": [
+     "catalog"
+    ]
+   },
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Virginia Peninsula Community College major and degree requirements",
+   "url": "https://catalog.vpcc.edu/preview_program.php?catoid=26&poid=6026&print=1",
+   "requested_url": "https://catalog.vpcc.edu/preview_program.php?catoid=26&poid=6026&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:14:30.020Z",
+   "sha256": "b3cae389b811d2966d8e493b7c5dcdf82f4a0bc1b2a4421432db5ba69fd64134",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "catalog",
+   "role": "catalog",
+   "kind": "catalog",
+   "label": "Virginia Peninsula Community College academic catalog",
+   "url": "https://catalog.vpcc.edu/index.php?catoid=26",
+   "requested_url": "https://catalog.vpcc.edu/index.php?catoid=26",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:14:30.020Z",
+   "sha256": "f148ae0406409f99a935a2ac0733142ffcda8e8af5eb3f5f8678729a6525d1a4",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Virginia Peninsula Community College general education requirements",
+   "url": "https://catalog.vpcc.edu/content.php?catoid=26&navoid=5787",
+   "requested_url": "https://catalog.vpcc.edu/content.php?catoid=26&navoid=5787",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:14:30.020Z",
+   "sha256": "82319784659568d0f6debf69c7a806b213b1225be92bf9971caf6762a1d87f63",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Virginia Peninsula Community College university graduation requirements",
+   "url": "https://catalog.vpcc.edu/content.php?catoid=26&navoid=5683",
+   "requested_url": "https://catalog.vpcc.edu/content.php?catoid=26&navoid=5683",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:14:30.020Z",
+   "sha256": "6af7b37f839120c95a0e2a11489d255f2b1c6d2b928ee04146ecb24f1d2a646c",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Virginia Peninsula Community College course descriptions and credit values",
+   "url": "https://catalog.vpcc.edu/content.php?catoid=26&navoid=5687",
+   "requested_url": "https://catalog.vpcc.edu/content.php?catoid=26&navoid=5687",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:14:30.020Z",
+   "sha256": "8961713b07af40a6fa5af413c7791bd283d00f7b6893ed07b14dac2545c53fde",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "catalog_identity": {
+   "status": "captured",
+   "source_refs": [
+    "catalog"
+   ],
+   "note": null
+  },
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T23:14:30.020Z",
+ "extracted_at": "2026-08-10T23:16:32.418Z",
+ "parser": "lines",
+ "pdf_window": null,
+ "source_role": "program",
+ "source_ref": "major",
  "program_title": "Computer Science (246) Associate of Science",
+ "parse_error": null,
  "total_credits": {
   "min": 60,
   "max": 60,
@@ -1132,6 +1326,5 @@
    },
    "stated_total": "60"
   }
- },
- "extracted_at": "2026-08-02T06:13:44.807Z"
+ }
 }

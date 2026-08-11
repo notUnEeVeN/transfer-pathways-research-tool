@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "slug": "virginia-peninsula-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science (246), Associate of Science",
+  "award": "AS",
+  "program_code": "246",
+  "catalog_version": {
+    "catalog_id": 26,
+    "program_id": 6026,
+    "general_education_nav_id": 5787,
+    "academic_information_nav_id": 5683,
+    "course_information_nav_id": 5687
+  },
+  "total_units": 60,
+  "total_units_max": 63,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "catalog",
+    "major",
+    "general_education",
+    "graduation",
+    "course_catalog"
+  ],
+  "course_titles": {
+    "SDV100": "College Success Skills",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "ENG113": "Technical-Professional Writing",
+    "MTH161": "Precalculus I",
+    "MTH162": "Precalculus II",
+    "MTH245": "Statistics I",
+    "MTH263": "Calculus I",
+    "MTH264": "Calculus II",
+    "MTH265": "Calculus III",
+    "MTH266": "Linear Algebra",
+    "CSC205": "Computer Organization",
+    "CSC208": "Introduction to Discrete Structures",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC222": "Object-Oriented Programming",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "ART100": "Art Appreciation",
+    "ART101": "History of Art: Prehistoric to Gothic",
+    "ART102": "History of Art: Renaissance to Modern",
+    "CST100": "Principles of Public Speaking",
+    "CST130": "Introduction to Theatre",
+    "CST151": "Film Appreciation I",
+    "MUS121": "Music in Society",
+    "MUS221": "History of Western Music Prior to 1750",
+    "MUS222": "History of Western Music 1750 to Present",
+    "MUS226": "World Music",
+    "HUM201": "Early Humanities",
+    "HUM202": "Modern Humanities",
+    "HUM210": "Introduction to Women and Gender Studies",
+    "HUM216": "Introduction to Non-Western Cultures",
+    "HUM220": "Introduction to African American Studies",
+    "HUM256": "Comparative Mythology",
+    "HUM259": "The Greek and Roman Tradition",
+    "PHI100": "Introduction to Philosophy",
+    "PHI111": "Logic I",
+    "PHI220": "Ethics and Society",
+    "REL100": "Introduction to the Study of Religion",
+    "REL230": "Religions of the World",
+    "REL237": "Eastern Religions",
+    "REL238": "Western Religions",
+    "REL240": "Religions in America",
+    "ENG225": "Reading Literature: Culture and Ideas",
+    "ENG245": "British Literature",
+    "ENG246": "American Literature",
+    "ENG250": "Children's Literature",
+    "ENG255": "World Literature",
+    "ENG258": "African American Literature",
+    "ENG275": "Women in Literature",
+    "ECO150": "Economic Essentials: Theory and Application",
+    "ECO201": "Principles of Macroeconomics",
+    "ECO202": "Principles of Microeconomics",
+    "GEO210": "People and the Land: Introduction to Cultural Geography",
+    "GEO220": "World Regional Geography",
+    "PLS135": "U.S. Government and Politics",
+    "PLS140": "Introduction to Comparative Politics",
+    "PLS241": "Introduction to International Relations I",
+    "PSY200": "Principles of Psychology",
+    "SOC200": "Introduction to Sociology",
+    "SOC211": "Cultural Anthropology",
+    "SOC268": "Social Problems",
+    "HIS101": "Western Civilizations Pre-1600 CE",
+    "HIS102": "Western Civilizations Post-1600 CE",
+    "HIS111": "World Civilizations Pre-1500 CE",
+    "HIS112": "World Civilizations Post-1500 CE",
+    "HIS121": "United States History to 1877",
+    "HIS122": "United States History Since 1865",
+    "BIO101": "General Biology I",
+    "BIO102": "General Biology II",
+    "CHM111": "General Chemistry I",
+    "CHM112": "General Chemistry II",
+    "GOL105": "Physical Geology",
+    "GOL106": "Historical Geology",
+    "PHY241": "University Physics I",
+    "PHY242": "University Physics II",
+    "FRE101": "Beginning French I",
+    "FRE102": "Beginning French II",
+    "FRE201": "Intermediate French I",
+    "FRE202": "Intermediate French II",
+    "SPA101": "Beginning Spanish I",
+    "SPA102": "Beginning Spanish II",
+    "SPA201": "Intermediate Spanish I",
+    "SPA202": "Intermediate Spanish II",
+    "ITE152": "Introduction to Digital and Information Literacy and Computer Applications",
+    "EGR121": "Foundations of Engineering",
+    "EGR122": "Engineering Design"
+  },
+  "option_sets": {
+    "ucgs_block_ii": {
+      "source_refs": ["major", "general_education"],
+      "rule": "Choose two three-credit courses from different Arts, Humanities, or Literature categories.",
+      "categories": {
+        "arts": ["ART100", "ART101", "ART102", "CST130", "CST151", "MUS121", "MUS221", "MUS222", "MUS226"],
+        "humanities": ["HUM201", "HUM202", "HUM210", "HUM216", "HUM220", "HUM256", "HUM259", "PHI100", "PHI111", "PHI220", "REL100", "REL230", "REL237", "REL238", "REL240"],
+        "literature": ["ENG225", "ENG245", "ENG246", "ENG250", "ENG255", "ENG258", "ENG275"]
+      }
+    },
+    "ucgs_block_iii": {
+      "source_refs": ["major", "general_education"],
+      "courses": ["ECO150", "ECO201", "ECO202", "GEO210", "GEO220", "PLS135", "PLS140", "PLS241", "PSY200", "SOC200", "SOC211", "SOC268"]
+    },
+    "ucgs_block_vi": {
+      "source_refs": ["major", "general_education"],
+      "courses": ["HIS101", "HIS102", "HIS111", "HIS112", "HIS121", "HIS122"]
+    },
+    "computer_science_1": {
+      "source_refs": ["major"],
+      "credits_minimum": 3,
+      "credits_maximum": 4,
+      "courses": ["BIO102", "CHM112", "CSC205", "FRE101", "FRE102", "FRE201", "FRE202", "GOL106", "ITE152", "MTH265", "MTH266", "PHY242", "SPA101", "SPA102", "SPA201", "SPA202"]
+    },
+    "computer_science_2": {
+      "source_refs": ["major"],
+      "published_credits_minimum": 7,
+      "published_credits_maximum": 10,
+      "canonical_minimum_path_allocation": 10,
+      "courses": ["CSC205", "CST100", "EGR121", "EGR122", "FRE101", "FRE102", "FRE201", "FRE202", "MTH245", "MTH264", "MTH266", "MTH161", "MTH162", "SPA101", "SPA102", "SPA201", "SPA202"]
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": 63,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 63,
+    "closure_basis": "The canonical minimum uses 50 credits from fixed, breadth, science, and minimum-credit choice rows plus ten approved Computer Science 2 credits. Three one-credit choice increases yield the published 63-credit maximum.",
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "rule": "At least 25 percent of the curriculum credit hours must be acquired at Virginia Peninsula.",
+      "source_refs": ["graduation"]
+    },
+    "minimum_curriculum_gpa": 2
+  },
+  "modeling_notes": [
+    "The catalog's Fall/Spring headings organize requirements rather than establish an additional prospective schedule; the composition discards term order.",
+    "The program's two Block II placeholders inherit the current UCGS rule that the choices come from different Arts, Humanities, or Literature categories.",
+    "Computer Science 2 is printed as 7-10 credits. Earlier 3/4-credit choices and the explicit MTH 161/162 prerequisite-credit rule determine how much of that menu remains; the canonical all-minimum path needs ten menu credits to reach 60.",
+    "The canonical Computer Science 2 section uses three options totaling ten credits, but the source allows a variable number of courses. Exact cardinality, credit balancing, and cross-slot no-double-count rules remain explicit analysis constraints."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "dynamic_computer_science_two_credit_allocation",
+      "severity": "review",
+      "message": "Computer Science 2 supplies 7-10 credits depending on earlier choices and prerequisite substitutions; the canonical minimum path allocates ten."
+    },
+    {
+      "code": "ucgs_category_distinctness_requires_evaluation",
+      "severity": "review",
+      "message": "The two Block II courses must come from different UCGS categories."
+    },
+    {
+      "code": "cross_requirement_overlap_requires_evaluation",
+      "severity": "review",
+      "message": "Courses repeated among math, science, Computer Science 1, Computer Science 2, and the separate CSC 205/MTH 265 slot cannot double-count."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Fixed computer science, calculus, composition, and college success",
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV100"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC208"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]}
+      ]
+    },
+    {
+      "title": "Second written communication course",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"], ["ENG113"]]}]}
+      ]
+    },
+    {
+      "title": "Calculus II or Statistics I",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "cc_course", "options": [["MTH264"], ["MTH245"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS Block II — Arts, Humanities, and Literature",
+      "source_refs": ["major", "general_education"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "distinct_categories_across_sections",
+          "status": "evaluator_not_implemented",
+          "description": "The two selections must come from different UCGS categories, not merely be different course numbers."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ART100"], ["ART101"], ["ART102"], ["CST130"], ["CST151"], ["MUS121"], ["MUS221"], ["MUS222"], ["MUS226"], ["HUM201"], ["HUM202"], ["HUM210"], ["HUM216"], ["HUM220"], ["HUM256"], ["HUM259"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL100"], ["REL230"], ["REL237"], ["REL238"], ["REL240"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ART100"], ["ART101"], ["ART102"], ["CST130"], ["CST151"], ["MUS121"], ["MUS221"], ["MUS222"], ["MUS226"], ["HUM201"], ["HUM202"], ["HUM210"], ["HUM216"], ["HUM220"], ["HUM256"], ["HUM259"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL100"], ["REL230"], ["REL237"], ["REL238"], ["REL240"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS Block VI — History",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["HIS101"], ["HIS102"], ["HIS111"], ["HIS112"], ["HIS121"], ["HIS122"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS Block III — Social and Behavioral Sciences",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ECO150"], ["ECO201"], ["ECO202"], ["GEO210"], ["GEO220"], ["PLS135"], ["PLS140"], ["PLS241"], ["PSY200"], ["SOC200"], ["SOC211"], ["SOC268"]]}]}
+      ]
+    },
+    {
+      "title": "Laboratory science",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["BIO101"], ["CHM111"], ["GOL105"], ["PHY241"]]}]}
+      ]
+    },
+    {
+      "title": "Computer Science 1 approved choice",
+      "source_refs": ["major"],
+      "analysis_constraints": [
+        {
+          "kind": "no_double_count_across_requirement_slots",
+          "status": "evaluator_not_implemented",
+          "description": "A Computer Science 1 selection cannot reuse credits already applied to another named requirement."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "cc_course", "options": [["BIO102"], ["CHM112"], ["CSC205"], ["FRE101"], ["FRE102"], ["FRE201"], ["FRE202"], ["GOL106"], ["ITE152"], ["MTH265"], ["MTH266"], ["PHY242"], ["SPA101"], ["SPA102"], ["SPA201"], ["SPA202"]]}]}
+      ]
+    },
+    {
+      "title": "CSC 205 or MTH 265",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "cc_course", "options": [["CSC205"], ["MTH265"]]}]}
+      ]
+    },
+    {
+      "title": "Computer Science 2 approved choices",
+      "source_refs": ["major"],
+      "stated_credits": "7-10",
+      "analysis_constraints": [
+        {
+          "kind": "dynamic_elective_credits_to_degree_minimum",
+          "status": "evaluator_not_implemented",
+          "description": "Select 7-10 approved credits as needed after earlier variable-credit choices and MTH 161/MTH 162 prerequisite substitutions to satisfy the 60-credit minimum."
+        },
+        {
+          "kind": "variable_choice_count_with_minimum_units",
+          "status": "evaluator_not_implemented",
+          "description": "The catalog states a credit range and no universal course count; the canonical all-minimum route uses three courses totaling ten credits."
+        },
+        {
+          "kind": "no_double_count_across_requirement_slots",
+          "status": "evaluator_not_implemented",
+          "description": "A course used in another requirement or Computer Science 1 cannot supply the same credits to Computer Science 2."
+        }
+      ],
+      "sections": [
+        {
+          "select": 3,
+          "units": 10,
+          "label": "Canonical all-minimum path: three approved courses totaling ten credits; source range is 7-10 credits",
+          "receivers": [
+            {"kind": "cc_course", "options": [["CSC205"]]},
+            {"kind": "cc_course", "options": [["CST100"]]},
+            {"kind": "cc_course", "options": [["EGR121"]]},
+            {"kind": "cc_course", "options": [["EGR122"]]},
+            {"kind": "cc_course", "options": [["FRE101"]]},
+            {"kind": "cc_course", "options": [["FRE102"]]},
+            {"kind": "cc_course", "options": [["FRE201"]]},
+            {"kind": "cc_course", "options": [["FRE202"]]},
+            {"kind": "cc_course", "options": [["MTH245"]]},
+            {"kind": "cc_course", "options": [["MTH264"]]},
+            {"kind": "cc_course", "options": [["MTH266"]]},
+            {"kind": "cc_course", "options": [["MTH161"]]},
+            {"kind": "cc_course", "options": [["MTH162"]]},
+            {"kind": "cc_course", "options": [["SPA101"]]},
+            {"kind": "cc_course", "options": [["SPA102"]]},
+            {"kind": "cc_course", "options": [["SPA201"]]},
+            {"kind": "cc_course", "options": [["SPA202"]]}
+          ]
+        }
+      ]
+    }
+  ]
+}

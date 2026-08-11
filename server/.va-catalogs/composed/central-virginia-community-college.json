@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "slug": "central-virginia-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Associate of Science",
+  "award": "AS",
+  "catalog_version": {
+    "catalog_id": 6,
+    "program_id": 934,
+    "returnto": 208,
+    "academic_plan": 246
+  },
+  "total_units": 60,
+  "total_units_max": 61,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "major",
+    "catalog",
+    "ge_block_ii",
+    "ge_block_iii",
+    "ge_block_vi",
+    "graduation"
+  ],
+  "course_titles": {
+    "SDV100": "College Success Skills",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "MTH263": "Calculus I",
+    "EGR121": "Foundations of Engineering",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC208": "Introduction to Discrete Structures",
+    "MTH288": "Discrete Mathematics",
+    "MTH264": "Calculus II",
+    "MTH245": "Statistics I",
+    "EGR122": "Engineering Design",
+    "PHY241": "University Physics I",
+    "CHM111": "General Chemistry I",
+    "CSC222": "Object-Oriented Programming",
+    "PHY242": "University Physics II",
+    "CHM112": "General Chemistry II",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "CSC215": "Computer Systems",
+    "CSC205": "Computer Organization",
+    "ART100": "Art Appreciation",
+    "ART101": "History of Art: Prehistoric to Gothic",
+    "ART102": "History of Art: Renaissance to Modern",
+    "CST151": "Film Appreciation I",
+    "MUS121": "Music in Society",
+    "HUM256": "Comparative Mythology",
+    "PHI100": "Introduction to Philosophy",
+    "PHI111": "Logic I",
+    "PHI220": "Ethics and Society",
+    "REL230": "Religions of the World",
+    "ENG225": "Reading Literature: Culture and Ideas",
+    "ENG245": "British Literature",
+    "ENG246": "American Literature",
+    "ENG250": "Children's Literature",
+    "ENG255": "World Literature",
+    "ENG258": "African American Literature",
+    "ECO150": "Economic Essentials: Theory and Application",
+    "ECO201": "Principles of Macroeconomics",
+    "ECO202": "Principles of Microeconomics",
+    "GEO210": "People & Land: Introduction To Cultural Geography",
+    "PLS135": "United States Government and Politics",
+    "PSY200": "Principles of Psychology",
+    "SOC200": "Introduction to Sociology",
+    "HIS101": "Western Civilizations Pre-1600 CE",
+    "HIS102": "Western Civilizations Post-1600 CE",
+    "HIS112": "History of World Civilization II",
+    "HIS121": "United States History to 1877",
+    "HIS122": "United States History Since 1865"
+  },
+  "option_sets": {
+    "ucgs_block_ii": {
+      "source_refs": ["ge_block_ii"],
+      "rule": "Select two three-credit courses from different categories.",
+      "categories": {
+        "art": ["ART100", "ART101", "ART102", "CST151", "MUS121"],
+        "humanities": ["HUM256", "PHI100", "PHI111", "PHI220", "REL230"],
+        "literature": ["ENG225", "ENG245", "ENG246", "ENG250", "ENG255", "ENG258"]
+      }
+    },
+    "ucgs_block_iii": {
+      "source_refs": ["ge_block_iii"],
+      "courses": ["ECO150", "ECO201", "ECO202", "GEO210", "PLS135", "PSY200", "SOC200"]
+    },
+    "ucgs_block_vi": {
+      "source_refs": ["ge_block_vi"],
+      "courses": ["HIS101", "HIS102", "HIS112", "HIS121", "HIS122"]
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": 61,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 61,
+    "closure_basis": "The minimum path is 60 credits when the three-credit MTH 245 option fills the row printed as four credits; MTH 264 raises the path to 61.",
+    "minimum_curriculum_gpa": 2,
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "minimum_units_on_60_credit_path": 15,
+      "rule": "At least 25 percent of the program credits must be acquired at Central Virginia Community College.",
+      "source_refs": ["graduation"]
+    },
+    "graduation_gates": {
+      "application_required": true,
+      "graduate_exit_assessment_required": true,
+      "source_refs": ["major", "graduation"]
+    }
+  },
+  "modeling_notes": [
+    "The current catalog's only course-requirement structure is presented in a four-term pathway. This composition reorganizes the same rows by requirement and does not make term placement an additional rule.",
+    "The two Block II rows are joined to the linked current Block II option record, which requires selections from two different Art, Humanities, or Literature categories.",
+    "The source prints two distinct four-credit requirements with the identical PHY 241 or CHM 111 menu. Both are retained and the same applied course credit cannot fulfill both.",
+    "The separate PHY 242 or CHM 112 requirement is preserved exactly. The catalog does not expressly require it to match the discipline selected in either introductory-science slot, so no same-sequence rule is invented.",
+    "Transfer notes and four-year-destination advice are not additional degree requirements."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "duplicate_introductory_science_option_slots",
+      "severity": "review",
+      "message": "Two distinct four-credit requirements share the PHY 241/CHM 111 menu; the same course credit cannot be counted in both."
+    },
+    {
+      "code": "printed_four_credit_math_choice_contains_three_credit_option",
+      "severity": "review",
+      "message": "The MTH 264/MTH 245 row is labeled four credits, while MTH 245 carries three credits, yielding the published 60-61 range."
+    },
+    {
+      "code": "science_sequence_alignment_not_stated",
+      "severity": "review",
+      "message": "The degree page does not state that the PHY 242/CHM 112 selection must align with either preceding PHY 241/CHM 111 selection."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Student development and written communication",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 1,
+          "receivers": [{"kind": "cc_course", "options": [["SDV100"]]}]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Calculus, engineering, and computer science core",
+      "source_refs": ["major"],
+      "analysis_constraints": [
+        {
+          "kind": "option_specific_credit_value",
+          "status": "evaluator_not_implemented",
+          "description": "MTH 245 contributes three credits and MTH 264 contributes four credits in the same printed four-credit slot."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]},
+        {"select": 1, "units": 2, "receivers": [{"kind": "cc_course", "options": [["EGR121"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC208"], ["MTH288"]]}]},
+        {
+          "select": 1,
+          "units": 3,
+          "units_max": 4,
+          "label": "MTH 245 (3 credits) or MTH 264 (4 credits); the degree row prints 4",
+          "receivers": [{"kind": "cc_course", "options": [["MTH245"], ["MTH264"]]}]
+        },
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["EGR122"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC215"], ["CSC205"]]}]}
+      ]
+    },
+    {
+      "title": "Two distinct introductory laboratory-science selections",
+      "source_refs": ["major"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "no_double_count_across_duplicate_option_slots",
+          "status": "evaluator_not_implemented",
+          "description": "The same PHY 241 or CHM 111 course credit cannot fulfill both separately printed four-credit slots."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "label": "First printed PHY 241 or CHM 111 slot",
+          "receivers": [{"kind": "cc_course", "options": [["PHY241"], ["CHM111"]]}]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "label": "Second printed PHY 241 or CHM 111 slot",
+          "receivers": [{"kind": "cc_course", "options": [["PHY241"], ["CHM111"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Second laboratory-science course",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [{"kind": "cc_course", "options": [["PHY242"], ["CHM112"]]}]
+        }
+      ]
+    },
+    {
+      "title": "UCGS Block II — Humanities, Art, and Literature",
+      "source_refs": ["major", "ge_block_ii"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "distinct_ge_areas",
+          "status": "evaluator_not_implemented",
+          "description": "The two selected courses must come from different Art, Humanities, or Literature categories."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "label": "First Block II selection",
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [["ART100"], ["ART101"], ["ART102"], ["CST151"], ["MUS121"], ["HUM256"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL230"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"]]
+          }]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Second Block II selection from a different category",
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [["ART100"], ["ART101"], ["ART102"], ["CST151"], ["MUS121"], ["HUM256"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL230"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"]]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "UCGS Block III — Social and Behavioral Sciences",
+      "source_refs": ["major", "ge_block_iii"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [["ECO150"], ["ECO201"], ["ECO202"], ["GEO210"], ["PLS135"], ["PSY200"], ["SOC200"]]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "UCGS Block VI — History",
+      "source_refs": ["major", "ge_block_vi"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [["HIS101"], ["HIS102"], ["HIS112"], ["HIS121"], ["HIS122"]]
+          }]
+        }
+      ]
+    }
+  ]
+}

@@ -43,14 +43,15 @@
  * document until a hand read replaces the tree.
  *
  * Usage:
- *   node scripts/importVirginiaCatalogDegrees.js --uri <uri> --db pmt_research
- *   node scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --uri <uri> --db pmt_research
  *   node scripts/importVirginiaCatalogDegrees.js --dry-run
+ *   node scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --dry-run --uri <uri> --db pmt_research
+ *   node scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --apply --uri <uri> --db pmt_research
  */
 const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { MongoClient } = require('mongodb');
+const { diffDocs } = require('../services/docDiff');
 const { courseIdFor } = require('../services/virginia/courseIdentity');
 const { compileDegreeComposition } = require('../services/virginia/degreeComposition');
 const { validateDegreeAcceptance } = require('../services/virginia/degreeAcceptance');
@@ -59,23 +60,113 @@ const CAT = path.join(__dirname, '..', '.va-catalogs');
 const REQS = path.join(CAT, 'requirements');
 const COMPOSED = path.join(CAT, 'composed');
 
-const argv = process.argv.slice(2);
-const flag = (f) => argv.includes(f);
-const val = (f, d = null) => {
-  const i = argv.indexOf(f);
-  return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d;
-};
-const opts = {
-  uri: val('--uri'),
-  dbName: val('--db'),
-  dryRun: flag('--dry-run'),
-  allowFailed: flag('--allow-failed'),
-  acceptedCompositionsOnly: flag('--accepted-compositions-only'),
-  only: (val('--only') || '').split(',').map((s) => s.trim()).filter(Boolean),
-};
+const HELP_TEXT = `Usage:
+  node scripts/importVirginiaCatalogDegrees.js --dry-run
+  node scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --dry-run --uri <uri> --db <name>
+  node scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --apply --uri <uri> --db <name>
+
+Options:
+  --only <slug,...>                 Limit the evaluated registry records
+  --allow-failed                    Include failed machine extractions
+  --accepted-compositions-only      Publish only catalog-accepted compositions
+  --dry-run                         Evaluate without writing MongoDB (the default)
+  --apply                           Apply the exact evaluated plan atomically
+  --allow-unaccepted-write          With --apply, explicitly allow the legacy research rebuild
+  --allow-verified-reopen           After review, allow --apply to reopen changed-source verification
+  --allow-verified-supersede        After review, allow --apply to reopen a verified retired record
+  --help                            Show this help without connecting to MongoDB`;
 const log = (...a) => console.log('[va:import]', ...a);
 
+const CLI_VALUE_OPTIONS = new Set(['--uri', '--db', '--only']);
+const CLI_BOOLEAN_OPTIONS = new Set([
+  '--dry-run', '--apply', '--allow-failed', '--accepted-compositions-only',
+  '--allow-unaccepted-write', '--allow-verified-reopen', '--allow-verified-supersede', '--help',
+]);
+
+/**
+ * Parse fail-closed: a misspelled publication flag must never degrade into an
+ * ungated write. Importing this module from tests does not parse the test
+ * runner's argv; only the executable entry point does.
+ */
+function parseCliArgs(args = [], env = {}) {
+  const values = new Map();
+  const booleans = new Set();
+  for (let i = 0; i < args.length; i += 1) {
+    const token = args[i];
+    if (CLI_VALUE_OPTIONS.has(token)) {
+      if (values.has(token)) throw new Error(`${token} may be supplied only once`);
+      const value = args[i + 1];
+      if (!value || value.startsWith('--')) throw new Error(`${token} requires a value`);
+      values.set(token, value);
+      i += 1;
+      continue;
+    }
+    if (CLI_BOOLEAN_OPTIONS.has(token)) {
+      if (booleans.has(token)) throw new Error(`${token} may be supplied only once`);
+      booleans.add(token);
+      continue;
+    }
+    throw new Error(`unknown option: ${token}`);
+  }
+
+  const apply = booleans.has('--apply');
+  const explicitDryRun = booleans.has('--dry-run');
+  const acceptedCompositionsOnly = booleans.has('--accepted-compositions-only');
+  const allowUnacceptedWrite = booleans.has('--allow-unaccepted-write');
+  const allowVerifiedReopen = booleans.has('--allow-verified-reopen');
+  const allowVerifiedSupersede = booleans.has('--allow-verified-supersede');
+  const help = booleans.has('--help');
+  const uri = values.get('--uri') || env.MONGO_URI || null;
+  const dbName = values.get('--db') || env.DB_NAME || null;
+
+  if (!help && apply && explicitDryRun) throw new Error('--apply and --dry-run are mutually exclusive');
+  if (!help && apply && !acceptedCompositionsOnly && !allowUnacceptedWrite) {
+    throw new Error('--apply requires --accepted-compositions-only (or the explicit --allow-unaccepted-write research override)');
+  }
+  if (!help && apply && !uri) throw new Error('--apply requires --uri or MONGO_URI');
+  if (!help && apply && !dbName) throw new Error('--apply requires --db or DB_NAME');
+  if (!help && allowUnacceptedWrite && !apply) {
+    throw new Error('--allow-unaccepted-write is valid only with --apply');
+  }
+  if (!help && allowVerifiedSupersede && !apply) {
+    throw new Error('--allow-verified-supersede is valid only with --apply');
+  }
+  if (!help && allowVerifiedReopen && !apply) {
+    throw new Error('--allow-verified-reopen is valid only with --apply');
+  }
+  const only = (values.get('--only') || '').split(',').map((value) => value.trim()).filter(Boolean);
+  if (values.has('--only') && !only.length) throw new Error('--only requires at least one complete institution slug');
+
+  return {
+    uri,
+    dbName,
+    apply,
+    dryRun: !apply,
+    allowFailed: booleans.has('--allow-failed'),
+    acceptedCompositionsOnly,
+    allowUnacceptedWrite,
+    allowVerifiedReopen,
+    allowVerifiedSupersede,
+    help,
+    only,
+  };
+}
+
+const opts = require.main === module
+  ? parseCliArgs(process.argv.slice(2), process.env)
+  : parseCliArgs([], {});
+
 const isCC = (level) => level === 'community_college';
+
+function selectedInstitutions(institutions, only = []) {
+  if (!only.length) return institutions;
+  if (new Set(only).size !== only.length) throw new Error('--only contains duplicate slugs');
+  const available = new Set((institutions || []).map((institution) => institution.slug));
+  const unknown = only.filter((slug) => !available.has(slug));
+  if (unknown.length) throw new Error(`--only contains unknown institution slug(s): ${unknown.join(', ')}`);
+  const selected = new Set(only);
+  return institutions.filter((institution) => selected.has(institution.slug));
+}
 
 const courseNumber = (code) => Number((/\d{3,4}/.exec(String(code || '')) || [])[0] || 0);
 
@@ -556,9 +647,20 @@ function toDocument(extract, inst, creditsByCode, composition = null) {
       : 'machine_collected_needs_human_verification',
     collection_status: captured ? (context.composition_status || 'major_only') : 'captured_only',
     total_units: composition?.total_units ?? (extract.total_credits ? extract.total_credits.min : null),
-    total_units_max: composition?.total_units_max ?? (extract.total_credits ? extract.total_credits.max : null),
+    // A parser subtotal/range is not a whole-degree maximum. Once a reviewed
+    // composition exists, only its explicit whole-degree maximum may populate
+    // this field; otherwise keep the parser evidence in published_unit_audit.
+    total_units_max: composition
+      ? (composition.total_units_max ?? null)
+      : (extract.total_credits ? extract.total_credits.max : null),
     requirement_groups: groups,
     requirement_variants: requirementVariants,
+    // Source-composed category rules can have exact, cited dictionaries even
+    // when the canonical receiver tree cannot express a universal choose-N
+    // (for example, a variable-credit transfer-elective pool). Keep those
+    // dictionaries on the API document so researchers can inspect options and
+    // obtain their course identities without opening a repository artifact.
+    option_sets: composition?.option_sets || null,
     catalog_platform: inst.platform || null,
     codes_seen: codes,
     course_titles: {
@@ -680,6 +782,124 @@ function verificationForSourceBundle(prior, nextHash) {
   };
 }
 
+const IMPORT_OPERATIONAL_FIELDS = new Set([
+  'acceptance', 'collection_status', 'curated_at', 'curated_by',
+  'research_status', 'updated_at', 'verification',
+]);
+
+function stableMaterial(value, { topLevel = true } = {}) {
+  if (value instanceof Date) return value.toISOString();
+  if (Array.isArray(value)) return value.map((entry) => stableMaterial(entry, { topLevel: false }));
+  if (!value || typeof value !== 'object') return value;
+  return Object.fromEntries(Object.keys(value).sort().filter((key) => (
+    !topLevel || !IMPORT_OPERATIONAL_FIELDS.has(key)
+  )).map((key) => [key, stableMaterial(value[key], { topLevel: false })]));
+}
+
+/** Content identity used to keep an importer from overwriting a hand edit. */
+function importMaterialHash(doc) {
+  return createHash('sha256').update(JSON.stringify(stableMaterial(doc))).digest('hex');
+}
+
+/**
+ * A verified Mongo document may contain a researcher correction not yet
+ * reflected in the composition artifact. The source bundle can be unchanged
+ * in that case, so carrying its verdict while replacing its tree would be
+ * dishonest. Fail the preflight and require an explicit artifact reconciliation.
+ */
+function verifiedImportConflict(prior, next) {
+  if (prior?.verification?.verified !== true) return false;
+  const priorHash = prior?.provenance?.source_bundle_hash;
+  const nextHash = next?.provenance?.source_bundle_hash;
+  if (!priorHash || priorHash !== nextHash) return false;
+  return importMaterialHash(prior) !== importMaterialHash(next);
+}
+
+const idsFor = (rows) => new Set((rows || []).map((row) => row?._id).filter(Boolean));
+
+/**
+ * Exact primary-release manifest. This is deliberately stricter than the
+ * generic registry row-count check: losing one accepted public university or
+ * turning a resolved negative into an unfinished row must abort publication.
+ */
+function assertPrimaryPublicationCohort(registry, docs, coverage) {
+  const publicSlugs = registry?.cohorts?.schev_public_four_year?.institution_slugs || [];
+  const colleges = (registry?.institutions || []).filter((institution) => (
+    institution.level === 'community_college'
+  ));
+  const negativeColleges = colleges.filter((institution) => institution.offers_cs === false);
+  const positiveColleges = colleges.filter((institution) => institution.offers_cs !== false);
+  const secondarySlugs = [
+    'bridgewater-college',
+    'randolph-macon-college',
+    'shenandoah-university',
+  ];
+  if (publicSlugs.length !== 15 || colleges.length !== 24
+      || positiveColleges.length !== 19 || negativeColleges.length !== 5) {
+    throw new Error(
+      `primary cohort manifest changed: public=${publicSlugs.length}, colleges=${colleges.length}, `
+      + `positive_colleges=${positiveColleges.length}, negative_findings=${negativeColleges.length}`,
+    );
+  }
+  if (new Set(publicSlugs).size !== publicSlugs.length
+      || new Set(colleges.map((institution) => institution.slug)).size !== colleges.length) {
+    throw new Error('primary cohort manifest contains duplicate institution slugs');
+  }
+  const registryBySlug = new Map((registry.institutions || []).map((institution) => [institution.slug, institution]));
+  const invalidPublic = publicSlugs.filter((slug) => registryBySlug.get(slug)?.level !== 'four_year');
+  if (invalidPublic.length) {
+    throw new Error(`SCHEV public cohort slugs missing from the four-year registry: ${invalidPublic.join(', ')}`);
+  }
+
+  const documentIds = idsFor(docs);
+  const expectedDocumentIds = new Set([
+    ...publicSlugs.map((slug) => `va:degree:${slug}:cs`),
+    ...positiveColleges.map((institution) => `va:as:${institution.slug}:cs`),
+    ...secondarySlugs.map((slug) => `va:degree:${slug}:cs`),
+  ]);
+  const coverageBySlug = new Map((coverage || []).map((row) => [
+    String(row?._id || '').replace(/^va:cov:(?:cc|uni):/, ''), row,
+  ]));
+  const missingPublic = publicSlugs.filter((slug) => !documentIds.has(`va:degree:${slug}:cs`));
+  const missingColleges = positiveColleges
+    .map((institution) => institution.slug)
+    .filter((slug) => !documentIds.has(`va:as:${slug}:cs`));
+  const unresolvedNegatives = negativeColleges
+    .map((institution) => institution.slug)
+    .filter((slug) => {
+      const row = coverageBySlug.get(slug);
+      return !row?.finding_complete || row?.outcome !== 'no_cs_program'
+        || row?.publication_applicable !== false || row?.collected !== true;
+    });
+  const wronglyPublishedNegatives = negativeColleges
+    .map((institution) => institution.slug)
+    .filter((slug) => documentIds.has(`va:as:${slug}:cs`));
+  const unaccepted = (docs || []).filter((doc) => doc?.acceptance?.accepted !== true).map((doc) => doc?._id);
+  const unexpectedDocuments = [...documentIds].filter((id) => !expectedDocumentIds.has(id));
+  const duplicateDocuments = docs.length !== documentIds.size;
+  const associateCount = (docs || []).filter((doc) => doc?.kind === 'as_degree').length;
+  const bachelorCount = (docs || []).filter((doc) => doc?.kind === 'degree').length;
+  const problems = [];
+  if (missingPublic.length) problems.push(`missing public degrees: ${missingPublic.join(', ')}`);
+  if (missingColleges.length) problems.push(`missing associate degrees: ${missingColleges.join(', ')}`);
+  if (unresolvedNegatives.length) problems.push(`incomplete negative findings: ${unresolvedNegatives.join(', ')}`);
+  if (wronglyPublishedNegatives.length) problems.push(`negative findings published as degrees: ${wronglyPublishedNegatives.join(', ')}`);
+  if (unaccepted.length) problems.push(`unaccepted published documents: ${unaccepted.join(', ')}`);
+  if (unexpectedDocuments.length) problems.push(`unexpected release documents: ${unexpectedDocuments.join(', ')}`);
+  if (duplicateDocuments) problems.push('release contains duplicate document IDs');
+  if (associateCount !== 19 || bachelorCount !== 18 || docs.length !== 37) {
+    problems.push(`release document counts are AS ${associateCount}, BS ${bachelorCount}, total ${docs.length}; expected 19/18/37`);
+  }
+  if (problems.length) throw new Error(`primary publication invariant failed — ${problems.join('; ')}`);
+  return {
+    public_degrees: publicSlugs.length,
+    associate_degrees: associateCount,
+    negative_findings: negativeColleges.length,
+    secondary_bachelors: bachelorCount - publicSlugs.length,
+    documents: docs.length,
+  };
+}
+
 /**
  * Publication is narrower than parser or catalog evaluation.
  *
@@ -735,6 +955,7 @@ function unpublishedRequirementIds(existingDocs, institutions, publishedDocs) {
     ));
   return [...new Set(existing.filter(({ id, doc }) => (
     id && scoped.has(id) && !published.has(id) && doc?.status !== 'superseded'
+      && doc?.source === 'institution_catalog'
   )).map(({ id }) => id))].sort();
 }
 
@@ -748,6 +969,7 @@ function retiredRequirementIds(existingDocs, institutions) {
   ));
   return [...new Set(retired.filter((id) => (
     existing.has(id) && existing.get(id)?.status !== 'superseded'
+      && existing.get(id)?.source === 'institution_catalog'
   )))].sort();
 }
 
@@ -787,15 +1009,38 @@ function supersededCatalogPatch(prior, {
   };
 }
 
+function replacementRevision(prior, next, at = new Date()) {
+  return {
+    doc_id: next._id,
+    at,
+    by: 'importVirginiaCatalogDegrees',
+    action: 'replace_catalog_document',
+    before: {
+      groups: (prior?.requirement_groups || []).length,
+      codes: (prior?.codes_seen || []).length,
+      status: prior?.status || null,
+      source_bundle_hash: prior?.provenance?.source_bundle_hash || null,
+    },
+    after: {
+      groups: (next.requirement_groups || []).length,
+      codes: (next.codes_seen || []).length,
+      status: next.status || null,
+      source_bundle_hash: next?.provenance?.source_bundle_hash || null,
+    },
+    // Preserve the old values, not just counts. This makes a source-driven
+    // replacement of a previously curated tree reconstructible from history.
+    changes: diffDocs(prior, next),
+  };
+}
+
 // ── driver ──────────────────────────────────────────────────────────────────
 
 async function main() {
   const registry = JSON.parse(fs.readFileSync(path.join(CAT, 'institutions.json'), 'utf8'));
-  let list = registry.institutions;
-  if (opts.only.length) list = list.filter((i) => opts.only.some((o) => i.slug.startsWith(o)));
+  const list = selectedInstitutions(registry.institutions, opts.only);
 
-  const uri = opts.uri || process.env.MONGO_URI || 'mongodb://localhost:27017';
-  const dbName = opts.dbName || process.env.DB_NAME || 'pmt_research';
+  const uri = opts.uri || 'mongodb://localhost:27017';
+  const dbName = opts.dbName || 'pmt_research';
   const client = new MongoClient(uri);
   await client.connect();
 
@@ -806,16 +1051,31 @@ async function main() {
         .map((c) => [c.code, c.credits]),
     );
     log(`course registry: ${creditsByCode.size} VCCS courses with credit figures`);
+    if (opts.apply && creditsByCode.size === 0) {
+      throw new Error('refusing --apply because va_courses is empty; publish the Virginia course corpus first');
+    }
 
+    // Read every source for collision detection. A non-catalog document that
+    // happens to use a catalog-shaped ID must abort rather than be overwritten
+    // through an `_id`-only upsert.
     const existing = new Map(
-      (await db.collection('va_requirements').find({ source: 'institution_catalog' }).toArray()).map((d) => [d._id, d]),
+      (await db.collection('va_requirements').find({}).toArray()).map((document) => [document._id, document]),
     );
+    const idCollisions = list.map((institution) => requirementIdForInstitution(institution))
+      .filter((id) => {
+        const prior = existing.get(id);
+        return prior && prior.source !== 'institution_catalog';
+      });
+    if (idCollisions.length) {
+      throw new Error(`catalog document ID collides with another source: ${idCollisions.join(', ')}`);
+    }
 
     const docs = [];
     const evaluatedDocs = [];
     const skipped = [];
     const coverage = [];
     const publicationReasons = new Map();
+    const reopenedVerificationIds = [];
 
     for (const inst of list) {
       const file = path.join(REQS, `${inst.slug}.json`);
@@ -855,10 +1115,14 @@ async function main() {
       const carried = verificationForSourceBundle(prior?.status === 'superseded' ? null : prior, nextHash);
       doc.verification = carried.verification;
       if (carried.research_status) doc.research_status = carried.research_status;
+      if (carried.source_changed) reopenedVerificationIds.push(doc._id);
       evaluatedDocs.push(doc);
 
+      const findingEvidence = programFindingEvidence(extract);
       const publication = opts.acceptedCompositionsOnly
-        ? acceptedCompositionPublication(composition, doc)
+        ? (findingEvidence.complete
+          ? { eligible: false, reason: 'not_applicable_no_program', finding_complete: true }
+          : acceptedCompositionPublication(composition, doc))
         : { eligible: true, reason: null };
       publicationReasons.set(doc._id, publication.reason);
       if (publication.eligible) docs.push(doc);
@@ -872,11 +1136,37 @@ async function main() {
       ));
     }
 
+    const verifiedConflicts = docs.filter((doc) => verifiedImportConflict(existing.get(doc._id), doc));
+    if (verifiedConflicts.length) {
+      throw new Error(
+        'refusing to overwrite verified Mongo content that differs from the unchanged composition artifact: '
+        + verifiedConflicts.map((doc) => doc._id).join(', '),
+      );
+    }
+    if (reopenedVerificationIds.length) {
+      log(`verified records reopened by changed/missing source bundle hash: ${reopenedVerificationIds.join(', ')}`);
+      if (opts.apply && !opts.allowVerifiedReopen) {
+        throw new Error(
+          'refusing to reopen verified records without --allow-verified-reopen: '
+          + reopenedVerificationIds.join(', '),
+        );
+      }
+    }
+
     // A full run is the authoritative registry-wide coverage snapshot even
     // though only accepted compositions become degree documents. The registry
     // count grows when the comparison scope adds a previously missing school.
     if (!opts.only.length && coverage.length !== registry.institutions.length) {
       throw new Error(`coverage invariant failed: evaluated ${coverage.length}/${registry.institutions.length} institutions`);
+    }
+    if (opts.acceptedCompositionsOnly && !opts.only.length) {
+      const manifest = assertPrimaryPublicationCohort(registry, docs, coverage);
+      log(
+        `primary publication invariant: ${manifest.public_degrees}/15 public degrees · `
+        + `${manifest.associate_degrees}/19 associate degrees · `
+        + `${manifest.negative_findings}/5 source-backed negative findings · `
+        + `${manifest.secondary_bachelors} secondary bachelors`,
+      );
     }
 
     const as = docs.filter((d) => d.kind === 'as_degree');
@@ -906,8 +1196,20 @@ async function main() {
       ...(opts.acceptedCompositionsOnly ? unpublishedRequirementIds(existing, list, docs) : []),
       ...retiredIds,
     ])].sort();
+    const verifiedSupersedeIds = unpublishedIds.filter((id) => (
+      existing.get(id)?.verification?.verified === true
+    ));
     if (opts.acceptedCompositionsOnly) {
       log(`accepted-composition publication: ${docs.length} document(s); ${unpublishedIds.length} scoped prior document(s) to supersede`);
+    }
+    if (verifiedSupersedeIds.length) {
+      log(`verified records in supersede plan: ${verifiedSupersedeIds.join(', ')}`);
+      if (opts.apply && !opts.allowVerifiedSupersede) {
+        throw new Error(
+          'refusing to supersede verified records without --allow-verified-supersede: '
+          + verifiedSupersedeIds.join(', '),
+        );
+      }
     }
     const coverageSummary = {
       rows: coverage.length,
@@ -916,68 +1218,104 @@ async function main() {
     };
     log(`coverage snapshot: ${coverageSummary.rows} rows · offering CS ${coverageSummary.offering} · collected ${coverageSummary.collected}`);
 
-    if (opts.dryRun) { log('dry run — nothing written'); return; }
+    if (opts.dryRun) { log('dry run — nothing written (pass --apply to write)'); return; }
 
     log(`writing to ${uri.replace(/\/\/[^@]*@/, '//<redacted>@')} · db ${dbName}`);
-    for (const d of docs) {
-      const prior = existing.get(d._id);
-      await db.collection('va_requirements').replaceOne({ _id: d._id }, d, { upsert: true });
-      if (prior) {
-        await db.collection('va_revisions').insertOne({
-          doc_id: d._id,
-          at: new Date(),
-          by: 'importVirginiaCatalogDegrees',
-          before: { groups: (prior.requirement_groups || []).length, codes: (prior.codes_seen || []).length, status: prior.status },
-          after: { groups: d.requirement_groups.length, codes: d.codes_seen.length, status: d.status },
-        });
-      }
-    }
+    const session = client.startSession();
+    let superseded = 0;
+    try {
+      await session.withTransaction(async () => {
+        // withTransaction may retry this callback after a transient error.
+        superseded = 0;
+        for (const d of docs) {
+          const prior = existing.get(d._id);
+          const filter = prior
+            ? {
+              _id: d._id,
+              ...(prior.source != null
+                ? { source: prior.source }
+                : { source: { $exists: false } }),
+              ...(prior.updated_at != null
+                ? { updated_at: prior.updated_at }
+                : { updated_at: { $exists: false } }),
+            }
+            : { _id: d._id, source: 'institution_catalog' };
+          const result = await db.collection('va_requirements').replaceOne(
+            filter,
+            d,
+            { upsert: !prior, session },
+          );
+          if (prior && result.matchedCount !== 1) {
+            throw new Error(`concurrent edit detected for ${d._id}; publication transaction aborted`);
+          }
+          if (prior) {
+            await db.collection('va_revisions').insertOne(
+              replacementRevision(prior, d),
+              { session },
+            );
+          }
+        }
 
+        for (const id of unpublishedIds) {
+          const prior = existing.get(id);
+          const supersedePatch = supersededCatalogPatch(prior, {
+            reason: publicationReasons.get(id) || 'no_longer_eligible_for_accepted_composition_publication',
+            at: new Date(),
+          });
+          const concurrency = prior?.updated_at != null
+            ? { updated_at: prior.updated_at }
+            : { updated_at: { $exists: false } };
+          const sourceGuard = prior?.source != null
+            ? { source: prior.source }
+            : { source: { $exists: false } };
+          const result = await db.collection('va_requirements').updateOne(
+            { _id: id, ...sourceGuard, ...concurrency },
+            { $set: supersedePatch },
+            { session },
+          );
+          if (!result.matchedCount) {
+            throw new Error(`concurrent edit detected for ${id}; publication transaction aborted`);
+          }
+          if (!result.modifiedCount) continue;
+          superseded += 1;
+          await db.collection('va_revisions').insertOne({
+            doc_id: id,
+            at: supersedePatch.unpublication.at,
+            by: 'importVirginiaCatalogDegrees',
+            action: 'unpublish_catalog_document',
+            reason: supersedePatch.unpublication.reason,
+            before: {
+              status: prior?.status || null,
+              collection_status: prior?.collection_status || null,
+              acceptance: prior?.acceptance || null,
+              verification: prior?.verification || null,
+              provenance: prior?.provenance || null,
+            },
+            after: {
+              status: supersedePatch.status,
+              collection_status: supersedePatch.collection_status,
+              research_status: supersedePatch.research_status,
+              verification: supersedePatch.verification,
+              unpublication: supersedePatch.unpublication,
+            },
+          }, { session });
+        }
+
+        // A targeted `--only` import must not erase other institutions from
+        // coverage. Full sweeps replace the Virginia coverage namespace;
+        // targeted sweeps replace only the rows they evaluated.
+        const coverageFilter = coverageReplacementFilter(coverage, opts.only.length > 0);
+        if (coverageFilter) await db.collection('va_coverage').deleteMany(coverageFilter, { session });
+        if (coverage.length) {
+          await db.collection('va_coverage').insertMany(coverage, { ordered: false, session });
+        }
+      });
+    } finally {
+      await session.endSession();
+    }
     if (unpublishedIds.length) {
-      let superseded = 0;
-      for (const id of unpublishedIds) {
-        const prior = existing.get(id);
-        const patch = supersededCatalogPatch(prior, {
-          reason: publicationReasons.get(id) || 'no_longer_eligible_for_accepted_composition_publication',
-          at: new Date(),
-        });
-        const res = await db.collection('va_requirements').updateOne(
-          { _id: id, source: 'institution_catalog' },
-          { $set: patch },
-        );
-        if (!res.modifiedCount) continue;
-        superseded += 1;
-        await db.collection('va_revisions').insertOne({
-          doc_id: id,
-          at: patch.unpublication.at,
-          by: 'importVirginiaCatalogDegrees',
-          action: 'unpublish_catalog_document',
-          reason: patch.unpublication.reason,
-          before: {
-            status: prior?.status || null,
-            collection_status: prior?.collection_status || null,
-            acceptance: prior?.acceptance || null,
-            verification: prior?.verification || null,
-            provenance: prior?.provenance || null,
-          },
-          after: {
-            status: patch.status,
-            collection_status: patch.collection_status,
-            research_status: patch.research_status,
-            verification: patch.verification,
-            unpublication: patch.unpublication,
-          },
-        });
-      }
       log(`superseded ${superseded} ineligible prior catalog document(s): ${unpublishedIds.join(', ')}`);
     }
-
-    // A targeted `--only` import must not erase the other 54 institutions from
-    // coverage. Full sweeps replace the Virginia coverage namespace; targeted
-    // sweeps replace only the rows they just evaluated.
-    const coverageFilter = coverageReplacementFilter(coverage, opts.only.length > 0);
-    if (coverageFilter) await db.collection('va_coverage').deleteMany(coverageFilter);
-    if (coverage.length) await db.collection('va_coverage').insertMany(coverage, { ordered: false });
     log(`coverage written: ${coverageSummary.rows} rows`);
   } finally {
     await client.close();
@@ -990,10 +1328,60 @@ function coverageReplacementFilter(rows, selective) {
   return ids.length ? { _id: { $in: ids } } : null;
 }
 
+function collectSourceRefs(value, refs = new Set()) {
+  if (Array.isArray(value)) {
+    value.forEach((entry) => collectSourceRefs(entry, refs));
+    return refs;
+  }
+  if (!value || typeof value !== 'object') return refs;
+  for (const [key, child] of Object.entries(value)) {
+    if (key === 'source_refs' && Array.isArray(child)) {
+      child.filter((sourceId) => typeof sourceId === 'string' && sourceId.trim())
+        .forEach((sourceId) => refs.add(sourceId));
+    } else collectSourceRefs(child, refs);
+  }
+  return refs;
+}
+
+function programFindingEvidence(source = {}) {
+  const refs = collectSourceRefs(source.program_finding);
+  const sources = (source.sources || [])
+    .filter((entry) => refs.has(entry.id))
+    .map((entry) => ({
+      id: entry.id,
+      kind: entry.kind || null,
+      label: entry.label || null,
+      url: entry.url || entry.requested_url || null,
+      requested_url: entry.requested_url || null,
+      final_url: entry.final_url || null,
+      retrieval_url: entry.retrieval_url || null,
+      captured_at: entry.captured_at || null,
+      sha256: entry.sha256 || null,
+      official: entry.official === true,
+      secure: entry.secure === true,
+    }));
+  const sourceIds = new Set(sources.map((entry) => entry.id));
+  const refsResolved = refs.size > 0 && [...refs].every((sourceId) => sourceIds.has(sourceId));
+  const sourceEvidenceValid = sources.every((entry) => (
+    entry.official === true
+    && /^https?:\/\//.test(entry.url || '')
+    && /^[a-f0-9]{64}$/.test(entry.sha256 || '')
+  ));
+  const complete = source.outcome === 'no_cs_program'
+    && Boolean(source.catalog_year)
+    && Boolean(source.program_finding?.code)
+    && Boolean(source.program_finding?.summary)
+    && refsResolved
+    && sourceEvidenceValid;
+  return { complete, refsResolved, sources };
+}
+
 /** One coverage row: does this institution offer CS, and did we publish it. */
 function coverageRow(inst, extract, collected, doc = null, { publication = null } = {}) {
   const source = extract || {};
   const publicationEligible = publication ? publication.eligible === true : Boolean(collected);
+  const findingEvidence = programFindingEvidence(source);
+  const findingComplete = findingEvidence.complete;
   return {
     _id: `va:cov:${isCC(inst.level) ? 'cc' : 'uni'}:${inst.slug}`,
     institution: inst.name,
@@ -1002,40 +1390,65 @@ function coverageRow(inst, extract, collected, doc = null, { publication = null 
     vccs_slug: inst.vccs_slug || null,
     registry_url: inst.catalog_root || null,
     source_url: source.source_url || null,
+    catalog_year: source.catalog_year || inst.degree_context?.catalog_year || null,
     outcome: source.outcome || 'not_extracted',
+    // Negative findings need to be inspectable without opening a repository
+    // artifact. In particular, "no CS-specific degree" can coexist with a
+    // broad Science A.S. or a recently discontinued specialization.
+    program_finding: source.program_finding || null,
+    // Negative findings have no publishable degree document. Carry the exact
+    // official evidence their source_refs name on the coverage row so those
+    // refs remain resolvable through the API instead of dangling into a local
+    // extraction artifact.
+    finding_sources: findingEvidence.sources,
+    finding_source_refs_resolved: findingEvidence.refsResolved,
+    finding_complete: findingComplete,
+    publication_applicable: !findingComplete,
+    source_composition_applicable: !findingComplete,
     validation: source.validation ? source.validation.verdict : null,
     source_composed: doc?.source_method === 'official_catalog_composition',
     publication_eligible: publicationEligible,
-    publication_blocker: publicationEligible ? null : (publication?.reason || 'not_collected'),
+    publication_blocker: publicationEligible || findingComplete
+      ? null
+      : (publication?.reason || 'not_collected'),
     catalog_accepted: publicationEligible && doc?.acceptance?.accepted === true,
     analysis_ready: publicationEligible && doc?.acceptance?.ready_for_analysis === true,
     acceptance_failures: doc ? {
       catalog: doc.acceptance.catalog.failed,
       analysis: doc.acceptance.analysis_ready.failed,
     } : null,
-    collected: Boolean(collected),
+    collected: Boolean(collected) || findingComplete,
   };
 }
 
-if (require.main === module) main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  if (opts.help) console.log(HELP_TEXT);
+  else main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
 
 module.exports = {
   acceptanceResolver,
   acceptedCompositionPublication,
+  assertPrimaryPublicationCohort,
   canonicalSections,
   courseTitles,
   coverageRow,
   coverageReplacementFilter,
+  importMaterialHash,
+  parseCliArgs,
   receiversForRow,
   retiredRequirementIds,
   requirementGroups,
+  replacementRevision,
+  selectedInstitutions,
   sourceBundleHash,
   supersededCatalogPatch,
   unpublishedRequirementIds,
   validatedCourseNamespace,
   verificationForSourceBundle,
+  verifiedImportConflict,
   toDocument,
 };

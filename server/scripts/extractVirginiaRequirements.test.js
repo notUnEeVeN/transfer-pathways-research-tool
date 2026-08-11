@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 import {
   buildCapturedDocument,
+  buildUnavailableDocument,
   requirementBearingPages,
   requirementBearingRoles,
 } from './extractVirginiaRequirements';
@@ -93,6 +94,47 @@ const campCatalogText = ({ endAnchor = camp.pdf_parse.requirements_end_anchor } 
 };
 
 describe('Virginia requirement-bearing program variants', () => {
+  it('preserves a source-backed no-program finding across forced extraction', () => {
+    const institution = {
+      slug: 'example-community-college',
+      name: 'Example Community College',
+      level: 'community_college',
+      platform: 'acalog',
+      catalog_root: 'https://catalog.example.edu/',
+      seeds: [{ role: 'program_index', url: 'https://catalog.example.edu/programs/' }],
+      program_finding: {
+        code: 'broad_science_as_no_cs_specific_curriculum',
+        summary: 'A broad Science A.S. exists without a prescribed CS branch.',
+        source_refs: ['program_index'],
+      },
+    };
+    const captured = {
+      outcome: 'no_cs_program',
+      discovery: { candidates: [], program_links_seen: 90 },
+      pages: [{ final_url: 'https://catalog.example.edu/programs/' }],
+    };
+    const context = {
+      catalog_year: '2026-2027',
+      degree_context: { catalog_year: '2026-2027' },
+      sources: [{ id: 'program_index', url: 'https://catalog.example.edu/programs/' }],
+      source_layers: { program_index: { status: 'captured', source_refs: ['program_index'] } },
+    };
+
+    expect(buildUnavailableDocument(institution, captured, {
+      context,
+      extractedAt: '2026-08-10T00:00:00.000Z',
+    })).toMatchObject({
+      outcome: 'no_cs_program',
+      offers_cs: false,
+      catalog_year: '2026-2027',
+      source_url: 'https://catalog.example.edu/programs/',
+      program_finding: institution.program_finding,
+      sources: context.sources,
+      groups: [],
+      validation: { verdict: 'n/a', needs_hand_read: false },
+    });
+  });
+
   it('uses Camp registry anchors during extraction and fails closed when the end anchor disappears', () => {
     const seed = camp.seeds.find((candidate) => candidate.role === 'program');
     const campCapture = {

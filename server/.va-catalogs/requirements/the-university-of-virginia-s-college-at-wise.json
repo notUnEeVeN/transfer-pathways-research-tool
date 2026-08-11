@@ -14,12 +14,15 @@
   "award_name": "Bachelor of Science",
   "catalog_year": "2026-2027",
   "program": "Computer Science, B.S.",
-  "variant": "Standard Computer Science B.S.",
+  "variant": "Standard Computer Science B.S.; current department concentration pages are preserved as alternate requirement sets",
   "academic_unit": "Department of Mathematics and Computer Science",
   "college": null,
   "general_education_authority": "UVA Wise General Education Liberal Arts Core",
-  "excluded_variants": [
-   "Data Science Concentration",
+  "alternate_variants": [
+   "Cybersecurity Concentration",
+   "Data Science Concentration"
+  ],
+  "excluded_programs": [
    "Computer Science minor"
   ],
   "unit_audit": {
@@ -28,12 +31,11 @@
    "major_units_minimum": 77,
    "major_units_maximum": 80,
    "general_education_units_minimum": 48,
-   "general_education_units_maximum": 49,
+   "general_education_units_maximum": 50,
    "additional_upper_division_major_units": 15,
    "upper_division": {
-    "status": "scoped_only",
-    "minimum_units": 15,
-    "rule": "At least 15 upper-level credits in the major must be completed through UVA Wise. The CS major separately labels 15 additional upper-division hours; these rules can overlap and must not be double-counted without a course audit.",
+    "status": "none_stated",
+    "reason": "No aggregate university-wide upper-division minimum is stated. At least 15 upper-level credits in the major must be completed through UVA Wise, and the CS major separately labels 15 additional upper-division hours; these scoped rules can overlap.",
     "source_refs": [
      "major",
      "graduation"
@@ -53,15 +55,17 @@
   },
   "modeling_notes": [
    "Current requirements are catoid 9, poid 1199. The former catoid 2, poid 179 seed is archived 2024-2025 content.",
-   "The 48-49 credit Liberal Arts Core overlaps major math and science courses marked with an asterisk; do not add the Core grossly to the 77-80 major range.",
+   "The Liberal Arts Core introduction states 48-49 credits while its component footer states 48-50; preserve the conflict rather than choosing an unsupported range.",
+   "The standard major overlaps the Core through MTH 2040, required laboratory science, and SWE 1790 in Studies of Self; do not add the Core grossly to the 77-80 major range.",
+   "Cybersecurity and Data Science are separate current concentration requirement sets. Preserve them as alternates rather than silently adding them to the standard major.",
    "The graduation policy's 15 upper-level major credits and the program's 15 additional upper-division hours can overlap and must not be treated as two independent 15-credit blocks.",
    "The current catalog host redirects HTTPS requests to HTTP and presents certificate issues; preserve the official HTTP URLs and mark source security accurately."
   ],
   "data_quality_flags": [
    {
-    "code": "stale_archived_catalog_seed",
-    "severity": "blocker",
-    "message": "Do not use catoid 2, poid 179; it is archived 2024-2025 content."
+    "code": "archived_catalog_disambiguated",
+    "severity": "review",
+    "message": "The current composition uses catoid 9, poid 1199; former catoid 2, poid 179 is archived 2024-2025 content and is intentionally excluded."
    },
    {
     "code": "official_catalog_http_only",
@@ -72,13 +76,26 @@
     "code": "upper_level_major_rules_may_overlap",
     "severity": "review",
     "message": "The 15-credit program and graduation upper-level-major rules require course-level overlap analysis."
+   },
+   {
+    "code": "liberal_arts_core_published_range_conflict",
+    "severity": "review",
+    "message": "The Core introduction says 48-49 credits while its component footer says 48-50."
+   },
+   {
+    "code": "cybersecurity_concentration_applicability_not_enumerated",
+    "severity": "review",
+    "message": "The Cybersecurity concentration page does not enumerate eligible majors; preserve it without assuming it is mandatory for the Computer Science B.S."
    }
   ],
   "layers": {
    "major": {
     "source_roles": [
-     "program"
-    ]
+     "program",
+     "cybersecurity_concentration",
+     "data_science_concentration"
+    ],
+    "note": "The standard B.S. is canonical; both current concentration pages are preserved as separate alternate requirement sets."
    },
    "general_education": {
     "source_roles": [
@@ -175,15 +192,49 @@
    "sha256": "8550e101ff93853ec8ad3e5a4786c6a96ba45c9f002ae7aeb9c8a73926f03f93",
    "official": true,
    "secure": false
+  },
+  {
+   "id": "cybersecurity_concentration",
+   "role": "cybersecurity_concentration",
+   "kind": "major",
+   "label": "The University of Virginia's College at Wise Cybersecurity concentration requirements",
+   "url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1203&returnto=1055",
+   "requested_url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1203&returnto=1055",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:58:16Z",
+   "capture_transport": "retained_official_text_transport_not_recorded",
+   "retained_text_path": "server/.va-catalogs/pages/the-university-of-virginia-s-college-at-wise__cybersecurity_concentration.txt",
+   "hash_basis": "sha256_of_retained_utf8_text_bytes",
+   "sha256": "99b9702837f07e5115ef446204b78c46a48244e663fb97c9f0322dfdffb4672b",
+   "official": true,
+   "secure": false
+  },
+  {
+   "id": "data_science_concentration",
+   "role": "data_science_concentration",
+   "kind": "major",
+   "label": "The University of Virginia's College at Wise Data Science concentration requirements",
+   "url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1246&returnto=1055",
+   "requested_url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1246&returnto=1055",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:58:16Z",
+   "capture_transport": "retained_official_text_transport_not_recorded",
+   "retained_text_path": "server/.va-catalogs/pages/the-university-of-virginia-s-college-at-wise__data_science_concentration.txt",
+   "hash_basis": "sha256_of_retained_utf8_text_bytes",
+   "sha256": "77fea2a06a50eeb69da3c40096480db9df4096b413e63e29d3a2c4d32a57f515",
+   "official": true,
+   "secure": false
   }
  ],
  "source_layers": {
   "major": {
    "status": "captured",
    "source_refs": [
-    "major"
+    "major",
+    "cybersecurity_concentration",
+    "data_science_concentration"
    ],
-   "note": null
+   "note": "The standard B.S. and both current department concentration requirement sets are captured."
   },
   "general_education": {
    "status": "captured",

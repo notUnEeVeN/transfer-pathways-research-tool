@@ -4,9 +4,148 @@
  "level": "community_college",
  "platform": "acalog",
  "outcome": "no_cs_program",
- "source_url": "https://catalog.danville.edu/",
+ "source_url": "https://catalog.danville.edu/index.php?catoid=7",
  "offers_cs": false,
  "program_title": null,
+ "program_finding": {
+  "code": "current_cs_transfer_specialization_discontinued",
+  "summary": "Danville's 2026-2027 catalog does not publish the former Science - Computer Science Specialization; the college's current marketing index still points to an archived catoid 4 record.",
+  "source_refs": [
+   "catalog",
+   "current_program_index",
+   "stale_public_index",
+   "prior_program"
+  ],
+  "alternate_path": {
+   "program": "Science (AS)",
+   "catalog_year": "2026-2027",
+   "source_refs": [
+    "alternate_science_program"
+   ],
+   "computer_science_alignment": "not_defined_by_current_catalog"
+  }
+ },
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "catalog_year": "2026-2027",
+  "catalog_version": {
+   "catalog_id": 7,
+   "program_index_nav_id": 222
+  },
+  "layers": {
+   "catalog_identity": {
+    "source_roles": [
+     "catalog"
+    ]
+   },
+   "program_finding": {
+    "source_roles": [
+     "current_program_index",
+     "stale_public_index",
+     "prior_program"
+    ]
+   },
+   "alternate_path": {
+    "source_roles": [
+     "alternate_science_program"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "catalog",
+   "role": "catalog",
+   "kind": "catalog",
+   "label": "Danville Community College academic catalog",
+   "url": "https://catalog.danville.edu/index.php?catoid=7",
+   "requested_url": "https://catalog.danville.edu/index.php?catoid=7",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:48:02.628Z",
+   "sha256": "219a249096914b368c24d8e830699673c709490ff395801c9f03584bb1fdbe1f",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "current_program_index",
+   "role": "current_program_index",
+   "kind": "current_program_index",
+   "label": "Danville Community College current_program_index",
+   "url": "https://catalog.danville.edu/content.php?catoid=7&navoid=222",
+   "requested_url": "https://catalog.danville.edu/content.php?catoid=7&navoid=222",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:48:02.628Z",
+   "sha256": "76552361a435b6936b5a37d0c09c6d99546e8fb1f5c57382fdd76de74d81f04b",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "stale_public_index",
+   "role": "stale_public_index",
+   "kind": "stale_public_index",
+   "label": "Danville Community College stale_public_index",
+   "url": "https://danville.edu/transfer-programs",
+   "requested_url": "https://danville.edu/transfer-programs",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:48:02.628Z",
+   "sha256": "35080f2238c25bfd6534df0a1f70989929d23060af23e045f824d052761c92d7",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "prior_program",
+   "role": "prior_program",
+   "kind": "prior_program",
+      "label": "Archived CS-specialization URL redirect result (prior page contents unavailable)",
+   "url": "https://catalog.danville.edu/index.php?catoid=7",
+   "requested_url": "https://catalog.danville.edu/preview_program.php?catoid=4&poid=450&returnto=108",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:48:02.628Z",
+      "sha256": "219a249096914b368c24d8e830699673c709490ff395801c9f03584bb1fdbe1f",
+      "capture_result": "redirected_to_current_catalog_home",
+      "archived_content_retained": false,
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "alternate_science_program",
+   "role": "alternate_science_program",
+   "kind": "alternate_science_program",
+   "label": "Danville Community College alternate_science_program",
+   "url": "https://catalog.danville.edu/preview_program.php?catoid=7&poid=702&returnto=222",
+   "requested_url": "https://catalog.danville.edu/preview_program.php?catoid=7&poid=702&returnto=222",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:48:02.628Z",
+   "sha256": "5787b7838acf3c9208ffc6d3bfc6dc561c40c10458577bbd29f2886a7d55c9ee",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "catalog_identity": {
+   "status": "captured",
+   "source_refs": [
+    "catalog"
+   ],
+   "note": null
+  },
+  "program_finding": {
+   "status": "captured",
+   "source_refs": [
+    "current_program_index",
+    "stale_public_index",
+    "prior_program"
+   ],
+   "note": null
+  },
+  "alternate_path": {
+   "status": "captured",
+   "source_refs": [
+    "alternate_science_program"
+   ],
+   "note": null
+  }
+ },
  "total_credits": null,
  "groups": [],
  "validation": {
@@ -39,5 +178,5 @@
    "via": "curl"
   }
  },
- "extracted_at": "2026-08-02T06:13:44.723Z"
+ "extracted_at": "2026-08-10T23:49:39.307Z"
 }

@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_community_college_cs_as_central_germanna_laurel_official_source_batch",
+  "researched_at": "2026-08-10",
+  "source_policy": {
+    "allowed_sources": "Current 2026-2027 official college catalog program, linked option-menu, catalog-identity, and graduation-policy pages only.",
+    "schedule_rule": "Where a program page includes both categorical requirements and a suggested schedule, only the categorical requirements are composed. Central Virginia's four-term pathway is retained and reorganized because it is the current catalog's only course-requirement list; its term placement is not a degree rule.",
+    "option_rule": "A named catalog option source is walked to concrete courses. Multiple options are OR alternatives; a two-course science or calculus sequence is an AND route; cross-slot distinctness and no-double-count rules remain explicit constraints.",
+    "arithmetic_rule": "Catalog credit conflicts and variable-credit ranges remain visible. No unprinted filler course is invented; a residual units_fill is used only where the catalog itself directs students to select enough applicable elective credit to reach the award minimum."
+  },
+  "summary": {
+    "institutions_reviewed": 3,
+    "catalog_year": "2026-2027",
+    "current_standalone_cs_as": 3,
+    "genuine_no_program_findings": 0,
+    "catalog_accepted": 3,
+    "analysis_ready": 0,
+    "analysis_blocker_for_all": "constraint_support",
+    "findings": [
+      "Central Virginia publishes a current 60-61 credit Computer Science A.S. under academic plan 246 and links three concrete UCGS option records.",
+      "Germanna publishes a current Computer Science A.S. plan 246 with a 60-credit minimum, an explicit 60-62 completion range, categorical degree requirements, UCGS options, and a separate approved transfer-elective dictionary.",
+      "Laurel Ridge publishes a current 60-64 credit Computer Science A.S. plan 246 with a complete categorical requirement list before a separately labeled suggested schedule.",
+      "All three current graduation policies require at least a 2.0 applicable-curriculum GPA and at least 25 percent institutional credit."
+    ]
+  },
+  "institutions": [
+    {
+      "slug": "central-virginia-community-college",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog_identity": {
+        "catalog_year": "2026-2027",
+        "catalog_id": 6,
+        "program_id": 934,
+        "academic_plan": 246,
+        "program_title": "Computer Science, AS",
+        "award": "Associate of Science",
+        "published_total_credits": "60-61"
+      },
+      "requirement_findings": {
+        "fixed_course_and_choice_minimum": 48,
+        "introductory_science_slots": "Two distinct four-credit slots, each with PHY 241 or CHM 111 as the exact menu.",
+        "second_science_slot": "One four-credit PHY 242 or CHM 112 choice; no same-discipline alignment statement is printed.",
+        "block_ii": "Two three-credit courses from different Art, Humanities, or Literature categories; 16 concrete options.",
+        "block_iii": "One three-credit Social and Behavioral Sciences course; 7 concrete options.",
+        "block_vi": "One three-credit History course; 5 concrete options.",
+        "credit_variation": "MTH 245 is three credits and MTH 264 is four credits in a row printed as four, producing the 60-61 range."
+      },
+      "graduation": {
+        "minimum_curriculum_gpa": 2,
+        "minimum_residency_percent": 25,
+        "application_required": true,
+        "graduate_exit_assessment_required": true
+      },
+      "sources": [
+        {"id": "major", "url": "https://centralvirginia.catalog.acalog.com/preview_program.php?catoid=6&poid=934&returnto=208&print=1", "sha256": "d291fd836680753fed1f0daed739057a23b153a0389d014e286641ebaf2d47c8"},
+        {"id": "catalog", "url": "https://centralvirginia.catalog.acalog.com/index.php?catoid=6", "sha256": "53197a367b7743623c95703881cf28c83ac0dd37c8c4e45a6273601b9c909f9d"},
+        {"id": "ge_block_ii", "url": "https://centralvirginia.catalog.acalog.com/preview_program.php?catoid=6&poid=939&returnto=208", "sha256": "191717fb76516b541f08c51fbb7a9453ac8ed03580081aaf19006aae1b099e61"},
+        {"id": "ge_block_iii", "url": "https://centralvirginia.catalog.acalog.com/preview_program.php?catoid=6&poid=940&returnto=208", "sha256": "eeac7e14b600b16016781c21ebc2c4a469fb02e3a5e5641485d6feb50882a7f2"},
+        {"id": "ge_block_vi", "url": "https://centralvirginia.catalog.acalog.com/preview_program.php?catoid=6&poid=943&returnto=208", "sha256": "5bddcfbef47827d21c6cda36499688ed86296e08dfb08a47285db53b3328167d"},
+        {"id": "graduation", "url": "https://centralvirginia.catalog.acalog.com/content.php?catoid=6&navoid=204", "sha256": "e87e90d3692e257c391086527420c81e84b9d458470dc7012ba521652df95228"}
+      ]
+    },
+    {
+      "slug": "germanna-community-college",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog_identity": {
+        "catalog_year": "2026-2027",
+        "catalog_id": 15,
+        "program_id": 1614,
+        "academic_plan": 246,
+        "program_title": "Computer Science - AS - 246",
+        "award": "Associate of Science",
+        "published_total_credits": "60 minimum; select electives to reach 60-62"
+      },
+      "requirement_findings": {
+        "fixed_and_minimum_choice_credits_before_transfer_electives": 50,
+        "transfer_electives": "The categorical requirement prints 7-10 credits and directs students to choose enough approved coursework to reach 60-62 total credits.",
+        "arts_humanities_literature": "Two courses from two different categories; 25 concrete options.",
+        "world_language_resolution": "The generic world-language options are resolved to all 40 current concrete language-course codes in the official transfer-elective record.",
+        "cross_requirement_conditions": "CSC 205 is an elective only when not used for the major; MTH 265 and several GE options also appear in more than one menu and cannot be double counted."
+      },
+      "graduation": {
+        "minimum_curriculum_gpa": 2,
+        "minimum_residency_percent": 25,
+        "computer_competency_required": true,
+        "exit_assessment_required": true
+      },
+      "sources": [
+        {"id": "major", "url": "https://catalog.germanna.edu/preview_program.php?catoid=15&poid=1614&returnto=453&print=1", "sha256": "b49ef55d43f3f837cb334ab2a5392c5fedaf696fbb474b45ae6fdbcbf3d268bd"},
+        {"id": "catalog", "url": "https://catalog.germanna.edu/index.php?catoid=15", "sha256": "e79914c588d83efb88c0f2e5f72b8f254b576091a19305624afa9a4e453d8b7e"},
+        {"id": "general_education", "url": "https://catalog.germanna.edu/preview_program.php?catoid=15&poid=1595&returnto=453", "sha256": "bb709113989659911ecccf35250ded2281429bb00d64f1d3782973a63320b631"},
+        {"id": "elective", "url": "https://catalog.germanna.edu/preview_program.php?catoid=15&poid=1670&returnto=453", "sha256": "ec4c6ee175265ed353ae3409cc8bcc8ff39bb360fe5f3833ebad5b05b2675c0f"},
+        {"id": "graduation", "url": "https://catalog.germanna.edu/content.php?catoid=15&navoid=462", "sha256": "50df72ee9794c811c5520528b6ddb5b6fe1e5141a3057bf89f89b8b5d71d4345"}
+      ]
+    },
+    {
+      "slug": "laurel-ridge-community-college",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog_identity": {
+        "catalog_year": "2026-2027",
+        "catalog_id": 25,
+        "program_id": 1940,
+        "academic_plan": 246,
+        "program_title": "Computer Science Degree, AS (246)",
+        "award": "Associate of Science",
+        "published_total_credits": "60-64"
+      },
+      "requirement_findings": {
+        "fixed_credits_before_electives": 55,
+        "natural_science": "Required CHM 111 and CHM 112 eight-credit AND sequence.",
+        "mathematics": "Required MTH 263 and MTH 264 eight-credit AND sequence.",
+        "electives": "Exactly two courses totaling 5-8 credits from 14 concrete options, including variable-credit CSC 295 and CSC 298.",
+        "source_conflict": "The fixed 55 credits plus the printed 5-8 elective range model 60-63, while the same page publishes 60-64."
+      },
+      "graduation": {
+        "minimum_curriculum_gpa": 2,
+        "minimum_residency_percent": 25,
+        "competency_and_exit_testing_required": true
+      },
+      "sources": [
+        {"id": "major", "url": "https://catalog.laurelridge.edu/preview_program.php?catoid=25&poid=1940&returnto=996&print=1", "sha256": "6bdf1df27805e887c3d56937033391e7993fb7dd41fa241884c8604e60f22659"},
+        {"id": "catalog", "url": "https://catalog.laurelridge.edu/index.php?catoid=25", "sha256": "e04e809965b2c415c579b615ea622d22f5f1d1e8d46b272b8447922263aff2cf"},
+        {"id": "graduation", "url": "https://catalog.laurelridge.edu/content.php?catoid=25&navoid=1001", "sha256": "ef8a7d1d207a94683fec7ccb7fdd0e95fbb6af0f5881094923ec1357722bbe8c"}
+      ]
+    }
+  ]
+}

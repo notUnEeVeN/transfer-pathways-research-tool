@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "slug": "virginia-commonwealth-university",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Bachelor of Science (B.S.)",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "course_titles": {
+    "BIOL151": "Introduction to Biological Sciences I",
+    "BIOZ151": "Introduction to Biological Science Laboratory I",
+    "CHEM101": "General Chemistry I",
+    "CHEZ101": "General Chemistry Laboratory I",
+    "PHYS207": "University Physics I",
+    "PHYZ207": "University Physics I Laboratory"
+  },
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Engineering",
+  "ge_authority": "Virginia Commonwealth University ConnectED General Education curriculum",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "policy",
+    "course_catalog"
+  ],
+  "selected_variant": "Base Computer Science B.S. without a concentration",
+  "excluded_variants": [
+    "Cybersecurity concentration",
+    "Data science concentration",
+    "Software engineering concentration",
+    "Accelerated bachelor's-to-master's pathways"
+  ],
+  "capture_exclusions": [
+    "The separately labeled recommended course sequence/plan of study is scheduling guidance and is not imported.",
+    "All accelerated B.S.-and-M.S. containers are separate pathways and are not imported into the ordinary B.S."
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": ["major", "course_catalog"]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": ["major", "general_education", "college"],
+      "note": "The College of Engineering source establishes ownership. The reviewed current college and department sources publish no additional college-wide credit block beyond the program table and ConnectED."
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": ["graduation", "policy"]
+    }
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "program_core_units": 52,
+    "major_elective_units": 9,
+    "ancillary_and_open_units_on_canonical_path": 38,
+    "additional_connected_capacity_after_program_overlap": 21,
+    "upper_division": {
+      "status": "required",
+      "minimum_units": 45,
+      "modeled_units": 50,
+      "rule": "At least 45 credits must be at the 300-500 level or equivalent. The ordinary program necessarily contributes 37 upper-level core credits, nine upper-level CMSC elective credits, ENGR 395, and a three-credit 300-400-level MATH course, for 50 modeled upper-level credits.",
+      "source_refs": ["major", "graduation", "policy"]
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "minimum_fraction": 0.25,
+      "rule": "At least 25 percent of the degree must be completed at VCU, including at least 30 of the final 45 credits at VCU, subject to the published exceptions.",
+      "source_refs": ["graduation", "policy"]
+    },
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+    "The authoritative degree table publishes 120 credits, while its printed gross rows exceed 120 because designated ancillary courses satisfy ConnectED categories. This composition represents those courses once and reserves 21 additional ConnectED credits so the canonical unit budget closes at the published 120-credit minimum.",
+    "The 21-credit net ConnectED capacity contains the six nonoverlapping focused-inquiry foundation credits and 15 additional breadth/area-of-inquiry credits. The underlying gross rule remains 30 ConnectED credits: foundations, nine breadth-of-knowledge credits, and 20-21 area-of-inquiry credits with breadth courses included in the area total.",
+    "The canonical variable-credit path uses a four-credit natural-science lecture/lab sequence and nine open-elective credits. The five-credit PHYS path instead carries eight open-elective credits, keeping the combined capacity at 13.",
+    "CMSC 254 is displayed in the core table, but the special-requirements text makes it placement-dependent and says it may count as elective credit when required. The four-credit slot therefore exposes either CMSC 254 or equivalent applicable elective capacity after placement exemption without changing the 120-credit minimum.",
+    "CMSC 491 and CMSC 492 are retained in the official nine-credit upper-level elective menu with their published variable credit. The catalog states a credit minimum rather than a universal three-course count, so exact repeat/variable-credit evaluation remains a downstream constraint.",
+    "VCU REAL, GPA, major-grade, upper-level, and residency requirements are retained as policy requirements and audit declarations rather than omitted because they add no separate credits."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "catalog_edition_preliminary",
+      "severity": "review",
+      "message": "The live 2026-2027 Bulletin is labeled preliminary/launch and says program and General Education content may change before finalization."
+    },
+    {
+      "code": "connected_overlap_evaluator_required",
+      "severity": "block_analysis",
+      "message": "The catalog permits designated ancillary courses to satisfy ConnectED categories; category distribution, prefix limits, and no-double-count rules need an attribute-aware evaluator."
+    },
+    {
+      "code": "placement_dependent_cmsc_254",
+      "severity": "block_analysis",
+      "message": "CMSC 254 is placement-dependent; an evaluator must distinguish students required to take it from students who fill the same degree capacity with other applicable credit."
+    },
+    {
+      "code": "variable_credit_major_electives",
+      "severity": "block_analysis",
+      "message": "CMSC 491 and CMSC 492 have variable credit inside a nine-credit menu; repetition and exact credit fulfillment are not represented by a simple course-count solver."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Computer Science core: lower-level requirements",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "15",
+      "analysis_constraints": [
+        {
+          "kind": "placement_dependent_introductory_course",
+          "status": "evaluator_not_implemented",
+          "description": "The Computer Science Placement Test determines whether CMSC 254 is required; when required, its four credits count toward the degree, while a placement-exempt student retains four credits of applicable degree capacity."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC235", "title": "Computing and Data Ethics", "units": 3}]},
+        {"label": "Placement-dependent introductory slot", "select": 1, "units": 4, "tier": "nontransferable", "cc_articulable": false, "receivers": [
+          {"kind": "course", "code": "CMSC254", "title": "Introduction to Problem-solving", "units": 4},
+          {"kind": "requirement", "name": "Four credits of applicable degree capacity when the placement test does not require CMSC 254", "units": 4}
+        ]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CMSC255", "title": "Object-oriented Programming", "units": 4}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CMSC256", "title": "Introduction to Data Structures", "units": 4}]}
+      ]
+    },
+    {
+      "title": "Computer Science core: upper-level requirements",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "37",
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC302", "title": "Introduction to Discrete Structures", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC303", "title": "Introduction to the Theory of Computation", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC304", "title": "Programming Languages", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC311", "title": "Computer Organization", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC355", "title": "Fundamentals of Software Engineering", "units": 3}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CMSC357", "title": "Computer Systems", "units": 4}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC401", "title": "Algorithm Analysis with Advanced Data Structures", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC405", "title": "Operating Systems", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC408", "title": "Databases", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CMSC440", "title": "Data Communication and Networking", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "series", "codes": ["CMSC441", "CMSC451"], "units": 3, "note": "Senior Design Studio I and Senior Project I."}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "series", "codes": ["CMSC442", "CMSC452"], "units": 3, "note": "Senior Design Studio II and Senior Project II."}]}
+      ]
+    },
+    {
+      "title": "CMSC upper-level electives",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "9",
+      "analysis_constraints": [
+        {
+          "kind": "variable_credit_selection_and_repeatability",
+          "status": "evaluator_not_implemented",
+          "description": "Choose enough approved upper-level CMSC elective attempts to earn nine credits; CMSC 491 and CMSC 492 have variable credit, so three selections do not universally guarantee nine credits."
+        },
+        {
+          "kind": "no_double_count_with_core",
+          "status": "evaluator_not_implemented",
+          "description": "Courses used for fixed core requirements cannot also earn elective credit."
+        }
+      ],
+      "sections": [
+        {
+          "select": 3,
+          "units": 9,
+          "assume_satisfiable": true,
+          "receivers": [
+            {"kind": "course", "code": "CMSC410", "title": "Introduction to Quantum Computing", "units": 3},
+            {"kind": "course", "code": "CMSC411", "title": "Computer Graphics", "units": 3},
+            {"kind": "course", "code": "CMSC412", "title": "Social Network Analysis and Cybersecurity Risks", "units": 3},
+            {"kind": "course", "code": "CMSC413", "title": "Introduction to Cybersecurity", "units": 3},
+            {"kind": "course", "code": "CMSC414", "title": "Computer and Network Security", "units": 3},
+            {"kind": "course", "code": "CMSC415", "title": "Introduction to Cryptography", "units": 3},
+            {"kind": "course", "code": "CMSC420", "title": "Software Project Management", "units": 3},
+            {"kind": "course", "code": "CMSC425", "title": "Introduction to Software Analysis and Testing", "units": 3},
+            {"kind": "course", "code": "CMSC426", "title": "Software as a Service", "units": 3},
+            {"kind": "course", "code": "CMSC427", "title": "Design and Implementation of User Interfaces", "units": 3},
+            {"kind": "course", "code": "CMSC428", "title": "Mobile Programming: iOS", "units": 3},
+            {"kind": "course", "code": "CMSC435", "title": "Introduction to Data Science", "units": 3},
+            {"kind": "course", "code": "CMSC436", "title": "Artificial Intelligence", "units": 3},
+            {"kind": "course", "code": "CMSC437", "title": "Introduction to Natural Language Processing", "units": 3},
+            {"kind": "course", "code": "CMSC438", "title": "Machine Learning", "units": 3},
+            {"kind": "course", "code": "CMSC491", "title": "Topics in Computer Science", "units": 1, "note": "Published for 1-3 credits."},
+            {"kind": "course", "code": "CMSC492", "title": "Independent Study", "units": 2, "note": "Published for 2-4 credits."},
+            {"kind": "course", "code": "CMSC506", "title": "Computer Networks and Communications", "units": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Ancillary lower-level course requirements",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "course_catalog"],
+      "stated_credits": "15",
+      "sections": [
+        {"label": "Economics", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "ECON205", "title": "The Economics of Product Development and Markets", "units": 3},
+          {"kind": "course", "code": "ECON210", "title": "Principles of Microeconomics", "units": 3},
+          {"kind": "course", "code": "ECON211", "title": "Principles of Macroeconomics", "units": 3}
+        ]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MATH200", "title": "Calculus with Analytic Geometry I", "units": 4}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MATH201", "title": "Calculus with Analytic Geometry II", "units": 4}]},
+        {"label": "Statistics", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "STAT212", "title": "Concepts of Statistics", "units": 3},
+          {"kind": "course", "code": "STAT210", "title": "Basic Practice of Statistics", "units": 3}
+        ]},
+        {"label": "Student-success course", "select": 1, "units": 1, "receivers": [
+          {"kind": "course", "code": "UNIV101", "title": "Introduction to the University", "units": 1},
+          {"kind": "course", "code": "UNIV103", "title": "Education and Career Planning", "units": 1},
+          {"kind": "course", "code": "UNIV191", "title": "Student Success Special Topics", "units": 1}
+        ]}
+      ]
+    },
+    {
+      "title": "Professional development",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "ENGR395", "title": "Professional Development", "units": 1}]}
+      ]
+    },
+    {
+      "title": "Upper-level mathematics elective",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "requirement", "name": "One three-credit MATH course at the 300- or 400-level", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Approved humanities electives",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "stated_credits": "6",
+      "sections": [
+        {"select": 1, "units": 6, "receivers": [{"kind": "ge_area", "code": "VCU-HUMANITIES", "name": "Six credits from African-American studies, American studies, anthropology, the School of the Arts, English, foreign language, history, philosophy, psychology, religious studies, social work, sociology, urban studies, or another department-approved course", "units": 6}]}
+      ]
+    },
+    {
+      "title": "Natural science option and path-adjusted open electives",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "general_education", "course_catalog"],
+      "stated_credits": "13 on each complete path",
+      "conjunction": "Or",
+      "sections": [
+        {"label": "Chemistry path", "select": 2, "units": 13, "receivers": [
+          {"kind": "series", "codes": ["CHEM101", "CHEZ101"], "units": 4},
+          {"kind": "requirement", "name": "Nine credits of open electives", "units": 9}
+        ]},
+        {"label": "Physics path", "select": 2, "units": 13, "receivers": [
+          {"kind": "series", "codes": ["PHYS207", "PHYZ207"], "units": 5},
+          {"kind": "requirement", "name": "Eight credits of open electives", "units": 8}
+        ]},
+        {"label": "Biology path", "select": 2, "units": 13, "receivers": [
+          {"kind": "series", "codes": ["BIOL151", "BIOZ151"], "units": 4},
+          {"kind": "requirement", "name": "Nine credits of open electives", "units": 9}
+        ]}
+      ]
+    },
+    {
+      "title": "ConnectED foundations not already counted in the program table",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "6 additional credits; MATH 200 separately fulfills quantitative foundations",
+      "analysis_constraints": [
+        {
+          "kind": "focused_inquiry_grade_and_postmatriculation_transfer_rule",
+          "status": "evaluator_not_implemented",
+          "description": "Earn at least C in UNIV 200; after enrollment at VCU, transfer credit is not accepted for UNIV 111 or UNIV 200. Honors replacements remain limited to honors students."
+        }
+      ],
+      "sections": [
+        {"label": "Focused Inquiry", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "UNIV111", "title": "Introduction to Focused Inquiry: Investigation and Communication", "units": 3},
+          {"kind": "course", "code": "HONR230", "title": "Introduction to Academic Writing", "units": 3, "note": "Honors-student replacement only."}
+        ]},
+        {"label": "Advanced Focused Inquiry", "select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "UNIV200", "title": "Advanced Focused Inquiry: Literacies, Research and Communication", "units": 3},
+          {"kind": "course", "code": "HONR240", "title": "Research Writing and Critical Thinking", "units": 3, "note": "Honors-student replacement only."}
+        ]}
+      ]
+    },
+    {
+      "title": "ConnectED breadth and areas-of-inquiry capacity after program overlap",
+      "requirement_layer": "general_education",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "15 net additional credits within the 30-credit gross ConnectED requirement",
+      "analysis_constraints": [
+        {
+          "kind": "connected_category_distribution_and_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "Across the gross ConnectED curriculum, earn nine breadth credits (three in each breadth area), 20-21 area-of-inquiry credits with three to nine in every inquiry area, and no more than six credits under one prefix; breadth courses count inside the inquiry total and designated program courses overlap this block."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 15, "receivers": [{"kind": "ge_area", "code": "VCU-CONNECTED-NET", "name": "Fifteen additional credits completing the ConnectED breadth-of-knowledge and areas-of-inquiry distributions after the degree table's documented ECON and laboratory-science overlaps", "units": 15}]}
+      ]
+    },
+    {
+      "title": "Computer Science course-grade requirement",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": ["major", "graduation"],
+      "analysis_constraints": [
+        {"kind": "minimum_course_grade", "status": "evaluator_not_implemented", "description": "Every computer science course requires a minimum grade of C for graduation."}
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Earn at least C in every computer science course", "units": 0}]}
+      ]
+    },
+    {
+      "title": "VCU REAL experiential-learning requirement",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": ["graduation"],
+      "analysis_constraints": [
+        {"kind": "course_attribute_or_cocurricular_experience", "status": "evaluator_not_implemented", "description": "Complete one VCU REAL Level 2-4 course or approved Level 3-4 co-curricular experience; it may overlap another degree course and adds no independent credit block."}
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete one qualifying VCU REAL experiential-learning activity", "units": 0}]}
+      ]
+    },
+    {
+      "title": "University graduation GPA and residence policies",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "nonunit_policy",
+      "cc_articulable": false,
+      "source_refs": ["graduation", "policy"],
+      "analysis_constraints": [
+        {"kind": "gpa_and_residency", "status": "evaluator_not_implemented", "description": "Graduation requires 2.0 cumulative and major GPAs, at least 25 percent of degree credit at VCU, and at least 30 of the final 45 credits at VCU, subject to published exceptions."}
+      ],
+      "sections": [
+        {"label": "Cumulative GPA", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Minimum 2.0 cumulative VCU GPA", "units": 0}]},
+        {"label": "Major GPA", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Minimum 2.0 major-area GPA", "units": 0}]},
+        {"label": "Residence", "select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Meet the VCU 25-percent and 30-of-final-45 residence rules", "units": 0}]}
+      ]
+    }
+  ]
+}

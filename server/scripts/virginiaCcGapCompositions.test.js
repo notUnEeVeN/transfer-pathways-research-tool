@@ -130,22 +130,24 @@ describe('Reynolds and Tidewater source-composed Computer Science A.S. degrees',
     expect(rawSlots.printed_slots.map((slot) => slot.printed_units)).toEqual([4, 3, 3, 3]);
   });
 
-  it('compiles Tidewater to the 60-credit minimum but refuses catalog acceptance without source bytes', () => {
+  it('catalog-accepts Tidewater from the complete retained official-source walk', () => {
     const { acceptance, composition, doc } = degree('tidewater-community-college');
     expect(composition.capture_gate).toMatchObject({
-      status: 'blocked_cloudflare',
-      catalog_bytes_captured: false,
-      catalog_acceptance_allowed: false,
+      status: 'source_walk_complete_origin_cloudflare',
+      direct_origin_capture_status: 'blocked_cloudflare_403',
+      catalog_acceptance_allowed: true,
     });
     expect(composition.research_sources.every((source) => (
-      source.official === true && source.captured_locally === false
+      source.official === true
+      && source.evidence_retained_locally === true
+      && source.evidence_method === 'transparent_render_of_exact_official_origin_plus_hand_read'
     ))).toBe(true);
     expect(doc).toMatchObject({
       degree_title_seen: 'Computer Science, Associate of Science',
       total_units: 60,
       total_units_max: 63,
-      status: 'url_only',
-      collection_status: 'captured_only',
+      status: 'extracted',
+      collection_status: 'composed_full_degree',
       unit_audit: {
         published_program_units_minimum: 60,
         published_program_units_maximum: 63,
@@ -153,8 +155,9 @@ describe('Reynolds and Tidewater source-composed Computer Science A.S. degrees',
         residency: { minimum_percent: 25 },
       },
     });
-    expect(acceptance).toMatchObject({ accepted: false, ready_for_analysis: false });
-    expect(acceptance.catalog.failed).toEqual(['source_references']);
+    expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
+    expect(acceptance.catalog.failed).toEqual([]);
+    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
     expect(check(acceptance, 'analysis_ready', 'unit_closure')).toMatchObject({
       severity: 'pass', modeled_units: 60,
     });
@@ -187,8 +190,9 @@ describe('Reynolds and Tidewater source-composed Computer Science A.S. degrees',
     const humanities = doc.requirement_groups.find((group) => (
       group.title === 'Humanities from two distinct categories'
     ));
-    expect(humanities).toMatchObject({ distinct_areas: 2 });
-    expect(humanities.sections[0]).toMatchObject({ unit_advisement: 6 });
+    expect(humanities).toMatchObject({ distinct_course_ids_across_sections: true });
+    expect(humanities.sections).toHaveLength(2);
+    expect(humanities.sections.every((section) => section.unit_advisement === 3)).toBe(true);
 
     const technical = doc.requirement_groups.find((group) => (
       group.title === 'Two distinct technical selections'

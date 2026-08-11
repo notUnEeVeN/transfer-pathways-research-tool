@@ -1,0 +1,445 @@
+{
+  "schema_version": 1,
+  "slug": "rappahannock-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Associate of Science in Science (Computer Science transfer use)",
+  "award": "AS",
+  "total_units": 60,
+  "total_units_max": 62,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "catalog",
+    "major",
+    "program_intent",
+    "general_education",
+    "graduation",
+    "course_catalog"
+  ],
+  "option_sets": {
+    "ucgs_laboratory_science_i": {
+      "source_refs": ["major"],
+      "credits": 4,
+      "courses": ["BIO101", "BIO102", "CHM101", "CHM111", "CHM112", "ENV121", "ENV122", "GOL105", "GOL106", "PHY100", "PHY201", "PHY202", "PHY241", "PHY242"]
+    },
+    "approved_transfer_laboratory_science_ii": {
+      "source_refs": ["major", "general_education"],
+      "credits": 4,
+      "courses": ["BIO101", "BIO102", "BIO141", "BIO142", "BIO150", "BIO270", "CHM101", "CHM111", "CHM112", "GOL111", "GOL112", "MAR101", "MAR102", "MAR201", "MAR202", "PHY100", "PHY201", "PHY202", "PHY241", "PHY242"]
+    },
+    "mathematics_requirements": {
+      "source_refs": ["major", "general_education"],
+      "printed_slots": [
+        {
+          "label": "MTH 154 or MTH 161 or UCGS Mathematics",
+          "credits": 3,
+          "named_courses": ["MTH154", "MTH161"]
+        },
+        {
+          "label": "MTH 162 or MTH 245 or approved Mathematics",
+          "credits_minimum": 3,
+          "credits_maximum": 4,
+          "named_courses": ["MTH162", "MTH245"]
+        }
+      ],
+      "ucgs_courses_named_by_program_footnote": ["MTH154", "MTH161", "MTH162", "MTH167", "MTH245", "MTH261", "MTH263", "MTH264"],
+      "recommended_routes": [
+        {
+          "label": "Quantitative/statistics",
+          "routes": [["MTH154", "MTH245"], ["MTH161", "MTH245"]]
+        },
+        {
+          "label": "Calculus",
+          "precalculus_routes": [["MTH161", "MTH162"], ["MTH167"]],
+          "then_calculus_routes": [["MTH261"], ["MTH263", "MTH264"]]
+        }
+      ],
+      "mutual_exclusions": [
+        {
+          "course": "MTH167",
+          "cannot_also_receive_credit_for": ["MTH161", "MTH162"]
+        }
+      ]
+    },
+    "history": {
+      "source_refs": ["major"],
+      "courses": ["HIS101", "HIS102", "HIS111", "HIS112", "HIS121", "HIS122"]
+    },
+    "non_history_social_behavioral_science": {
+      "source_refs": ["major"],
+      "courses": ["ECO201", "ECO202", "GEO210", "GEO220", "PLS135", "PLS241", "PSY200", "SOC200", "SOC211"]
+    },
+    "non_literature_humanities_fine_arts": {
+      "source_refs": ["major"],
+      "courses": ["ART100", "ART101", "MUS121", "MUS221", "HUM201", "HUM202", "HUM220", "PHI100", "PHI220", "REL230", "REL240"]
+    },
+    "literature": {
+      "source_refs": ["major"],
+      "courses": ["ENG245", "ENG246", "ENG250", "ENG255", "ENG258", "ENG275"]
+    },
+    "social_behavioral_science": {
+      "source_refs": ["major"],
+      "courses": ["HIS101", "HIS102", "HIS111", "HIS112", "HIS121", "HIS122", "ECO201", "ECO202", "GEO210", "GEO220", "PLS135", "PLS241", "PSY200", "SOC200", "SOC211"]
+    },
+    "communication_humanities_fine_arts": {
+      "source_refs": ["major"],
+      "courses": ["CST100", "CST110", "ART100", "ART101", "ENG225", "ENG245", "ENG246", "ENG250", "ENG258", "ENG275", "MUS121", "MUS221", "MUS222", "HUM201", "HUM220", "PHI100", "PHI220", "REL230", "REL240"]
+    },
+    "approved_transfer_electives": {
+      "source_refs": ["major", "general_education", "program_intent"],
+      "required_credits_minimum": 18,
+      "required_credits_maximum": 19,
+      "printed_slots": [
+        {"count": 5, "credits_each": 3},
+        {"count": 1, "credits_minimum": 3, "credits_maximum": 4}
+      ],
+      "default_course_credits": 3,
+      "course_credit_overrides": {
+        "BIO101": 4, "BIO102": 4, "BIO141": 4, "BIO142": 4, "BIO150": 4, "BIO270": 4,
+        "CHM101": 4, "CHM111": 4, "CHM112": 4,
+        "EGR121": 2,
+        "SPA101": 4, "SPA102": 4,
+        "GOL111": 4, "GOL112": 4,
+        "HLT116": 2,
+        "MAR101": 4, "MAR102": 4, "MAR201": 4, "MAR202": 4,
+        "MTH167": 5, "MTH263": 4, "MTH264": 4, "MTH265": 4,
+        "MUS111": 4,
+        "PED101": {"minimum": 1, "maximum": 2},
+        "PED102": {"minimum": 1, "maximum": 2},
+        "PED109": 1, "PED116": 2, "PED117": 1, "PED123": 2, "PED124": 2,
+        "PHY100": 4, "PHY201": 4, "PHY202": 4, "PHY241": 4, "PHY242": 4
+      },
+      "courses": [
+        "ART100", "ART101", "ART102", "ART121", "ART243", "ART244",
+        "ACC211", "ACC212",
+        "ADJ100", "ADJ105", "ADJ201", "ADJ211", "ADJ229", "ADJ233",
+        "BIO101", "BIO102", "BIO141", "BIO142", "BIO150", "BIO270",
+        "BUS100", "BUS200", "BUS201", "BUS240",
+        "CHM101", "CHM111", "CHM112",
+        "CST100", "CST110",
+        "ECO120", "ECO201", "ECO202",
+        "EDU200", "EDU204", "EDU250",
+        "EGR121",
+        "ENG211", "ENG225", "ENG245", "ENG246", "ENG250", "ENG255", "ENG258", "ENG275",
+        "SPA101", "SPA102", "SPA201", "SPA202",
+        "GEO200", "GEO210",
+        "GOL111", "GOL112",
+        "HLT116", "HLT121", "HLT206", "HLT215", "HLT230", "HLT250",
+        "HIS101", "HIS102", "HIS111", "HIS112", "HIS121", "HIS122", "HIS141", "HIS142",
+        "HUM201", "HUM202", "HUM220",
+        "ITE152",
+        "MAR101", "MAR102", "MAR201", "MAR202",
+        "MTH161", "MTH162", "MTH167", "MTH245", "MTH246", "MTH261", "MTH262", "MTH263", "MTH264", "MTH265", "MTH266", "MTH267",
+        "MUS101", "MUS111", "MUS121", "MUS221", "MUS222", "MUS226",
+        "PHI100", "PHI220",
+        "PED101", "PED102", "PED109", "PED116", "PED117", "PED123", "PED124",
+        "PHY100", "PHY201", "PHY202", "PHY241", "PHY242",
+        "PLS135", "PLS136", "PLS241",
+        "PSY200", "PSY215", "PSY230", "PSY235",
+        "REL200", "REL210", "REL230", "REL240",
+        "SOC200", "SOC210", "SOC211", "SOC212", "SOC215", "SOC245"
+      ],
+      "unlisted_course_rule": "An unlisted course may be applied only after the student consults a faculty advisor.",
+      "computer_science_course_prescribed": false,
+      "computer_science_roster_note": "The current approved-transfer-elective roster contains no CSC course."
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": 62,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 62,
+    "closure_basis": "The official semester subtotals are 17 + 16-17 + 15 + 12-13 = 60-62. The semantic model reorganizes the same inventory as 42-43 credits of fixed/breadth requirements plus 18-19 approved-transfer-elective credits.",
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "rule": "At least 25 percent of the degree's semester credits must be earned at Rappahannock Community College.",
+      "source_refs": ["graduation"]
+    },
+    "minimum_curriculum_gpa": 2,
+    "minimum_curriculum_gpa_source_refs": ["graduation"],
+    "computer_literacy": {
+      "status": "required",
+      "satisfied_by_fixed_course": "ITE152",
+      "source_refs": ["major", "graduation"]
+    }
+  },
+  "modeling_notes": [
+    "The catalog's curriculum table is the complete requirement inventory; semester placement is discarded and is not modeled as an additional prospective schedule rule.",
+    "The current RCC transfer-program page expressly includes Computer Science as a destination for the general Science A.S. and links this program. The catalog does not define a separate CS major within the award.",
+    "The six printed approved-transfer-elective rows are modeled as one 18-19 credit category because the official roster contains one- through five-credit courses and may require combinations; treating every listed course as a one-course completion route would be false.",
+    "The two mathematics rows and the footnote's cross-row recommended routes are preserved as an option dictionary rather than flattened into independent OR choices.",
+    "No CSC requirement is inferred. Students must use advisor-selected electives to satisfy the receiving Computer Science program."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "generic_science_as_no_prescribed_cs_sequence",
+      "severity": "review",
+      "message": "RCC officially markets this Science A.S. for Computer Science transfer, but the current degree and approved-elective roster prescribe no CSC course."
+    },
+    {
+      "code": "math_footnote_exceeds_printed_slot_range",
+      "severity": "review",
+      "message": "The math footnote names five-credit MTH 167 and multi-course calculus routes while the two printed math rows carry 3 and 3-4 credits; retain the published 60-62 total and require human interpretation of the route arithmetic."
+    },
+    {
+      "code": "variable_credit_transfer_elective_category",
+      "severity": "review",
+      "message": "The approved-transfer roster includes one- and two-credit courses for printed three-credit slots, so course combinations and no-double-counting require a constraint-aware evaluator."
+    }
+  ],
+  "course_titles": {
+    "SDV100": "College Success Skills",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "MTH154": "Quantitative Reasoning",
+    "ENV121": "General Environmental Science I",
+    "ENV122": "General Environmental Science II",
+    "GOL105": "Physical Geology",
+    "GOL106": "Historical Geology",
+    "ART100": "Art Appreciation",
+    "ART101": "History of Art: Prehistoric to Gothic",
+    "ART102": "History of Art: Renaissance to Modern",
+    "ART121": "Foundations of Drawing",
+    "ART243": "Watercolor I",
+    "ART244": "Watercolor II",
+    "ACC211": "Principles of Accounting I",
+    "ACC212": "Principles of Accounting II",
+    "ADJ100": "Survey of Criminal Justice",
+    "ADJ105": "The Juvenile Justice System",
+    "ADJ201": "Criminology",
+    "ADJ211": "Criminal Law, Evidence & Procedures I",
+    "ADJ229": "Community Policing in Modern Society",
+    "ADJ233": "Multiculturalism in Policing",
+    "BIO101": "General Biology I",
+    "BIO102": "General Biology II",
+    "BIO141": "Human Anatomy and Physiology I",
+    "BIO142": "Human Anatomy and Physiology II",
+    "BIO150": "Microbiology for Health Science",
+    "BIO270": "General Ecology",
+    "BUS100": "Introduction to Business",
+    "BUS200": "Principles of Management",
+    "BUS201": "Organizational Behavior",
+    "BUS240": "Introduction to Business Law",
+    "CHM101": "Introductory Chemistry I",
+    "CHM111": "General Chemistry I",
+    "CHM112": "General Chemistry II",
+    "CST100": "Principles of Public Speaking",
+    "CST110": "Introduction to Human Communication",
+    "ECO120": "Survey of Economics",
+    "ECO201": "Principles of Macroeconomics",
+    "ECO202": "Principles of Microeconomics",
+    "EDU200": "Introduction to Teaching as a Profession",
+    "EDU204": "Teaching in a Diverse Society",
+    "EDU250": "Foundations of Exceptional Education",
+    "EGR121": "Foundations of Engineering",
+    "ENG211": "Creative Writing I",
+    "ENG225": "Reading Literature: Culture and Ideas",
+    "ENG245": "British Literature",
+    "ENG246": "American Literature",
+    "ENG250": "Children's Literature",
+    "ENG255": "World Literature",
+    "ENG258": "African American Literature",
+    "ENG275": "Women in Literature",
+    "SPA101": "Beginning Spanish I",
+    "SPA102": "Beginning Spanish II",
+    "SPA201": "Intermediate Spanish I",
+    "SPA202": "Intermediate Spanish II",
+    "GEO200": "Introduction to Physical Geography",
+    "GEO210": "People and the Land: Intro to Cultural Geography",
+    "GEO220": "World Regional Geography",
+    "GOL111": "Oceanography I",
+    "GOL112": "Oceanography II",
+    "HLT116": "Introduction to Personal Wellness Concepts",
+    "HLT121": "Substance Abuse: Prevention and Treatment",
+    "HLT206": "Exercise Science",
+    "HLT215": "Personal Stress and Stress Management",
+    "HLT230": "Principles of Nutrition",
+    "HLT250": "General Pharmacology",
+    "HIS101": "Western Civilizations Pre-1600 CE",
+    "HIS102": "Western Civilizations Post-1600 CE",
+    "HIS111": "World Civilizations Pre-1500 CE",
+    "HIS112": "World Civilizations Post-1500 CE",
+    "HIS121": "United States History to 1877",
+    "HIS122": "United States History Since 1865",
+    "HIS141": "African-American History I",
+    "HIS142": "African-American History II",
+    "HUM201": "Early Humanities",
+    "HUM202": "Modern Humanities",
+    "HUM220": "Introduction to African American Studies",
+    "ITE152": "Introduction to Digital and Information Literacy & Computer Applications",
+    "MAR101": "General Oceanography I",
+    "MAR102": "General Oceanography II",
+    "MAR201": "Marine Ecology I",
+    "MAR202": "Marine Ecology II",
+    "MTH161": "Precalculus I",
+    "MTH162": "Precalculus II",
+    "MTH167": "Precalculus with Trigonometry",
+    "MTH245": "Statistics I",
+    "MTH246": "Statistics II",
+    "MTH261": "Applied Calculus I",
+    "MTH262": "Applied Calculus II",
+    "MTH263": "Calculus I",
+    "MTH264": "Calculus II",
+    "MTH265": "Calculus III",
+    "MTH266": "Linear Algebra",
+    "MTH267": "Differential Equations",
+    "MUS101": "Fundamentals of Music",
+    "MUS111": "Music Theory I",
+    "MUS121": "Music in Society",
+    "MUS221": "History of Western Music Prior to 1750",
+    "MUS222": "History of Western Music 1750 to Present",
+    "MUS226": "World Music",
+    "PHI100": "Introduction to Philosophy",
+    "PHI220": "Ethics and Society",
+    "PED101": "Fundamentals of Physical Activity",
+    "PED102": "Fundamentals of Physical Activity",
+    "PED109": "Yoga",
+    "PED116": "Lifetime Fitness and Wellness",
+    "PED117": "Fitness Walking",
+    "PED123": "Tennis I",
+    "PED124": "Tennis II",
+    "PHY100": "Elements of Physics",
+    "PHY201": "General College Physics I",
+    "PHY202": "General College Physics II",
+    "PHY241": "University Physics I",
+    "PHY242": "University Physics II",
+    "PLS135": "U.S. Government and Politics",
+    "PLS136": "State and Local Government and Politics",
+    "PLS241": "Introduction to International Relations I",
+    "PSY200": "Principles of Psychology",
+    "PSY215": "Psychopathology",
+    "PSY230": "Developmental Psychology",
+    "PSY235": "Child Psychology",
+    "REL200": "Survey of the Old Testament",
+    "REL210": "Survey of the New Testament",
+    "REL230": "Religions of the World",
+    "REL240": "Religions in America",
+    "SOC200": "Introduction to Sociology",
+    "SOC210": "Survey of Physical and Cultural Anthropology",
+    "SOC211": "Cultural Anthropology",
+    "SOC212": "Principles of Anthropology II",
+    "SOC215": "Sociology of the Family",
+    "SOC245": "Sociology of Aging"
+  },
+  "requirement_groups": [
+    {
+      "title": "Student development",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV100"]]}]}
+      ]
+    },
+    {
+      "title": "Written communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]}
+      ]
+    },
+    {
+      "title": "Digital and information literacy",
+      "source_refs": ["major", "graduation"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ITE152"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS laboratory science I",
+      "source_refs": ["major"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [{"kind": "cc_course", "options": [["BIO101"], ["BIO102"], ["CHM101"], ["CHM111"], ["CHM112"], ["ENV121"], ["ENV122"], ["GOL105"], ["GOL106"], ["PHY100"], ["PHY201"], ["PHY202"], ["PHY241"], ["PHY242"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Approved transfer elective laboratory science II",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [{"kind": "cc_course", "options": [["BIO101"], ["BIO102"], ["BIO141"], ["BIO142"], ["BIO150"], ["BIO270"], ["CHM101"], ["CHM111"], ["CHM112"], ["GOL111"], ["GOL112"], ["MAR101"], ["MAR102"], ["MAR201"], ["MAR202"], ["PHY100"], ["PHY201"], ["PHY202"], ["PHY241"], ["PHY242"]]}]
+        }
+      ],
+      "analysis_constraints": [
+        {"kind": "no_double_count_across_laboratory_science_slots", "status": "evaluator_not_implemented", "description": "The same applied course cannot satisfy both separately printed four-credit laboratory-science rows."}
+      ]
+    },
+    {
+      "title": "Mathematics",
+      "source_refs": ["major", "general_education"],
+      "ge_area": "rcc_science_as_mathematics",
+      "units": 6,
+      "units_max": 7,
+      "human_review": "Use option_sets.mathematics_requirements; the footnote relates alternatives across two printed rows and cannot be flattened safely.",
+      "analysis_constraints": [
+        {"kind": "paired_math_slots_with_cross_row_routes", "status": "evaluator_not_implemented", "description": "Enforce the two printed slots, recommended routes, and MTH 167 credit exclusion without exceeding the source's published degree range."}
+      ]
+    },
+    {
+      "title": "UCGS history",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["HIS101"], ["HIS102"], ["HIS111"], ["HIS112"], ["HIS121"], ["HIS122"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS non-history social or behavioral science",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ECO201"], ["ECO202"], ["GEO210"], ["GEO220"], ["PLS135"], ["PLS241"], ["PSY200"], ["SOC200"], ["SOC211"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS non-literature humanities or fine arts",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ART100"], ["ART101"], ["MUS121"], ["MUS221"], ["HUM201"], ["HUM202"], ["HUM220"], ["PHI100"], ["PHI220"], ["REL230"], ["REL240"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS literature",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS social or behavioral science",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["HIS101"], ["HIS102"], ["HIS111"], ["HIS112"], ["HIS121"], ["HIS122"], ["ECO201"], ["ECO202"], ["GEO210"], ["GEO220"], ["PLS135"], ["PLS241"], ["PSY200"], ["SOC200"], ["SOC211"]]}]}
+      ],
+      "analysis_constraints": [
+        {"kind": "no_double_count_across_breadth_slots", "status": "evaluator_not_implemented", "description": "The applied course must be distinct from the separate history and non-history social/behavioral requirements."}
+      ]
+    },
+    {
+      "title": "Communication, humanities, or fine arts",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CST100"], ["CST110"], ["ART100"], ["ART101"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG258"], ["ENG275"], ["MUS121"], ["MUS221"], ["MUS222"], ["HUM201"], ["HUM220"], ["PHI100"], ["PHI220"], ["REL230"], ["REL240"]]}]}
+      ],
+      "analysis_constraints": [
+        {"kind": "no_double_count_across_breadth_slots", "status": "evaluator_not_implemented", "description": "The applied course must be distinct from the separate literature and non-literature humanities/fine-arts requirements."}
+      ]
+    },
+    {
+      "title": "Advisor-selected approved transfer electives",
+      "source_refs": ["major", "general_education", "program_intent"],
+      "ge_area": "rcc_approved_transfer_electives_for_receiving_major",
+      "units": 18,
+      "units_max": 19,
+      "human_review": "Use option_sets.approved_transfer_electives. RCC directs the student and advisor to select courses for the desired receiving degree and publishes no Computer Science-specific subset.",
+      "analysis_constraints": [
+        {"kind": "variable_credit_category_with_course_combinations", "status": "evaluator_not_implemented", "description": "Five printed rows require three credits each and one requires three to four; one- and two-credit roster courses may need combinations."},
+        {"kind": "receiving_program_alignment_required", "status": "evaluator_not_implemented", "description": "Selections must satisfy the intended receiving Computer Science degree; RCC does not publish a universal CS subset."},
+        {"kind": "no_double_count_with_other_degree_slots", "status": "evaluator_not_implemented", "description": "Credits applied to fixed, math, science, or breadth requirements cannot be reused in the six approved-transfer-elective slots."}
+      ]
+    }
+  ]
+}

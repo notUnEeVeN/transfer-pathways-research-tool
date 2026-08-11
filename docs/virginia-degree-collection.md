@@ -18,10 +18,34 @@ postsecondary institution in Virginia:
 - 18 additional Virginia private/professional transfer partners retained as a
   secondary research cohort.
 
-The website and API lead with the complete SCHEV cohort, including UVA and VMI
-even while their catalog collection is still pending. The secondary cohort is
-one click/filter away; its source work is retained but does not enter the
-primary verification denominator or UC comparison.
+The website and API lead with the complete SCHEV cohort. All 15 public
+institutions now have source-composed, catalog-accepted records: 12 use the
+current 2026–2027 catalog, while CNU, Norfolk State, and VMI use 2025–2026
+because that is still each institution's current official catalog. The
+secondary cohort is one click/filter away; its source work is retained but does
+not enter the primary verification denominator or UC comparison.
+
+### Current primary-cohort result (2026-08-10)
+
+- **15/15 SCHEV public four-year institutions:** full major, GE/college, and
+  university-graduation layers are composed and catalog-accepted.
+- **24/24 community-college/Richard Bland outcomes accounted for:** 19 current
+  CS-directed associate paths are composed and catalog-accepted; five are
+  official, source-backed findings that no current CS-specific curriculum
+  exists.
+- **The five negative findings:** Danville's previously published CS
+  specialization is absent from the current catalog; Eastern Shore, Mountain
+  Empire, Patrick & Henry, and Southside publish broad Science A.S. degrees but
+  no current source-prescribed CS award, branch, or curriculum.
+- **Two honest generic positives:** Mountain Gateway and Rappahannock publish a
+  broad Science A.S. that explicitly names Computer Science as a supported
+  transfer purpose/path. Their complete generic requirements are modeled, with
+  `computer_science_specific_prescribed_branch: false`; no CSC sequence is
+  invented.
+
+The 34 positive primary records all pass source-layer/source-reference checks,
+canonical unit closure, and course-identity resolution. They remain unsigned
+until an allowlisted researcher performs the separate human-verification step.
 
 An institution may have no Computer Science A.S./B.S., may publish a related
 award under another title, or may expose more than one materially different
@@ -201,10 +225,14 @@ requirements rather than presenting it as a suggested schedule.
   30-credit residence rule, and published component-range conflict are retained.
 
 Tidewater's [current Computer Science A.S.](https://www.tcc.edu/programs/computer-science/)
-is source-walked and compiled at 60–63 credits, including its nested mathematics
-path and two distinct technical slots. Its catalog pages remain blocked by
-Cloudflare in the reproducible capture, so that draft intentionally fails
-catalog acceptance until the source bytes and hashes can be recorded.
+is source-walked, compiled, and catalog-accepted at 60–63 credits, including its
+nested mathematics path, two distinct technical slots, complete GE/elective
+menus, and graduation rules. The official Acalog origin returns a reproducible
+Cloudflare 403 to the project browser. The durable evidence therefore records
+that direct failure separately from four repeatable transparent renders of the
+exact official-origin pages, with response hashes and direct official Transfer
+Virginia corroboration. This is an explicit provenance caveat, not a missing
+requirement or an excuse to use a prospective schedule.
 
 ### George Mason University, Computer Science B.S. (2026–2027)
 
@@ -316,6 +344,77 @@ until an allowlisted researcher walks the cited sources and signs the current
 bundle. Catalog acceptance also does not imply analysis readiness: exact
 distinctness, overlap, variable-cardinality, exclusion, and conditional-path
 rules remain explicit blockers until the downstream evaluator implements them.
+
+Three program-listed codes deliberately retain a null title because their
+institutions' current course catalogs contain no matching course entry:
+Radford `GEOL 121` and Virginia Tech `ENGE 2724` / `ENGE 4724`. Their stable
+IDs, requirement context, and source discrepancy are preserved with
+`block_analysis` flags; the pipeline does not invent titles.
+
+Source provenance is inventoried in
+`server/.va-catalogs/research/primary-source-integrity-manifest.json`. Across
+the 196 official references used by the 39 primary outcomes, 182 declarations
+were checked against the locally retained normalized response bytes. Four
+Tidewater references are explicitly classified as transparent-render transport
+exceptions, and ten retain an official URL plus declared hash and compact
+research evidence without claiming exact response-byte reproducibility. Raw
+page captures remain an ignored transport cache, so this distinction is a
+provenance limitation—not a hidden catalog-completeness claim—and must remain
+visible during human verification.
+
+## Publication gate
+
+The source-composed records are published only through the accepted-composition
+gate. New composition, requirement, research, and regression files must be
+staged explicitly (for example with a reviewed `git add -A`); `git commit -am`
+does not include new cohort artifacts. From `server/`, always run the no-write
+preflight against the exact production database first:
+
+```bash
+node scripts/importVirginiaCatalogDegrees.js \
+  --accepted-compositions-only \
+  --dry-run \
+  --uri <production-mongodb-uri> \
+  --db pmt_research
+```
+
+The current expected preflight is:
+
+- 57 registry candidates evaluated;
+- 37 publishable documents: 19 A.S. and 18 bachelor's records;
+- 37/37 catalog-accepted, including all 34 primary records plus Bridgewater,
+  Randolph-Macon, and Shenandoah from the secondary cohort;
+- one analysis-ready record (Virginia Western); every other accepted record is
+  blocked only by explicitly retained `constraint_support` rules; and
+- a database-specific list of ineligible legacy/incomplete records that would
+  be superseded, with no write during the preflight. Review that list against
+  production; its count depends on the target database's existing state.
+
+After reviewing that exact output and receiving explicit production authority,
+publish with the production Mongo URI and the same gate:
+
+```bash
+node scripts/importVirginiaCatalogDegrees.js \
+  --accepted-compositions-only \
+  --apply \
+  --uri <production-mongodb-uri> \
+  --db pmt_research
+```
+
+The importer is no-write by default, rejects unknown flags, and requires
+`--apply` plus `--accepted-compositions-only` for the normal publication path.
+The full publication also enforces the exact 15 public degrees, 19 associate
+degrees, and five complete negative findings before starting one Mongo
+transaction. If the preflight identifies a verified record in the supersede
+plan, reconcile it first; applying that status change additionally requires the
+explicit `--allow-verified-supersede` acknowledgement. Likewise, a verified
+record whose source-bundle hash changed (or predates source hashing) is listed
+for re-verification and requires `--allow-verified-reopen` before apply. A
+successful code
+deployment alone does not write these
+Mongo-backed degree documents. After the import, verify the 15-row public
+cohort, all 24 college coverage rows, the five `program_finding` negatives, and
+representative `/va/degrees` course-ID/title catalogs through the guarded API.
 
 ## Researcher workflow
 

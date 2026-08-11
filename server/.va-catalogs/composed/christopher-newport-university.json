@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "slug": "christopher-newport-university",
+  "catalog_year": "2025-2026",
+  "program": "Bachelor of Science in Computer Foundations, Computer Science Major",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "School of Engineering and Computing",
+  "college": "College of Natural and Behavioral Sciences",
+  "ge_authority": "Christopher Newport University Liberal Learning Core Curriculum",
+  "source_bundle_required": ["major", "general_education", "college", "graduation", "course_catalog"],
+  "requirement_layers": {
+    "major": {"status": "complete", "source_refs": ["major", "course_catalog"]},
+    "ge_college": {"status": "complete", "source_refs": ["general_education", "college", "graduation"]},
+    "university_graduation": {"status": "complete", "source_refs": ["graduation"]}
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "canonical_major_and_support_units": 70,
+    "liberal_learning_unique_nonmajor_units": 31,
+    "liberal_learning_units_satisfied_by_major": 9,
+    "remaining_elective_units": 19,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The current university graduation rules require two 300- or 400-level writing-intensive courses but publish no aggregate upper-division-credit minimum. The modeled major guarantees at least 29 credits numbered 300 or above.",
+      "source_refs": ["major", "general_education", "graduation"]
+    },
+    "major_scoped_upper_division_units_minimum": 29,
+    "residency": {
+      "status": "required",
+      "minimum_units": 45,
+      "rule": "At least 45 credits must be completed in residence; at least 30 of the final 36 credits, including the final 12 credits in the major, must be completed in residence.",
+      "source_refs": ["graduation"]
+    },
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+    "The ordinary Computer Science major in the Bachelor of Science in Computer Foundations is modeled. Cybersecurity, Information Science, minors, teacher preparation, and five-year graduate paths are excluded.",
+    "The catalog's named computer-science major and support courses close at 70 credits on a three-credit choice path: 58 fixed/choice credits before the advanced selection, nine advanced-selection credits, and the three-credit capstone.",
+    "The Liberal Learning Core is 40 credits minimum. CPSC 150 supplies its three-credit Logical Reasoning requirement and the required MATH 140/148 plus MATH 240 sequence supplies at least six Mathematical Literacy credits, so 31 additional nonmajor Liberal Learning credits are modeled without double-counting those nine credits.",
+    "The B.S. science sequence is separate from the seven-credit Investigating the Natural World Area of Inquiry. The major-required PHYS sequence fills the B.S. sequence; the Area of Inquiry remains in the 31-credit nonmajor Core block.",
+    "The fixed CPEN 371W supplies one of the two upper-level Writing Intensive courses. A second WI course is a zero-increment gate within the remaining 19-credit elective capacity."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "advanced_selection_variable_topic_credit",
+      "severity": "block_analysis",
+      "message": "CPSC 495 and PCSE 495 vary from one to three credits; a selected topics route must supply three credits to preserve the canonical nine-credit selection."
+    },
+    {
+      "code": "liberal_learning_distribution_constraints",
+      "severity": "block_analysis",
+      "message": "Area-of-Inquiry discipline limits and the second Writing Intensive attribute require cross-course attribute evaluation."
+    }
+  ],
+  "course_titles": {
+    "CPEN214": "Digital Logic Design",
+    "CPEN371W": "WI: Computer Ethics",
+    "CPSC150": "Introduction to Programming",
+    "CPSC150L": "Introduction to Programming Laboratory",
+    "CPSC250": "Programming for Data Manipulation",
+    "CPSC250L": "Programming for Data Manipulation Laboratory",
+    "CPSC255": "Programming for Applications",
+    "CPSC270": "Data and File Structures",
+    "CPSC280": "Introduction to Software Engineering",
+    "CPSC327": "C++ Programming",
+    "CPSC360": "Programming Language Concepts",
+    "CPSC410": "Operating Systems I",
+    "CPSC420": "Algorithms",
+    "CPSC425": "Object Oriented Programming and Design",
+    "CPSC440": "Database Management Systems",
+    "CPSC470": "Theoretical Computer Science",
+    "CPSC471": "Applied Artificial Intelligence",
+    "CPSC472": "Introduction to Robotics",
+    "CPSC475": "Android Mobile Computing",
+    "CPSC480": "Software Design and Development",
+    "CPSC495": "Special Topics",
+    "CPSC498": "Capstone Project in Computer Science",
+    "CYBR428": "Network Security and Cryptography",
+    "ENGR210": "Mathematical Methods for Engineers and Scientists",
+    "ENGR213": "Discrete Structures for Computer Applications",
+    "MATH140": "Calculus and Analytic Geometry",
+    "MATH148": "Accelerated Calculus",
+    "MATH235": "Applied Matrix Techniques",
+    "MATH240": "Intermediate Calculus",
+    "MATH260": "Linear Algebra",
+    "MATH380": "Numerical Analysis I",
+    "PCSE495": "Special Topics",
+    "PHYS151": "College Physics I",
+    "PHYS151L": "College Physics Laboratory I",
+    "PHYS152": "College Physics II",
+    "PHYS152L": "College Physics Laboratory II",
+    "PHYS201": "University Physics I",
+    "PHYS201L": "University Physics I Laboratory",
+    "PHYS202": "University Physics II",
+    "PHYS202L": "University Physics II Laboratory",
+    "PHYS340": "Methods of Theoretical Physics",
+    "PHYS341": "Design and Analysis of Experiments",
+    "PHYS421": "System Design Lab (Data Acquisition)",
+    "PHYS441": "Modeling and Simulation",
+    "ENGL123": "First-Year Writing Seminar",
+    "ENGL223": "Second-Year Writing Seminar"
+  },
+  "requirement_groups": [
+    {
+      "title": "Computer Science major and named support requirements",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "58 before the advanced three-course selection and capstone",
+      "sections": [
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CPEN214", "units": 3}]},
+        {"select": 1, "units": 2, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPEN371W", "units": 2}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "series", "codes": ["CPSC150", "CPSC150L"], "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "series", "codes": ["CPSC250", "CPSC250L"], "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CPSC255", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CPSC270", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CPSC280", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC327", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC360", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC410", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CPSC420", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "MATH140", "units": 3}, {"kind": "course", "code": "MATH148", "units": 3}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "MATH240", "units": 4}]},
+        {"select": 1, "units": 8, "course_level": "lower_division", "cc_articulable": true, "label": "B.S. laboratory science sequence specified by the major", "receivers": [
+          {"kind": "series", "codes": ["PHYS151", "PHYS151L", "PHYS152", "PHYS152L"], "units": 8},
+          {"kind": "series", "codes": ["PHYS201", "PHYS201L", "PHYS202", "PHYS202L"], "units": 8}
+        ]},
+        {"select": 1, "units": 3, "course_level": "mixed", "cc_articulable": true, "receivers": [
+          {"kind": "course", "code": "PHYS340", "units": 3},
+          {"kind": "course", "code": "ENGR210", "units": 3},
+          {"kind": "course", "code": "MATH235", "units": 3},
+          {"kind": "course", "code": "MATH260", "units": 3}
+        ]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "ENGR213", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "PHYS341", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Advanced major selection",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "Select three courses; canonical nine credits",
+      "analysis_constraints": [
+        {
+          "kind": "variable_topics_credit_must_close_selection",
+          "status": "evaluator_not_implemented",
+          "description": "CPSC 495 and PCSE 495 vary from one to three credits; any selected topics offering must provide three credits on the canonical path."
+        },
+        {
+          "kind": "special_topics_and_500_level_limit",
+          "status": "evaluator_not_implemented",
+          "description": "Courses numbered 495 and above may be used no more than twice in this three-course selection."
+        }
+      ],
+      "sections": [
+        {"select": 3, "units": 9, "tier": "breadth", "course_level": "upper_division", "cc_articulable": false, "receivers": [
+          {"kind": "course", "code": "CPSC425", "units": 3},
+          {"kind": "course", "code": "CPSC440", "units": 3},
+          {"kind": "course", "code": "CPSC470", "units": 3},
+          {"kind": "course", "code": "CPSC471", "units": 3},
+          {"kind": "course", "code": "CPSC472", "units": 3},
+          {"kind": "course", "code": "CPSC475", "units": 3},
+          {"kind": "course", "code": "CPSC480", "units": 3},
+          {"kind": "course", "code": "CPSC495", "units": 3},
+          {"kind": "course", "code": "MATH380", "units": 3},
+          {"kind": "course", "code": "PCSE495", "units": 3},
+          {"kind": "course", "code": "PHYS421", "units": 3},
+          {"kind": "course", "code": "PHYS441", "units": 3},
+          {"kind": "course", "code": "CYBR428", "units": 3},
+          {"kind": "ge_area", "code": "CNU-CPSC-500", "name": "Any CPSC 500-level course with advisor permission", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Computer Science capstone",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CPSC498", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Liberal Learning Foundations not already satisfied by the major",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "graduation"],
+      "stated_credits": "12 unique nonmajor credits; Mathematical Literacy and Logical Reasoning overlap the major",
+      "sections": [
+        {"select": 1, "units": 3, "label": "First-Year Writing Seminar", "receivers": [{"kind": "course", "code": "ENGL123", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Second-Year Writing Seminar", "receivers": [{"kind": "course", "code": "ENGL223", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Second Language Literacy at the 200 level or higher", "receivers": [{"kind": "ge_area", "code": "CNU-LLF-LANGUAGE-200", "name": "Second Language Literacy at the 200 level or higher", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Economic Modeling and Analysis", "receivers": [{"kind": "ge_area", "code": "CNU-LLFE", "name": "Economic Modeling and Analysis", "units": 3}]},
+        {"select": 1, "units": 0, "label": "Mathematical Literacy supplied by required MATH courses", "receivers": [{"kind": "requirement", "name": "At least six Mathematical Literacy credits supplied by required MATH 140/148 and MATH 240", "units": 0}], "cc_articulable": false, "tier": "nontransferable"},
+        {"select": 1, "units": 0, "label": "Logical Reasoning supplied by CPSC 150", "receivers": [{"kind": "requirement", "name": "Logical Reasoning requirement supplied by required CPSC 150", "units": 0}], "cc_articulable": false, "tier": "nontransferable"}
+      ]
+    },
+    {
+      "title": "Liberal Learning Areas of Inquiry",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "graduation"],
+      "stated_credits": "19",
+      "analysis_constraints": [
+        {
+          "kind": "area_of_inquiry_discipline_limits",
+          "status": "evaluator_not_implemented",
+          "description": "Only one three-credit Area-of-Inquiry course may be in the major discipline, and no more than eight Area-of-Inquiry credits may share one discipline."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "label": "Civic and Democratic Engagement", "receivers": [{"kind": "ge_area", "code": "CNU-AIDE", "name": "Civic and Democratic Engagement", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Creative Expressions", "receivers": [{"kind": "ge_area", "code": "CNU-AICE", "name": "Creative Expressions", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Global and Multicultural Perspectives", "receivers": [{"kind": "ge_area", "code": "CNU-AIGM", "name": "Global and Multicultural Perspectives", "units": 3}]},
+        {"select": 1, "units": 7, "label": "Investigating the Natural World: two lectures and one corresponding laboratory", "receivers": [{"kind": "ge_area", "code": "CNU-AINW", "name": "Investigating the Natural World: two lectures and one corresponding laboratory", "units": 7}]},
+        {"select": 1, "units": 3, "label": "Western Traditions", "receivers": [{"kind": "ge_area", "code": "CNU-AIWT", "name": "Western Traditions", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Remaining elective capacity",
+      "requirement_layer": "university_graduation",
+      "tier": "breadth",
+      "course_level": "elective_capacity",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "graduation"],
+      "stated_credits": "19 after the 70-credit major/support block and 31 unique nonmajor Liberal Learning credits",
+      "analysis_constraints": [
+        {
+          "kind": "writing_intensive_attribute_within_capacity",
+          "status": "evaluator_not_implemented",
+          "description": "At least one course in this or another non-CPEN-371W block must carry the 300/400-level Writing Intensive attribute."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 19, "receivers": [{"kind": "ge_area", "code": "CNU-ELECTIVE-CAPACITY", "name": "Remaining elective credit to 120", "units": 19}]},
+        {"select": 1, "units": 0, "tier": "nontransferable", "cc_articulable": false, "label": "Second upper-level Writing Intensive course", "receivers": [{"kind": "requirement", "name": "One additional 300- or 400-level Writing Intensive course beyond CPEN 371W", "units": 0}]}
+      ]
+    },
+    {
+      "title": "University graduation and residence requirements",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "policy",
+      "cc_articulable": false,
+      "source_refs": ["graduation"],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "At least 120 academic semester hours with a minimum 2.0 cumulative GPA", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "At least 45 credits completed in residence as a degree-seeking Christopher Newport student", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "At least 30 of the final 36 credits completed in residence", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Final 12 credits in the major completed in residence", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Minimum 2.0 major GPA with no more than two major grades below C-", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Satisfactory completion of university assessment requirements", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Enrollment in at least one Christopher Newport course during the degree-conferral semester", "units": 0}]}
+      ]
+    }
+  ]
+}

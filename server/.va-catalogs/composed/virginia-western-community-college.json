@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "slug": "virginia-western-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, A.S.",
+  "award": "AS",
+  "program_code": "246",
+  "catalog_version": {
+    "catalog_id": 25,
+    "program_id": 3520,
+    "returnto": 2597,
+    "social_science_menu_course_id": 29546,
+    "literature_menu_course_id": 29505
+  },
+  "total_units": 60,
+  "total_units_max": 61,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "catalog",
+    "major",
+    "general_education",
+    "social_science_elective",
+    "literature_elective",
+    "course_catalog",
+    "graduation"
+  ],
+  "course_titles": {
+    "SDV101": "Orientation to Information Technology",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "MTH167": "Pre-Calculus with Trigonometry",
+    "MTH245": "Statistics I",
+    "MTH263": "Calculus I",
+    "MTH264": "Calculus II",
+    "MTH288": "Discrete Mathematics",
+    "CSC215": "Computer Systems",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC222": "Object-Oriented Programming",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "HIS121": "United States History to 1877",
+    "CST100": "Principles of Public Speaking",
+    "PHI220": "Ethics and Society",
+    "ECO201": "Principles of Macroeconomics",
+    "GEO210": "People and the Land: Introduction to Cultural Geography",
+    "PLS135": "U.S. Government and Politics",
+    "PLS241": "Introduction to International Relations I",
+    "PSY200": "Principles of Psychology",
+    "SOC200": "Introduction to Sociology",
+    "SOC268": "Social Problems",
+    "CHM111": "General Chemistry I",
+    "CHM112": "General Chemistry II",
+    "PHY241": "University Physics I",
+    "PHY242": "University Physics II",
+    "ENG225": "Reading Literature: Culture and Ideas",
+    "ENG245": "British Literature",
+    "ENG246": "American Literature",
+    "ENG250": "Children's Literature",
+    "ENG255": "World Literature",
+    "ENG258": "African American Literature",
+    "ENG275": "Women in Literature"
+  },
+  "option_sets": {
+    "social_science_elective": {
+      "source_refs": ["major", "social_science_elective"],
+      "courses": ["ECO201", "GEO210", "PLS135", "PLS241", "PSY200", "SOC200", "SOC268"]
+    },
+    "literature_elective": {
+      "source_refs": ["major", "literature_elective"],
+      "courses": ["ENG225", "ENG245", "ENG246", "ENG250", "ENG255", "ENG258", "ENG275"]
+    },
+    "laboratory_science_sequence": {
+      "source_refs": ["major"],
+      "routes": [
+        ["CHM111", "CHM112"],
+        ["PHY241", "PHY242"]
+      ]
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": null,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 61,
+    "closure_basis": "Forty-three fixed credits, three social-science elective credits, three or four credits of MTH 245/MTH 264, eight credits from one science sequence, and three literature credits total 60-61.",
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "rule": "At least 25 percent of the total semester hours must be acquired at Virginia Western.",
+      "source_refs": ["graduation"]
+    },
+    "minimum_curriculum_gpa": 2
+  },
+  "modeling_notes": [
+    "The current catalog's semester headings are reorganized into degree requirements; their ordering is not imported as a prospective schedule.",
+    "Social Science ELE and ENG LIT are linked catalog pseudo-courses. Their official descriptions each publish a closed seven-course option menu, so neither remains an unresolved category.",
+    "The program footnote describes the chemistry and physics alternatives as sequences. The composition therefore preserves CHM 111+112 and PHY 241+242 as complete AND routes inside one OR choice.",
+    "The specific program publishes a 60-credit minimum. MTH 245 is three credits and MTH 264 is four, producing complete 60- and 61-credit routes."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "published_total_is_minimum_only",
+      "severity": "review",
+      "message": "The catalog publishes a 60-credit minimum rather than a range; the MTH 264 route totals 61 credits."
+    },
+    {
+      "code": "pseudo_course_menus_resolved",
+      "severity": "review",
+      "message": "The source program shows Social Science ELE and ENG LIT, but their linked official descriptions supply exact option lists and are required source layers."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Fixed Computer Science A.S. requirements",
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 2, "receivers": [{"kind": "cc_course", "options": [["SDV101"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 5, "receivers": [{"kind": "cc_course", "options": [["MTH167"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["HIS121"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CST100"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["PHI220"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC215"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["MTH288"]]}]}
+      ]
+    },
+    {
+      "title": "Social Science elective",
+      "source_refs": ["major", "general_education", "social_science_elective"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ECO201"], ["GEO210"], ["PLS135"], ["PLS241"], ["PSY200"], ["SOC200"], ["SOC268"]]}]}
+      ]
+    },
+    {
+      "title": "Statistics I or Calculus II",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "cc_course", "options": [["MTH245"], ["MTH264"]]}]}
+      ]
+    },
+    {
+      "title": "Laboratory science sequence",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 8, "receivers": [{"kind": "cc_course", "options": [["CHM111", "CHM112"], ["PHY241", "PHY242"]]}]}
+      ]
+    },
+    {
+      "title": "Literature elective",
+      "source_refs": ["major", "general_education", "literature_elective"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]}
+      ]
+    }
+  ]
+}

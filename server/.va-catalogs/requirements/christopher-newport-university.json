@@ -2,14 +2,136 @@
  "slug": "christopher-newport-university",
  "name": "Christopher Newport University",
  "level": "four_year",
- "platform": "web",
- "parser": "lines",
- "pdf_window": null,
+ "platform": "pdf",
+ "parser": "hand_composition",
+ "hand_read": true,
+ "hand_read_notes": "The canonical composition was hand-read from the official catalog. The configured PDF window proves the Computer Foundations/Computer Science identity and captures the CS requirement column; the source PDF's two-column layout also interleaves adjacent physics text, so the raw parser tree is not canonical.",
+ "pdf_window": {
+  "found": true,
+  "mode": "configured_anchors",
+  "start_page": 270,
+  "end_page": 270,
+  "lines": 26,
+  "requirements_start_anchor": "Students pursuing the major in computer science are strongly",
+  "requirements_end_anchor": "Major in Cybersecurity",
+  "program_identity_start_anchor": "Bachelor of Science degree in Computer Foundations",
+  "program_pdf_pages": [269, 270],
+  "program_printed_pages": [269, 270]
+ },
  "outcome": "captured",
  "offers_cs": true,
- "source_url": "https://cnu.edu/academics/programs/computer-science.html",
- "captured_at": "2026-08-02T05:53:34.152Z",
- "program_title": null,
+ "source_url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf",
+ "catalog_year": "2025-2026",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science in Computer Foundations",
+  "catalog_year": "2025-2026",
+  "program": "Bachelor of Science in Computer Foundations, Computer Science Major",
+  "variant": "Ordinary Computer Science major; excludes Cybersecurity, Information Science, minors, and five-year graduate pathways",
+  "academic_unit": "School of Engineering and Computing",
+  "college": "College of Natural and Behavioral Sciences",
+  "general_education_authority": "Christopher Newport University Liberal Learning Core Curriculum",
+  "unit_audit": {
+   "graduation_minimum": 120,
+   "modeled_units": 120,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "The university requires two 300- or 400-level writing-intensive courses but states no aggregate upper-division-credit minimum; the composed major guarantees at least 29 upper-level credits.",
+    "source_refs": ["major", "general_education", "graduation"]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 45,
+    "rule": "At least 45 credits must be completed in residence; at least 30 of the final 36 credits, including the final 12 credits in the major, must be completed in residence.",
+    "source_refs": ["graduation"]
+   }
+  },
+  "layers": {
+   "major": {"source_roles": ["program"]},
+   "general_education": {"source_roles": ["ge"]},
+   "college": {"source_roles": ["college"]},
+   "graduation": {"source_roles": ["graduation"]},
+   "academic_policy": {"source_roles": ["graduation"]},
+   "course_catalog": {"source_roles": ["course_catalog"]}
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Christopher Newport 2025-2026 Undergraduate Catalog, Computer Science major, pp. 269-270",
+   "url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf",
+   "requested_url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T23:53:52.165Z",
+   "sha256": "decd8d2605842c3ce1fc7714dda8c4c1eb82abc293b89f0208773a4dd09112ec",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Christopher Newport 2025-2026 Undergraduate Catalog, Liberal Learning Core, pp. 59-61",
+   "url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf#page=59",
+   "requested_url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf#page=59",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T23:53:52.165Z",
+   "sha256": "decd8d2605842c3ce1fc7714dda8c4c1eb82abc293b89f0208773a4dd09112ec",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "college",
+   "role": "college",
+   "kind": "college",
+   "label": "Christopher Newport 2025-2026 Undergraduate Catalog, School of Engineering and Computing, pp. 269-270",
+   "url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf#page=269",
+   "requested_url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf#page=269",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T23:53:52.165Z",
+   "sha256": "decd8d2605842c3ce1fc7714dda8c4c1eb82abc293b89f0208773a4dd09112ec",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Christopher Newport 2025-2026 Undergraduate Catalog, General Requirements for Graduation, pp. 56-57",
+   "url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf#page=56",
+   "requested_url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf#page=56",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T23:53:52.165Z",
+   "sha256": "decd8d2605842c3ce1fc7714dda8c4c1eb82abc293b89f0208773a4dd09112ec",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Christopher Newport 2025-2026 Undergraduate Catalog course descriptions",
+   "url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf#page=271",
+   "requested_url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf#page=271",
+   "catalog_platform": "pdf",
+   "captured_at": "2026-08-10T23:53:52.165Z",
+   "sha256": "decd8d2605842c3ce1fc7714dda8c4c1eb82abc293b89f0208773a4dd09112ec",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {"status": "captured", "source_refs": ["major", "course_catalog"], "note": "Catalog pp. 269-270 and course descriptions."},
+  "general_education": {"status": "captured", "source_refs": ["general_education"], "note": "Catalog pp. 59-61."},
+  "college": {"status": "captured", "source_refs": ["college", "major"], "note": "College and school ownership are printed in the official catalog."},
+  "graduation": {"status": "captured", "source_refs": ["graduation"], "note": "Catalog pp. 56-57."},
+  "academic_policy": {"status": "captured", "source_refs": ["graduation"], "note": "Catalog academic policies and graduation rules."},
+  "course_catalog": {"status": "captured", "source_refs": ["course_catalog"], "note": "Course credits and titles are in the same catalog PDF."}
+ },
+ "captured_at": "2026-08-10T23:53:52.165Z",
+ "program_title": "Bachelor of Science in Computer Foundations, Computer Science Major",
  "total_credits": null,
  "stopped_at": null,
  "groups": [

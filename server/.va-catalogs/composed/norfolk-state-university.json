@@ -1,0 +1,359 @@
+{
+  "schema_version": 1,
+  "slug": "norfolk-state-university",
+  "catalog_year": "2025-2026",
+  "program": "Bachelor of Science in Computer Science - Standard Track",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Science, Engineering, and Technology",
+  "ge_authority": "Norfolk State University General Education Core Program",
+  "source_bundle_required": ["major", "general_education", "college", "college_2", "policy", "course_catalog"],
+  "requirement_layers": {
+    "major": {"status": "complete", "source_refs": ["major", "college_2", "course_catalog"]},
+    "ge_college": {"status": "complete", "source_refs": ["major", "general_education", "college"]},
+    "university_graduation": {"status": "complete", "source_refs": ["general_education", "policy"]}
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "published_general_education_units": 40,
+    "published_core_major_units": 53,
+    "published_requirements_elective_units": 27,
+    "published_other_requirement_units": 0,
+    "fixed_computing_math_and_writing_units": 64,
+    "laboratory_science_support_units": 8,
+    "remaining_explicit_general_education_units": 27,
+    "upper_cs_or_math_elective_units": 18,
+    "free_elective_units": 3,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The current degree, General Education, department, and academic-policy sources publish no aggregate university-wide upper-division-credit minimum. Upper-level courses are required within the Standard Track curriculum and its elective rules, but that is not a university minimum.",
+      "source_refs": ["major", "general_education", "policy"]
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "rule": "Bachelor candidates must spend at least two semesters in residence and earn at least 30 semester hours during that period, including all courses required by the senior-year curriculum.",
+      "source_refs": ["general_education"]
+    },
+    "resident_semesters_minimum": 2,
+    "minimum_cumulative_gpa": 2
+  },
+  "modeling_notes": [
+    "The ordinary Standard Track is modeled. Computer Engineering, IA, Cybersecurity, Software Engineering, DNIMAS, and accelerated pathways are excluded.",
+    "Norfolk State publishes the Standard Track course table under the heading Curriculum and makes it the only course-level statement of the degree. Although CourseLeaf's generic table class renders the words Plan of Study Grid, the page does not call it sample, suggested, recommended, or illustrative; the four table totals close exactly to 120. The composition therefore treats the rows as the required curriculum while discarding their year-by-year sequencing.",
+    "The published summary is 40 General Education + 53 Core Major + 27 Requirements Electives + 0 Other = 120. The same 120 credits are organized here by requirement semantics because the curriculum does not label each row with one of those four accounting buckets.",
+    "The fixed named computing, mathematics, and technical-writing rows total 64; two laboratory-science selections total eight; the remaining explicit General Education rows total 27; upper-level CS/Math choices total 18; and free elective capacity is three.",
+    "The 40-credit General Education Core includes Digital/Computer, Mathematics, and Natural Sciences categories that are supplied inside the fixed computing/math/science curriculum. Zero-increment gates retain those category requirements without counting the same credits twice.",
+    "The curriculum displays 18 upper-level CS-or-Math elective credits while the adjacent Major Electives authority requires at least 15 credits from its enumerated CSC menu. The model therefore requires five menu courses plus one additional CSC-menu or 300-level MATH course."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "catalog_edition_lag",
+      "severity": "review",
+      "message": "The current live Norfolk State catalog remains 2025-2026; compare this source bundle when a newer edition is published."
+    },
+    {
+      "code": "courseleaf_curriculum_grid_authority",
+      "severity": "review",
+      "message": "The required course inventory is published only in the degree page's Curriculum table; sequencing columns are excluded from this composition."
+    },
+    {
+      "code": "cross_section_science_and_elective_distinctness",
+      "severity": "block_analysis",
+      "message": "The evaluator does not yet enforce distinct laboratory-science sequences or prevent reuse between the 15-credit CSC menu and final three-credit CSC/MATH choice."
+    }
+  ],
+  "course_titles": {
+    "BIO110": "General Biology",
+    "BIO110L": "General Biology Laboratory",
+    "BUS175": "Introduction to Business and Entrepreneurship",
+    "CHM221": "General Chemistry I",
+    "CHM221L": "General Chemistry I Laboratory",
+    "CSC101": "Introduction to the Computer Science Profession",
+    "CSC170": "Computer Programming I",
+    "CSC170L": "Computer Programming Laboratory I",
+    "CSC260": "Computer Programming II",
+    "CSC260L": "Computer Programming II Laboratory",
+    "CSC268": "Computer Organization",
+    "CSC275": "Fundamentals of Cybersecurity",
+    "CSC292": "Unix and C Programming",
+    "CSC295": "Java Applications Programming",
+    "CSC312": "Topics in Information Technology",
+    "CSC313": "Network Administration",
+    "CSC314": "Advanced Internet Programming",
+    "CSC316": "Introduction to Cloud Computing",
+    "CSC360": "Interface Design",
+    "CSC361": "Survey of Programming Languages",
+    "CSC369": "Introduction to 3D Animation and Visual",
+    "CSC372": "Data Structures",
+    "CSC373": "Algorithms Design and Analysis",
+    "CSC380": "Software Engineering",
+    "CSC390": "Technical Strategies in Game Design",
+    "CSC395": "Mobile App Development Using Android",
+    "CSC411": "Web Server Administration",
+    "CSC420": "Database Principles and Design",
+    "CSC422": "Database Implementation",
+    "CSC430": "Data Communications",
+    "CSC432": "Wireless Internet of Things",
+    "CSC435": "Computer Security I",
+    "CSC445": "Computer Network Defense",
+    "CSC449": "Cryptography and Network Security",
+    "CSC464": "Operating Systems",
+    "CSC466": "Advanced Computer Topics I",
+    "CSC467": "Advanced Computer Topics II",
+    "CSC468": "Computer Architecture",
+    "CSC470": "Artificial Intelligence",
+    "CSC471": "Introduction to Game Design and Development",
+    "CSC472": "3D Game Programming",
+    "CSC476": "Advanced Computer Topics III",
+    "CSC477": "Advanced Computer Topics IV",
+    "CSC485": "Software Quality Assurance and Testing",
+    "CSC486": "Software Project Management",
+    "CSC487": "Engineering Secure Software Systems",
+    "CSC488": "Principles of Distributed Software Systems",
+    "CSC490": "Game Design Capstone Project",
+    "CSC492": "Independent Study",
+    "CSC494": "Digital Forensics",
+    "CSC498": "Computer Science Seminar I",
+    "CSC499": "Computer Science Seminar II",
+    "ECN200": "Basic Principles of Economics",
+    "ENG101": "College English I",
+    "ENG102": "College English II",
+    "ENG207": "Introduction to World Literature",
+    "ENG285": "Public Speaking",
+    "ENG303": "Professional and Technical Writing",
+    "ENG383": "African American Literature",
+    "FIA201": "Basic Art Appreciation",
+    "HED100": "Personal and Community Health",
+    "HIS101": "History of World Societies II",
+    "HIS103": "United States History Since 1865",
+    "HIS335": "African American History",
+    "HIS336": "African American History Since 1865",
+    "HIS371": "African History and Cultures 1600-Present",
+    "HRP320": "African American Health",
+    "MTH153": "College Algebra and Trigonometry",
+    "MTH184": "Calculus I",
+    "MTH251": "Calculus II",
+    "MTH351": "Probability and Statistics I",
+    "MTH371": "Discrete Mathematical Structures",
+    "MUS234": "African American Music",
+    "MUS301": "Music Appreciation",
+    "PED100": "Fundamentals of Fitness for Life",
+    "PHY152": "General Physics",
+    "PHY152L": "General Physics Laboratory I",
+    "SEM101": "Spartan Seminar 101",
+    "SEM102": "Spartan Seminar 102",
+    "SEM201": "Spartan Seminar 201",
+    "SOC101": "Introduction to the Social Sciences"
+  },
+  "requirement_groups": [
+    {
+      "title": "Standard Track fixed computing, mathematics, and technical-writing curriculum",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "college_2", "course_catalog"],
+      "stated_credits": "64",
+      "sections": [
+        {"select": 1, "units": 1, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSC101", "units": 1}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSC170", "units": 3}]},
+        {"select": 1, "units": 1, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSC170L", "units": 1}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSC260", "units": 3}]},
+        {"select": 1, "units": 1, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSC260L", "units": 1}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC372", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSC268", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSC295", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC361", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSC292", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC380", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC468", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC430", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSC275", "units": 3}]},
+        {"select": 1, "units": 2, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC498", "units": 2}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC464", "units": 3}]},
+        {"select": 1, "units": 2, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSC499", "units": 2}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "MTH153", "units": 3}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "MTH184", "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "MTH251", "units": 4}]},
+        {"select": 1, "units": 4, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "MTH371", "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "MTH351", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "ENG303", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Two distinct laboratory-science selections required by the Standard Track curriculum",
+      "requirement_layer": "ge_college",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "8",
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "distinct_laboratory_science_sequences",
+          "status": "evaluator_not_implemented",
+          "description": "The two four-credit selections must be distinct; the same lecture/laboratory pair cannot earn degree credit twice."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [
+          {"kind": "series", "codes": ["BIO110", "BIO110L"], "units": 4},
+          {"kind": "series", "codes": ["PHY152", "PHY152L"], "units": 4},
+          {"kind": "series", "codes": ["CHM221", "CHM221L"], "units": 4}
+        ]},
+        {"select": 1, "units": 4, "receivers": [
+          {"kind": "series", "codes": ["BIO110", "BIO110L"], "units": 4},
+          {"kind": "series", "codes": ["PHY152", "PHY152L"], "units": 4},
+          {"kind": "series", "codes": ["CHM221", "CHM221L"], "units": 4}
+        ]}
+      ]
+    },
+    {
+      "title": "Explicit General Education courses and narrowed Standard Track distributions",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": "27 additive credits; remaining GE categories are supplied within fixed curriculum",
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "SEM101", "units": 1}]},
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "SEM102", "units": 1}]},
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "SEM201", "units": 1}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENG101", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENG102", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENG285", "units": 3}]},
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "PED100", "units": 1}]},
+        {"select": 1, "units": 2, "receivers": [{"kind": "course", "code": "HED100", "units": 2}]},
+        {"select": 1, "units": 3, "label": "Social Science elective", "receivers": [
+          {"kind": "course", "code": "SOC101", "units": 3},
+          {"kind": "course", "code": "HIS101", "units": 3},
+          {"kind": "course", "code": "HIS103", "units": 3},
+          {"kind": "course", "code": "BUS175", "units": 3},
+          {"kind": "course", "code": "ECN200", "units": 3}
+        ]},
+        {"select": 1, "units": 3, "label": "Humanities or Foreign Languages selection narrowed by the Standard Track table", "receivers": [
+          {"kind": "course", "code": "ENG207", "units": 3},
+          {"kind": "course", "code": "FIA201", "units": 3},
+          {"kind": "course", "code": "MUS301", "units": 3}
+        ]},
+        {"select": 1, "units": 3, "label": "Social Science Cultural Elective", "receivers": [
+          {"kind": "course", "code": "HIS335", "units": 3},
+          {"kind": "course", "code": "HIS336", "units": 3},
+          {"kind": "course", "code": "HIS371", "units": 3},
+          {"kind": "course", "code": "HRP320", "units": 3}
+        ]},
+        {"select": 1, "units": 3, "label": "Humanities Cultural Elective", "receivers": [
+          {"kind": "course", "code": "ENG383", "units": 3},
+          {"kind": "course", "code": "MUS234", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education category gates supplied inside the fixed Standard Track curriculum",
+      "requirement_layer": "ge_college",
+      "tier": "nontransferable",
+      "course_level": "overlap_policy",
+      "cc_articulable": false,
+      "source_refs": ["major", "general_education"],
+      "analysis_constraints": [
+        {
+          "kind": "general_education_major_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "Digital/Computer, Mathematics, and Natural Sciences category credit is contained in the required computing/math/science curriculum and must not be added again."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Three-credit Digital, Computer and Telecommunications requirement supplied within required CSC curriculum", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Three-credit General Education Mathematics requirement supplied within required MTH curriculum", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Seven-credit General Education Natural Sciences requirement supplied within the eight-credit laboratory-science curriculum", "units": 0}]}
+      ]
+    },
+    {
+      "title": "Upper-level Computer Science and Mathematics electives",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "18 total; at least 15 from the published Major Electives menu",
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "minimum_major_menu_units",
+          "status": "evaluator_not_implemented",
+          "description": "At least five of the six three-credit selections must come from the enumerated CSC Major Electives menu; the sixth may instead be a 300-level-or-above mathematics course."
+        }
+      ],
+      "sections": [
+        {"select": 5, "units": 15, "receivers": [
+          {"kind": "course", "code": "CSC312", "units": 3}, {"kind": "course", "code": "CSC313", "units": 3},
+          {"kind": "course", "code": "CSC314", "units": 3}, {"kind": "course", "code": "CSC316", "units": 3},
+          {"kind": "course", "code": "CSC360", "units": 3}, {"kind": "course", "code": "CSC369", "units": 3},
+          {"kind": "course", "code": "CSC390", "units": 3}, {"kind": "course", "code": "CSC373", "units": 3},
+          {"kind": "course", "code": "CSC395", "units": 3}, {"kind": "course", "code": "CSC411", "units": 3},
+          {"kind": "course", "code": "CSC420", "units": 3}, {"kind": "course", "code": "CSC422", "units": 3},
+          {"kind": "course", "code": "CSC432", "units": 3}, {"kind": "course", "code": "CSC435", "units": 3},
+          {"kind": "course", "code": "CSC445", "units": 3}, {"kind": "course", "code": "CSC449", "units": 3},
+          {"kind": "course", "code": "CSC466", "units": 3}, {"kind": "course", "code": "CSC467", "units": 3},
+          {"kind": "course", "code": "CSC470", "units": 3}, {"kind": "course", "code": "CSC471", "units": 3},
+          {"kind": "course", "code": "CSC472", "units": 3}, {"kind": "course", "code": "CSC476", "units": 3},
+          {"kind": "course", "code": "CSC477", "units": 3}, {"kind": "course", "code": "CSC485", "units": 3},
+          {"kind": "course", "code": "CSC486", "units": 3}, {"kind": "course", "code": "CSC487", "units": 3},
+          {"kind": "course", "code": "CSC488", "units": 3}, {"kind": "course", "code": "CSC490", "units": 3},
+          {"kind": "course", "code": "CSC492", "units": 3}, {"kind": "course", "code": "CSC494", "units": 3}
+        ]},
+        {"select": 1, "units": 3, "tier": "breadth", "receivers": [
+          {"kind": "course", "code": "CSC312", "units": 3}, {"kind": "course", "code": "CSC313", "units": 3},
+          {"kind": "course", "code": "CSC314", "units": 3}, {"kind": "course", "code": "CSC316", "units": 3},
+          {"kind": "course", "code": "CSC360", "units": 3}, {"kind": "course", "code": "CSC369", "units": 3},
+          {"kind": "course", "code": "CSC390", "units": 3}, {"kind": "course", "code": "CSC373", "units": 3},
+          {"kind": "course", "code": "CSC395", "units": 3}, {"kind": "course", "code": "CSC411", "units": 3},
+          {"kind": "course", "code": "CSC420", "units": 3}, {"kind": "course", "code": "CSC422", "units": 3},
+          {"kind": "course", "code": "CSC432", "units": 3}, {"kind": "course", "code": "CSC435", "units": 3},
+          {"kind": "course", "code": "CSC445", "units": 3}, {"kind": "course", "code": "CSC449", "units": 3},
+          {"kind": "course", "code": "CSC466", "units": 3}, {"kind": "course", "code": "CSC467", "units": 3},
+          {"kind": "course", "code": "CSC470", "units": 3}, {"kind": "course", "code": "CSC471", "units": 3},
+          {"kind": "course", "code": "CSC472", "units": 3}, {"kind": "course", "code": "CSC476", "units": 3},
+          {"kind": "course", "code": "CSC477", "units": 3}, {"kind": "course", "code": "CSC485", "units": 3},
+          {"kind": "course", "code": "CSC486", "units": 3}, {"kind": "course", "code": "CSC487", "units": 3},
+          {"kind": "course", "code": "CSC488", "units": 3}, {"kind": "course", "code": "CSC490", "units": 3},
+          {"kind": "course", "code": "CSC492", "units": 3}, {"kind": "course", "code": "CSC494", "units": 3},
+          {"kind": "ge_area", "code": "NSU-MATH-300", "name": "Mathematics elective numbered 300 or above", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Free elective",
+      "requirement_layer": "university_graduation",
+      "tier": "breadth",
+      "course_level": "elective_capacity",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "ge_area", "code": "NSU-FREE-ELECTIVE", "name": "Free elective", "units": 3}]}
+      ]
+    },
+    {
+      "title": "University and department graduation requirements",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "policy",
+      "cc_articulable": false,
+      "source_refs": ["general_education", "college_2", "policy"],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Minimum 120 semester hours and minimum 2.0 cumulative GPA", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete the General Education Core and all Standard Track curriculum requirements", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Complete SEM 101, SEM 102, and SEM 201 with a minimum grade of C unless formally exempted", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "At least two semesters and 30 credits in residence, including all senior-year curriculum courses", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Meet university core competency requirements", "units": 0}]},
+        {"select": 1, "units": 0, "receivers": [{"kind": "requirement", "name": "Minimum grade of C in all English, Science, Mathematics, and Computer Science courses required for the major", "units": 0}]}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,542 @@
+{
+  "schema_version": 1,
+  "slug": "the-university-of-virginia-s-college-at-wise",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "course_titles": {
+    "ENG1010": "Composition",
+    "ENG1020": "Composition",
+    "FRE1010": "Elementary French",
+    "FRE1020": "Elementary French",
+    "GER1010": "Elementary German",
+    "GER1020": "Elementary German",
+    "SPA1010": "Elementary Spanish",
+    "SPA1020": "Elementary Spanish"
+  },
+  "canonical_variant": "Standard Computer Science B.S. without an added concentration, using the published MTH 2040 and eight-credit laboratory-science Liberal Arts Core substitutions",
+  "academic_unit": "Department of Mathematics and Computer Science",
+  "college": null,
+  "ge_authority": "UVA Wise General Education Liberal Arts Core",
+  "excluded_variants": [
+    "Computer Science minor"
+  ],
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "graduation",
+    "course_catalog",
+    "cybersecurity_concentration",
+    "data_science_concentration"
+  ],
+  "requirement_layers": {
+    "major": {"status": "complete", "source_refs": ["major", "course_catalog", "cybersecurity_concentration", "data_science_concentration"]},
+    "ge_college": {"status": "complete", "source_refs": ["major", "general_education", "college"]},
+    "university_graduation": {"status": "complete", "source_refs": ["major", "general_education", "graduation"]}
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "canonical_major_units": 77,
+    "canonical_math_and_science_units": 25,
+    "computer_science_core_units": 37,
+    "additional_upper_division_major_units": 15,
+    "canonical_liberal_arts_core_actual_units": 48,
+    "canonical_liberal_arts_core_units_inside_major": 15,
+    "canonical_net_liberal_arts_core_units": 33,
+    "remaining_elective_capacity_units": 10,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The current catalog states fifteen additional upper-division major credits and a fifteen-credit upper-level major residence rule, but no aggregate university-wide upper-division-credit minimum.",
+      "source_refs": ["major", "graduation"]
+    },
+    "major_upper_division_coursework_units": 15,
+    "major_upper_level_residency_minimum": 15,
+    "residency": {
+      "status": "required",
+      "minimum_units": 45,
+      "rule": "At least 45 credits must be completed through UVA Wise, including at least 15 upper-level credits in the major; at least 58 of the 120 credits must be earned at a regionally accredited four-year institution.",
+      "source_refs": ["graduation"]
+    },
+    "four_year_institution_units_minimum": 58,
+    "two_year_transfer_units_maximum": 62,
+    "minimum_overall_gpa": 2,
+    "minimum_uvawise_gpa": 2
+  },
+  "modeling_notes": [
+    "The direct 2026-2027 Computer Science B.S. page is the canonical standard path. The separately published Cybersecurity and Data Science concentration pages remain explicit alternate requirement sets and are not silently made mandatory.",
+    "The minimum standard major arithmetic is 25 math/science + 37 computer-science core + 15 additional upper-division = 77 credits; the published maximum is 80.",
+    "The Liberal Arts Core introduction says 48-49 credits while the page's component footer says 48-50. The canonical actual-course path is 48 credits because the four-credit MTH 2040 major requirement is explicitly marked as satisfying the six-hour Quantitative Reasoning gate.",
+    "The canonical standard major supplies 15 actual Core credits: MTH 2040 (4), required laboratory science (8), and SWE 1790 in Studies of Self (3). The remaining distinct Core coursework is therefore 33 credits, leaving ten credits to reach 120.",
+    "A Liberal Arts Core course may not satisfy more than one listed Core area. The remaining contextual coursework must total eighteen credits after SWE 1790 and must include Community, Nation, and World coverage plus the Humanities/Fine Arts, Social/Behavioral Science, and Inclusive Excellence gates.",
+    "The catalog lists one- and three-credit First-Year Experience possibilities but names SEM 1010 as the current three-credit course; SEM 1010 is canonical. Accelerated language and composition routes are preserved as alternates, not prospective schedules.",
+    "The comprehensive examination, one Experiential Learning Activity, and cultural-activity attendance are zero-credit completion gates and remain explicit rather than being converted into elective credits."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "liberal_arts_core_published_range_conflict",
+      "severity": "review",
+      "message": "The Core introduction publishes 48-49 credits while its component footer publishes 48-50."
+    },
+    {
+      "code": "cybersecurity_concentration_applicability_not_enumerated",
+      "severity": "review",
+      "message": "The department publishes the Cybersecurity concentration but its standalone page does not enumerate eligible majors; it is retained as an alternate without assuming it is required for Computer Science."
+    },
+    {
+      "code": "upper_level_major_rules_may_overlap",
+      "severity": "review",
+      "message": "The program's fifteen additional upper-division credits can satisfy the graduation policy's fifteen upper-level resident-major credits; they are not modeled as two additive blocks."
+    },
+    {
+      "code": "liberal_arts_core_cross_area_constraints",
+      "severity": "review",
+      "message": "Contextual subareas, disciplinary breadth, Inclusive Excellence, and the no-double-use rule overlap and require a constraint-aware evaluator."
+    },
+    {
+      "code": "official_catalog_http_only",
+      "severity": "review",
+      "message": "The official current catalog host serves these pages over HTTP after HTTPS certificate and redirect failures; source provenance records secure=false."
+    }
+  ],
+  "requirement_variants": [
+    {
+      "key": "standard_computer_science_bs",
+      "label": "Standard Computer Science B.S. without an added concentration",
+      "selected": true,
+      "source_refs": ["major"],
+      "published_major_units_minimum": 77,
+      "published_major_units_maximum": 80,
+      "canonical_major_units": 77,
+      "requirement_groups_location": "top-level requirement_groups"
+    },
+    {
+      "key": "cybersecurity_concentration",
+      "label": "Cybersecurity Concentration",
+      "selected": false,
+      "source_refs": ["cybersecurity_concentration"],
+      "published_concentration_units_minimum": 9,
+      "published_concentration_units_maximum": 9,
+      "relationship_to_standard_major": "Separate department concentration requirement set; applicability to the standard CS B.S. requires advising confirmation because the standalone page does not enumerate eligible majors.",
+      "requirement_groups": [
+        {
+          "title": "Cybersecurity concentration: choose three of four courses",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["cybersecurity_concentration", "course_catalog"],
+          "analysis_constraints": [
+            {
+              "kind": "concentration_major_applicability",
+              "status": "evaluator_not_implemented",
+              "description": "The standalone concentration page does not enumerate eligible majors, so attaching it to the CS B.S. requires department or degree-audit confirmation."
+            }
+          ],
+          "sections": [
+            {
+              "select": 3,
+              "units": 9,
+              "receivers": [
+                {"kind": "course", "code": "CSC4280", "title": "Cybersecurity", "units": 3},
+                {"kind": "course", "code": "CSC4281", "title": "Penetration Testing", "units": 3},
+                {"kind": "course", "code": "CSC4282", "title": "Digital Forensics", "units": 3},
+                {"kind": "course", "code": "CSC4380", "title": "Information Security", "units": 3}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "data_science_concentration",
+      "label": "Data Science Concentration",
+      "selected": false,
+      "source_refs": ["data_science_concentration"],
+      "published_concentration_units_minimum": 17,
+      "published_concentration_units_maximum": 20,
+      "minimum_course_grade": "C",
+      "eligible_majors": [
+        "Computer Science",
+        "Mathematics",
+        "Management Information Systems",
+        "Software Engineering",
+        "Biochemistry",
+        "Biology",
+        "Chemistry",
+        "Environmental Science"
+      ],
+      "relationship_to_standard_major": "Explicitly available to Computer Science and seven other B.S. majors; courses already required by the selected major may overlap subject to the degree audit.",
+      "requirement_groups": [
+        {
+          "title": "Data Science concentration required coursework",
+          "requirement_layer": "major",
+          "tier": "transferable",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "source_refs": ["data_science_concentration", "course_catalog"],
+          "analysis_constraints": [
+            {
+              "kind": "concentration_course_overlap",
+              "status": "evaluator_not_implemented",
+              "description": "Courses also used by the Computer Science B.S. remain the same earned credits and must not be counted twice in a full-degree unit total."
+            }
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 1,
+              "units_max": 3,
+              "label": "Matrix or linear algebra",
+              "receivers": [
+                {"kind": "course", "code": "MTH1130", "title": "Matrix Algebra", "units": 1},
+                {"kind": "course", "code": "MTH3030", "title": "Introduction to Linear Algebra with Applications", "units": 3}
+              ]
+            },
+            {
+              "select": 1,
+              "units": 3,
+              "units_max": 4,
+              "label": "Calculus",
+              "receivers": [
+                {"kind": "course", "code": "MTH2030", "title": "Calculus Essentials", "units": 3},
+                {"kind": "course", "code": "MTH2040", "title": "Calculus I", "units": 4, "overlap_key": "uvawise-major-mth2040"}
+              ]
+            },
+            {
+              "select": 1,
+              "units": 3,
+              "label": "Probability or statistics",
+              "receivers": [
+                {"kind": "course", "code": "MTH3250", "title": "Probability & Statistics I", "units": 3},
+                {"kind": "course", "code": "MTH2180", "title": "Applied Probability & Statistics", "units": 3, "overlap_key": "uvawise-major-statistics"},
+                {"kind": "course", "code": "STA2180", "title": "Applied Probability & Statistics", "units": 3, "overlap_key": "uvawise-major-statistics"},
+                {"kind": "course", "code": "BIO2025", "title": "Biostatistics", "units": 3}
+              ]
+            },
+            {
+              "select": 1,
+              "units": 4,
+              "label": "Programming foundation",
+              "receivers": [
+                {"kind": "course", "code": "CSC1010", "title": "Introduction to Programming in Python", "units": 4, "overlap_key": "uvawise-major-csc1010"},
+                {"kind": "course", "code": "CSC1180", "title": "Foundations of Programming in C++", "units": 4, "overlap_key": "uvawise-major-csc1180"}
+              ]
+            },
+            {
+              "select": 1,
+              "units": 3,
+              "label": "Data analytics and modeling",
+              "receivers": [
+                {"kind": "course", "code": "DSC3500", "title": "Data Analytics and Modeling", "units": 3},
+                {"kind": "course", "code": "ISC3500", "title": "Data Analytics and Modeling", "units": 3},
+                {"kind": "course", "code": "MIS3500", "title": "Data Analytics & Modeling", "units": 3}
+              ]
+            },
+            {
+              "select": 1,
+              "units": 3,
+              "label": "Data visualization",
+              "receivers": [
+                {"kind": "course", "code": "DSC4500", "title": "Data Visualization", "units": 3},
+                {"kind": "course", "code": "ISC4500", "title": "Data Visualization", "units": 3},
+                {"kind": "course", "code": "MIS4500", "title": "Data Visualization", "units": 3}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Math and Science Requirements: fixed courses",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MTH2040", "title": "Calculus I", "units": 4, "overlap_key": "uvawise-major-mth2040"}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MTH2050", "title": "Calculus II", "units": 4}]},
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Applied probability and statistics",
+          "receivers": [
+            {"kind": "course", "code": "MTH2180", "title": "Applied Probability & Statistics", "units": 3, "overlap_key": "uvawise-major-statistics"},
+            {"kind": "course", "code": "STA2180", "title": "Applied Probability & Statistics", "units": 3, "overlap_key": "uvawise-major-statistics"}
+          ]
+        },
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSC3710", "title": "Discrete Structures", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Additional 3000/4000-level Mathematics course",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "analysis_constraints": [
+        {
+          "kind": "prefix_and_level_course_menu",
+          "status": "evaluator_not_implemented",
+          "description": "Choose at least one additional MTH course numbered at the 3000 or 4000 level; the selected course may carry three or four credits."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "units_max": 4, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "One additional MTH 3000/4000-level course", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Two natural sciences with associated laboratories",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "course_catalog"],
+      "analysis_constraints": [
+        {
+          "kind": "two_distinct_lab_sciences_from_approved_disciplines",
+          "status": "evaluator_not_implemented",
+          "description": "At least two natural sciences with associated laboratories must be chosen from Biology, Chemistry, Environmental Science, Geology, or Physics; the department recommends Physics."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 8, "units_max": 10, "receivers": [{"kind": "ge_area", "code": "UVAWISE-CS-LAB-SCIENCE", "name": "Two approved natural sciences with associated laboratories", "units": 8, "overlap_key": "uvawise-core-scientific-reasoning"}]}
+      ]
+    },
+    {
+      "title": "Computer Science Core",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "SWE1790", "title": "Engineering Leadership", "units": 3, "overlap_key": "uvawise-core-studies-self"}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CSC1010", "title": "Introduction to Programming in Python", "units": 4, "overlap_key": "uvawise-major-csc1010"}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CSC1180", "title": "Foundations of Programming in C++", "units": 4, "overlap_key": "uvawise-major-csc1180"}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "CSC2180", "title": "Data Structures", "units": 4}]},
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Software Engineering",
+          "receivers": [
+            {"kind": "course", "code": "CSC2300", "title": "Software Engineering", "units": 3},
+            {"kind": "course", "code": "SWE2300", "title": "Software Engineering", "units": 3}
+          ]
+        },
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSC3180", "title": "Introduction to Algorithms", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSC3400", "title": "Database Design & Applications", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSC4000", "title": "Operating Systems: Theory/Practice", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSC4200", "title": "Programming Languages", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSC4300", "title": "Computer Architecture", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSC4350", "title": "Computer Networks", "units": 3}]},
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CSC4990", "title": "Computer Science Seminar", "units": 1}]}
+      ]
+    },
+    {
+      "title": "Additional upper-division major coursework",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "analysis_constraints": [
+        {
+          "kind": "upper_division_prefix_distribution",
+          "status": "evaluator_not_implemented",
+          "description": "Nine of the fifteen credits must be Computer Science. One unused 2000-level programming course may partially satisfy those nine credits; remaining coursework must be from CSC, DSC, SWE, MIS, MTH, or PHY 3030."
+        },
+        {
+          "kind": "no_double_count_with_core",
+          "status": "evaluator_not_implemented",
+          "description": "The permitted 2000-level programming course must not already be used in the Computer Science core."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 9, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "Nine Computer Science credits under the published level and unused-course rule", "units": 9}]},
+        {"select": 1, "units": 6, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "Six additional credits from CSC, DSC, SWE, MIS, MTH, or PHY 3030", "units": 6}]}
+      ]
+    },
+    {
+      "title": "Computer Science comprehensive examination",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "administrative",
+      "cc_articulable": false,
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 0, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "Satisfactory performance on department comprehensive examinations covering the Computer Science core", "units": 0}]}
+      ]
+    },
+    {
+      "title": "Liberal Arts Core First-Year Experience",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "course_catalog"],
+      "analysis_constraints": [
+        {
+          "kind": "published_first_year_experience_range",
+          "status": "evaluator_not_implemented",
+          "description": "The Core heading states one to three hours while the current named SEM 1010 route is three credits; SEM 1010 is canonical."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "SEM1010", "title": "Be Wise", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Liberal Arts Core Written Communication",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "course_catalog"],
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "analysis_constraints": [
+        {
+          "kind": "accelerated_composition_credit_award",
+          "status": "evaluator_not_implemented",
+          "description": "Students placed into ENG 1030 may earn the six-hour requirement when the final grade is C- or higher, although the course listing displays three credits."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 6, "receivers": [{"kind": "series", "codes": ["ENG1010", "ENG1020"], "units": 6}]},
+        {"select": 1, "units": 6, "receivers": [{"kind": "course", "code": "ENG1030", "title": "Honors Composition", "units": 6, "note": "Honors by placement; six hours awarded only with a final grade of C- or higher."}]}
+      ]
+    },
+    {
+      "title": "Liberal Arts Core Global Communication",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "course_catalog"],
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "analysis_constraints": [
+        {
+          "kind": "accelerated_language_core_substitution",
+          "status": "evaluator_not_implemented",
+          "description": "The Core labels this a six-hour area but publishes each three-credit accelerated 1030 course as a complete alternate; the six-credit FRE 1010+1020 route is canonical for unit closure."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 6, "receivers": [{"kind": "series", "codes": ["FRE1010", "FRE1020"], "units": 6}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "FRE1030", "title": "Accelerated Elementary French", "units": 3}]},
+        {"select": 1, "units": 6, "receivers": [{"kind": "series", "codes": ["GER1010", "GER1020"], "units": 6}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "GER1030", "title": "Accelerated Elementary German", "units": 3}]},
+        {"select": 1, "units": 6, "receivers": [{"kind": "series", "codes": ["SPA1010", "SPA1020"], "units": 6}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "SPA1030", "title": "Accelerated Elementary Spanish", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Liberal Arts Core Quantitative Reasoning satisfied by the major",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "analysis_constraints": [
+        {
+          "kind": "major_course_substitutes_for_core_area",
+          "status": "evaluator_not_implemented",
+          "description": "The four-credit MTH 2040 major course is marked as satisfying the six-hour Quantitative Reasoning area; only its four earned credits count toward 120."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "course", "code": "MTH2040", "title": "Calculus I", "units": 0, "overlap_key": "uvawise-major-mth2040"}]}
+      ]
+    },
+    {
+      "title": "Liberal Arts Core Scientific Reasoning satisfied by the major",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "ge_area", "code": "UVAWISE-CORE-SCIENTIFIC-REASONING", "name": "Eight-hour Scientific Reasoning area satisfied by the required major laboratory sciences", "units": 0, "overlap_key": "uvawise-core-scientific-reasoning"}]}
+      ]
+    },
+    {
+      "title": "Liberal Arts Core Studies of Self satisfied by the major",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "course", "code": "SWE1790", "title": "Engineering Leadership", "units": 0, "overlap_key": "uvawise-core-studies-self"}]}
+      ]
+    },
+    {
+      "title": "Remaining Liberal Arts Core Contextual Coursework",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed_or_category",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "course_catalog"],
+      "analysis_constraints": [
+        {
+          "kind": "contextual_subarea_minimums",
+          "status": "evaluator_not_implemented",
+          "description": "The full Core requires twenty-one contextual credits and at least three from each of Self, Community, Nation, and World; SWE 1790 supplies the Self minimum, leaving eighteen distinct credits."
+        },
+        {
+          "kind": "contextual_disciplinary_breadth",
+          "status": "evaluator_not_implemented",
+          "description": "At least one contextual course must be Humanities/Fine Arts and at least one must be Social/Behavioral Science."
+        },
+        {
+          "kind": "inclusive_excellence_designation",
+          "status": "evaluator_not_implemented",
+          "description": "At least one course anywhere in the Liberal Arts Core must carry the Inclusive Excellence designation."
+        },
+        {
+          "kind": "no_core_cross_area_double_count",
+          "status": "evaluator_not_implemented",
+          "description": "One course may not satisfy more than one listed Liberal Arts Core area."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "label": "Studies of Community", "receivers": [{"kind": "ge_area", "code": "UVAWISE-CONTEXT-COMMUNITY", "name": "One published Studies of Community course", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Studies of Nation", "receivers": [{"kind": "ge_area", "code": "UVAWISE-CONTEXT-NATION", "name": "One published Studies of Nation course", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Studies of World", "receivers": [{"kind": "ge_area", "code": "UVAWISE-CONTEXT-WORLD", "name": "One published Studies of World course", "units": 3}]},
+        {"select": 1, "units": 9, "label": "Additional contextual credits", "receivers": [{"kind": "ge_area", "code": "UVAWISE-CONTEXT-ADDITIONAL", "name": "Nine additional published contextual credits while satisfying disciplinary and IE gates", "units": 9}]}
+      ]
+    },
+    {
+      "title": "Liberal Arts Core co-curricular completion requirements",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "administrative",
+      "cc_articulable": false,
+      "source_refs": ["general_education", "graduation"],
+      "sections": [
+        {"select": 1, "units": 0, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "Complete one Experiential Learning Activity before graduation", "units": 0}]},
+        {"select": 1, "units": 0, "cc_articulable": false, "receivers": [{"kind": "requirement", "name": "Complete the applicable cultural-activity attendance requirement recorded as GNE 1010 and/or GNE 3010", "units": 0}], "note": "Eight activities normally apply; qualifying transfer students entering after the first year complete the junior/senior requirement only, and qualifying completed A.A./A.S. entrants receive the catalog's stated exception."}
+      ]
+    },
+    {
+      "title": "Remaining elective capacity to the 120-credit degree minimum",
+      "requirement_layer": "university_graduation",
+      "tier": "breadth",
+      "course_level": "any",
+      "cc_articulable": true,
+      "source_refs": ["graduation"],
+      "sections": [
+        {"select": 1, "units": 10, "receivers": [{"kind": "ge_area", "code": "UVAWISE-OPEN-CREDIT", "name": "Open credit capacity after the canonical 77-credit major and 33 distinct remaining Core credits", "units": 10}]}
+      ]
+    }
+  ]
+}

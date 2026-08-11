@@ -399,6 +399,37 @@ function buildCapturedDocument(institution, capture, {
   };
 }
 
+/**
+ * A non-capture can still be a completed catalog finding. Keep its official
+ * source registry and the registry-authored explanation instead of reducing it
+ * to an untraceable boolean that a forced extraction would overwrite.
+ */
+function buildUnavailableDocument(institution, capture, {
+  context = sourceContext(institution, capture),
+  extractedAt = new Date().toISOString(),
+} = {}) {
+  const outcome = capture ? capture.outcome : 'not_captured';
+  return {
+    slug: institution.slug,
+    name: institution.name,
+    level: institution.level,
+    platform: institution.platform,
+    outcome,
+    source_url: capture?.pages?.[0]?.final_url
+      || institution.seeds?.[0]?.url
+      || institution.catalog_root,
+    offers_cs: outcome === 'no_cs_program' ? false : null,
+    program_title: null,
+    program_finding: institution.program_finding || null,
+    ...context,
+    total_credits: null,
+    groups: [],
+    validation: { verdict: 'n/a', needs_hand_read: outcome !== 'no_cs_program', checks: [], stats: {} },
+    evidence: capture ? capture.discovery : null,
+    extracted_at: extractedAt,
+  };
+}
+
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const registry = JSON.parse(fs.readFileSync(path.join(CAT, 'institutions.json'), 'utf8'));
@@ -424,26 +455,10 @@ async function main() {
     }
 
     if (!captured || captured.outcome !== 'captured') {
-      const outcome = captured ? captured.outcome : 'not_captured';
-      const doc = {
-        slug: inst.slug,
-        name: inst.name,
-        level: inst.level,
-        platform: inst.platform,
-        outcome,
-        source_url: captured && captured.pages && captured.pages[0] ? captured.pages[0].final_url : (inst.seeds[0] || {}).url || inst.catalog_root,
-        offers_cs: outcome === 'no_cs_program' ? false : null,
-        program_title: null,
-        ...context,
-        total_credits: null,
-        groups: [],
-        validation: { verdict: 'n/a', needs_hand_read: outcome !== 'no_cs_program', checks: [], stats: {} },
-        evidence: captured ? captured.discovery : null,
-        extracted_at: new Date().toISOString(),
-      };
+      const doc = buildUnavailableDocument(inst, captured, { context });
       if (!opts.report) fs.writeFileSync(outFile, JSON.stringify(doc, null, 1));
-      rows.push({ slug: inst.slug, level: inst.level, verdict: outcome, parser: '-', stats: {} });
-      log(`${outcome.padEnd(14)} ${inst.slug}`);
+      rows.push({ slug: inst.slug, level: inst.level, verdict: doc.outcome, parser: '-', stats: {} });
+      log(`${doc.outcome.padEnd(14)} ${inst.slug}`);
       continue;
     }
 
@@ -474,6 +489,7 @@ if (require.main === module) {
 
 module.exports = {
   buildCapturedDocument,
+  buildUnavailableDocument,
   extractRequirementVariants,
   readCapturedFiles,
   requirementBearingPages,

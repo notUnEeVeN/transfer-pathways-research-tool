@@ -1,0 +1,6763 @@
+{
+ "slug": "virginia-military-institute",
+ "name": "Virginia Military Institute",
+ "level": "four_year",
+ "platform": "acalog",
+ "outcome": "captured",
+ "offers_cs": true,
+ "source_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2815&print=1",
+ "catalog_year": "2025-2026",
+ "degree_context": {
+  "award": "BS",
+  "award_name": "Bachelor of Science",
+  "catalog_year": "2025-2026",
+  "program": "Computer Science, B.S. - Theory and Application Track",
+  "variant": "Theory and Application is the canonical broad-computing path; Cybersecurity and Information Technology are separately published required track variants",
+  "academic_unit": "Department of Computer and Information Sciences",
+  "college": "Virginia Military Institute",
+  "general_education_authority": "VMI Core Curriculum",
+  "unit_audit": {
+   "graduation_minimum": 136,
+   "modeled_units": 136,
+   "upper_division": {
+    "status": "none_stated",
+    "reason": "The reviewed current catalog and academic-regulation sources state no aggregate upper-division-credit minimum; track-specific upper-level requirements remain explicit in the curriculum.",
+    "source_refs": [
+     "major",
+     "general_education",
+     "graduation"
+    ]
+   },
+   "residency": {
+    "status": "required",
+    "minimum_units": 68,
+    "rule": "At least six qualifying full-time semesters and at least 50 percent of the academic program must be completed at VMI; the published transfer guidance imposes a 75-percent in-residence rule on cadets entering without advanced-standing credit.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "minimum_cumulative_gpa": 2,
+   "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+   "The live 2025-2026 academic catalog publishes three materially different Computer Science B.S. tracks. Their trees must remain separate rather than being flattened into one menu.",
+   "VMI's Core, ROTC, leadership, human-performance, writing-intensive, capstone, GPA, and residence rules are graduation requirements and must be composed with the selected track.",
+   "Catalog curriculum tables are authoritative requirement allocations. Marketing or advising schedules are not substituted for them."
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program",
+     "program_cybersecurity",
+     "program_information_technology"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "ge"
+    ]
+   },
+   "college": {
+    "status": "not_applicable",
+    "source_roles": [],
+    "note": "VMI is a single undergraduate institute; the Computer and Information Sciences department is the academic owner and there is no intervening college requirement layer."
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation",
+     "policy"
+    ]
+   },
+   "academic_policy": {
+    "source_roles": [
+     "policy"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Virginia Military Institute major and degree requirements",
+   "url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2815&print=1",
+   "requested_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2815&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:35:19.019Z",
+   "sha256": "87c7981ed376b431a5116bdbed48d5213e3bf476ac7ec5da3f4e3a3571fe2609",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "program_cybersecurity",
+   "role": "program_cybersecurity",
+   "kind": "program_cybersecurity",
+   "label": "Virginia Military Institute program_cybersecurity",
+   "url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2816&returnto=1546",
+   "requested_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2816&returnto=1546",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:35:19.019Z",
+   "sha256": "5a98ade34154f2a2c48ffbd39918fae4164465b73912956d8bd0b2df4137795f",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "program_information_technology",
+   "role": "program_information_technology",
+   "kind": "program_information_technology",
+   "label": "Virginia Military Institute program_information_technology",
+   "url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2817&returnto=1546",
+   "requested_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2817&returnto=1546",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:35:19.019Z",
+   "sha256": "6413a62c099fe1178f678b27d9caf612ec19485450ccdb0e7e534c3001234777",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Virginia Military Institute general education requirements",
+   "url": "https://www.vmi.edu/academics/academic-program/",
+   "requested_url": "https://www.vmi.edu/academics/academic-program/",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:35:19.019Z",
+   "sha256": "189939a08a458e988916adbc5fe7ef3bd1f647b005cabe28cff2695c664c738d",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Virginia Military Institute university graduation requirements",
+   "url": "https://www.vmi.edu/academics/academic-support-services/registrar/registration-enrollment/transfer-activity-after-matriculation/",
+   "requested_url": "https://www.vmi.edu/academics/academic-support-services/registrar/registration-enrollment/transfer-activity-after-matriculation/",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:35:19.019Z",
+   "sha256": "ba0009fe257230d773537dc2578ebae35c71c4af5639222aa2208ecc23307d7e",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Virginia Military Institute academic policies",
+   "url": "https://www.vmi.edu/academics/academic-support-services/registrar/institutional-information/",
+   "requested_url": "https://www.vmi.edu/academics/academic-support-services/registrar/institutional-information/",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:35:19.019Z",
+   "sha256": "7c0f5c1d53b9cf0b4278d03ea3a3a5f5a0cbe24ca9b89781a169e0b81e7309db",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Virginia Military Institute course descriptions and credit values",
+   "url": "https://catalog.vmi.edu/content.php?catoid=39&navoid=1548",
+   "requested_url": "https://catalog.vmi.edu/content.php?catoid=39&navoid=1548",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T22:35:19.019Z",
+   "sha256": "88a32ceba30aabc76b6a6389de0a52c5d9fde78b1a5634ad6f3bed4b10a02439",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "program_cybersecurity",
+    "program_information_technology"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "general_education"
+   ],
+   "note": null
+  },
+  "college": {
+   "status": "not_applicable",
+   "source_refs": [],
+   "note": "VMI is a single undergraduate institute; the Computer and Information Sciences department is the academic owner and there is no intervening college requirement layer."
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation",
+    "policy"
+   ],
+   "note": null
+  },
+  "academic_policy": {
+   "status": "captured",
+   "source_refs": [
+    "policy"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T22:35:19.019Z",
+ "extracted_at": "2026-08-10T22:36:12.525Z",
+ "parser": "variant_set",
+ "pdf_window": null,
+ "program_title": "Computer Science, B.S. - Theory and Application Track",
+ "parse_error": null,
+ "total_credits": null,
+ "stopped_at": null,
+ "groups": [],
+ "narrative": [],
+ "unassigned": [],
+ "requirement_variants": {
+  "schema_version": 1,
+  "relationship": null,
+  "flattened": false,
+  "selection_rule": null,
+  "source_roles": [
+   "program",
+   "program_cybersecurity",
+   "program_information_technology"
+  ],
+  "captured_source_roles": [
+   "program",
+   "program_cybersecurity",
+   "program_information_technology"
+  ],
+  "missing_source_roles": [],
+  "items": [
+   {
+    "key": "program",
+    "source_role": "program",
+    "source_ref": "major",
+    "source_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2815&print=1",
+    "requested_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2815&print=1",
+    "capture_sha256": "87c7981ed376b431a5116bdbed48d5213e3bf476ac7ec5da3f4e3a3571fe2609",
+    "capture_file": "virginia-military-institute__program",
+    "parser": "lines",
+    "pdf_window": null,
+    "tree": {
+     "program_title": null,
+     "parse_error": null,
+     "total_credits": null,
+     "stopped_at": null,
+     "groups": [
+      {
+       "title": "VMI Core Curriculum",
+       "credits": {
+        "min": 34,
+        "max": 34,
+        "raw": "34"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "B.S. in Computer Science - Theory and Application Track must complete mathematics sequence: B.S. in Computer Science - Theory and Application Track must complete science sequence:",
+       "source_text": [
+        "VMI Core Curriculum: 34 Credits",
+        "MA 123 - Calculus & Analytic Geometry I Credit Hours: 3",
+        "MA 124 - Calculus & Analytic Geometry II Credit Hours: 3",
+        "Science Requirement I - (BI, CH, or PY w/ lab) Credit Hours: 4",
+        "Science Requirement II - (BI, CH, or PY w/ lab) Credit Hours: 4"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "MA123",
+             "title": "Calculus & Analytic Geometry I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 123 - Calculus & Analytic Geometry I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA124",
+             "title": "Calculus & Analytic Geometry II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 124 - Calculus & Analytic Geometry II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement I - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement I - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement II - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement II - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Required Computer Science Core Courses",
+       "credits": {
+        "min": 30,
+        "max": 30,
+        "raw": "30"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Required Computer Science Core Courses: 30 Credits",
+        "CIS 101 - Introduction to Computer Science Credit Hours: 3",
+        "CIS 111 - Programming I Credit Hours: 3",
+        "CIS 111L - Laboratory for Programming I Credit Hours: 1",
+        "CIS 112 - Programming II Credit Hours: 3",
+        "CIS 112L - Laboratory for Programming II Credit Hours: 1",
+        "CIS 213 - Data Structures and Applications Credit Hours: 3",
+        "CIS 222 - Database Management Systems Credit Hours: 3",
+        "CIS 301 - Networking Credit Hours: 3",
+        "CIS 301L - Networking Lab Credit Hours: 1",
+        "CIS 380W - Research Topics in Computer and Information Sciences Credit Hours: 3",
+        "CIS 480 - Capstone I Credit Hours: 3",
+        "CIS 490 - Capstone II Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS101",
+             "title": "Introduction to Computer Science"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 101 - Introduction to Computer Science",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111",
+             "title": "Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111 - Programming I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111L",
+             "title": "Laboratory for Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111L - Laboratory for Programming I",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112",
+             "title": "Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112 - Programming II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112L",
+             "title": "Laboratory for Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112L - Laboratory for Programming II",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS213",
+             "title": "Data Structures and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 213 - Data Structures and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS222",
+             "title": "Database Management Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 222 - Database Management Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301",
+             "title": "Networking"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301 - Networking",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301L",
+             "title": "Networking Lab"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301L - Networking Lab",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS380W",
+             "title": "Research Topics in Computer and Information Sciences"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 380W - Research Topics in Computer and Information Sciences",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS480",
+             "title": "Capstone I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 480 - Capstone I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS490",
+             "title": "Capstone II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 490 - Capstone II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Required Theory and Application Track Courses",
+       "credits": {
+        "min": 18,
+        "max": 18,
+        "raw": "18"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Required Theory and Application Track Courses: 18 credits",
+        "CIS 201 - Computer Architecture and Organization Credit Hours: 3",
+        "CIS 302 - Modern Operating Systems Credit Hours: 3",
+        "CIS 312W - Software Engineering Credit Hours: 3",
+        "CIS 343 - Design and Analysis of Algorithms Credit Hours: 3",
+        "CIS 411 - Distributed Computing and Applications Credit Hours: 3",
+        "CIS 430 - Theory of Computation and Programming Languages Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS201",
+             "title": "Computer Architecture and Organization"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 201 - Computer Architecture and Organization",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS302",
+             "title": "Modern Operating Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 302 - Modern Operating Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS312W",
+             "title": "Software Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 312W - Software Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS343",
+             "title": "Design and Analysis of Algorithms"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 343 - Design and Analysis of Algorithms",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS411",
+             "title": "Distributed Computing and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 411 - Distributed Computing and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS430",
+             "title": "Theory of Computation and Programming Languages"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 430 - Theory of Computation and Programming Languages",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Computer and Information Sciences Electives*",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Computer and Information Sciences Electives*: 6 credits",
+        "CIS 211 - Internet and Mobile Programming Credit Hours: 3",
+        "CIS 303 - Computer & Information Security Credit Hours: 3",
+        "CIS 303L - Computer and Information Security Laboratory Credit Hours: 1",
+        "CIS 342 - Data Analytics Credit Hours: 3",
+        "CIS 331 - Human Computer Interaction and Usability Analysis Credit Hours: 3",
+        "CIS 377 - Linux Fundamentals, Administration, and Security Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS211",
+             "title": "Internet and Mobile Programming"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 211 - Internet and Mobile Programming",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS303",
+             "title": "Computer & Information Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 303 - Computer & Information Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS303L",
+             "title": "Computer and Information Security Laboratory"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 303L - Computer and Information Security Laboratory",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS342",
+             "title": "Data Analytics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 342 - Data Analytics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS331",
+             "title": "Human Computer Interaction and Usability Analysis"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 331 - Human Computer Interaction and Usability Analysis",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS377",
+             "title": "Linux Fundamentals, Administration, and Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 377 - Linux Fundamentals, Administration, and Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Computer and Information Sciences Upper-Level Electives*",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "Choose from below:",
+       "source_text": [
+        "Computer and Information Sciences Upper-Level Electives*: 3 credits",
+        "Choose from below:",
+        "CIS 401 - Advanced Network Security Credit Hours: 3",
+        "CIS 402 - Computer Forensics Credit Hours: 3",
+        "CIS 477 - Secure Software Engineering Credit Hours: 3",
+        "CIS 431 - Information Organization & Management Credit Hours: 3",
+        "CIS 432 - Computer Vision Credit Hours: 3",
+        "CIS 434 - Bioinformatics Credit Hours: 3",
+        "CIS 476W - Internship in Computer Science Credit Hours: 1-3",
+        "CIS 412 - Mobile Computing and Applications Credit Hours: 3",
+        "CIS 421 - Database Design and Development Credit Hours: 3",
+        "CIS 422 - Information Retrieval Credit Hours: 3",
+        "CIS 424 - Artificial Intelligence Credit Hours: 3",
+        "EE 428 - Reverse Engineering Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS401",
+             "title": "Advanced Network Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 401 - Advanced Network Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS402",
+             "title": "Computer Forensics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 402 - Computer Forensics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS477",
+             "title": "Secure Software Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 477 - Secure Software Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS431",
+             "title": "Information Organization & Management"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 431 - Information Organization & Management",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS432",
+             "title": "Computer Vision"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 432 - Computer Vision",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS434",
+             "title": "Bioinformatics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 434 - Bioinformatics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS476W",
+             "title": "Internship in Computer Science"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 476W - Internship in Computer Science",
+           "credits": {
+            "min": 1,
+            "max": 3,
+            "raw": "1-3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS412",
+             "title": "Mobile Computing and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 412 - Mobile Computing and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS421",
+             "title": "Database Design and Development"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 421 - Database Design and Development",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS422",
+             "title": "Information Retrieval"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 422 - Information Retrieval",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS424",
+             "title": "Artificial Intelligence"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 424 - Artificial Intelligence",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "EE428",
+             "title": "Reverse Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "EE 428 - Reverse Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Required Additional Mathematics Courses",
+       "credits": {
+        "min": 9,
+        "max": 9,
+        "raw": "9"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Required Additional Mathematics Courses: 9 Credits",
+        "MA 220 - Probability & Statistics for Engineers & Scientists Credit Hours: 3",
+        "ELEC MA - Mathematics Elective Credit Hours: 3 **",
+        "CIS 241 - Discrete Structures Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "MA220",
+             "title": "Probability & Statistics for Engineers & Scientists"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 220 - Probability & Statistics for Engineers & Scientists",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC MA - Mathematics Elective Credit Hours: 3 **",
+           "category": "ELEC MA - Mathematics Elective **",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS241",
+             "title": "Discrete Structures"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 241 - Discrete Structures",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Free Electives",
+       "credits": {
+        "min": 24,
+        "max": 24,
+        "raw": "24"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "Notes: Synopsis of the B.S. Curriculum in Computer Sciences - Theory and Application Track",
+       "source_text": [
+        "Free Electives: 24 credits",
+        "*If more than one track is declared, required courses of another track cannot be taken as a Computer and Information Sciences Elective or a Computer and Information Sciences Upper-Level elective.",
+        "** MA Elective must be 200 level or higher",
+        "Fourth (Freshman) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "*If more than one track is declared, required courses of another track cannot be taken as a Computer and Information Sciences Elective or a Computer and Information Sciences Upper-Level elective.",
+           "category": "*If more than one track is declared, required courses of another track cannot be taken as a Computer and Information Sciences Elective or a Computer and Information Sciences Upper-Level elective."
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "First Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "First Semester",
+        "CIS 101 - Introduction to Computer Science Credit Hours: 3",
+        "CIS 111 - Programming I Credit Hours: 3",
+        "CIS 111L - Laboratory for Programming I Credit Hours: 1",
+        "ERH 101 - Writing and Rhetoric I Credit Hours: 3",
+        "HI 103 - World History I Credit Hours: 3",
+        "MA 123 - Calculus & Analytic Geometry I Credit Hours: 3",
+        "HPW 102 - Boxing Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 17.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS101",
+             "title": "Introduction to Computer Science"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 101 - Introduction to Computer Science",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111",
+             "title": "Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111 - Programming I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111L",
+             "title": "Laboratory for Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111L - Laboratory for Programming I",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "ERH101",
+             "title": "Writing and Rhetoric I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ERH 101 - Writing and Rhetoric I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HI103",
+             "title": "World History I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HI 103 - World History I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA123",
+             "title": "Calculus & Analytic Geometry I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 123 - Calculus & Analytic Geometry I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW102",
+             "title": "Boxing .5"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 102 - Boxing .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Second Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Second Semester",
+        "CIS 112 - Programming II Credit Hours: 3",
+        "CIS 112L - Laboratory for Programming II Credit Hours: 1",
+        "CIS 201 - Computer Architecture and Organization Credit Hours: 3",
+        "ERH 102 - Writing and Rhetoric II Credit Hours: 3",
+        "HI 104 - World History II Credit Hours: 3",
+        "MA 124 - Calculus & Analytic Geometry II Credit Hours: 3",
+        "HPW 105 - Wellness Concepts Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 17.5",
+        "Third (Sophomore) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS112",
+             "title": "Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112 - Programming II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112L",
+             "title": "Laboratory for Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112L - Laboratory for Programming II",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS201",
+             "title": "Computer Architecture and Organization"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 201 - Computer Architecture and Organization",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "ERH102",
+             "title": "Writing and Rhetoric II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ERH 102 - Writing and Rhetoric II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HI104",
+             "title": "World History II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HI 104 - World History II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA124",
+             "title": "Calculus & Analytic Geometry II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 124 - Calculus & Analytic Geometry II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW105",
+             "title": "Wellness Concepts .5"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 105 - Wellness Concepts .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Third Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Third Semester",
+        "CIS 213 - Data Structures and Applications Credit Hours: 3",
+        "CIS 301 - Networking Credit Hours: 3",
+        "CIS 301L - Networking Lab Credit Hours: 1",
+        "CIS 241 - Discrete Structures Credit Hours: 3",
+        "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "HPW 201 - Basic Swimming and Survival Credit Hours: 0.5",
+        "Total Semester Hrs: 18.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS213",
+             "title": "Data Structures and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 213 - Data Structures and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301",
+             "title": "Networking"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301 - Networking",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301L",
+             "title": "Networking Lab"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301L - Networking Lab",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS241",
+             "title": "Discrete Structures"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 241 - Discrete Structures",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW201",
+             "title": "Basic Swimming and Survival .5"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 201 - Basic Swimming and Survival .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Fourth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Fourth Semester",
+        "CIS 222 - Database Management Systems Credit Hours: 3",
+        "CIS 343 - Design and Analysis of Algorithms Credit Hours: 3",
+        "MA 220 - Probability & Statistics for Engineers & Scientists Credit Hours: 3",
+        "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW 205 - Principles of Physical Conditioning Credit Hours: 1",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 18.0",
+        "Second (Junior) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS222",
+             "title": "Database Management Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 222 - Database Management Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS343",
+             "title": "Design and Analysis of Algorithms"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 343 - Design and Analysis of Algorithms",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA220",
+             "title": "Probability & Statistics for Engineers & Scientists"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 220 - Probability & Statistics for Engineers & Scientists",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW205",
+             "title": "Principles of Physical Conditioning"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 205 - Principles of Physical Conditioning",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Fifth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Fifth Semester",
+        "CIS 312W - Software Engineering Credit Hours: 3",
+        "CIS 411 - Distributed Computing and Applications Credit Hours: 3",
+        "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+        "ERH 103 - Fundamentals of Public Speaking Credit Hours: 1",
+        "LEAD 344 - Leadership in Organizations Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW Requirement - Elective Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 18.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS312W",
+             "title": "Software Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 312W - Software Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS411",
+             "title": "Distributed Computing and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 411 - Distributed Computing and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+           "category": "ELEC CIS - Computer & Information Sciences Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "ERH103",
+             "title": "Fundamentals of Public Speaking"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ERH 103 - Fundamentals of Public Speaking",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "LEAD344",
+             "title": "Leadership in Organizations"
+            }
+           ],
+           "conjunction": "and",
+           "text": "LEAD 344 - Leadership in Organizations",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "HPW Requirement - Elective Credit Hours: 0.5",
+           "category": "HPW Requirement - Elective .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Sixth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Sixth Semester",
+        "CIS 302 - Modern Operating Systems Credit Hours: 3",
+        "BU 430 - Financial Modeling Credit Hours: 3",
+        "CIS 380W - Research Topics in Computer and Information Sciences Credit Hours: 3",
+        "ELEC MA - Mathematics Elective Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW Requirement - Elective Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 17.5",
+        "First (Senior) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS302",
+             "title": "Modern Operating Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 302 - Modern Operating Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "BU430",
+             "title": "Financial Modeling"
+            }
+           ],
+           "conjunction": "and",
+           "text": "BU 430 - Financial Modeling",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS380W",
+             "title": "Research Topics in Computer and Information Sciences"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 380W - Research Topics in Computer and Information Sciences",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC MA - Mathematics Elective Credit Hours: 3",
+           "category": "ELEC MA - Mathematics Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "HPW Requirement - Elective Credit Hours: 0.5",
+           "category": "HPW Requirement - Elective .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Seventh Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Seventh Semester",
+        "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+        "CIS 480 - Capstone I Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW Requirement - Elective Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 14.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+           "category": "ELEC CIS - Computer & Information Sciences Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS480",
+             "title": "Capstone I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 480 - Capstone I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "HPW Requirement - Elective Credit Hours: 0.5",
+           "category": "HPW Requirement - Elective .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Eighth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Eighth Semester",
+        "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+        "CIS 490 - Capstone II Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 14.0"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+           "category": "ELEC CIS - Computer & Information Sciences Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS490",
+             "title": "Capstone II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 490 - Capstone II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ],
+     "narrative": [],
+     "unassigned": [
+      "B.S. in Computer Science - Theory and Application Track must complete mathematics sequence:",
+      "B.S. in Computer Science - Theory and Application Track must complete science sequence:",
+      "Notes:",
+      "Synopsis of the B.S. Curriculum in Computer Sciences - Theory and Application Track"
+     ]
+    },
+    "validation": {
+     "verdict": "warn",
+     "needs_hand_read": false,
+     "checks": [
+      {
+       "severity": "pass",
+       "name": "codes_not_in_source",
+       "detail": "all 51 codes appear verbatim in the captured text"
+      },
+      {
+       "severity": "pass",
+       "name": "group_count",
+       "detail": "15 requirement groups"
+      },
+      {
+       "severity": "pass",
+       "name": "course_count",
+       "detail": "51 distinct courses across 101 rows"
+      },
+      {
+       "severity": "warn",
+       "name": "no_stated_total",
+       "detail": "the page states no total credit figure — nothing to reconcile against"
+      },
+      {
+       "severity": "pass",
+       "name": "categories",
+       "detail": "29 unenumerated requirement(s) kept as categories"
+      }
+     ],
+     "stats": {
+      "groups": 15,
+      "sections": 15,
+      "rows": 101,
+      "course_rows": 72,
+      "category_rows": 29,
+      "distinct_courses": 51,
+      "credit_span": {
+       "min": 124,
+       "max": 124,
+       "groups_with_credits": 7
+      },
+      "stated_total": null
+     }
+    }
+   },
+   {
+    "key": "program_cybersecurity",
+    "source_role": "program_cybersecurity",
+    "source_ref": "program_cybersecurity",
+    "source_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2816&returnto=1546",
+    "requested_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2816&returnto=1546",
+    "capture_sha256": "5a98ade34154f2a2c48ffbd39918fae4164465b73912956d8bd0b2df4137795f",
+    "capture_file": "virginia-military-institute__program_cybersecurity",
+    "parser": "lines",
+    "pdf_window": null,
+    "tree": {
+     "program_title": null,
+     "parse_error": null,
+     "total_credits": null,
+     "stopped_at": null,
+     "groups": [
+      {
+       "title": "B.S. in Computer Science - Cybersecurity Track must complete mathematics sequence",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "B.S. in Computer Science - Cybersecurity Track must complete science sequence:",
+       "source_text": [
+        "B.S. in Computer Science - Cybersecurity Track must complete mathematics sequence:",
+        "MA 106 - Introduction to Probability and Statistics Credit Hours: 3",
+        "MA 126 - Quantitative Methods Credit Hours: 3",
+        "or",
+        "MA 101 - Math that Matters I Credit Hours: 3",
+        "MA 102 - Math that Matters II Credit Hours: 3",
+        "or",
+        "MA 123 - Calculus & Analytic Geometry I Credit Hours: 3",
+        "MA 124 - Calculus & Analytic Geometry II Credit Hours: 3",
+        "Science Requirement I - (BI, CH, or PY w/ lab) Credit Hours: 4",
+        "Science Requirement II - (BI, CH, or PY w/ lab) Credit Hours: 4"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "MA106",
+             "title": "Introduction to Probability and Statistics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 106 - Introduction to Probability and Statistics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA126",
+             "title": "Quantitative Methods"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 126 - Quantitative Methods",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        },
+        {
+         "label": "or",
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "MA101",
+             "title": "Math that Matters I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 101 - Math that Matters I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA102",
+             "title": "Math that Matters II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 102 - Math that Matters II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        },
+        {
+         "label": "or",
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "MA123",
+             "title": "Calculus & Analytic Geometry I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 123 - Calculus & Analytic Geometry I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA124",
+             "title": "Calculus & Analytic Geometry II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 124 - Calculus & Analytic Geometry II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement I - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement I - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement II - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement II - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Required Computer Science Core Courses",
+       "credits": {
+        "min": 30,
+        "max": 30,
+        "raw": "30"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Required Computer Science Core Courses: 30 Credits",
+        "CIS 101 - Introduction to Computer Science Credit Hours: 3",
+        "CIS 111 - Programming I Credit Hours: 3",
+        "CIS 111L - Laboratory for Programming I Credit Hours: 1",
+        "CIS 112 - Programming II Credit Hours: 3",
+        "CIS 112L - Laboratory for Programming II Credit Hours: 1",
+        "CIS 213 - Data Structures and Applications Credit Hours: 3",
+        "CIS 222 - Database Management Systems Credit Hours: 3",
+        "CIS 301 - Networking Credit Hours: 3",
+        "CIS 301L - Networking Lab Credit Hours: 1",
+        "CIS 380W - Research Topics in Computer and Information Sciences Credit Hours: 3",
+        "CIS 480 - Capstone I Credit Hours: 3",
+        "CIS 490 - Capstone II Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS101",
+             "title": "Introduction to Computer Science"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 101 - Introduction to Computer Science",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111",
+             "title": "Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111 - Programming I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111L",
+             "title": "Laboratory for Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111L - Laboratory for Programming I",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112",
+             "title": "Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112 - Programming II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112L",
+             "title": "Laboratory for Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112L - Laboratory for Programming II",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS213",
+             "title": "Data Structures and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 213 - Data Structures and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS222",
+             "title": "Database Management Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 222 - Database Management Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301",
+             "title": "Networking"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301 - Networking",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301L",
+             "title": "Networking Lab"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301L - Networking Lab",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS380W",
+             "title": "Research Topics in Computer and Information Sciences"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 380W - Research Topics in Computer and Information Sciences",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS480",
+             "title": "Capstone I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 480 - Capstone I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS490",
+             "title": "Capstone II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 490 - Capstone II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Required Cybersecurity Track Courses",
+       "credits": {
+        "min": 19,
+        "max": 19,
+        "raw": "19"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Required Cybersecurity Track Courses: 19 credits",
+        "CIS 201 - Computer Architecture and Organization Credit Hours: 3",
+        "CIS 303 - Computer & Information Security Credit Hours: 3",
+        "CIS 303L - Computer and Information Security Laboratory Credit Hours: 1",
+        "CIS 302 - Modern Operating Systems Credit Hours: 3",
+        "CIS 377 - Linux Fundamentals, Administration, and Security Credit Hours: 3",
+        "CIS 401 - Advanced Network Security Credit Hours: 3",
+        "CIS 402 - Computer Forensics Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS201",
+             "title": "Computer Architecture and Organization"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 201 - Computer Architecture and Organization",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS303",
+             "title": "Computer & Information Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 303 - Computer & Information Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS303L",
+             "title": "Computer and Information Security Laboratory"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 303L - Computer and Information Security Laboratory",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS302",
+             "title": "Modern Operating Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 302 - Modern Operating Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS377",
+             "title": "Linux Fundamentals, Administration, and Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 377 - Linux Fundamentals, Administration, and Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS401",
+             "title": "Advanced Network Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 401 - Advanced Network Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS402",
+             "title": "Computer Forensics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 402 - Computer Forensics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Computer and Information Sciences Electives*",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "Choose courses from below or from Computer and Information Sciences Upper-Level Electives:",
+       "source_text": [
+        "Computer and Information Sciences Electives*: 6 credits",
+        "Choose courses from below or from Computer and Information Sciences Upper-Level Electives:",
+        "CIS 211 - Internet and Mobile Programming Credit Hours: 3",
+        "CIS 312W - Software Engineering Credit Hours: 3",
+        "CIS 342 - Data Analytics Credit Hours: 3",
+        "CIS 343 - Design and Analysis of Algorithms Credit Hours: 3",
+        "CIS 331 - Human Computer Interaction and Usability Analysis Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS211",
+             "title": "Internet and Mobile Programming"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 211 - Internet and Mobile Programming",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS312W",
+             "title": "Software Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 312W - Software Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS342",
+             "title": "Data Analytics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 342 - Data Analytics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS343",
+             "title": "Design and Analysis of Algorithms"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 343 - Design and Analysis of Algorithms",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS331",
+             "title": "Human Computer Interaction and Usability Analysis"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 331 - Human Computer Interaction and Usability Analysis",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Computer and Information Sciences Upper-Level Electives*",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Computer and Information Sciences Upper-Level Electives*: 3 credits",
+        "CIS 430 - Theory of Computation and Programming Languages Credit Hours: 3",
+        "CIS 411 - Distributed Computing and Applications Credit Hours: 3",
+        "CIS 412 - Mobile Computing and Applications Credit Hours: 3",
+        "CIS 421 - Database Design and Development Credit Hours: 3",
+        "CIS 422 - Information Retrieval Credit Hours: 3",
+        "CIS 424 - Artificial Intelligence Credit Hours: 3",
+        "CIS 431 - Information Organization & Management Credit Hours: 3",
+        "CIS 432 - Computer Vision Credit Hours: 3",
+        "CIS 434 - Bioinformatics Credit Hours: 3",
+        "CIS 476W - Internship in Computer Science Credit Hours: 1-3",
+        "CIS 477 - Secure Software Engineering Credit Hours: 3",
+        "EE 428 - Reverse Engineering Credit Hours: 3",
+        "Required Additional Mathematics Courses: 3-6** credits",
+        "CIS 241 - Discrete Structures Credit Hours: 3",
+        "MA 106 - Introduction to Probability and Statistics Credit Hours: 3 **",
+        "or MA 220 - Probability & Statistics for Engineers & Scientists Credit Hours: 3 **"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS430",
+             "title": "Theory of Computation and Programming Languages"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 430 - Theory of Computation and Programming Languages",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS411",
+             "title": "Distributed Computing and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 411 - Distributed Computing and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS412",
+             "title": "Mobile Computing and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 412 - Mobile Computing and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS421",
+             "title": "Database Design and Development"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 421 - Database Design and Development",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS422",
+             "title": "Information Retrieval"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 422 - Information Retrieval",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS424",
+             "title": "Artificial Intelligence"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 424 - Artificial Intelligence",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS431",
+             "title": "Information Organization & Management"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 431 - Information Organization & Management",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS432",
+             "title": "Computer Vision"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 432 - Computer Vision",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS434",
+             "title": "Bioinformatics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 434 - Bioinformatics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS476W",
+             "title": "Internship in Computer Science"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 476W - Internship in Computer Science",
+           "credits": {
+            "min": 1,
+            "max": 3,
+            "raw": "1-3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS477",
+             "title": "Secure Software Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 477 - Secure Software Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "EE428",
+             "title": "Reverse Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "EE 428 - Reverse Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        },
+        {
+         "label": "Required Additional Mathematics Courses: 3-6** credits",
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS241",
+             "title": "Discrete Structures"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 241 - Discrete Structures",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA106",
+             "title": "Introduction to Probability and Statistics **"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 106 - Introduction to Probability and Statistics **",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA220",
+             "title": "Probability & Statistics for Engineers & Scientists **"
+            }
+           ],
+           "conjunction": "and",
+           "text": "or MA 220 - Probability & Statistics for Engineers & Scientists **",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Required Additional Courses",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       },
+       "choose": 1,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "Choose one from below: Choose one from below: ***",
+       "source_text": [
+        "Required Additional Courses: 6 credits",
+        "Choose one from below:",
+        "BU 277 - Information Security Management, Policy, & Law Credit Hours: 3",
+        "CIS 277 - Information Security Management, Policy, & Law Credit Hours: 3",
+        "IS 307 - Information Security Management, Policy, & Law Credit Hours: 3",
+        "Choose one from below: ***",
+        "ELEC BU - Business Elective Credit Hours: 3",
+        "ELEC EC - Economics Elective Credit Hours: 3",
+        "ELEC ERH - ERH Elective Credit Hours: 3",
+        "ELEC IS - International Studies Elective Credit Hours: 3",
+        "ELEC PS - Psychology Elective Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "BU277",
+             "title": "Information Security Management, Policy, & Law"
+            }
+           ],
+           "conjunction": "and",
+           "text": "BU 277 - Information Security Management, Policy, & Law",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS277",
+             "title": "Information Security Management, Policy, & Law"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 277 - Information Security Management, Policy, & Law",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "IS307",
+             "title": "Information Security Management, Policy, & Law"
+            }
+           ],
+           "conjunction": "and",
+           "text": "IS 307 - Information Security Management, Policy, & Law",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        },
+        {
+         "label": null,
+         "choose": 1,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC BU - Business Elective Credit Hours: 3",
+           "category": "ELEC BU - Business Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC EC - Economics Elective Credit Hours: 3",
+           "category": "ELEC EC - Economics Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC ERH - ERH Elective Credit Hours: 3",
+           "category": "ELEC ERH - ERH Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC IS - International Studies Elective Credit Hours: 3",
+           "category": "ELEC IS - International Studies Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC PS - Psychology Elective Credit Hours: 3",
+           "category": "ELEC PS - Psychology Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "ROTC",
+       "credits": {
+        "min": 12,
+        "max": 12,
+        "raw": "12"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "Notes: Synopsis of the B.S. Curriculum in Computer Science - Cybersecurity Track",
+       "source_text": [
+        "ROTC: 12 credits",
+        "Free Electives: 21-24** credits",
+        "*If more than one track is declared, required courses of another track cannot be taken as a Computer and Information Sciences Elective or a Computer and Information Sciences Upper-Level elective.",
+        "**If MA 106 is not taken in the VMI Core Curriculum, then MA 106 or MA 220 is additionally required and the number of Free Elective credits is 21, otherwise the number of Free Electives credits is 24.",
+        "***BU Elective, EC Elective, ERH Elective, IS Elective, PS Elective must be related to cybersecurity and approved by Department Head.",
+        "Fourth (Freshman) Class"
+       ],
+       "sections": [
+        {
+         "label": "Free Electives: 21-24** credits",
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "*If more than one track is declared, required courses of another track cannot be taken as a Computer and Information Sciences Elective or a Computer and Information Sciences Upper-Level elective.",
+           "category": "*If more than one track is declared, required courses of another track cannot be taken as a Computer and Information Sciences Elective or a Computer and Information Sciences Upper-Level elective."
+          },
+          {
+           "codes": [
+            {
+             "code": "MA106",
+             "title": "is not taken in the VMI Core Curriculum, then"
+            },
+            {
+             "code": "MA106",
+             "title": null
+            },
+            {
+             "code": "MA220",
+             "title": "is additionally required and the number of Free Elective credits is 21, otherwise the number of Free Electives credits is 24."
+            }
+           ],
+           "conjunction": "or",
+           "text": "**If MA 106 is not taken in the VMI Core Curriculum, then MA 106 or MA 220 is additionally required and the number of Free Elective credits is 21, otherwise the number of Free Electives credits is 24.",
+           "credits": null,
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "***BU Elective, EC Elective, ERH Elective, IS Elective, PS Elective must be related to cybersecurity and approved by Department Head.",
+           "category": "***BU Elective, EC Elective, ERH Elective, IS Elective, PS Elective must be related to cybersecurity and approved by Department Head."
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "First Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "First Semester",
+        "CIS 101 - Introduction to Computer Science Credit Hours: 3",
+        "CIS 111 - Programming I Credit Hours: 3",
+        "CIS 111L - Laboratory for Programming I Credit Hours: 1",
+        "ERH 101 - Writing and Rhetoric I Credit Hours: 3",
+        "HI 103 - World History I Credit Hours: 3",
+        "MA 106 - Introduction to Probability and Statistics Credit Hours: 3",
+        "HPW 102 - Boxing Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 17.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS101",
+             "title": "Introduction to Computer Science"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 101 - Introduction to Computer Science",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111",
+             "title": "Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111 - Programming I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111L",
+             "title": "Laboratory for Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111L - Laboratory for Programming I",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "ERH101",
+             "title": "Writing and Rhetoric I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ERH 101 - Writing and Rhetoric I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HI103",
+             "title": "World History I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HI 103 - World History I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA106",
+             "title": "Introduction to Probability and Statistics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 106 - Introduction to Probability and Statistics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW102",
+             "title": "Boxing .5"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 102 - Boxing .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Second Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Second Semester",
+        "CIS 112 - Programming II Credit Hours: 3",
+        "CIS 112L - Laboratory for Programming II Credit Hours: 1",
+        "CIS 201 - Computer Architecture and Organization Credit Hours: 3",
+        "ERH 102 - Writing and Rhetoric II Credit Hours: 3",
+        "HI 104 - World History II Credit Hours: 3",
+        "MA 126 - Quantitative Methods Credit Hours: 3",
+        "HPW 105 - Wellness Concepts Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 17.5",
+        "Third (Sophomore) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS112",
+             "title": "Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112 - Programming II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112L",
+             "title": "Laboratory for Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112L - Laboratory for Programming II",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS201",
+             "title": "Computer Architecture and Organization"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 201 - Computer Architecture and Organization",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "ERH102",
+             "title": "Writing and Rhetoric II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ERH 102 - Writing and Rhetoric II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HI104",
+             "title": "World History II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HI 104 - World History II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA126",
+             "title": "Quantitative Methods"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 126 - Quantitative Methods",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW105",
+             "title": "Wellness Concepts .5"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 105 - Wellness Concepts .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Third Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Third Semester",
+        "CIS 213 - Data Structures and Applications Credit Hours: 3",
+        "CIS 301 - Networking Credit Hours: 3",
+        "CIS 301L - Networking Lab Credit Hours: 1",
+        "CIS 241 - Discrete Structures Credit Hours: 3",
+        "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+        "ELEC BU/EC/IS/PS - Elective Credit Hours: 3",
+        "HPW 201 - Basic Swimming and Survival Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 18.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS213",
+             "title": "Data Structures and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 213 - Data Structures and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301",
+             "title": "Networking"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301 - Networking",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301L",
+             "title": "Networking Lab"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301L - Networking Lab",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS241",
+             "title": "Discrete Structures"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 241 - Discrete Structures",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC BU/EC/IS/PS - Elective Credit Hours: 3",
+           "category": "ELEC BU/EC/IS/PS - Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW201",
+             "title": "Basic Swimming and Survival .5"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 201 - Basic Swimming and Survival .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Fourth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Fourth Semester",
+        "CIS 222 - Database Management Systems Credit Hours: 3",
+        "CIS 303 - Computer & Information Security Credit Hours: 3",
+        "CIS 303L - Computer and Information Security Laboratory Credit Hours: 1",
+        "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW 205 - Principles of Physical Conditioning Credit Hours: 1",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 16.0",
+        "Second (Junior) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS222",
+             "title": "Database Management Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 222 - Database Management Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS303",
+             "title": "Computer & Information Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 303 - Computer & Information Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS303L",
+             "title": "Computer and Information Security Laboratory"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 303L - Computer and Information Security Laboratory",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW205",
+             "title": "Principles of Physical Conditioning"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 205 - Principles of Physical Conditioning",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Fifth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Fifth Semester",
+        "CIS 377 - Linux Fundamentals, Administration, and Security Credit Hours: 3",
+        "CIS 401 - Advanced Network Security Credit Hours: 3",
+        "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+        "ERH 103 - Fundamentals of Public Speaking Credit Hours: 1",
+        "LEAD 344 - Leadership in Organizations Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW Requirement - Elective Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 18.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS377",
+             "title": "Linux Fundamentals, Administration, and Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 377 - Linux Fundamentals, Administration, and Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS401",
+             "title": "Advanced Network Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 401 - Advanced Network Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+           "category": "ELEC CIS - Computer & Information Sciences Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "ERH103",
+             "title": "Fundamentals of Public Speaking"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ERH 103 - Fundamentals of Public Speaking",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "LEAD344",
+             "title": "Leadership in Organizations"
+            }
+           ],
+           "conjunction": "and",
+           "text": "LEAD 344 - Leadership in Organizations",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "HPW Requirement - Elective Credit Hours: 0.5",
+           "category": "HPW Requirement - Elective .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Sixth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Sixth Semester",
+        "CIS 302 - Modern Operating Systems Credit Hours: 3",
+        "CIS 402 - Computer Forensics Credit Hours: 3",
+        "CIS 380W - Research Topics in Computer and Information Sciences Credit Hours: 3",
+        "BU/CIS/IS 277/307 - Information Security, Management, Policy, and Law Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW Requirement - Elective Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 17.5",
+        "First (Senior) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS302",
+             "title": "Modern Operating Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 302 - Modern Operating Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS402",
+             "title": "Computer Forensics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 402 - Computer Forensics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS380W",
+             "title": "Research Topics in Computer and Information Sciences"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 380W - Research Topics in Computer and Information Sciences",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "IS277",
+             "title": "/307 - Information Security, Management, Policy, and Law"
+            }
+           ],
+           "conjunction": "and",
+           "text": "BU/CIS/IS 277/307 - Information Security, Management, Policy, and Law",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "HPW Requirement - Elective Credit Hours: 0.5",
+           "category": "HPW Requirement - Elective .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Seventh Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Seventh Semester",
+        "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+        "CIS 480 - Capstone I Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW Requirement - Elective Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 17.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+           "category": "ELEC CIS - Computer & Information Sciences Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS480",
+             "title": "Capstone I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 480 - Capstone I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "HPW Requirement - Elective Credit Hours: 0.5",
+           "category": "HPW Requirement - Elective .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Eighth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "All catalogs © 2026 Virginia Military Institute. Powered by Modern Campus Catalog™.",
+       "source_text": [
+        "Eighth Semester",
+        "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+        "CIS 490 - Capstone II Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 14.0",
+        "Return to: The Curricula",
+        "Print (opens a new window)"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+           "category": "ELEC CIS - Computer & Information Sciences Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS490",
+             "title": "Capstone II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 490 - Capstone II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ],
+     "narrative": [],
+     "unassigned": [
+      "B.S. in Computer Science - Cybersecurity Track must complete science sequence:",
+      "Notes:",
+      "Synopsis of the B.S. Curriculum in Computer Science - Cybersecurity Track",
+      "All catalogs © 2026 Virginia Military Institute. Powered by Modern Campus Catalog™."
+     ]
+    },
+    "validation": {
+     "verdict": "warn",
+     "needs_hand_read": false,
+     "checks": [
+      {
+       "severity": "pass",
+       "name": "codes_not_in_source",
+       "detail": "all 58 codes appear verbatim in the captured text"
+      },
+      {
+       "severity": "pass",
+       "name": "group_count",
+       "detail": "15 requirement groups"
+      },
+      {
+       "severity": "pass",
+       "name": "course_count",
+       "detail": "58 distinct courses across 116 rows"
+      },
+      {
+       "severity": "warn",
+       "name": "no_stated_total",
+       "detail": "the page states no total credit figure — nothing to reconcile against"
+      },
+      {
+       "severity": "pass",
+       "name": "categories",
+       "detail": "34 unenumerated requirement(s) kept as categories"
+      }
+     ],
+     "stats": {
+      "groups": 15,
+      "sections": 19,
+      "rows": 116,
+      "course_rows": 82,
+      "category_rows": 34,
+      "distinct_courses": 58,
+      "credit_span": {
+       "min": 76,
+       "max": 76,
+       "groups_with_credits": 6
+      },
+      "stated_total": null
+     }
+    }
+   },
+   {
+    "key": "program_information_technology",
+    "source_role": "program_information_technology",
+    "source_ref": "program_information_technology",
+    "source_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2817&returnto=1546",
+    "requested_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2817&returnto=1546",
+    "capture_sha256": "6413a62c099fe1178f678b27d9caf612ec19485450ccdb0e7e534c3001234777",
+    "capture_file": "virginia-military-institute__program_information_technology",
+    "parser": "lines",
+    "pdf_window": null,
+    "tree": {
+     "program_title": null,
+     "parse_error": null,
+     "total_credits": null,
+     "stopped_at": null,
+     "groups": [
+      {
+       "title": "VMI Core Curriculum",
+       "credits": {
+        "min": 34,
+        "max": 34,
+        "raw": "34"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "B.S. in Computer Science - Information Technology Track must complete mathematics sequence. Either: B.S. in Computer Science - Information Technology Track must complete science sequence:",
+       "source_text": [
+        "VMI Core Curriculum: 34 Credits",
+        "MA 101 - Math that Matters I Credit Hours: 3",
+        "MA 102 - Math that Matters II Credit Hours: 3",
+        "or",
+        "MA 106 - Introduction to Probability and Statistics Credit Hours: 3",
+        "MA 126 - Quantitative Methods Credit Hours: 3",
+        "or",
+        "MA 123 - Calculus & Analytic Geometry I Credit Hours: 3",
+        "MA 124 - Calculus & Analytic Geometry II Credit Hours: 3",
+        "Science Requirement I - (BI, CH, or PY w/ lab) Credit Hours: 4",
+        "Science Requirement II - (BI, CH, or PY w/ lab) Credit Hours: 4"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "MA101",
+             "title": "Math that Matters I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 101 - Math that Matters I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA102",
+             "title": "Math that Matters II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 102 - Math that Matters II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        },
+        {
+         "label": "or",
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "MA106",
+             "title": "Introduction to Probability and Statistics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 106 - Introduction to Probability and Statistics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA126",
+             "title": "Quantitative Methods"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 126 - Quantitative Methods",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        },
+        {
+         "label": "or",
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "MA123",
+             "title": "Calculus & Analytic Geometry I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 123 - Calculus & Analytic Geometry I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA124",
+             "title": "Calculus & Analytic Geometry II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 124 - Calculus & Analytic Geometry II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement I - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement I - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement II - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement II - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Required Computer Science Core Courses",
+       "credits": {
+        "min": 30,
+        "max": 30,
+        "raw": "30"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Required Computer Science Core Courses: 30 Credits",
+        "CIS 101 - Introduction to Computer Science Credit Hours: 3",
+        "or CIS 131 - Introduction to Information Systems Credit Hours: 3",
+        "CIS 111 - Programming I Credit Hours: 3",
+        "CIS 111L - Laboratory for Programming I Credit Hours: 1",
+        "CIS 112 - Programming II Credit Hours: 3",
+        "CIS 112L - Laboratory for Programming II Credit Hours: 1",
+        "CIS 213 - Data Structures and Applications Credit Hours: 3",
+        "CIS 222 - Database Management Systems Credit Hours: 3",
+        "CIS 301 - Networking Credit Hours: 3",
+        "CIS 301L - Networking Lab Credit Hours: 1",
+        "CIS 380W - Research Topics in Computer and Information Sciences Credit Hours: 3",
+        "CIS 480 - Capstone I Credit Hours: 3",
+        "CIS 490 - Capstone II Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS101",
+             "title": "Introduction to Computer Science"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 101 - Introduction to Computer Science",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS131",
+             "title": "Introduction to Information Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "or CIS 131 - Introduction to Information Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111",
+             "title": "Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111 - Programming I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111L",
+             "title": "Laboratory for Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111L - Laboratory for Programming I",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112",
+             "title": "Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112 - Programming II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112L",
+             "title": "Laboratory for Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112L - Laboratory for Programming II",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS213",
+             "title": "Data Structures and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 213 - Data Structures and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS222",
+             "title": "Database Management Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 222 - Database Management Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301",
+             "title": "Networking"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301 - Networking",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301L",
+             "title": "Networking Lab"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301L - Networking Lab",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS380W",
+             "title": "Research Topics in Computer and Information Sciences"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 380W - Research Topics in Computer and Information Sciences",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS480",
+             "title": "Capstone I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 480 - Capstone I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS490",
+             "title": "Capstone II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 490 - Capstone II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Required Information Technology Track Courses",
+       "credits": {
+        "min": 18,
+        "max": 18,
+        "raw": "18"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Required Information Technology Track Courses: 18 Credits",
+        "CIS 211 - Internet and Mobile Programming Credit Hours: 3",
+        "CIS 231WX - IT: Past, Present, and Future Credit Hours: 3",
+        "CIS 331 - Human Computer Interaction and Usability Analysis Credit Hours: 3",
+        "CIS 377 - Linux Fundamentals, Administration, and Security Credit Hours: 3",
+        "CIS 431 - Information Organization & Management Credit Hours: 3",
+        "CIS 476W - Internship in Computer Science Credit Hours: 1-3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS211",
+             "title": "Internet and Mobile Programming"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 211 - Internet and Mobile Programming",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "CIS 231WX - IT: Past, Present, and Future Credit Hours: 3",
+           "category": "CIS 231WX - IT: Past, Present, and Future",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS331",
+             "title": "Human Computer Interaction and Usability Analysis"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 331 - Human Computer Interaction and Usability Analysis",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS377",
+             "title": "Linux Fundamentals, Administration, and Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 377 - Linux Fundamentals, Administration, and Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS431",
+             "title": "Information Organization & Management"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 431 - Information Organization & Management",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS476W",
+             "title": "Internship in Computer Science"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 476W - Internship in Computer Science",
+           "credits": {
+            "min": 1,
+            "max": 3,
+            "raw": "1-3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Computer and Information Sciences Electives*",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Computer and Information Sciences Electives*: 6 credits",
+        "CIS 201 - Computer Architecture and Organization Credit Hours: 3",
+        "CIS 303 - Computer & Information Security Credit Hours: 3",
+        "CIS 303L - Computer and Information Security Laboratory Credit Hours: 1",
+        "CIS 302 - Modern Operating Systems Credit Hours: 3",
+        "CIS 312W - Software Engineering Credit Hours: 3",
+        "CIS 342 - Data Analytics Credit Hours: 3",
+        "CIS 343 - Design and Analysis of Algorithms Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS201",
+             "title": "Computer Architecture and Organization"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 201 - Computer Architecture and Organization",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS303",
+             "title": "Computer & Information Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 303 - Computer & Information Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS303L",
+             "title": "Computer and Information Security Laboratory"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 303L - Computer and Information Security Laboratory",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS302",
+             "title": "Modern Operating Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 302 - Modern Operating Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS312W",
+             "title": "Software Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 312W - Software Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS342",
+             "title": "Data Analytics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 342 - Data Analytics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS343",
+             "title": "Design and Analysis of Algorithms"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 343 - Design and Analysis of Algorithms",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Computer and Information Sciences Upper Electives*",
+       "credits": {
+        "min": 3,
+        "max": 3,
+        "raw": "3"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Computer and Information Sciences Upper Electives*: 3 Credits",
+        "CIS 401 - Advanced Network Security Credit Hours: 3",
+        "CIS 402 - Computer Forensics Credit Hours: 3",
+        "CIS 411 - Distributed Computing and Applications Credit Hours: 3",
+        "CIS 412 - Mobile Computing and Applications Credit Hours: 3",
+        "CIS 421 - Database Design and Development Credit Hours: 3",
+        "CIS 422 - Information Retrieval Credit Hours: 3",
+        "CIS 424 - Artificial Intelligence Credit Hours: 3",
+        "CIS 430 - Theory of Computation and Programming Languages Credit Hours: 3",
+        "CIS 432 - Computer Vision Credit Hours: 3",
+        "CIS 434 - Bioinformatics Credit Hours: 3",
+        "CIS 477 - Secure Software Engineering Credit Hours: 3",
+        "EE 428 - Reverse Engineering Credit Hours: 3",
+        "Required Additional Mathematics Course: 3",
+        "CIS 241 - Discrete Structures Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS401",
+             "title": "Advanced Network Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 401 - Advanced Network Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS402",
+             "title": "Computer Forensics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 402 - Computer Forensics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS411",
+             "title": "Distributed Computing and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 411 - Distributed Computing and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS412",
+             "title": "Mobile Computing and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 412 - Mobile Computing and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS421",
+             "title": "Database Design and Development"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 421 - Database Design and Development",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS422",
+             "title": "Information Retrieval"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 422 - Information Retrieval",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS424",
+             "title": "Artificial Intelligence"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 424 - Artificial Intelligence",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS430",
+             "title": "Theory of Computation and Programming Languages"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 430 - Theory of Computation and Programming Languages",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS432",
+             "title": "Computer Vision"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 432 - Computer Vision",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS434",
+             "title": "Bioinformatics"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 434 - Bioinformatics",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS477",
+             "title": "Secure Software Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 477 - Secure Software Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "EE428",
+             "title": "Reverse Engineering"
+            }
+           ],
+           "conjunction": "and",
+           "text": "EE 428 - Reverse Engineering",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        },
+        {
+         "label": "Required Additional Mathematics Course: 3",
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS241",
+             "title": "Discrete Structures"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 241 - Discrete Structures",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Required Additional Courses",
+       "credits": {
+        "min": 6,
+        "max": 6,
+        "raw": "6"
+       },
+       "choose": 1,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "Choose one from below: Choose one from below: **",
+       "source_text": [
+        "Required Additional Courses: 6 credits",
+        "Choose one from below:",
+        "BU 277 - Information Security Management, Policy, & Law Credit Hours: 3",
+        "CIS 277 - Information Security Management, Policy, & Law Credit Hours: 3",
+        "IS 307 - Information Security Management, Policy, & Law Credit Hours: 3",
+        "Choose one from below: **",
+        "ELEC BU - Business Elective Credit Hours: 3",
+        "ELEC EC - Economics Elective Credit Hours: 3",
+        "ELEC ERH - ERH Elective Credit Hours: 3",
+        "ELEC PS - Psychology Elective Credit Hours: 3",
+        "ELEC IS - International Studies Elective Credit Hours: 3"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "BU277",
+             "title": "Information Security Management, Policy, & Law"
+            }
+           ],
+           "conjunction": "and",
+           "text": "BU 277 - Information Security Management, Policy, & Law",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS277",
+             "title": "Information Security Management, Policy, & Law"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 277 - Information Security Management, Policy, & Law",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "IS307",
+             "title": "Information Security Management, Policy, & Law"
+            }
+           ],
+           "conjunction": "and",
+           "text": "IS 307 - Information Security Management, Policy, & Law",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          }
+         ]
+        },
+        {
+         "label": null,
+         "choose": 1,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC BU - Business Elective Credit Hours: 3",
+           "category": "ELEC BU - Business Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC EC - Economics Elective Credit Hours: 3",
+           "category": "ELEC EC - Economics Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC ERH - ERH Elective Credit Hours: 3",
+           "category": "ELEC ERH - ERH Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC PS - Psychology Elective Credit Hours: 3",
+           "category": "ELEC PS - Psychology Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC IS - International Studies Elective Credit Hours: 3",
+           "category": "ELEC IS - International Studies Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Free Electives",
+       "credits": {
+        "min": 24,
+        "max": 24,
+        "raw": "24"
+       },
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "Notes: Synopsis of the B.S. Curriculum in Computer Science - Information Technology Track",
+       "source_text": [
+        "Free Electives: 24 credits",
+        "*If more than one track is declared, required courses of another track cannot be taken as a Computer and Information Sciences Elective or a Computer and Information Sciences Upper-Level elective.",
+        "**BU Elective, EC Elective, ERH Elective, IS Elective, PS Elective must be approved by Department Head.",
+        "Fourth (Freshman) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "*If more than one track is declared, required courses of another track cannot be taken as a Computer and Information Sciences Elective or a Computer and Information Sciences Upper-Level elective.",
+           "category": "*If more than one track is declared, required courses of another track cannot be taken as a Computer and Information Sciences Elective or a Computer and Information Sciences Upper-Level elective."
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "**BU Elective, EC Elective, ERH Elective, IS Elective, PS Elective must be approved by Department Head.",
+           "category": "**BU Elective, EC Elective, ERH Elective, IS Elective, PS Elective must be approved by Department Head."
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "First Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "First Semester",
+        "CIS 131 - Introduction to Information Systems Credit Hours: 3",
+        "CIS 111 - Programming I Credit Hours: 3",
+        "CIS 111L - Laboratory for Programming I Credit Hours: 1",
+        "ERH 101 - Writing and Rhetoric I Credit Hours: 3",
+        "HI 103 - World History I Credit Hours: 3",
+        "MA 101 - Math that Matters I Credit Hours: 3",
+        "HPW 102 - Boxing Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 17.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS131",
+             "title": "Introduction to Information Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 131 - Introduction to Information Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111",
+             "title": "Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111 - Programming I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS111L",
+             "title": "Laboratory for Programming I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 111L - Laboratory for Programming I",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "ERH101",
+             "title": "Writing and Rhetoric I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ERH 101 - Writing and Rhetoric I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HI103",
+             "title": "World History I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HI 103 - World History I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA101",
+             "title": "Math that Matters I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 101 - Math that Matters I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW102",
+             "title": "Boxing .5"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 102 - Boxing .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Second Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Second Semester",
+        "CIS 231WX - IT: Past, Present, and Future Credit Hours: 3",
+        "CIS 112 - Programming II Credit Hours: 3",
+        "CIS 112L - Laboratory for Programming II Credit Hours: 1",
+        "ERH 102 - Writing and Rhetoric II Credit Hours: 3",
+        "HI 104 - World History II Credit Hours: 3",
+        "MA 102 - Math that Matters II Credit Hours: 3",
+        "HPW 105 - Wellness Concepts Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 17.5",
+        "Third (Sophomore) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "CIS 231WX - IT: Past, Present, and Future Credit Hours: 3",
+           "category": "CIS 231WX - IT: Past, Present, and Future",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112",
+             "title": "Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112 - Programming II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS112L",
+             "title": "Laboratory for Programming II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 112L - Laboratory for Programming II",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "ERH102",
+             "title": "Writing and Rhetoric II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ERH 102 - Writing and Rhetoric II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HI104",
+             "title": "World History II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HI 104 - World History II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "MA102",
+             "title": "Math that Matters II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "MA 102 - Math that Matters II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW105",
+             "title": "Wellness Concepts .5"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 105 - Wellness Concepts .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Third Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Third Semester",
+        "CIS 213 - Data Structures and Applications Credit Hours: 3",
+        "CIS 301 - Networking Credit Hours: 3",
+        "CIS 301L - Networking Lab Credit Hours: 1",
+        "CIS 241 - Discrete Structures Credit Hours: 3",
+        "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+        "ELEC BU/EC/IS/PS - Elective Credit Hours: 3",
+        "HPW 201 - Basic Swimming and Survival Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 18.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS213",
+             "title": "Data Structures and Applications"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 213 - Data Structures and Applications",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301",
+             "title": "Networking"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301 - Networking",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS301L",
+             "title": "Networking Lab"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 301L - Networking Lab",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS241",
+             "title": "Discrete Structures"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 241 - Discrete Structures",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC BU/EC/IS/PS - Elective Credit Hours: 3",
+           "category": "ELEC BU/EC/IS/PS - Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW201",
+             "title": "Basic Swimming and Survival .5"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 201 - Basic Swimming and Survival .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Fourth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Fourth Semester",
+        "CIS 222 - Database Management Systems Credit Hours: 3",
+        "CIS 211 - Internet and Mobile Programming Credit Hours: 3",
+        "CIS 331 - Human Computer Interaction and Usability Analysis Credit Hours: 3",
+        "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW 205 - Principles of Physical Conditioning Credit Hours: 1",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+        "Total Semester Hrs: 18.0",
+        "Second (Junior) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS222",
+             "title": "Database Management Systems"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 222 - Database Management Systems",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS211",
+             "title": "Internet and Mobile Programming"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 211 - Internet and Mobile Programming",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS331",
+             "title": "Human Computer Interaction and Usability Analysis"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 331 - Human Computer Interaction and Usability Analysis",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "Science Requirement - (BI, CH, or PY w/ lab) Credit Hours: 4",
+           "category": "Science Requirement - (BI, CH, or PY w/ lab)",
+           "credits": {
+            "min": 4,
+            "max": 4,
+            "raw": "4"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "HPW205",
+             "title": "Principles of Physical Conditioning"
+            }
+           ],
+           "conjunction": "and",
+           "text": "HPW 205 - Principles of Physical Conditioning",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 1",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Fifth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Fifth Semester",
+        "CIS 377 - Linux Fundamentals, Administration, and Security Credit Hours: 3",
+        "CIS 431 - Information Organization & Management Credit Hours: 3",
+        "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+        "ERH 103 - Fundamentals of Public Speaking Credit Hours: 1",
+        "LEAD 344 - Leadership in Organizations Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW Requirement - Elective Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 18.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS377",
+             "title": "Linux Fundamentals, Administration, and Security"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 377 - Linux Fundamentals, Administration, and Security",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS431",
+             "title": "Information Organization & Management"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 431 - Information Organization & Management",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+           "category": "ELEC CIS - Computer & Information Sciences Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "ERH103",
+             "title": "Fundamentals of Public Speaking"
+            }
+           ],
+           "conjunction": "and",
+           "text": "ERH 103 - Fundamentals of Public Speaking",
+           "credits": {
+            "min": 1,
+            "max": 1,
+            "raw": "1"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "LEAD344",
+             "title": "Leadership in Organizations"
+            }
+           ],
+           "conjunction": "and",
+           "text": "LEAD 344 - Leadership in Organizations",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "HPW Requirement - Elective Credit Hours: 0.5",
+           "category": "HPW Requirement - Elective .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Sixth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Sixth Semester",
+        "CIS 476W - Internship in Computer Science Credit Hours: 1-3",
+        "CIS 380W - Research Topics in Computer and Information Sciences Credit Hours: 3",
+        "BU/CIS/IS 277/307 - Information Security, Management, Policy, and Law Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW Requirement - Elective Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 14.5",
+        "First (Senior) Class"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [
+            {
+             "code": "CIS476W",
+             "title": "Internship in Computer Science"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 476W - Internship in Computer Science",
+           "credits": {
+            "min": 1,
+            "max": 3,
+            "raw": "1-3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS380W",
+             "title": "Research Topics in Computer and Information Sciences"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 380W - Research Topics in Computer and Information Sciences",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [
+            {
+             "code": "IS277",
+             "title": "/307 - Information Security, Management, Policy, and Law"
+            }
+           ],
+           "conjunction": "and",
+           "text": "BU/CIS/IS 277/307 - Information Security, Management, Policy, and Law",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "HPW Requirement - Elective Credit Hours: 0.5",
+           "category": "HPW Requirement - Elective .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Seventh Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": null,
+       "source_text": [
+        "Seventh Semester",
+        "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+        "CIS 480 - Capstone I Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "HPW Requirement - Elective Credit Hours: 0.5",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 17.5"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+           "category": "ELEC CIS - Computer & Information Sciences Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS480",
+             "title": "Capstone I"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 480 - Capstone I",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "HPW Requirement - Elective Credit Hours: 0.5",
+           "category": "HPW Requirement - Elective .5",
+           "credits": {
+            "min": 0,
+            "max": 0,
+            "raw": "0"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "title": "Eighth Semester",
+       "credits": null,
+       "choose": null,
+       "choose_credits": null,
+       "distinct_sections": null,
+       "note": "All catalogs © 2026 Virginia Military Institute. Powered by Modern Campus Catalog™.",
+       "source_text": [
+        "Eighth Semester",
+        "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+        "CIS 490 - Capstone II Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ELEC Free - Free Elective Credit Hours: 3",
+        "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+        "Total Semester Hrs: 14.0",
+        "Return to: The Curricula",
+        "Print (opens a new window)"
+       ],
+       "sections": [
+        {
+         "label": null,
+         "choose": null,
+         "credits": null,
+         "rows": [
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC CIS - Computer & Information Sciences Elective Credit Hours: 3",
+           "category": "ELEC CIS - Computer & Information Sciences Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [
+            {
+             "code": "CIS490",
+             "title": "Capstone II"
+            }
+           ],
+           "conjunction": "and",
+           "text": "CIS 490 - Capstone II",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           },
+           "administrative": false
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ELEC Free - Free Elective Credit Hours: 3",
+           "category": "ELEC Free - Free Elective",
+           "credits": {
+            "min": 3,
+            "max": 3,
+            "raw": "3"
+           }
+          },
+          {
+           "codes": [],
+           "conjunction": "and",
+           "text": "ROTC Requirement - AS, MS, or NS Credit Hours: 2",
+           "category": "ROTC Requirement - AS, MS, or NS",
+           "credits": {
+            "min": 2,
+            "max": 2,
+            "raw": "2"
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ],
+     "narrative": [],
+     "unassigned": [
+      "B.S. in Computer Science - Information Technology Track must complete mathematics sequence. Either:",
+      "B.S. in Computer Science - Information Technology Track must complete science sequence:",
+      "Notes:",
+      "Synopsis of the B.S. Curriculum in Computer Science - Information Technology Track",
+      "All catalogs © 2026 Virginia Military Institute. Powered by Modern Campus Catalog™."
+     ]
+    },
+    "validation": {
+     "verdict": "warn",
+     "needs_hand_read": false,
+     "checks": [
+      {
+       "severity": "pass",
+       "name": "codes_not_in_source",
+       "detail": "all 58 codes appear verbatim in the captured text"
+      },
+      {
+       "severity": "pass",
+       "name": "group_count",
+       "detail": "15 requirement groups"
+      },
+      {
+       "severity": "pass",
+       "name": "course_count",
+       "detail": "58 distinct courses across 114 rows"
+      },
+      {
+       "severity": "warn",
+       "name": "no_stated_total",
+       "detail": "the page states no total credit figure — nothing to reconcile against"
+      },
+      {
+       "severity": "pass",
+       "name": "categories",
+       "detail": "36 unenumerated requirement(s) kept as categories"
+      }
+     ],
+     "stats": {
+      "groups": 15,
+      "sections": 19,
+      "rows": 114,
+      "course_rows": 78,
+      "category_rows": 36,
+      "distinct_courses": 58,
+      "credit_span": {
+       "min": 121,
+       "max": 121,
+       "groups_with_credits": 7
+      },
+      "stated_total": null
+     }
+    }
+   }
+  ]
+ },
+ "validation": {
+  "verdict": "warn",
+  "needs_hand_read": false,
+  "checks": [
+   {
+    "severity": "warn",
+    "name": "multiple_program_variants_preserved",
+    "detail": "3 requirement-bearing program sources were parsed separately; a cited composition must select or relate them",
+    "source_roles": [
+     "program",
+     "program_cybersecurity",
+     "program_information_technology"
+    ],
+    "expected_source_roles": [
+     "program",
+     "program_cybersecurity",
+     "program_information_technology"
+    ],
+    "missing_source_roles": [],
+    "failed_source_roles": [],
+    "warned_source_roles": [
+     "program",
+     "program_cybersecurity",
+     "program_information_technology"
+    ]
+   }
+  ],
+  "stats": {
+   "groups": 0,
+   "sections": 0,
+   "rows": 0,
+   "course_rows": 0,
+   "category_rows": 0,
+   "distinct_courses": 0,
+   "credit_span": {
+    "min": 0,
+    "max": 0,
+    "groups_with_credits": 0
+   },
+   "stated_total": null,
+   "variants": 3,
+   "missing_variants": 0,
+   "variant_stats": [
+    {
+     "source_role": "program",
+     "source_ref": "major",
+     "verdict": "warn",
+     "groups": 15,
+     "sections": 15,
+     "rows": 101,
+     "course_rows": 72,
+     "category_rows": 29,
+     "distinct_courses": 51,
+     "credit_span": {
+      "min": 124,
+      "max": 124,
+      "groups_with_credits": 7
+     },
+     "stated_total": null
+    },
+    {
+     "source_role": "program_cybersecurity",
+     "source_ref": "program_cybersecurity",
+     "verdict": "warn",
+     "groups": 15,
+     "sections": 19,
+     "rows": 116,
+     "course_rows": 82,
+     "category_rows": 34,
+     "distinct_courses": 58,
+     "credit_span": {
+      "min": 76,
+      "max": 76,
+      "groups_with_credits": 6
+     },
+     "stated_total": null
+    },
+    {
+     "source_role": "program_information_technology",
+     "source_ref": "program_information_technology",
+     "verdict": "warn",
+     "groups": 15,
+     "sections": 19,
+     "rows": 114,
+     "course_rows": 78,
+     "category_rows": 36,
+     "distinct_courses": 58,
+     "credit_span": {
+      "min": 121,
+      "max": 121,
+      "groups_with_credits": 7
+     },
+     "stated_total": null
+    }
+   ]
+  }
+ }
+}

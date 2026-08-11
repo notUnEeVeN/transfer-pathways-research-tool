@@ -1,0 +1,377 @@
+{
+  "schema_version": 1,
+  "slug": "william-mary",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science (BS in Computer Science)",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Computer Science",
+  "college": "School of Computing, Data Sciences & Physics",
+  "ge_authority": "William & Mary College Curriculum (COLL)",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "policy",
+    "course_catalog"
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": ["major", "course_catalog"]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": ["general_education", "college"]
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": ["general_education", "policy"]
+    }
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "canonical_major_units": 48,
+    "canonical_distinct_coll_and_arts_units": 34,
+    "remaining_elective_capacity_units": 38,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The 2026-2027 catalog states no aggregate university-wide upper-division-credit minimum. The General-concentration major itself guarantees at least 27 credits numbered 300 or above.",
+      "source_refs": ["major", "general_education"]
+    },
+    "major_scoped_upper_division_units_minimum": 27,
+    "residency": {
+      "status": "required",
+      "minimum_units": 60,
+      "rule": "At least 60 credits overall and at least 15 credits in the major must be earned in residence at William & Mary; Computer Science additionally requires at least half of its minimum course count at William & Mary.",
+      "source_refs": ["major", "general_education"]
+    },
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+    "The broad 48-credit General concentration is the canonical B.S. path. The 48-credit Cybersecurity and 51-credit Artificial Intelligence/Machine Learning paths are preserved as alternate requirement variants rather than being collapsed into one menu.",
+    "The canonical unit path keeps the 34 published COLL and Creative/Performing Arts credits distinct from the major. Published overlap is allowed but not required; overlap changes how the 38-credit remaining capacity is used, not the 120-credit degree minimum.",
+    "Foreign-language proficiency can be satisfied before matriculation and therefore has a zero-credit canonical increment. Any language coursework still needed is taken inside the remaining degree capacity.",
+    "Mathematics proficiency and the major writing requirement are satisfied by named major requirements. COLL 350 is an attribute on another COLL course and carries no additional canonical increment.",
+    "Accelerated bachelor's-to-master's pathways, honors, and advising schedules are excluded from the ordinary B.S."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "general_concentration_open_course_category",
+      "severity": "review",
+      "message": "The General concentration is a 12-credit category over eligible 300-400-level CSCI courses, with MATH 413/414 allowed and CSCI 320/430/498 excluded; the catalog does not publish one closed course menu."
+    },
+    {
+      "code": "coll_major_overlap",
+      "severity": "review",
+      "message": "At most three courses may count toward both COLL and the major. The canonical arithmetic uses a no-overlap path and retains the overlap rule explicitly."
+    }
+  ],
+  "course_titles": {
+    "CSCI141": "Modern Programming Fundamentals",
+    "CSCI241": "Data Structures",
+    "CSCI243": "Logic and Discrete Structures",
+    "CSCI301": "Software Development",
+    "CSCI303": "Algorithms",
+    "CSCI304": "Computer Organization",
+    "CSCI312": "Principles of Programming Languages",
+    "CSCI423": "Finite Automata and Theory of Computation",
+    "MATH109": "Linear Algebra",
+    "MATH111": "Calculus I",
+    "MATH112": "Calculus II",
+    "MATH131": "Calculus I for Life Sciences",
+    "MATH132": "Calculus II for Life Sciences",
+    "MATH214": "Foundations of Math",
+    "CSCI324": "Cybersecurity Fundamentals",
+    "CSCI415": "Systems Programming",
+    "CSCI434": "Network Systems and Design",
+    "CSCI444": "Principles of Operating Systems",
+    "CSCI445": "Mobile Application Security",
+    "CSCI454": "Computer and Network Security",
+    "CSCI464": "Penetration Testing",
+    "CSCI356": "Large Language Models",
+    "CSCI416": "Fundamentals of Artificial Intelligence/Machine Learning",
+    "CSCI421": "Database Systems",
+    "CSCI436": "Data Mining",
+    "CSCI446": "Neural Networks for Machine Learning",
+    "CSCI455": "Generative Artificial Intelligence for Software Development",
+    "CSCI466": "Applied Topology Data Science",
+    "DATA441": "Advanced Applications of AI",
+    "MATH351": "Probability and Statistics for Scientists",
+    "MATH451": "Probability"
+  },
+  "requirement_groups": [
+    {
+      "title": "Computer Science core",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 25,
+      "sections": [
+        {"select": 1, "units": 4, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSCI141", "units": 4}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CSCI241", "units": 3}]},
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Logic and discrete structures",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "receivers": [
+            {"kind": "course", "code": "CSCI243", "units": 3},
+            {"kind": "course", "code": "MATH214", "units": 3}
+          ]
+        },
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSCI301", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSCI303", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSCI304", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSCI312", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CSCI423", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Mathematics proficiency for the B.S. major",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "stated_credits": 11,
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "label": "Calculus I",
+          "receivers": [
+            {"kind": "course", "code": "MATH111", "units": 4},
+            {"kind": "course", "code": "MATH131", "units": 4}
+          ]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "label": "Calculus II",
+          "receivers": [
+            {"kind": "course", "code": "MATH112", "units": 4},
+            {"kind": "course", "code": "MATH132", "units": 4}
+          ]
+        },
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "MATH109", "units": 3}]}
+      ]
+    },
+    {
+      "title": "General concentration",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 12,
+      "analysis_constraints": [
+        {
+          "kind": "open_course_category_with_exclusions",
+          "status": "evaluator_not_implemented",
+          "description": "Complete 12 credits from eligible 300-400-level CSCI courses; MATH 413 and MATH 414 may count, while CSCI 320, CSCI 430, and CSCI 498 may not."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 12,
+          "label": "Twelve eligible upper-level elective credits",
+          "receivers": [
+            {"kind": "ge_area", "code": "WM-CSCI-GENERAL-UPPER-12", "name": "Twelve credits of eligible 300-400-level CSCI electives, including permitted MATH 413/414 substitutions", "units": 12}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "College Curriculum and degree proficiencies",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "college"],
+      "analysis_constraints": [
+        {
+          "kind": "coll_major_overlap_limit",
+          "status": "evaluator_not_implemented",
+          "description": "A course may satisfy one COLL requirement and a proficiency, and at most three courses may count toward both COLL and the major."
+        },
+        {
+          "kind": "coll350_attribute_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "COLL 350 is an attribute applied to another COLL course and adds no distinct credits."
+        },
+        {
+          "kind": "foreign_language_proficiency_variable_credit",
+          "status": "evaluator_not_implemented",
+          "description": "Language proficiency may be satisfied before enrollment or by coursework through the 202/203 level."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 4, "label": "COLL 100", "receivers": [{"kind": "ge_area", "code": "WM-COLL100", "name": "One four-credit COLL 100 course", "units": 4}]},
+        {"select": 1, "units": 4, "label": "COLL 150", "receivers": [{"kind": "ge_area", "code": "WM-COLL150", "name": "One four-credit COLL 150 course with C- or better", "units": 4}]},
+        {"select": 1, "units": 9, "label": "COLL 200 domains", "receivers": [{"kind": "ge_area", "code": "WM-COLL200-DOMAINS", "name": "Nine COLL 200 credits: at least three each in ALV, CSI, and NQR", "units": 9}]},
+        {"select": 1, "units": 9, "label": "Additional knowledge-domain credits", "receivers": [{"kind": "ge_area", "code": "WM-COLL-DOMAIN-ADDITIONAL", "name": "Nine additional credits: at least three each in ALV, CSI, and NQR", "units": 9}]},
+        {"select": 1, "units": 3, "label": "COLL 300", "receivers": [{"kind": "ge_area", "code": "WM-COLL300", "name": "Three credits satisfying COLL 300", "units": 3}]},
+        {"select": 1, "units": 0, "label": "COLL 350", "receivers": [{"kind": "ge_area", "code": "WM-COLL350", "name": "COLL 350 attribute on another COLL course", "units": 0}]},
+        {"select": 1, "units": 3, "label": "COLL 400", "receivers": [{"kind": "ge_area", "code": "WM-COLL400", "name": "At least three credits satisfying the COLL 400 capstone", "units": 3}]},
+        {"select": 1, "units": 2, "label": "Creative and Performing Arts proficiency", "receivers": [{"kind": "ge_area", "code": "WM-ARTS-PROFICIENCY", "name": "Two credits with the Arts Proficiency attribute in the same art", "units": 2}]},
+        {"select": 1, "units": 0, "label": "Foreign-language proficiency", "receivers": [{"kind": "ge_area", "code": "WM-LANGUAGE-202-203", "name": "Foreign-language proficiency through the 202/203 level or an approved pre-enrollment equivalent", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Writing proficiency", "receivers": [{"kind": "ge_area", "code": "WM-WRITING-PROFICIENCY", "name": "COLL 150 writing proficiency plus the Computer Science major writing requirement", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Mathematics proficiency", "receivers": [{"kind": "ge_area", "code": "WM-MATHEMATICS-PROFICIENCY", "name": "Mathematics proficiency satisfied by the required calculus sequence", "units": 0}]}
+      ]
+    },
+    {
+      "title": "Remaining elective capacity to the degree minimum",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["general_education"],
+      "analysis_constraints": [
+        {
+          "kind": "capacity_reallocation_after_overlap",
+          "status": "evaluator_not_implemented",
+          "description": "The canonical 38-credit capacity assumes the 34 COLL/arts credits are distinct from the 48-credit major. Any permitted overlap increases free-elective capacity without changing the 120-credit minimum."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 38,
+          "label": "Remaining credits after the canonical major and distinct COLL path",
+          "receivers": [
+            {"kind": "ge_area", "code": "WM-DEGREE-ELECTIVE-CAPACITY", "name": "Remaining elective and any needed language credit", "units": 38}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "University graduation and residence rules",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "policy",
+      "cc_articulable": false,
+      "source_refs": ["general_education", "policy"],
+      "analysis_constraints": [
+        {
+          "kind": "overlapping_residency_rules",
+          "status": "evaluator_not_implemented",
+          "description": "The 60-credit overall residency rule, 15-credit major rule, and department half-course rule overlap rather than adding credits."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "label": "120-credit degree minimum", "receivers": [{"kind": "requirement", "name": "Complete at least 120 credit hours", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Minimum 2.0 institutional GPA", "receivers": [{"kind": "requirement", "name": "Earn at least a 2.0 GPA in William & Mary graded courses", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Minimum 2.0 major GPA", "receivers": [{"kind": "requirement", "name": "Earn at least a 2.0 GPA in the Computer Science major", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Overall residency", "receivers": [{"kind": "requirement", "name": "Earn at least 60 credits in residence at William & Mary", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Major residency", "receivers": [{"kind": "requirement", "name": "Earn at least 15 major credits and at least half of the minimum Computer Science course count at William & Mary", "units": 0}]},
+        {"select": 1, "units": 0, "label": "External upper-level major limit", "receivers": [{"kind": "requirement", "name": "No more than two transferred 300- or 400-level courses may count toward the Computer Science major", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Ten-semester rule", "receivers": [{"kind": "requirement", "name": "Complete the degree within the university's ten-semester limit", "units": 0}]}
+      ]
+    }
+  ],
+  "requirement_variants": [
+    {
+      "key": "general",
+      "label": "General concentration",
+      "selected": true,
+      "published_major_units": 48,
+      "source_refs": ["major", "course_catalog"],
+      "requirement_groups_location": "top-level requirement_groups"
+    },
+    {
+      "key": "cybersecurity",
+      "label": "Cybersecurity concentration",
+      "selected": false,
+      "published_major_units": 48,
+      "common_requirements": "Computer Science core and mathematics proficiency are inherited from the canonical document.",
+      "source_refs": ["major", "course_catalog"],
+      "requirement_groups": [
+        {
+          "title": "Cybersecurity concentration",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major", "course_catalog"],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI444", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI454", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CSCI464", "units": 3}]},
+            {
+              "select": 1,
+              "units": 3,
+              "label": "Additional Cybersecurity course",
+              "receivers": [
+                {"kind": "course", "code": "CSCI324", "units": 3},
+                {"kind": "course", "code": "CSCI415", "units": 3},
+                {"kind": "course", "code": "CSCI434", "units": 3},
+                {"kind": "course", "code": "CSCI445", "units": 3},
+                {"kind": "ge_area", "code": "WM-CSCI420-CYBER-APPROVED", "name": "Approved cybersecurity-focused CSCI 420 Special Topics course", "units": 3}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "artificial_intelligence_machine_learning",
+      "label": "Artificial Intelligence/Machine Learning concentration",
+      "selected": false,
+      "published_major_units": 51,
+      "common_requirements": "Computer Science core and mathematics proficiency are inherited from the canonical document.",
+      "source_refs": ["major", "course_catalog"],
+      "requirement_groups": [
+        {
+          "title": "Artificial Intelligence/Machine Learning concentration",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["major", "course_catalog"],
+          "analysis_constraints": [
+            {
+              "kind": "approved_special_topics",
+              "status": "evaluator_not_implemented",
+              "description": "A CSCI 420 topic may count only when the Undergraduate Director determines that it contains sufficient concentration material."
+            }
+          ],
+          "sections": [
+            {
+              "select": 1,
+              "units": 3,
+              "label": "Probability and statistics",
+              "receivers": [
+                {"kind": "course", "code": "MATH351", "units": 3},
+                {"kind": "course", "code": "MATH451", "units": 3}
+              ]
+            },
+            {
+              "select": 4,
+              "units": 12,
+              "label": "Twelve AI/ML elective credits",
+              "receivers": [
+                {"kind": "course", "code": "CSCI356", "units": 3},
+                {"kind": "course", "code": "CSCI416", "units": 3},
+                {"kind": "course", "code": "CSCI421", "units": 3},
+                {"kind": "course", "code": "CSCI436", "units": 3},
+                {"kind": "course", "code": "CSCI446", "units": 3},
+                {"kind": "course", "code": "CSCI455", "units": 3},
+                {"kind": "course", "code": "CSCI466", "units": 3},
+                {"kind": "course", "code": "DATA441", "units": 3},
+                {"kind": "ge_area", "code": "WM-CSCI420-AI-APPROVED", "name": "Approved AI/ML-focused CSCI 420 Special Topics course", "units": 3}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

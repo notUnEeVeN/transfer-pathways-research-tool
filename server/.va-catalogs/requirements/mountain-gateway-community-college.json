@@ -1,43 +1,187 @@
 {
- "slug": "mountain-gateway-community-college",
- "name": "Mountain Gateway Community College",
- "level": "community_college",
- "platform": "acalog",
- "outcome": "no_cs_program",
- "source_url": "https://catalog.mgcc.edu/",
- "offers_cs": false,
- "program_title": null,
- "total_credits": null,
- "groups": [],
- "validation": {
-  "verdict": "n/a",
-  "needs_hand_read": false,
-  "checks": [],
-  "stats": {}
- },
- "evidence": {
-  "url": null,
-  "candidates": [],
-  "catoids": [
-   9
+  "slug": "mountain-gateway-community-college",
+  "name": "Mountain Gateway Community College",
+  "level": "community_college",
+  "platform": "acalog",
+  "outcome": "captured",
+  "offers_cs": true,
+  "hand_read": true,
+  "hand_read_notes": "The source-owned four-component degree structure is authoritative. Biology and Natural Resources guided-pathway rows are explicitly excluded because no Computer Science guided schedule is published.",
+  "source_url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=895&returnto=478&print=1",
+  "catalog_year": "2026-2027",
+  "program_title": "Science, AS",
+  "total_credits": {
+    "min": 60,
+    "max": 64,
+    "raw": "60-64"
+  },
+  "degree_context": {
+    "award": "AS",
+    "award_name": "Associate of Science",
+    "catalog_year": "2026-2027",
+    "program": "Science, AS",
+    "variant": "Generic multi-pathway Science A.S. explicitly configured to support the Transfer Virginia Computer Science pathway; no CS-specific prescribed course branch",
+    "catalog_version": {
+      "catalog_id": 9,
+      "program_id": 895,
+      "returnto": 478,
+      "academic_plan": 880
+    },
+    "general_education_authority": "Mountain Gateway Uniform Certificate of General Studies, Science Specialized Requirements, and Transfer Core",
+    "unit_audit": {
+      "published_program_units_minimum": 60,
+      "published_program_units_maximum": 64,
+      "modeled_units_minimum": 60,
+      "modeled_units_maximum": 64,
+      "component_units": {
+        "college_success": 1,
+        "uniform_general_studies_minimum": 31,
+        "uniform_general_studies_maximum": 33,
+        "science_specialized": 12,
+        "transfer_core_minimum": 16,
+        "transfer_core_maximum": 18
+      },
+      "minimum_curriculum_gpa": 2,
+      "residency": {
+        "status": "required",
+        "minimum_percent": 25,
+        "minimum_units_on_60_credit_path": 15,
+        "rule": "Twenty-five percent of the degree credits, excluding advanced-placement and credit-by-exam credit, must be acquired at Mountain Gateway Community College.",
+        "source_refs": ["graduation"]
+      }
+    },
+    "modeling_notes": [
+      "The college expressly names Computer Science as one of several Transfer Virginia pathways supported by this generic Science A.S.; it does not publish a CS-only award, specialization, or prescribed CSC sequence.",
+      "The canonical 60-credit path uses the published component minima: one SDV credit, 31 UCGS credits, 12 Science Specialized credits, and 16 Transfer Core credits.",
+      "The linked UCGS and Science Specialized records preserve all locally listed concrete options. The Science Specialized rule also permits other destination-appropriate Transfer Virginia STEM courses, and Transfer Core remains destination-selected.",
+      "The Biology and Natural Resources guided pathways are not degree-wide requirements and are excluded from the composition."
+    ],
+    "data_quality_flags": [
+      {
+        "code": "generic_multi_pathway_science_as",
+        "severity": "block_analysis",
+        "message": "Computer Science is a supported transfer destination, but the college publishes no CS-specific prescribed course branch."
+      },
+      {
+        "code": "destination_selected_open_components",
+        "severity": "block_analysis",
+        "message": "Science Specialized and Transfer Core selections must be aligned with the receiving program through Transfer Virginia or advising."
+      },
+      {
+        "code": "ucgs_internal_credit_range_conflict",
+        "severity": "review",
+        "message": "The UCGS publishes a 31-33 total even though the locally listed five-credit MTH 167 and six-to-eight-credit Block VII menus can arithmetically exceed 33; the degree component cap remains 33."
+      }
+    ],
+    "layers": {
+      "catalog_identity": {"source_roles": ["catalog"]},
+      "major": {"source_roles": ["program"]},
+      "general_education": {"source_roles": ["program", "uniform_general_studies"]},
+      "science_specialized": {"source_roles": ["program", "science_specialized"]},
+      "transfer_core": {"source_roles": ["program", "transfer_core"]},
+      "graduation": {"source_roles": ["program", "graduation"]}
+    }
+  },
+  "sources": [
+    {
+      "id": "catalog",
+      "role": "catalog",
+      "kind": "catalog",
+      "label": "Mountain Gateway Community College 2026-2027 academic catalog",
+      "url": "https://catalog.mgcc.edu/index.php?catoid=9",
+      "requested_url": "https://catalog.mgcc.edu/index.php?catoid=9",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:45:23.060Z",
+      "sha256": "c91c3dfad32e0dc405eb74e5649e6360715e9ac033c977e3b22af0034ce6339a",
+      "official": true,
+      "secure": true
+    },
+    {
+      "id": "major",
+      "role": "program",
+      "kind": "major",
+      "label": "Mountain Gateway Science A.S. plan 880 and four-component degree requirements",
+      "url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=895&returnto=478&print=1",
+      "requested_url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=895&returnto=478&print=1",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:45:23.060Z",
+      "sha256": "4f9494ae5e63cbc37fc0253d6aabe84cafe812997cc34f328a1b3d81a33c2655",
+      "official": true,
+      "secure": true
+    },
+    {
+      "id": "uniform_general_studies",
+      "role": "uniform_general_studies",
+      "kind": "general_education",
+      "label": "Mountain Gateway Uniform Certificate of General Studies blocks and course menus",
+      "url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=909&returnto=478",
+      "requested_url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=909&returnto=478",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:45:23.060Z",
+      "sha256": "4c377bd2f74ed9a7f41e23b5c07496a985536a37dad23fd37c686fc7eba7da21",
+      "official": true,
+      "secure": true
+    },
+    {
+      "id": "science_specialized",
+      "role": "science_specialized",
+      "kind": "major",
+      "label": "Mountain Gateway Science Specialized Requirements course menu",
+      "url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=975&returnto=478",
+      "requested_url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=975&returnto=478",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:45:23.060Z",
+      "sha256": "dc40c89a36f35758f31c4355b6d6ace8c58822bf0bf6c09fe55d5e0245a39521",
+      "official": true,
+      "secure": true
+    },
+    {
+      "id": "transfer_core",
+      "role": "transfer_core",
+      "kind": "general_education",
+      "label": "Mountain Gateway Transfer Core destination-selected requirements",
+      "url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=967&returnto=478",
+      "requested_url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=967&returnto=478",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:45:23.060Z",
+      "sha256": "570ac276cf5cfe45c8b7ef646039688f4b4058f6f9d2af1697b9d0cb09a8324c",
+      "official": true,
+      "secure": true
+    },
+    {
+      "id": "graduation",
+      "role": "graduation",
+      "kind": "graduation",
+      "label": "Mountain Gateway associate-degree graduation and residency requirements",
+      "url": "https://catalog.mgcc.edu/content.php?catoid=9&navoid=487",
+      "requested_url": "https://catalog.mgcc.edu/content.php?catoid=9&navoid=487",
+      "catalog_platform": "acalog",
+      "captured_at": "2026-08-10T23:45:23.060Z",
+      "sha256": "18abb70961c6b81c14180dc9e41847de9e5a4d5e0a43264727f71ac620c8aa23",
+      "official": true,
+      "secure": true
+    }
   ],
-  "read": {
-   "navs_seen": 23,
-   "nav_pages_read": 5,
-   "program_links_seen": 209,
-   "via": "navigation"
+  "source_layers": {
+    "catalog_identity": {"status": "captured", "source_refs": ["catalog"], "note": "Current 2026-2027 catalog identity."},
+    "major": {"status": "captured", "source_refs": ["major", "science_specialized"], "note": "The generic Science A.S. names CS as a supported pathway and publishes its component totals; no CS-only branch is stated."},
+    "general_education": {"status": "captured", "source_refs": ["major", "uniform_general_studies", "transfer_core"], "note": "All seven UCGS blocks and the destination-selected Transfer Core rule are retained."},
+    "graduation": {"status": "captured", "source_refs": ["major", "graduation"], "note": "Program GPA and college associate-degree residency/gates are retained."}
   },
-  "read_fetch": {
-   "navs_seen": 23,
-   "nav_pages_read": 0,
-   "program_links_seen": 0
-  },
-  "read_curl": {
-   "navs_seen": 23,
-   "nav_pages_read": 0,
-   "program_links_seen": 0,
-   "via": "curl"
+  "captured_at": "2026-08-10T23:45:23.060Z",
+  "extracted_at": "2026-08-10T23:48:00.000Z",
+  "parser": "hand_composition",
+  "pdf_window": null,
+  "groups": [],
+  "narrative": [],
+  "unassigned": [],
+  "validation": {
+    "verdict": "pass",
+    "needs_hand_read": false,
+    "checks": [
+      {"name": "guided_pathway_schedule_excluded", "severity": "pass", "detail": "Only source-owned degree components are composed; Biology and Natural Resources term rows are excluded."},
+      {"name": "generic_cs_path_labeled", "severity": "pass", "detail": "The record states that CS is supported but no CS-specific prescribed sequence exists."}
+    ],
+    "stats": {"groups": 0, "rows": 0, "distinct_courses": 0, "credit_span": {"min": 60, "max": 64}, "stated_total": "60-64"}
   }
- },
- "extracted_at": "2026-08-02T06:13:44.735Z"
 }

@@ -1,0 +1,377 @@
+{
+  "schema_version": 1,
+  "slug": "germanna-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Associate of Science (Plan 246)",
+  "award": "AS",
+  "catalog_version": {
+    "catalog_id": 15,
+    "program_id": 1614,
+    "returnto": 453,
+    "academic_plan": 246
+  },
+  "total_units": 60,
+  "total_units_max": 62,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": ["major", "catalog", "general_education", "elective", "graduation"],
+  "course_titles": {
+    "SDV100": "College Success Skills",
+    "SDV101": "Orientation to Information Technology Professions",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "ENG113": "Technical-Professional Writing",
+    "ART101": "History of Art: Prehistoric to Gothic",
+    "ART102": "History of Art: Renaissance to Modern",
+    "MUS121": "Music in Society",
+    "CST130": "Introduction to Theatre",
+    "CST151": "Film Appreciation I",
+    "HUM201": "Early Humanities",
+    "HUM202": "Modern Humanities",
+    "HUM210": "Introduction to Women and Gender Studies",
+    "HUM220": "Introduction to African-American Studies",
+    "HUM256": "Comparative Mythology",
+    "HUM259": "The Greek and Roman Tradition",
+    "PHI100": "Introduction to Philosophy",
+    "PHI111": "Logic I",
+    "PHI220": "Ethics",
+    "REL100": "Introduction to the Study of Religion",
+    "REL230": "Religions of the World",
+    "REL237": "Eastern Religions",
+    "REL240": "Religions in America",
+    "ENG225": "Reading Literature",
+    "ENG245": "British Literature",
+    "ENG246": "American Literature",
+    "ENG250": "Children's Literature",
+    "ENG255": "World Literature",
+    "ENG258": "African American Literature",
+    "ENG275": "Women's Literature",
+    "ECO150": "Economic Essentials: Theory and Application",
+    "ECO201": "Principles of Macroeconomics",
+    "ECO202": "Principles of Microeconomics",
+    "GEO210": "People and the Land: Introduction to Cultural Geography",
+    "GEO220": "World Regional Geography",
+    "PLS135": "U.S. Government and Politics",
+    "PLS140": "Introduction to Comparative Politics",
+    "PLS241": "Introduction to International Relations",
+    "PSY200": "Principles of Psychology",
+    "SOC200": "Introduction to Sociology",
+    "SOC268": "Social Problems",
+    "HIS101": "Western Civilizations Pre-1600 CE",
+    "HIS102": "Western Civilizations Post-1600 CE",
+    "HIS111": "World Civilizations Pre-1500 CE",
+    "HIS112": "World Civilizations Post-1500 CE",
+    "HIS121": "United States History to 1877",
+    "HIS122": "United States History since 1865",
+    "BIO101": "General Biology I",
+    "BIO102": "General Biology II",
+    "CHM111": "General Chemistry I",
+    "CHM112": "General Chemistry II",
+    "PHY201": "General College Physics I",
+    "PHY202": "General College Physics II",
+    "PHY241": "University Physics I",
+    "PHY242": "University Physics II",
+    "GOL105": "Physical Geology",
+    "GOL106": "Historical Geology",
+    "MTH263": "Calculus I",
+    "MTH245": "Statistics I",
+    "MTH264": "Calculus II",
+    "MTH265": "Calculus III",
+    "MTH161": "Precalculus I",
+    "MTH162": "Precalculus II",
+    "MTH167": "Precalculus with Trigonometry",
+    "MTH266": "Linear Algebra",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC222": "Object-Oriented Programming",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "CSC205": "Computer Organization",
+    "CSC208": "Introduction to Discrete Structure",
+    "MTH288": "Discrete Mathematics",
+    "EGR121": "Foundations of Engineering",
+    "EGR122": "Engineering Design",
+    "EGR270": "Fundamentals of Computer Engineering",
+    "CST100": "Principles of Public Speaking",
+    "CST110": "Introduction to Human Communication",
+    "ASL101": "Beginning American Sign Language I",
+    "ASL102": "Beginning American Sign Language II",
+    "ASL201": "Intermediate American Sign Language I",
+    "ASL202": "Intermediate American Sign Language II",
+    "ARA101": "Beginning Arabic I",
+    "ARA102": "Beginning Arabic II",
+    "ARA201": "Intermediate Arabic I",
+    "ARA202": "Intermediate Arabic II",
+    "CHI101": "Beginning Chinese I",
+    "CHI102": "Beginning Chinese II",
+    "CHI201": "Conversational Chinese (Mandarin) I",
+    "CHI202": "Conversational Chinese (Mandarin) II",
+    "FRE101": "Beginning French I",
+    "FRE102": "Beginning French II",
+    "FRE201": "Intermediate French I",
+    "FRE202": "Intermediate French II",
+    "GER101": "Beginning German I",
+    "GER102": "Beginning German II",
+    "GER201": "Intermediate German I",
+    "GER202": "Intermediate German II",
+    "ITA101": "Beginning Italian I",
+    "ITA102": "Beginning Italian II",
+    "ITA201": "Intermediate Italian I",
+    "ITA202": "Intermediate Italian I",
+    "JPN101": "Beginning Japanese I",
+    "JPN102": "Beginning Japanese II",
+    "JPN201": "Intermediate Japanese I",
+    "JPN202": "Intermediate Japanese II",
+    "LAT101": "Beginning Latin I",
+    "LAT102": "Beginning Latin II",
+    "LAT201": "Intermediate Latin I",
+    "LAT202": "Intermediate Latin II",
+    "RUS101": "Beginning Russian I",
+    "RUS102": "Beginning Russian II",
+    "RUS201": "Intermediate Russian I",
+    "RUS202": "Intermediate Russian II",
+    "SPA101": "Beginning Spanish I",
+    "SPA102": "Beginning Spanish II",
+    "SPA201": "Intermediate Spanish I",
+    "SPA202": "Intermediate Spanish II"
+  },
+  "option_sets": {
+    "arts_humanities_literature": {
+      "source_refs": ["major", "general_education"],
+      "rule": "Choose two courses from two different categories.",
+      "categories": {
+        "art": ["ART101", "ART102", "MUS121", "CST130", "CST151"],
+        "humanities": ["HUM201", "HUM202", "HUM210", "HUM220", "HUM256", "HUM259", "PHI100", "PHI111", "PHI220", "REL100", "REL230", "REL237", "REL240"],
+        "literature": ["ENG225", "ENG245", "ENG246", "ENG250", "ENG255", "ENG258", "ENG275"]
+      }
+    },
+    "world_language": {
+      "source_refs": ["major", "elective"],
+      "courses": [
+        "ASL101", "ASL102", "ASL201", "ASL202",
+        "ARA101", "ARA102", "ARA201", "ARA202",
+        "CHI101", "CHI102", "CHI201", "CHI202",
+        "FRE101", "FRE102", "FRE201", "FRE202",
+        "GER101", "GER102", "GER201", "GER202",
+        "ITA101", "ITA102", "ITA201", "ITA202",
+        "JPN101", "JPN102", "JPN201", "JPN202",
+        "LAT101", "LAT102", "LAT201", "LAT202",
+        "RUS101", "RUS102", "RUS201", "RUS202",
+        "SPA101", "SPA102", "SPA201", "SPA202"
+      ]
+    },
+    "ucgs_general_education_elective": {
+      "source_refs": ["major", "general_education", "elective"],
+      "printed_credits": 3,
+      "courses": [
+        "BIO102", "CHM112", "PHY202", "PHY242", "GOL105", "GOL106",
+        "MTH245", "MTH264", "MTH265", "CST100", "CST110",
+        "ASL101", "ASL102", "ASL201", "ASL202",
+        "ARA101", "ARA102", "ARA201", "ARA202",
+        "CHI101", "CHI102", "CHI201", "CHI202",
+        "FRE101", "FRE102", "FRE201", "FRE202",
+        "GER101", "GER102", "GER201", "GER202",
+        "ITA101", "ITA102", "ITA201", "ITA202",
+        "JPN101", "JPN102", "JPN201", "JPN202",
+        "LAT101", "LAT102", "LAT201", "LAT202",
+        "RUS101", "RUS102", "RUS201", "RUS202",
+        "SPA101", "SPA102", "SPA201", "SPA202"
+      ]
+    },
+    "transfer_electives": {
+      "source_refs": ["major", "elective"],
+      "published_credits_minimum": 7,
+      "published_credits_maximum": 10,
+      "rule": "Select applicable coursework from the printed pool until the entire degree reaches 60-62 credits; prerequisites may also be used when needed.",
+      "courses": [
+        "MTH161", "MTH162", "MTH167",
+        "BIO101", "CHM111", "PHY201", "PHY241", "GOL105", "GOL106",
+        "CSC205", "EGR121", "EGR122", "EGR270", "CST100", "CST110", "MTH265", "MTH266",
+        "ASL101", "ASL102", "ASL201", "ASL202",
+        "ARA101", "ARA102", "ARA201", "ARA202",
+        "CHI101", "CHI102", "CHI201", "CHI202",
+        "FRE101", "FRE102", "FRE201", "FRE202",
+        "GER101", "GER102", "GER201", "GER202",
+        "ITA101", "ITA102", "ITA201", "ITA202",
+        "JPN101", "JPN102", "JPN201", "JPN202",
+        "LAT101", "LAT102", "LAT201", "LAT202",
+        "RUS101", "RUS102", "RUS201", "RUS202",
+        "SPA101", "SPA102", "SPA201", "SPA202"
+      ]
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": 62,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 62,
+    "fixed_and_choice_units_before_transfer_electives_minimum": 50,
+    "published_transfer_elective_units_minimum": 7,
+    "published_transfer_elective_units_maximum": 10,
+    "closure_basis": "Fixed and minimum-valued choice requirements contribute 50 credits. The catalog separately requires 7-10 transfer-elective credits and directs students to select enough applicable coursework to reach 60-62; a three-credit residual fill closes the canonical 60-credit path without inventing a course.",
+    "minimum_curriculum_gpa": 2,
+    "computer_competency_required": true,
+    "exit_assessment_required": true,
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "minimum_units_on_60_credit_path": 15,
+      "rule": "Twenty-five percent of the program credits must be completed at Germanna Community College.",
+      "source_refs": ["graduation"]
+    },
+    "analysis_constraints": [
+      {
+        "kind": "variable_transfer_elective_credit_fill",
+        "status": "evaluator_not_implemented",
+        "description": "Transfer electives carry a 7-10 credit range and must also bring the whole award to 60-62 credits; the exact residual depends on other variable-credit choices."
+      },
+      {
+        "kind": "no_double_count_across_requirement_slots",
+        "status": "evaluator_not_implemented",
+        "description": "Courses appearing in major, general-education, and transfer-elective menus cannot reuse the same applied credit across distinct slots; CSC 205 is explicitly elective only when not used in the major."
+      },
+      {
+        "kind": "option_specific_credit_values",
+        "status": "evaluator_not_implemented",
+        "description": "Several three-credit-labeled choice blocks contain four-credit mathematics, science, or language options."
+      }
+    ]
+  },
+  "modeling_notes": [
+    "The categorical Computer Science Curriculum Degree Requirements are authoritative. The separate Suggested Scheduling section is excluded.",
+    "The UCGS and general-transfer records resolve the program's linked option sources, including every concrete language course currently listed under Foreign Language.",
+    "The transfer-elective category retains the catalog's 7-10 credit range and 60-62 whole-degree floor/cap. Its exact pool is stored in option_sets because the catalog states no universal choose-N cardinality.",
+    "The generic instruction to select an additional science is resolved only against the six natural-science options printed in this degree, not every science in Germanna's broader transfer-elective catalog.",
+    "The MTH 161/MTH 162 line is preserved as two available preparatory courses; no unprinted requirement to take both is imposed."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "transfer_elective_range_and_degree_floor_interact",
+      "severity": "review",
+      "message": "The printed 7-10 transfer-elective range does not by itself close every fixed-choice path; the same instruction also requires the whole degree to reach 60-62 credits."
+    },
+    {
+      "code": "cross_requirement_overlap_requires_evaluation",
+      "severity": "review",
+      "message": "Several approved options occur in more than one slot, and CSC 205 is expressly conditional on not being used for the major."
+    },
+    {
+      "code": "italian_202_title_source_typo",
+      "severity": "review",
+      "message": "The current official elective record prints ITA 202 as Intermediate Italian I; that source title is retained rather than silently corrected."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Student development and written communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV100"], ["SDV101"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"], ["ENG113"]]}]}
+      ]
+    },
+    {
+      "title": "Arts, Humanities, and Literature from two different categories",
+      "source_refs": ["major", "general_education"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "distinct_ge_areas",
+          "status": "evaluator_not_implemented",
+          "description": "The two courses must be selected from two different Art, Humanities, or Literature categories."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "label": "First category selection",
+          "receivers": [{"kind": "cc_course", "options": [["ART101"], ["ART102"], ["MUS121"], ["CST130"], ["CST151"], ["HUM201"], ["HUM202"], ["HUM210"], ["HUM220"], ["HUM256"], ["HUM259"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL100"], ["REL230"], ["REL237"], ["REL240"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Second selection from a different category",
+          "receivers": [{"kind": "cc_course", "options": [["ART101"], ["ART102"], ["MUS121"], ["CST130"], ["CST151"], ["HUM201"], ["HUM202"], ["HUM210"], ["HUM220"], ["HUM256"], ["HUM259"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL100"], ["REL230"], ["REL237"], ["REL240"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]
+        }
+      ]
+    },
+    {
+      "title": "Social and Behavioral Sciences",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ECO150"], ["ECO201"], ["ECO202"], ["GEO210"], ["GEO220"], ["PLS135"], ["PLS140"], ["PLS241"], ["PSY200"], ["SOC200"], ["SOC268"]]}]}
+      ]
+    },
+    {
+      "title": "History",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["HIS101"], ["HIS102"], ["HIS111"], ["HIS112"], ["HIS121"], ["HIS122"]]}]}
+      ]
+    },
+    {
+      "title": "Natural Science",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["BIO101"], ["CHM111"], ["PHY201"], ["PHY241"], ["GOL105"], ["GOL106"]]}]}
+      ]
+    },
+    {
+      "title": "Mathematics",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]},
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "cc_course", "options": [["MTH245"], ["MTH264"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS General Education Elective",
+      "source_refs": ["major", "general_education", "elective"],
+      "analysis_constraints": [
+        {
+          "kind": "option_specific_credit_value",
+          "status": "evaluator_not_implemented",
+          "description": "The requirement is labeled three credits but its current approved list includes four-credit science, mathematics, and language courses."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "units_max": 4,
+          "receivers": [{
+            "kind": "cc_course",
+            "options": [
+              ["BIO102"], ["CHM112"], ["PHY202"], ["PHY242"], ["GOL105"], ["GOL106"], ["MTH245"], ["MTH264"], ["MTH265"], ["CST100"], ["CST110"],
+              ["ASL101"], ["ASL102"], ["ASL201"], ["ASL202"], ["ARA101"], ["ARA102"], ["ARA201"], ["ARA202"], ["CHI101"], ["CHI102"], ["CHI201"], ["CHI202"], ["FRE101"], ["FRE102"], ["FRE201"], ["FRE202"], ["GER101"], ["GER102"], ["GER201"], ["GER202"], ["ITA101"], ["ITA102"], ["ITA201"], ["ITA202"], ["JPN101"], ["JPN102"], ["JPN201"], ["JPN202"], ["LAT101"], ["LAT102"], ["LAT201"], ["LAT202"], ["RUS101"], ["RUS102"], ["RUS201"], ["RUS202"], ["SPA101"], ["SPA102"], ["SPA201"], ["SPA202"]
+            ]
+          }]
+        }
+      ]
+    },
+    {
+      "title": "Computer science major requirements",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]},
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "cc_course", "options": [["CSC205"], ["MTH265"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC208"], ["MTH288"]]}]}
+      ]
+    },
+    {
+      "title": "Transfer electives from the program's approved pool",
+      "source_refs": ["major", "elective"],
+      "ge_area": "germanna_computer_science_transfer_electives",
+      "units": 7,
+      "units_max": 10,
+      "note": "Complete 7-10 credits from the exact program-owned pool in option_sets, subject to the separate requirement that the whole degree reach 60-62 credits."
+    },
+    {
+      "title": "Additional applicable transfer-elective credit to the degree minimum",
+      "source_refs": ["major", "elective", "graduation"],
+      "units_fill": true,
+      "note": "Variable major, UCGS, and transfer-elective choices must still close the award to at least 60 and no more than 62 applicable credits."
+    }
+  ]
+}

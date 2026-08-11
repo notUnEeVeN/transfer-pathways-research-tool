@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "slug": "wytheville-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Science, Major in Computer Science, AS",
+  "award": "AS",
+  "catalog_version": {
+    "catalog_id": 14,
+    "program_id": 1454
+  },
+  "total_units": 62,
+  "total_units_max": 62,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": ["major", "policy", "graduation", "course_catalog"],
+  "course_titles": {
+    "ART101": "History of Art: Prehistoric to Gothic",
+    "CSC208": "Introduction to Discrete Structures",
+    "CSC215": "Computer Systems",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC222": "Object-Oriented Programming",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "CST100": "Principles of Public Speaking",
+    "CST151": "Film Appreciation I",
+    "EGR121": "Foundations of Engineering",
+    "EGR122": "Engineering Design",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "ENG113": "Technical-Professional Writing",
+    "HIS101": "Western Civilizations Pre-1600 CE",
+    "HIS102": "Western Civilizations Post-1600 CE",
+    "HIS121": "United States History to 1877",
+    "HIS122": "United States History since 1865",
+    "HUM201": "Early Humanities",
+    "HUM202": "Modern Humanities",
+    "MTH263": "Calculus I",
+    "MTH264": "Calculus II",
+    "MTH265": "Calculus III",
+    "MTH266": "Linear Algebra",
+    "PHI100": "Introduction to Philosophy",
+    "PHI220": "Ethics",
+    "PHY201": "General College Physics I",
+    "PHY202": "General College Physics II",
+    "PHY241": "University Physics I",
+    "PHY242": "University Physics II",
+    "PSY200": "Principles of Psychology",
+    "PSY215": "Psychopathology",
+    "PSY216": "Social Psychology",
+    "PSY230": "Developmental Psychology",
+    "REL230": "Religions of the World",
+    "SDV100": "College Success Skills",
+    "SOC200": "Introduction to Sociology"
+  },
+  "option_sets": {
+    "history_elective": {
+      "source_refs": ["major", "course_catalog"],
+      "courses": ["HIS101", "HIS102", "HIS121", "HIS122"]
+    },
+    "humanities_elective": {
+      "source_refs": ["major", "course_catalog"],
+      "rule": "Complete two courses from different clusters; PHI 220 is preferred but not required.",
+      "courses": ["ART101", "CST151", "HUM201", "HUM202", "PHI100", "PHI220", "REL230"]
+    },
+    "first_physics_elective": {
+      "source_refs": ["major", "course_catalog"],
+      "courses": ["PHY201", "PHY241"]
+    },
+    "second_physics_elective": {
+      "source_refs": ["major", "course_catalog"],
+      "courses": ["PHY202", "PHY242"]
+    },
+    "social_behavioral_science_elective": {
+      "source_refs": ["major", "course_catalog"],
+      "courses": ["PSY200", "PSY215", "PSY216", "PSY230", "SOC200"]
+    },
+    "computer_science_engineering_elective": {
+      "source_refs": ["major", "course_catalog"],
+      "rule": "Choose EGR 121, EGR 122, CSC 215, or another advisor-approved course for transfer purposes.",
+      "courses": ["EGR121", "EGR122", "CSC215"],
+      "open_option": "other course approved by the advisor for transfer purposes"
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 62,
+    "published_program_units_maximum": 62,
+    "modeled_units_minimum": 62,
+    "modeled_units_maximum": 62,
+    "minimum_program_gpa": 2,
+    "minimum_course_grade": "C",
+    "computer_competency_required": true,
+    "computer_competency_rule": "Graduates of programs containing 45 or more credits must meet the college computer competency requirement. ITE 115 plus an eligible SDV course is one automatic route; approved program activities or the competency test are alternate routes, so ITE 115 is not added to this curriculum.",
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "minimum_units_on_62_credit_path": 15.5,
+      "rule": "At least 25 percent of the credits must be acquired at Wytheville Community College.",
+      "source_refs": ["graduation", "policy"]
+    },
+    "other_graduation_requirements": [
+      "Fulfill every curriculum course and credit-hour requirement.",
+      "Earn at least a 2.0 GPA in applicable studies.",
+      "Apply for graduation by the published deadline.",
+      "Resolve college obligations and return college materials.",
+      "Meet the computer competency requirement.",
+      "Receive certification by an appropriate college official."
+    ],
+    "analysis_constraints": [
+      {
+        "kind": "minimum_course_grade",
+        "status": "evaluator_not_implemented",
+        "description": "The program directs students to complete community-college courses with a grade of C; the current evaluator does not enforce per-course grades."
+      },
+      {
+        "kind": "computer_competency_multiple_routes",
+        "status": "evaluator_not_implemented",
+        "description": "Computer competency can be met through course, program-activity, or testing routes and must not be flattened into an extra ITE 115 course requirement."
+      }
+    ]
+  },
+  "modeling_notes": [
+    "The current catalog labels the four term blocks a suggested sequence. This composition preserves every categorical course row and footnote option but intentionally excludes the prospective schedule labels.",
+    "History and Humanities rows carry misaligned printed footnote superscripts. Their unique category labels and the separately numbered definitions resolve them to the history and humanities menus without inventing an option.",
+    "The two humanities slots are separate and must come from different clusters. The current program page supplies the seven-course union but does not publish a course-to-cluster dictionary, so that cross-choice rule remains explicit for human review.",
+    "The two physics slots use different closed menus: PHY 201 or PHY 241 first, followed by PHY 202 or PHY 242.",
+    "The advisor-approved transfer-course branch of the Computer Science/Engineering elective is retained as an open source constraint; the three named options remain directly accessible by deterministic course identity."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "program_footnote_markers_misaligned",
+      "severity": "review",
+      "message": "The first History and Humanities rows display superscripts 2 and 5 although the uniquely matching definitions are numbered 1 and 2."
+    },
+    {
+      "code": "humanities_cluster_dictionary_not_printed",
+      "severity": "block_analysis",
+      "message": "The program requires different humanities clusters but does not map its seven eligible courses to cluster identities."
+    },
+    {
+      "code": "advisor_approved_transfer_option_is_open",
+      "severity": "block_analysis",
+      "message": "The Computer Science/Engineering elective includes a source-authorized advisor-approved transfer course outside the three named options."
+    },
+    {
+      "code": "current_vccs_master_csc221_credit_drift",
+      "severity": "review",
+      "message": "The current VCCS master page shows CSC 221 as four credits effective 2026-08-01, while this current local degree page explicitly prints CSC 221 as three and closes the award at 62. The local degree requirement and published total are retained pending catalog correction."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Student development and communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV100"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"], ["ENG113"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CST100"]]}]}
+      ]
+    },
+    {
+      "title": "Calculus and linear algebra",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH264"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH265"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["MTH266"]]}]}
+      ]
+    },
+    {
+      "title": "Computer science core",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC208"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]}
+      ]
+    },
+    {
+      "title": "History elective",
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["HIS101"], ["HIS102"], ["HIS121"], ["HIS122"]]}]}
+      ]
+    },
+    {
+      "title": "Two humanities electives from different clusters",
+      "source_refs": ["major", "course_catalog"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "distinct_humanities_clusters",
+          "status": "evaluator_not_implemented",
+          "description": "The two humanities selections must come from different clusters, but the source does not publish the cluster membership dictionary."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "label": "First humanities selection", "receivers": [{"kind": "cc_course", "options": [["ART101"], ["CST151"], ["HUM201"], ["HUM202"], ["PHI100"], ["PHI220"], ["REL230"]]}]},
+        {"select": 1, "units": 3, "label": "Second selection from a different cluster", "receivers": [{"kind": "cc_course", "options": [["ART101"], ["CST151"], ["HUM201"], ["HUM202"], ["PHI100"], ["PHI220"], ["REL230"]]}]}
+      ]
+    },
+    {
+      "title": "Social and Behavioral Science elective",
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["PSY200"], ["PSY215"], ["PSY216"], ["PSY230"], ["SOC200"]]}]}
+      ]
+    },
+    {
+      "title": "Two-course physics sequence",
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 4, "label": "First physics selection", "receivers": [{"kind": "cc_course", "options": [["PHY201"], ["PHY241"]]}]},
+        {"select": 1, "units": 4, "label": "Second physics selection", "receivers": [{"kind": "cc_course", "options": [["PHY202"], ["PHY242"]]}]}
+      ]
+    },
+    {
+      "title": "Computer Science or Engineering transfer elective",
+      "source_refs": ["major", "course_catalog"],
+      "analysis_constraints": [
+        {
+          "kind": "advisor_approved_transfer_course_open_option",
+          "status": "evaluator_not_implemented",
+          "description": "In addition to the named EGR 121, EGR 122, and CSC 215 options, the source permits another advisor-approved course for transfer purposes."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["EGR121"], ["EGR122"], ["CSC215"]]}]}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,686 @@
+{
+  "schema_version": 1,
+  "slug": "virginia-military-institute",
+  "catalog_year": "2025-2026",
+  "program": "Computer Science, B.S. - Theory and Application Track",
+  "award": "BS",
+  "total_units": 136,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Computer and Information Sciences",
+  "college": "Virginia Military Institute",
+  "ge_authority": "VMI Core Curriculum",
+  "source_bundle_required": [
+    "major",
+    "program_cybersecurity",
+    "program_information_technology",
+    "general_education",
+    "graduation",
+    "policy",
+    "course_catalog"
+  ],
+  "requirement_layers": {
+    "major": {
+      "status": "complete",
+      "source_refs": ["major", "course_catalog"]
+    },
+    "ge_college": {
+      "status": "complete",
+      "source_refs": ["major", "general_education"]
+    },
+    "university_graduation": {
+      "status": "complete",
+      "source_refs": ["general_education", "graduation", "policy"]
+    }
+  },
+  "unit_audit": {
+    "graduation_minimum": 136,
+    "modeled_units": 136,
+    "canonical_core_units": 34,
+    "canonical_major_and_support_units": 66,
+    "rotc_units": 12,
+    "free_elective_units": 24,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The current catalog and academic-policy sources state no aggregate upper-division-credit minimum; all track-specific upper-level courses and menus are modeled explicitly.",
+      "source_refs": ["major", "general_education", "policy"]
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 68,
+      "rule": "At least six qualifying full-time semesters and at least 50 percent of the academic program must be completed at VMI. Cadets entering without advanced-standing credit are subject to the published 75-percent in-residence rule.",
+      "source_refs": ["graduation", "policy"]
+    },
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+    "The Theory and Application curriculum is the canonical broad-computing B.S. path. Cybersecurity and Information Technology are complete alternate curriculum variants, not elective concentrations inside the canonical track.",
+    "The catalog's categorical requirements close exactly to 136 credits for Theory and Application and Information Technology and 137 credits for Cybersecurity. Semester-by-semester synopsis tables were used only to corroborate category arithmetic and were not imported as additional requirements.",
+    "The 34-credit VMI Core allocation includes the required writing, speaking, history, mathematics, science, leadership, and human-performance credits. ROTC is a separate 12-credit allocation. Civilizations and Cultures, writing-intensive, and capstone rules are retained as overlays because they are satisfied within those allocations.",
+    "Cybersecurity's statistics requirement is conditional on the chosen Core mathematics sequence. The catalog offsets the extra three statistics credits with a 21-versus-24-credit free-elective range, keeping the track total at 137."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "variable_credit_cis_elective_menu",
+      "severity": "review",
+      "message": "The open CIS elective menus include one-credit laboratories and a one-to-three-credit internship. The exact credit target is preserved and requires a credit-aware choice evaluator."
+    },
+    {
+      "code": "conditional_cyber_statistics_overlap",
+      "severity": "review",
+      "message": "Cybersecurity uses a cross-choice condition between its Core mathematics route, additional statistics course, and free-elective capacity."
+    }
+  ],
+  "course_titles": {
+    "ERH101": "Writing and Rhetoric I",
+    "ERH102": "Writing and Rhetoric II",
+    "ERH103": "Fundamentals of Public Speaking",
+    "HI103": "World History I",
+    "HI104": "World History II",
+    "LEAD344": "Leadership in Organizations",
+    "MA101": "Math that Matters I",
+    "MA102": "Math that Matters II",
+    "MA106": "Introduction to Probability and Statistics",
+    "MA123": "Calculus & Analytic Geometry I",
+    "MA124": "Calculus & Analytic Geometry II",
+    "MA126": "Quantitative Methods",
+    "MA220": "Probability & Statistics for Engineers & Scientists",
+    "CIS101": "Introduction to Computer Science",
+    "CIS111": "Programming I",
+    "CIS111L": "Laboratory for Programming I",
+    "CIS112": "Programming II",
+    "CIS112L": "Laboratory for Programming II",
+    "CIS131": "Introduction to Information Systems",
+    "CIS201": "Computer Architecture and Organization",
+    "CIS211": "Internet and Mobile Programming",
+    "CIS213": "Data Structures and Applications",
+    "CIS222": "Database Management Systems",
+    "CIS231WX": "IT: Past, Present, and Future",
+    "CIS241": "Discrete Structures",
+    "CIS277": "Information Security Management, Policy, & Law",
+    "CIS301": "Networking",
+    "CIS301L": "Networking Lab",
+    "CIS302": "Modern Operating Systems",
+    "CIS303": "Computer & Information Security",
+    "CIS303L": "Computer and Information Security Laboratory",
+    "CIS312W": "Software Engineering",
+    "CIS331": "Human Computer Interaction and Usability Analysis",
+    "CIS342": "Data Analytics",
+    "CIS343": "Design and Analysis of Algorithms",
+    "CIS377": "Linux Fundamentals, Administration, and Security",
+    "CIS380W": "Research Topics in Computer and Information Sciences",
+    "CIS401": "Advanced Network Security",
+    "CIS402": "Computer Forensics",
+    "CIS411": "Distributed Computing and Applications",
+    "CIS412": "Mobile Computing and Applications",
+    "CIS421": "Database Design and Development",
+    "CIS422": "Information Retrieval",
+    "CIS424": "Artificial Intelligence",
+    "CIS430": "Theory of Computation and Programming Languages",
+    "CIS431": "Information Organization & Management",
+    "CIS432": "Computer Vision",
+    "CIS434": "Bioinformatics",
+    "CIS476W": "Internship in Computer Science",
+    "CIS477": "Secure Software Engineering",
+    "CIS480": "Capstone I",
+    "CIS490": "Capstone II",
+    "BU277": "Information Security Management, Policy, & Law",
+    "IS307": "Information Security Management, Policy, & Law",
+    "EE428": "Reverse Engineering"
+  },
+  "requirement_groups": [
+    {
+      "title": "VMI Core Curriculum for the Theory and Application track",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education", "course_catalog"],
+      "stated_credits": 34,
+      "analysis_constraints": [
+        {
+          "kind": "approved_science_sequence",
+          "status": "evaluator_not_implemented",
+          "description": "The eight science credits must be an approved two-course biology, chemistry, or physics sequence with laboratories."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 6, "label": "Written communication", "receivers": [{"kind": "series", "codes": ["ERH101", "ERH102"], "units": 6}]},
+        {"select": 1, "units": 1, "label": "Oral communication", "receivers": [{"kind": "course", "code": "ERH103", "units": 1}]},
+        {"select": 1, "units": 6, "label": "World history", "receivers": [{"kind": "series", "codes": ["HI103", "HI104"], "units": 6}]},
+        {"select": 1, "units": 6, "label": "Mathematical reasoning", "receivers": [{"kind": "series", "codes": ["MA123", "MA124"], "units": 6}]},
+        {"select": 1, "units": 8, "label": "Scientific analysis", "receivers": [{"kind": "ge_area", "code": "VMI-SCIENCE-SEQUENCE", "name": "Approved two-course BI, CH, or PY science sequence with laboratories", "units": 8}]},
+        {"select": 1, "units": 4, "label": "Human Performance and Wellness", "receivers": [{"kind": "ge_area", "code": "VMI-HPW-SEVEN-SEMESTERS", "name": "Seven semesters of Human Performance and Wellness totaling four credits", "units": 4}]},
+        {"select": 1, "units": 3, "label": "Leadership in Organizations", "receivers": [{"kind": "course", "code": "LEAD344", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Required Computer Science core",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 30,
+      "sections": [
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CIS101", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CIS111", "units": 3}]},
+        {"select": 1, "units": 1, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CIS111L", "units": 1}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CIS112", "units": 3}]},
+        {"select": 1, "units": 1, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CIS112L", "units": 1}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CIS213", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CIS222", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "receivers": [{"kind": "course", "code": "CIS301", "units": 3}]},
+        {"select": 1, "units": 1, "course_level": "upper_division", "receivers": [{"kind": "course", "code": "CIS301L", "units": 1}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "receivers": [{"kind": "course", "code": "CIS380W", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "receivers": [{"kind": "course", "code": "CIS480", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "receivers": [{"kind": "course", "code": "CIS490", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Required Theory and Application track courses",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 18,
+      "sections": [
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CIS201", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS302", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS312W", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS343", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS411", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS430", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Computer and Information Sciences electives",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 6,
+      "analysis_constraints": [
+        {
+          "kind": "choose_six_credits_from_variable_credit_menu",
+          "status": "evaluator_not_implemented",
+          "description": "Choose six credits from the published CIS menu; the one-credit CIS 303L may be used only as part of a credit-complete combination."
+        }
+      ],
+      "sections": [
+        {
+          "select": 2,
+          "units": 6,
+          "label": "Six CIS elective credits",
+          "receivers": [
+            {"kind": "course", "code": "CIS211", "units": 3},
+            {"kind": "course", "code": "CIS303", "units": 3},
+            {"kind": "course", "code": "CIS303L", "units": 1},
+            {"kind": "course", "code": "CIS342", "units": 3},
+            {"kind": "course", "code": "CIS331", "units": 3},
+            {"kind": "course", "code": "CIS377", "units": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Computer and Information Sciences upper-level elective",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 3,
+      "analysis_constraints": [
+        {
+          "kind": "variable_credit_internship",
+          "status": "evaluator_not_implemented",
+          "description": "CIS 476W is variable one-to-three credits and must be taken for three credits if used to fill this three-credit category."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {"kind": "course", "code": "CIS401", "units": 3},
+            {"kind": "course", "code": "CIS402", "units": 3},
+            {"kind": "course", "code": "CIS477", "units": 3},
+            {"kind": "course", "code": "CIS431", "units": 3},
+            {"kind": "course", "code": "CIS432", "units": 3},
+            {"kind": "course", "code": "CIS434", "units": 3},
+            {"kind": "course", "code": "CIS476W", "units": 3},
+            {"kind": "course", "code": "CIS412", "units": 3},
+            {"kind": "course", "code": "CIS421", "units": 3},
+            {"kind": "course", "code": "CIS422", "units": 3},
+            {"kind": "course", "code": "CIS424", "units": 3},
+            {"kind": "course", "code": "EE428", "units": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Required additional mathematics",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": 9,
+      "analysis_constraints": [
+        {
+          "kind": "approved_math_elective_level_floor",
+          "status": "evaluator_not_implemented",
+          "description": "The open mathematics elective must be numbered 200 or above."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "MA220", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS241", "units": 3}]},
+        {"select": 1, "units": 3, "tier": "breadth", "receivers": [{"kind": "ge_area", "code": "VMI-MA-200-PLUS", "name": "Approved mathematics elective numbered 200 or above", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Reserve Officers Training Corps",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "general_education"],
+      "stated_credits": 12,
+      "sections": [
+        {"select": 1, "units": 12, "receivers": [{"kind": "ge_area", "code": "VMI-ROTC-FOUR-YEARS", "name": "Four years of AS, MS, or NS Reserve Officers Training Corps coursework", "units": 12}]}
+      ]
+    },
+    {
+      "title": "Free electives to the Theory and Application degree total",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "stated_credits": 24,
+      "analysis_constraints": [
+        {
+          "kind": "core_overlay_inside_free_electives",
+          "status": "evaluator_not_implemented",
+          "description": "Two Civilizations and Cultures courses must be satisfied inside the published allocation; one may be replaced by an approved credit-bearing study-abroad experience."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 24, "receivers": [{"kind": "ge_area", "code": "VMI-THEORY-FREE-ELECTIVES", "name": "Twenty-four free-elective credits, including any remaining Core overlays", "units": 24}]}
+      ]
+    },
+    {
+      "title": "Institute graduation and residence rules",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "policy",
+      "cc_articulable": false,
+      "source_refs": ["general_education", "graduation", "policy", "major"],
+      "analysis_constraints": [
+        {
+          "kind": "conditional_residency_by_advanced_standing",
+          "status": "evaluator_not_implemented",
+          "description": "Residence is at least six qualifying full-time semesters and either 75 percent of the degree for entrants without advanced standing or 50 percent for entrants with advanced standing."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 0, "label": "Civilizations and Cultures", "receivers": [{"kind": "requirement", "name": "Complete two approved Civilizations and Cultures courses; one may be replaced by approved credit-bearing study abroad", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Writing-intensive requirement", "receivers": [{"kind": "requirement", "name": "Complete two writing-intensive courses, including at least one in the major", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Capstone experience", "receivers": [{"kind": "requirement", "name": "Complete the Computer Science capstone experience through CIS 480 and CIS 490", "units": 0}]},
+        {"select": 1, "units": 0, "label": "GPA requirements", "receivers": [{"kind": "requirement", "name": "Earn at least a 2.00 cumulative GPA and a 2.00 Computer and Information Sciences major GPA without rounding", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Residence requirements", "receivers": [{"kind": "requirement", "name": "Satisfy VMI's six-semester, percentage-of-program, and final-semester residence rules", "units": 0}]}
+      ]
+    }
+  ],
+  "requirement_variants": [
+    {
+      "key": "theory_and_application",
+      "label": "Theory and Application Track",
+      "selected": true,
+      "published_total_units": 136,
+      "source_refs": ["major", "general_education", "graduation", "policy", "course_catalog"],
+      "requirement_groups_location": "top-level requirement_groups"
+    },
+    {
+      "key": "cybersecurity",
+      "label": "Cybersecurity Track",
+      "selected": false,
+      "published_total_units": 137,
+      "source_refs": ["program_cybersecurity", "general_education", "graduation", "policy", "course_catalog"],
+      "common_degree_requirements": "The Institute overlays and graduation/residence rules in the canonical document also apply to this complete alternate track tree.",
+      "requirement_groups": [
+        {
+          "title": "VMI Core Curriculum for the Cybersecurity track",
+          "requirement_layer": "ge_college",
+          "tier": "breadth",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "source_refs": ["program_cybersecurity", "general_education", "course_catalog"],
+          "stated_credits": 34,
+          "analysis_constraints": [
+            {"kind": "approved_science_sequence", "status": "evaluator_not_implemented", "description": "The science requirement is an approved eight-credit BI, CH, or PY sequence with laboratories."}
+          ],
+          "sections": [
+            {"select": 1, "units": 6, "label": "Written communication", "receivers": [{"kind": "series", "codes": ["ERH101", "ERH102"], "units": 6}]},
+            {"select": 1, "units": 1, "label": "Oral communication", "receivers": [{"kind": "course", "code": "ERH103", "units": 1}]},
+            {"select": 1, "units": 6, "label": "World history", "receivers": [{"kind": "series", "codes": ["HI103", "HI104"], "units": 6}]},
+            {"select": 1, "units": 6, "label": "Mathematical reasoning sequence", "receivers": [
+              {"kind": "series", "codes": ["MA106", "MA126"], "units": 6},
+              {"kind": "series", "codes": ["MA101", "MA102"], "units": 6},
+              {"kind": "series", "codes": ["MA123", "MA124"], "units": 6}
+            ]},
+            {"select": 1, "units": 8, "label": "Scientific analysis", "receivers": [{"kind": "ge_area", "code": "VMI-SCIENCE-SEQUENCE", "name": "Approved two-course BI, CH, or PY science sequence with laboratories", "units": 8}]},
+            {"select": 1, "units": 4, "label": "Human Performance and Wellness", "receivers": [{"kind": "ge_area", "code": "VMI-HPW-SEVEN-SEMESTERS", "name": "Seven semesters of Human Performance and Wellness totaling four credits", "units": 4}]},
+            {"select": 1, "units": 3, "label": "Leadership in Organizations", "receivers": [{"kind": "course", "code": "LEAD344", "units": 3}]}
+          ]
+        },
+        {
+          "title": "Cybersecurity Computer Science core",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "mixed",
+          "cc_articulable": false,
+          "source_refs": ["program_cybersecurity", "course_catalog"],
+          "stated_credits": 30,
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS101", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS111", "units": 3}]},
+            {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CIS111L", "units": 1}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS112", "units": 3}]},
+            {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CIS112L", "units": 1}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS213", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS222", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS301", "units": 3}]},
+            {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CIS301L", "units": 1}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS380W", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS480", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS490", "units": 3}]}
+          ]
+        },
+        {
+          "title": "Required Cybersecurity track courses",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "mixed",
+          "cc_articulable": false,
+          "source_refs": ["program_cybersecurity", "course_catalog"],
+          "stated_credits": 19,
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS201", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS303", "units": 3}]},
+            {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CIS303L", "units": 1}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS302", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS377", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS401", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS402", "units": 3}]}
+          ]
+        },
+        {
+          "title": "Cybersecurity CIS electives",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "mixed",
+          "cc_articulable": false,
+          "source_refs": ["program_cybersecurity", "course_catalog"],
+          "stated_credits": 6,
+          "analysis_constraints": [
+            {"kind": "choose_six_credits_across_linked_menus", "status": "evaluator_not_implemented", "description": "Choose six credits from the lower menu or the published upper-level menu, with track-course exclusions when more than one track is declared."}
+          ],
+          "sections": [
+            {"select": 2, "units": 6, "receivers": [
+              {"kind": "course", "code": "CIS211", "units": 3}, {"kind": "course", "code": "CIS312W", "units": 3},
+              {"kind": "course", "code": "CIS342", "units": 3}, {"kind": "course", "code": "CIS343", "units": 3},
+              {"kind": "course", "code": "CIS331", "units": 3}, {"kind": "course", "code": "CIS430", "units": 3},
+              {"kind": "course", "code": "CIS411", "units": 3}, {"kind": "course", "code": "CIS412", "units": 3},
+              {"kind": "course", "code": "CIS421", "units": 3}, {"kind": "course", "code": "CIS422", "units": 3},
+              {"kind": "course", "code": "CIS424", "units": 3}, {"kind": "course", "code": "CIS431", "units": 3},
+              {"kind": "course", "code": "CIS432", "units": 3}, {"kind": "course", "code": "CIS434", "units": 3},
+              {"kind": "course", "code": "CIS476W", "units": 3}, {"kind": "course", "code": "CIS477", "units": 3},
+              {"kind": "course", "code": "EE428", "units": 3}
+            ]}
+          ]
+        },
+        {
+          "title": "Cybersecurity upper-level CIS elective",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["program_cybersecurity", "course_catalog"],
+          "stated_credits": 3,
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [
+              {"kind": "course", "code": "CIS430", "units": 3}, {"kind": "course", "code": "CIS411", "units": 3},
+              {"kind": "course", "code": "CIS412", "units": 3}, {"kind": "course", "code": "CIS421", "units": 3},
+              {"kind": "course", "code": "CIS422", "units": 3}, {"kind": "course", "code": "CIS424", "units": 3},
+              {"kind": "course", "code": "CIS431", "units": 3}, {"kind": "course", "code": "CIS432", "units": 3},
+              {"kind": "course", "code": "CIS434", "units": 3}, {"kind": "course", "code": "CIS476W", "units": 3},
+              {"kind": "course", "code": "CIS477", "units": 3}, {"kind": "course", "code": "EE428", "units": 3}
+            ]}
+          ]
+        },
+        {
+          "title": "Cybersecurity additional mathematics",
+          "requirement_layer": "major",
+          "tier": "transferable",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "source_refs": ["program_cybersecurity", "course_catalog"],
+          "stated_credits": 6,
+          "analysis_constraints": [
+            {"kind": "conditional_statistics_core_overlap", "status": "evaluator_not_implemented", "description": "CIS 241 is always required. MA 106 or MA 220 is additionally required only when MA 106 was not used in the Core; a Core MA 106 route converts these three credits to free-elective capacity."}
+          ],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS241", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "MA106", "units": 3}, {"kind": "course", "code": "MA220", "units": 3}]}
+          ]
+        },
+        {
+          "title": "Cybersecurity additional approved courses",
+          "requirement_layer": "major",
+          "tier": "breadth",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "source_refs": ["program_cybersecurity", "course_catalog"],
+          "stated_credits": 6,
+          "analysis_constraints": [
+            {"kind": "department_head_approved_cyber_domain_elective", "status": "evaluator_not_implemented", "description": "The second three-credit course must be a cybersecurity-related BU, EC, ERH, IS, or PS elective approved by the department head."}
+          ],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "BU277", "units": 3}, {"kind": "course", "code": "CIS277", "units": 3}, {"kind": "course", "code": "IS307", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "ge_area", "code": "VMI-CYBER-APPROVED-DOMAIN", "name": "Department-head-approved cybersecurity-related BU, EC, ERH, IS, or PS elective", "units": 3}]}
+          ]
+        },
+        {
+          "title": "Cybersecurity ROTC requirement",
+          "requirement_layer": "ge_college",
+          "tier": "breadth",
+          "course_level": "mixed",
+          "cc_articulable": false,
+          "source_refs": ["program_cybersecurity", "general_education"],
+          "stated_credits": 12,
+          "sections": [{"select": 1, "units": 12, "receivers": [{"kind": "ge_area", "code": "VMI-ROTC-FOUR-YEARS", "name": "Four years of AS, MS, or NS Reserve Officers Training Corps coursework", "units": 12}]}]
+        },
+        {
+          "title": "Cybersecurity free electives",
+          "requirement_layer": "ge_college",
+          "tier": "breadth",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "source_refs": ["program_cybersecurity"],
+          "stated_credits": 21,
+          "analysis_constraints": [
+            {"kind": "conditional_free_elective_capacity", "status": "evaluator_not_implemented", "description": "The canonical non-MA-106 Core route has 21 free-elective credits; a Core route containing MA 106 has 24 because the additional statistics slot is already satisfied."}
+          ],
+          "sections": [{"select": 1, "units": 21, "receivers": [{"kind": "ge_area", "code": "VMI-CYBER-FREE-ELECTIVES", "name": "Twenty-one canonical free-elective credits, increasing to twenty-four when MA 106 satisfies both Core and statistics", "units": 21}]}]
+        }
+      ]
+    },
+    {
+      "key": "information_technology",
+      "label": "Information Technology Track",
+      "selected": false,
+      "published_total_units": 136,
+      "source_refs": ["program_information_technology", "general_education", "graduation", "policy", "course_catalog"],
+      "common_degree_requirements": "The Institute overlays and graduation/residence rules in the canonical document also apply to this complete alternate track tree.",
+      "requirement_groups": [
+        {
+          "title": "VMI Core Curriculum for the Information Technology track",
+          "requirement_layer": "ge_college",
+          "tier": "breadth",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "source_refs": ["program_information_technology", "general_education", "course_catalog"],
+          "stated_credits": 34,
+          "analysis_constraints": [
+            {"kind": "approved_science_sequence", "status": "evaluator_not_implemented", "description": "The science requirement is an approved eight-credit BI, CH, or PY sequence with laboratories."}
+          ],
+          "sections": [
+            {"select": 1, "units": 6, "label": "Written communication", "receivers": [{"kind": "series", "codes": ["ERH101", "ERH102"], "units": 6}]},
+            {"select": 1, "units": 1, "label": "Oral communication", "receivers": [{"kind": "course", "code": "ERH103", "units": 1}]},
+            {"select": 1, "units": 6, "label": "World history", "receivers": [{"kind": "series", "codes": ["HI103", "HI104"], "units": 6}]},
+            {"select": 1, "units": 6, "label": "Mathematical reasoning sequence", "receivers": [
+              {"kind": "series", "codes": ["MA101", "MA102"], "units": 6},
+              {"kind": "series", "codes": ["MA106", "MA126"], "units": 6},
+              {"kind": "series", "codes": ["MA123", "MA124"], "units": 6}
+            ]},
+            {"select": 1, "units": 8, "label": "Scientific analysis", "receivers": [{"kind": "ge_area", "code": "VMI-SCIENCE-SEQUENCE", "name": "Approved two-course BI, CH, or PY science sequence with laboratories", "units": 8}]},
+            {"select": 1, "units": 4, "label": "Human Performance and Wellness", "receivers": [{"kind": "ge_area", "code": "VMI-HPW-SEVEN-SEMESTERS", "name": "Seven semesters of Human Performance and Wellness totaling four credits", "units": 4}]},
+            {"select": 1, "units": 3, "label": "Leadership in Organizations", "receivers": [{"kind": "course", "code": "LEAD344", "units": 3}]}
+          ]
+        },
+        {
+          "title": "Information Technology Computer Science core",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "mixed",
+          "cc_articulable": false,
+          "source_refs": ["program_information_technology", "course_catalog"],
+          "stated_credits": 30,
+          "sections": [
+            {"select": 1, "units": 3, "label": "Introductory computing", "receivers": [{"kind": "course", "code": "CIS101", "units": 3}, {"kind": "course", "code": "CIS131", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS111", "units": 3}]},
+            {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CIS111L", "units": 1}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS112", "units": 3}]},
+            {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CIS112L", "units": 1}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS213", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS222", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS301", "units": 3}]},
+            {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CIS301L", "units": 1}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS380W", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS480", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS490", "units": 3}]}
+          ]
+        },
+        {
+          "title": "Required Information Technology track courses",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "mixed",
+          "cc_articulable": false,
+          "source_refs": ["program_information_technology", "course_catalog"],
+          "stated_credits": 18,
+          "analysis_constraints": [
+            {"kind": "internship_credit_floor", "status": "evaluator_not_implemented", "description": "CIS 476W is variable one-to-three credits and must be completed for three credits to close the published 18-credit track total."}
+          ],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS211", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS231WX", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS331", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS377", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS431", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS476W", "units": 3}]}
+          ]
+        },
+        {
+          "title": "Information Technology CIS electives",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "mixed",
+          "cc_articulable": false,
+          "source_refs": ["program_information_technology", "course_catalog"],
+          "stated_credits": 6,
+          "analysis_constraints": [
+            {"kind": "choose_six_credits_from_variable_credit_menu", "status": "evaluator_not_implemented", "description": "Choose six credits from the published menu; CIS 303L is a one-credit option and needs a credit-aware combination."}
+          ],
+          "sections": [{"select": 2, "units": 6, "receivers": [
+            {"kind": "course", "code": "CIS201", "units": 3}, {"kind": "course", "code": "CIS303", "units": 3},
+            {"kind": "course", "code": "CIS303L", "units": 1}, {"kind": "course", "code": "CIS302", "units": 3},
+            {"kind": "course", "code": "CIS312W", "units": 3}, {"kind": "course", "code": "CIS342", "units": 3},
+            {"kind": "course", "code": "CIS343", "units": 3}
+          ]}]
+        },
+        {
+          "title": "Information Technology upper-level CIS elective",
+          "requirement_layer": "major",
+          "tier": "nontransferable",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "source_refs": ["program_information_technology", "course_catalog"],
+          "stated_credits": 3,
+          "sections": [{"select": 1, "units": 3, "receivers": [
+            {"kind": "course", "code": "CIS401", "units": 3}, {"kind": "course", "code": "CIS402", "units": 3},
+            {"kind": "course", "code": "CIS411", "units": 3}, {"kind": "course", "code": "CIS412", "units": 3},
+            {"kind": "course", "code": "CIS421", "units": 3}, {"kind": "course", "code": "CIS422", "units": 3},
+            {"kind": "course", "code": "CIS424", "units": 3}, {"kind": "course", "code": "CIS430", "units": 3},
+            {"kind": "course", "code": "CIS432", "units": 3}, {"kind": "course", "code": "CIS434", "units": 3},
+            {"kind": "course", "code": "CIS477", "units": 3}, {"kind": "course", "code": "EE428", "units": 3}
+          ]}]
+        },
+        {
+          "title": "Information Technology discrete structures",
+          "requirement_layer": "major",
+          "tier": "transferable",
+          "course_level": "lower_division",
+          "cc_articulable": true,
+          "source_refs": ["program_information_technology", "course_catalog"],
+          "stated_credits": 3,
+          "sections": [{"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CIS241", "units": 3}]}]
+        },
+        {
+          "title": "Information Technology additional approved courses",
+          "requirement_layer": "major",
+          "tier": "breadth",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "source_refs": ["program_information_technology", "course_catalog"],
+          "stated_credits": 6,
+          "analysis_constraints": [
+            {"kind": "department_head_approved_domain_elective", "status": "evaluator_not_implemented", "description": "The second three-credit course must be a BU, EC, ERH, IS, or PS elective approved by the department head."}
+          ],
+          "sections": [
+            {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "BU277", "units": 3}, {"kind": "course", "code": "CIS277", "units": 3}, {"kind": "course", "code": "IS307", "units": 3}]},
+            {"select": 1, "units": 3, "receivers": [{"kind": "ge_area", "code": "VMI-IT-APPROVED-DOMAIN", "name": "Department-head-approved BU, EC, ERH, IS, or PS elective", "units": 3}]}
+          ]
+        },
+        {
+          "title": "Information Technology ROTC requirement",
+          "requirement_layer": "ge_college",
+          "tier": "breadth",
+          "course_level": "mixed",
+          "cc_articulable": false,
+          "source_refs": ["program_information_technology", "general_education"],
+          "stated_credits": 12,
+          "sections": [{"select": 1, "units": 12, "receivers": [{"kind": "ge_area", "code": "VMI-ROTC-FOUR-YEARS", "name": "Four years of AS, MS, or NS Reserve Officers Training Corps coursework", "units": 12}]}]
+        },
+        {
+          "title": "Information Technology free electives",
+          "requirement_layer": "ge_college",
+          "tier": "breadth",
+          "course_level": "mixed",
+          "cc_articulable": true,
+          "source_refs": ["program_information_technology"],
+          "stated_credits": 24,
+          "analysis_constraints": [
+            {"kind": "core_overlay_inside_free_electives", "status": "evaluator_not_implemented", "description": "Two Civilizations and Cultures courses must be satisfied inside the published allocation; one may be replaced by approved credit-bearing study abroad."}
+          ],
+          "sections": [{"select": 1, "units": 24, "receivers": [{"kind": "ge_area", "code": "VMI-IT-FREE-ELECTIVES", "name": "Twenty-four free-elective credits, including any remaining Core overlays", "units": 24}]}]
+        }
+      ]
+    }
+  ]
+}

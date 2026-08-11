@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_public_four_year_cs_full_composition_cnu_jmu_nsu",
+  "researched_at": "2026-08-10",
+  "scope": {
+    "institutions": [
+      "christopher-newport-university",
+      "james-madison-university",
+      "norfolk-state-university"
+    ],
+    "source_policy": "Current official university catalogs and official university policy or ownership pages only.",
+    "variant_policy": "Model the ordinary undergraduate Computer Science B.S. path. Do not merge concentrations, alternative tracks, minors, honors variants, or accelerated graduate pathways into the base degree.",
+    "schedule_policy": "Do not import a sample, recommended, suggested, or illustrative schedule as degree requirements. A term-organized table may be reorganized only when the institution labels it Curriculum, supplies no advisory disclaimer, uses it as the only course-level degree inventory, and its published credits close to the degree total; semester ordering is then discarded.",
+    "arithmetic_policy": "Preserve published ranges and overlap rules. Use a documented canonical minimum path to close the 120-credit object, and retain unsupported cross-choice logic as an explicit analysis blocker.",
+    "supersedes_findings": [
+      "The partial JMU General Education description in four-year-batch-courseleaf.json; the current full catalog supplies all 14 requirements.",
+      "The blocked NSU finding in four-year-batch-courseleaf-remaining.json; a hand review determined that the institution's Curriculum table is the required 120-credit inventory, although CourseLeaf gives the table a generic Plan of Study Grid caption."
+    ]
+  },
+  "summary": {
+    "institutions_composed": 3,
+    "catalog_acceptance_passed": 3,
+    "analysis_ready": 0,
+    "analysis_blocker_policy": "All three records preserve exact catalog rules that the current evaluator cannot enforce; each therefore passes catalog acceptance while failing only constraint_support for analysis readiness.",
+    "canonical_degree_units": {
+      "christopher-newport-university": 120,
+      "james-madison-university": 120,
+      "norfolk-state-university": 120
+    }
+  },
+  "institutions": [
+    {
+      "slug": "christopher-newport-university",
+      "name": "Christopher Newport University",
+      "catalog_year": "2025-2026",
+      "selected_degree": {
+        "catalog_title": "Bachelor of Science in Computer Foundations, Computer Science Major",
+        "award": "Bachelor of Science",
+        "variant": "ordinary Computer Science major",
+        "excluded_variants": [
+          "Cybersecurity major",
+          "Information Science major",
+          "Computer Science minor",
+          "five-year graduate pathways"
+        ]
+      },
+      "ownership": {
+        "college": "College of Natural and Behavioral Sciences",
+        "academic_unit": "School of Engineering and Computing"
+      },
+      "official_sources": [
+        {
+          "id": "catalog_pdf",
+          "url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf",
+          "sha256": "30e4ab16d575d4ab5a966012f37cf6a6b536ffb775d267fccba4f82fcd23d327",
+          "page_scope": {
+            "graduation": "56-57",
+            "liberal_learning_core": "59-61",
+            "computer_science_major": "269-270",
+            "course_dictionary": "course-description section in the same catalog"
+          }
+        },
+        {
+          "id": "program_ownership",
+          "url": "https://cnu.edu/academics/departments/pcse/majorsminors/computerscience/",
+          "sha256": "53605b466a7d514ef9e52b505d6412f0bcf533962469f9e3150659f02469eaa2",
+          "page_scope": "current Computer Science program ownership"
+        }
+      ],
+      "major": {
+        "canonical_units": 70,
+        "arithmetic": "58 fixed computing, mathematics, engineering, and physics credits + 9 credits from three advanced choices + CPSC 498 (3) = 70.",
+        "choice_rules": [
+          "MATH 140 or MATH 148.",
+          "PHYS 151/151L and 152/152L, or PHYS 201/201L and 202/202L.",
+          "One of PHYS 340, ENGR 210, MATH 235, or MATH 260.",
+          "Three advanced choices from the catalog list; 495-and-above offerings may be used no more than twice."
+        ],
+        "upper_level_major_minimum": 29
+      },
+      "general_education_and_college": {
+        "authority": "Liberal Learning Core Curriculum",
+        "published_units": 40,
+        "composition": "Foundations total 21 and Areas of Inquiry total 19. Required MATH 140/148 plus MATH 240 supply six Mathematical Literacy credits and CPSC 150 supplies Logical Reasoning, leaving 12 additive Foundation credits plus all 19 Area-of-Inquiry credits.",
+        "unique_nonmajor_units": 31,
+        "college_wide_additional_block": "none published beyond the Liberal Learning Core and B.S./major rules",
+        "distribution_rules": [
+          "Two upper-level Writing Intensive courses are required; CPEN 371W supplies one.",
+          "Only one three-credit Area-of-Inquiry course may be in the major discipline, and no more than eight Area-of-Inquiry credits may share a discipline."
+        ]
+      },
+      "graduation": {
+        "minimum_units": 120,
+        "canonical_closure": "70 major/support + 31 unique nonmajor Liberal Learning + 19 remaining electives = 120.",
+        "cumulative_gpa_minimum": 2.0,
+        "major_gpa_minimum": 2.0,
+        "residency": "45 credits in residence; 30 of the final 36 and the final 12 major credits in residence.",
+        "upper_division_university_minimum": null,
+        "upper_division_finding": "No aggregate university-wide upper-division minimum is stated; the two upper-level Writing Intensive requirements and upper-level major content are modeled separately."
+      },
+      "excluded_schedule_content": "No sample or prospective schedule supplies any modeled requirement.",
+      "acceptance": {
+        "catalog": "pass",
+        "analysis_ready": "fail_constraint_support_only",
+        "blockers": [
+          "variable credit of CPSC/PCSE 495 selections",
+          "limit on 495-and-above selections",
+          "Area-of-Inquiry discipline limits",
+          "attribute evaluation for the second upper-level Writing Intensive course"
+        ]
+      }
+    },
+    {
+      "slug": "james-madison-university",
+      "name": "James Madison University",
+      "catalog_year": "2026-2027",
+      "selected_degree": {
+        "catalog_title": "Computer Science, B.S.",
+        "award": "Bachelor of Science",
+        "variant": "standard Computer Science B.S.; no concentration",
+        "excluded_variants": [
+          "recommended course sequence and four-year planning grid"
+        ]
+      },
+      "ownership": {
+        "college": "College of Integrated Science and Engineering",
+        "academic_unit": "Department of Computer Science"
+      },
+      "official_sources": [
+        {
+          "id": "major",
+          "url": "https://catalog.jmu.edu/programs/computer-science-bs/",
+          "sha256": "10fdfbb0c011fdde2beaab4a3b6f3de02b914a5dbf339ec6e10e1abced86bf28",
+          "page_scope": "current program requirements"
+        },
+        {
+          "id": "catalog_pdf",
+          "url": "https://catalog.jmu.edu/pdf/JMU2026-2027UndergraduateCatalog.pdf",
+          "sha256": "1a62e25d4117107d671c310542c28a2bc6904835f76c6f08106e17170158569c",
+          "page_scope": "Computer Science B.S. pp. 49-52; General Education pp. 109-115"
+        },
+        {
+          "id": "general_education",
+          "url": "https://catalog.jmu.edu/general-education/",
+          "sha256": "b542d974c0373eeac5e57cea33c5bb28f05a56096f018e4e6da7f7839c563e4b",
+          "page_scope": "General Education authority"
+        },
+        {
+          "id": "college",
+          "url": "https://www.jmu.edu/cise/depts/computer-science.shtml",
+          "sha256": "7a68eb6bf13727acd4ebbd774603904a420a1800856a3428aa32f82d875036bb",
+          "page_scope": "department and college ownership"
+        },
+        {
+          "id": "graduation",
+          "url": "https://www.jmu.edu/registrar/students/graduation/undergrad-requirements.shtml",
+          "sha256": "1a9588f1714951d73ca5e146e1ac57cabcb9c8510d58e92e2d7ff08ffcf07567",
+          "page_scope": "undergraduate graduation and residency rules"
+        },
+        {
+          "id": "degree_policy",
+          "url": "https://catalog.jmu.edu/undergraduate-degree-requirements-james-madison-university/",
+          "sha256": "a70dc513cc5436ac180aff595c01149a4a0c5bd3b174b914dbf0c3772c0dccf8",
+          "page_scope": "B.S. and university degree requirements"
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.jmu.edu/courses/",
+          "sha256": "866d0306b8f7218bd74a04c390cdeb218f4f8499113f781c7822199894711a29",
+          "page_scope": "course dictionary and credit values"
+        }
+      ],
+      "major": {
+        "published_units": "49-52",
+        "canonical_units": 49,
+        "arithmetic": "24 fixed CS + 9 upper-level CS electives + 3 discrete mathematics + 4 canonical calculus + 3 canonical statistics + 3 algorithms + 3 systems = 49.",
+        "variable_paths": "MATH 231 plus MATH 232 raises calculus from four to six credits; MATH 318 raises statistics from three to four. The degree remains 120 by reducing university electives from 27 to as few as 24.",
+        "upper_elective_rule": "Three CS courses numbered 300 or above, with at least two numbered above CS 332."
+      },
+      "general_education_and_college": {
+        "authority": "General Education: The Human Community",
+        "published_units": 41,
+        "modeled_requirements": 14,
+        "domains": [
+          "Madison Foundations: Critical Thinking, Human Communication, Writing",
+          "Arts and Humanities: Human Questions and Contexts, Visual and Performing Arts, Literature",
+          "The Natural World: Quantitative Reasoning, Physical Principles, Natural Systems, Laboratory Experience",
+          "American and Global Perspectives: American Experience and Global Experience",
+          "Sociocultural and Wellness: Wellness and Sociocultural domains"
+        ],
+        "bs_additional_quantitative_units": 3,
+        "college_wide_additional_block": "none published for this program"
+      },
+      "graduation": {
+        "minimum_units": 120,
+        "canonical_closure": "49 major + 41 General Education + 3 B.S. quantitative + 27 university electives = 120.",
+        "cumulative_gpa_minimum": 2.0,
+        "major_gpa_minimum": 2.0,
+        "residency": "At least 25 percent of the degree at JMU (30 credits on this degree), and at least 60 credits from four-year institutions including JMU.",
+        "upper_division_university_minimum": null,
+        "upper_division_finding": "No aggregate university-wide upper-division minimum is published in the reviewed current program, degree-policy, or graduation sources."
+      },
+      "excluded_schedule_content": "The recommended course sequence/four-year grid is illustrative and was not imported; every modeled requirement comes from requirement, General Education, or policy authority.",
+      "acceptance": {
+        "catalog": "pass",
+        "analysis_ready": "fail_constraint_support_only",
+        "blockers": [
+          "at least two of three upper-level CS electives must be above CS 332",
+          "major-range and university-elective-range credits are correlated"
+        ]
+      }
+    },
+    {
+      "slug": "norfolk-state-university",
+      "name": "Norfolk State University",
+      "catalog_year": "2025-2026",
+      "selected_degree": {
+        "catalog_title": "Bachelor of Science in Computer Science - Standard Track",
+        "award": "Bachelor of Science",
+        "variant": "Standard Track",
+        "excluded_variants": [
+          "Computer Engineering Track",
+          "IA Track",
+          "Cybersecurity Track",
+          "Software Engineering Track",
+          "DNIMAS and accelerated graduate pathways"
+        ]
+      },
+      "ownership": {
+        "college": "College of Science, Engineering, and Technology",
+        "academic_unit": "Department of Computer Science"
+      },
+      "official_sources": [
+        {
+          "id": "major",
+          "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/computer-science-bs-standard-track/",
+          "sha256": "f223ee32c51b1597a85aa3f82be17c1018cc257a969de3fca3e222be71746ac1",
+          "page_scope": "degree summary, required Curriculum table, and Major Electives list"
+        },
+        {
+          "id": "general_education_and_graduation",
+          "url": "https://catalog.nsu.edu/undergraduate/academic-information/general-education-core-program/",
+          "sha256": "a582c2e01a83134b609086ea218dfcad27a4c8327515ee9038bbf1f00e6c451c",
+          "page_scope": "40-credit General Education Core plus bachelor's graduation and residency requirements"
+        },
+        {
+          "id": "college",
+          "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/",
+          "sha256": "c6f34f1f976e77b9925b2c0897cac59251ff3615dee6dee7f997a1b08dab1292",
+          "page_scope": "college ownership"
+        },
+        {
+          "id": "department",
+          "url": "https://catalog.nsu.edu/undergraduate/science-engineering-technology/computer-science/",
+          "sha256": "c715d597e0898ad7655c59675b164324d21fea5a3c3ceda8148500662825f718",
+          "page_scope": "department ownership, program list, and minimum-C rule"
+        },
+        {
+          "id": "policy",
+          "url": "https://catalog.nsu.edu/undergraduate/academic-policies/",
+          "sha256": "81623b45aa0703da5465a94bf914370430c4afc4069a58dd41e0e82ace73c476",
+          "page_scope": "current academic policies"
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.nsu.edu/undergraduate/course-descriptions/csc/",
+          "sha256": "9d2f4b6142ac40a1c71c382bd53e4c92447d27a43156d50ce82504bc519fe86f",
+          "page_scope": "CSC course dictionary and credit values"
+        }
+      ],
+      "curriculum_authority_decision": {
+        "decision": "use the course rows as degree requirements and discard their year ordering",
+        "evidence": [
+          "The degree page's visible heading is Curriculum, not sample, suggested, recommended, or illustrative curriculum.",
+          "The catalog makes this table the only course-level inventory beneath the Standard Track degree.",
+          "The four published table totals are 30, 31, 28, and 31, and the table's Total Credits is 120, matching the degree's Summary of Graduation Requirements.",
+          "The catalog separately requires students to meet all requirements of the curriculum leading to the degree."
+        ],
+        "caveat": "CourseLeaf supplies the HTML table caption Plan of Study Grid. That generic platform caption is retained as a review flag, but there is no institutional advisory disclaimer and no competing non-sequenced course list."
+      },
+      "degree_arithmetic": {
+        "published_summary": "40 General Education + 53 Core Major + 27 Requirements Electives + 0 Other = 120.",
+        "semantic_composition": "64 fixed computing/math/technical-writing + 8 from two distinct laboratory-science selections + 27 remaining explicit General Education + 18 upper-level CS/Math choices + 3 free elective = 120.",
+        "general_education_overlap": "The required curriculum replaces the generic CSC 150, MTH 103, and seven-credit natural-science rows with the program's computing, mathematics, and laboratory-science curriculum. Zero-increment category gates preserve the 40-credit GE obligation without double counting.",
+        "upper_electives": "The curriculum contains 18 upper-level CS-or-Math elective credits. The adjacent Major Electives authority requires at least 15 from its enumerated CSC menu, so five three-credit choices come from that menu and the final three credits may come from the menu or MATH numbered 300 or above."
+      },
+      "graduation": {
+        "minimum_units": 120,
+        "cumulative_gpa_minimum": 2.0,
+        "residency": "At least two semesters and 30 credits in residence, including all courses required by the senior-year curriculum.",
+        "department_grade_rule": "Minimum C in all required English, Science, Mathematics, and Computer Science courses.",
+        "upper_division_university_minimum": null,
+        "upper_division_finding": "No aggregate university-wide upper-division minimum is published in the reviewed degree, General Education, department, or academic-policy sources."
+      },
+      "acceptance": {
+        "catalog": "pass",
+        "analysis_ready": "fail_constraint_support_only",
+        "blockers": [
+          "the two laboratory-science sequences must be distinct",
+          "General Education substitutions overlap the fixed program curriculum",
+          "at least 15 of 18 upper elective credits must come from the enumerated CSC menu",
+          "course reuse between the two elective sections must be prevented"
+        ]
+      }
+    }
+  ]
+}

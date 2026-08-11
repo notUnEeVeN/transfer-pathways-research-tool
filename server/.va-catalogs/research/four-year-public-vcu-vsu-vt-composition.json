@@ -1,0 +1,354 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_public_four_year_cs_full_composition_vcu_vsu_vt",
+  "researched_at": "2026-08-10",
+  "scope": {
+    "institutions": [
+      "virginia-commonwealth-university",
+      "virginia-state-university",
+      "virginia-polytechnic-institute-and-state-university"
+    ],
+    "source_policy": "Current official university catalogs and official university policy, registrar, department, or college pages only.",
+    "variant_policy": "Model the ordinary undergraduate Computer Science B.S. without merging concentrations, other computing majors, or accelerated graduate pathways.",
+    "schedule_policy": "Do not use the VCU recommended sequence, VSU Plan of Study, or Virginia Tech Roadmap as requirement authority.",
+    "arithmetic_policy": "Preserve official gross component subtotals and documented overlap, expose every bounded menu, and use a source-explainable canonical minimum path. Never invent an upper-level, residence, or elective-submenu rule when the current catalog does not publish one."
+  },
+  "summary": {
+    "institutions_composed": 3,
+    "catalog_acceptance_passed": 3,
+    "analysis_ready": 0,
+    "analysis_blocker_policy": "All three documents pass the source-completeness and catalog-structure gate. They fail analysis_ready only because exact overlap, attribute, variable-credit, conditional-choice, or distribution rules do not yet have evaluators.",
+    "canonical_degree_units": {
+      "virginia-commonwealth-university": 120,
+      "virginia-state-university": 120,
+      "virginia-polytechnic-institute-and-state-university": 123
+    }
+  },
+  "institutions": [
+    {
+      "slug": "virginia-commonwealth-university",
+      "name": "Virginia Commonwealth University",
+      "catalog_year": "2026-2027",
+      "catalog_status": "preliminary_launch_edition",
+      "selected_degree": {
+        "catalog_title": "Computer Science, Bachelor of Science (B.S.)",
+        "award": "Bachelor of Science",
+        "variant": "base degree without a concentration",
+        "excluded_variants": [
+          "Cybersecurity concentration",
+          "Data science concentration",
+          "Software engineering concentration",
+          "all accelerated B.S.-to-M.S. pathways"
+        ]
+      },
+      "ownership": {
+        "college": "College of Engineering",
+        "academic_unit": "Department of Computer Science",
+        "college_wide_additional_block": "none published beyond ConnectED and the program requirements"
+      },
+      "official_sources": [
+        {
+          "id": "major",
+          "url": "https://bulletin.vcu.edu/undergraduate/engineering/computer-science/computer-science-bs/",
+          "sha256": "ed94403fe3bcccbe16d2d017421df63620c75750503a0082f5f4b17d72d38e48",
+          "page_scope": "ordinary Degree requirements container, upper-level CMSC menu, humanities subjects, natural-science routes, and 120-credit total"
+        },
+        {
+          "id": "general_education",
+          "url": "https://bulletin.vcu.edu/undergraduate/undergraduate-study/general-education-curriculum/",
+          "sha256": "6ec33ca815bf2c9ac9ed09e0080603ef8c27ec7f9040ad81b0cbc25a23fa5b99",
+          "page_scope": "30-credit ConnectED foundations, breadth, inquiry-area, overlap, and prefix rules"
+        },
+        {
+          "id": "college",
+          "url": "https://bulletin.vcu.edu/undergraduate/engineering/computer-science/",
+          "sha256": "b1972c5be96b13bdbc7d602d79f2e5d8c3e6439f005e4c6676104fb49aad619e",
+          "page_scope": "College of Engineering and Department of Computer Science ownership, program variants, and department scope"
+        },
+        {
+          "id": "graduation",
+          "url": "https://bulletin.vcu.edu/academic-regs/ugrad/ugrad-degree-reqs/",
+          "sha256": "51f159f928a8291883425ee9db96c5cc32d258b4327a18f308a7782708a9ecd5",
+          "page_scope": "120-credit, 45-upper-level, GPA, REAL, 25-percent, and 30-of-final-45 rules"
+        },
+        {
+          "id": "policy",
+          "url": "https://bulletin.vcu.edu/academic-regs/ugrad/ugrad-graduation-app/",
+          "sha256": "917605bfa0691b554dba2f102998a50e76221a7f09a2424d5bb5fb4232e91881",
+          "page_scope": "current undergraduate graduation-policy context and graduation application authority"
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://bulletin.vcu.edu/azcourses/cmsc/",
+          "sha256": "609f2b3def7f4a44227495bedbac581554ba5d799e60510cfceefa5c23994212",
+          "page_scope": "current CMSC course identities and credit values"
+        }
+      ],
+      "major_and_degree_arithmetic": {
+        "lower_level_core": 15,
+        "upper_level_core": 37,
+        "upper_level_cmsc_electives": 9,
+        "ancillary_lower_level": 15,
+        "professional_development": 1,
+        "upper_level_math": 3,
+        "humanities": 6,
+        "natural_science_plus_path_adjusted_open_electives": 13,
+        "connected_foundations_not_already_counted": 6,
+        "connected_breadth_and_inquiry_net_capacity": 15,
+        "total": 120,
+        "gross_overlap_finding": "The program table publishes a 30-credit gross General Education requirement and marks ECON, MATH 200, and laboratory science as ConnectED-satisfying. Its displayed rows close at 120 only when those courses are represented once; the canonical composition therefore carries 21 additional ConnectED credits rather than adding 30 again.",
+        "placement_finding": "CMSC 254 appears in the displayed core but is required only when the placement test calls for it; the composition exposes either CMSC 254 or four credits of applicable degree capacity in that slot."
+      },
+      "graduation": {
+        "minimum_units": 120,
+        "major_course_grade": "C or better in all CSCI, MATH, and STAT courses",
+        "upper_division_minimum": 45,
+        "modeled_required_upper_division_units": 50,
+        "residency": "At least 25 percent at VCU, including at least 30 of the final 45 credits.",
+        "minimum_cumulative_gpa": 2,
+        "minimum_major_gpa": 2,
+        "major_course_grade": "C or better in every computer science course",
+        "additional_nonunit_requirement": "one qualifying VCU REAL activity"
+      },
+      "acceptance": {
+        "catalog": "pass",
+        "analysis_ready": "fail_constraint_support_only",
+        "blockers": [
+          "ConnectED category and overlap evaluation",
+          "placement-dependent CMSC 254 evaluation",
+          "variable-credit CMSC 491/492 fulfillment",
+          "Focused Inquiry grade, honors eligibility, and postmatriculation transfer rules",
+          "REAL course-attribute or co-curricular evaluation",
+          "GPA and residency evaluation"
+        ]
+      }
+    },
+    {
+      "slug": "virginia-state-university",
+      "name": "Virginia State University",
+      "catalog_year": "2026-2027",
+      "catalog_status": "published",
+      "selected_degree": {
+        "catalog_title": "Computer Science Major, Bachelor of Science (B.S.)",
+        "award": "Bachelor of Science",
+        "variant": "base degree without a concentration",
+        "excluded_variants": ["Information Security concentration"]
+      },
+      "ownership": {
+        "college": "College of Engineering and Technology",
+        "academic_unit": "Department of Computer Science",
+        "college_wide_additional_block": "none published beyond university General Education and the program Summary of Requirements"
+      },
+      "official_sources": [
+        {
+          "id": "major",
+          "url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-engineering-computer-science/computer-science-major-bs/",
+          "sha256": "a3b7b3e40240ae0a78a1c8ad07d1c965524a11a0e2dd65293f653dcd47128ec8",
+          "page_scope": "authoritative Summary of Requirements, fixed core and required courses, complete restricted menus, and 120-credit total"
+        },
+        {
+          "id": "general_education",
+          "url": "https://catalog.vsu.edu/undergraduate/general-education-programs/",
+          "sha256": "02d2e2935e9a20f1674f5998d76222bcd87e3e63caba167d2356f80e4fa78a39",
+          "page_scope": "33-credit General Education distribution and complete current course menus"
+        },
+        {
+          "id": "college",
+          "url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-computer-science/",
+          "sha256": "5336696ee31b33102cfcc1c3f334eb23450aea6cf83ba15cf6b76f4425dbca34",
+          "page_scope": "College of Engineering and Technology/Department of Computer Science ownership, base and concentration scope, and C-or-better CSCI/MATH/STAT rule"
+        },
+        {
+          "id": "graduation",
+          "url": "https://catalog.vsu.edu/undergraduate/university/policy-statements/",
+          "sha256": "8231eec2870bed927cd7eff20b190aa1f2bdd8b3977b478d665caf555b7851ee",
+          "page_scope": "current undergraduate policy statements and explicit search for degree-residence and graduation minima"
+        },
+        {
+          "id": "policy",
+          "url": "https://catalog.vsu.edu/undergraduate/academic-regulations-procedures/",
+          "sha256": "8505c4af65f4890eab611f542c5ef39e2ef50ce4e616da8cc2f02c8e64912cdb",
+          "page_scope": "current academic regulations and explicit search for upper-level and degree-residence rules"
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.vsu.edu/undergraduate/courses/csci/",
+          "sha256": "7c5ec8b6c5f35f8abf15d7d3e641f1c7023db2ac1f9d7cacf5dc0d3f5cad7214",
+          "page_scope": "current CSCI identities, titles, credits, and confirmation of CSCI 471"
+        }
+      ],
+      "major_and_degree_arithmetic": {
+        "general_education": 33,
+        "core": 54,
+        "required_mathematics_and_statistics": 14,
+        "unrestricted_electives": 6,
+        "restricted_electives": 13,
+        "total": 120,
+        "restricted_pool_finding": "The authoritative container publishes a single 13-credit restricted requirement followed by complete CSCI, MATH, and approved laboratory-science menus, but it does not publish how the 13 credits divide among those menus. The complete pool is exposed without importing the Plan of Study's apparent distribution."
+      },
+      "general_education": {
+        "distribution": {
+          "English": 6,
+          "History": 3,
+          "Humanities": 3,
+          "Global Studies": 3,
+          "Literature": 3,
+          "Health/Wellness": 2,
+          "Mathematics": 6,
+          "Social Science": 3,
+          "Natural Science and Lab": 4
+        },
+        "overlap_rule": "One course may satisfy General Education and the major, but one course may not satisfy two General Education areas.",
+        "science_menu_finding": "The full university General Education science menu remains available for the four-credit GE category. The narrower BIOL/CHEM/PHYS list is separately exposed within the 13-credit Computer Science restricted-elective pool.",
+        "course_identities_exposed": 161
+      },
+      "graduation": {
+        "minimum_units": 120,
+        "upper_division_minimum": null,
+        "upper_division_finding": "No universal bachelor's numeric minimum appears in the reviewed current sources; wording confined to the excluded Plan of Study is not promoted.",
+        "degree_residency_minimum": null,
+        "residency_finding": "No numeric bachelor's degree-completion residency rule appears in the reviewed current Academic Regulations and Policy Statements; honors and admission provisions are not repurposed.",
+        "minimum_cumulative_gpa": null,
+        "gpa_finding": "No universal undergraduate graduation GPA minimum or Computer Science-specific GPA minimum appears in the reviewed current program, Academic Regulations, or Policy Statements; admission, transfer-admission, and honors thresholds are not repurposed."
+      },
+      "catalog_conflict_resolution": "CSCI 471 is in the authoritative 54-credit core and the current course dictionary. An unlabeled CSCI 470 row appears only in the excluded Plan of Study and is absent from the composition.",
+      "acceptance": {
+        "catalog": "pass",
+        "analysis_ready": "fail_constraint_support_only",
+        "blockers": [
+          "unpublished restricted-pool submenu distribution",
+          "credit-based variable-course choices",
+          "variable-credit General Education science/laboratory fulfillment",
+          "CSCI/MATH/STAT minimum-course-grade evaluation",
+          "General Education/major overlap and single-GE-area enforcement"
+        ]
+      }
+    },
+    {
+      "slug": "virginia-polytechnic-institute-and-state-university",
+      "name": "Virginia Polytechnic Institute and State University",
+      "display_name": "Virginia Tech",
+      "catalog_year": "2026-2027",
+      "catalog_status": "published",
+      "selected_degree": {
+        "catalog_title": "Computer Science Major, Bachelor of Science in Computer Science",
+        "award": "Bachelor of Science",
+        "variant": "broad Computer Science major",
+        "excluded_variants": [
+          "Secure Computing major",
+          "Data-Centric Computing major",
+          "accelerated undergraduate/graduate degree pathway"
+        ]
+      },
+      "ownership": {
+        "college": "College of Engineering",
+        "academic_unit": "Department of Computer Science",
+        "college_wide_additional_block": "none beyond the engineering foundations embedded in Program Curriculum"
+      },
+      "official_sources": [
+        {
+          "id": "major",
+          "url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/computer-science-bs/",
+          "sha256": "5734621e7745782d5018255d94884f5a56c0351dda2e25783fdb14bb945cfcf5",
+          "page_scope": "Program Curriculum, elective rules and exclusions, substitutions, program graduation rules, and 123-credit total"
+        },
+        {
+          "id": "general_education",
+          "url": "https://catalog.vt.edu/undergraduate/undergraduate-policies/#pathwaysgeneraleducationtext",
+          "sha256": "1fd916f3737867768eec86ae07218907112c598bd1323a6d715a885402a76251",
+          "page_scope": "Pathways authority and fall-2025 Concept 7 suspension"
+        },
+        {
+          "id": "college",
+          "url": "https://catalog.vt.edu/undergraduate/college-engineering/computer-science/",
+          "sha256": "f528785a2ea8c8a37442ed618c72c61dd9064f7781084849613631e7820e618e",
+          "page_scope": "College of Engineering/Department of Computer Science ownership, current course identities, and complete pre-approved Career Bridge route families"
+        },
+        {
+          "id": "graduation",
+          "url": "https://www.registrar.vt.edu/graduation-multi-brief/graduation-policies.html",
+          "sha256": "a89d241281d8d9d9676f798ce772f3dbc383556e0a7bdc49f054270971c1a0cb",
+          "page_scope": "25-percent institutional, final-45 transfer, two-year transfer, and GPA policies"
+        },
+        {
+          "id": "policy",
+          "url": "https://catalog.vt.edu/undergraduate/undergraduate-policies/",
+          "sha256": "1fd916f3737867768eec86ae07218907112c598bd1323a6d715a885402a76251",
+          "page_scope": "undergraduate degree, transfer, Pathways, and acceptable-credit policy context"
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.vt.edu/course-search/",
+          "sha256": "3cc64422c0972d8f98279440741314669b420a50c135bb343f15ef518fb16ac2",
+          "page_scope": "official current course-search authority"
+        }
+      ],
+      "major_and_degree_arithmetic": {
+        "degree_core": 24,
+        "major_requirements": 15,
+        "career_bridge": 0,
+        "additional_courses": 8,
+        "elective_subtotal": 37,
+        "gross_pathways_subtotal": 47,
+        "natural_science_overlap_between_electives_and_pathways": 8,
+        "net_pathways": 39,
+        "total": 123,
+        "elective_subtotal_reconciliation": "The displayed elective rows total 29; the separately detailed eight-credit Natural Science Electives rule supplies the remaining eight and also fulfills Pathways Concept 4.",
+        "pathways_reconciliation": "47 gross Pathways credits minus the eight natural-science credits already counted in the elective subtotal equals 39 unique credits; 24 + 15 + 8 + 37 + 39 = 123."
+      },
+      "elective_scope": {
+        "bounded_menus_exposed": [
+          "theory",
+          "capstone",
+          "cross-listed 4/5XXX",
+          "cross-listed 3/4/5XXX",
+          "technical electives",
+          "natural and advanced natural science",
+          "communications",
+          "professional writing",
+          "statistics"
+        ],
+        "open_rules_exposed": "eligible CS level rules and prior-approved capstone/non-CS technical alternatives",
+        "explicitly_excluded_codes_absent": [
+          "CS 4774",
+          "CS 5040",
+          "CS 5044",
+          "CS 5045",
+          "CS 5046",
+          "CS 5644",
+          "CS 5664",
+          "CS 5904",
+          "CS 5944",
+          "CS 5974",
+          "CS 5994"
+        ]
+      },
+      "career_bridge": {
+        "transcript_course": "ENGE 3900",
+        "route_scope": "All seven currently published pre-approved route families are exposed: full-time co-op/internship, credited or full-time research, international experience, senior Corps/ROTC leadership, qualifying client capstone, ENGE project, and approved full-time field experience; other routes remain subject to department approval."
+      },
+      "graduation": {
+        "minimum_units": 123,
+        "minimum_cumulative_gpa": 2,
+        "minimum_major_gpa": 2,
+        "gateway_grade_rule": "C- or better in MATH 1225; C or better in CS 1114, 2104, 2114, 2505, 2506, and 3114 or approved substitutions",
+        "residency": "At least 25 percent at Virginia Tech (30.75 of 123 credits, therefore at least 31 whole semester credits); no more than 18 transfer credits among the final 45; no more than 50 percent of degree requirements transferred from two-year institutions.",
+        "foreign_language": "Two high-school years or one college year of the same language; college credit used solely for this rule does not count into the 123 credits.",
+        "upper_division_minimum": null,
+        "upper_division_finding": "No separate university-wide bachelor's upper-division minimum is published in the reviewed current sources."
+      },
+      "acceptance": {
+        "catalog": "pass",
+        "analysis_ready": "fail_constraint_support_only",
+        "blockers": [
+          "cross-menu no-double-count and independent-study limits",
+          "conditional 5000-level eligibility",
+          "Pathways 1a and Concept 4 overlap",
+          "paired honors-math substitution and free-credit adjustment",
+          "non-technical 30-credit distribution",
+          "GPA, residence, transfer, and foreign-language evaluation"
+        ]
+      }
+    }
+  ]
+}

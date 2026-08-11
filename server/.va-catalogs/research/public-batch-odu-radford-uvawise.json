@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "research_batch": "public-universities-odu-radford-uvawise",
+  "researched_at": "2026-08-10",
+  "catalog_year": "2026-2027",
+  "scope": [
+    "old-dominion-university",
+    "radford-university",
+    "the-university-of-virginia-s-college-at-wise"
+  ],
+  "methodology": [
+    "Use only the institutions' current official catalog, policy, academic-owner, and course-description pages.",
+    "Compose requirements rather than semester schedules, suggested plans, accelerated graduate pathways, or honors paths.",
+    "Model every mandatory major, general-education or college, and university-graduation layer needed to close the ordinary bachelor's degree.",
+    "Preserve mutually exclusive concentrations and material alternate routes without adding them together.",
+    "Treat scoped upper-level rules as scoped rules; do not invent an aggregate upper-division minimum when the catalog states none.",
+    "Retain catalog contradictions as data-quality evidence instead of silently normalizing them."
+  ],
+  "institutions": [
+    {
+      "slug": "old-dominion-university",
+      "program": "Computer Science (BSCS)",
+      "canonical_variant": "Standard Bachelor of Science in Computer Science, minimum-credit language placement, Upper-Division General Education Option D",
+      "sources": [
+        {
+          "id": "major",
+          "url": "https://catalog.odu.edu/undergraduate/sciences/computer-science/computer-science-bscs/",
+          "sha256": "a64306fb6678b08559f0c1ca523fcfe632b898606c4498002e9a0c33bfdad0e2",
+          "evidence": "Requirements table, standard BSCS identity, major course routes, CS elective rule, 120-134 displayed requirement range, writing and residence rules."
+        },
+        {
+          "id": "general_education",
+          "url": "https://catalog.odu.edu/undergraduate/general-education-requirements/",
+          "sha256": "43b3871305c51b7bc67fe3f8932246a57ac12b7ec1d7714d1cd9b7c4e84360f0",
+          "evidence": "Lower-division areas and four mutually exclusive upper-division General Education routes."
+        },
+        {
+          "id": "college",
+          "url": "https://catalog.odu.edu/undergraduate/sciences/computer-science/",
+          "sha256": "69e30828e2f0f74dfee47d5e574758c5ab28e4c10a2469450d4511cf46af03e9",
+          "evidence": "Department of Computer Science ownership inside the College of Sciences."
+        },
+        {
+          "id": "policy",
+          "url": "https://catalog.odu.edu/undergraduate/policies/academic-policies/",
+          "sha256": "57886ed1986992d659c59a6ebb21f2175665447765ff39b89c8375cdb8161955",
+          "evidence": "120-credit graduation minimum, 30-credit institutional residence, GPA and writing-course policies."
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.odu.edu/courses/cs/",
+          "sha256": "975130484364dbe7ca82a179712a7556cb714739357979a98ecefa7d363ceefc",
+          "evidence": "Current CS course identities, titles, levels, and credit values."
+        }
+      ],
+      "arithmetic": {
+        "graduation_minimum": 120,
+        "published_requirement_table_range": "120-134",
+        "canonical_major": {
+          "required_computer_science": 53,
+          "upper_level_computer_science_electives": 9,
+          "other_required_major_courses": 14,
+          "technical_elective": 3,
+          "total": 79
+        },
+        "canonical_general_education": {
+          "written_communication": 6,
+          "oral_communication": 3,
+          "mathematics_overlap_inside_major": 0,
+          "language_and_culture_placement_route": 0,
+          "information_literacy": 3,
+          "five_lower_division_breadth_areas": 15,
+          "nature_of_science": 8,
+          "impact_of_technology_overlap_inside_major": 0,
+          "upper_division_option_d": 6,
+          "total": 41
+        },
+        "closure": "79 major + 41 distinct General Education = 120"
+      },
+      "variant_handling": {
+        "upper_division_general_education": [
+          "disciplinary minor or second major (minimum 12)",
+          "interdisciplinary minor (12)",
+          "approved certificate route (published program credits)",
+          "two upper-division courses outside the College of Sciences (6; canonical)"
+        ],
+        "excluded": [
+          "suggested Degree Program Guide",
+          "Computer Science/Computer Engineering double degree",
+          "Dual Dominion and other accelerated graduate pathways",
+          "departmental honors"
+        ]
+      },
+      "graduation_constraints": {
+        "upper_division": "No aggregate minimum stated; preserve six upper-division GE credits, nine upper-level CS elective credits, and twelve upper-level resident-major credits as separate scoped rules.",
+        "residency": "30 credits overall at ODU, including 12 upper-level major credits; the writing-intensive major course must be taken at ODU.",
+        "gpa": "2.0 cumulative and 2.0 in the major",
+        "other": "C or better in ENGL 110C, ENGL 211C/231C, every required non-elective CS course, every CS prerequisite course, and the major writing course; senior assessment required."
+      },
+      "catalog_acceptance": {
+        "accepted": true,
+        "ready_for_analysis": false,
+        "analysis_blockers": ["constraint_support"]
+      }
+    },
+    {
+      "slug": "radford-university",
+      "program": "Computer Science, B.S. (R, L)",
+      "canonical_variant": "Base Computer Science B.S. without a concentration, MATH 171 route, twelve approved upper-level CS credits",
+      "sources": [
+        {
+          "id": "major",
+          "url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834&returnto=3321&print=1",
+          "canonical_url": "https://catalog.radford.edu/preview_program.php?catoid=62&poid=8834&returnto=3423",
+          "sha256": "377250367076d0a6fe945db23326b400e04ab3d47c816da464793c8897aa1b8c",
+          "evidence": "Common requirements, explicit no-concentration alternative, all five concentration blocks, R/L designation, and published 55-88 major banner."
+        },
+        {
+          "id": "general_education",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3437",
+          "sha256": "f6702e30bd187de51d7fd72a13729de64fe8ec6c8cdc697aff5a62f04f52909c",
+          "evidence": "REAL framework, 48-credit minimum, 30 GE-designated-credit minimum, writing-intensive, area, and outside-school rules."
+        },
+        {
+          "id": "college",
+          "url": "https://www.radford.edu/artis-college-science-technology/school-of-computing-and-information-sciences/academic-programs.html",
+          "sha256": "833e8647a6ad9b7b1607b3daae420f465360ac77c8d6a3536746e7946e6fb38b",
+          "evidence": "School of Computing and Information Sciences ownership in the Artis College of Science and Technology."
+        },
+        {
+          "id": "graduation",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3433",
+          "sha256": "8cbd26b4c092390c642000a9ed2073bb6aaae2d2cfc44e8d05fc7e2d2636ad8b",
+          "evidence": "120-credit degree minimum and 30-credit Radford residence rule."
+        },
+        {
+          "id": "policy",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3438",
+          "sha256": "a7857bf36596af10cfa04d336b95eac8fd6f5d89c6b466d9a648a46cbe1957f4",
+          "evidence": "Current undergraduate academic regulations."
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.radford.edu/content.php?catoid=62&navoid=3427",
+          "sha256": "f2fe7f4f4586be3897b0b4e5e516d5c213bfea0f3deb11ccd70414abdfb8f6cd",
+          "evidence": "Current course identities and credit values used to audit every named concentration row."
+        }
+      ],
+      "arithmetic": {
+        "graduation_minimum": 120,
+        "canonical_major": {
+          "school_fixed_courses": 15,
+          "MATH_171": 4,
+          "BS_science": 6,
+          "common_computer_science": 18,
+          "base_upper_level_computer_science": 12,
+          "total": 55
+        },
+        "canonical_post_major": {
+          "remaining_REAL_capacity": 30,
+          "unrestricted_capacity": 35,
+          "total": 65
+        },
+        "closure": "55 canonical major + 30 remaining REAL + 35 unrestricted = 120",
+        "embedded_constraints": "The major supplies 18 R/L credits and 12 GE-designated credits; at least 18 more GE-designated credits, six Writing Intensive credits, and at least 15 qualifying outside-school credits must fit inside the post-major capacity."
+      },
+      "variants": [
+        {"key": "base_no_concentration", "replacement_units": 12, "canonical_major_units": 55},
+        {"key": "advanced_computer_science", "published_units": "20", "concentration_specific_science_units": "7-8", "canonical_major_units": 64, "additional_gates": ["Major Field Test or approved equivalent in the last semester", "C or better in every CS course applied to the concentration"]},
+        {"key": "advanced_database", "published_units": "22-23", "canonical_major_units": 65},
+        {"key": "advanced_networks", "published_units": "21", "named_row_units": "24-25", "canonical_major_units_from_named_rows": 67},
+        {"key": "advanced_software_engineering", "published_units": "15", "canonical_major_units": 58},
+        {"key": "advanced_artificial_intelligence", "published_units": "18-19", "canonical_major_units": 61}
+      ],
+      "catalog_conflicts": [
+        "The Advanced Networks heading says 21 credits, but five fixed three-credit CS courses + six additional CS credits + a required three- or four-credit statistics option total 24-25.",
+        "The page's 55-88 Major Requirements banner and 41-74 Open Credit Hours range do not reconcile with the explicit mutually exclusive path arithmetic and 120-credit total; explicit rows are retained as authoritative requirement evidence.",
+        "The B.S. science paragraph names the base CS major, Advanced Database, Advanced Networks, and Advanced Software Engineering, plus a separate Advanced Computer Science route, but omits the newer Advanced Artificial Intelligence concentration; the general CS-major route is retained provisionally and the omission is flagged."
+      ],
+      "excluded": ["Virginia Tech accelerated M.Eng. pathway"],
+      "graduation_constraints": {
+        "upper_division": "No aggregate university-wide minimum stated; the base path separately requires twelve upper-level CS credits and one Writing Intensive course at the 300/400 level.",
+        "residency": "At least 30 bachelor-level credits at Radford University.",
+        "REAL": "48 credits minimum, at least 30 GE-designated credits, R/L major coverage, two Writing Intensive courses with one upper-level, and 15 qualifying credits outside the major school."
+      },
+      "catalog_acceptance": {
+        "accepted": true,
+        "ready_for_analysis": false,
+        "analysis_blockers": ["constraint_support"]
+      }
+    },
+    {
+      "slug": "the-university-of-virginia-s-college-at-wise",
+      "program": "Computer Science, B.S.",
+      "canonical_variant": "Standard Computer Science B.S. without an added concentration",
+      "sources": [
+        {
+          "id": "major",
+          "url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1199&returnto=1055",
+          "sha256": "351dcdfb593b6eb07d8a13d406e1b63bb383ce0f5e132ae7b96b09309348f944",
+          "evidence": "Current standard major, 77-80 credits, math/science, CS core, additional upper-division rule, and comprehensive examination."
+        },
+        {
+          "id": "general_education",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1044",
+          "sha256": "eeaf89b77c60ab9b29edf6ee9f11fe89bd2ef7bef2b04a9c686196ffabd88a11",
+          "evidence": "Liberal Arts Core components, exact course menus, contextual gates, ELA, cultural attendance, and conflicting 48-49 versus 48-50 totals."
+        },
+        {
+          "id": "college",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1055",
+          "sha256": "db776266706b6daa53b15bf3808e90d08de667a5845356f81477274b747400e4",
+          "evidence": "Department of Mathematics and Computer Science ownership; no intervening school/college layer."
+        },
+        {
+          "id": "graduation",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1039",
+          "sha256": "a704b500a0ae3ee95fcec90ee41cdee18094721181d0b0100e25e58f7fac6151",
+          "evidence": "120 credits, GPA, 45-credit UVA Wise residence, 15 upper-level resident-major credits, 58 four-year credits, and 62-credit two-year transfer cap."
+        },
+        {
+          "id": "course_catalog",
+          "url": "http://catalog.uvawise.edu/content.php?catoid=9&navoid=1085",
+          "sha256": "8550e101ff93853ec8ad3e5a4786c6a96ba45c9f002ae7aeb9c8a73926f03f93",
+          "evidence": "Current full course listing for identity and credit evidence."
+        },
+        {
+          "id": "cybersecurity_concentration",
+          "url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1203&returnto=1055",
+          "captured_at": "2026-08-10T22:58:16Z",
+          "capture_transport": "retained_official_text_transport_not_recorded",
+          "retained_text_path": "server/.va-catalogs/pages/the-university-of-virginia-s-college-at-wise__cybersecurity_concentration.txt",
+          "hash_basis": "sha256_of_retained_utf8_text_bytes",
+          "sha256": "99b9702837f07e5115ef446204b78c46a48244e663fb97c9f0322dfdffb4672b",
+          "evidence": "Choose any three of CSC 4280, CSC 4281, CSC 4282, and CSC 4380; nine total credits."
+        },
+        {
+          "id": "data_science_concentration",
+          "url": "http://catalog.uvawise.edu/preview_program.php?catoid=9&poid=1246&returnto=1055",
+          "captured_at": "2026-08-10T22:58:16Z",
+          "capture_transport": "retained_official_text_transport_not_recorded",
+          "retained_text_path": "server/.va-catalogs/pages/the-university-of-virginia-s-college-at-wise__data_science_concentration.txt",
+          "hash_basis": "sha256_of_retained_utf8_text_bytes",
+          "sha256": "77fea2a06a50eeb69da3c40096480db9df4096b413e63e29d3a2c4d32a57f515",
+          "evidence": "Seventeen- to twenty-credit concentration explicitly open to Computer Science and seven other B.S. majors; all six option sets and C minimum captured."
+        }
+      ],
+      "arithmetic": {
+        "graduation_minimum": 120,
+        "canonical_major": {
+          "math_and_science": 25,
+          "computer_science_core": 37,
+          "additional_upper_division": 15,
+          "total": 77
+        },
+        "canonical_liberal_arts_core": {
+          "actual_course_units": 48,
+          "inside_major": {
+            "MTH_2040": 4,
+            "laboratory_sciences": 8,
+            "SWE_1790_studies_of_self": 3,
+            "total": 15
+          },
+          "remaining_distinct_units": 33
+        },
+        "remaining_elective_capacity": 10,
+        "closure": "77 canonical major + 33 distinct remaining Core + 10 elective capacity = 120"
+      },
+      "liberal_arts_core": {
+        "published_conflict": "Introduction says 48-49; component footer says 48-50.",
+        "canonical_actual_course_path": "SEM 1010 (3) + written communication (6) + non-accelerated global communication (6) + MTH 2040 substitution (4) + science (8) + contextual (21) = 48.",
+        "contextual": "Twenty-one credits, at least three each in Self, Community, Nation, and World; SWE 1790 supplies Self, leaving eighteen. At least one Humanities/Fine Arts course, one Social/Behavioral Science course, and one IE-designated Core course are required.",
+        "co_curricular": "One ELA and the applicable eight- or four-activity cultural attendance rule remain zero-credit gates."
+      },
+      "variants": [
+        {"key": "standard_computer_science_bs", "selected": true, "published_major_units": "77-80"},
+        {"key": "cybersecurity_concentration", "selected": false, "units": 9, "applicability_note": "Standalone page does not enumerate eligible majors; retain without assuming attachment."},
+        {"key": "data_science_concentration", "selected": false, "units": "17-20", "applicability_note": "Computer Science is explicitly eligible; C or better required in all concentration coursework."}
+      ],
+      "graduation_constraints": {
+        "upper_division": "No aggregate university-wide minimum stated; preserve the fifteen additional upper-division major credits and fifteen resident upper-level major credits as scoped, potentially overlapping rules.",
+        "residency": "45 credits at UVA Wise including 15 upper-level major credits.",
+        "four_year_institution": "58 of 120 credits from a regionally accredited four-year institution.",
+        "two_year_transfer_cap": 62,
+        "gpa": "2.0 overall college work and 2.0 on UVA Wise work.",
+        "other": "Satisfactory comprehensive examinations covering the CS core."
+      },
+      "catalog_acceptance": {
+        "accepted": true,
+        "ready_for_analysis": false,
+        "analysis_blockers": ["constraint_support"]
+      }
+    }
+  ]
+}

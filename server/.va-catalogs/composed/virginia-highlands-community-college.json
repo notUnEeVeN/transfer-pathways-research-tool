@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "slug": "virginia-highlands-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Associate of Science",
+  "award": "AS",
+  "catalog_version": {
+    "label": "2026-2027 College Catalog v1.2",
+    "sha256": "a3126a08f12390d358094695a87df51d81cbf0c90c80c7b51b949dc845735e3a",
+    "program_pdf_pages": [62, 63]
+  },
+  "total_units": 60,
+  "total_units_max": 62,
+  "published_total_units_max": 63,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "graduation",
+    "course_catalog"
+  ],
+  "course_titles": {
+    "SDV101": "Orientation to College Success",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "HIS121": "United States History to 1877",
+    "HIS122": "United States History Since 1865",
+    "ECO201": "Principles of Macroeconomics",
+    "ECO202": "Principles of Microeconomics",
+    "GEO210": "People and the Land: Introduction to Cultural Geography",
+    "PLS135": "U.S. Government and Politics",
+    "PLS140": "Introduction to Comparative Politics",
+    "PSY200": "Principles of Psychology",
+    "SOC200": "Introduction to Sociology",
+    "SOC211": "Cultural Anthropology",
+    "SOC268": "Social Problems",
+    "MTH161": "Precalculus I",
+    "MTH162": "Precalculus II",
+    "MTH263": "Calculus I",
+    "MTH264": "Calculus II",
+    "MTH265": "Calculus III",
+    "MTH266": "Linear Algebra",
+    "MTH288": "Discrete Mathematics",
+    "CSC205": "Computer Organization",
+    "CSC208": "Introduction to Discrete Structures",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC222": "Object-Oriented Programming",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "ART101": "History of Art: Prehistoric to Gothic",
+    "ART102": "History of Art: Renaissance to Modern",
+    "CST100": "Principles of Public Speaking",
+    "CST130": "Introduction to Theatre",
+    "CST151": "Film Appreciation I",
+    "MUS121": "Music in Society",
+    "MUS221": "History of Western Music Prior to 1750",
+    "MUS222": "History of Western Music 1750 to Present",
+    "HUM256": "Comparative Mythology",
+    "PHI100": "Introduction to Philosophy",
+    "PHI111": "Logic I",
+    "PHI220": "Ethics",
+    "REL230": "Religions of the World",
+    "BIO101": "General Biology I",
+    "BIO102": "General Biology II",
+    "BIO106": "Life Science",
+    "CHM101": "Introductory Chemistry I",
+    "CHM111": "General Chemistry I",
+    "CHM112": "General Chemistry II",
+    "ENV121": "General Environmental Science I",
+    "ENV122": "General Environmental Science II",
+    "GOL105": "Physical Geology",
+    "GOL106": "Historical Geology",
+    "PHY241": "University Physics I",
+    "PHY242": "University Physics II",
+    "ENG245": "British Literature",
+    "ENG246": "American Literature"
+  },
+  "option_sets": {
+    "ucgs_block_ii_non_literature": {
+      "source_refs": ["major", "general_education"],
+      "rule": "Choose one three-credit course from Art or Humanities; literature is expressly excluded by program note 2.",
+      "categories": {
+        "art": ["ART101", "ART102", "CST130", "CST151", "MUS121", "MUS221", "MUS222"],
+        "humanities": ["HUM256", "PHI100", "PHI111", "PHI220", "REL230"]
+      }
+    },
+    "ucgs_block_iii": {
+      "source_refs": ["major", "general_education"],
+      "courses": ["ECO201", "ECO202", "GEO210", "PLS135", "PLS140", "PSY200", "SOC200", "SOC211", "SOC268"]
+    },
+    "ucgs_block_iv": {
+      "source_refs": ["major", "general_education"],
+      "courses": ["BIO101", "BIO102", "BIO106", "CHM101", "CHM111", "CHM112", "ENV121", "ENV122", "GOL105", "GOL106", "PHY241", "PHY242"]
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": 63,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 62,
+    "closure_basis": "Forty-seven non-math credits plus the 13-credit canonical distinct math route (MTH 161, MTH 162, MTH 263, MTH 266) close at 60. Distinct math routes top out at 15 credits, for a modeled 62-credit maximum.",
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "rule": "At least 25 percent of the degree credits must be acquired at Virginia Highlands.",
+      "source_refs": ["graduation"]
+    },
+    "minimum_curriculum_gpa": 2
+  },
+  "modeling_notes": [
+    "The semester headings organize the official requirements but are not prospective schedules; their rows are reorganized by requirement type.",
+    "Program notes 1-3 make the current VHCC UCGS roster part of the degree: Block III supplies social science, only Block II Art/Humanities options satisfy the non-literature breadth slot, and Block IV supplies each science slot.",
+    "The math rows recur across semesters. MTH 263 or MTH 264 cannot provide credits twice, so the printed independent-row maximum of 63 is retained as source evidence but the composed distinct-course maximum is 62.",
+    "The two Block IV rows are independent requirements, not a mandatory same-discipline sequence; they nevertheless require two distinct applied courses."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "published_maximum_requires_duplicate_math_credit",
+      "severity": "review",
+      "message": "The catalog's 63-credit maximum adds row maxima that select MTH 263 and MTH 264 twice; a course cannot contribute the same credits to two slots."
+    },
+    {
+      "code": "cross_slot_course_distinctness",
+      "severity": "review",
+      "message": "The evaluator must prevent repeated math and science options from double-counting across separate slots."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "College success and written communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV101"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]}
+      ]
+    },
+    {
+      "title": "United States history",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["HIS121"], ["HIS122"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS Block III — Social and Behavioral Sciences",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ECO201"], ["ECO202"], ["GEO210"], ["PLS135"], ["PLS140"], ["PSY200"], ["SOC200"], ["SOC211"], ["SOC268"]]}]}
+      ]
+    },
+    {
+      "title": "Mathematics progression",
+      "source_refs": ["major"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "no_double_count_across_requirement_slots",
+          "status": "evaluator_not_implemented",
+          "description": "MTH 263 and MTH 264 each appear in two separate rows but may contribute their credits only once."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "cc_course", "options": [["MTH161"], ["MTH263"]]}]},
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "cc_course", "options": [["MTH162"], ["MTH264"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["MTH263"], ["MTH265"]]}]},
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [{"kind": "cc_course", "options": [["MTH264"], ["MTH266"]]}]}
+      ]
+    },
+    {
+      "title": "Computer science requirements",
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC208"], ["MTH288"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC205"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS Block II — Art or Humanities (non-literature)",
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ART101"], ["ART102"], ["CST130"], ["CST151"], ["MUS121"], ["MUS221"], ["MUS222"], ["HUM256"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL230"]]}]}
+      ]
+    },
+    {
+      "title": "Oral communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CST100"]]}]}
+      ]
+    },
+    {
+      "title": "UCGS Block IV — Natural Sciences",
+      "source_refs": ["major", "general_education"],
+      "distinct_course_ids_across_sections": true,
+      "analysis_constraints": [
+        {
+          "kind": "no_double_count_across_requirement_slots",
+          "status": "evaluator_not_implemented",
+          "description": "The same Block IV course cannot satisfy both four-credit natural-science rows."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["BIO101"], ["BIO102"], ["BIO106"], ["CHM101"], ["CHM111"], ["CHM112"], ["ENV121"], ["ENV122"], ["GOL105"], ["GOL106"], ["PHY241"], ["PHY242"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["BIO101"], ["BIO102"], ["BIO106"], ["CHM101"], ["CHM111"], ["CHM112"], ["ENV121"], ["ENV122"], ["GOL105"], ["GOL106"], ["PHY241"], ["PHY242"]]}]}
+      ]
+    },
+    {
+      "title": "Literature",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG245"], ["ENG246"]]}]}
+      ]
+    }
+  ]
+}

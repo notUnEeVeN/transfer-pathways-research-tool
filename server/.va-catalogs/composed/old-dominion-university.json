@@ -1,0 +1,467 @@
+{
+  "schema_version": 1,
+  "slug": "old-dominion-university",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science (BSCS)",
+  "award": "BSCS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "course_titles": {
+    "COMM101R": "Public Speaking",
+    "CS121G": "Introduction to Information Literacy and Research for Scientists",
+    "CS202G": "Information Literacy for Cybersecurity",
+    "CS367": "Cooperative Education",
+    "CS368": "Computer Science Internship",
+    "ENGL211C": "Writing, Rhetoric, and Research",
+    "ENGL231C": "Writing, Rhetoric, and Research: Special Topics",
+    "OEAS110N": "Earth Science",
+    "OEAS111N": "Physical Geology",
+    "OEAS112N": "Historical Geology",
+    "PHIL160R": "Raising Moral Issues in STEM"
+  },
+  "canonical_variant": "Standard Bachelor of Science in Computer Science using the minimum-credit language-placement route and Upper-Division General Education Option D",
+  "excluded_variants": [
+    "Computer Science with a Major in Secondary Computer Science Education (6-12) (BSCS)",
+    "Computer Science/Computer Engineering double-degree plan",
+    "Dual Dominion bachelor's-to-master's pathways",
+    "Departmental honors pathways"
+  ],
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Sciences",
+  "ge_authority": "Old Dominion University General Education Requirements",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "college",
+    "policy",
+    "course_catalog"
+  ],
+  "requirement_layers": {
+    "major": {"status": "complete", "source_refs": ["major", "course_catalog"]},
+    "ge_college": {"status": "complete", "source_refs": ["major", "general_education", "college"]},
+    "university_graduation": {"status": "complete", "source_refs": ["major", "policy"]}
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "published_requirement_table_units_minimum": 120,
+    "published_requirement_table_units_maximum": 134,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The current catalog states scoped upper-level rules (six upper-division General Education credits, nine upper-level CS elective credits, and twelve upper-level major credits in ODU residence) but no aggregate university-wide upper-division-credit minimum.",
+      "source_refs": ["major", "general_education", "policy"]
+    },
+    "upper_division_general_education_units_minimum": 6,
+    "upper_level_computer_science_elective_units": 9,
+    "major_upper_division_residency_minimum": 12,
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "rule": "At least 30 credits overall and at least 12 upper-level credits in the major must be completed at Old Dominion University; the writing-intensive major course must also be taken at ODU.",
+      "source_refs": ["major", "policy"]
+    },
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2,
+    "required_non_elective_cs_minimum_grade": "C",
+    "senior_assessment_required": true
+  },
+  "modeling_notes": [
+    "The authoritative Requirements tab is modeled; the explicitly suggested Degree Program Guide, double-degree plan, graduate pathways, and honors material are excluded.",
+    "The canonical 120-credit path uses language competency at the 102 level without additive language credit, Upper-Division General Education Option D (six credits), the five-credit programming-language bridge, and a three-credit technical elective.",
+    "The published 120-134 range is preserved through section maxima and alternate General Education routes; it is not substituted for the 120-credit graduation minimum.",
+    "Lower-Division General Education contributes 35 additional credits on the canonical path because Mathematics and Impact of Technology are explicitly satisfied inside the major.",
+    "The three CS elective selections must together supply nine upper-level CS credits and cannot reuse a course already selected for another major requirement.",
+    "All required non-elective CS courses, CS prerequisite courses, and the writing-intensive major course require C or better; the senior assessment is a zero-credit graduation gate."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "scoped_upper_division_rules_not_aggregate",
+      "severity": "review",
+      "message": "The six-credit GE, nine-credit CS-elective, and twelve-credit resident-major rules have different scopes and must not be summed as a university-wide minimum."
+    },
+    {
+      "code": "cross_group_course_reuse",
+      "severity": "review",
+      "message": "CS 418, CS 422, CS 450, and CS 480 appear in both fixed-choice and elective menus but cannot earn degree credit twice."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Required Computer Science courses",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "analysis_constraints": [
+        {
+          "kind": "variable_credit_programming_bridge",
+          "status": "evaluator_not_implemented",
+          "description": "The three published language-bridge routes consume five or six credits; the five-credit route is canonical and the six-credit maximum remains explicit."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 4,
+          "label": "Introductory programming language",
+          "receivers": [
+            {"kind": "course", "code": "CS151", "title": "Introduction to Programming with Java", "units": 4},
+            {"kind": "course", "code": "CS153", "title": "Introduction to Programming with Python", "units": 4},
+            {"kind": "course", "code": "CS150", "title": "Introduction to Programming with C++", "units": 4}
+          ]
+        },
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS170", "title": "Introduction to Computer Architecture I", "units": 3}]},
+        {
+          "select": 1,
+          "units": 5,
+          "units_max": 6,
+          "label": "Programming-language bridge",
+          "receivers": [
+            {"kind": "series", "codes": ["CS251", "CS260"], "units": 5},
+            {"kind": "series", "codes": ["CS253", "CS260", "CS261"], "units": 6},
+            {"kind": "series", "codes": ["CS250", "CS261"], "units": 5}
+          ]
+        },
+        {"select": 1, "units": 1, "receivers": [{"kind": "course", "code": "CS252", "title": "Introduction to Unix for Programmers", "units": 1}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS270", "title": "Introduction to Computer Architecture II", "units": 3}]},
+        {
+          "select": 1,
+          "units": 1,
+          "label": "Undergraduate colloquium requirement",
+          "receivers": [
+            {"kind": "course", "code": "CS315", "title": "Computer Science Undergraduate Colloquium", "units": 1},
+            {"kind": "course", "code": "CS115", "title": "Introduction to Computer Science with Python", "units": 1, "note": "Students who completed CS 115 are not required to take CS 315."}
+          ]
+        },
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS330", "title": "Object-Oriented Design and Programming", "units": 3, "overlap_key": "odu-impact-technology"}]},
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Software engineering",
+          "receivers": [
+            {"kind": "course", "code": "CS350", "title": "Introduction to Software Engineering", "units": 3, "overlap_key": "odu-impact-technology"},
+            {"kind": "series", "codes": ["CS351", "CS352"], "units": 3}
+          ]
+        },
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS355", "title": "Principles of Programming Languages", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS361", "title": "Data Structures and Algorithms", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS381", "title": "Introduction to Discrete Structures", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS390", "title": "Introduction to Theoretical Computer Science", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS410", "title": "Professional Workforce Development I", "units": 3, "overlap_key": "odu-impact-technology"}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS411W", "title": "Professional Workforce Development II", "units": 3, "overlap_key": "odu-impact-technology"}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS417", "title": "Computational Methods and Software", "units": 3}]},
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Machine learning or artificial intelligence",
+          "receivers": [
+            {"kind": "course", "code": "CS422", "title": "Introduction to Machine Learning", "units": 3, "overlap_key": "odu-cs422"},
+            {"kind": "course", "code": "CS480", "title": "Introduction to Artificial Intelligence", "units": 3, "overlap_key": "odu-cs480"}
+          ]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "label": "Database or web programming",
+          "receivers": [
+            {"kind": "course", "code": "CS450", "title": "Database Concepts", "units": 3, "overlap_key": "odu-cs450"},
+            {"kind": "course", "code": "CS418", "title": "Web Programming", "units": 3, "overlap_key": "odu-cs418"}
+          ]
+        },
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS471", "title": "Operating Systems", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Upper-level Computer Science electives",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "analysis_constraints": [
+        {
+          "kind": "minimum_upper_level_credits_across_menu",
+          "status": "evaluator_not_implemented",
+          "description": "The three selections must provide at least nine 300/400-level CS credits; choosing the listed CS 222 requires additional upper-level CS credit beyond the three-course minimum."
+        },
+        {
+          "kind": "no_double_count_with_required_major_choices",
+          "status": "evaluator_not_implemented",
+          "description": "A course selected for a fixed major choice cannot also count as one of the three CS electives."
+        },
+        {
+          "kind": "work_experience_cap",
+          "status": "evaluator_not_implemented",
+          "description": "At most six credits of CS 367 or CS 368 work experience may apply."
+        }
+      ],
+      "sections": [
+        {
+          "select": 3,
+          "units": 9,
+          "label": "Select three additional CS courses, subject to the nine-credit upper-level rule",
+          "receivers": [
+            {"kind": "course", "code": "CS222", "units": 3},
+            {"kind": "course", "code": "CS312", "units": 3},
+            {"kind": "course", "code": "CS337", "units": 3},
+            {"kind": "course", "code": "CS402", "units": 3},
+            {"kind": "course", "code": "CS418", "units": 3, "overlap_key": "odu-cs418"},
+            {"kind": "course", "code": "CS422", "units": 3, "overlap_key": "odu-cs422"},
+            {"kind": "course", "code": "CS431", "units": 3},
+            {"kind": "course", "code": "CS432", "units": 3},
+            {"kind": "course", "code": "CS433", "units": 3},
+            {"kind": "course", "code": "CS441", "units": 3},
+            {"kind": "course", "code": "CS445", "units": 3},
+            {"kind": "course", "code": "CS450", "units": 3, "overlap_key": "odu-cs450"},
+            {"kind": "course", "code": "CS455", "units": 3},
+            {"kind": "course", "code": "CS460", "units": 3},
+            {"kind": "course", "code": "CS462", "units": 3},
+            {"kind": "course", "code": "CS463", "units": 3},
+            {"kind": "course", "code": "CS464", "units": 3},
+            {"kind": "course", "code": "CS465", "units": 3},
+            {"kind": "course", "code": "CS466", "units": 3},
+            {"kind": "course", "code": "CS467", "units": 3},
+            {"kind": "course", "code": "CS469", "units": 3},
+            {"kind": "course", "code": "CS472", "units": 3},
+            {"kind": "course", "code": "CS475", "units": 3},
+            {"kind": "course", "code": "CS476", "units": 3},
+            {"kind": "course", "code": "CS478", "units": 3},
+            {"kind": "course", "code": "CS480", "units": 3, "overlap_key": "odu-cs480"},
+            {"kind": "course", "code": "CS481", "units": 3},
+            {"kind": "course", "code": "CS486", "units": 3},
+            {"kind": "course", "code": "CS487", "units": 3},
+            {"kind": "course", "code": "CS488", "units": 3},
+            {"kind": "course", "code": "CS491", "units": 3},
+            {"kind": "course", "code": "CS492", "units": 3},
+            {"kind": "course", "code": "CS499W", "units": 3},
+            {"kind": "course", "code": "CS367", "units": 3, "note": "Work-experience credits are capped with CS 368 at six."},
+            {"kind": "course", "code": "CS368", "units": 3, "note": "Work-experience credits are capped with CS 367 at six."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Other required major courses",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MATH211", "title": "Calculus I", "units": 4, "overlap_key": "odu-ge-mathematics"}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "course", "code": "MATH212", "title": "Calculus II", "units": 4}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "MATH316", "title": "Introductory Linear Algebra", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "STAT330", "title": "An Introduction to Probability and Statistics", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Technical elective from the published science menu",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major"],
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "analysis_constraints": [
+        {
+          "kind": "no_double_count_with_other_degree_requirement",
+          "status": "evaluator_not_implemented",
+          "description": "The technical elective must be a course not already counted toward another degree requirement."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "units_max": 4,
+          "receivers": [
+            {"kind": "course", "code": "BIOL121N", "units": 4},
+            {"kind": "course", "code": "BIOL123N", "units": 4},
+            {"kind": "course", "code": "BIOL136N", "units": 4},
+            {"kind": "course", "code": "BIOL138N", "units": 4},
+            {"kind": "course", "code": "CHEM105N", "units": 3},
+            {"kind": "course", "code": "CHEM107N", "units": 3},
+            {"kind": "course", "code": "CHEM121N", "units": 3},
+            {"kind": "course", "code": "CHEM123N", "units": 3},
+            {"kind": "course", "code": "OEAS106N", "units": 3},
+            {"kind": "course", "code": "OEAS108N", "units": 3},
+            {"kind": "course", "code": "OEAS110N", "units": 3},
+            {"kind": "course", "code": "OEAS111N", "units": 3},
+            {"kind": "course", "code": "OEAS112N", "units": 3},
+            {"kind": "course", "code": "OEAS126N", "units": 3},
+            {"kind": "course", "code": "OEAS250N", "units": 3},
+            {"kind": "course", "code": "PHYS111N", "units": 4},
+            {"kind": "course", "code": "PHYS112N", "units": 4},
+            {"kind": "course", "code": "PHYS226N", "units": 4},
+            {"kind": "course", "code": "PHYS227N", "units": 4},
+            {"kind": "course", "code": "PHYS231N", "units": 4},
+            {"kind": "course", "code": "PHYS232N", "units": 4}
+          ]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "units_max": 4,
+          "cc_articulable": false,
+          "receivers": [
+            {"kind": "requirement", "name": "Another technically oriented course approved by a computer science advisor", "units": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Written Communication",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENGL110C", "title": "English Composition", "units": 3}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "ENGL211C", "units": 3}, {"kind": "course", "code": "ENGL231C", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Oral Communication",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "COMM101R", "units": 3}, {"kind": "course", "code": "PHIL160R", "units": 3}]}]
+    },
+    {
+      "title": "Mathematics General Education satisfied in the major",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 0, "receivers": [{"kind": "course", "code": "MATH211", "units": 4, "overlap_key": "odu-ge-mathematics"}]}]
+    },
+    {
+      "title": "Language and Culture",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "conjunction": "Or",
+      "canonical_section_index": 0,
+      "sections": [
+        {"select": 1, "units": 0, "receivers": [{"kind": "ge_area", "code": "ODU-LANGUAGE-102-COMPETENCY", "name": "Language competency through the 102 level", "units": 0}]},
+        {"select": 1, "units": 6, "receivers": [{"kind": "ge_area", "code": "ODU-LANGUAGE-COURSE-SEQUENCE", "name": "Coursework through the 102 language level", "units": 6}]}
+      ]
+    },
+    {
+      "title": "Information Literacy and Research",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 3, "receivers": [{"kind": "course", "code": "CS121G", "units": 3}, {"kind": "course", "code": "CS202G", "units": 3}]}]
+    },
+    {
+      "title": "Lower-Division General Education breadth areas",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {"select": 1, "units": 3, "label": "Human Behavior", "receivers": [{"kind": "ge_area", "code": "ODU-HUMAN-BEHAVIOR", "name": "Human Behavior", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Human Creativity", "receivers": [{"kind": "ge_area", "code": "ODU-HUMAN-CREATIVITY", "name": "Human Creativity", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Interpreting the Past", "receivers": [{"kind": "ge_area", "code": "ODU-INTERPRETING-PAST", "name": "Interpreting the Past", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Literature", "receivers": [{"kind": "ge_area", "code": "ODU-LITERATURE", "name": "Literature", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Philosophy and Ethics", "receivers": [{"kind": "ge_area", "code": "ODU-PHILOSOPHY-ETHICS", "name": "Philosophy and Ethics", "units": 3}]}
+      ]
+    },
+    {
+      "title": "The Nature of Science sequence",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 8,
+          "label": "Choose one published eight-credit science sequence",
+          "receivers": [
+            {"kind": "series", "codes": ["BIOL121N", "BIOL122N", "BIOL123N", "BIOL124N"], "units": 8},
+            {"kind": "series", "codes": ["BIOL136N", "BIOL137N", "BIOL138N", "BIOL139N"], "units": 8},
+            {"kind": "series", "codes": ["CHEM105N", "CHEM106N", "CHEM107N", "CHEM108N"], "units": 8},
+            {"kind": "series", "codes": ["CHEM121N", "CHEM122N", "CHEM123N", "CHEM124N"], "units": 8},
+            {"kind": "series", "codes": ["OEAS106N", "OEAS108N"], "units": 8},
+            {"kind": "series", "codes": ["OEAS106N", "OEAS250N"], "units": 8},
+            {"kind": "series", "codes": ["OEAS126N", "OEAS108N"], "units": 8},
+            {"kind": "series", "codes": ["OEAS126N", "OEAS250N"], "units": 8},
+            {"kind": "series", "codes": ["PHYS111N", "PHYS112N"], "units": 8},
+            {"kind": "series", "codes": ["PHYS226N", "PHYS227N"], "units": 8},
+            {"kind": "series", "codes": ["PHYS231N", "PHYS232N"], "units": 8}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Impact of Technology satisfied in the major",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "general_education"],
+      "sections": [{"select": 1, "units": 0, "receivers": [{"kind": "series", "codes": ["CS330", "CS350", "CS410", "CS411W"], "units": 0, "overlap_key": "odu-impact-technology"}]}]
+    },
+    {
+      "title": "Upper-Division General Education",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "general_education", "college"],
+      "conjunction": "Or",
+      "canonical_section_index": 3,
+      "analysis_constraints": [
+        {
+          "kind": "upper_division_ge_alternate_path",
+          "status": "evaluator_not_implemented",
+          "description": "The four alternatives have different structures and credit footprints; the six-credit outside-college course route is canonical."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 12, "cc_articulable": false, "label": "Option A", "receivers": [{"kind": "requirement", "name": "Approved disciplinary minor, second degree, or second major", "units": 12}]},
+        {"select": 1, "units": 12, "cc_articulable": false, "label": "Option B", "receivers": [{"kind": "requirement", "name": "Twelve-credit interdisciplinary minor; up to three credits may be in the major", "units": 12}]},
+        {"select": 1, "units": 6, "units_max": 12, "cc_articulable": false, "label": "Option C", "receivers": [{"kind": "requirement", "name": "Approved certification program such as teaching licensure", "units": 6}]},
+        {"select": 1, "units": 6, "cc_articulable": false, "label": "Option D", "receivers": [{"kind": "requirement", "name": "Two upper-division courses outside the College of Sciences and not required by the major", "units": 6}]}
+      ]
+    },
+    {
+      "title": "Major grade and university assessment completion gates",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "administrative",
+      "cc_articulable": false,
+      "source_refs": ["major", "policy"],
+      "sections": [
+        {
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {"kind": "requirement", "name": "Earn C or better in every required non-elective CS course, every CS prerequisite course, and the writing-intensive course in the major", "units": 0}
+          ]
+        },
+        {
+          "select": 1,
+          "units": 0,
+          "receivers": [
+            {"kind": "requirement", "name": "Complete Old Dominion University's Senior Assessment", "units": 0}
+          ]
+        }
+      ]
+    }
+  ]
+}

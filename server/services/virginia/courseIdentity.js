@@ -9,7 +9,10 @@
 const { createHash } = require('node:crypto');
 
 const VA_ID_BASE = 900000000;
-const CANONICAL_COURSE_CODE = /^[A-Z]{2,5}\d{2,4}[A-Z]?$/;
+// Most Virginia catalogs use an optional single lab/writing suffix, but VMI's
+// current catalog has the concrete course CIS 231WX. Keep the grammar narrow
+// while allowing that legitimate two-letter attribute suffix.
+const CANONICAL_COURSE_CODE = /^[A-Z]{2,5}\d{2,4}[A-Z]{0,2}$/;
 const PLACEHOLDER_COURSE_CODE = /^(?:X{2,5}0{2,4}|[A-Z]{2,5}0{3,4})$/;
 const NON_COURSE_LANDING_NAME = /\b(?:elective|transfer|placeholder)\b|\b(?:general\s+(?:course\s+)?|no\s+|collegiate\s+|major\s+)credit\b|^general education$/i;
 

@@ -208,11 +208,25 @@ export const ENDPOINT_GROUPS = [
         plain: 'The complete SCHEV public four-year comparison cohort, with collection status and stable aliases; omit cohort to retain the broader transfer-partner corpus.',
         returns: '{ cohorts, institutions: [{ institution_slug, canonical_name, cohort, is_primary, collection_status, ... }] }',
         fields: [
-          ['cohort=schev_public_four_year', 'The primary public-to-public comparison with UC: exactly the 15 SCHEV public four-year institutions, including UVA and VMI even before course or degree data is collected.'],
+          ['cohort=schev_public_four_year', 'The primary public-to-public comparison with UC: exactly the 15 SCHEV public four-year institutions. The cohort contract keeps a school visible even if a future catalog refresh temporarily has no course or degree data.'],
           ['cohort=other_four_year', 'Secondary Virginia transfer partners remain available for supplemental research but do not enter the primary comparison or verification denominator.'],
           ['corpus_present / needs_collection', 'A zero-equivalency public institution remains visible. not_collected is distinct from catalog_url_only and from a verified no_program finding.'],
           ['canonical_name / source_names', 'Use canonical_name for display and source_names for exact matching against historical Transfer Virginia names and renamed institutions.'],
           ['scope_source_url', 'The authoritative SCHEV page defining the primary public cohort.'],
+        ],
+      },
+      {
+        method: 'GET',
+        path: '/va/coverage',
+        title: 'Virginia collection and verification coverage',
+        plain: 'The full institution work queue, including catalog acceptance, human verification, and source-backed findings where no current CS-specific degree is published.',
+        returns: '{ coverage, collected, total, public_four_year, verification }',
+        fields: [
+          ['coverage[].collection_status', 'Distinguishes not_collected, captured_needs_review, catalog_collected, and no_program; the last means no current source-prescribed CS-specific degree/path, not necessarily that the college has no broad Science A.S.'],
+          ['coverage[].program_finding', 'When present, the durable catalog finding explains a broad alternate degree, a discontinued prior specialization, and the exact official evidence behind the classification.'],
+          ['coverage[].catalog_year / finding_sources[]', 'A no-program finding carries its catalog year and the exact official source records named by program_finding.source_refs, including public URLs, capture hashes, and redirect/retrieval provenance.'],
+          ['coverage[].finding_complete / publication_applicable', 'A complete source-backed negative is a settled collection outcome. Degree publication and source composition are not applicable, so it is not reported as a blocked or missing degree record.'],
+          ['coverage[].catalog_accepted / analysis_ready', 'Machine completeness gates. Signed human verification remains in coverage[].documents and is never inferred from a successful scrape.'],
         ],
       },
       {
@@ -240,6 +254,7 @@ export const ENDPOINT_GROUPS = [
           ['degrees', 'Stored requirement trees; A.S. options use course_ids/course_keys and four-year receivers use parent_id or parent_ids.'],
           ['degrees[].collection_status / acceptance', 'Completeness is explicit: captured_only and major_only are research work-in-progress; catalog_accepted has all required source layers; analysis_ready additionally passes course, logic, and unit audits. Human verification remains separate.'],
           ['degrees[].requirement_variants[]', 'When one award publishes materially different maps, the selected map remains in requirement_groups and alternate maps are retained here with the same compiled course_ids/course_keys. Keep the variant key and source refs; do not merge the paths.'],
+          ['degrees[].option_sets', 'Exact cited course dictionaries and category allowances for source rules that do not have one universal choose-N representation. Concrete codes also appear in the degree course identity catalog; preserve the option-set credit, sequence, exclusion, and overlap metadata.'],
           ['degrees[].course_namespace', 'Present when an A.S. catalog uses institution-local rather than VCCS master course codes. Its owner_plus_course_id contract means the owning college is part of every course identity.'],
           ['courses[].course_id / course_key', 'Legacy project-minted, code-derived identities for every concrete code named by the collected A.S. document. They remain unchanged for compatibility, but are not globally unique for an institution-local namespace.'],
           ['courses[].college_id / institution_id / identity_scope / scoped_course_key', 'Present for institution-local A.S. catalogs. Join with scoped_course_key, or with the college_id + course_id tuple; never resolve that row from a same-code global /va/courses record.'],
@@ -259,6 +274,7 @@ export const ENDPOINT_GROUPS = [
         returns: '{ ok, id, revision_recorded, verification_reopened, acceptance }',
         fields: [
           ['id / body._id / body.kind', 'Use the stored va:as:<college>:... or va:degree:<university>:... id and send the complete object with kind as_degree or degree.'],
+          ['updated_at', 'Send the updated_at value returned by GET as an optimistic concurrency token. A stale save returns HTTP 409 instead of overwriting a newer publication or researcher edit.'],
           ['verification.verified', 'Set true only after walking the cited sources. The caller cannot forge acceptance or verifier identity; both are derived server-side.'],
           ['material edits', 'Changing requirements or sources on a signed record reopens verification and retains the previous signature as stale audit history. Notes-only saves do not change the degree model.'],
           ['access', 'Virginia reads and writes require an authenticated, allowlisted research account or personal API token; they are not unauthenticated public endpoints.'],

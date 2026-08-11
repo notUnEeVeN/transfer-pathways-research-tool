@@ -362,6 +362,41 @@ describe('Virginia public institution cohort API', () => {
     expect(secondary.body.institutions.map((row) => row.name)).not.toContain('George Washington University');
   });
 
+  it('ignores superseded and out-of-scope catalog documents when reporting degree status', async () => {
+    await db.collection('va_requirements').insertMany([
+      {
+        _id: 'va:degree:george-mason-university:retired-cs',
+        source: 'institution_catalog', status: 'superseded',
+        school_id: 'va:uni:george-mason-university', codes_seen: ['CS110'], total_units: 120,
+      },
+      {
+        _id: 'va:degree:randolph-macon-college:out-of-scope-cs',
+        source: 'institution_catalog', status: 'out_of_scope',
+        school_id: 'va:uni:randolph-macon-college', codes_seen: ['CSCI111'], total_units: 120,
+      },
+      {
+        _id: 'va:degree:virginia-polytechnic-institute-and-state-university:cs',
+        source: 'institution_catalog', status: 'extracted',
+        school_id: 'va:uni:virginia-polytechnic-institute-and-state-university',
+        codes_seen: ['CS1114'], total_units: 123,
+      },
+    ]);
+
+    const response = await run(institutions, request({ level: 'four_year' }));
+    const bySlug = new Map(response.body.institutions.map((row) => [row.institution_slug, row]));
+
+    expect(bySlug.get('george-mason-university')).toMatchObject({
+      degree_status: 'none', collection_status: 'not_collected', degree_courses: 0,
+    });
+    expect(bySlug.get('randolph-macon-college')).toMatchObject({
+      degree_status: 'none', collection_status: 'not_collected', degree_courses: 0,
+    });
+    expect(bySlug.get('virginia-polytechnic-institute-and-state-university')).toMatchObject({
+      degree_status: 'full', collection_status: 'catalog_collected', degree_courses: 1,
+      degree_units: 123,
+    });
+  });
+
   it('resolves aliases for receiver courses and degree owners', async () => {
     const courseResponse = await run(courses, request({
       receiver: 'Virginia Polytechnic Institute and State University',
@@ -742,6 +777,26 @@ describe('Virginia degree course naming', () => {
 });
 
 describe('Virginia degree verification gate', () => {
+  it('rejects a stale degree save instead of overwriting a newer publication', async () => {
+    const current = acceptedDegreeForPut();
+    current.updated_at = new Date('2026-08-10T12:00:00.000Z');
+    await db.collection('va_requirements').insertOne(current);
+    const stale = structuredClone(current);
+    stale.updated_at = new Date('2026-08-09T12:00:00.000Z');
+    stale.requirement_groups[0].title = 'Stale browser title';
+
+    const response = await run(putDegree, request({}, {
+      params: { id: stale._id },
+      body: stale,
+      user: { uid: 'researcher-1', name: 'Researcher One' },
+    }));
+
+    expect(response.statusCode).toBe(409);
+    expect(response.body.error).toContain('Refresh');
+    const stored = await db.collection('va_requirements').findOne({ _id: current._id });
+    expect(stored.requirement_groups[0].title).toBe(current.requirement_groups[0].title);
+  });
+
   it('rejects a verification claim for a parser-only partial document', async () => {
     const partial = acceptedDegreeForPut();
     partial.requirement_layers.ge_college.status = 'missing';

@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_cc_danville_rappahannock_current_cs_transfer_award_audit",
+  "researched_at": "2026-08-10",
+  "scope": [
+    "danville-community-college",
+    "rappahannock-community-college"
+  ],
+  "methodology": [
+    "Current 2026-2027 official catalog authority controls over stale college marketing links and archived catalog records.",
+    "A general transfer award is included only when a current official college source expressly identifies Computer Science as an intended receiving major and links the current award requirements.",
+    "Curriculum tables are used as the official requirement inventory; semester placement is discarded rather than treated as a prospective schedule.",
+    "No Computer Science coursework is inferred where the source delegates elective selection to the student, advisor, and receiving institution."
+  ],
+  "summary": {
+    "current_positive_awards_composed": 1,
+    "current_discontinued_or_no_program_findings": 1,
+    "catalog_acceptance_passed": 1,
+    "analysis_ready": 0
+  },
+  "institutions": [
+    {
+      "slug": "danville-community-college",
+      "finding": "current_cs_transfer_specialization_discontinued",
+      "catalog": {
+        "year": "2026-2027",
+        "catalog_id": 7,
+        "program_index_nav_id": 222
+      },
+      "evidence": [
+        "The current program index lists Business Administration and Engineering in its College & University Transfer Associate of Science section and a generic Science A.S. under Science, Math & Engineering; it does not list the former Science - Computer Science Specialization.",
+        "The current Computer & Information Technology section offers applied degrees, certificates, and career studies certificates, not a Computer Science transfer associate award.",
+        "The college's public Transfer Programs page still prints Science - Computer Science Specialization, but its anchor targets archived catoid 4 / poid 450. That requested URL now redirects to the current catoid 7 catalog landing page instead of a current program record.",
+        "The current generic Science A.S. (poid 702) defines medical or other science-related transfer use and does not define a Computer Science pathway. It is retained only as an alternate non-CS-specific award."
+      ],
+      "program_finding": {
+        "code": "current_cs_transfer_specialization_discontinued",
+        "alternate_path": {
+          "program": "Science (AS)",
+          "program_id": 702,
+          "computer_science_alignment": "not_defined_by_current_catalog"
+        }
+      },
+      "sources": [
+        {
+          "id": "catalog",
+          "url": "https://catalog.danville.edu/index.php?catoid=7",
+          "sha256": "219a249096914b368c24d8e830699673c709490ff395801c9f03584bb1fdbe1f"
+        },
+        {
+          "id": "current_program_index",
+          "url": "https://catalog.danville.edu/content.php?catoid=7&navoid=222",
+          "sha256": "76552361a435b6936b5a37d0c09c6d99546e8fb1f5c57382fdd76de74d81f04b"
+        },
+        {
+          "id": "stale_public_index",
+          "url": "https://danville.edu/transfer-programs",
+          "sha256": "35080f2238c25bfd6534df0a1f70989929d23060af23e045f824d052761c92d7"
+        },
+        {
+          "id": "prior_program",
+          "requested_url": "https://catalog.danville.edu/preview_program.php?catoid=4&poid=450&returnto=108",
+          "final_url": "https://catalog.danville.edu/index.php?catoid=7",
+          "sha256": "219a249096914b368c24d8e830699673c709490ff395801c9f03584bb1fdbe1f"
+        },
+        {
+          "id": "alternate_science_program",
+          "url": "https://catalog.danville.edu/preview_program.php?catoid=7&poid=702&returnto=222",
+          "sha256": "5787b7838acf3c9208ffc6d3bfc6dc561c40c10458577bbd29f2886a7d55c9ee"
+        }
+      ]
+    },
+    {
+      "slug": "rappahannock-community-college",
+      "finding": "current_general_science_as_explicitly_supports_cs_transfer",
+      "catalog": {
+        "year": "2026-2027",
+        "catalog_id": 9,
+        "program_id": 695,
+        "cip_code": "30.0101"
+      },
+      "degree": {
+        "title": "Associate of Science in Science",
+        "award": "Associate of Science",
+        "published_total_credits_minimum": 60,
+        "published_total_credits_maximum": 62,
+        "modeled_total_credits_minimum": 60,
+        "modeled_total_credits_maximum": 62,
+        "residency_percent": 25,
+        "minimum_curriculum_gpa": 2,
+        "computer_science_relationship": "RCC's current Transfer Programs page expressly lists Computer Science as an intended baccalaureate major for the general Science A.S. and links the current poid 695 program.",
+        "computer_science_coursework": "No CSC course or CS-specific option subset is prescribed. Six general approved-transfer-elective rows totaling 18-19 credits must be selected for the receiving degree with an advisor."
+      },
+      "source_semantics": {
+        "published_semester_totals": ["17", "16-17", "15", "12-13"],
+        "semantic_closure": "42-43 fixed, science, math, and breadth credits plus 18-19 advisor-selected approved-transfer-elective credits equals 60-62.",
+        "laboratory_science": "One four-credit UCGS lab slot and one distinct four-credit approved-transfer lab-science slot; both complete current menus are retained.",
+        "mathematics": "Two printed rows totaling 6-7 credits are retained with the footnote's quantitative/statistics and calculus routes and MTH 167 exclusion; they are not flattened into independent choices.",
+        "approved_transfer_electives": "All 123 courses in the current roster are retained with credit values. One- and two-credit courses may require combinations to fill a printed three-credit row.",
+        "breadth": "All six current footnote menus are retained exactly, with no duplicate credit across separately printed rows."
+      },
+      "catalog_acceptance": {
+        "accepted": true,
+        "ready_for_analysis": false,
+        "analysis_blockers": ["constraint_support"]
+      },
+      "sources": [
+        {
+          "id": "catalog",
+          "url": "https://catalog.rappahannock.edu/index.php?catoid=9",
+          "sha256": "160120baa9202fb0a802bd1026270c3d369700184596594c4004a0923dc5bf82"
+        },
+        {
+          "id": "major",
+          "url": "https://catalog.rappahannock.edu/preview_program.php?catoid=9&poid=695&returnto=1600",
+          "sha256": "1b267573b6902007e0d234c2cce0542e56afc9da2d122dc95fe63587cfc5790d"
+        },
+        {
+          "id": "program_intent",
+          "url": "https://www.rappahannock.edu/explore-programs/programs/transfer-programs-transfer-va.html",
+          "sha256": "246bff0dffc992d2981d2959f39df9adb660f66eb0b3e853d1c7bec3ba71fb41"
+        },
+        {
+          "id": "general_education",
+          "url": "https://catalog.rappahannock.edu/preview_program.php?catoid=9&poid=614",
+          "sha256": "d4a00d980a67da44f62239535d21fb8c8859e2a809583234b78a5ba6939e81b5"
+        },
+        {
+          "id": "graduation",
+          "url": "https://catalog.rappahannock.edu/content.php?catoid=9&navoid=1592",
+          "sha256": "e76312dc5e933781a236783101474e77f54e9b878e8615bf4eb8e5b1b19e7d24"
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.rappahannock.edu/content.php?catoid=9&navoid=1602",
+          "sha256": "140fca396b87ad8a830ea50ade3cc26a371184a4e3bfbc0ee49d04295834b91e"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "researched_at": "2026-08-10T23:45:00.000Z",
+  "scope": ["wytheville-community-college", "tidewater-community-college"],
+  "method": "Current official source walk; direct headed-browser captures where the origin allowed them, otherwise transparent renders of exact official HTTPS origins with response hashes and complete normalized requirement evidence retained here.",
+  "institutions": {
+    "wytheville-community-college": {
+      "catalog_identity": {
+        "year": "2026-2027",
+        "catalog_id": 14,
+        "program_id": 1454,
+        "title": "Science, Major in Computer Science, AS",
+        "award": "Associate of Science",
+        "published_total": {"minimum": 62, "maximum": 62}
+      },
+      "source_walk": [
+        {
+          "id": "major",
+          "url": "https://catalog.wcc.vccs.edu/preview_program.php?catoid=14&poid=1454&returnto=377&print=1",
+          "transport": "headed_browser_direct_origin",
+          "local_text": "server/.va-catalogs/pages/wytheville-community-college__program.txt",
+          "local_html": "server/.va-catalogs/pages/wytheville-community-college__program.html",
+          "sha256": "70f3034b207f6958f21df519ac66f6c98aefe6714c8c8682c6b217101e23fa94"
+        },
+        {
+          "id": "policy",
+          "url": "https://catalog.wcc.vccs.edu/content.php?catoid=14&navoid=385",
+          "transport": "headed_browser_direct_origin",
+          "local_text": "server/.va-catalogs/pages/wytheville-community-college__policy.txt",
+          "local_html": "server/.va-catalogs/pages/wytheville-community-college__policy.html",
+          "sha256": "75087dda11e3b28702cda54eff5293695f881ef62314e93b07d243116c982423"
+        },
+        {
+          "id": "graduation",
+          "url": "https://www.wcc.vccs.edu/graduation",
+          "transport": "headed_browser_direct_origin",
+          "local_text": "server/.va-catalogs/pages/wytheville-community-college__graduation.txt",
+          "local_html": "server/.va-catalogs/pages/wytheville-community-college__graduation.html",
+          "sha256": "fa4344570e8f21e6876765409c03ff29c43ea04d3f2c1a59453a041141cc922f"
+        },
+        {
+          "id": "course_catalog",
+          "url": "https://catalog.wcc.vccs.edu/content.php?catoid=14&navoid=378",
+          "transport": "headed_browser_direct_origin",
+          "local_text": "server/.va-catalogs/pages/wytheville-community-college__course_catalog.txt",
+          "local_html": "server/.va-catalogs/pages/wytheville-community-college__course_catalog.html",
+          "sha256": "48478e578797b0902db1515b26fbe209882812545f243b2adbf008a37fb0224b"
+        }
+      ],
+      "requirement_evidence": {
+        "fixed_courses": [
+          {"code": "ENG111", "credits": 3},
+          {"code": "MTH263", "credits": 4},
+          {"code": "SDV100", "credits": 1},
+          {"code": "CSC221", "credits": 3},
+          {"code": "CST100", "credits": 3},
+          {"code": "MTH264", "credits": 4},
+          {"code": "MTH266", "credits": 3},
+          {"code": "CSC222", "credits": 4},
+          {"code": "MTH265", "credits": 4},
+          {"code": "CSC208", "credits": 3},
+          {"code": "CSC223", "credits": 4}
+        ],
+        "menus": {
+          "history_3": ["HIS101", "HIS102", "HIS121", "HIS122"],
+          "humanities_3_each_two_distinct_clusters": ["ART101", "CST151", "HUM201", "HUM202", "PHI100", "PHI220", "REL230"],
+          "english_3": ["ENG112", "ENG113"],
+          "physics_first_4": ["PHY201", "PHY241"],
+          "social_behavioral_3": ["PSY200", "PSY215", "PSY216", "PSY230", "SOC200"],
+          "computer_science_engineering_3": ["EGR121", "EGR122", "CSC215"],
+          "physics_second_4": ["PHY202", "PHY242"]
+        },
+        "open_rule": "The Computer Science/Engineering elective also permits other courses approved by the advisor for transfer purposes.",
+        "advisory_only": ["PHI 220 preferred", "four-semester order"],
+        "program_grade_rule": "Students should successfully complete community-college courses meeting the grade requirement of C."
+      },
+      "arithmetic": {
+        "student_development_and_communication": 10,
+        "mathematics": 15,
+        "computer_science": 14,
+        "history": 3,
+        "humanities": 6,
+        "social_science": 3,
+        "physics": 8,
+        "cs_engineering_elective": 3,
+        "total": 62
+      },
+      "graduation_evidence": {
+        "residency_percent": 25,
+        "applicable_gpa_minimum": 2,
+        "computer_competency_required_for_programs_45_or_more_credits": true,
+        "computer_competency_routes": ["ITE 115 plus an eligible SDV course", "approved program course activities", "college competency test"],
+        "administrative": ["apply by deadline", "resolve obligations and return materials", "official certification"]
+      },
+      "anomalies": [
+        "The first History and Humanities rows display superscripts 2 and 5, while their uniquely matching definitions are numbered 1 and 2.",
+        "The page requires different humanities clusters but does not publish cluster memberships.",
+        "The current local degree prints CSC 221 as three credits and totals 62; the current VCCS master page shows four credits effective 2026-08-01."
+      ]
+    },
+    "tidewater-community-college": {
+      "catalog_identity": {
+        "year": "2026-2027",
+        "catalog_id": 23,
+        "program_id": 5235,
+        "program_code": "246",
+        "title": "Computer Science, Associate of Science",
+        "published_total": {"minimum": 60, "maximum": 63}
+      },
+      "origin_capture_note": "The shared headed Chrome capture received Cloudflare 403 verification pages for every catalog role. Acceptance is based on a complete retained source walk, not those blocked files.",
+      "source_walk": [
+        {
+          "id": "major",
+          "url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235&print=1",
+          "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/preview_program.php?catoid=23%26poid=5235%26print=1",
+          "transport": "transparent_render_of_exact_official_origin",
+          "sha256": "640461df56b1fb0a8d6df67974f5cc8097ea837c56ed150a4110c3a473db04b7"
+        },
+        {
+          "id": "general_education",
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1119&print=1",
+          "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1119%26print=1",
+          "transport": "transparent_render_of_exact_official_origin",
+          "sha256": "fcd1488f7ba18bc352c95afd1b12e5f1641d9a3ba30477c18e8fd22c79cee8ec"
+        },
+        {
+          "id": "approved_transfer_electives",
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1120&print=1",
+          "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1120%26print=1",
+          "transport": "transparent_render_of_exact_official_origin",
+          "sha256": "7cff878486fe7c2c483fd828bb6d498b95ec9df41b0497ab263ef7c1b5e85e1a"
+        },
+        {
+          "id": "graduation",
+          "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1105&print=1",
+          "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1105%26print=1",
+          "transport": "transparent_render_of_exact_official_origin",
+          "sha256": "395299d5555ea5431848a6f5404fd64f11d5dfc8101d99bbfdaddb40f405c47e"
+        },
+        {
+          "id": "vccs_master_csc221",
+          "url": "https://courses.vccs.edu/courses/CSC221",
+          "transport": "direct_https",
+          "sha256": "8e5727b2f9e57d3f679545519e98d60c84c7c97484f7c88f4ac767d8841542c7"
+        }
+      ],
+      "requirement_evidence": {
+        "fixed_courses": ["CSC221", "ENG111", "SDV101", "CSC222", "ENG112", "MTH263", "CSC223"],
+        "precalculus_paths": [
+          {"all_of": ["MTH167"], "credits": 5},
+          {"all_of": ["MTH161", "MTH162"], "credits": 6},
+          {"condition": "direct placement into MTH 263", "replacement_categories": ["Mathematics", "Natural Sciences", "Social Sciences", "Humanities", "Foreign Language"]}
+        ],
+        "discrete_3": ["MTH288", "CSC208"],
+        "calculus_ii_or_statistics_slot": ["MTH264", "MTH245"],
+        "history_3": ["HIS101", "HIS102", "HIS111", "HIS112", "HIS121", "HIS122"],
+        "science_with_lab_4": ["BIO101", "CHM111", "PHY241", "GOL105", "GOL106", "GOL110"],
+        "technical_slot_b_3": ["CSC205", "CSC215", "MTH265"],
+        "approved_elective_named": ["BIO102", "CHM112", "GOL105", "GOL106", "GOL110", "PHY242", "MTH245", "MTH264", "MTH265", "CST100", "CSC110"],
+        "approved_world_languages": ["FRE101", "FRE102", "FRE203", "FRE204", "GER101", "GER102", "GER201", "RUS101", "RUS102", "RUS201", "RUS202", "SPA101", "SPA102"],
+        "technical_slot_a_literal": "Students may select an additional science plus PHY 201, CSC 205/CSC 215, EGR 121, EGR 122, EGR 270, CST 100, CSC 110, World Languages, MTH 265, MTH 266.",
+        "technical_slot_a_unambiguous_named": ["PHY201", "CSC205", "CSC215", "EGR121", "EGR122", "EGR270", "CST100", "CSC110", "MTH265", "MTH266"],
+        "advisory_only": ["PHI 220 recommended", "second science with lab recommended", "some destinations may require a science sequence", "term ordering"]
+      },
+      "general_education_evidence": {
+        "no_double_count_rule": "Students may not use the same course to satisfy more than one curriculum requirement.",
+        "humanities_rule": "Associate of Arts and Associate of Science students select one course from two of the three categories.",
+        "humanities_categories": {
+          "artistic_expression": ["ART100", "ART101", "ART102", "CST130", "CST151", "CST152", "MUS121", "MUS221", "MUS222"],
+          "human_culture": ["ASL125", "HUM201", "HUM202", "HUM220", "HUM256", "HUM259", "HUM260", "PHI100", "PHI111", "PHI220", "REL230"],
+          "literature_and_creative_writing": ["ENG125", "ENG211", "ENG212", "ENG225", "ENG245", "ENG246", "ENG250", "ENG255", "ENG258", "ENG275"]
+        },
+        "social_science_all": ["ECO150", "ECO201", "ECO202", "GEO210", "GEO220", "HIS101", "HIS102", "HIS111", "HIS112", "HIS121", "HIS122", "PLS135", "PLS136", "PLS140", "PLS241", "PSY116", "PSY200", "PSY215", "PSY216", "PSY230", "PSY231", "PSY232", "PSY235", "SOC200", "SOC211", "SOC215", "SOC268", "SSC210"],
+        "program_social_science_after_history_exclusion": ["ECO150", "ECO201", "ECO202", "GEO210", "GEO220", "PLS135", "PLS136", "PLS140", "PLS241", "PSY116", "PSY200", "PSY215", "PSY216", "PSY230", "PSY231", "PSY232", "PSY235", "SOC200", "SOC211", "SOC215", "SOC268", "SSC210"]
+      },
+      "canonical_arithmetic": {
+        "student_development_and_communication": 7,
+        "computer_science_core": 11,
+        "precalculus": 5,
+        "calculus_i": 4,
+        "discrete": 3,
+        "calculus_ii_capacity": 4,
+        "social_science": 3,
+        "history": 3,
+        "science": 4,
+        "humanities": 6,
+        "technical_slots": 6,
+        "approved_elective_capacity": 4,
+        "total": 60
+      },
+      "graduation_evidence": {
+        "residency_percent": 25,
+        "applicable_gpa_minimum": 2,
+        "catalog_age_maximum_years_including_graduation_year": 6,
+        "administrative": ["apply by deadline", "resolve obligations and return materials", "official certification"],
+        "assessment_may_be_required": true,
+        "assessment_minimum_score": null
+      },
+      "anomalies": [
+        "Footnote 8 is grammatically malformed around 'additional science plus PHY 201'; no AND/OR meaning is inferred.",
+        "MTH 245 and several elective/technical choices carry fewer credits than their canonical curriculum capacity and therefore interact with the 60-credit floor.",
+        "The current local degree's term and 60-63 award totals still count CSC 221 at the historical three-credit value; the VCCS master record shows four credits effective 2026-08-01.",
+        "The marketing page's curriculum link targets archived catoid 21/poid 4756."
+      ]
+    }
+  }
+}

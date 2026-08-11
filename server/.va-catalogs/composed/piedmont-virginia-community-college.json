@@ -1,0 +1,732 @@
+{
+  "schema_version": 1,
+  "slug": "piedmont-virginia-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, Associate of Science",
+  "award": "AS",
+  "total_units": 60,
+  "total_units_max": 60,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "graduation",
+    "policy",
+    "gpa_policy",
+    "course_catalog"
+  ],
+  "option_sets": {
+    "laboratory_science_sequence": {
+      "source_refs": [
+        "major"
+      ],
+      "credits": 8,
+      "routes": [
+        [
+          "BIO101",
+          "BIO102"
+        ],
+        [
+          "CHM111",
+          "CHM112"
+        ]
+      ]
+    },
+    "social_behavioral_science": {
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "courses": [
+        "ECO201",
+        "ECO202",
+        "GEO210",
+        "GEO220",
+        "PLS135",
+        "PLS140",
+        "PLS241",
+        "PSY200",
+        "SOC200",
+        "SOC211",
+        "SOC268"
+      ]
+    },
+    "fine_arts_or_literature": {
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "courses": [
+        "ART100",
+        "ART101",
+        "ART102",
+        "ART223",
+        "CST130",
+        "CST151",
+        "MUS121",
+        "MUS221",
+        "MUS222",
+        "MUS226",
+        "ENG225",
+        "ENG245",
+        "ENG246",
+        "ENG250",
+        "ENG255",
+        "ENG258",
+        "ENG275"
+      ]
+    },
+    "history": {
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "courses": [
+        "HIS101",
+        "HIS102",
+        "HIS111",
+        "HIS112",
+        "HIS121",
+        "HIS122"
+      ]
+    },
+    "humanities_fine_arts_literature": {
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "courses": [
+        "ART100",
+        "ART101",
+        "ART102",
+        "ART223",
+        "CST130",
+        "CST151",
+        "MUS121",
+        "MUS221",
+        "MUS222",
+        "MUS226",
+        "HUM201",
+        "HUM202",
+        "HUM256",
+        "HUM259",
+        "PHI100",
+        "PHI111",
+        "PHI220",
+        "REL100",
+        "REL230",
+        "REL237",
+        "REL240",
+        "ENG225",
+        "ENG245",
+        "ENG246",
+        "ENG250",
+        "ENG255",
+        "ENG258",
+        "ENG275"
+      ]
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 60,
+    "closure_basis": "All fixed courses, one complete eight-credit laboratory sequence, and the four three-credit UCGS breadth slots sum exactly to the published 60 credits.",
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "rule": "At least 25 percent of degree credits must be completed at Piedmont Virginia Community College.",
+      "source_refs": [
+        "policy"
+      ]
+    },
+    "minimum_curriculum_gpa": 2,
+    "minimum_curriculum_gpa_source_refs": [
+      "gpa_policy"
+    ]
+  },
+  "modeling_notes": [
+    "The source is a categorical requirements page, not a prospective schedule.",
+    "The catalog prints BIO 101 then BIO 102 or CHM 111 then CHM 112; each route is modeled as one complete eight-credit AND sequence.",
+    "Every current UCGS course in each of the four printed breadth categories is retained, and the same applied course cannot count in two separate slots."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "overlapping_ucgs_menus",
+      "severity": "review",
+      "message": "Fine arts/literature and humanities/fine arts/literature have overlapping approved menus; applied credits cannot be reused across the two printed slots."
+    }
+  ],
+  "course_titles": {
+    "SDV100": "College Success Skills",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC222": "Object-Oriented Programming",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "CSC205": "Computer Organization",
+    "MTH245": "Statistics I",
+    "MTH167": "Precalculus with Trigonometry",
+    "MTH263": "Calculus I",
+    "MTH264": "Calculus II",
+    "MTH288": "Discrete Mathematics",
+    "BIO101": "General Biology I",
+    "BIO102": "General Biology II",
+    "CHM111": "General Chemistry I",
+    "CHM112": "General Chemistry II",
+    "ART100": "Art Appreciation",
+    "ART101": "History of Art: Prehistoric to Gothic",
+    "ART102": "History of Art: Renaissance to Modern",
+    "ART223": "Life Drawing",
+    "CST130": "Introduction to Theatre",
+    "CST151": "Film Appreciation I",
+    "MUS121": "Music in Society",
+    "MUS221": "History of Western Music Prior to 1750",
+    "MUS222": "History of Western Music 1750 to Present",
+    "MUS226": "World Music",
+    "HUM201": "Early Humanities",
+    "HUM202": "Modern Humanities",
+    "HUM256": "Comparative Mythology",
+    "HUM259": "The Greek and Roman Tradition",
+    "PHI100": "Introduction to Philosophy",
+    "PHI111": "Logic",
+    "PHI220": "Ethics",
+    "REL100": "Introduction to the Study of Religion",
+    "REL230": "Religions of the World",
+    "REL237": "Eastern Religions",
+    "REL240": "Religions in the U.S.",
+    "ENG225": "Reading Literature: Culture and Ideas",
+    "ENG245": "British Literature",
+    "ENG246": "American Literature",
+    "ENG250": "Children's Literature",
+    "ENG255": "World Literature",
+    "ENG258": "African American Literature",
+    "ENG275": "Women in Literature",
+    "ECO201": "Principles of Macroeconomics",
+    "ECO202": "Principles of Microeconomics",
+    "GEO210": "People and the Land: Introduction to Cultural Geography",
+    "GEO220": "World Regional Geography",
+    "PLS135": "U.S. Government and Politics",
+    "PLS140": "Introduction to Comparative Politics",
+    "PLS241": "Introduction to International Relations I",
+    "PSY200": "Principles of Psychology",
+    "SOC200": "Introduction to Sociology",
+    "SOC211": "Cultural Anthropology",
+    "SOC268": "Social Problems",
+    "HIS101": "Western Civilizations Pre-1600 CE",
+    "HIS102": "Western Civilizations Post-1600 CE",
+    "HIS111": "World Civilizations Pre-1500 CE",
+    "HIS112": "World Civilizations Post-1500 CE",
+    "HIS121": "United States History to 1877",
+    "HIS122": "United States History Since 1865"
+  },
+  "requirement_groups": [
+    {
+      "title": "Student development",
+      "source_refs": [
+        "major"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 1,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "SDV100"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Written communication",
+      "source_refs": [
+        "major"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "ENG111"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "ENG112"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Computer science core",
+      "source_refs": [
+        "major"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC221"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC222"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC223"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "CSC205"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Mathematics",
+      "source_refs": [
+        "major"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "MTH245"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 5,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "MTH167"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "MTH263"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 4,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "MTH264"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "MTH288"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Laboratory science sequence",
+      "source_refs": [
+        "major"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 8,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "BIO101",
+                  "BIO102"
+                ],
+                [
+                  "CHM111",
+                  "CHM112"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "UCGS Social or Behavioral Science",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "ECO201"
+                ],
+                [
+                  "ECO202"
+                ],
+                [
+                  "GEO210"
+                ],
+                [
+                  "GEO220"
+                ],
+                [
+                  "PLS135"
+                ],
+                [
+                  "PLS140"
+                ],
+                [
+                  "PLS241"
+                ],
+                [
+                  "PSY200"
+                ],
+                [
+                  "SOC200"
+                ],
+                [
+                  "SOC211"
+                ],
+                [
+                  "SOC268"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "UCGS Fine Arts or Literature",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "analysis_constraints": [
+        {
+          "kind": "no_double_count_across_breadth_slots",
+          "status": "evaluator_not_implemented",
+          "description": "The same applied course cannot also satisfy the separate humanities/fine-arts/literature slot."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "ART100"
+                ],
+                [
+                  "ART101"
+                ],
+                [
+                  "ART102"
+                ],
+                [
+                  "ART223"
+                ],
+                [
+                  "CST130"
+                ],
+                [
+                  "CST151"
+                ],
+                [
+                  "MUS121"
+                ],
+                [
+                  "MUS221"
+                ],
+                [
+                  "MUS222"
+                ],
+                [
+                  "MUS226"
+                ],
+                [
+                  "ENG225"
+                ],
+                [
+                  "ENG245"
+                ],
+                [
+                  "ENG246"
+                ],
+                [
+                  "ENG250"
+                ],
+                [
+                  "ENG255"
+                ],
+                [
+                  "ENG258"
+                ],
+                [
+                  "ENG275"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "UCGS History",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "HIS101"
+                ],
+                [
+                  "HIS102"
+                ],
+                [
+                  "HIS111"
+                ],
+                [
+                  "HIS112"
+                ],
+                [
+                  "HIS121"
+                ],
+                [
+                  "HIS122"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "UCGS Humanities, Fine Arts, or Literature",
+      "source_refs": [
+        "major",
+        "general_education"
+      ],
+      "analysis_constraints": [
+        {
+          "kind": "no_double_count_across_breadth_slots",
+          "status": "evaluator_not_implemented",
+          "description": "The same applied course cannot also satisfy the separate fine-arts/literature slot."
+        }
+      ],
+      "sections": [
+        {
+          "select": 1,
+          "units": 3,
+          "receivers": [
+            {
+              "kind": "cc_course",
+              "options": [
+                [
+                  "ART100"
+                ],
+                [
+                  "ART101"
+                ],
+                [
+                  "ART102"
+                ],
+                [
+                  "ART223"
+                ],
+                [
+                  "CST130"
+                ],
+                [
+                  "CST151"
+                ],
+                [
+                  "MUS121"
+                ],
+                [
+                  "MUS221"
+                ],
+                [
+                  "MUS222"
+                ],
+                [
+                  "MUS226"
+                ],
+                [
+                  "HUM201"
+                ],
+                [
+                  "HUM202"
+                ],
+                [
+                  "HUM256"
+                ],
+                [
+                  "HUM259"
+                ],
+                [
+                  "PHI100"
+                ],
+                [
+                  "PHI111"
+                ],
+                [
+                  "PHI220"
+                ],
+                [
+                  "REL100"
+                ],
+                [
+                  "REL230"
+                ],
+                [
+                  "REL237"
+                ],
+                [
+                  "REL240"
+                ],
+                [
+                  "ENG225"
+                ],
+                [
+                  "ENG245"
+                ],
+                [
+                  "ENG246"
+                ],
+                [
+                  "ENG250"
+                ],
+                [
+                  "ENG255"
+                ],
+                [
+                  "ENG258"
+                ],
+                [
+                  "ENG275"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

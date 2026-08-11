@@ -51,6 +51,8 @@ beforeEach(() => {
         course_count: 213, receives_count: 0, degree_status: 'full', degree_courses: 31 },
       { _id: 'va:inst:wytheville', name: 'Wytheville Community College', level: 'community_college',
         course_count: 180, receives_count: 0, degree_status: 'url_only', degree_courses: 0 },
+      { _id: 'va:inst:danville-community-college', name: 'Danville Community College', level: 'community_college',
+        course_count: 170, receives_count: 0, degree_status: 'no_program', degree_courses: 0 },
       { _id: 'va:inst:gmu', name: 'George Mason University', level: 'four_year',
         cohort: 'schev_public_four_year', is_primary: true,
         course_count: 0, receives_count: 237, degree_status: 'full', degree_courses: 114 },
@@ -148,6 +150,34 @@ beforeEach(() => {
       { _id: 'va:cov:cc:wytheville', institution: 'Wytheville Community College', level: 'community_college', collected: false,
         offers_cs: true,
         documents: { as_degree: [doc({ doc_id: 'va:as:wytheville:cs', status: 'url_only', groups: 0, receivers: 0, validation: null })], degree: [] } },
+      { _id: 'va:cov:cc:danville-community-college', institution: 'Danville Community College', level: 'community_college', collected: true,
+        catalog_year: '2026-2027', collection_status: 'no_program', offers_cs: false,
+        finding_complete: true, finding_source_refs_resolved: true,
+        program_finding: {
+          code: 'current_cs_transfer_specialization_discontinued',
+          summary: "Danville's 2026-2027 catalog does not publish the former Science - Computer Science Specialization.",
+          evidence: ['The current Programs of Study index contains no Computer Science specialization.'],
+          source_refs: ['current_program_index', 'prior_program'],
+          alternate_path: {
+            program: 'Science (AS)', catalog_year: '2026-2027',
+            source_refs: ['alternate_science_program'],
+            computer_science_alignment: 'not_defined_by_current_catalog',
+          },
+        },
+        finding_sources: [
+          { id: 'current_program_index', kind: 'current_program_index',
+            label: 'Danville 2026-2027 Programs of Study index',
+            url: 'https://catalog.danville.edu/content.php?catoid=7&navoid=222',
+            sha256: '76552361a435b6936b5a37d0c09c6d99546e8fb1f5c57382fdd76de74d81f04b' },
+          { id: 'prior_program', kind: 'prior_program', label: 'Archived Computer Science specialization',
+            url: 'https://catalog.danville.edu/preview_program.php?catoid=4&poid=450&returnto=108',
+            sha256: '219a249096914b368c24d8e830699673c709490ff395801c9f03584bb1fdbe1f' },
+          { id: 'alternate_science_program', kind: 'alternate_science_program',
+            label: 'Current broad Science A.S.',
+            url: 'https://catalog.danville.edu/preview_program.php?catoid=7&poid=702&returnto=222',
+            sha256: '5787b7838acf3c9208ffc6d3bfc6dc561c40c10458577bbd29f2886a7d55c9ee' },
+        ],
+        documents: { as_degree: [], degree: [] } },
       { _id: 'va:cov:uni:gmu', institution: 'George Mason University', level: 'four_year', collected: true,
         cohort: 'schev_public_four_year', is_primary: true,
         offers_cs: true,
@@ -343,6 +373,8 @@ describe('verification progress', () => {
     // job looking permanently unfinished.
     expect(screen.getByLabelText('A.S. degrees verified').getAttribute('aria-valuetext')).toBe('0 of 1')
     expect(screen.getByLabelText('B.S. degrees verified').getAttribute('aria-valuetext')).toBe('1 of 1')
+    expect(screen.getByText('0 still need a reviewable catalog record')).toBeTruthy()
+    expect(screen.getByText('3 still need a reviewable catalog record')).toBeTruthy()
   })
 })
 
@@ -354,10 +386,10 @@ describe('the rail status filters', () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
-    // Both colleges to start; only Blue Ridge is outstanding work.
+    // Every settled outcome remains reachable; only Blue Ridge is outstanding work.
     expect(rail().getByText('Blue Ridge Community College')).toBeTruthy()
     expect(rail().getByText('Wytheville Community College')).toBeTruthy()
-    fireEvent.click(filters().getByRole('button', { name: /Needs verifying/ }))
+    fireEvent.click(filters().getByRole('button', { name: /Unverified/ }))
     expect(rail().getByText('Blue Ridge Community College')).toBeTruthy()
     expect(rail().queryByText('Wytheville Community College')).toBeNull()
   })
@@ -375,10 +407,10 @@ describe('the rail status filters', () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
-    const pill = filters().getByRole('button', { name: /Needs verifying/ })
+    const pill = filters().getByRole('button', { name: /Unverified/ })
     fireEvent.click(pill)
     expect(rail().queryByText('Wytheville Community College')).toBeNull()
-    fireEvent.click(filters().getByRole('button', { name: /Needs verifying/ }))
+    fireEvent.click(filters().getByRole('button', { name: /Unverified/ }))
     expect(rail().getByText('Wytheville Community College')).toBeTruthy()
   })
 })
@@ -412,7 +444,7 @@ describe('degree editing', () => {
   })
 })
 
-describe('degree completeness and verification gates', () => {
+describe('degree verification gates', () => {
   const openAssociateDegree = async () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
@@ -423,11 +455,11 @@ describe('degree completeness and verification gates', () => {
   }
 
   it.each([
-    ['captured_only', 'Captured only', /no trustworthy requirement tree/i, true],
-    ['major_only', 'Major only', /general education, college, or university graduation layers/i, true],
-    ['catalog_accepted', 'Catalog accepted', /eligible for human verification/i, false],
-    ['analysis_ready', 'Analysis ready', /unit closure, and policy audits passed/i, false],
-  ])('shows %s honestly and gates verification', async (status, label, explanation, disabled) => {
+    ['captured_only', true],
+    ['major_only', true],
+    ['catalog_accepted', false],
+    ['analysis_ready', false],
+  ])('keeps %s as an internal gate while showing one verification verdict', async (status, disabled) => {
     const doc = state.degrees.data.degrees[0]
     doc.collection_status = status
     // Exercise collection_status as an independent allow-list. The two
@@ -436,9 +468,13 @@ describe('degree completeness and verification gates', () => {
     delete doc.acceptance
     await openAssociateDegree()
 
-    expect(screen.getAllByText(label).length).toBeGreaterThanOrEqual(2)
-    expect(screen.getByText(explanation)).toBeTruthy()
+    expect(screen.getByText('Unverified')).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(disabled)
+    if (disabled) {
+      expect(screen.getByText(/Verification unavailable: this document has not passed catalog acceptance/i)).toBeTruthy()
+    } else {
+      expect(screen.queryByText(/Verification unavailable/i)).toBeNull()
+    }
   })
 
   it('accepts the nested catalog verdict when collection_status is absent', async () => {
@@ -447,8 +483,9 @@ describe('degree completeness and verification gates', () => {
     doc.acceptance = { accepted: true, ready_for_analysis: false }
     await openAssociateDegree()
 
-    expect(screen.getAllByText('Catalog accepted').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getByText('Unverified')).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(false)
+    expect(screen.queryByText(/Verification unavailable/i)).toBeNull()
   })
 
   it('keeps a corroborating major-only document editable without calling it complete', async () => {
@@ -459,8 +496,9 @@ describe('degree completeness and verification gates', () => {
     const fireEvent = await openAssociateDegree()
 
     expect(screen.getByText('Transfer Virginia map')).toBeTruthy()
-    expect(screen.getByText(/This is not a complete degree/i)).toBeTruthy()
+    expect(screen.getByText('Unverified')).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(true)
+    expect(screen.getByText(/Verification unavailable: this document has not passed catalog acceptance/i)).toBeTruthy()
     const notes = screen.getByPlaceholderText(/your own notes/i)
     expect(notes.disabled).toBe(false)
     fireEvent.change(notes, { target: { value: 'major layer checked; GE still missing' } })
@@ -478,8 +516,10 @@ describe('degree completeness and verification gates', () => {
     doc.verification = { verified: true, verified_by_label: 'Legacy researcher' }
     const fireEvent = await openAssociateDegree()
 
-    expect(screen.getAllByText('Completeness not recorded').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText('Verified').length).toBeGreaterThanOrEqual(1)
+    expect(screen.queryByText(/Completeness not recorded/i)).toBeNull()
     expect(screen.getByRole('button', { name: 'Re-verify' }).disabled).toBe(true)
+    expect(screen.getByText(/Verification unavailable: this document has not passed catalog acceptance/i)).toBeTruthy()
     const reopen = screen.getByRole('button', { name: 'Reopen' })
     expect(reopen.disabled).toBe(false)
     fireEvent.click(reopen)
@@ -516,6 +556,40 @@ describe('degree panes', () => {
     fireEvent.click(screen.getAllByText('Graduation Requirements')[0])
     expect(screen.getByText('URL only')).toBeTruthy()
     expect(screen.getByText(/no machine-readable course list/i)).toBeTruthy()
+  })
+
+  it('shows a completed no-program finding with its official evidence instead of an ambiguous empty state', async () => {
+    state.degrees = ok({ degrees: [], university_courses_by_id: {}, courses: [] })
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
+    fireEvent.click(screen.getByText('Danville Community College'))
+    fireEvent.click(screen.getAllByRole('tab', { name: 'Associate Degrees' }).at(-1))
+
+    expect(screen.getByText('Official evidence resolved')).toBeTruthy()
+    expect(screen.getByText('Catalog 2026-2027')).toBeTruthy()
+    expect(screen.getByText(/does not publish the former Science - Computer Science Specialization/i)).toBeTruthy()
+    expect(screen.getByText(/current Programs of Study index contains no Computer Science specialization/i)).toBeTruthy()
+    expect(screen.getByRole('link', { name: /Science \(AS\)/i }).getAttribute('href'))
+      .toBe('https://catalog.danville.edu/preview_program.php?catoid=7&poid=702&returnto=222')
+    expect(screen.getByRole('link', { name: /Danville 2026-2027 Programs of Study index/i })).toBeTruthy()
+    expect(screen.getByText(/SHA-256 76552361a435b693/i)).toBeTruthy()
+    expect(screen.queryByText(/Either it does not offer the program/i)).toBeNull()
+    expect(screen.getByRole('button', {
+      name: 'GET /api/va/degrees?institution=Danville%20Community%20College',
+    })).toBeTruthy()
+  })
+
+  it('reports the selected university on the displayed degree API route', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Universities' }))
+    fireEvent.click(screen.getByText('George Mason University'))
+    fireEvent.click(screen.getAllByRole('tab', { name: 'Graduation Requirements' }).at(-1))
+
+    expect(screen.getByRole('button', {
+      name: 'GET /api/va/degrees?institution=George%20Mason%20University',
+    })).toBeTruthy()
   })
 })
 
@@ -579,7 +653,7 @@ describe('degree status in the rails', () => {
     // every row was the noise that made the rail hard to read.
     expect(uniRail.queryByText(/accepted/)).toBeNull()
     expect(uniRail.queryByText(/✓ Verified/)).toBeNull()
-    expect(uniRail.queryByText(/No program/)).toBeNull()
+    expect(uniRail.queryByText(/No CS-specific degree/)).toBeNull()
     // The institutions themselves are of course still listed.
     expect(uniRail.getByText('George Mason University')).toBeTruthy()
   })
@@ -593,7 +667,7 @@ describe('degree status in the rails', () => {
     expect(filters().getByText('Needs composing 1')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: /Other Virginia partners 18/ }))
     expect(filters().getByText('URL only 1')).toBeTruthy()
-    expect(filters().getByText('No program 1')).toBeTruthy()
+    expect(filters().getByText('No CS-specific degree 1')).toBeTruthy()
   })
 
   it('opens on the public cohort and keeps other Virginia partners one click away', async () => {

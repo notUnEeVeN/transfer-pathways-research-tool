@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_cc_broad_science_cs_scope_and_cnu_capture_hardening",
+  "researched_at": "2026-08-10",
+  "source_policy": {
+    "current_catalog_rule": "Use the newest live official institution catalog. A broad Science A.S. counts as a CS-directed path only when the current official source expressly names Computer Science as a supported destination or purpose.",
+    "negative_rule": "Do not equate a generic Science A.S. with no program at all. Record the award as an alternate path and classify the finding narrowly as no source-prescribed CS-specific curriculum.",
+    "schedule_rule": "Destination schedules are not universal degree requirements. Mountain Gateway's Biology and Natural Resources guided pathways are excluded from the canonical CS-usable degree composition.",
+    "source_ref_rule": "Every finding is backed by current official URLs, stable source IDs, and observed-byte hashes."
+  },
+  "summary": {
+    "community_colleges_reviewed": 5,
+    "generic_science_as_explicitly_supporting_cs": 1,
+    "broad_science_as_without_source_prescribed_cs_curriculum": 4,
+    "mountain_gateway_catalog_accepted": true,
+    "mountain_gateway_analysis_ready": false,
+    "mountain_gateway_analysis_blocker": "constraint_support",
+    "expected_primary_cc_cohort_after_all_batches": {
+      "accepted_cs_directed_paths": 19,
+      "source_backed_no_current_cs_specific_path_findings": 5,
+      "total": 24
+    }
+  },
+  "institutions": [
+    {
+      "slug": "eastern-shore-community-college",
+      "finding": "broad_science_as_no_cs_specific_curriculum",
+      "catalog_year": "2026-2027",
+      "catalog_search_result": "The Programs of Study index contains no Computer Science entry.",
+      "alternate_path": {
+        "title": "Science, AS",
+        "published_total_credits": "60-63",
+        "computer_science_named": false
+      },
+      "sources": [
+        {"id": "catalog_index", "url": "https://catalog.es.vccs.edu/content.php?catoid=16&navoid=1699", "sha256": "a6d0e3ad2a50ff5f4abda7a53cb92631cd22c869b5167ac6c423f60caeaddb3c"},
+        {"id": "broad_science_program", "url": "https://catalog.es.vccs.edu/preview_program.php?catoid=16&poid=1745&returnto=1699", "sha256": "846f7bcc62f65240ba07f882c2fa39acf8a00b2a3bb676e4c945e49cfcfbe94e"}
+      ]
+    },
+    {
+      "slug": "mountain-empire-community-college",
+      "finding": "broad_science_as_no_cs_specific_curriculum",
+      "catalog_year": "2026-2027",
+      "catalog_search_result": "The Programs A-Z index contains no Computer Science entry.",
+      "alternate_path": {
+        "title": "Science, AS",
+        "published_total_credits": "61-62",
+        "computer_science_named": false
+      },
+      "sources": [
+        {"id": "catalog_index", "url": "https://catalog.mecc.edu/content.php?catoid=6&navoid=397", "sha256": "8839efc8ee1a1ca04b93cbca3853e8b39b085b74e2810c1ec3683d566c001f5b"},
+        {"id": "broad_science_program", "url": "https://catalog.mecc.edu/preview_program.php?catoid=6&poid=590&returnto=408", "sha256": "a522f5d0c00a26c857d6ac257a1bc09bfdb9991cf06163892a78cecf8f0e9bf0"}
+      ]
+    },
+    {
+      "slug": "mountain-gateway-community-college",
+      "finding": "generic_science_as_explicitly_supports_computer_science",
+      "catalog_year": "2026-2027",
+      "catalog_identity": {
+        "title": "Science, AS",
+        "award": "Associate of Science",
+        "plan_code": 880,
+        "cip_code": "30.0101",
+        "published_total_credits": "60-64"
+      },
+      "scope_finding": "The degree and college program page expressly name Computer Science among supported Transfer Virginia pathways. The award is generic and multi-pathway; neither source prescribes a CS-only course branch.",
+      "component_arithmetic": {
+        "college_success": 1,
+        "uniform_general_studies": "31-33",
+        "science_specialized": 12,
+        "transfer_core": "16-18",
+        "minimum": "1 + 31 + 12 + 16 = 60",
+        "maximum": "1 + 33 + 12 + 18 = 64"
+      },
+      "requirements": {
+        "ucgs": "Seven complete blocks are retained. Concrete local options remain in option_sets; Block II requires two different categories and Block VII requires two destination-aligned courses totaling 6-8 credits.",
+        "science_specialized": "Twelve credits from 19 locally listed science/mathematics courses or other Transfer Virginia common-curriculum courses appropriate to Computer Science or another STEM destination.",
+        "transfer_core": "Sixteen to eighteen transfer-intended credits aligned to the receiving curriculum; the source names eligible UCGS blocks but no universal course list.",
+        "graduation": "Minimum applicable-program GPA 2.0, at least 25 percent institutional credit, graduation application, recommendation, assessment/survey completion, and resolved obligations."
+      },
+      "excluded_material": "Biology and Natural Resources guided-pathway term rows are destination-specific and are not a Computer Science curriculum.",
+      "sources": [
+        {"id": "catalog", "url": "https://catalog.mgcc.edu/index.php?catoid=9", "sha256": "c91c3dfad32e0dc405eb74e5649e6360715e9ac033c977e3b22af0034ce6339a"},
+        {"id": "major", "url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=895&returnto=478&print=1", "sha256": "4f9494ae5e63cbc37fc0253d6aabe84cafe812997cc34f328a1b3d81a33c2655"},
+        {"id": "uniform_general_studies", "url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=909&returnto=478", "sha256": "4c377bd2f74ed9a7f41e23b5c07496a985536a37dad23fd37c686fc7eba7da21"},
+        {"id": "science_specialized", "url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=975&returnto=478", "sha256": "dc40c89a36f35758f31c4355b6d6ace8c58822bf0bf6c09fe55d5e0245a39521"},
+        {"id": "transfer_core", "url": "https://catalog.mgcc.edu/preview_program.php?catoid=9&poid=967&returnto=478", "sha256": "570ac276cf5cfe45c8b7ef646039688f4b4058f6f9d2af1697b9d0cb09a8324c"},
+        {"id": "graduation", "url": "https://catalog.mgcc.edu/content.php?catoid=9&navoid=487", "sha256": "18abb70961c6b81c14180dc9e41847de9e5a4d5e0a43264727f71ac620c8aa23"}
+      ]
+    },
+    {
+      "slug": "patrick-henry-community-college",
+      "finding": "broad_science_as_no_cs_specific_curriculum",
+      "catalog_year": "2026-2027",
+      "catalog_search_result": "The Programs of Study index contains no Computer Science entry.",
+      "alternate_path": {
+        "title": "Science, AS",
+        "published_total_credits": "61-63",
+        "computer_science_named": false
+      },
+      "sources": [
+        {"id": "catalog_index", "url": "https://catalog.patrickhenry.edu/content.php?catoid=11&navoid=838", "sha256": "ca34db4f3b6a71ae8810ab8459ba870e8e075239e171b7b1ddf2539aba90701f"},
+        {"id": "broad_science_program", "url": "https://catalog.patrickhenry.edu/preview_program.php?catoid=11&poid=1638&returnto=838", "sha256": "f39a26ded639dfbb17bd1a6c45c51411dc782683710fd51deafad6eb0dc6c445"}
+      ]
+    },
+    {
+      "slug": "southside-virginia-community-college",
+      "finding": "broad_science_as_no_cs_specific_curriculum",
+      "catalog_year": "2025-2026",
+      "catalog_status": "The official catalog host's newest live edition is 2025-2026 (catoid 13).",
+      "catalog_search_result": "The Programs of Study index contains no Computer Science entry.",
+      "alternate_path": {
+        "title": "Science, AS",
+        "published_total_credits": "60",
+        "computer_science_named": false,
+        "named_preparation": ["Biology", "Chemistry", "Physics", "Pre-health", "Environmental Science"]
+      },
+      "sources": [
+        {"id": "catalog_index", "url": "https://catalog.southside.edu/content.php?catoid=13&navoid=1623", "sha256": "e519c5d18a361f77147446d1ffd28660f992603403fea72c7c4e7384d772e51f"},
+        {"id": "broad_science_program", "url": "https://catalog.southside.edu/preview_program.php?catoid=13&poid=1246&returnto=1623", "sha256": "aa5f64b1e99591d4d96ba09ae2836c9e60f885482adc379568f107103f727b95"}
+      ]
+    }
+  ],
+  "christopher_newport_registry_hardening": {
+    "catalog_year": "2025-2026",
+    "source_url": "https://cnu.edu/public/_documents/undergrad-catalog/2025-26-undergraduate_catalog.pdf",
+    "captured_text_sha256": "decd8d2605842c3ce1fc7714dda8c4c1eb82abc293b89f0208773a4dd09112ec",
+    "configured_program_window": {
+      "requirements_start_anchor": "Students pursuing the major in computer science are strongly",
+      "requirements_end_anchor": "Major in Cybersecurity",
+      "program_identity_start_anchor": "Bachelor of Science degree in Computer Foundations",
+      "program_identity_anchors": ["Students in this program can choose to major in physics,", "computer science or cybersecurity."],
+      "pdf_pages": [269, 270],
+      "printed_pages": [269, 270],
+      "capture_result": "found",
+      "captured_requirement_window_lines": 26
+    },
+    "source_roles": ["program", "ge", "college", "graduation", "course_catalog"],
+    "reason": "The official catalog PDF is now a reproducible role-complete registry source. Fragment-qualified seed URLs keep each role distinct while resolving to the same official bytes."
+  }
+}

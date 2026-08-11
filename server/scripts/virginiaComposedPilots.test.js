@@ -137,6 +137,10 @@ describe('source-composed Virginia pilots', () => {
     expect(bs).toMatchObject({ group_conjunction: 'Or', canonical_section_index: 0 });
     expect(bs.sections.map((section) => section.unit_advisement)).toEqual([3, 4]);
     expect(bs.sections.map((section) => section.receivers[0].code_seen)).toEqual(['MATH250', 'MATH261']);
+    expect(doc.course_titles).toMatchObject({
+      CMSC140: 'Introduction to Programming',
+      MATH250: 'Linear Algebra',
+    });
 
     const perspectives = doc.requirement_groups.find((group) => group.title === 'Civitae Perspectives');
     expect(perspectives.sections).toHaveLength(4);

@@ -190,6 +190,9 @@ function compileGroup(group, index, { cc, collect }) {
       ge_area: group.ge_area,
       distinct_areas: group.distinct_areas ?? null,
       note: group.note ?? null,
+      human_review: group.human_review ?? null,
+      analysis_constraints: group.analysis_constraints || [],
+      stated_credits: group.stated_credits ?? null,
       sections: [{
         section_advisement: null,
         unit_advisement: group.units,
@@ -227,6 +230,30 @@ function compileGroup(group, index, { cc, collect }) {
   };
 }
 
+/**
+ * Option dictionaries preserve catalog menus whose exact choose-by-credit,
+ * no-double-count, or category rules cannot yet be represented as ordinary
+ * receivers. They are still part of the degree's course identity catalog and
+ * must therefore participate in `codes_seen`.
+ *
+ * The dictionaries intentionally remain schema-flexible. Walk their values
+ * and collect only strings that satisfy the concrete Virginia course grammar;
+ * prose, source ids, category labels, and placeholders are ignored.
+ */
+function collectOptionSetCodes(value, collect) {
+  if (typeof value === 'string') {
+    if (courseIdFor(value) != null) collect(value);
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((entry) => collectOptionSetCodes(entry, collect));
+    return;
+  }
+  if (value && typeof value === 'object') {
+    Object.values(value).forEach((entry) => collectOptionSetCodes(entry, collect));
+  }
+}
+
 /** Compile readable, cited composition JSON without mutating it. */
 function compileDegreeComposition(composition, { institutionLevel } = {}) {
   const cc = ['community_college', 'community-college', 'cc'].includes(institutionLevel);
@@ -243,6 +270,10 @@ function compileDegreeComposition(composition, { institutionLevel } = {}) {
   const requirementGroups = composition.requirement_groups.map((group, index) => compileGroup(
     group, index, { cc, collect },
   ));
+  Object.keys(titles).forEach((code) => {
+    if (courseIdFor(code) != null) collect(code);
+  });
+  collectOptionSetCodes(composition.option_sets, collect);
   return {
     requirement_groups: requirementGroups,
     codes_seen: [...codes].sort(),

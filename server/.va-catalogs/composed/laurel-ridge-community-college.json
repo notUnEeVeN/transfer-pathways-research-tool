@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "slug": "laurel-ridge-community-college",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science Degree, Associate of Science (Plan 246)",
+  "award": "AS",
+  "catalog_version": {
+    "catalog_id": 25,
+    "program_id": 1940,
+    "academic_plan": 246
+  },
+  "total_units": 60,
+  "total_units_max": 64,
+  "composition_status": "composed_full_degree",
+  "source_bundle_required": ["catalog", "major", "graduation"],
+  "course_titles": {
+    "SDV100": "College Success Skills",
+    "SDV101": "Orientation to IT Professions",
+    "ENG111": "College Composition I",
+    "ENG112": "College Composition II",
+    "ART100": "Art Appreciation",
+    "ART101": "History of Art: Prehistoric to Gothic",
+    "ART102": "History of Art: Renaissance to Modern",
+    "CST151": "Film Appreciation",
+    "MUS121": "Music in Society",
+    "HUM201": "Early Humanities",
+    "HUM202": "Modern Humanities",
+    "HUM216": "Introduction to Non-Western Cultures",
+    "HUM256": "Comparative Mythology",
+    "HUM259": "The Greek and Roman Tradition",
+    "PHI100": "Introduction to Philosophy",
+    "PHI111": "Logic",
+    "PHI220": "Ethics and Society",
+    "REL100": "Introduction to the Study of Religion",
+    "REL230": "Religions of the World",
+    "ENG225": "Reading Literature: Culture and Ideas",
+    "ENG245": "British Literature",
+    "ENG246": "American Literature",
+    "ENG250": "Children's Literature",
+    "ENG255": "World Literature",
+    "ENG258": "African American Literature",
+    "ENG275": "Women's Literature",
+    "ECO150": "Economic Essentials: Theory and Application",
+    "ECO201": "Principles of Macroeconomics",
+    "ECO202": "Principles of Microeconomics",
+    "GEO210": "People & the Land: Introduction to Cultural Geography",
+    "GEO220": "World Regional Geography",
+    "PLS135": "U.S. Government and Politics",
+    "PLS241": "Introduction to International Relations",
+    "PSY200": "Principles of Psychology",
+    "SOC200": "Introduction to Sociology",
+    "SOC268": "Social Problems",
+    "CHM111": "General Chemistry I",
+    "CHM112": "General Chemistry II",
+    "MTH263": "Calculus I",
+    "MTH264": "Calculus II",
+    "HIS111": "World Civilizations Pre-1500 CE",
+    "HIS112": "World Civilizations Post-1500 CE",
+    "HIS121": "United States History to 1877",
+    "HIS122": "United States History Since 1865",
+    "CST100": "Principles of Public Speaking",
+    "CST110": "Introduction to Human Communication",
+    "CSC221": "Introduction to Problem Solving and Programming",
+    "CSC222": "Object-Oriented Programming",
+    "CSC223": "Data Structures and Analysis of Algorithms",
+    "CSC208": "Introduction to Discrete Structures",
+    "CSC205": "Computer Organization",
+    "CSC215": "Computer Systems",
+    "CSC110": "Principles of Computer Science",
+    "CSC210": "Programming with C++",
+    "CSC295": "Topics in",
+    "CSC298": "Seminar and Project",
+    "EGR121": "Foundations of Engineering",
+    "EGR122": "Engineering Design",
+    "EGR270": "Fundamentals of Computer Engineering",
+    "MTH161": "Precalculus I",
+    "MTH162": "Precalculus II",
+    "MTH167": "Precalculus with Trigonometry",
+    "MTH265": "Calculus III",
+    "MTH266": "Linear Algebra"
+  },
+  "option_sets": {
+    "arts_humanities": {
+      "source_refs": ["major"],
+      "courses": ["ART100", "ART101", "ART102", "CST151", "MUS121", "HUM201", "HUM202", "HUM216", "HUM256", "HUM259", "PHI100", "PHI111", "PHI220", "REL100", "REL230"]
+    },
+    "literature": {
+      "source_refs": ["major"],
+      "courses": ["ENG225", "ENG245", "ENG246", "ENG250", "ENG255", "ENG258", "ENG275"]
+    },
+    "social_behavioral_sciences": {
+      "source_refs": ["major"],
+      "courses": ["ECO150", "ECO201", "ECO202", "GEO210", "GEO220", "PLS135", "PLS241", "PSY200", "SOC200", "SOC268"]
+    },
+    "history": {
+      "source_refs": ["major"],
+      "courses": ["HIS111", "HIS112", "HIS121", "HIS122"]
+    },
+    "electives": {
+      "source_refs": ["major"],
+      "rule": "Select exactly two courses totaling 5-8 credits.",
+      "courses": ["CSC110", "CSC205", "CSC210", "CSC215", "CSC295", "CSC298", "EGR121", "EGR122", "EGR270", "MTH161", "MTH162", "MTH167", "MTH265", "MTH266"]
+    }
+  },
+  "unit_audit": {
+    "published_program_units_minimum": 60,
+    "published_program_units_maximum": 64,
+    "modeled_units_minimum": 60,
+    "modeled_units_maximum": 63,
+    "fixed_requirements_before_electives": 55,
+    "printed_elective_units_minimum": 5,
+    "printed_elective_units_maximum": 8,
+    "closure_basis": "The categorical requirements total 55 fixed/choice credits before the 5-8 credit elective category, producing 60-63 modeled credits. The official page separately prints 60-64; the one-credit maximum discrepancy is retained as a source conflict.",
+    "minimum_curriculum_gpa": 2,
+    "residency": {
+      "status": "required",
+      "minimum_percent": 25,
+      "minimum_units_on_60_credit_path": 15,
+      "rule": "At least 25 percent of the degree credits must be acquired at Laurel Ridge Community College.",
+      "source_refs": ["graduation"]
+    },
+    "graduation_gates": {
+      "application_required": true,
+      "competency_and_exit_testing_required": true,
+      "source_refs": ["graduation"]
+    },
+    "analysis_constraints": [
+      {
+        "kind": "published_maximum_source_conflict",
+        "status": "evaluator_not_implemented",
+        "description": "The printed requirement rows model at most 63 credits while the same page publishes a 64-credit program maximum."
+      }
+    ]
+  },
+  "modeling_notes": [
+    "The categorical Computer Science Degree Curriculum Requirements are composed; the later Suggested Scheduling section is excluded.",
+    "Natural Science is the fixed CHM 111 and CHM 112 AND sequence, and Mathematics is the fixed MTH 263 and MTH 264 AND sequence.",
+    "The elective category requires exactly two distinct courses totaling 5-8 credits. CSC 295 and CSC 298 remain variable 1-5 credit options; no fixed value is invented for either.",
+    "CSC 205 and CSC 215 appear in both the separate Computer Systems and Digital Design requirement and the elective menu. The same applied course credit cannot satisfy both.",
+    "Course availability labels and semester-only offering notes are not degree requirements."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "published_maximum_exceeds_printed_requirement_arithmetic",
+      "severity": "review",
+      "message": "The fixed 55 credits plus the printed 5-8 elective range produce 60-63, but Program Total is printed as 60-64."
+    },
+    {
+      "code": "variable_credit_two_course_elective",
+      "severity": "review",
+      "message": "Exactly two electives must total 5-8 credits, and two approved topics/project courses each carry a 1-5 credit range."
+    },
+    {
+      "code": "cross_requirement_overlap_requires_evaluation",
+      "severity": "review",
+      "message": "CSC 205 and CSC 215 cannot reuse the same applied credits across the systems choice and elective category."
+    }
+  ],
+  "requirement_groups": [
+    {
+      "title": "Student development and written communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 1, "receivers": [{"kind": "cc_course", "options": [["SDV100"], ["SDV101"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG111"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG112"]]}]}
+      ]
+    },
+    {
+      "title": "Arts and Humanities",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ART100"], ["ART101"], ["ART102"], ["CST151"], ["MUS121"], ["HUM201"], ["HUM202"], ["HUM216"], ["HUM256"], ["HUM259"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL100"], ["REL230"]]}]}
+      ]
+    },
+    {
+      "title": "Literature",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]}
+      ]
+    },
+    {
+      "title": "Social and Behavioral Sciences",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["ECO150"], ["ECO201"], ["ECO202"], ["GEO210"], ["GEO220"], ["PLS135"], ["PLS241"], ["PSY200"], ["SOC200"], ["SOC268"]]}]}
+      ]
+    },
+    {
+      "title": "Natural Science sequence",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 8, "receivers": [{"kind": "cc_course", "options": [["CHM111", "CHM112"]]}]}
+      ]
+    },
+    {
+      "title": "Calculus sequence",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 8, "receivers": [{"kind": "cc_course", "options": [["MTH263", "MTH264"]]}]}
+      ]
+    },
+    {
+      "title": "History",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["HIS111"], ["HIS112"], ["HIS121"], ["HIS122"]]}]}
+      ]
+    },
+    {
+      "title": "Communication",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CST100"], ["CST110"]]}]}
+      ]
+    },
+    {
+      "title": "Computer science major requirements",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC221"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC222"]]}]},
+        {"select": 1, "units": 4, "receivers": [{"kind": "cc_course", "options": [["CSC223"]]}]},
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC208"]]}]}
+      ]
+    },
+    {
+      "title": "Computer Systems and Digital Design",
+      "source_refs": ["major"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "cc_course", "options": [["CSC205"], ["CSC215"]]}]}
+      ]
+    },
+    {
+      "title": "Two distinct electives totaling 5-8 credits",
+      "source_refs": ["major"],
+      "analysis_constraints": [
+        {
+          "kind": "variable_credit_exactly_two_course_choice",
+          "status": "evaluator_not_implemented",
+          "description": "Select exactly two distinct approved courses whose combined credits fall between five and eight."
+        },
+        {
+          "kind": "no_double_count_across_requirement_slots",
+          "status": "evaluator_not_implemented",
+          "description": "CSC 205 or CSC 215 used for Computer Systems and Digital Design cannot reuse the same applied credits as an elective."
+        }
+      ],
+      "sections": [
+        {
+          "select": 2,
+          "units": 5,
+          "units_max": 8,
+          "receivers": [
+            {"kind": "cc_course", "options": [["CSC110"]]},
+            {"kind": "cc_course", "options": [["CSC205"]]},
+            {"kind": "cc_course", "options": [["CSC210"]]},
+            {"kind": "cc_course", "options": [["CSC215"]]},
+            {"kind": "cc_course", "options": [["CSC295"]]},
+            {"kind": "cc_course", "options": [["CSC298"]]},
+            {"kind": "cc_course", "options": [["EGR121"]]},
+            {"kind": "cc_course", "options": [["EGR122"]]},
+            {"kind": "cc_course", "options": [["EGR270"]]},
+            {"kind": "cc_course", "options": [["MTH161"]]},
+            {"kind": "cc_course", "options": [["MTH162"]]},
+            {"kind": "cc_course", "options": [["MTH167"]]},
+            {"kind": "cc_course", "options": [["MTH265"]]},
+            {"kind": "cc_course", "options": [["MTH266"]]}
+          ]
+        }
+      ]
+    }
+  ]
+}

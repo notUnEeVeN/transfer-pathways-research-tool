@@ -35,35 +35,40 @@ acceptance paths all have focused regression coverage.
 `.va-catalogs/institutions.json` is the registry: 57 institutions — 24 sending
 colleges, the 15-school SCHEV public four-year primary cohort, and 18 additional
 Virginia four-year partners retained as a secondary cohort. Existing catalog
-hosts were probed live rather than assumed; UVA and VMI are explicit
-`needs_collection` additions and are not accepted degree records.
+hosts were probed live rather than assumed.
 
-## Current state — 2026-08-09
+## Current state — 2026-08-10
 
-The parser-only counts below are the pre-expansion 55-school collection
-diagnostics, not degree-completeness claims; UVA and VMI are not folded into
-them until their source layers have actually been captured:
+The primary collection goal is complete at the catalog/source-composition
+layer:
 
-| | Community colleges | Four-year institutions |
-| --- | ---: | ---: |
-| Captured program tree | 16 | 21 |
-| URL/source only | 0 | 5 |
-| Official no-program finding | 7 | 5 |
-| Blocked capture | 1 | 0 |
-| Parser verdict `pass` / `warn` | 5 / 11 | 0 / 21 |
+| Primary outcome | Complete | Notes |
+| --- | ---: | --- |
+| SCHEV public four-year degrees | 15 / 15 | Full major, GE/college, and graduation-policy composition |
+| CS-directed CC/RBC associate paths | 19 / 19 | Includes the source-supported generic Science A.S. paths at Mountain Gateway and Rappahannock without inventing a CS-only sequence |
+| Sourced CC negative findings | 5 / 5 | Danville, Eastern Shore, Mountain Empire, Patrick & Henry, Southside Virginia |
 
-The source-walked compositions in `.va-catalogs/composed/` are the only records
-eligible for catalog acceptance. Parser-only trees remain `major_only` or
-`captured_only`; exact composition and acceptance counts are reported by the
-importer’s dry run rather than maintained manually in this resume file.
+All 34 positive primary documents pass catalog acceptance and unit closure.
+Virginia Western is analysis-ready; the other 33 retain exact rules the current
+constraint solver cannot yet evaluate. The accepted-only release also contains
+three source-complete secondary bachelor's records (Bridgewater,
+Randolph-Macon, and Shenandoah), for 37 publishable documents total: 19 A.S.
+and 18 bachelor's records. These are not automatically human-verified; that
+verdict remains a separate signed source walk.
 
-The 2026-08-09 accepted-only publication evaluated the then-current 55 institutions and
-published 12 source-composed documents (six A.S. and six B.S.) plus all 55
-coverage rows. All 12 are catalog-accepted, none is analysis-ready, and none is
-human-verified. Tidewater and Averett remain visible source artifacts but were
-not published as accepted degrees. On 2026-08-10 the registry gained UVA and
-VMI to complete SCHEV's 15-school public cohort; the API synthesizes honest
-`not_collected` work rows for them until the next collection/publication run.
+Tidewater is source-composed and catalog-accepted. Its official Acalog origin
+returns Cloudflare 403 to the collector, so the retained provenance distinguishes
+that failure from the exact transparent renders of the same official pages used
+for composition. UVA, VMI, and William & Mary now have current full source
+compositions rather than pending or URL-only records.
+
+The durable source-integrity inventory is
+`.va-catalogs/research/primary-source-integrity-manifest.json`: 196 primary
+source references, 182 locally byte-matched, four explicit Tidewater
+transparent-render exceptions, and ten URL/hash-only provenance limitations.
+The ignored `pages/` directory remains a transport cache, not a publication
+artifact; compact source-specific evidence is retained in nonignored research
+JSON without pretending unavailable response bytes are reproducible.
 
 The authoritative contract and current workflow are documented in
 `docs/virginia-degree-collection.md`. In particular, a parser `pass` means only
@@ -124,21 +129,18 @@ Others worth keeping:
 
 ## Findings about the institutions
 
-- **In the pre-expansion 55-school scrape, 12 institutions offer no CS degree** — 7 community colleges and 5 four-years,
-  each confirmed at the catalog rather than inherited from a registry:
-  - *Community colleges (7 of 24):* Danville, Eastern Shore, Mountain Empire,
-    Mountain Gateway, Patrick & Henry, Rappahannock, Southside Virginia.
-  - *Four-years (5 of 31):* Appalachian College of Pharmacy (a pharmacy
-    school), Bluefield University (its programs list carries Cybersecurity and
-    Information Technology but no CS), Mary Baldwin (its CS page redirects to a
-    URL ending `-discontinued`), Sweet Briar College, University of Lynchburg.
-
-  So **17 of 24 community colleges and 26 of 31 four-years do offer it**.
-- **William & Mary is `url_only`, not no-program.** `catalog.wm.edu` serves a
-  CourseLeaf "coming soon" placeholder and `wm.edu/as/computerscience` redirects
-  to `cdsp.wm.edu`, whose B.S. page is prose with no course list. The college
-  plainly offers the degree; it currently publishes no machine-readable
-  requirements anywhere. Re-point at the catalog once it launches.
+- **Five of the 24 sending colleges have no current source-prescribed CS
+  curriculum.** Danville's former specialization is absent from the current
+  catalog despite stale marketing. Eastern Shore, Mountain Empire, Patrick &
+  Henry, and Southside publish broad Science A.S. awards but no official
+  CS-specific branch. These are complete, cited findings rather than missing
+  scrape work.
+- **Mountain Gateway and Rappahannock are positive generic paths.** Their
+  current official sources explicitly name Computer Science as a supported
+  transfer purpose, but do not prescribe a separate CSC sequence. Their exact
+  broad degree is retained with that limitation visible.
+- **William & Mary is fully composed.** Its current official sources require a
+  cross-page source walk rather than relying on the earlier placeholder page.
 - **Norfolk State's** previously recorded URL was Computer Engineering
   Technology, a different degree. It publishes five CS tracks; the corpus uses
   the Standard Track.
@@ -153,17 +155,15 @@ Others worth keeping:
 
 ## Still open
 
-- **Tidewater** is the one blocked institution: Cloudflare on top of Acalog.
-  It has succeeded before with a warm profile — retry rather than treat as
-  permanent.
-- **5 four-year institutions are `url_only`** — Hollins, Marymount, Regent,
-  Roanoke, and William & Mary. Averett's bounded current PDF and Bridgewater's
-  current CleanCatalog source layers are now captured; Reynolds and Camp are
-  likewise no longer source-only. Sweet Briar is a current official no-program
-  finding.
-- 32 documents are `warn`. The commonest reason is `credits_partial` — the
-  catalog prints a figure on some headings and not others, so the sum cannot be
-  reconciled. That is a fact about the page, not a defect.
+- Human verification remains separate from catalog acceptance. A researcher
+  must walk the cited current source bundle before signing a degree.
+- The downstream constraint solver still needs support for the exact overlap,
+  distinctness, variable-cardinality, and conditional-path rules retained by
+  33 primary documents.
+- Radford `GEOL 121` and Virginia Tech `ENGE 2724` / `ENGE 4724` are named by
+  their current program requirements but absent from the corresponding current
+  course catalogs. Their IDs and contexts remain visible with block-analysis
+  flags; no title was invented.
 - Hand-authored trees go in `.va-catalogs/requirements/<slug>.json` with
   `"hand_read": true` and are never overwritten by a re-run.
 
@@ -173,8 +173,8 @@ Others worth keeping:
 node scripts/importVirginiaCourses.js --uri <uri> --db pmt_research --crosscheck 25
 node scripts/captureVirginiaCatalogs.js                 # opens Chrome; leave it alone
 node scripts/extractVirginiaRequirements.js --uri <uri>
-node scripts/importVirginiaCatalogDegrees.js --uri <uri> --db pmt_research --dry-run
-node scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --uri <uri> --db pmt_research
+node scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --dry-run --uri <uri> --db pmt_research
+node scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --apply --uri <uri> --db pmt_research
 ```
 
 Collections: `va_courses`, `va_institutions`, `va_requirements`, `va_coverage`,

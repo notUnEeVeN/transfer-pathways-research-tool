@@ -18,12 +18,14 @@
   "academic_unit": "School of Computing and Information Sciences",
   "college": "Artis College of Science and Technology",
   "general_education_authority": "Radford University REAL Curriculum",
-  "excluded_variants": [
+  "alternate_variants": [
    "Advanced Computer Science Concentration",
    "Advanced Database Concentration",
    "Advanced Networks Concentration",
    "Advanced Software Engineering Concentration",
-   "Advanced Artificial Intelligence Concentration",
+   "Advanced Artificial Intelligence Concentration"
+  ],
+  "excluded_paths": [
    "Virginia Tech accelerated M.Eng. track"
   ],
   "unit_audit": {
@@ -37,9 +39,8 @@
    "bs_science_units_minimum": 6,
    "bs_science_units_maximum": 8,
    "upper_division": {
-    "status": "scoped_only",
-    "minimum_units": null,
-    "rule": "No aggregate university-wide upper-level minimum was found. The selected no-concentration path requires 12 approved upper-level CS credits, and one of the two writing-intensive courses must be at the 300 or 400 level.",
+    "status": "none_stated",
+    "reason": "No aggregate university-wide upper-level minimum was found. The selected no-concentration path requires 12 approved upper-level CS credits, and one of the two writing-intensive courses must be at the 300 or 400 level.",
     "source_refs": [
      "major",
      "general_education",
@@ -57,7 +58,9 @@
   },
   "modeling_notes": [
    "The selected base path uses the catalog's explicit 12-hour upper-level CS alternative when no concentration is taken. Do not aggregate any of the five optional concentration blocks into it.",
-   "The published 55-88 major-credit range spans mutually exclusive base and concentration choices; it is not one additive requirement.",
+   "All five current concentration blocks are preserved as mutually exclusive alternates to the no-concentration upper-level CS requirement; they are not aggregated into the base path.",
+   "Advanced Computer Science has its own 7-8 credit B.S. science list plus a Major Field Test and C-or-better CS-course rule; these variant-only gates do not apply to the base path.",
+   "The published 55-88 major-credit banner and 41-74 open-credit range do not reconcile with the named mutually exclusive path arithmetic and 120-credit total; preserve the explicit rows and flag the conflict rather than treating either range as an additive requirement.",
    "REAL is an integrated 48-hour framework that can be fulfilled by major, minor, and degree work. The program separately requires at least 30 GE-designated credits; do not add 48 gross credits on top of the major.",
    "Exclude the separate Virginia Tech accelerated M.Eng. pathway from the standard 120-credit B.S. model."
   ],
@@ -71,6 +74,16 @@
     "code": "upper_division_rules_are_scoped_not_aggregate",
     "severity": "review",
     "message": "The current catalog publishes scoped major and writing-intensive upper-level rules but no one university-wide upper-level-credit total."
+   },
+   {
+    "code": "advanced_ai_science_requirement_not_named",
+    "severity": "review",
+    "message": "The B.S. science paragraph does not name the newer Advanced Artificial Intelligence concentration; the general CS-major science route is retained provisionally."
+   },
+   {
+    "code": "published_ranges_do_not_reconcile",
+    "severity": "review",
+    "message": "The 55-88 major range and 41-74 open-credit range do not reconcile with the explicit path rows and 120-credit total."
    }
   ],
   "layers": {

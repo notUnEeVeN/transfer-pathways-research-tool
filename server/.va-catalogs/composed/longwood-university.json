@@ -6,6 +6,10 @@
   "award": "BS",
   "total_units": 120,
   "composition_status": "composed_full_degree",
+  "course_titles": {
+    "CMSC140": "Introduction to Programming",
+    "MATH250": "Linear Algebra"
+  },
   "academic_unit": "Department of Mathematics and Computer Science",
   "college": "Cook-Cole College of Arts and Sciences",
   "ge_authority": "Longwood University Civitae Core Curriculum",

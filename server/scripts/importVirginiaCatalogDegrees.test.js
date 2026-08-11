@@ -3,22 +3,67 @@ import { describe, expect, it } from 'vitest';
 import { courseIdFor } from '../services/virginia/courseIdentity';
 import {
   acceptedCompositionPublication,
+  assertPrimaryPublicationCohort,
   canonicalSections,
   coverageRow,
   coverageReplacementFilter,
+  parseCliArgs,
   receiversForRow,
   retiredRequirementIds,
   requirementGroups,
+  replacementRevision,
+  selectedInstitutions,
   sourceBundleHash,
   supersededCatalogPatch,
   toDocument,
   unpublishedRequirementIds,
   verificationForSourceBundle,
+  verifiedImportConflict,
 } from './importVirginiaCatalogDegrees';
 
 const course = (code, title = code) => ({ code, title });
 
 describe('Virginia catalog requirement conversion', () => {
+  it('defaults to no-write and rejects ambiguous or misspelled publication flags', () => {
+    expect(parseCliArgs([], {})).toMatchObject({ apply: false, dryRun: true });
+    expect(() => parseCliArgs(['--accepted-compositons-only', '--apply'], {}))
+      .toThrow(/unknown option/);
+    expect(() => parseCliArgs(['--apply'], { MONGO_URI: 'mongodb://example', DB_NAME: 'db' }))
+      .toThrow(/accepted-compositions-only/);
+    expect(() => parseCliArgs([
+      '--accepted-compositions-only', '--apply', '--dry-run',
+    ], { MONGO_URI: 'mongodb://example', DB_NAME: 'db' })).toThrow(/mutually exclusive/);
+    expect(() => parseCliArgs(['--accepted-compositions-only', '--apply'], {}))
+      .toThrow(/--uri or MONGO_URI/);
+    expect(() => parseCliArgs(['--accepted-compositions-only', '--only', ' , '], {}))
+      .toThrow(/at least one complete institution slug/);
+    expect(() => parseCliArgs(['--allow-verified-supersede'], {}))
+      .toThrow(/valid only with --apply/);
+    expect(() => parseCliArgs(['--allow-verified-reopen'], {}))
+      .toThrow(/valid only with --apply/);
+    expect(parseCliArgs([
+      '--accepted-compositions-only', '--apply', '--uri', 'mongodb://example', '--db', 'research',
+    ], {})).toMatchObject({
+      apply: true,
+      dryRun: false,
+      acceptedCompositionsOnly: true,
+      uri: 'mongodb://example',
+      dbName: 'research',
+    });
+  });
+
+  it('selects --only institutions by exact slug and rejects prefixes or duplicates', () => {
+    const institutions = [
+      { slug: 'virginia-state-university' },
+      { slug: 'virginia-tech' },
+    ];
+    expect(selectedInstitutions(institutions, ['virginia-tech'])).toEqual([institutions[1]]);
+    expect(() => selectedInstitutions(institutions, ['virginia']))
+      .toThrow(/unknown institution slug/);
+    expect(() => selectedInstitutions(institutions, ['virginia-tech', 'virginia-tech']))
+      .toThrow(/duplicate slugs/);
+  });
+
   it('keeps every member of an AND sequence and models OR as receiver alternatives', () => {
     const and = receiversForRow({
       codes: [course('CHEM211'), course('CHEM213')], conjunction: 'and', credits: { min: 4, max: 4 },
@@ -218,6 +263,53 @@ describe('Virginia catalog requirement conversion', () => {
     expect(doc.provenance.source_bundle_hash).toMatch(/^[a-f0-9]{64}$/);
   });
 
+  it('publishes exact source-composed option dictionaries on the API document', () => {
+    const extract = {
+      outcome: 'captured', parser: 'lines', program_title: 'Computer Science, AS',
+      source_url: 'https://catalog.example.edu/cs/', catalog_year: '2026-2027',
+      // This is a parser subtotal, not the composed whole-degree maximum.
+      total_credits: { min: 3, max: 6 },
+      sources: [{
+        id: 'major', kind: 'major', label: 'Program requirements',
+        url: 'https://catalog.example.edu/cs/', sha256: 'bytes',
+      }],
+      source_layers: { major: { status: 'captured', source_refs: ['major'] } },
+      groups: [{ title: 'Parsed source evidence', sections: [] }],
+    };
+    const composition = {
+      schema_version: 1,
+      slug: 'example-community-college',
+      program: 'Computer Science, Associate of Science',
+      award: 'AS',
+      catalog_year: '2026-2027',
+      total_units: 3,
+      composition_status: 'composed_full_degree',
+      source_bundle_required: ['major'],
+      option_sets: {
+        transfer_electives: {
+          source_refs: ['major'],
+          required_credits: 3,
+          courses: ['CSC205', 'MTH288'],
+        },
+      },
+      course_titles: { CSC205: 'Computer Organization', MTH288: 'Discrete Mathematics' },
+      requirement_groups: [{
+        title: 'Programming', source_refs: ['major'], sections: [{
+          select: 1, units: 3, receivers: [{ kind: 'cc_course', options: [['CSC205']] }],
+        }],
+      }],
+    };
+    const doc = toDocument(extract, {
+      slug: 'example-community-college', name: 'Example Community College',
+      level: 'community_college', platform: 'acalog',
+    }, new Map([['CSC205', 3], ['MTH288', 3]]), composition);
+
+    expect(doc.option_sets).toEqual(composition.option_sets);
+    expect(doc.course_titles).toMatchObject(composition.course_titles);
+    expect(doc.total_units).toBe(3);
+    expect(doc.total_units_max).toBeNull();
+  });
+
   it('reopens verification when the official source bundle changes', () => {
     const first = {
       catalog_year: '2026-2027',
@@ -266,6 +358,111 @@ describe('Virginia catalog requirement conversion', () => {
     const second = sourceBundleHash(extract, { schema_version: 1, requirement_groups: [{ title: 'B' }] });
     expect(first).not.toBe(second);
     expect(sourceBundleHash(extract)).toBe(sourceBundleHash(extract));
+  });
+
+  it('refuses to replace a verified hand edit while its artifact bundle is unchanged', () => {
+    const base = {
+      _id: 'va:degree:example:cs',
+      provenance: { source_bundle_hash: 'same-bundle' },
+      verification: { verified: true, verified_by: 'researcher' },
+      requirement_groups: [{ group_id: 'core', title: 'Core' }],
+      acceptance: { accepted: true },
+      collection_status: 'catalog_accepted',
+      research_status: 'hand_verified',
+      updated_at: new Date('2026-08-01T00:00:00.000Z'),
+    };
+    const operationalOnly = {
+      ...base,
+      verification: { verified: false },
+      acceptance: { accepted: false },
+      collection_status: 'major_only',
+      research_status: 'recomputed',
+      updated_at: new Date('2026-08-10T00:00:00.000Z'),
+    };
+    expect(verifiedImportConflict(base, operationalOnly)).toBe(false);
+    expect(verifiedImportConflict(base, {
+      ...operationalOnly,
+      requirement_groups: [{ group_id: 'core', title: 'Researcher-corrected Core' }],
+    })).toBe(true);
+    expect(verifiedImportConflict(base, {
+      ...operationalOnly,
+      provenance: { source_bundle_hash: 'new-bundle' },
+      requirement_groups: [{ group_id: 'core', title: 'New source Core' }],
+    })).toBe(false);
+  });
+
+  it('records reconstructible field changes when an import replaces a catalog document', () => {
+    const prior = {
+      _id: 'va:degree:example:cs', status: 'extracted', codes_seen: ['CS101'],
+      requirement_groups: [{ title: 'Researcher-corrected Core' }],
+      provenance: { source_bundle_hash: 'old-bundle' },
+    };
+    const next = {
+      ...prior,
+      codes_seen: ['CS101', 'CS102'],
+      requirement_groups: [{ title: 'Current Catalog Core' }],
+      provenance: { source_bundle_hash: 'new-bundle' },
+    };
+    const at = new Date('2026-08-10T00:00:00.000Z');
+    const revision = replacementRevision(prior, next, at);
+    expect(revision).toMatchObject({
+      doc_id: prior._id,
+      at,
+      action: 'replace_catalog_document',
+      before: { groups: 1, codes: 1, source_bundle_hash: 'old-bundle' },
+      after: { groups: 1, codes: 2, source_bundle_hash: 'new-bundle' },
+    });
+    expect(revision.changes).toContainEqual({
+      path: 'requirement_groups[0].title',
+      from: 'Researcher-corrected Core',
+      to: 'Current Catalog Core',
+    });
+  });
+
+  it('requires the exact primary release manifest before a full publication', () => {
+    const publicSlugs = Array.from({ length: 15 }, (_, index) => `public-${index + 1}`);
+    const positiveColleges = Array.from({ length: 19 }, (_, index) => ({
+      slug: `college-${index + 1}`, level: 'community_college',
+    }));
+    const negativeColleges = Array.from({ length: 5 }, (_, index) => ({
+      slug: `negative-${index + 1}`, level: 'community_college', offers_cs: false,
+    }));
+    const registry = {
+      cohorts: { schev_public_four_year: { institution_slugs: publicSlugs } },
+      institutions: [
+        ...positiveColleges,
+        ...negativeColleges,
+        ...publicSlugs.map((slug) => ({ slug, level: 'four_year' })),
+      ],
+    };
+    const docs = [
+      ...publicSlugs.map((slug) => ({
+        _id: `va:degree:${slug}:cs`, kind: 'degree', acceptance: { accepted: true },
+      })),
+      ...positiveColleges.map(({ slug }) => ({
+        _id: `va:as:${slug}:cs`, kind: 'as_degree', acceptance: { accepted: true },
+      })),
+      ...['bridgewater-college', 'randolph-macon-college', 'shenandoah-university']
+        .map((slug) => ({
+          _id: `va:degree:${slug}:cs`, kind: 'degree', acceptance: { accepted: true },
+        })),
+    ];
+    const coverage = negativeColleges.map(({ slug }) => ({
+      _id: `va:cov:cc:${slug}`, outcome: 'no_cs_program', finding_complete: true,
+      publication_applicable: false, collected: true,
+    }));
+
+    expect(assertPrimaryPublicationCohort(registry, docs, coverage)).toEqual({
+      public_degrees: 15,
+      associate_degrees: 19,
+      negative_findings: 5,
+      secondary_bachelors: 3,
+      documents: 37,
+    });
+    expect(() => assertPrimaryPublicationCohort(registry, docs.slice(1), coverage))
+      .toThrow(/missing public degrees/);
+    expect(() => assertPrimaryPublicationCohort(registry, docs, coverage.slice(1)))
+      .toThrow(/incomplete negative findings/);
   });
 
   it('replaces only selected coverage rows during a targeted import', () => {
@@ -341,6 +538,10 @@ describe('Virginia catalog requirement conversion', () => {
     };
     const extract = {
       outcome: 'captured', source_url: 'https://catalog.example.edu/cs/', offers_cs: true,
+      program_finding: {
+        code: 'broad_science_as_no_cs_specific_curriculum',
+        summary: 'A broad Science A.S. exists without a prescribed CS branch.',
+      },
       validation: { verdict: 'pass' },
     };
     const parserOnly = {
@@ -364,7 +565,86 @@ describe('Virginia catalog requirement conversion', () => {
       catalog_accepted: false,
       analysis_ready: false,
       acceptance_failures: { catalog: [], analysis: ['unit_closure'] },
+      program_finding: {
+        code: 'broad_science_as_no_cs_specific_curriculum',
+        summary: 'A broad Science A.S. exists without a prescribed CS branch.',
+      },
     });
+  });
+
+  it('keeps every negative-finding source ref resolvable through coverage', () => {
+    const institution = {
+      slug: 'example-college', name: 'Example College', level: 'community_college',
+      catalog_root: 'https://catalog.example.edu/',
+      degree_context: { catalog_year: '2026-2027' },
+    };
+    const extract = {
+      outcome: 'no_cs_program', offers_cs: false, catalog_year: '2026-2027',
+      source_url: 'https://catalog.example.edu/programs/',
+      program_finding: {
+        code: 'broad_science_as_no_cs_specific_curriculum',
+        summary: 'A broad Science A.S. exists without a prescribed CS branch.',
+        source_refs: ['catalog_index', 'broad_science_program'],
+        alternate_path: { source_refs: ['alternate_program'] },
+      },
+      sources: [
+        {
+          id: 'catalog_index', kind: 'catalog_index', label: 'Programs A-Z',
+          url: 'https://catalog.example.edu/programs/', captured_at: '2026-08-10T00:00:00.000Z',
+          sha256: 'a'.repeat(64), official: true, secure: true,
+        },
+        {
+          id: 'broad_science_program', kind: 'program', label: 'Science, A.S.',
+          requested_url: 'https://catalog.example.edu/science-as/',
+          final_url: 'https://catalog.example.edu/science/', sha256: 'b'.repeat(64),
+          official: true, secure: true,
+        },
+        {
+          id: 'alternate_program', kind: 'program', label: 'Alternate Science path',
+          url: 'https://catalog.example.edu/alternate/', sha256: 'c'.repeat(64),
+          official: true, secure: true,
+        },
+        { id: 'unrelated', url: 'https://catalog.example.edu/other/' },
+      ],
+    };
+
+    const row = coverageRow(institution, extract, false, null, {
+      publication: { eligible: false, reason: 'source_composition_required' },
+    });
+
+    expect(row.catalog_year).toBe('2026-2027');
+    expect(row).toMatchObject({
+      collected: true,
+      finding_complete: true,
+      finding_source_refs_resolved: true,
+      publication_applicable: false,
+      source_composition_applicable: false,
+      publication_eligible: false,
+      publication_blocker: null,
+      catalog_accepted: false,
+    });
+    expect(row.finding_sources).toEqual([
+      expect.objectContaining({
+        id: 'catalog_index', label: 'Programs A-Z',
+        url: 'https://catalog.example.edu/programs/', sha256: 'a'.repeat(64),
+        official: true, secure: true,
+      }),
+      expect.objectContaining({
+        id: 'broad_science_program', label: 'Science, A.S.',
+        url: 'https://catalog.example.edu/science-as/',
+        final_url: 'https://catalog.example.edu/science/', sha256: 'b'.repeat(64),
+        official: true, secure: true,
+      }),
+      expect.objectContaining({
+        id: 'alternate_program', label: 'Alternate Science path',
+        url: 'https://catalog.example.edu/alternate/', sha256: 'c'.repeat(64),
+        official: true, secure: true,
+      }),
+    ]);
+    expect(row.finding_sources.map((source) => source.id)).toEqual([
+      ...row.program_finding.source_refs,
+      ...row.program_finding.alternate_path.source_refs,
+    ]);
   });
 
   it('publishes Richard Bland only with its validated owner-scoped identity contract', () => {
@@ -404,17 +684,20 @@ describe('Virginia catalog requirement conversion', () => {
     ];
     const existing = new Map([
       ['va:degree:accepted-university:cs', {
-        _id: 'va:degree:accepted-university:cs', verification: { verified: true },
+        _id: 'va:degree:accepted-university:cs', source: 'institution_catalog', verification: { verified: true },
       }],
       ['va:degree:changed-university:cs', {
-        _id: 'va:degree:changed-university:cs', verification: { verified: true },
+        _id: 'va:degree:changed-university:cs', source: 'institution_catalog', verification: { verified: true },
       }],
       ['va:degree:outside-scope:cs', {
         _id: 'va:degree:outside-scope:cs', verification: { verified: true },
       }],
       ['va:degree:already-superseded:cs', {
         _id: 'va:degree:already-superseded:cs', status: 'superseded',
-        verification: { verified: false, stale: true },
+        source: 'institution_catalog', verification: { verified: false, stale: true },
+      }],
+      ['va:degree:other-source:cs', {
+        _id: 'va:degree:other-source:cs', source: 'transfer_virginia',
       }],
     ]);
     const published = [{ _id: 'va:degree:accepted-university:cs' }];
@@ -425,15 +708,18 @@ describe('Virginia catalog requirement conversion', () => {
     expect(unpublishedRequirementIds(existing, [institutions[1]], [])).toEqual([
       'va:degree:changed-university:cs',
     ]);
+    expect(unpublishedRequirementIds(existing, [{
+      slug: 'other-source', level: 'four_year',
+    }], [])).toEqual([]);
   });
 
   it('supersedes registry-retired identities instead of selecting them for deletion', () => {
     const existing = new Map([
       ['va:degree:old-name:cs', {
-        _id: 'va:degree:old-name:cs', verification: { verified: true },
+        _id: 'va:degree:old-name:cs', source: 'institution_catalog', verification: { verified: true },
       }],
       ['va:as:old-name:cs', {
-        _id: 'va:as:old-name:cs', status: 'superseded',
+        _id: 'va:as:old-name:cs', source: 'institution_catalog', status: 'superseded',
       }],
       ['va:degree:unrelated:cs', {
         _id: 'va:degree:unrelated:cs', verification: { verified: true },

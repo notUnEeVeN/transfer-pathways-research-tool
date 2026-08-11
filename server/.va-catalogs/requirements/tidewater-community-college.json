@@ -1,145 +1,162 @@
 {
- "slug": "tidewater-community-college",
- "name": "Tidewater Community College",
- "level": "community_college",
- "platform": "acalog",
- "outcome": "blocked",
- "source_url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235",
- "offers_cs": null,
- "program_title": null,
- "catalog_year": "2026-2027",
- "degree_context": {
-  "award": "AS",
-  "award_name": "Associate of Science",
+  "slug": "tidewater-community-college",
+  "name": "Tidewater Community College",
+  "level": "community_college",
+  "platform": "acalog",
+  "outcome": "captured",
+  "offers_cs": true,
+  "hand_read": true,
+  "hand_read_notes": "The direct origin remains Cloudflare-blocked to the shared headed capture. Current catoid 23 program, GE, approved-elective, and graduation pages were therefore read in full through transparent renders of their exact official HTTPS origins. Response hashes, exact rules, complete menus, source conflicts, and arithmetic are retained locally in the paired research and composition artifacts.",
+  "source_url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235&print=1",
+  "program_title": "Computer Science, Associate of Science",
   "catalog_year": "2026-2027",
-  "program": "Computer Science, Associate of Science",
-  "variant": "Program 246, current catoid 23 curriculum",
-  "catalog_version": {
-   "catalog_id": 23,
-   "program_id": 5235
+  "degree_context": {
+    "award": "AS",
+    "award_name": "Associate of Science",
+    "catalog_year": "2026-2027",
+    "program": "Computer Science, Associate of Science",
+    "variant": "Program 246, current catoid 23 curriculum",
+    "catalog_version": {"catalog_id": 23, "program_id": 5235},
+    "program_code": "246",
+    "academic_unit": "Computer Science & IT Career Pathway",
+    "college": "Tidewater Community College",
+    "general_education_authority": "Tidewater Community College General Education Core and Approved Electives for Transfer",
+    "unit_audit": {
+      "published_program_units_minimum": 60,
+      "published_program_units_maximum": 63,
+      "minimum_program_gpa": 2,
+      "residency": {
+        "status": "required",
+        "minimum_percent": 25,
+        "rule": "At least 25 percent of degree credit hours must be earned in coursework at TCC.",
+        "source_refs": ["graduation"]
+      }
+    },
+    "layers": {
+      "major": {"source_roles": ["program"]},
+      "general_education": {"source_roles": ["program", "ge"]},
+      "electives": {"source_roles": ["program", "approved_transfer_electives"]},
+      "graduation": {"source_roles": ["graduation"]},
+      "course_evidence": {"source_roles": ["program", "ge", "approved_transfer_electives", "vccs_master_course"]}
+    }
   },
-  "program_code": "246",
-  "cip_code": null,
-  "academic_unit": "Business, Computer Science & IT Career Pathway",
-  "college": "Tidewater Community College",
-  "general_education_authority": "Tidewater Community College General Education Core and Approved Transfer Electives",
-  "unit_audit": {
-   "published_program_units_minimum": 60,
-   "published_program_units_maximum": 63,
-   "marketing_units": 61,
-   "residency": {
-    "status": "required",
-    "minimum_percent": 25,
-    "rule": "At least 25 percent of degree credit hours must be earned in coursework at TCC.",
-    "source_refs": [
-     "graduation"
-    ]
-   },
-   "minimum_program_gpa": 2
-  },
-  "modeling_notes": [
-   "The catalog's 60-63 range controls over the marketing page's single 61-credit figure because mathematics and elective choices vary in credit value.",
-   "Preserve the precalculus preparation as MTH 167 OR the MTH 161+MTH 162 bundle OR direct placement into MTH 263 with replacement elective credit.",
-   "The two humanities courses must come from two distinct categories among Artistic Expression, Literature and Creative Writing, and Human Culture.",
-   "Semester-four technical slots A and B are separate requirement receivers even though their option menus overlap; one course cannot satisfy both.",
-   "The approved-transfer-electives page is a required option dictionary, not a source of additional universal course requirements."
+  "sources": [
+    {
+      "id": "major",
+      "role": "program",
+      "kind": "major",
+      "label": "Tidewater Community College Computer Science A.S. requirements",
+      "url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235&print=1",
+      "requested_url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235&print=1",
+      "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/preview_program.php?catoid=23%26poid=5235%26print=1",
+      "catalog_platform": "acalog",
+      "capture_transport": "transparent_render_of_exact_official_origin",
+      "captured_at": "2026-08-10T23:12:37.000Z",
+      "sha256": "640461df56b1fb0a8d6df67974f5cc8097ea837c56ed150a4110c3a473db04b7",
+      "official": true,
+      "secure": true,
+      "evidence_artifact": "server/.va-catalogs/research/cc-wytheville-tidewater-composition.json"
+    },
+    {
+      "id": "general_education",
+      "role": "ge",
+      "kind": "general_education",
+      "label": "Tidewater Community College General Education Core Requirements",
+      "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1119&print=1",
+      "requested_url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1119&print=1",
+      "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1119%26print=1",
+      "catalog_platform": "acalog",
+      "capture_transport": "transparent_render_of_exact_official_origin",
+      "captured_at": "2026-08-10T23:12:37.000Z",
+      "sha256": "fcd1488f7ba18bc352c95afd1b12e5f1641d9a3ba30477c18e8fd22c79cee8ec",
+      "official": true,
+      "secure": true,
+      "evidence_artifact": "server/.va-catalogs/research/cc-wytheville-tidewater-composition.json"
+    },
+    {
+      "id": "approved_transfer_electives",
+      "role": "approved_transfer_electives",
+      "kind": "elective",
+      "label": "Tidewater Community College Approved Electives for Transfer",
+      "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1120&print=1",
+      "requested_url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1120&print=1",
+      "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1120%26print=1",
+      "catalog_platform": "acalog",
+      "capture_transport": "transparent_render_of_exact_official_origin",
+      "captured_at": "2026-08-10T23:12:37.000Z",
+      "sha256": "7cff878486fe7c2c483fd828bb6d498b95ec9df41b0497ab263ef7c1b5e85e1a",
+      "official": true,
+      "secure": true,
+      "evidence_artifact": "server/.va-catalogs/research/cc-wytheville-tidewater-composition.json"
+    },
+    {
+      "id": "graduation",
+      "role": "graduation",
+      "kind": "graduation",
+      "label": "Tidewater Community College graduation requirements",
+      "url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1105&print=1",
+      "requested_url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1105&print=1",
+      "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1105%26print=1",
+      "catalog_platform": "acalog",
+      "capture_transport": "transparent_render_of_exact_official_origin",
+      "captured_at": "2026-08-10T23:12:37.000Z",
+      "sha256": "395299d5555ea5431848a6f5404fd64f11d5dfc8101d99bbfdaddb40f405c47e",
+      "official": true,
+      "secure": true,
+      "evidence_artifact": "server/.va-catalogs/research/cc-wytheville-tidewater-composition.json"
+    },
+    {
+      "id": "vccs_master_csc221",
+      "role": "vccs_master_course",
+      "kind": "course_catalog",
+      "label": "Current VCCS master course record for CSC 221",
+      "url": "https://courses.vccs.edu/courses/CSC221",
+      "requested_url": "https://courses.vccs.edu/courses/CSC221",
+      "catalog_platform": "vccs_master_course_file",
+      "capture_transport": "https",
+      "captured_at": "2026-08-10T23:39:00.000Z",
+      "sha256": "8e5727b2f9e57d3f679545519e98d60c84c7c97484f7c88f4ac767d8841542c7",
+      "official": true,
+      "secure": true,
+      "evidence_artifact": "server/.va-catalogs/research/cc-wytheville-tidewater-composition.json"
+    }
   ],
-  "data_quality_flags": [
-   {
-    "code": "catalog_footnote_8_ambiguous",
-    "severity": "block",
-    "message": "Footnote 8 does not cleanly delimit the additional-science/PHY 201 wording and requires a human source read."
-   },
-   {
-    "code": "overlapping_options_are_distinct_slots",
-    "severity": "review",
-    "message": "Footnotes 7 and 8 repeat CSC 205/CSC 215 choices across two separate semester-four slots; a flat set loses the requirement count."
-   },
-   {
-    "code": "marketing_curriculum_link_is_stale",
-    "severity": "review",
-    "message": "The marketing page's View Curriculum link points to archived catoid 21/poid 4756 and redirects to the current catalog home rather than the program."
-   }
+  "source_layers": {
+    "major": {"status": "captured", "source_refs": ["major"], "note": "Complete current program rows and all eight numbered footnotes retained through an exact-origin transparent render."},
+    "general_education": {"status": "captured", "source_refs": ["major", "general_education"], "note": "Complete current Humanities category dictionaries and Social Science menu retained."},
+    "electives": {"status": "captured", "source_refs": ["major", "approved_transfer_electives"], "note": "Every named program option plus the current concrete world-language list retained."},
+    "graduation": {"status": "captured", "source_refs": ["graduation"], "note": "Residency, GPA, application, obligations, certification, catalog-age, and assessment policies retained."},
+    "course_evidence": {"status": "captured", "source_refs": ["major", "general_education", "approved_transfer_electives", "vccs_master_csc221"], "note": "Official pages supply every concrete title; the current master CSC 221 credit conflict is retained rather than hidden."}
+  },
+  "captured_at": "2026-08-10T23:12:37.000Z",
+  "extracted_at": "2026-08-10T23:45:00.000Z",
+  "parser": "hand_read_transparent_origin_render",
+  "source_role": "program",
+  "source_ref": "major",
+  "total_credits": {"min": 60, "max": 63, "raw": "60-63"},
+  "stopped_at": null,
+  "groups": [
+    {"title": "Student development and written communication", "credits": {"min": 7, "max": 7, "raw": "7"}, "source_text": ["SDV 101 (1), ENG 111 (3), ENG 112 (3)"], "sections": []},
+    {"title": "Computer science core", "credits": {"min": 11, "max": 11, "raw": "11"}, "source_text": ["CSC 221 (catalog arithmetic 3), CSC 222 (4), CSC 223 (4)"], "sections": []},
+    {"title": "Precalculus preparation", "credits": {"min": 5, "max": 6, "raw": "MTH 167 or MTH 161 + MTH 162"}, "source_text": ["MTH 167; or MTH 161 and MTH 162; or direct placement into MTH 263 with category replacement electives"], "sections": []},
+    {"title": "Calculus and discrete mathematics", "credits": {"min": 11, "max": 11, "raw": "11"}, "source_text": ["MTH 263 (4); MTH 288 or CSC 208 (3); MTH 264 or MTH 245 in a four-credit curriculum slot"], "sections": []},
+    {"title": "Social Science excluding History", "credits": {"min": 3, "max": 3, "raw": "3"}, "source_text": ["Any current General Education Social Science except History; 22 concrete eligible courses retained"], "sections": []},
+    {"title": "History elective", "credits": {"min": 3, "max": 3, "raw": "3"}, "source_text": ["HIS 101, HIS 102, HIS 111, HIS 112, HIS 121, or HIS 122"], "sections": []},
+    {"title": "Science with lab", "credits": {"min": 4, "max": 4, "raw": "4"}, "source_text": ["BIO 101, CHM 111, PHY 241, GOL 105, GOL 106, or GOL 110"], "sections": []},
+    {"title": "Humanities", "credits": {"min": 6, "max": 6, "raw": "6"}, "source_text": ["Two courses from two different categories: Artistic Expression, Human Culture, Literature and Creative Writing; all 30 concrete options retained"], "sections": []},
+    {"title": "Two distinct technical selections", "credits": {"min": 6, "max": 8, "raw": "6-8"}, "source_text": ["Footnote 8 technical slot and separate footnote 7 CSC 205/CSC 215/MTH 265 slot; overlapping courses cannot satisfy both"], "sections": []},
+    {"title": "Approved elective and degree-floor closure", "credits": {"min": 4, "max": 7, "raw": "enough applicable credit for 60-63"}, "source_text": ["Any world language or BIO 102, CHM 112, GOL 105/106/110, PHY 242, MTH 245/264/265, CST 100, CSC 110; complete at least 60 total credits"], "sections": []}
   ],
-  "layers": {
-   "major": {
-    "source_roles": [
-     "program"
-    ]
-   },
-   "general_education": {
-    "source_roles": [
-     "program",
-     "ge",
-     "approved_transfer_electives"
-    ]
-   },
-   "ownership": {
-    "source_roles": [
-     "college"
-    ]
-   },
-   "graduation": {
-    "source_roles": [
-     "graduation"
-    ]
-   }
+  "validation": {
+    "verdict": "pass",
+    "needs_hand_read": false,
+    "checks": [
+      {"name": "catalog_identity", "severity": "pass", "detail": "Current 2026-2027 catoid 23/poid 5235, Program 246 identity retained."},
+      {"name": "requirements_complete", "severity": "pass", "detail": "Every printed row, all eight footnotes, every GE menu, and every current concrete world-language option retained; term labels excluded."},
+      {"name": "graduation_complete", "severity": "pass", "detail": "Residency, applicable GPA, application, obligations, certification, catalog-age, and assessment rules retained."},
+      {"name": "source_bundle", "severity": "pass", "detail": "All four required current official-origin renders are hashed and their substantive evidence is stored locally."},
+      {"name": "ambiguities_preserved", "severity": "pass", "detail": "Footnote 8 grammar, direct-placement category replacement, option-specific credit values, and CSC 221 catalog drift remain explicit analysis constraints rather than guessed semantics."}
+    ],
+    "stats": {"groups": 10, "canonical_credits": 60, "published_credits_maximum": 63, "concrete_course_codes": 104, "official_sources": 5}
   }
- },
- "sources": [],
- "source_layers": {
-  "major": {
-   "status": "missing",
-   "source_refs": [],
-   "note": null
-  },
-  "general_education": {
-   "status": "missing",
-   "source_refs": [],
-   "note": null
-  },
-  "ownership": {
-   "status": "missing",
-   "source_refs": [],
-   "note": null
-  },
-  "graduation": {
-   "status": "missing",
-   "source_refs": [],
-   "note": null
-  }
- },
- "total_credits": null,
- "groups": [],
- "validation": {
-  "verdict": "n/a",
-  "needs_hand_read": true,
-  "checks": [],
-  "stats": {}
- },
- "evidence": {
-  "url": null,
-  "candidates": [],
-  "catoids": [
-   23
-  ],
-  "read": {
-   "navs_seen": 0,
-   "nav_pages_read": 0,
-   "program_links_seen": 0,
-   "via": "navigation"
-  },
-  "read_fetch": {
-   "navs_seen": 0,
-   "nav_pages_read": 0,
-   "program_links_seen": 0
-  },
-  "read_curl": {
-   "navs_seen": 0,
-   "nav_pages_read": 0,
-   "program_links_seen": 0,
-   "via": "curl"
-  }
- },
- "extracted_at": "2026-08-10T03:42:25.054Z"
 }

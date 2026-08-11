@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "researched_at": "2026-08-10",
+  "scope": "Current 2026-2027 Computer Science Associate of Science requirements for New River, Piedmont Virginia, and Southwest Virginia community colleges.",
+  "method": "Official catalog source walk and hand composition; semester grids were treated as requirement inventories, not as prospective schedules.",
+  "institutions": [
+    {
+      "slug": "new-river-community-college",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog": {
+        "year": "2026-2027",
+        "catalog_id": 42,
+        "program_id": 1965
+      },
+      "degree": {
+        "title": "Computer Science AS",
+        "award": "Associate of Science",
+        "published_total_credits_minimum": 61,
+        "published_total_credits_maximum": 63,
+        "modeled_total_credits_minimum": 61,
+        "modeled_total_credits_maximum": 63,
+        "residency_percent": 25,
+        "minimum_curriculum_gpa": 2
+      },
+      "source_semantics": {
+        "fixed_semester_totals": [
+          "17",
+          "15",
+          "14-16",
+          "15"
+        ],
+        "laboratory_science": "Two distinct four-credit rows. Complete published pool retained; same-discipline sequence is destination advice, not a universal degree requirement.",
+        "computer_science_requirements": "Two rows totaling 6-8 credits; named individual courses, paired sequences, CSC 1XX, and world languages retained without inventing choose-N."
+      },
+      "excluded": [
+        "Radford-specific transfer advice as a universal AS condition",
+        "semester order as an additional schedule rule"
+      ],
+      "sources": [
+        {
+          "id": "major",
+          "kind": "major",
+          "url": "https://catalog.nr.edu/preview_program.php?catoid=42&poid=1965&returnto=3275&print=1",
+          "sha256": "9d8cc1f06a98516558d5941210877af3bb5da5d193f0db64be484be9cf4482b7"
+        },
+        {
+          "id": "general_education",
+          "kind": "general_education",
+          "url": "https://catalog.nr.edu/content.php?catoid=42&navoid=3260",
+          "sha256": "569fb1e10c95f92e94ba57e01d0a8dde6f4a61360229c9f34fcfbafc04f2c29f"
+        },
+        {
+          "id": "graduation",
+          "kind": "graduation",
+          "url": "https://www.nr.edu/graduation/",
+          "sha256": "a10d34a010cbed892d6e93aaeac062b3e40c1bc2550b2874d1c1e395ffc47d18"
+        },
+        {
+          "id": "course_catalog",
+          "kind": "course_catalog",
+          "url": "https://catalog.nr.edu/content.php?catoid=42&navoid=3271",
+          "sha256": "cb54ed984f146a4bb3b87d5eaba6bb905b44af8342ecd235e403d06f264185fd"
+        }
+      ]
+    },
+    {
+      "slug": "piedmont-virginia-community-college",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog": {
+        "year": "2026-2027",
+        "catalog_id": 9,
+        "program_id": 1070,
+        "program_code": "246"
+      },
+      "degree": {
+        "title": "Computer Science (AS)",
+        "award": "Associate of Science",
+        "published_total_credits_minimum": 60,
+        "published_total_credits_maximum": 60,
+        "modeled_total_credits_minimum": 60,
+        "modeled_total_credits_maximum": 60,
+        "residency_percent": 25,
+        "minimum_curriculum_gpa": 2
+      },
+      "source_semantics": {
+        "laboratory_science": "One complete eight-credit BIO 101+102 or CHM 111+112 sequence.",
+        "breadth": "Four separately printed three-credit UCGS slots; every current PVCC roster option retained and duplicate credit prohibited."
+      },
+      "excluded": [
+        "general UCGS courses outside a printed degree category",
+        "any inferred semester sequence"
+      ],
+      "sources": [
+        {
+          "id": "major",
+          "kind": "major",
+          "url": "https://catalog.pvcc.edu/preview_program.php?catoid=9&poid=1070&returnto=1076&print=1",
+          "sha256": "1d4f39b94e2034dd4003f0bf7f0aea1c4de00620ddd7f4780a56c977e1fd20c6"
+        },
+        {
+          "id": "general_education",
+          "kind": "general_education",
+          "url": "https://catalog.pvcc.edu/content.php?catoid=9&navoid=1157",
+          "sha256": "395ee67f22d55129ad697d93fa66c257ede8cee50e3fb1f44ae124695ce19330"
+        },
+        {
+          "id": "graduation",
+          "kind": "graduation",
+          "url": "https://catalog.pvcc.edu/content.php?catoid=9&navoid=1112",
+          "sha256": "348e30b7b0eaa06705dec4ff5e4fb334cfee1742934a002ab3245fe8eb62ee86"
+        },
+        {
+          "id": "policy",
+          "kind": "policy",
+          "url": "https://www.pvcc.edu/credit-prior-learning",
+          "sha256": "f791d85779f164453cfc72fb6891ebbe2b482f1029e810f0a18222b0195c602e"
+        },
+        {
+          "id": "gpa_policy",
+          "kind": "gpa_policy",
+          "url": "https://www.pvcc.edu/satisfactory-academic-progress-sap",
+          "sha256": "b11678d9c83e6d3dae8716d95f320bcdaec0a176907e0c9bf02407bfc350040d"
+        },
+        {
+          "id": "course_catalog",
+          "kind": "course_catalog",
+          "url": "https://catalog.pvcc.edu/content.php?catoid=9&navoid=1077",
+          "sha256": "90dc0ffa78cedd8a1b8873431cfa598a2c33a724a9d8a5bd8d4adfd5dccb4a2e"
+        }
+      ]
+    },
+    {
+      "slug": "southwest-virginia-community-college",
+      "finding": "current_standalone_cs_as_exists",
+      "catalog": {
+        "year": "2026-2027",
+        "catalog_id": 13,
+        "program_id": 1613,
+        "program_code": "246",
+        "cip": "11.0701"
+      },
+      "degree": {
+        "title": "Computer Science, AS",
+        "award": "Associate of Science",
+        "published_total_credits_minimum": 60,
+        "published_total_credits_maximum": 60,
+        "modeled_total_credits_minimum": 60,
+        "modeled_total_credits_maximum": 60,
+        "residency_percent": 25,
+        "minimum_curriculum_gpa": 2
+      },
+      "source_semantics": {
+        "fixed_semester_totals": [
+          "16",
+          "14",
+          "13",
+          "17"
+        ],
+        "history": "Six HIS choices from the current official Social Sciences list.",
+        "humanities": "Complete current Humanities list.",
+        "social_behavioral_science": "Current Social Sciences list with history excluded because the degree already prints a separate history row."
+      },
+      "excluded": [
+        "semester order as an additional schedule rule",
+        "history courses from the second social/behavioral-science slot",
+        "duplicate use of fixed PHI 220 as the humanities elective"
+      ],
+      "sources": [
+        {
+          "id": "major",
+          "kind": "major",
+          "url": "https://catalog.sw.edu/preview_program.php?catoid=13&poid=1613&returnto=761&print=1",
+          "sha256": "14d006b4f24c1f790c799faf988df8bbb4c46345a93de778832713942b05e130"
+        },
+        {
+          "id": "general_education",
+          "kind": "general_education",
+          "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=811",
+          "sha256": "d811428472d4b3f7f412d534218f8d3cd60ea49913c6ea0b53f9e121e9450738"
+        },
+        {
+          "id": "humanities",
+          "kind": "humanities",
+          "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=809",
+          "sha256": "d70808647ef68d97ebc04babd35fbc99abfa52f87569a294657f261df3e40d74"
+        },
+        {
+          "id": "social_sciences",
+          "kind": "social_sciences",
+          "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=810",
+          "sha256": "4dec5bfc3106066f6082bfd7e02c28bcc2ed4177fba3c062165c4bd0204d8b47"
+        },
+        {
+          "id": "graduation",
+          "kind": "graduation",
+          "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=777",
+          "sha256": "bf78f1eba706f231d90169c76f59609f8c0834a8e3a2fd08ebe13244c7869cf0"
+        },
+        {
+          "id": "policy",
+          "kind": "policy",
+          "url": "https://www.sw.edu/admissions/credit-prior-learning.html",
+          "sha256": "69eea0af496ebbbcd6d2327e1be11fb38ce2221c34c870ed06b1a2e3ae36d638"
+        },
+        {
+          "id": "course_catalog",
+          "kind": "course_catalog",
+          "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=762",
+          "sha256": "8467fa7f02510f016f38a59c21c4df3e41044a96a6c85e04d0be8ceeed504feb"
+        }
+      ]
+    }
+  ]
+}

@@ -3,13 +3,231 @@
  "name": "Virginia Western Community College",
  "level": "community_college",
  "platform": "acalog",
- "parser": "lines",
- "pdf_window": null,
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.virginiawestern.edu/preview_program.php?catoid=25&poid=3520&returnto=2597&print=1",
- "captured_at": "2026-08-02T05:52:11.745Z",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "AS",
+  "award_name": "Associate of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, A.S.",
+  "variant": "Current non-engineering transfer Computer Science A.S.; the separate Engineering A.S. is excluded",
+  "program_code": "246",
+  "catalog_version": {
+   "catalog_id": 25,
+   "program_id": 3520,
+   "returnto": 2597,
+   "social_science_menu_course_id": 29546,
+   "literature_menu_course_id": 29505
+  },
+  "academic_unit": null,
+  "college": "Virginia Western Community College",
+  "general_education_authority": "Virginia Western 2026-27 Program Requirements and program-owned Social Science and Literature elective dictionaries",
+  "unit_audit": {
+   "published_program_units_minimum": 60,
+   "modeled_units_minimum": 60,
+   "modeled_units_maximum": 61,
+   "residency": {
+    "status": "required",
+    "minimum_percent": 25,
+    "rule": "At least 25 percent of the total semester hours must be acquired at Virginia Western.",
+    "source_refs": [
+     "graduation"
+    ]
+   },
+   "minimum_curriculum_gpa": 2
+  },
+  "modeling_notes": [
+   "The current program table is the official course inventory; semester placement is discarded after its required rows are composed.",
+   "The footnote calls CHM 111/112 and PHY 241/242 science sequences, so they are modeled as two complete AND routes rather than independently mixable science rows.",
+   "The MTH 245 or MTH 264 row is three or four credits, producing a modeled 60-61 degree range against the catalog's published 60-credit minimum.",
+   "Social Science ELE and ENG LIT are catalog pseudo-courses whose linked official descriptions enumerate seven options each; they are not unresolved free electives."
+  ],
+  "data_quality_flags": [
+   {
+    "code": "published_total_is_minimum_only",
+    "severity": "review",
+    "message": "The program publishes a 60-credit minimum, while choosing four-credit MTH 264 produces a complete 61-credit route."
+   },
+   {
+    "code": "pseudo_course_menus_require_link_following",
+    "severity": "review",
+    "message": "Social Science ELE and ENG LIT expose their closed option lists only in linked course-description records."
+   }
+  ],
+  "layers": {
+   "catalog_identity": {
+    "source_roles": [
+     "catalog"
+    ]
+   },
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge",
+     "social_science_elective",
+     "literature_elective"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Virginia Western Community College major and degree requirements",
+   "url": "https://catalog.virginiawestern.edu/preview_program.php?catoid=25&poid=3520&returnto=2597&print=1",
+   "requested_url": "https://catalog.virginiawestern.edu/preview_program.php?catoid=25&poid=3520&returnto=2597&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:15:13.008Z",
+   "sha256": "cc92aa17fb0f2caf8aa2ff079fc4a2eacadd191f1f0183ade0a7f59ca6fccd55",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "catalog",
+   "role": "catalog",
+   "kind": "catalog",
+   "label": "Virginia Western Community College academic catalog",
+   "url": "https://catalog.virginiawestern.edu/index.php?catoid=25",
+   "requested_url": "https://catalog.virginiawestern.edu/index.php?catoid=25",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:15:13.008Z",
+   "sha256": "30a79f062d231f3c2c191310e1aba6d2aff963e9d1419f73e52a7a0b962775b2",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Virginia Western Community College general education requirements",
+   "url": "https://catalog.virginiawestern.edu/content.php?catoid=25&navoid=2593",
+   "requested_url": "https://catalog.virginiawestern.edu/content.php?catoid=25&navoid=2593",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:15:13.008Z",
+   "sha256": "431c2f3ccbcb2a629fec80c7f26d3b5f8c02c76299fe924d0c05e0ab9f553cf8",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "social_science_elective",
+   "role": "social_science_elective",
+   "kind": "social_science_elective",
+   "label": "Virginia Western Community College social_science_elective",
+   "url": "https://catalog.virginiawestern.edu/preview_course.php?catoid=25&coid=29546&print",
+   "requested_url": "https://catalog.virginiawestern.edu/preview_course.php?catoid=25&coid=29546&print",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:15:13.008Z",
+   "sha256": "b97a5e89b6a44e7cd485e780eb4053ea83cc35a47732e05ceed8c919835ef884",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "literature_elective",
+   "role": "literature_elective",
+   "kind": "literature_elective",
+   "label": "Virginia Western Community College literature_elective",
+   "url": "https://catalog.virginiawestern.edu/preview_course.php?catoid=25&coid=29505&print",
+   "requested_url": "https://catalog.virginiawestern.edu/preview_course.php?catoid=25&coid=29505&print",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:15:13.008Z",
+   "sha256": "bcfb8842aed95614088b7b2e72cc33b6a91aea77555e05c4e6a13966f6eb88e1",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Virginia Western Community College course descriptions and credit values",
+   "url": "https://catalog.virginiawestern.edu/content.php?catoid=25&navoid=2592",
+   "requested_url": "https://catalog.virginiawestern.edu/content.php?catoid=25&navoid=2592",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:15:13.008Z",
+   "sha256": "f35f2cd5f7b614d9bcd3c23760875cd795379e9e900ff40e82b919832e683779",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Virginia Western Community College university graduation requirements",
+   "url": "https://www.virginiawestern.edu/graduation/requirements/",
+   "requested_url": "https://www.virginiawestern.edu/graduation/requirements/",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:15:13.008Z",
+   "sha256": "572882a8a2968fcd93aeea60e97f479632742e812666c865304982ff3a33d8c4",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "catalog_identity": {
+   "status": "captured",
+   "source_refs": [
+    "catalog"
+   ],
+   "note": null
+  },
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education",
+    "social_science_elective",
+    "literature_elective"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T23:15:13.008Z",
+ "extracted_at": "2026-08-10T23:16:32.425Z",
+ "parser": "lines",
+ "pdf_window": null,
+ "source_role": "program",
+ "source_ref": "major",
  "program_title": "Computer Science, A.S.",
+ "parse_error": null,
  "total_credits": null,
  "stopped_at": null,
  "groups": [
@@ -462,6 +680,5 @@
    },
    "stated_total": null
   }
- },
- "extracted_at": "2026-08-02T06:13:44.809Z"
+ }
 }

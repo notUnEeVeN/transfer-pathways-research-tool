@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "slug": "james-madison-university",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, B.S.",
+  "award": "BS",
+  "total_units": 120,
+  "composition_status": "composed_full_degree",
+  "academic_unit": "Department of Computer Science",
+  "college": "College of Integrated Science and Engineering",
+  "ge_authority": "James Madison University General Education: The Human Community",
+  "source_bundle_required": [
+    "major",
+    "general_education",
+    "general_education_detail",
+    "college",
+    "graduation",
+    "policy",
+    "course_catalog"
+  ],
+  "requirement_layers": {
+    "major": {"status": "complete", "source_refs": ["major", "course_catalog"]},
+    "ge_college": {"status": "complete", "source_refs": ["general_education", "general_education_detail", "college", "policy"]},
+    "university_graduation": {"status": "complete", "source_refs": ["graduation", "policy"]}
+  },
+  "unit_audit": {
+    "graduation_minimum": 120,
+    "modeled_units": 120,
+    "canonical_major_units": 49,
+    "major_units_maximum": 52,
+    "general_education_units": 41,
+    "bs_quantitative_units_beyond_general_education": 3,
+    "canonical_university_elective_units": 27,
+    "university_elective_units_minimum": 24,
+    "upper_division": {
+      "status": "none_stated",
+      "reason": "The current program, undergraduate degree, and graduation sources publish no aggregate university-wide upper-division-credit minimum.",
+      "source_refs": ["major", "graduation", "policy"]
+    },
+    "residency": {
+      "status": "required",
+      "minimum_units": 30,
+      "rule": "At least 25 percent of the 120-credit degree must be completed at JMU; at least 60 credits must be earned from four-year institutions including JMU.",
+      "source_refs": ["graduation"]
+    },
+    "four_year_institution_units_minimum": 60,
+    "minimum_cumulative_gpa": 2,
+    "minimum_major_gpa": 2
+  },
+  "modeling_notes": [
+    "The ordinary Computer Science B.S. is modeled. Certificates, the U.S. government employment recommendation, and the page's explicitly illustrative sample plan are excluded.",
+    "The catalog publishes a 49-52-credit major. The canonical unit path uses MATH 235 (4 credits) and a three-credit statistics option, producing 49 major credits; longer calculus/statistics choices reduce university elective capacity from 27 to as little as 24.",
+    "General Education contains 14 course requirements in five areas totaling 41 credits. Information Literacy is integrated across the three Madison Foundations courses and is not a fourth additive course.",
+    "The B.S. quantitative requirement is three credits in addition to General Education. The 41 + 3 + 49 + 27 canonical component arithmetic is the program's published 120-credit degree table."
+  ],
+  "data_quality_flags": [
+    {
+      "code": "correlated_major_and_elective_ranges",
+      "severity": "block_analysis",
+      "message": "The evaluator does not yet reduce the 27-credit university-elective block when the 50-52-credit major paths are chosen."
+    },
+    {
+      "code": "upper_cs_elective_number_constraint",
+      "severity": "block_analysis",
+      "message": "The evaluator does not yet enforce that at least two of the three upper-level CS electives be numbered above CS 332."
+    }
+  ],
+  "course_titles": {
+    "CS149": "Introduction to Programming",
+    "CS159": "Advanced Programming",
+    "CS227": "Discrete Structures I",
+    "CS240": "Algorithms and Data Structures",
+    "CS261": "Computer Systems I",
+    "CS327": "Discrete Structures II",
+    "CS345": "Software Engineering",
+    "CS361": "Computer Systems II",
+    "CS412": "Applied Algorithms",
+    "CS430": "Programming Languages",
+    "CS432": "Compilers",
+    "CS450": "Operating Systems",
+    "CS452": "Design and Analysis of Algorithms",
+    "CS455": "Advanced Computer Networking",
+    "CS456": "Computer Architecture",
+    "CS470": "Parallel and Distributed Systems",
+    "MATH220": "Elementary Statistics",
+    "MATH227": "Discrete Structures I",
+    "MATH229": "Introduction to Applied Statistics Using R",
+    "MATH231": "Calculus with Functions I",
+    "MATH232": "Calculus with Functions II",
+    "MATH235": "Calculus I",
+    "MATH245": "Discrete Mathematics",
+    "MATH318": "Introduction to Probability and Statistics"
+  },
+  "requirement_groups": [
+    {
+      "title": "Computer Science fixed major requirements",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "mixed",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "24",
+      "sections": [
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CS149", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CS159", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CS240", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "lower_division", "cc_articulable": true, "receivers": [{"kind": "course", "code": "CS261", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS327", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS345", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS361", "units": 3}]},
+        {"select": 1, "units": 3, "course_level": "upper_division", "cc_articulable": false, "receivers": [{"kind": "course", "code": "CS430", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Upper-level Computer Science electives",
+      "requirement_layer": "major",
+      "tier": "breadth",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major"],
+      "stated_credits": "9; at least two courses above CS 332",
+      "analysis_constraints": [
+        {
+          "kind": "minimum_course_number_distribution",
+          "status": "evaluator_not_implemented",
+          "description": "Select three CS courses numbered 300 or above, at least two of which must be numbered above CS 332."
+        }
+      ],
+      "sections": [
+        {
+          "select": 3,
+          "units": 9,
+          "tier": "breadth",
+          "course_level": "upper_division",
+          "cc_articulable": false,
+          "receivers": [
+            {"kind": "ge_area", "code": "JMU-CS-ELECTIVE-300", "name": "CS elective numbered 300 or above", "units": 3},
+            {"kind": "ge_area", "code": "JMU-CS-ELECTIVE-ABOVE-332-A", "name": "CS elective numbered above 332", "units": 3},
+            {"kind": "ge_area", "code": "JMU-CS-ELECTIVE-ABOVE-332-B", "name": "Second CS elective numbered above 332", "units": 3}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Introductory discrete mathematics",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "CS227", "units": 3},
+          {"kind": "course", "code": "MATH227", "units": 3},
+          {"kind": "course", "code": "MATH245", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Calculus sequence",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "lower_division",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "4-6",
+      "sections": [
+        {"select": 1, "units": 4, "units_max": 6, "receivers": [
+          {"kind": "course", "code": "MATH235", "units": 4},
+          {"kind": "series", "codes": ["MATH231", "MATH232"], "units": 6}
+        ]}
+      ]
+    },
+    {
+      "title": "Statistics",
+      "requirement_layer": "major",
+      "tier": "transferable",
+      "course_level": "mixed",
+      "cc_articulable": true,
+      "source_refs": ["major", "course_catalog"],
+      "stated_credits": "3-4",
+      "sections": [
+        {"select": 1, "units": 3, "units_max": 4, "receivers": [
+          {"kind": "course", "code": "MATH220", "units": 3},
+          {"kind": "course", "code": "MATH229", "units": 3},
+          {"kind": "course", "code": "MATH318", "units": 4}
+        ]}
+      ]
+    },
+    {
+      "title": "Algorithms elective",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "CS412", "units": 3},
+          {"kind": "course", "code": "CS452", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "Systems elective",
+      "requirement_layer": "major",
+      "tier": "nontransferable",
+      "course_level": "upper_division",
+      "cc_articulable": false,
+      "source_refs": ["major", "course_catalog"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [
+          {"kind": "course", "code": "CS432", "units": 3},
+          {"kind": "course", "code": "CS450", "units": 3},
+          {"kind": "course", "code": "CS455", "units": 3},
+          {"kind": "course", "code": "CS456", "units": 3},
+          {"kind": "course", "code": "CS470", "units": 3}
+        ]}
+      ]
+    },
+    {
+      "title": "General Education: The Human Community",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["general_education", "general_education_detail"],
+      "stated_credits": "41",
+      "sections": [
+        {"select": 1, "units": 3, "label": "Madison Foundations: Critical Thinking", "receivers": [{"kind": "ge_area", "code": "JMU-C1CT", "name": "Critical Thinking", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Madison Foundations: Human Communication", "receivers": [{"kind": "ge_area", "code": "JMU-C1HC", "name": "Human Communication", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Madison Foundations: Writing", "receivers": [{"kind": "ge_area", "code": "JMU-C1W", "name": "Writing", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Arts and Humanities: Human Questions and Contexts", "receivers": [{"kind": "ge_area", "code": "JMU-C2HQC", "name": "Human Questions and Contexts", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Arts and Humanities: Visual and Performing Arts", "receivers": [{"kind": "ge_area", "code": "JMU-C2VPA", "name": "Visual and Performing Arts", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Arts and Humanities: Literature", "receivers": [{"kind": "ge_area", "code": "JMU-C2L", "name": "Literature", "units": 3}]},
+        {"select": 1, "units": 3, "label": "The Natural World: Quantitative Reasoning", "receivers": [{"kind": "ge_area", "code": "JMU-C3QR", "name": "Quantitative Reasoning", "units": 3}]},
+        {"select": 1, "units": 3, "label": "The Natural World: Physical Principles", "receivers": [{"kind": "ge_area", "code": "JMU-C3PP", "name": "Physical Principles", "units": 3}]},
+        {"select": 1, "units": 3, "label": "The Natural World: Natural Systems", "receivers": [{"kind": "ge_area", "code": "JMU-C3NS", "name": "Natural Systems", "units": 3}]},
+        {"select": 1, "units": 1, "label": "The Natural World: Laboratory Experience", "receivers": [{"kind": "ge_area", "code": "JMU-C3L", "name": "Laboratory Experience", "units": 1}]},
+        {"select": 1, "units": 4, "label": "American and Global Perspectives: The American Experience", "receivers": [{"kind": "ge_area", "code": "JMU-C4AE", "name": "The American Experience", "units": 4}]},
+        {"select": 1, "units": 3, "label": "American and Global Perspectives: The Global Experience", "receivers": [{"kind": "ge_area", "code": "JMU-C4GE", "name": "The Global Experience", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Sociocultural and Wellness: Wellness Domain", "receivers": [{"kind": "ge_area", "code": "JMU-C5W", "name": "Wellness Domain", "units": 3}]},
+        {"select": 1, "units": 3, "label": "Sociocultural and Wellness: Sociocultural Domain", "receivers": [{"kind": "ge_area", "code": "JMU-C5SD", "name": "Sociocultural Domain", "units": 3}]}
+      ]
+    },
+    {
+      "title": "Bachelor of Science quantitative requirement beyond General Education",
+      "requirement_layer": "ge_college",
+      "tier": "breadth",
+      "course_level": "lower_division_or_category",
+      "cc_articulable": true,
+      "source_refs": ["policy"],
+      "sections": [
+        {"select": 1, "units": 3, "receivers": [{"kind": "ge_area", "code": "JMU-BS-QUANT", "name": "Approved B.S. quantitative course in addition to General Education", "units": 3}]}
+      ]
+    },
+    {
+      "title": "University electives on the canonical 49-credit major path",
+      "requirement_layer": "university_graduation",
+      "tier": "breadth",
+      "course_level": "elective_capacity",
+      "cc_articulable": true,
+      "source_refs": ["major", "graduation", "policy"],
+      "stated_credits": "24-27",
+      "analysis_constraints": [
+        {
+          "kind": "correlated_variable_major_and_elective_units",
+          "status": "evaluator_not_implemented",
+          "description": "This block is 27 credits only on the 49-credit canonical major path and must fall one-for-one to 24 when longer major options are selected."
+        }
+      ],
+      "sections": [
+        {"select": 1, "units": 27, "receivers": [{"kind": "ge_area", "code": "JMU-UNIVERSITY-ELECTIVES", "name": "University elective credit", "units": 27}]}
+      ]
+    },
+    {
+      "title": "University graduation and residence requirements",
+      "requirement_layer": "university_graduation",
+      "tier": "nontransferable",
+      "course_level": "policy",
+      "cc_articulable": false,
+      "source_refs": ["graduation"],
+      "sections": [
+        {"select": 1, "units": 0, "label": "Minimum 120 cumulative credits", "receivers": [{"kind": "requirement", "name": "At least 120 cumulative credit hours", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Minimum 2.0 cumulative GPA", "receivers": [{"kind": "requirement", "name": "Minimum cumulative GPA of 2.0", "units": 0}]},
+        {"select": 1, "units": 0, "label": "At least 60 credits from four-year institutions", "receivers": [{"kind": "requirement", "name": "At least 60 credits from four-year institutions, including JMU", "units": 0}]},
+        {"select": 1, "units": 0, "label": "At least 25 percent completed at JMU", "receivers": [{"kind": "requirement", "name": "At least 25 percent of required degree credits completed at JMU", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Complete General Education and B.S. degree requirements", "receivers": [{"kind": "requirement", "name": "Complete General Education and all Bachelor of Science degree requirements", "units": 0}]},
+        {"select": 1, "units": 0, "label": "Minimum 2.0 major GPA", "receivers": [{"kind": "requirement", "name": "Complete the Computer Science major with a minimum 2.0 GPA", "units": 0}]}
+      ]
+    }
+  ]
+}

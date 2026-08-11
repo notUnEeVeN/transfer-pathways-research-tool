@@ -3,13 +3,210 @@
  "name": "Southwest Virginia Community College",
  "level": "community_college",
  "platform": "acalog",
- "parser": "lines",
- "pdf_window": null,
  "outcome": "captured",
  "offers_cs": true,
  "source_url": "https://catalog.sw.edu/preview_program.php?catoid=13&poid=1613&returnto=761&print=1",
- "captured_at": "2026-08-02T05:50:02.031Z",
+ "catalog_year": "2026-2027",
+ "degree_context": {
+  "award": "AS",
+  "award_name": "Associate of Science",
+  "catalog_year": "2026-2027",
+  "program": "Computer Science, AS",
+  "variant": "Current transfer-oriented Computer Science A.S.",
+  "catalog_version": {
+   "catalog_id": 13,
+   "program_id": 1613,
+   "returnto": 761
+  },
+  "program_code": "246",
+  "cip_code": "11.0701",
+  "general_education_authority": "Southwest Virginia Community College General Education elective lists",
+  "unit_audit": {
+   "published_program_units_minimum": 60,
+   "modeled_units_minimum": 60,
+   "modeled_units_maximum": 60,
+   "residency": {
+    "status": "required",
+    "minimum_percent": 25,
+    "rule": "At least 25 percent of program requirements must be completed at Southwest Virginia Community College.",
+    "source_refs": [
+     "policy"
+    ]
+   },
+   "minimum_curriculum_gpa": 2,
+   "minimum_curriculum_gpa_source_refs": [
+    "general_education"
+   ]
+  },
+  "modeling_notes": [
+   "The four-semester table is the catalog's complete requirement inventory. Semester placement is not modeled as an extra prospective schedule constraint.",
+   "The history slot uses the six HIS courses in the current Social Sciences elective source; the separate social/behavioral slot excludes history under the published associate-degree distribution rule.",
+   "The humanities, literature, or fine-arts slot uses the complete current Humanities elective source."
+  ],
+  "layers": {
+   "major": {
+    "source_roles": [
+     "program"
+    ]
+   },
+   "general_education": {
+    "source_roles": [
+     "program",
+     "ge",
+     "humanities",
+     "social_sciences"
+    ]
+   },
+   "graduation": {
+    "source_roles": [
+     "graduation",
+     "policy",
+     "ge"
+    ]
+   },
+   "course_catalog": {
+    "source_roles": [
+     "course_catalog"
+    ]
+   }
+  }
+ },
+ "sources": [
+  {
+   "id": "major",
+   "role": "program",
+   "kind": "major",
+   "label": "Southwest Virginia Community College major and degree requirements",
+   "url": "https://catalog.sw.edu/preview_program.php?catoid=13&poid=1613&returnto=761&print=1",
+   "requested_url": "https://catalog.sw.edu/preview_program.php?catoid=13&poid=1613&returnto=761&print=1",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:12:16.229Z",
+   "sha256": "14d006b4f24c1f790c799faf988df8bbb4c46345a93de778832713942b05e130",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "general_education",
+   "role": "ge",
+   "kind": "general_education",
+   "label": "Southwest Virginia Community College general education requirements",
+   "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=811",
+   "requested_url": "https://catalog.sw.edu/content.php?catoid=13&navoid=811",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:12:16.229Z",
+   "sha256": "d811428472d4b3f7f412d534218f8d3cd60ea49913c6ea0b53f9e121e9450738",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "humanities",
+   "role": "humanities",
+   "kind": "humanities",
+   "label": "Southwest Virginia Community College humanities",
+   "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=809",
+   "requested_url": "https://catalog.sw.edu/content.php?catoid=13&navoid=809",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:12:16.229Z",
+   "sha256": "d70808647ef68d97ebc04babd35fbc99abfa52f87569a294657f261df3e40d74",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "social_sciences",
+   "role": "social_sciences",
+   "kind": "social_sciences",
+   "label": "Southwest Virginia Community College social_sciences",
+   "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=810",
+   "requested_url": "https://catalog.sw.edu/content.php?catoid=13&navoid=810",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:12:16.229Z",
+   "sha256": "4dec5bfc3106066f6082bfd7e02c28bcc2ed4177fba3c062165c4bd0204d8b47",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "graduation",
+   "role": "graduation",
+   "kind": "graduation",
+   "label": "Southwest Virginia Community College university graduation requirements",
+   "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=777",
+   "requested_url": "https://catalog.sw.edu/content.php?catoid=13&navoid=777",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:12:16.229Z",
+   "sha256": "bf78f1eba706f231d90169c76f59609f8c0834a8e3a2fd08ebe13244c7869cf0",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "policy",
+   "role": "policy",
+   "kind": "policy",
+   "label": "Southwest Virginia Community College academic policies",
+   "url": "https://www.sw.edu/admissions/credit-prior-learning.html",
+   "requested_url": "https://www.sw.edu/admissions/credit-prior-learning.html",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:12:16.229Z",
+   "sha256": "69eea0af496ebbbcd6d2327e1be11fb38ce2221c34c870ed06b1a2e3ae36d638",
+   "official": true,
+   "secure": true
+  },
+  {
+   "id": "course_catalog",
+   "role": "course_catalog",
+   "kind": "course_catalog",
+   "label": "Southwest Virginia Community College course descriptions and credit values",
+   "url": "https://catalog.sw.edu/content.php?catoid=13&navoid=762",
+   "requested_url": "https://catalog.sw.edu/content.php?catoid=13&navoid=762",
+   "catalog_platform": "acalog",
+   "captured_at": "2026-08-10T23:12:16.229Z",
+   "sha256": "8467fa7f02510f016f38a59c21c4df3e41044a96a6c85e04d0be8ceeed504feb",
+   "official": true,
+   "secure": true
+  }
+ ],
+ "source_layers": {
+  "major": {
+   "status": "captured",
+   "source_refs": [
+    "major"
+   ],
+   "note": null
+  },
+  "general_education": {
+   "status": "captured",
+   "source_refs": [
+    "major",
+    "general_education",
+    "humanities",
+    "social_sciences"
+   ],
+   "note": null
+  },
+  "graduation": {
+   "status": "captured",
+   "source_refs": [
+    "graduation",
+    "policy",
+    "general_education"
+   ],
+   "note": null
+  },
+  "course_catalog": {
+   "status": "captured",
+   "source_refs": [
+    "course_catalog"
+   ],
+   "note": null
+  }
+ },
+ "captured_at": "2026-08-10T23:12:16.229Z",
+ "extracted_at": "2026-08-10T23:13:05.505Z",
+ "parser": "lines",
+ "pdf_window": null,
+ "source_role": "program",
+ "source_ref": "major",
  "program_title": "Computer Science, AS",
+ "parse_error": null,
  "total_credits": {
   "min": 60,
   "max": 60,
@@ -461,6 +658,5 @@
    },
    "stated_total": "60"
   }
- },
- "extracted_at": "2026-08-02T06:13:44.769Z"
+ }
 }
