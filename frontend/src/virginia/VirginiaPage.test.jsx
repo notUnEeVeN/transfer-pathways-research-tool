@@ -1,6 +1,28 @@
 import React from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
+
+// The Visuals tab reuses the California gallery primitives, which carry their
+// own tests; the stubs here record which analysis and major each card was
+// wired with, matching the Massachusetts page's harness.
+vi.mock('../visuals/VisualsPage', () => ({
+  VisualThumbnailCard: ({ item, selectedMajor, onOpen }) => (
+    <button type='button' data-testid={`thumb-${item.analysis.id}`}
+      data-major={selectedMajor?.slug} onClick={onOpen}>{item.analysis.title}</button>
+  ),
+  BuiltInAnalysisCard: ({ analysis, selectedMajor }) => (
+    <div data-testid={`detail-${analysis.id}`} data-major={selectedMajor?.slug} />
+  ),
+  itemDetails: (item) => ({ title: item.analysis.title, source: 'test source' }),
+}))
+
+// Only `useMajors` is stubbed: the module also exports the California fallback
+// that MajorContext imports, so the rest of it has to stay real.
+const mockMajors = vi.fn()
+vi.mock('../shared/majors/useMajors', async (importOriginal) => ({
+  ...(await importOriginal()),
+  useMajors: (...args) => mockMajors(...args),
+}))
 
 // The hooks are the only thing this page needs from the outside; stubbing them
 // keeps the test about whether the page renders, not about the network.
@@ -37,6 +59,16 @@ import VirginiaPage from './VirginiaPage'
 const ok = (data) => ({ data, isLoading: false, error: null })
 
 beforeEach(() => {
+  mockMajors.mockReturnValue({
+    majors: [{
+      slug: 'va-cs',
+      label: 'Computer Science (VA)',
+      state: 'va',
+      capabilities: { paperBaselines: false, asDegrees: true, degreeTemplates: true },
+    }],
+    isLoading: false,
+    isError: false,
+  })
   state.summary = ok({
     imported: true, courses: 304, institutions: 57, community_colleges: 24,
     four_year: 33, public_four_year: 15, equivalencies: 4668, with_notes: 970, departments: 69,
@@ -243,12 +275,25 @@ describe('VirginiaPage', () => {
     expect(within(publicTile).getByText('15')).toBeTruthy()
   })
 
-  it('shows the five top-level tabs, including Virginia prerequisites but no Districts', () => {
+  it('shows the corpus tabs, including Virginia prerequisites but no Districts', () => {
     render(<VirginiaPage />)
     for (const t of ['Overview', 'Community Colleges', 'Universities', 'Courses', 'Prerequisites']) {
       expect(screen.getAllByText(t).length).toBeGreaterThan(0)
     }
     expect(screen.queryByText('Districts')).toBeNull()
+  })
+
+  // The Virginia figures compute, but the corpus is unverified and its
+  // agreements are derived rather than published, so the tab is withheld
+  // (VA_VISUALS_READY in VirginiaPage.jsx). This test is the guard against
+  // re-exposing it by accident: it must fail the moment the tab returns.
+  it('does not expose the visuals tab while the corpus is unverified', () => {
+    render(<VirginiaPage />)
+    expect(screen.queryByRole('tab', { name: 'Visuals' })).toBeNull()
+    // No figure reaches the page, and nothing even asks for the VA major.
+    expect(screen.queryByTestId('thumb-coverage-heatmap')).toBeNull()
+    expect(screen.queryByTestId('thumb-transfer-credit-rate')).toBeNull()
+    expect(mockMajors).not.toHaveBeenCalledWith({ state: 'va' })
   })
 
   it('renders the not-imported state instead of crashing on an empty corpus', () => {
@@ -368,13 +413,17 @@ describe('verification progress', () => {
   it('states how much is left rather than listing it all on the landing view', () => {
     render(<VirginiaPage />)
     expect(screen.getByText('Verification progress')).toBeTruthy()
-    // One readable A.S. record, unverified. Wytheville publishes nothing to
-    // read, so it stays out of the denominator — counting it would leave the
-    // job looking permanently unfinished.
+    // The bars report the server's own gated figures, not a second count
+    // derived in the component. One A.S. document is acceptable and unsigned;
+    // one B.S. document is acceptable and signed. Wytheville publishes nothing
+    // readable, so it holds no document and cannot appear in either.
     expect(screen.getByLabelText('A.S. degrees verified').getAttribute('aria-valuetext')).toBe('0 of 1')
     expect(screen.getByLabelText('B.S. degrees verified').getAttribute('aria-valuetext')).toBe('1 of 1')
-    expect(screen.getByText('0 still need a reviewable catalog record')).toBeTruthy()
-    expect(screen.getByText('3 still need a reviewable catalog record')).toBeTruthy()
+    // The caption carries what a document-based bar cannot: institutions with
+    // nothing collected yet are absent from the denominator, so the bar is
+    // progress through what exists rather than through the cohort.
+    expect(screen.getByText(/0 of \d+ institutions still need a reviewable catalog record/)).toBeTruthy()
+    expect(screen.getByText(/3 of \d+ institutions still need a reviewable catalog record/)).toBeTruthy()
   })
 })
 

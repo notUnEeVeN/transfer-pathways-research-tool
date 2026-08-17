@@ -21,6 +21,7 @@ const {
 } = require('../degreeSlots');
 const { categoryOfFor, fineCategoriesFor } = require('../majorCourseTypes');
 const { assistCourseCategoryCoverage } = require('../assistCourseBarriers');
+const { computeTransferBudget } = require('../degreeTransferBudget');
 const { projectPrereqEdges } = require('../prereqGraph');
 const { majorDocumentClause } = require('../../config/majorDocumentScope');
 
@@ -181,8 +182,9 @@ function receiverParentIds(receiver) {
 
 // ── reference-table joins ──
 
-async function loadRefs(db) {
-  const institutions = await db.collection('assist_institutions').find().toArray();
+async function loadRefs(db, state = null) {
+  const institutions = await db.collection('assist_institutions')
+    .find(stateClause(state)).toArray();
   const universities = institutions.filter((row) => row.kind === 'university');
   const colleges = institutions.filter((row) => row.kind === 'community_college');
   return {
@@ -340,6 +342,7 @@ const { pairClause } = require('../majorVisibility');
 const {
   getMajor, listMajors, programPairs, programPairClause,
 } = require('../../config/majors');
+const { stateClause } = require('../../config/stateScope');
 
 // The configured CS entry is the sole compatibility target for old
 // pin=paper/settings URLs. Both aliases now mean the same canonical nine
@@ -912,12 +915,32 @@ async function degreeRequirementCoverageData(db, {
       }
       const ccGeAreas = mergeGeAreas(collegeIds, geAreasByCollege);
       const evaluated = buildDegreeGroups(degree.requirement_groups,
-        { articulated, articulatedRequirements, ccGeAreas, universityCoursesById, categoryOf });
+        { articulated, articulatedRequirements, ccGeAreas, universityCoursesById, categoryOf,
+          excludeGeFromCategories: Boolean(getMajor(majorSlug)?.courseTypes?.excludeGeGroups) });
       const pctSlots = evaluated.total
         ? +((evaluated.covered / evaluated.total) * 100).toFixed(1)
         : null;
-      const pctUnits = evaluated.units.total
-        ? +((evaluated.units.covered / evaluated.units.total) * 100).toFixed(1)
+      // The heatmap builds its own groups rather than going through
+      // degreeCoverage, so the same correction has to be made here or the Data
+      // tab and this figure disagree about one college.
+      //
+      // Dividing covered by modeled units was wrong twice over. The denominator
+      // moved per college — an Or group collapses to whichever path that college
+      // covers best, so UC Davis Biology was measured against 180 units at
+      // American River and 190 at Barstow, making rows of one heatmap
+      // incomparable. And the numerator could exceed what a student may carry:
+      // Allan Hancock read 109 covered units against a 105-unit cap.
+      const budget = computeTransferBudget(degree, { satisfiedUnits: evaluated.units.covered });
+      const unitTotal = Number(degree.total_units) || evaluated.units.total;
+      // A corpus can declare that the California unit-budget model does not
+      // describe it (Massachusetts: no transfer cap, no GE netting — the
+      // model computes negative coverage). Its rows then carry NO unit-lens
+      // numbers at all, so no client — current or stale — can render unit
+      // garbage; the stated total stays, because it is real.
+      const unitLensModeled = getMajor(majorSlug)?.capabilities?.unitCoverage !== false;
+      const unitCovered = unitLensModeled ? Math.min(budget.transferred, unitTotal) : null;
+      const pctUnits = unitLensModeled && unitTotal
+        ? +((unitCovered / unitTotal) * 100).toFixed(1)
         : null;
       // Keyed by position, not title: a template group may carry no title, and
       // several untitled groups must not collapse into one bucket.
@@ -960,9 +983,37 @@ async function degreeRequirementCoverageData(db, {
         degree_template_updated_at: degree.updated_at ?? null,
         degree_unit_system: unitSystem,
         degree_units_stated_minimum: degree.total_units ?? null,
-        degree_units_modeled_total: evaluated.units.total,
-        degree_units_with_equivalent: evaluated.units.covered,
+        degree_units_modeled_total: unitTotal,
+        degree_units_with_equivalent: unitCovered,
+        // Requirements this college discharges, before the cap. Distinct from
+        // units carried: satisfying every requirement does not mean bringing
+        // the units that work was worth.
+        degree_units_satisfied: unitLensModeled ? budget.satisfied : null,
+        degree_transfer_cap: unitLensModeled ? budget.cap : null,
+        degree_units_binding: unitLensModeled ? budget.binding : null,
         pct_degree_units: pctUnits,
+        // The Massachusetts paper's published Figure 1 population — named
+        // course requirements at every level with general education excluded —
+        // counted the paper's way: binary per required COURSE (series
+        // expanded, choose-N at the stated ask, unit-only blocks at the
+        // four-unit assumption). Kept beside our whole-degree measure so the
+        // figure can show the paper-equivalent state without giving up the
+        // cap-aware headline.
+        named_requirement_courses_total: evaluated.named_requirements.courses.total,
+        named_requirement_courses_articulated: evaluated.named_requirements.courses.covered,
+        pct_named_requirement_courses: evaluated.named_requirements.courses.total
+          ? +((evaluated.named_requirements.courses.covered
+            / evaluated.named_requirements.courses.total) * 100).toFixed(1)
+          : null,
+        // The GE-included variant — our extension for GE-heavy majors, where
+        // lower-division general education counts as articulable everywhere
+        // (certification clears it) and upper-division GE counts against.
+        named_requirement_courses_with_ge_total: evaluated.named_requirements.courses_with_ge.total,
+        named_requirement_courses_with_ge_articulated: evaluated.named_requirements.courses_with_ge.covered,
+        pct_named_requirement_courses_with_ge: evaluated.named_requirements.courses_with_ge.total
+          ? +((evaluated.named_requirements.courses_with_ge.covered
+            / evaluated.named_requirements.courses_with_ge.total) * 100).toFixed(1)
+          : null,
         // Slot coverage remains available as a secondary description of the
         // requirement structure. The legacy names are kept for compatibility.
         degree_total_units: degree.total_units ?? null,
@@ -1020,7 +1071,7 @@ async function coverageData(db, auditDb, {
   groupBy = 'college', requirements = 'assist', pin = null,
   requireCompleteDistrictMatrix = false,
 } = {}) {
-  const refs = await loadRefs(db);
+  const refs = await loadRefs(db, majorSlug ? getMajor(majorSlug)?.state : null);
   if (requirements === 'degree') {
     return degreeRequirementCoverageData(db, {
       majorSlug, majorPrograms, majorContains, visiblePairs, groupBy, pin,
@@ -1186,7 +1237,7 @@ async function requirementComparisonData(db, auditDb, { schoolId, major, communi
   schoolId = Number(schoolId);
   communityCollegeId = Number(communityCollegeId);
   const wantedMajor = String(major || '').trim();
-  const configuredMajor = listMajors().find((entry) =>
+  const configuredMajor = listMajors({ includeStates: true }).find((entry) =>
     (entry.programs[schoolId] || []).some((program) => String(program).trim() === wantedMajor));
   const [requirementsBySchool, curation] = await Promise.all([
     loadTransferRequirements(db, configuredMajor?.slug || null),
@@ -1394,7 +1445,7 @@ async function creditLossData(db, auditDb, {
   majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
 } = {}) {
   const curation = await loadCuration(auditDb, majorSlug);
-  const refs = await loadRefs(db);
+  const refs = await loadRefs(db, majorSlug ? getMajor(majorSlug)?.state : null);
   const units = await loadCcCourseUnits(db);
   const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);
@@ -1641,7 +1692,7 @@ async function timeToDegreeData(db, auditDb, {
   majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
 } = {}) {
   const curation = await loadCuration(auditDb, majorSlug);
-  const refs = await loadRefs(db);
+  const refs = await loadRefs(db, majorSlug ? getMajor(majorSlug)?.state : null);
   const units = await loadCcCourseUnits(db);
   const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);

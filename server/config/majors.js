@@ -106,6 +106,8 @@ const MAJORS = [
       paperBaselines: true,
       transferMinimums: true,
       degreeTemplates: true,
+      // The California unit-budget model (70-unit cap, GE netting) applies.
+      unitCoverage: true,
       courseCategories: true,
       // Rule-based receiver typing for MA Figure 2 / CA Figure 5. Distinct
       // from courseCategories, which needs hand-curated per-course tags.
@@ -221,6 +223,8 @@ const MAJORS = [
       // there are no hand-curated website minimums to gather.
       transferMinimums: false,
       degreeTemplates: true,
+      // The California unit-budget model (70-unit cap, GE netting) applies.
+      unitCoverage: true,
       // Course-category validation is separate from the prerequisite mapping.
       courseCategories: false,
       courseTypeFigures: true,
@@ -329,7 +333,168 @@ const MAJORS = [
       // there are no hand-curated website minimums to gather.
       transferMinimums: false,
       degreeTemplates: true,
+      // The California unit-budget model (70-unit cap, GE netting) applies.
+      unitCoverage: true,
       // Course-category validation is separate from the prerequisite mapping.
+      courseCategories: false,
+      courseTypeFigures: true,
+      prerequisites: true,
+      snapshots: [],
+    },
+  },
+  {
+    // Massachusetts, imported from the "Lost in Transfer" paper's recovered
+    // workbooks (see server/data/ma/PROVENANCE.md). A state-scoped major: the
+    // Massachusetts tab addresses it directly and the default picker payload
+    // never offers it, so it cannot leak into a California analysis. Reserved
+    // ids: universities 9001–9011, community colleges 9101–9115.
+    slug: 'ma-cs',
+    label: 'Computer Science (MA)',
+    state: 'ma',
+    match: 'computer science',
+    programs: Object.fromEntries(
+      Array.from({ length: 11 }, (_, index) => [9001 + index, ['Computer Science, B.S.']]),
+    ),
+    // The paper's Q2 cohort is each college's AS in CS; the importer stores
+    // them in the local_as slot.
+    degreeAnalysisSlots: ['local_as'],
+    categories: [
+      { key: 'intro_programming', axis: 'computing' },
+      { key: 'data_structures', axis: 'computing' },
+      { key: 'other_computing', axis: 'computing' },
+      { key: 'calculus', axis: 'math' },
+      { key: 'other_math', axis: 'math' },
+      { key: 'science', axis: 'science' },
+      { key: 'non_stem', axis: 'non_stem' },
+    ],
+    broadAxes: ['computing', 'math', 'science', 'non_stem'],
+    // Massachusetts course codes type through the CS module's rules
+    // (COMP/CSCI/CSC/CIS/CAIS/CICS to computing, MATH/MAT/MTH/MA to math,
+    // and so on — the MA prefixes are in the module's sets).
+    courseTypes: {
+      module: 'cs',
+      // The paper's Figure 2 matrix carries no GE columns, so the GE-titled
+      // template group stays out of this corpus's course-type tallies —
+      // matching the named-requirement population. California deliberately
+      // does not set this: its verified figure counts GE blocks in Non-STEM.
+      excludeGeGroups: true,
+      axes: {
+        faithful: [
+          { key: 'computing', label: 'Computing', categories: ['computing'] },
+          { key: 'math', label: 'Math', categories: ['math'] },
+          { key: 'science', label: 'Science', categories: ['science'] },
+          { key: 'non_stem', label: 'Non-STEM', categories: ['non_stem'] },
+        ],
+      },
+    },
+    conceptDisciplines: [],
+    prerequisiteConcepts: [],
+    capabilities: {
+      assistAgreements: true,
+      articulationVerdicts: false,
+      caCreditLossArtifact: false,
+      agreementPathways: false,
+      asDegrees: true,
+      paperBaselines: true,
+      transferMinimums: false,
+      degreeTemplates: true,
+      // The California unit-budget model does not describe this corpus (no
+      // transfer cap, no GE netting; it computes negative coverage). The
+      // heatmap's unit lenses are gated off; the paper's course lens is the
+      // native measure.
+      unitCoverage: false,
+      courseCategories: false,
+      courseTypeFigures: true,
+      prerequisites: false,
+      snapshots: [],
+    },
+  },
+  {
+    // Virginia. Unlike Massachusetts, this corpus is ours: we gathered the
+    // degree requirements and the course equivalencies, and Roy Martinez
+    // verifies the associate degrees, so the California verified/unverified
+    // cohort applies here and the paper-source controls do not.
+    //
+    // Agreements are DERIVED rather than published — Transfer Virginia issues
+    // course equivalencies and degree requirements separately and never joins
+    // them. `scripts/va/buildVaAgreements.js` performs the join; re-run it
+    // whenever va_courses or va_requirements change.
+    //
+    // Reserved ids: universities 9201–9233 (assigned across all 33 four-years
+    // in name order, so the sixteen carrying a CS degree are sparse),
+    // community colleges 9301–9324.
+    slug: 'va-cs',
+    label: 'Computer Science (VA)',
+    state: 'va',
+    match: 'computer science',
+    programs: {
+      9205: ['Computer Science, B.S.'], // Bridgewater College
+      9206: ['Computer Science, B.S.'], // Christopher Newport University
+      9210: ['Computer Science, B.S.'], // George Mason University
+      9213: ['Computer Science, B.S.'], // James Madison University
+      9214: ['Computer Science, B.S.'], // Longwood University
+      9217: ['Computer Science, B.S.'], // Norfolk State University
+      9218: ['Computer Science, B.S.'], // Old Dominion University
+      9219: ['Computer Science, B.S.'], // Radford University
+      9221: ['Computer Science, B.S.'], // Randolph-Macon College
+      9224: ['Computer Science, B.S.'], // Shenandoah University
+      9226: ['Computer Science, B.S.'], // The University of Virginia's College at Wise
+      9228: ['Computer Science, B.S.'], // University of Mary Washington
+      9229: ['Computer Science, B.S.'], // Virginia Commonwealth University
+      9230: ['Computer Science, B.S.'], // Virginia Polytechnic Institute and State University
+      9231: ['Computer Science, B.S.'], // Virginia State University
+      9233: ['Computer Science, B.S.'], // William & Mary
+      // The University of Virginia and Virginia Military Institute publish CS
+      // degree requirements but no course equivalencies at all, so they carry
+      // no agreements and are absent here rather than reading as zero.
+    },
+    // Virginia's community-college cohort is the VCCS transfer-oriented
+    // associate degree, stored in the local_as slot by the collection pipeline.
+    degreeAnalysisSlots: ['local_as'],
+    categories: [
+      { key: 'intro_programming', axis: 'computing' },
+      { key: 'data_structures', axis: 'computing' },
+      { key: 'other_computing', axis: 'computing' },
+      { key: 'calculus', axis: 'math' },
+      { key: 'other_math', axis: 'math' },
+      { key: 'science', axis: 'science' },
+      { key: 'non_stem', axis: 'non_stem' },
+    ],
+    broadAxes: ['computing', 'math', 'science', 'non_stem'],
+    courseTypes: {
+      module: 'cs',
+      // Virginia marks its breadth work structurally (ge_area receivers on
+      // breadth-tier sections) rather than by block title, and the shared
+      // reader already excludes those from the named-requirement population,
+      // so no corpus-specific exclusion is needed here.
+      axes: {
+        faithful: [
+          { key: 'computing', label: 'Computing', categories: ['computing'] },
+          { key: 'math', label: 'Math', categories: ['math'] },
+          { key: 'science', label: 'Science', categories: ['science'] },
+          { key: 'non_stem', label: 'Non-STEM', categories: ['non_stem'] },
+        ],
+      },
+    },
+    conceptDisciplines: [],
+    prerequisiteConcepts: [],
+    capabilities: {
+      assistAgreements: true,
+      articulationVerdicts: false,
+      caCreditLossArtifact: false,
+      agreementPathways: false,
+      asDegrees: true,
+      // No external paper publishes per-cell values for this corpus, so there
+      // is nothing to compare against and no source selector. This flag is
+      // what separates a paper import (Massachusetts) from data we gathered
+      // ourselves: it keeps the verified-cohort control on for Virginia.
+      paperBaselines: false,
+      transferMinimums: false,
+      degreeTemplates: true,
+      // Virginia publishes no transfer-unit cap analogous to California's 70
+      // units, and we have not modelled one, so the unit lenses stay off until
+      // that policy is researched. The course lens is the native measure.
+      unitCoverage: false,
       courseCategories: false,
       courseTypeFigures: true,
       prerequisites: true,
@@ -344,8 +509,15 @@ function getMajor(slug) {
   return bySlug.get(String(slug ?? '')) || null;
 }
 
-function listMajors() {
-  return [...MAJORS];
+/**
+ * Majors for iteration. The default excludes state-scoped majors — every
+ * historical caller is a California-console feature (audit rollups, visible
+ * pairs, admin inventories) that must not grow rows when a new state lands.
+ * Validation and reverse-lookup sites that need every ADDRESSABLE slug pass
+ * `{ includeStates: true }`.
+ */
+function listMajors({ includeStates = false } = {}) {
+  return includeStates ? [...MAJORS] : MAJORS.filter((major) => !major.state);
 }
 
 function defaultMajor() {
@@ -392,8 +564,15 @@ function programPairClause(majorOrPrograms, {
 }
 
 /** The majors payload for GET /api/majors. Every field here is JSON-safe. */
-function serializeMajors() {
-  return [...MAJORS];
+/**
+ * Majors for a picker payload. The default payload is the California
+ * console's picker and excludes state-scoped majors; a state argument
+ * returns that state's majors alone (the Massachusetts tab asks for
+ * `{ state: 'ma' }`).
+ */
+function serializeMajors({ state } = {}) {
+  if (state) return MAJORS.filter((major) => major.state === state);
+  return MAJORS.filter((major) => !major.state);
 }
 
 /**

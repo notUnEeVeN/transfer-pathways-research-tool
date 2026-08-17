@@ -12,7 +12,7 @@ CS sibling program to Atlas cannot change this matrix.
 ## How to read this note
 
 For the condensed memory-refresh version, start with
-[`../visualization-quick-reference.md`](../visualization-quick-reference.md).
+[`../visualizations.md`](../visualizations.md).
 This page is the full receipt trail for the 99.5% heatmap replication result:
 the exact computation rule, the three gained cells, and the course-level
 evidence behind each one.

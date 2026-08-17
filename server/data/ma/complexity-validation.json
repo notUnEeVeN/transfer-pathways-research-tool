@@ -1,0 +1,628 @@
+{
+  "generated_at": "2026-08-15T18:01:06.528Z",
+  "method": "Their README: complexity computed by curricularanalytics.org (the web front end for CurricularAnalytics.jl, implementing Heileman et al. 2018). Their recovered pathway workbooks carry the prerequisite graph those scores were computed from, so the figure is reproducible.",
+  "coreq_treatment": {
+    "with_coreqs": {
+      "compared": 60,
+      "exact": 58,
+      "mean_delta": 0.133
+    },
+    "without_coreqs": {
+      "compared": 60,
+      "exact": 17,
+      "mean_delta": -9.9
+    },
+    "chosen": "coreqs are edges"
+  },
+  "misses": [
+    {
+      "pathway": "Bridgewater (resident)",
+      "ours": 164,
+      "theirs": 160,
+      "delta": 4,
+      "tab_credits": 123,
+      "their_published_hours": 120,
+      "tab_drifted": true
+    },
+    {
+      "pathway": "UMass Dartmouth x Bristol",
+      "ours": 174,
+      "theirs": 170,
+      "delta": 4,
+      "tab_credits": 132,
+      "their_published_hours": 132,
+      "tab_drifted": false
+    }
+  ],
+  "headline_plus_15": {
+    "over_scored_pathways": 15.94,
+    "over_all_pathways": 10.34
+  },
+  "pathways": [
+    {
+      "pathway": "Bridgewater (resident)",
+      "uni": "Bridgewater",
+      "cc": null,
+      "ours": 164,
+      "theirs": 160,
+      "their_hours": 120
+    },
+    {
+      "pathway": "Bridgewater x Bristol",
+      "uni": "Bridgewater",
+      "cc": "Bristol",
+      "ours": 165,
+      "theirs": 165,
+      "their_hours": 130
+    },
+    {
+      "pathway": "Bridgewater x Bunker Hill",
+      "uni": "Bridgewater",
+      "cc": "Bunker Hill",
+      "ours": 180,
+      "theirs": 180,
+      "their_hours": 149
+    },
+    {
+      "pathway": "Bridgewater x Cape Cod",
+      "uni": "Bridgewater",
+      "cc": "Cape Cod",
+      "ours": 113,
+      "theirs": 113,
+      "their_hours": 131
+    },
+    {
+      "pathway": "Bridgewater x MassBay",
+      "uni": "Bridgewater",
+      "cc": "MassBay",
+      "ours": 108,
+      "theirs": 108,
+      "their_hours": 132
+    },
+    {
+      "pathway": "Bridgewater x Massasoit",
+      "uni": "Bridgewater",
+      "cc": "Massasoit",
+      "ours": 70,
+      "theirs": null,
+      "their_hours": 125
+    },
+    {
+      "pathway": "Bridgewater x North Shore",
+      "uni": "Bridgewater",
+      "cc": "North Shore",
+      "ours": 129,
+      "theirs": 129,
+      "their_hours": 133
+    },
+    {
+      "pathway": "Bridgewater x Roxbury",
+      "uni": "Bridgewater",
+      "cc": "Roxbury",
+      "ours": 140,
+      "theirs": null,
+      "their_hours": 155
+    },
+    {
+      "pathway": "Fitchburg (resident)",
+      "uni": "Fitchburg",
+      "cc": null,
+      "ours": 138,
+      "theirs": 138,
+      "their_hours": 120
+    },
+    {
+      "pathway": "Fitchburg x Bunker Hill",
+      "uni": "Fitchburg",
+      "cc": "Bunker Hill",
+      "ours": 179,
+      "theirs": 179,
+      "their_hours": 126
+    },
+    {
+      "pathway": "Fitchburg x MassBay",
+      "uni": "Fitchburg",
+      "cc": "MassBay",
+      "ours": 102,
+      "theirs": 102,
+      "their_hours": 120
+    },
+    {
+      "pathway": "Fitchburg x Middlesex",
+      "uni": "Fitchburg",
+      "cc": "Middlesex",
+      "ours": 122,
+      "theirs": 122,
+      "their_hours": 120
+    },
+    {
+      "pathway": "Fitchburg x Mount Wachusett",
+      "uni": "Fitchburg",
+      "cc": "Mount Wachusett",
+      "ours": 119,
+      "theirs": 119,
+      "their_hours": 125
+    },
+    {
+      "pathway": "Fitchburg x Quinsigamond",
+      "uni": "Fitchburg",
+      "cc": "Quinsigamond",
+      "ours": 120,
+      "theirs": 120,
+      "their_hours": 120
+    },
+    {
+      "pathway": "Fitchburg x Roxbury",
+      "uni": "Fitchburg",
+      "cc": "Roxbury",
+      "ours": 130,
+      "theirs": null,
+      "their_hours": 150
+    },
+    {
+      "pathway": "Framingham (resident)",
+      "uni": "Framingham",
+      "cc": null,
+      "ours": 139,
+      "theirs": 139,
+      "their_hours": 122
+    },
+    {
+      "pathway": "Framingham x Bunker Hill",
+      "uni": "Framingham",
+      "cc": "Bunker Hill",
+      "ours": 181,
+      "theirs": 181,
+      "their_hours": 155
+    },
+    {
+      "pathway": "Framingham x MassBay",
+      "uni": "Framingham",
+      "cc": "MassBay",
+      "ours": 186,
+      "theirs": 186,
+      "their_hours": 162
+    },
+    {
+      "pathway": "Framingham x Massasoit",
+      "uni": "Framingham",
+      "cc": "Massasoit",
+      "ours": 148,
+      "theirs": null,
+      "their_hours": 144
+    },
+    {
+      "pathway": "Framingham x Middlesex",
+      "uni": "Framingham",
+      "cc": "Middlesex",
+      "ours": 196,
+      "theirs": 196,
+      "their_hours": 159
+    },
+    {
+      "pathway": "Framingham x Mount Wachusett",
+      "uni": "Framingham",
+      "cc": "Mount Wachusett",
+      "ours": 182,
+      "theirs": 182,
+      "their_hours": 153
+    },
+    {
+      "pathway": "Framingham x North Shore",
+      "uni": "Framingham",
+      "cc": "North Shore",
+      "ours": 186,
+      "theirs": 186,
+      "their_hours": 154
+    },
+    {
+      "pathway": "Framingham x Quinsigamond",
+      "uni": "Framingham",
+      "cc": "Quinsigamond",
+      "ours": 179,
+      "theirs": 179,
+      "their_hours": 146
+    },
+    {
+      "pathway": "Framingham x Roxbury",
+      "uni": "Framingham",
+      "cc": "Roxbury",
+      "ours": 152,
+      "theirs": null,
+      "their_hours": 158
+    },
+    {
+      "pathway": "MCLA (resident)",
+      "uni": "MCLA",
+      "cc": null,
+      "ours": 160,
+      "theirs": 160,
+      "their_hours": 120
+    },
+    {
+      "pathway": "MCLA x Berkshire",
+      "uni": "MCLA",
+      "cc": "Berkshire",
+      "ours": 210,
+      "theirs": 210,
+      "their_hours": 146
+    },
+    {
+      "pathway": "MCLA x Greenfield",
+      "uni": "MCLA",
+      "cc": "Greenfield",
+      "ours": 218,
+      "theirs": 218,
+      "their_hours": 147
+    },
+    {
+      "pathway": "Salem (resident)",
+      "uni": "Salem",
+      "cc": null,
+      "ours": 157,
+      "theirs": 157,
+      "their_hours": 121
+    },
+    {
+      "pathway": "Salem x Bunker Hill",
+      "uni": "Salem",
+      "cc": "Bunker Hill",
+      "ours": 164,
+      "theirs": 164,
+      "their_hours": 129
+    },
+    {
+      "pathway": "Salem x MassBay",
+      "uni": "Salem",
+      "cc": "MassBay",
+      "ours": 140,
+      "theirs": 140,
+      "their_hours": 125
+    },
+    {
+      "pathway": "Salem x Massasoit",
+      "uni": "Salem",
+      "cc": "Massasoit",
+      "ours": 148,
+      "theirs": null,
+      "their_hours": 127
+    },
+    {
+      "pathway": "Salem x Middlesex",
+      "uni": "Salem",
+      "cc": "Middlesex",
+      "ours": 195,
+      "theirs": 195,
+      "their_hours": 142
+    },
+    {
+      "pathway": "Salem x North Shore",
+      "uni": "Salem",
+      "cc": "North Shore",
+      "ours": 128,
+      "theirs": 128,
+      "their_hours": 126
+    },
+    {
+      "pathway": "Salem x Northern Essex",
+      "uni": "Salem",
+      "cc": "Northern Essex",
+      "ours": 211,
+      "theirs": 211,
+      "their_hours": 131
+    },
+    {
+      "pathway": "Salem x Roxbury",
+      "uni": "Salem",
+      "cc": "Roxbury",
+      "ours": 165,
+      "theirs": null,
+      "their_hours": 152
+    },
+    {
+      "pathway": "UMass Amherst (resident)",
+      "uni": "UMass Amherst",
+      "cc": null,
+      "ours": 185,
+      "theirs": 185,
+      "their_hours": 121
+    },
+    {
+      "pathway": "UMass Amherst x Greenfield",
+      "uni": "UMass Amherst",
+      "cc": "Greenfield",
+      "ours": 191,
+      "theirs": 191,
+      "their_hours": 122
+    },
+    {
+      "pathway": "UMass Amherst x Holyoke",
+      "uni": "UMass Amherst",
+      "cc": "Holyoke",
+      "ours": 210,
+      "theirs": 210,
+      "their_hours": 125
+    },
+    {
+      "pathway": "UMass Amherst x Springfield Technical",
+      "uni": "UMass Amherst",
+      "cc": "Springfield Technical",
+      "ours": 219,
+      "theirs": 219,
+      "their_hours": 131
+    },
+    {
+      "pathway": "UMass Boston (resident)",
+      "uni": "UMass Boston",
+      "cc": null,
+      "ours": 169,
+      "theirs": 169,
+      "their_hours": 120
+    },
+    {
+      "pathway": "UMass Boston x Bristol",
+      "uni": "UMass Boston",
+      "cc": "Bristol",
+      "ours": 170,
+      "theirs": 170,
+      "their_hours": 146
+    },
+    {
+      "pathway": "UMass Boston x Bunker Hill",
+      "uni": "UMass Boston",
+      "cc": "Bunker Hill",
+      "ours": 192,
+      "theirs": 192,
+      "their_hours": 126
+    },
+    {
+      "pathway": "UMass Boston x MassBay",
+      "uni": "UMass Boston",
+      "cc": "MassBay",
+      "ours": 181,
+      "theirs": 181,
+      "their_hours": 127
+    },
+    {
+      "pathway": "UMass Boston x Massasoit",
+      "uni": "UMass Boston",
+      "cc": "Massasoit",
+      "ours": 146,
+      "theirs": null,
+      "their_hours": 141
+    },
+    {
+      "pathway": "UMass Boston x Middlesex",
+      "uni": "UMass Boston",
+      "cc": "Middlesex",
+      "ours": 203,
+      "theirs": 203,
+      "their_hours": 142
+    },
+    {
+      "pathway": "UMass Boston x North Shore",
+      "uni": "UMass Boston",
+      "cc": "North Shore",
+      "ours": 204,
+      "theirs": 204,
+      "their_hours": 144
+    },
+    {
+      "pathway": "UMass Boston x Northern Essex",
+      "uni": "UMass Boston",
+      "cc": "Northern Essex",
+      "ours": 201,
+      "theirs": 201,
+      "their_hours": 155
+    },
+    {
+      "pathway": "UMass Boston x Roxbury",
+      "uni": "UMass Boston",
+      "cc": "Roxbury",
+      "ours": 167,
+      "theirs": null,
+      "their_hours": 159
+    },
+    {
+      "pathway": "UMass Dartmouth (resident)",
+      "uni": "UMass Dartmouth",
+      "cc": null,
+      "ours": 202,
+      "theirs": 202,
+      "their_hours": 120
+    },
+    {
+      "pathway": "UMass Dartmouth x Bristol",
+      "uni": "UMass Dartmouth",
+      "cc": "Bristol",
+      "ours": 174,
+      "theirs": 170,
+      "their_hours": 132
+    },
+    {
+      "pathway": "UMass Dartmouth x Cape Cod",
+      "uni": "UMass Dartmouth",
+      "cc": "Cape Cod",
+      "ours": 183,
+      "theirs": 183,
+      "their_hours": 136
+    },
+    {
+      "pathway": "UMass Dartmouth x Massasoit",
+      "uni": "UMass Dartmouth",
+      "cc": "Massasoit",
+      "ours": 159,
+      "theirs": null,
+      "their_hours": 151
+    },
+    {
+      "pathway": "UMass Lowell (resident)",
+      "uni": "UMass Lowell",
+      "cc": null,
+      "ours": 143,
+      "theirs": 143,
+      "their_hours": 121
+    },
+    {
+      "pathway": "UMass Lowell x Bunker Hill",
+      "uni": "UMass Lowell",
+      "cc": "Bunker Hill",
+      "ours": 169,
+      "theirs": 169,
+      "their_hours": 124
+    },
+    {
+      "pathway": "UMass Lowell x MassBay",
+      "uni": "UMass Lowell",
+      "cc": "MassBay",
+      "ours": 157,
+      "theirs": 157,
+      "their_hours": 125
+    },
+    {
+      "pathway": "UMass Lowell x Middlesex",
+      "uni": "UMass Lowell",
+      "cc": "Middlesex",
+      "ours": 174,
+      "theirs": 174,
+      "their_hours": 122
+    },
+    {
+      "pathway": "UMass Lowell x North Shore",
+      "uni": "UMass Lowell",
+      "cc": "North Shore",
+      "ours": 162,
+      "theirs": 162,
+      "their_hours": 126
+    },
+    {
+      "pathway": "UMass Lowell x Northern Essex",
+      "uni": "UMass Lowell",
+      "cc": "Northern Essex",
+      "ours": 215,
+      "theirs": 215,
+      "their_hours": 142
+    },
+    {
+      "pathway": "UMass Lowell x Quinsigamond",
+      "uni": "UMass Lowell",
+      "cc": "Quinsigamond",
+      "ours": 159,
+      "theirs": 159,
+      "their_hours": 122
+    },
+    {
+      "pathway": "UMass Lowell x Roxbury",
+      "uni": "UMass Lowell",
+      "cc": "Roxbury",
+      "ours": 153,
+      "theirs": null,
+      "their_hours": 152
+    },
+    {
+      "pathway": "Westfield (resident)",
+      "uni": "Westfield",
+      "cc": null,
+      "ours": 150,
+      "theirs": 150,
+      "their_hours": 120
+    },
+    {
+      "pathway": "Westfield x Berkshire",
+      "uni": "Westfield",
+      "cc": "Berkshire",
+      "ours": 197,
+      "theirs": 197,
+      "their_hours": 151
+    },
+    {
+      "pathway": "Westfield x Greenfield",
+      "uni": "Westfield",
+      "cc": "Greenfield",
+      "ours": 154,
+      "theirs": 154,
+      "their_hours": 134
+    },
+    {
+      "pathway": "Westfield x Holyoke",
+      "uni": "Westfield",
+      "cc": "Holyoke",
+      "ours": 177,
+      "theirs": 177,
+      "their_hours": 144
+    },
+    {
+      "pathway": "Westfield x Springfield Technical",
+      "uni": "Westfield",
+      "cc": "Springfield Technical",
+      "ours": 180,
+      "theirs": 180,
+      "their_hours": 134
+    },
+    {
+      "pathway": "Worcester (resident)",
+      "uni": "Worcester",
+      "cc": null,
+      "ours": 105,
+      "theirs": 105,
+      "their_hours": 120
+    },
+    {
+      "pathway": "Worcester x MassBay",
+      "uni": "Worcester",
+      "cc": "MassBay",
+      "ours": 104,
+      "theirs": 104,
+      "their_hours": 128
+    },
+    {
+      "pathway": "Worcester x Middlesex",
+      "uni": "Worcester",
+      "cc": "Middlesex",
+      "ours": 118,
+      "theirs": 118,
+      "their_hours": 127
+    },
+    {
+      "pathway": "Worcester x Mount Wachusett",
+      "uni": "Worcester",
+      "cc": "Mount Wachusett",
+      "ours": 128,
+      "theirs": 128,
+      "their_hours": 132
+    },
+    {
+      "pathway": "Worcester x Quinsigamond",
+      "uni": "Worcester",
+      "cc": "Quinsigamond",
+      "ours": 96,
+      "theirs": 96,
+      "their_hours": 120
+    },
+    {
+      "pathway": "Worcester x Roxbury",
+      "uni": "Worcester",
+      "cc": "Roxbury",
+      "ours": 110,
+      "theirs": null,
+      "their_hours": 145
+    },
+    {
+      "pathway": "Worcester x Springfield Technical",
+      "uni": "Worcester",
+      "cc": "Springfield Technical",
+      "ours": 135,
+      "theirs": 135,
+      "their_hours": 132
+    }
+  ],
+  "figure_cell_misses": [
+    {
+      "uni": "UMass Amherst",
+      "cc": "Springfield Technical",
+      "printed_delta": -28,
+      "tab_delta": 34,
+      "note": "The published Figure 6 prints -28 for this cell; their own Curricular Complexity tab computes +34 (score 219 vs the 185 resident), and our recomputation from their workbook reproduces 219 exactly. The proof is their own Average row: the printed Amherst average +1.0 equals (6 + 25 - 28) / 3 to the decimal - only the -28 cell produces it - while averaging their own tab gives +21.7. Figure 7 repeats the +1.0. Every other university printed average matches its tab to rounding, so this is the only such cell. Identified 2026-08-17 by reconciling printed column averages against the tab."
+    }
+  ]
+}

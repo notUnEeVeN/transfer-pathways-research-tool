@@ -1,12 +1,82 @@
-# State expansion feasibility
+# State expansion — survey, feasibility, and outcome
 
 **The test:** can we get machine-manipulable data of the form
 *"from this community college, to this university, for this major — take these
 courses"*? Everything else is secondary. A state that has it is integrable; a
-state that doesn't is not, however clean its API.
+state that doesn't is not, however clean its API. And does the state record
+what a college is **missing**? Negative space is what every access measure is
+computed from.
 
 Every claim below was verified by fetching the system, not from documentation.
 Investigated 2026-07-27.
+
+> ## ⚠ Outcome — read this before the recommendations below
+>
+> This document recommended **Maryland (ARTSYS)** and parked Virginia. **That
+> decision was later reversed.** Maryland was built, then parked under
+> [`deprecated/maryland/`](../deprecated/maryland/) and is not wired into the
+> application. **Virginia shipped instead** and is a live state tab
+> (`va_courses`, `va_requirements`, `frontend/src/virginia/`), documented in
+> [`virginia-courses.md`](virginia-courses.md),
+> [`virginia-degree-collection.md`](virginia-degree-collection.md), and
+> [`virginia-prerequisite-qa.md`](virginia-prerequisite-qa.md).
+>
+> The live state set is **California, Virginia, Massachusetts**. Everything
+> below is the original research record — accurate about what each state
+> publishes, superseded on which one to build.
+
+## The nine-state survey
+
+Nine state transfer systems, all investigated by fetching them rather than
+reading their documentation.
+
+### Not pursued
+
+| State | Source | Why not |
+| --- | --- | --- |
+| **Louisiana** | [Power BI course equivalency matrix](https://app.powerbi.com/view?r=eyJrIjoiMDE4OTRhYjUtMTc5ZC00ZjdhLWIxZWUtMzk5N2JhMjgyODI3IiwidCI6ImYyNWI1Y2Q1LTI3ZDItNDg2Yy1hZjhjLTU2MTU2NzVkMjU1NCJ9) · Universal Transfer Pathways PDFs | Fully extractable — we pulled all 26,748 rows across three vintages in one call — but it covers only 336 statewide common courses, of which **Computer Science is five**, with no data structures, discrete math or computer organisation. |
+| **Colorado** | [cdhe.colorado.gov](https://cdhe.colorado.gov/students/attending-college/colorado-transfer) | Cleanest data to scrape of any state, but GT Pathways is general education only and CDHE states outright that it *"does not apply to… computer science."* |
+| **Illinois** | [itransfer.org](https://itransfer.org/submitters/searches/) | Widest institutional coverage at 118 colleges and it even publishes a "courses NOT at this institution" report, but the major layer is a statewide recommendation of **no more than four courses**. |
+| **Indiana** | [transferin.net](https://transferin.net/ways-to-earn-credit/college-courses/) | The Core Transfer Library is a course list distributed as PDFs, and the site's own notice dates the data to AY 2024-25. |
+| **Ohio** | [transfercredit.ohio.gov](https://transfercredit.ohio.gov/home) | By far the best machine access — an open, unauthenticated JSON API with ~1.05M equivalency rows and 20 years of history — but no per-pair requirements (the OGTP pathways are statewide PDFs), no recorded absence, no course units, and only **42 Computer Science courses statewide** across 20 of 36 institutions. |
+| **Tennessee** | [tntransferpathway.org](https://www.tntransferpathway.org/) · [tnreconnect.gov](https://tnreconnect.gov/Student/Search-for-Course-Equivalencies) | The Transfer Pathways have genuinely good requirement structure, but it is one statewide curriculum per major published as a PDF, with per-university variation confined to four footnotes. |
+| **Texas** | [ACGM](https://www.highered.texas.gov/) · [texas-direct](https://www.highered.texas.gov/texas-direct/) · [tccns.org](https://tccns.org/) | The ACGM is the best course-identity document we saw anywhere (TCCNS numbers, CIP codes, prerequisites, learning outcomes) and is worth porting on its own merits, but the TCCNS matrix download is behind an institutional login and the Computer Science Field of Study is still listed as *"in progress."* |
+
+A pattern worth noting: most of these states **centralised** articulation behind
+statewide common course numbering, which by design removes the college-to-college
+variation our measure is built on. That is a policy fact, not a data-quality one.
+
+### The two finalists
+
+**Maryland — [artsys.usmd.edu](https://artsys.usmd.edu/)** was the only system
+of the nine publishing a genuine per-pair requirement tree — one document per
+*(community college × receiving university × program)* — with choose-N logic,
+AND/OR alternatives, and an explicit **"No equivalency found."** on every
+requirement a college cannot satisfy, so absence is a published fact rather than
+an inference. Its rigidity made it verifiable: because each guide renders once
+per sending college, the parser could be checked against all 9,600 renderings by
+asserting the receiving structure is identical across them — **zero mismatches**,
+zero unmatched headers, zero fetch errors. Corpus: 9,072 agreements · 367,024
+requirements · 33,084 courses · 16 colleges · 13 receiving universities. *Built,
+then parked — see the outcome box above.*
+
+**Virginia — [transfervirginia.org](https://www.transfervirginia.org/)** is the
+larger and in principle cleaner system: 23 community colleges, 29 receiving
+institutions including privates, both halves public, and an exact join because
+guides and colleges share VCCS course numbering. The original concern was that
+its guides are hand-authored WYSIWYG tables written by 60+ institutions, so
+requirements are prose to be interpreted rather than read — and that some
+universities put **their own course codes in the community-college column**
+(George Mason writes `ENGH 101` where the VCCS course belongs; one row mixes
+both as `PHY 201 & PHYS 202`). *Built and shipped — those traps were addressed
+in the collection pipeline; see [`virginia-degree-collection.md`](virginia-degree-collection.md).*
+
+### The one-line version of the survey
+
+Ohio has the best access but no requirements; Louisiana, Colorado, Illinois,
+Indiana, Tennessee and Texas publish requirements only statewide or not for
+Computer Science; Maryland and Virginia are the only two that publish what a
+college requires *and* what it lacks.
 
 ---
 
@@ -308,7 +378,8 @@ Virginia was checked and resolved (§3.1): good demand structure, 559 public
 guides, but no sending-college dimension. It is a viable *second* state for a
 "required course not taught here" analysis, not a substitute for Maryland.
 
-**Do this next, in order:**
+**Do this next, in order:** *(historical — superseded by the outcome box at the
+top of this document. Maryland was built and then parked; Virginia shipped.)*
 
 1. **Harden the ARTSYS parser** and pull the full 600 × 16 grid to a staging
    collection. The parser in

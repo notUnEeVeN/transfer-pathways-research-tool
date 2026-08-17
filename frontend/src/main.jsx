@@ -40,7 +40,7 @@ createRoot(document.getElementById('root')).render(
       // uc-prereqs-v1: /curated/prerequisites gained campus filtering and now
       // answers with { rows, total } rather than every row in the collection. A
       // persisted response predates both and would rehydrate the whole corpus.
-      buster: `research-console-${packagejson.version}-audit-stats-v2-access-gate-v1-majors-v2-analysis-v3-va-v3-degrees-v3-uc-prereqs-v1`,
+      buster: `research-console-${packagejson.version}-audit-stats-v2-access-gate-v1-majors-v2-analysis-v7-va-v3-degrees-v4-uc-prereqs-v1-ia-v1`,
       dehydrateOptions: {
         // Security/config state and computed analyses must always come from
         // the current server. Catalog/source records still hydrate instantly.

@@ -113,7 +113,13 @@ function Bracket({ conj, children }) {
 // University (receiving) side
 // ---------------------------------------------------------------------------
 
-function ReceivingSide({ receiving, universityCoursesById, done }) {
+// Placeholder pseudo-codes some documents mint for GE and elective blocks
+// (GE-SI, AH&I, ELECTIVE). Under a canonical category they render as a uniform
+// chip instead of masquerading as course codes, so every campus's GE block
+// reads the same way.
+const PLACEHOLDER_CODE = /^(GE(-[A-Z&]+)?|AH&I|ELECTIVE|ELECTIVES)$/i
+
+function ReceivingSide({ receiving, universityCoursesById, done, category }) {
   const lookup = (pid) => universityCoursesById?.[pid] || universityCoursesById?.[String(pid)]
 
   if (receiving.kind === 'series') {
@@ -150,6 +156,24 @@ function ReceivingSide({ receiving, universityCoursesById, done }) {
     )
   } else if (receiving.kind === 'ge_area') {
     item = <CourseItem code={`GE${receiving.code ? ` ${receiving.code}` : ''}`} title={receiving.name} done={done} />
+  } else if (receiving.alternatives?.length > 1) {
+    // A slot resolved to several courses that each satisfy it ("CSE 102 or
+    // CSE 103"). Show the choice rather than one arbitrary winner.
+    return (
+      <Bracket conj={receiving.alternatives_conjunction === 'and' ? 'and' : 'or'}>
+        {receiving.alternatives.map((alt) => (
+          <CourseItem key={alt.code} code={alt.code} title={alt.title}
+            units={alt.units != null ? `${alt.units}u` : null} done={done} />
+        ))}
+      </Bracket>
+    )
+  } else if (receiving.code && !PLACEHOLDER_CODE.test(receiving.code)) {
+    // A block that used to read only as a unit count now names its course.
+    item = <CourseItem code={receiving.code} title={receiving.name} done={done} />
+  } else if (category === 'general-education') {
+    item = <CourseItem code='GE' title={receiving.name} done={done} />
+  } else if (category === 'electives') {
+    item = <CourseItem code='Electives' title={receiving.name} done={done} />
   } else {
     item = <CourseItem code='Requirement' title={receiving.name} done={done} />
   }
@@ -308,7 +332,7 @@ function CategoryMatch({ match }) {
 // Receiver row — requirement  ←  satisfied by
 // ---------------------------------------------------------------------------
 
-function ReceiverRow({ receiver, ctx, rowKey }) {
+function ReceiverRow({ receiver, ctx, rowKey, category = null }) {
   const { courses, userCourses, crossCc, universityCoursesById } = ctx
   const completed = ctx.showCompletion && isReceiverCompleted(receiver, userCourses, crossCc)
   const notArt = receiver.articulation_status === 'not_articulated'
@@ -337,7 +361,7 @@ function ReceiverRow({ receiver, ctx, rowKey }) {
   // no wrapper is introduced on the default path.
   const leftCell = (done) => {
     const receiving = (
-      <ReceivingSide receiving={receiver.receiving} universityCoursesById={universityCoursesById} done={done} />
+      <ReceivingSide receiving={receiver.receiving} universityCoursesById={universityCoursesById} done={done} category={category} />
     )
     if (!marked) return receiving
     return (
@@ -513,8 +537,33 @@ function RequirementSection({ section, group, ctx, soleStat, pooled, groupComple
       headerMark={done ? <CompletionCheck /> : null}
     >
       {shown.map((r, i) => (
-        <ReceiverRow key={i} receiver={r} ctx={ctx} rowKey={`${groupIdx}-${sectionIdx}-${i}`} />
+        <ReceiverRow key={i} receiver={r} ctx={ctx} rowKey={`${groupIdx}-${sectionIdx}-${i}`}
+          category={section.category || null} />
       ))}
+      {/* A block that is a CHOICE rather than a list ("six upper-division
+          Economics electives") carries a derived eligibility rule instead of
+          named courses: which subject counts, and how large the eligible pool
+          is. UC numbering makes the level mechanical — 100 and above is upper
+          division. */}
+      {section.eligibility && (
+        <div className='px-4 py-2.5 text-[13px] text-ink-subtle'>
+          <span className='font-[650] text-ink-default'>
+            {section.eligibility.courses_required != null ? `Any ${section.eligibility.courses_required}` : 'Any'}
+            {section.eligibility.subject !== 'any' ? ` ${section.eligibility.subject}` : ''} course
+            {section.eligibility.courses_required === 1 ? '' : 's'}
+          </span>
+          {section.eligibility.min_course_number >= 100 && <span> numbered {section.eligibility.min_course_number}+</span>}
+          <span> — {section.eligibility.pool_size.toLocaleString()} qualify</span>
+          {section.eligibility.pool_sample?.length > 0 && (
+            <span className='ink-subtle'> · e.g. {section.eligibility.pool_sample.slice(0, 5).join(', ')}</span>
+          )}
+        </div>
+      )}
+      {section.requirement_kind === 'unit-accounting' && (
+        <div className='px-4 py-2.5 text-[13px] text-ink-subtle'>
+          Unit accounting — describes where units are earned, not a course to take.
+        </div>
+      )}
       {hiddenCount > 0 && (
         <button type='button' onClick={() => setExpanded(true)}
           className='w-full px-4 py-2.5 text-left text-[13px] text-ink-subtle hover:text-ink-default hover:bg-surface-hover transition-colors'>

@@ -7,6 +7,7 @@ const { recomputeAsDegreeCoveredConcepts } = require('../services/asDegreeConcep
 const { diffDocs } = require('../services/docDiff');
 const { defaultMajor, getMajor, listMajors } = require('../config/majors');
 const { AS_DEGREE_SLOTS, parseAsDegreeRowId } = require('../config/asDegreeSlots');
+const { stateClause } = require('../config/stateScope');
 
 const COLLECTIONS = Object.freeze({
   institutions: 'assist_institutions',
@@ -69,7 +70,9 @@ function validateDegreeIdentity(canonical) {
 function parseInstitutionId(value, expectedKind = null) {
   const raw = String(value ?? '').trim();
   if (!raw) return null;
-  const match = /^(cc|uc):(\d+)$/.exec(raw);
+  // State-stamped institutions (Massachusetts import) address as
+  // ma:cc:<id> / ma:uni:<id>; the raw string is the stored key.
+  const match = /^(cc|uc):(\d+)$/.exec(raw) || /^ma:(cc|uni):(\d+)$/.exec(raw);
   if (match) {
     const kind = match[1] === 'cc' ? 'community_college' : 'university';
     if (expectedKind && kind !== expectedKind) return null;
@@ -242,7 +245,7 @@ async function validateAsDegree(db, canonical) {
     return 'degree_type must match the slot segment of the row id';
   }
   if (!getMajor(canonical.major_slug)) {
-    return `major_slug must be a configured major (${listMajors().map((m) => m.slug).join(', ')})`;
+    return `major_slug must be a configured major (${listMajors({ includeStates: true }).map((m) => m.slug).join(', ')})`;
   }
   if (canonical.major_slug !== majorSlug) {
     return 'major_slug must match the major segment of the row id';
@@ -379,8 +382,12 @@ exports.listInstitutions = asyncHandler(async (req, res) => {
   const kind = ['community_college', 'university'].includes(req.query.kind)
     ? req.query.kind
     : null;
+  const state = String(req.query.state || '').trim().toLowerCase();
+  if (state && !['ca', 'ma'].includes(state)) {
+    return res.status(400).json({ error: 'state must be ca or ma' });
+  }
   const rows = await req.app.locals.db.collection(COLLECTIONS.institutions)
-    .find(kind ? { kind } : {})
+    .find({ ...(kind ? { kind } : {}), ...stateClause(state) })
     .sort({ name: 1 })
     .toArray();
   res.json({ rows });
@@ -391,11 +398,11 @@ exports.listCourses = asyncHandler(async (req, res) => {
   const parsed = requestedInstitution
     ? parseInstitutionId(
       requestedInstitution,
-      requestedInstitution.startsWith('uc:') ? 'university' : 'community_college'
+      /^(uc|ma:uni):/.test(requestedInstitution) ? 'university' : 'community_college'
     )
     : null;
   if (requestedInstitution && !parsed) {
-    return res.status(400).json({ error: 'institution_id must be cc:<id> or uc:<id>' });
+    return res.status(400).json({ error: 'institution_id must be cc:<id>, uc:<id>, ma:cc:<id>, or ma:uni:<id>' });
   }
 
   const ids = String(req.query.ids || '').split(',').map((id) => id.trim()).filter(Boolean);
@@ -669,7 +676,7 @@ exports.prerequisiteGraph = asyncHandler(async (req, res) => {
   if (majorSlug && !getMajor(majorSlug)) {
     return res.status(400).json({
       error: `unknown major: ${majorSlug}`,
-      known: listMajors().map((major) => major.slug),
+      known: listMajors({ includeStates: true }).map((major) => major.slug),
     });
   }
   const data = await prerequisiteGraphData(req.app.locals.db, {
@@ -761,7 +768,7 @@ exports.asDegrees = asyncHandler(async (req, res) => {
   if (!getMajor(major)) {
     return res.status(400).json({
       error: `unknown major: ${major}`,
-      known: listMajors().map((m) => m.slug),
+      known: listMajors({ includeStates: true }).map((m) => m.slug),
     });
   }
   if (degreeType && !AS_DEGREE_SLOTS.includes(degreeType)) {

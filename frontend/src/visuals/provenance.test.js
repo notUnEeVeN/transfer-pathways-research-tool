@@ -55,13 +55,38 @@ describe('groupGalleryBySource', () => {
     expect(groups[0].meta.label).toBe('CA')
   })
 
-  it('preserves the incoming order within a lane', () => {
+  it('preserves the incoming order for unnumbered items within a lane', () => {
     const groups = groupGalleryBySource([
       analysisItem('ma', 'first'),
       analysisItem('ma', 'second'),
       analysisItem('ma', 'third'),
     ])
     expect(groups[0].items.map((i) => i.key)).toEqual(['first', 'second', 'third'])
+  })
+
+  it('orders ported figures by their source paper’s figure number', () => {
+    // The gallery arrives sorted newest-first, which scrambles a set of ports
+    // relative to their labels. Inside a lane they must read MA Fig. 1 → 5.
+    const numbered = (figureNo, key) => ({
+      kind: 'analysis', key, analysis: { provenance: 'ma', figureNo },
+    })
+    const groups = groupGalleryBySource([
+      numbered(4, 'units'), numbered(1, 'heatmap'), numbered(5, 'cost'),
+      numbered(2, 'types'), numbered(3, 'rate'),
+    ])
+    expect(groups[0].items.map((i) => i.key))
+      .toEqual(['heatmap', 'types', 'rate', 'units', 'cost'])
+    expect(groups[0].items.map((i) => figureRefForItem(i)))
+      .toEqual(['MA Fig. 1', 'MA Fig. 2', 'MA Fig. 3', 'MA Fig. 4', 'MA Fig. 5'])
+  })
+
+  it('leads a lane with its numbered ports, unnumbered companions after', () => {
+    const groups = groupGalleryBySource([
+      analysisItem('ma', 'extra'),
+      { kind: 'analysis', key: 'fig2', analysis: { provenance: 'ma', figureNo: 2 } },
+      { kind: 'analysis', key: 'fig1', analysis: { provenance: 'ma', figureNo: 1 } },
+    ])
+    expect(groups[0].items.map((i) => i.key)).toEqual(['fig1', 'fig2', 'extra'])
   })
 
   it('returns nothing for an empty or missing gallery', () => {

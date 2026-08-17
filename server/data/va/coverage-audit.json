@@ -1,0 +1,3380 @@
+{
+ "generated_at": "2026-08-15T15:44:59.994Z",
+ "structures": {
+  "breadthSections": 238,
+  "residencySections": 211,
+  "orGroups": 0,
+  "chooseNSections": 35,
+  "multiReceiverSections": 0,
+  "series": 25
+ },
+ "per_degree": [
+  {
+   "school": "Virginia Commonwealth University",
+   "requirements": 8,
+   "reachable_statewide": 7,
+   "ceiling_pct": 87.5
+  },
+  {
+   "school": "Randolph-Macon College",
+   "requirements": 6,
+   "reachable_statewide": 5,
+   "ceiling_pct": 83.3
+  },
+  {
+   "school": "George Mason University",
+   "requirements": 12,
+   "reachable_statewide": 7,
+   "ceiling_pct": 58.3
+  },
+  {
+   "school": "Longwood University",
+   "requirements": 12,
+   "reachable_statewide": 7,
+   "ceiling_pct": 58.3
+  },
+  {
+   "school": "James Madison University",
+   "requirements": 7,
+   "reachable_statewide": 4,
+   "ceiling_pct": 57.1
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "requirements": 9,
+   "reachable_statewide": 5,
+   "ceiling_pct": 55.6
+  },
+  {
+   "school": "William & Mary",
+   "requirements": 6,
+   "reachable_statewide": 3,
+   "ceiling_pct": 50
+  },
+  {
+   "school": "Norfolk State University",
+   "requirements": 16,
+   "reachable_statewide": 6,
+   "ceiling_pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "requirements": 16,
+   "reachable_statewide": 6,
+   "ceiling_pct": 37.5
+  },
+  {
+   "school": "Radford University",
+   "requirements": 14,
+   "reachable_statewide": 5,
+   "ceiling_pct": 35.7
+  },
+  {
+   "school": "Bridgewater College",
+   "requirements": 9,
+   "reachable_statewide": 3,
+   "ceiling_pct": 33.3
+  },
+  {
+   "school": "Shenandoah University",
+   "requirements": 6,
+   "reachable_statewide": 2,
+   "ceiling_pct": 33.3
+  },
+  {
+   "school": "University of Mary Washington",
+   "requirements": 4,
+   "reachable_statewide": 1,
+   "ceiling_pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirements": 16,
+   "reachable_statewide": 4,
+   "ceiling_pct": 25
+  },
+  {
+   "school": "Old Dominion University",
+   "requirements": 24,
+   "reachable_statewide": 5,
+   "ceiling_pct": 20.8
+  },
+  {
+   "school": "Virginia State University",
+   "requirements": 11,
+   "reachable_statewide": 0,
+   "ceiling_pct": 0
+  }
+ ],
+ "audit_mean": 34.02,
+ "engine_mean": 34.02,
+ "disagreements": [
+  {
+   "school": "Norfolk State University",
+   "college": "Central Virginia Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Mountain Empire Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Mountain Gateway Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Southside Virginia Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Southwest Virginia Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25,
+   "engine": 31.3,
+   "engine_total": 16,
+   "engine_articulated": 5,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Central Virginia Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Mountain Gateway Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "New River Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25,
+   "engine": 31.3,
+   "engine_total": 16,
+   "engine_articulated": 5,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Patrick & Henry Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Paul D. Camp Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25,
+   "engine": 31.3,
+   "engine_total": 16,
+   "engine_articulated": 5,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Southside Virginia Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Southwest Virginia Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25,
+   "engine": 31.3,
+   "engine_total": 16,
+   "engine_articulated": 5,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Virginia Highlands Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25,
+   "engine": 31.3,
+   "engine_total": 16,
+   "engine_articulated": 5,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Virginia Western Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25,
+   "engine": 31.3,
+   "engine_total": 16,
+   "engine_articulated": 5,
+   "delta": -0.1
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Wytheville Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25,
+   "engine": 31.3,
+   "engine_total": 16,
+   "engine_articulated": 5,
+   "delta": -0.1
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Patrick & Henry Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Rappahannock Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Richard Bland College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75,
+   "engine": 18.8,
+   "engine_total": 16,
+   "engine_articulated": 3,
+   "delta": -0.1
+  }
+ ],
+ "unreachable": [
+  {
+   "school": "George Mason University",
+   "requirement": "CS110"
+  },
+  {
+   "school": "George Mason University",
+   "requirement": "CS262"
+  },
+  {
+   "school": "George Mason University",
+   "requirement": "BIOL102 + BIOL106 + BIOL103 + BIOL105 OR BIOL107 + BIOL103 + BIOL105 OR CHEM211 + CHEM213 "
+  },
+  {
+   "school": "James Madison University",
+   "requirement": "CS159"
+  },
+  {
+   "school": "James Madison University",
+   "requirement": "CS240"
+  },
+  {
+   "school": "James Madison University",
+   "requirement": "CS261"
+  },
+  {
+   "school": "Longwood University",
+   "requirement": "CMSC161"
+  },
+  {
+   "school": "Longwood University",
+   "requirement": "CMSC208"
+  },
+  {
+   "school": "Longwood University",
+   "requirement": "CMSC242"
+  },
+  {
+   "school": "Longwood University",
+   "requirement": "CMSC283"
+  },
+  {
+   "school": "Longwood University",
+   "requirement": "MATH250"
+  },
+  {
+   "school": "Norfolk State University",
+   "requirement": "CSC101"
+  },
+  {
+   "school": "Norfolk State University",
+   "requirement": "CSC170L"
+  },
+  {
+   "school": "Norfolk State University",
+   "requirement": "CSC260L"
+  },
+  {
+   "school": "Norfolk State University",
+   "requirement": "CSC295"
+  },
+  {
+   "school": "Norfolk State University",
+   "requirement": "CSC292"
+  },
+  {
+   "school": "Norfolk State University",
+   "requirement": "CSC275"
+  },
+  {
+   "school": "Norfolk State University",
+   "requirement": "BIO110 + BIO110L OR PHY152 + PHY152L OR CHM221 + CHM221L"
+  },
+  {
+   "school": "Norfolk State University",
+   "requirement": "BIO110 + BIO110L OR PHY152 + PHY152L OR CHM221 + CHM221L"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS151 OR CS153 OR CS150"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS251 + CS260 OR CS253 + CS260 + CS261 OR CS250 + CS261"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS252"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS315 OR CS115"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS330"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS350 OR CS351 + CS352"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS355"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS361"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS381"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS390"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS410"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS411W"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS417"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS422 OR CS480"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS450 OR CS418"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "CS471"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "MATH316"
+  },
+  {
+   "school": "Old Dominion University",
+   "requirement": "STAT330"
+  },
+  {
+   "school": "Radford University",
+   "requirement": "CS390"
+  },
+  {
+   "school": "Radford University",
+   "requirement": "CS411"
+  },
+  {
+   "school": "Radford University",
+   "requirement": "MATH168 + MATH169"
+  },
+  {
+   "school": "Radford University",
+   "requirement": "CS230"
+  },
+  {
+   "school": "Radford University",
+   "requirement": "CS340"
+  },
+  {
+   "school": "Radford University",
+   "requirement": "CS345"
+  },
+  {
+   "school": "Radford University",
+   "requirement": "CS350"
+  },
+  {
+   "school": "Radford University",
+   "requirement": "CS370"
+  },
+  {
+   "school": "Randolph-Macon College",
+   "requirement": "CSCI212"
+  },
+  {
+   "school": "University of Mary Washington",
+   "requirement": "CPSC225"
+  },
+  {
+   "school": "University of Mary Washington",
+   "requirement": "CPSC240"
+  },
+  {
+   "school": "University of Mary Washington",
+   "requirement": "CPSC284 OR MATH201 + MATH300"
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "requirement": "CMSC235"
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "requirement": "CS2506"
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "requirement": "MATH2204 OR CMDA2005 OR MATH2406H"
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "requirement": "CS2104 OR CS2144 OR CS4144"
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "requirement": "CS1944"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "CSCI101"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "CSCI150"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "CSCI151"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "CSCI250"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "CSCI251"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "CSCI281"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "CSCI287"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "CSCI296"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "MATH260"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "MATH261"
+  },
+  {
+   "school": "Virginia State University",
+   "requirement": "MATH280"
+  },
+  {
+   "school": "William & Mary",
+   "requirement": "CSCI241"
+  },
+  {
+   "school": "William & Mary",
+   "requirement": "CSCI243 OR MATH214"
+  },
+  {
+   "school": "William & Mary",
+   "requirement": "MATH109"
+  },
+  {
+   "school": "Bridgewater College",
+   "requirement": "CSCI101"
+  },
+  {
+   "school": "Bridgewater College",
+   "requirement": "CSCI250"
+  },
+  {
+   "school": "Bridgewater College",
+   "requirement": "DSA230"
+  },
+  {
+   "school": "Bridgewater College",
+   "requirement": "CSCI130 + CSCI261"
+  },
+  {
+   "school": "Bridgewater College",
+   "requirement": "CSCI131"
+  },
+  {
+   "school": "Christopher Newport University",
+   "requirement": "CPSC150 + CPSC150L"
+  },
+  {
+   "school": "Christopher Newport University",
+   "requirement": "CPSC250 + CPSC250L"
+  },
+  {
+   "school": "Christopher Newport University",
+   "requirement": "CPSC255"
+  },
+  {
+   "school": "Christopher Newport University",
+   "requirement": "CPSC280"
+  },
+  {
+   "school": "Christopher Newport University",
+   "requirement": "PHYS151 + PHYS151L + PHYS152 + PHYS152L OR PHYS201 + PHYS201L + PHYS202 + PHYS202L"
+  },
+  {
+   "school": "Shenandoah University",
+   "requirement": "CSC121"
+  },
+  {
+   "school": "Shenandoah University",
+   "requirement": "CSC122"
+  },
+  {
+   "school": "Shenandoah University",
+   "requirement": "CSC210"
+  },
+  {
+   "school": "Shenandoah University",
+   "requirement": "MATH209"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "MTH2180 OR STA2180"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC3710"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "SWE1790"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC1010"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC2300 OR SWE2300"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC3180"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC3400"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC4000"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC4200"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC4300"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC4350"
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "requirement": "CSC4990"
+  }
+ ],
+ "unparsed": [],
+ "cells": [
+  {
+   "school": "George Mason University",
+   "college": "Blue Ridge Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Brightpoint Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Central Virginia Community College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "George Mason University",
+   "college": "Danville Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Eastern Shore Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Germanna Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Laurel Ridge Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Mountain Empire Community College",
+   "asked": 12,
+   "met": 4,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Mountain Gateway Community College",
+   "asked": 12,
+   "met": 4,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "New River Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Northern Virginia Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Patrick & Henry Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "George Mason University",
+   "college": "Paul D. Camp Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Rappahannock Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "George Mason University",
+   "college": "Richard Bland College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "George Mason University",
+   "college": "Southside Virginia Community College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "George Mason University",
+   "college": "Southwest Virginia Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Tidewater Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Virginia Highlands Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Virginia Western Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "George Mason University",
+   "college": "Wytheville Community College",
+   "asked": 12,
+   "met": 7,
+   "pct": 58.333333333333336
+  },
+  {
+   "school": "James Madison University",
+   "college": "Blue Ridge Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Brightpoint Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Central Virginia Community College",
+   "asked": 7,
+   "met": 3,
+   "pct": 42.857142857142854
+  },
+  {
+   "school": "James Madison University",
+   "college": "Danville Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Eastern Shore Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Germanna Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Laurel Ridge Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Mountain Empire Community College",
+   "asked": 7,
+   "met": 2,
+   "pct": 28.571428571428573
+  },
+  {
+   "school": "James Madison University",
+   "college": "Mountain Gateway Community College",
+   "asked": 7,
+   "met": 2,
+   "pct": 28.571428571428573
+  },
+  {
+   "school": "James Madison University",
+   "college": "New River Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Northern Virginia Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Patrick & Henry Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Paul D. Camp Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Rappahannock Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Richard Bland College",
+   "asked": 7,
+   "met": 3,
+   "pct": 42.857142857142854
+  },
+  {
+   "school": "James Madison University",
+   "college": "Southside Virginia Community College",
+   "asked": 7,
+   "met": 3,
+   "pct": 42.857142857142854
+  },
+  {
+   "school": "James Madison University",
+   "college": "Southwest Virginia Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Tidewater Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Virginia Highlands Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Virginia Western Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "James Madison University",
+   "college": "Wytheville Community College",
+   "asked": 7,
+   "met": 4,
+   "pct": 57.142857142857146
+  },
+  {
+   "school": "Longwood University",
+   "college": "Blue Ridge Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "Longwood University",
+   "college": "Brightpoint Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "Longwood University",
+   "college": "Central Virginia Community College",
+   "asked": 12,
+   "met": 2,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Longwood University",
+   "college": "Danville Community College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "Longwood University",
+   "college": "Eastern Shore Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "Longwood University",
+   "college": "Germanna Community College",
+   "asked": 12,
+   "met": 4,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Longwood University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "Longwood University",
+   "college": "Laurel Ridge Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "Longwood University",
+   "college": "Mountain Empire Community College",
+   "asked": 12,
+   "met": 1,
+   "pct": 8.333333333333334
+  },
+  {
+   "school": "Longwood University",
+   "college": "Mountain Gateway Community College",
+   "asked": 12,
+   "met": 1,
+   "pct": 8.333333333333334
+  },
+  {
+   "school": "Longwood University",
+   "college": "New River Community College",
+   "asked": 12,
+   "met": 4,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Longwood University",
+   "college": "Northern Virginia Community College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "Longwood University",
+   "college": "Patrick & Henry Community College",
+   "asked": 12,
+   "met": 4,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Longwood University",
+   "college": "Paul D. Camp Community College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "Longwood University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "Longwood University",
+   "college": "Rappahannock Community College",
+   "asked": 12,
+   "met": 3,
+   "pct": 25
+  },
+  {
+   "school": "Longwood University",
+   "college": "Richard Bland College",
+   "asked": 12,
+   "met": 4,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Longwood University",
+   "college": "Southside Virginia Community College",
+   "asked": 12,
+   "met": 2,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Longwood University",
+   "college": "Southwest Virginia Community College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "Longwood University",
+   "college": "Tidewater Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "Longwood University",
+   "college": "Virginia Highlands Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "Longwood University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 12,
+   "met": 6,
+   "pct": 50
+  },
+  {
+   "school": "Longwood University",
+   "college": "Virginia Western Community College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "Longwood University",
+   "college": "Wytheville Community College",
+   "asked": 12,
+   "met": 5,
+   "pct": 41.666666666666664
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Blue Ridge Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Brightpoint Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Central Virginia Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Danville Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Eastern Shore Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Germanna Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Laurel Ridge Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Mountain Empire Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Mountain Gateway Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "New River Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Northern Virginia Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Patrick & Henry Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Paul D. Camp Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Rappahannock Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Richard Bland College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Southside Virginia Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Southwest Virginia Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Tidewater Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Virginia Highlands Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Virginia Western Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Norfolk State University",
+   "college": "Wytheville Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Blue Ridge Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Brightpoint Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Central Virginia Community College",
+   "asked": 24,
+   "met": 3,
+   "pct": 12.5
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Danville Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Eastern Shore Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Germanna Community College",
+   "asked": 24,
+   "met": 4,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Laurel Ridge Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Mountain Empire Community College",
+   "asked": 24,
+   "met": 3,
+   "pct": 12.5
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Mountain Gateway Community College",
+   "asked": 24,
+   "met": 3,
+   "pct": 12.5
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "New River Community College",
+   "asked": 24,
+   "met": 4,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Northern Virginia Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Patrick & Henry Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Paul D. Camp Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 24,
+   "met": 4,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Rappahannock Community College",
+   "asked": 24,
+   "met": 4,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Richard Bland College",
+   "asked": 24,
+   "met": 3,
+   "pct": 12.5
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Southside Virginia Community College",
+   "asked": 24,
+   "met": 3,
+   "pct": 12.5
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Southwest Virginia Community College",
+   "asked": 24,
+   "met": 4,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Tidewater Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Virginia Highlands Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Virginia Western Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Old Dominion University",
+   "college": "Wytheville Community College",
+   "asked": 24,
+   "met": 5,
+   "pct": 20.833333333333332
+  },
+  {
+   "school": "Radford University",
+   "college": "Blue Ridge Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Brightpoint Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Central Virginia Community College",
+   "asked": 14,
+   "met": 2,
+   "pct": 14.285714285714286
+  },
+  {
+   "school": "Radford University",
+   "college": "Danville Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Eastern Shore Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Germanna Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Laurel Ridge Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Mountain Empire Community College",
+   "asked": 14,
+   "met": 2,
+   "pct": 14.285714285714286
+  },
+  {
+   "school": "Radford University",
+   "college": "Mountain Gateway Community College",
+   "asked": 14,
+   "met": 1,
+   "pct": 7.142857142857143
+  },
+  {
+   "school": "Radford University",
+   "college": "New River Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Northern Virginia Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Patrick & Henry Community College",
+   "asked": 14,
+   "met": 4,
+   "pct": 28.571428571428573
+  },
+  {
+   "school": "Radford University",
+   "college": "Paul D. Camp Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Rappahannock Community College",
+   "asked": 14,
+   "met": 4,
+   "pct": 28.571428571428573
+  },
+  {
+   "school": "Radford University",
+   "college": "Richard Bland College",
+   "asked": 14,
+   "met": 2,
+   "pct": 14.285714285714286
+  },
+  {
+   "school": "Radford University",
+   "college": "Southside Virginia Community College",
+   "asked": 14,
+   "met": 2,
+   "pct": 14.285714285714286
+  },
+  {
+   "school": "Radford University",
+   "college": "Southwest Virginia Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Tidewater Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Virginia Highlands Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Virginia Western Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Radford University",
+   "college": "Wytheville Community College",
+   "asked": 14,
+   "met": 5,
+   "pct": 35.714285714285715
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Blue Ridge Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Brightpoint Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Central Virginia Community College",
+   "asked": 6,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Danville Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Eastern Shore Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Germanna Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Laurel Ridge Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Mountain Empire Community College",
+   "asked": 6,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Mountain Gateway Community College",
+   "asked": 6,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "New River Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Northern Virginia Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Patrick & Henry Community College",
+   "asked": 6,
+   "met": 3,
+   "pct": 50
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Paul D. Camp Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Piedmont Virginia Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Rappahannock Community College",
+   "asked": 6,
+   "met": 4,
+   "pct": 66.66666666666667
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Richard Bland College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Southside Virginia Community College",
+   "asked": 6,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Southwest Virginia Community College",
+   "asked": 6,
+   "met": 4,
+   "pct": 66.66666666666667
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Tidewater Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Virginia Highlands Community College",
+   "asked": 6,
+   "met": 4,
+   "pct": 66.66666666666667
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Virginia Peninsula Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Virginia Western Community College",
+   "asked": 6,
+   "met": 4,
+   "pct": 66.66666666666667
+  },
+  {
+   "school": "Randolph-Macon College",
+   "college": "Wytheville Community College",
+   "asked": 6,
+   "met": 5,
+   "pct": 83.33333333333333
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Blue Ridge Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Brightpoint Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Central Virginia Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Danville Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Eastern Shore Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Germanna Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Laurel Ridge Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Mountain Empire Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Mountain Gateway Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "New River Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Northern Virginia Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Patrick & Henry Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Paul D. Camp Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Piedmont Virginia Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Rappahannock Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Richard Bland College",
+   "asked": 4,
+   "met": 1,
+   "pct": 25
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Southside Virginia Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Southwest Virginia Community College",
+   "asked": 4,
+   "met": 1,
+   "pct": 25
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Tidewater Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Virginia Highlands Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Virginia Peninsula Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Virginia Western Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "University of Mary Washington",
+   "college": "Wytheville Community College",
+   "asked": 4,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Blue Ridge Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Brightpoint Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Central Virginia Community College",
+   "asked": 8,
+   "met": 5,
+   "pct": 62.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Danville Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Eastern Shore Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Germanna Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Laurel Ridge Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Mountain Empire Community College",
+   "asked": 8,
+   "met": 5,
+   "pct": 62.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Mountain Gateway Community College",
+   "asked": 8,
+   "met": 5,
+   "pct": 62.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "New River Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Northern Virginia Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Patrick & Henry Community College",
+   "asked": 8,
+   "met": 6,
+   "pct": 75
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Paul D. Camp Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Rappahannock Community College",
+   "asked": 8,
+   "met": 6,
+   "pct": 75
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Richard Bland College",
+   "asked": 8,
+   "met": 5,
+   "pct": 62.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Southside Virginia Community College",
+   "asked": 8,
+   "met": 5,
+   "pct": 62.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Southwest Virginia Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Tidewater Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Virginia Highlands Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Virginia Western Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Commonwealth University",
+   "college": "Wytheville Community College",
+   "asked": 8,
+   "met": 7,
+   "pct": 87.5
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Blue Ridge Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Brightpoint Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Central Virginia Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Danville Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Eastern Shore Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Germanna Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Laurel Ridge Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Mountain Empire Community College",
+   "asked": 9,
+   "met": 2,
+   "pct": 22.22222222222222
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Mountain Gateway Community College",
+   "asked": 9,
+   "met": 2,
+   "pct": 22.22222222222222
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "New River Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Northern Virginia Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Patrick & Henry Community College",
+   "asked": 9,
+   "met": 4,
+   "pct": 44.44444444444444
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Paul D. Camp Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Rappahannock Community College",
+   "asked": 9,
+   "met": 4,
+   "pct": 44.44444444444444
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Richard Bland College",
+   "asked": 9,
+   "met": 2,
+   "pct": 22.22222222222222
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Southside Virginia Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Southwest Virginia Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Tidewater Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Virginia Highlands Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Virginia Western Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia Polytechnic Institute and State University",
+   "college": "Wytheville Community College",
+   "asked": 9,
+   "met": 5,
+   "pct": 55.55555555555556
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Blue Ridge Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Brightpoint Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Central Virginia Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Danville Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Eastern Shore Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Germanna Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Laurel Ridge Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Mountain Empire Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Mountain Gateway Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "New River Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Northern Virginia Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Patrick & Henry Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Paul D. Camp Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Rappahannock Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Richard Bland College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Southside Virginia Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Southwest Virginia Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Tidewater Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Virginia Highlands Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Virginia Western Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Virginia State University",
+   "college": "Wytheville Community College",
+   "asked": 11,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "William & Mary",
+   "college": "Blue Ridge Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Brightpoint Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Central Virginia Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Danville Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Eastern Shore Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Germanna Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Laurel Ridge Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Mountain Empire Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Mountain Gateway Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "New River Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Northern Virginia Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Patrick & Henry Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Paul D. Camp Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Piedmont Virginia Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Rappahannock Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Richard Bland College",
+   "asked": 6,
+   "met": 3,
+   "pct": 50
+  },
+  {
+   "school": "William & Mary",
+   "college": "Southside Virginia Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Southwest Virginia Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Tidewater Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Virginia Highlands Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Virginia Peninsula Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Virginia Western Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "William & Mary",
+   "college": "Wytheville Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Blue Ridge Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Brightpoint Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Central Virginia Community College",
+   "asked": 9,
+   "met": 1,
+   "pct": 11.11111111111111
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Danville Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Eastern Shore Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Germanna Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Laurel Ridge Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Mountain Empire Community College",
+   "asked": 9,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Mountain Gateway Community College",
+   "asked": 9,
+   "met": 0,
+   "pct": 0
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "New River Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Northern Virginia Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Patrick & Henry Community College",
+   "asked": 9,
+   "met": 2,
+   "pct": 22.22222222222222
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Paul D. Camp Community College",
+   "asked": 9,
+   "met": 2,
+   "pct": 22.22222222222222
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Piedmont Virginia Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Rappahannock Community College",
+   "asked": 9,
+   "met": 1,
+   "pct": 11.11111111111111
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Richard Bland College",
+   "asked": 9,
+   "met": 1,
+   "pct": 11.11111111111111
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Southside Virginia Community College",
+   "asked": 9,
+   "met": 1,
+   "pct": 11.11111111111111
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Southwest Virginia Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Tidewater Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Virginia Highlands Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Virginia Peninsula Community College",
+   "asked": 9,
+   "met": 2,
+   "pct": 22.22222222222222
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Virginia Western Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Bridgewater College",
+   "college": "Wytheville Community College",
+   "asked": 9,
+   "met": 3,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Blue Ridge Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Brightpoint Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Central Virginia Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Danville Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Eastern Shore Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Germanna Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Laurel Ridge Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Mountain Empire Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Mountain Gateway Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "New River Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Northern Virginia Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Patrick & Henry Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Paul D. Camp Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Rappahannock Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Richard Bland College",
+   "asked": 16,
+   "met": 2,
+   "pct": 12.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Southside Virginia Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Southwest Virginia Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Tidewater Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Virginia Highlands Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 16,
+   "met": 6,
+   "pct": 37.5
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Virginia Western Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25
+  },
+  {
+   "school": "Christopher Newport University",
+   "college": "Wytheville Community College",
+   "asked": 16,
+   "met": 5,
+   "pct": 31.25
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Blue Ridge Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Brightpoint Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Central Virginia Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Danville Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Eastern Shore Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Germanna Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Laurel Ridge Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Mountain Empire Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Mountain Gateway Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "New River Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Northern Virginia Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Patrick & Henry Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Paul D. Camp Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Piedmont Virginia Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Rappahannock Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Richard Bland College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Southside Virginia Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Southwest Virginia Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Tidewater Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Virginia Highlands Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Virginia Peninsula Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Virginia Western Community College",
+   "asked": 6,
+   "met": 2,
+   "pct": 33.333333333333336
+  },
+  {
+   "school": "Shenandoah University",
+   "college": "Wytheville Community College",
+   "asked": 6,
+   "met": 1,
+   "pct": 16.666666666666668
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Blue Ridge Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Brightpoint Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Central Virginia Community College",
+   "asked": 16,
+   "met": 2,
+   "pct": 12.5
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Danville Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Eastern Shore Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Germanna Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "J Sargeant Reynolds Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Laurel Ridge Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Mountain Empire Community College",
+   "asked": 16,
+   "met": 2,
+   "pct": 12.5
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Mountain Gateway Community College",
+   "asked": 16,
+   "met": 2,
+   "pct": 12.5
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "New River Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Northern Virginia Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Patrick & Henry Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Paul D. Camp Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Piedmont Virginia Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Rappahannock Community College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Richard Bland College",
+   "asked": 16,
+   "met": 3,
+   "pct": 18.75
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Southside Virginia Community College",
+   "asked": 16,
+   "met": 2,
+   "pct": 12.5
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Southwest Virginia Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Tidewater Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Virginia Highlands Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Virginia Peninsula Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Virginia Western Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  },
+  {
+   "school": "The University of Virginia's College at Wise",
+   "college": "Wytheville Community College",
+   "asked": 16,
+   "met": 4,
+   "pct": 25
+  }
+ ]
+}

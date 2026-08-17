@@ -55,6 +55,11 @@ export const MEASURES = {
     grain: 'One value per community college × UC campus, for one associate degree type.',
     watchFor: 'This companion measure keeps the associate degree as its denominator, unlike the bachelor’s-requirement completion figure. Every optimistic application assumption pushes replacement units down, so read it as a lower bound rather than observed repeated coursework.',
   },
+  'pathway-complexity': {
+    expression: 'h(G) = Σ over pathway courses of (delay factor + blocking factor), on the prerequisite graph of the associate degree’s courses plus every university requirement the transfer does not satisfy; Δ = pathway h(G) − the campus’s own curriculum h(G).',
+    grain: 'One score per community college × UC campus × associate-degree type, with the campus resident curriculum as its baseline.',
+    watchFor: 'A negative Δ can be genuine where articulation is strong (a well-aligned associate degree replaces enough of the degree that the pathway is lighter than the resident map) — the opposite of Massachusetts, where weak alignment made every pathway heavier. Edge data is still partial and missing edges understate complexity, so treat small deltas as directional.',
+  },
   'transfer-extra-cost': {
     expression: 'cost = replacement units (semester-equivalent) × campus annual resident tuition and fees ÷ (full-time load × 2 semesters)',
     grain: 'One dollar value per community college × UC campus, for one associate degree type and one full-time load basis.',
@@ -79,6 +84,47 @@ export const MEASURES = {
     expression: 'transfer coursework = the fewest community college courses the solver finds that satisfy every required receiver in one agreement',
     grain: 'One value per agreement — a community college × UC campus × major — binned per campus.',
     watchFor: 'Overlap-aware and single-campus: a course satisfying two requirements counts once, and “complete one of three” costs one course rather than three. It is a best case for a student targeting exactly one campus, not a course load. Units are summed in the college’s own system with no quarter or semester conversion.',
+  },
+}
+
+// The coverage heatmap changes its statistic with its controls, so its panel
+// must change too — a definition of a lens the reader is not looking at is
+// worse than none. One entry per figure state; the figure reports the active
+// one upward through `onMeasureChange` and the gallery shows it in place of
+// the static default.
+export const COVERAGE_HEATMAP_MEASURES = {
+  degree: MEASURES['coverage-heatmap'],
+  'ma-courses': {
+    expression: 'coverage = required courses with an articulated equivalent ÷ all required courses, at every level',
+    grain: 'One value per community college × UC program.',
+    watchFor: 'The Massachusetts paper’s published Figure 1 measure, for direct comparison — their statewide average was 38.2%. Every required course counts once, articulated or not, whether departmental, college, or campus and at any division: a complete-series requirement counts each of its courses (an articulated series covers all of them), a choose-N pool counts its N cheapest alternatives, and the two unit-only blocks in the corpus use the four-unit assumption. General education and free-elective padding are excluded. Upper-division requirements rarely articulate, which is what pulls this measure far below lower-division-only coverage.',
+  },
+  'ma-courses-ge': {
+    expression: 'coverage = required courses with an articulated equivalent ÷ all required courses, general education included',
+    grain: 'One value per community college × UC program.',
+    watchFor: 'Our extension of the paper’s measure, not a figure they published — for general-education-heavy majors such as Economics, whose GE-excluded reading is dominated by the unarticulable upper division. Lower-division GE counts as articulable at every college (IGETC or Cal-GETC certification clears it, so the reading does not depend on how each template encodes its GE blocks); upper-division GE still counts against. Free-elective padding remains excluded, and the paper’s 38.2% benchmark applies only to the GE-excluded state.',
+  },
+  assist: {
+    expression: 'coverage = listed ASSIST receivers satisfied ÷ receivers listed as required, following each requirement’s choose-N rule',
+    grain: 'One value per community college × UC program.',
+    watchFor: 'The raw agreement lens: the denominator is whatever this pair’s ASSIST agreement lists as required, so it differs between pairs and is not a graduation plan. A series counts as one receiver satisfied only when every course in it articulates.',
+  },
+  paper: {
+    expression: 'coverage = hand-curated minimum requirements satisfied ÷ minimums required',
+    grain: 'One value per community college × UC program.',
+    watchFor: 'Computer Science only: the historical website-minimums basis kept for comparison with the papers. Requirement groups must all be satisfied; alternative sets within a group count when any one set is complete.',
+  },
+}
+
+// The transfer-credit-rate figure's MA state flips the denominator to the
+// associate degree's own units — the final paper's Figure 3 — while the
+// default state keeps the bachelor-side completion measure.
+export const TRANSFER_CREDIT_RATE_MEASURES = {
+  default: MEASURES['transfer-credit-rate'],
+  'ma-as-side': {
+    expression: 'transfer credit rate = associate-degree units that apply ÷ the associate degree’s own units',
+    grain: 'One value per community college × university, for one associate degree type.',
+    watchFor: 'On the Massachusetts tab the Source control switches between THREE versions of this one measure: the final paper’s Figure 3 as printed (the newer revision of their hand tally — its per-university averages mean 68%), the repo workbook’s older tally (mean 65.2%), and our recomputation from the paper’s own pathway workbooks (which matches the tally almost exactly wherever the paper’s two artifacts agree; r = 0.99 on those pairs). Every cell’s hover lists all three, so a difference between them is one glance away. Blank cells are pairs the paper did not study (outside 50 driving miles), not zeroes. On California data this state shows our recomputation of the same measure, statewide.',
   },
 }
 

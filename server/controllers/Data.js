@@ -13,6 +13,15 @@ const { ObjectId } = require('mongodb');
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { majorScope, pairAllowed, pairClause, scopeTag } = require('../services/majorVisibility');
 const { fetchRawAgreement } = require('../services/assistProxy');
+const { stateClause } = require('../config/stateScope');
+
+// This explorer is the CALIFORNIA dataset's window. `majorScope` deliberately
+// spans every state so the state pages' analyses resolve, so each wholesale
+// enumeration below has to re-narrow to California itself — otherwise the
+// Massachusetts and Virginia corpora appear here as school rows with no name
+// (their agreements carry `university_name`, never ASSIST's `uc_school`) and
+// inflate the college and course counts.
+const CALIFORNIA_ONLY = stateClause();
 
 const TTL_MS = 60 * 1000;
 const summaryCache = new Map(); // scopeTag → { at, payload }
@@ -42,7 +51,10 @@ exports.getSummary = asyncHandler(async (req, res) => {
   const hit = summaryCache.get(tag);
   if (hit && Date.now() - hit.at < TTL_MS) return res.json(hit.payload);
 
-  const match = pairs != null ? pairClause(pairs, 'uc_school_id') : {};
+  const match = {
+    ...(pairs != null ? pairClause(pairs, 'uc_school_id') : {}),
+    ...CALIFORNIA_ONLY,
+  };
   const [groups, nColleges, settings] = await Promise.all([
     db.collection('assist_agreements').aggregate([
       { $match: match },
@@ -55,7 +67,7 @@ exports.getSummary = asyncHandler(async (req, res) => {
       },
       { $sort: { '_id.school': 1 } },
     ]).toArray(),
-    db.collection('assist_institutions').countDocuments({ kind: 'community_college' }),
+    db.collection('assist_institutions').countDocuments({ kind: 'community_college', ...CALIFORNIA_ONLY }),
     (req.app.locals.auditDb || db).collection('settings')
       .findOne({ _id: 'app' }, { projection: { last_data_refresh_at: 1 } }),
   ]);
@@ -65,8 +77,8 @@ exports.getSummary = asyncHandler(async (req, res) => {
   let nUniversityCourses;
   if (pairs == null) {
     [nCourses, nUniversityCourses] = await Promise.all([
-      db.collection('assist_courses').countDocuments({ side: 'sending' }),
-      db.collection('assist_courses').countDocuments({ side: 'receiving' }),
+      db.collection('assist_courses').countDocuments({ side: 'sending', ...CALIFORNIA_ONLY }),
+      db.collection('assist_courses').countDocuments({ side: 'receiving', ...CALIFORNIA_ONLY }),
     ]);
   } else if (!pairs.length) {
     nCourses = 0;

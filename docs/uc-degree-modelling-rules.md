@@ -247,11 +247,55 @@ detect a college that falls short.
 
 ---
 
+## One vocabulary, one reader
+
+Two conventions mark university-only work and both are legitimate: the CS
+documents say `tier: 'nontransferable'`, the bio/econ documents say
+`course_level: 'upper_division'` with `cc_articulable: false`. The rules that
+keep them interchangeable (settled 2026-08-13, after the transfer figures
+divided Berkeley biology by 392 units and reported its whole upper division as
+lower division):
+
+**The group's word is final.** A group marked university-only — in either
+vocabulary — is university-only in its entirety. A section-level
+`tier: 'transferable'` beneath it is editor residue, not a fact, and every
+reader resolves it through `degreeSlots.resolveSectionTier`. Do not write
+section tiers that disagree with the group; `scripts/repairDegreeSectionTiers.js`
+aligns them (16 sections repaired across the two Berkeley documents).
+
+**Every reader prices a choice as one path.** `computeUnitBudget` (figure
+denominators, Degree-reqs `units_summary`), `computeTransferBudget` (heatmap
+budget) and the transfer figures' template walk all collapse an `Or` group:
+the *denominators* at the cheapest alternative a college can reach
+(`articulation_reach` 0 excludes a path; unrecorded reach is assumed live),
+the *numerators* along the path the college actually satisfies best. A student
+whose college articulates only the longer sequence genuinely brings more units
+than the cheapest path asks; aggregate clamps keep fulfilled within required.
+
+**The readers must agree.** `scripts/auditDegreeStandard.js` fails
+`reader_drift` when `computeUnitBudget` and `computeTransferBudget` price one
+document differently, and `section_tier_contradiction` when a stored section
+tier disagrees with its group. Run it after any document edit.
+
+**Zero units is an authored figure, never a missing one.** Berkeley's American
+Cultures requirement double-counts with breadth and is stated at 0 units;
+re-pricing it at the four-unit assumption invented GE demand on both Berkeley
+documents.
+
+**Figure denominators are the stated minimum.** The full-degree share in every
+figure divides by the campus's `total_units` (120/180) — never by the modeled
+sum, which moves with modelling completeness and let a thinly modelled degree
+read as more complete. The lower-division share divides by the transferable +
+breadth stated requirements. `modeled_share` remains the gate for thin
+documents.
+
 ## Mechanics that have bitten us
 
 **An `Or` group costs one path, not one per alternative.** Summing Berkeley
 MCB's twelve emphasis tracks pushed its denominator from 120 units to 392 and
-collapsed its coverage to 8.3%.
+collapsed its coverage to 8.3% — and the transfer-credit figure to an 11%
+column average. The by-course-type rollup must collapse the same way, or it
+reports 94 typed slots against a 26-slot degree.
 
 **`course_level` vocabulary is `upper_division` / `lower_division`.** Writing
 `upper` silently disabled the ledger's condense rule across the whole California
@@ -324,3 +368,20 @@ the six campuses not yet confirmed; whether depth blocks should model the leanes
 legal path or a typical one (Davis biology's 42u is the sum of stated minimums,
 against a catalogue range topping out near 50); and whether the general-education
 groups should declare IGETC areas everywhere rather than only at Berkeley.
+
+### Standing failures (2026-08-13, after the reader/vocabulary pass)
+
+`auditDegreeStandard.js` reports four documents failing, all in the
+human-verified CS set, which is off-limits to editing — these need Tybalt's
+catalogue judgment, not arithmetic:
+
+| document | failure |
+|---|---|
+| `degree:144:cs` | over_total — 125u stated against a 120u degree |
+| `degree:46:cs` | over_total — 182u stated against a 180u degree |
+| `degree:117:cs` | over_total — 181u stated against a 180u degree |
+| `degree:132:cs` | ge_above_pattern — 57u of GE against the 51u quarter Cal-GETC ceiling |
+
+The figures already read all four against their stated totals, so the excess
+only means their stated requirements slightly overfill the degree, not that a
+chart divides by the wrong number.

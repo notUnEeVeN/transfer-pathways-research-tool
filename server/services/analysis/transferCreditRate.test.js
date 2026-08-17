@@ -260,13 +260,16 @@ describe('transferCreditRateData v4', () => {
     expect(cell.elective_counted_units).toBe(6);
     expect(cell.transferred_units).toBe(18);
     expect(cell.degree_unit_system).toBe('semester');
-    expect(cell.full_degree_required_units).toBe(30);
+    // The full degree is measured against the campus's stated 120-unit
+    // minimum, not the 30 modeled units — a thinly modelled template must not
+    // read as more complete than a thorough one.
+    expect(cell.full_degree_required_units).toBe(120);
     expect(cell.full_degree_fulfilled_units).toBe(18);
-    expect(cell.full_degree_completion_pct).toBe(60);
+    expect(cell.full_degree_completion_pct).toBe(15);
     expect(cell.lower_division_required_units).toBe(18);
     expect(cell.lower_division_fulfilled_units).toBe(18);
     expect(cell.lower_division_completion_pct).toBe(100);
-    expect(cell.rate).toBe(60);
+    expect(cell.rate).toBe(15);
     // AS-unit utilization remains separately for the replacement-coursework visual.
     expect(cell.as_unit_utilization_pct).toBe(30);
     expect(cell.extra_units).toBe(42);
@@ -308,7 +311,8 @@ describe('transferCreditRateData v4', () => {
     expect(cell.named_units).toBe(6);
     expect(cell.named_transferred_units).toBe(6);
     expect(cell.transferred_units).toBe(6);
-    expect(cell.rate).toBe(75);
+    // 6 of the stated 120-unit degree.
+    expect(cell.rate).toBe(5);
     expect(cell.as_unit_utilization_pct).toBe(10);
     expect(cell.extra_units).toBe(54);
   });
@@ -798,7 +802,8 @@ describe('transferCreditRateData v4', () => {
     expect(cell.ge_demand_units).toBe(8);
     expect(cell.ge_counted_units).toBe(8);
     expect(cell.transferred_units).toBe(8);
-    expect(cell.rate).toBe(100);
+    // 8 of the stated 120-unit degree.
+    expect(cell.rate).toBe(6.7);
     expect(cell.as_unit_utilization_pct).toBeCloseTo(13.3, 1);
   });
 
@@ -824,12 +829,42 @@ describe('transferCreditRateData v4', () => {
     expect(cell.ge_demand_units).toBe(9);
     expect(cell.ge_counted_units).toBe(9);
     expect(cell.transferred_units).toBe(9);
-    expect(cell.full_degree_required_units).toBe(6);
+    // The conversion still lands 6 semester units on the campus side; the
+    // full-degree share now reads them against the stated 120-unit minimum.
+    expect(cell.full_degree_required_units).toBe(120);
     expect(cell.full_degree_fulfilled_units).toBe(6);
-    expect(cell.full_degree_completion_pct).toBe(100);
+    expect(cell.full_degree_completion_pct).toBe(5);
     expect(cell.lower_division_completion_pct).toBe(100);
     expect(cell.extra_units).toBe(81);
     expect(cell.extra_units_semester).toBe(54);
+  });
+
+  it('keeps a booleans-only agreement null rather than reading absent mappings as zero', async () => {
+    // Massachusetts pairs outside the paper's 50-mile study carry
+    // requirement-level verdicts but no course mappings; the credit-rate
+    // figures must leave them blank the way the paper left them unstudied.
+    await seedTemplate({
+      schoolId: 27,
+      groups: [namedGroup([{ section_advisement: 1, receivers: [ucCourse(2701)] }])],
+    });
+    await seedAsDegree({
+      collegeId: 270,
+      groups: [asNamedGroup([{ section_advisement: 1, receivers: [asReceiver(70)] }])],
+    });
+    await seedCourses([[70, 4]]);
+    await db.collection('assist_agreements').insertOne({
+      uc_school_id: 27,
+      community_college_id: 270,
+      major: 'Computer Science B.S.',
+      pairing: 'booleans-only',
+      requirement_groups: [{ sections: [{ receivers: [
+        articulated({ kind: 'course', parent_id: 2701 }, [70]),
+      ] }] }],
+    });
+
+    const cell = await cellFor({ collegeId: 270, schoolId: 27 });
+    expect(cell.rate).toBeNull();
+    expect(cell.method_status).toBe('unavailable');
   });
 
   it('keeps a pair with no agreement null rather than treating it as zero credit', async () => {
@@ -847,7 +882,7 @@ describe('transferCreditRateData v4', () => {
     expect(cell.rate).toBeNull();
     expect(cell.full_degree_completion_pct).toBeNull();
     expect(cell.lower_division_completion_pct).toBeNull();
-    expect(cell.full_degree_required_units).toBe(4);
+    expect(cell.full_degree_required_units).toBe(120);
     expect(cell.lower_division_required_units).toBe(4);
     expect(cell.prescribed_units).toBeNull();
     expect(cell.transferred_units).toBeNull();
@@ -888,5 +923,299 @@ describe('transferCreditRateData v4', () => {
     expect(cell.extra_units).toBeNull();
     expect(cell.method_status).toBe('excluded');
     expect(cell.method_warning).toMatch(/named plan|degree total/i);
+  });
+});
+
+// The figure's denominators and vocabulary must follow the modelling standard
+// the other California figures already use, or the same document produces
+// different answers in different charts. Berkeley MCB is the cautionary tale:
+// its twelve-track emphasis Or-group summed to a 392-unit denominator against
+// a stated 120, and section-level `tier: 'transferable'` under nontransferable
+// groups reported all of it as lower division — the 11% column.
+describe('transferCreditRateData standardized denominators and vocabulary', () => {
+  it('measures the full degree against its stated unit minimum, not the modeled sum', async () => {
+    await seedTemplate({
+      schoolId: 21,
+      totalUnits: 120,
+      groups: [
+        namedGroup([{ section_advisement: 1, unit_advisement: 8, receivers: [ucCourse(2101)] }]),
+        {
+          title: 'Upper-division coursework', tier: 'nontransferable', sections: [
+            { section_advisement: 1, unit_advisement: 40, receivers: [{ receiving: { kind: 'requirement' } }] },
+          ],
+        },
+      ],
+    });
+    await seedAsDegree({
+      collegeId: 210,
+      groups: [asNamedGroup([{ section_advisement: 1, receivers: [asReceiver(21)] }])],
+    });
+    await seedCourses([[21, 8]]);
+    await seedAgreement({
+      schoolId: 21,
+      collegeId: 210,
+      receivers: [articulated({ kind: 'course', parent_id: 2101 }, [21])],
+    });
+
+    const cell = await cellFor({ collegeId: 210, schoolId: 21 });
+    expect(cell.full_degree_required_units).toBe(120);
+    expect(cell.full_degree_fulfilled_units).toBe(8);
+    expect(cell.full_degree_completion_pct).toBe(6.7);
+    // Lower division still measures the CC-completable requirements alone.
+    expect(cell.lower_division_required_units).toBe(8);
+    expect(cell.lower_division_completion_pct).toBe(100);
+  });
+
+  it('charges an Or choice one path in the denominator', async () => {
+    await seedTemplate({
+      schoolId: 22,
+      totalUnits: 120,
+      groups: [{
+        title: 'Lower-division mathematics — one complete sequence',
+        tier: 'transferable',
+        group_conjunction: 'Or',
+        sections: [
+          { section_advisement: 1, unit_advisement: 8, receivers: [ucSeries(2201, 2202)] },
+          { section_advisement: 1, unit_advisement: 10, receivers: [ucSeries(2203, 2204)] },
+        ],
+      }],
+    });
+    await seedAsDegree({
+      collegeId: 220,
+      groups: [asNamedGroup([{ section_advisement: 2, receivers: [asReceiver(22), asReceiver(23)] }])],
+    });
+    await seedCourses([[22, 4], [23, 4]]);
+    await seedAgreement({
+      schoolId: 22,
+      collegeId: 220,
+      receivers: [
+        articulated({ kind: 'series', parent_ids: [2201, 2202] }, [22, 23]),
+      ],
+    });
+
+    const cell = await cellFor({ collegeId: 220, schoolId: 22 });
+    // 8 cheapest-path units, not 18 summed alternatives.
+    expect(cell.lower_division_required_units).toBe(8);
+    expect(cell.lower_division_fulfilled_units).toBe(8);
+    expect(cell.lower_division_completion_pct).toBe(100);
+  });
+
+  it('credits an Or choice one path in the numerator, not one per alternative', async () => {
+    await seedTemplate({
+      schoolId: 23,
+      totalUnits: 120,
+      groups: [{
+        title: 'Statistics — one course',
+        tier: 'transferable',
+        group_conjunction: 'Or',
+        sections: [
+          { section_advisement: 1, unit_advisement: 4, receivers: [ucCourse(2301)] },
+          { section_advisement: 1, unit_advisement: 4, receivers: [ucCourse(2302)] },
+        ],
+      }],
+    });
+    // The associate degree carries BOTH alternatives' CC courses.
+    await seedAsDegree({
+      collegeId: 230,
+      groups: [asNamedGroup([{ section_advisement: 2, receivers: [asReceiver(30), asReceiver(31)] }])],
+    });
+    await seedCourses([[30, 4], [31, 4]]);
+    await seedAgreement({
+      schoolId: 23,
+      collegeId: 230,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 2301 }, [30]),
+        articulated({ kind: 'course', parent_id: 2302 }, [31]),
+      ],
+    });
+
+    const cell = await cellFor({ collegeId: 230, schoolId: 23 });
+    // One statistics requirement exists; satisfying it twice is not 8 units.
+    expect(cell.named_transferred_units).toBe(4);
+    expect(cell.lower_division_required_units).toBe(4);
+    expect(cell.lower_division_fulfilled_units).toBe(4);
+  });
+
+  it('lets a nontransferable group override contradictory section tiers', async () => {
+    await seedTemplate({
+      schoolId: 24,
+      totalUnits: 120,
+      groups: [
+        namedGroup([{ section_advisement: 1, unit_advisement: 4, receivers: [ucCourse(2401)] }]),
+        {
+          // Berkeley MCB's rebuilt shape: the group says university-only in
+          // both vocabularies, the sections still say transferable.
+          title: 'Upper-division emphasis',
+          tier: 'nontransferable',
+          course_level: 'upper_division',
+          cc_articulable: false,
+          sections: [
+            { tier: 'transferable', section_advisement: 1, unit_advisement: 24, receivers: [{ receiving: { kind: 'requirement' } }] },
+          ],
+        },
+      ],
+    });
+    await seedAsDegree({
+      collegeId: 240,
+      groups: [asNamedGroup([{ section_advisement: 1, receivers: [asReceiver(40)] }])],
+    });
+    await seedCourses([[40, 4]]);
+    await seedAgreement({
+      schoolId: 24,
+      collegeId: 240,
+      receivers: [articulated({ kind: 'course', parent_id: 2401 }, [40])],
+    });
+
+    const cell = await cellFor({ collegeId: 240, schoolId: 24 });
+    // The 24 upper-division units belong to the university side.
+    expect(cell.lower_division_required_units).toBe(4);
+    expect(cell.lower_division_completion_pct).toBe(100);
+  });
+
+  it('honors an authored zero-unit requirement instead of re-pricing it', async () => {
+    await seedTemplate({
+      schoolId: 25,
+      totalUnits: 120,
+      groups: [
+        namedGroup([{ section_advisement: 1, unit_advisement: 4, receivers: [ucCourse(2501)] }]),
+        {
+          // Berkeley's American Cultures: a real requirement that double-counts
+          // with breadth, authored at zero units.
+          title: 'American Cultures', tier: 'transferable', sections: [
+            { section_advisement: 1, unit_advisement: 0, receivers: [geReceiver('AC', { assume: true })] },
+          ],
+        },
+      ],
+    });
+    await seedAsDegree({
+      collegeId: 250,
+      groups: [
+        asNamedGroup([{ section_advisement: 1, receivers: [asReceiver(50)] }]),
+        asGeGroup(20),
+      ],
+    });
+    await seedCourses([[50, 4]]);
+    await seedAgreement({
+      schoolId: 25,
+      collegeId: 250,
+      receivers: [articulated({ kind: 'course', parent_id: 2501 }, [50])],
+    });
+
+    const cell = await cellFor({ collegeId: 250, schoolId: 25 });
+    // No phantom four-unit GE demand from the zero-unit overlay.
+    expect(cell.ge_demand_units).toBe(0);
+    expect(cell.ge_counted_units).toBe(0);
+    expect(cell.lower_division_required_units).toBe(4);
+  });
+
+  it('includes legacy associate-degree rows that predate the major stamp', async () => {
+    await seedTemplate({
+      schoolId: 26,
+      totalUnits: 120,
+      groups: [namedGroup([{ section_advisement: 1, unit_advisement: 4, receivers: [ucCourse(2601)] }])],
+    });
+    await seedAsDegree({
+      collegeId: 260,
+      majorSlug: null,
+      groups: [asNamedGroup([{ section_advisement: 1, receivers: [asReceiver(60)] }])],
+    });
+    await seedCourses([[60, 4]]);
+    await seedAgreement({
+      schoolId: 26,
+      collegeId: 260,
+      receivers: [articulated({ kind: 'course', parent_id: 2601 }, [60])],
+    });
+
+    // No majorSlug: the default major owns unstamped legacy rows, and the
+    // scoping clause (not a bare equality) is what lets them match.
+    const rows = await transferCreditRateData(db, null, { degreeType: 'local_as' });
+    expect(rows.map((row) => row.community_college_id)).toContain(260);
+  });
+
+  it('joins the published per-pair value onto paper-corpus rows, and only there', async () => {
+    await db.collection('curated_requirements').insertMany([
+      {
+        _id: 'degree:9001:ma-cs', kind: 'degree', school_id: 9001, school: 'Testfield',
+        program: 'Computer Science, B.S.', major_slug: 'ma-cs', state: 'ma',
+        total_units: 120, unit_system: 'semester',
+        requirement_groups: [{
+          title: 'Lower-division major requirements', tier: 'transferable',
+          sections: [{
+            section_advisement: 1, unit_advisement: 4, tier: 'transferable',
+            receivers: [{ receiving: { kind: 'course', parent_id: 9001000, code: 'COMP 151', name: 'Computer Science I' } }],
+          }],
+        }, {
+          title: 'GE: general education and electives', tier: 'transferable',
+          sections: [{
+            section_advisement: 1, unit_advisement: 3, tier: 'transferable',
+            receivers: [{ receiving: { kind: 'course', parent_id: 9001050, code: 'ELEC XXX', name: 'Humanities' } }],
+          }],
+        }],
+      },
+      {
+        _id: 'as_degree:ma:9101:local_as', kind: 'as_degree', degree_type: 'local_as',
+        major_slug: 'ma-cs', state: 'ma', status: 'found',
+        college_id: 'ma:cc:9101', community_college_id: 9101,
+        college_name: 'Berkshire Community College', total_units: 7, unit_system: 'semester',
+        verification: { verified: true },
+        requirement_groups: [{
+          title: 'Associate degree requirements',
+          sections: [{ section_advisement: 2, receivers: [
+            { receiving: { kind: 'requirement', parent_id: null }, articulation_status: null,
+              options: [{ course_ids: [9101001], course_conjunction: 'and' }] },
+            { receiving: { kind: 'requirement', parent_id: null }, articulation_status: null,
+              options: [{ course_ids: [9101002], course_conjunction: 'and' }] },
+          ] }],
+        }],
+      },
+    ]);
+    await db.collection('assist_courses').insertMany([
+      { _id: 'ma:sending:9101001', institution_id: 'ma:cc:9101', side: 'sending',
+        course_id: 9101001, prefix: 'CSC', number: '101', title: 'Programming I',
+        units: 4, community_college_id: 9101, state: 'ma' },
+      { _id: 'ma:sending:9101002', institution_id: 'ma:cc:9101', side: 'sending',
+        course_id: 9101002, prefix: 'HUM', number: '101', title: 'World Cultures',
+        units: 3, community_college_id: 9101, state: 'ma' },
+    ]);
+    await db.collection('assist_agreements').insertOne({
+      _id: 'ma:agreement:9001:9101', university_id: 'ma:uni:9001', college_id: 'ma:cc:9101',
+      uc_school_id: 9001, community_college_id: 9101,
+      major: 'Computer Science, B.S.', state: 'ma', pairing: 'order-approximate',
+      requirement_groups: [{ sections: [{ receivers: [
+        { receiving: { kind: 'course', parent_id: 9001000, code: 'COMP 151', name: 'Computer Science I' },
+          articulation_status: 'articulated',
+          options: [{ course_ids: [9101001], course_conjunction: 'and' }] },
+        { receiving: { kind: 'course', parent_id: 9001050, code: 'ELEC XXX', name: 'Humanities' },
+          articulation_status: 'articulated',
+          options: [{ course_ids: [9101002], course_conjunction: 'and' }] },
+      ] }] }],
+    });
+    await db.collection('ma_paper_baselines').insertMany([
+      { measure: 'pct_as', school_id: 9001, community_college_id: 9101,
+        school: 'Testfield', college_name: 'Berkshire Community College', value: 0.385 },
+      { measure: 'pct_as_pdf', school_id: 9001, community_college_id: 9101,
+        school: 'Testfield', college_name: 'Berkshire Community College', value: 0.42 },
+      { measure: 'pct_as', school_id: 9001, community_college_id: null,
+        school: 'Testfield', value: 1 },
+    ]);
+
+    const rows = await transferCreditRateData(db, null, { degreeType: 'local_as', majorSlug: 'ma-cs' });
+    const cell = rows.find((row) => row.community_college_id === 9101 && row.school_id === 9001);
+    // Both published revisions ride the row — the repo workbook's tally and
+    // the final PDF's printed value — beside our recomputation, so the
+    // figure's source selector can show any of the three.
+    expect(cell.published_as_transfer_pct).toBe(38.5);
+    expect(cell.published_pdf_as_transfer_pct).toBe(42);
+    expect(cell.as_unit_utilization_pct).toBe(100);
+    // The CS-only flavor drops the GE-group receiver's 3 units: 4 of 7.
+    expect(cell.as_cs_only_utilization_pct).toBe(57.1);
+
+    // California rows never carry the field: no paper corpus, no join.
+    const caRows = await transferCreditRateData(db, null, { degreeType: 'local_as' });
+    for (const row of caRows) {
+      expect(row.published_as_transfer_pct).toBeUndefined();
+      expect(row.published_pdf_as_transfer_pct).toBeUndefined();
+      expect(row.as_cs_only_utilization_pct).toBeUndefined();
+    }
   });
 });

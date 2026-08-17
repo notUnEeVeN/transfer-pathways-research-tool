@@ -82,7 +82,7 @@ exports.evaluate = asyncHandler(async (req, res) => {
   if (!getMajor(majorSlug)) {
     return res.status(400).json({
       error: `unknown major: ${majorSlug}`,
-      known: listMajors().map((major) => major.slug),
+      known: listMajors({ includeStates: true }).map((major) => major.slug),
     });
   }
   const result = await evaluateDegreeAtCollege(req.app.locals.db, {

@@ -97,9 +97,14 @@ export function resolveAnalysisAvailability(analysis, selectedMajor) {
     return unavailableConfiguration(`Capability metadata is unavailable for ${selectedLabel}.`, scope)
   }
 
+  // A requirement may list alternatives separated by '|' (for example
+  // 'prerequisites|paperBaselines'): the entry is satisfied when ANY
+  // alternative is ready. Used where the same figure runs live for corpora
+  // with one capability and from a committed paper snapshot for corpora with
+  // the other.
   const missingCapabilities = required
     .map(text)
-    .filter((name) => !capabilityReady(capabilities[name]))
+    .filter((name) => !name.split('|').some((alt) => capabilityReady(capabilities[alt.trim()])))
 
   if (missingCapabilities.length) {
     return {

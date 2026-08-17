@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowLeftIcon, ArrowTopRightOnSquareIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import {
   Panel, StatStrip, Badge, Button, Spinner, Alert, EmptyState, Stack,
-  PageContainer, Tabs,
+  PageContainer, Tabs, FullScreenPanel,
 } from '../components/ui'
 import SubNav from '../components/SubNav'
 import { InstitutionRail, CourseTable, courseSearch, TieredDegreeLedger } from '../DataPage'
@@ -12,6 +12,9 @@ import { ProgressBar } from '../asdegrees/validation/ValidationDashboard'
 import Textarea from '../components/ui/forms/Textarea'
 import JsonDocumentPanel from '../shared/JsonDocumentPanel'
 import VerifiedBanner from '../shared/components/VerifiedBanner'
+import { BuiltInAnalysisCard, VisualThumbnailCard, itemDetails } from '../visuals/VisualsPage'
+import { getAnalysisById } from '../analyses/registry'
+import { useMajors } from '../shared/majors/useMajors'
 import {
   useVaSummary, useVaInstitutions, useVaCourses, useVaCourse, useVaMatrix,
   useVaDegrees, useVaCoverage, useSaveVaDegree, useVaDegreeRevisions,
@@ -53,12 +56,22 @@ import VirginiaPrerequisitesTab, { VirginiaPrerequisiteView } from './VirginiaPr
  * the deliverable there.
  */
 
+// The Virginia figures compute, but the corpus behind them is not ready to be
+// read as findings: the agreements are DERIVED (Transfer Virginia never joins
+// its equivalencies to its degree requirements — we do), and none of it has
+// been through the verification pass California's and Massachusetts's numbers
+// have had. Until it has, the tab is withheld rather than shown with caveats,
+// because a figure on screen gets quoted. `VisualsTab` below is left intact:
+// restoring the tab is this one flag.
+const VA_VISUALS_READY = false
+
 const TABS = [
   { value: 'overview', label: 'Overview' },
   { value: 'colleges', label: 'Community Colleges' },
   { value: 'universities', label: 'Universities' },
   { value: 'courses', label: 'Courses' },
   { value: 'prerequisites', label: 'Prerequisites' },
+  ...(VA_VISUALS_READY ? [{ value: 'visuals', label: 'Visuals' }] : []),
 ]
 
 const TAB_ROUTES = {
@@ -67,9 +80,80 @@ const TAB_ROUTES = {
   universities: { path: '/api/va/institutions?level=four_year&cohort=schev_public_four_year' },
   courses: { path: '/api/va/courses' },
   prerequisites: { path: '/api/va/prerequisite-graph' },
+  visuals: { path: '/api/va/summary' },
 }
 
 const num = (v) => (v == null ? '—' : Number(v).toLocaleString())
+
+// The same five figures the California and Massachusetts libraries render, in
+// the same thumbnail-gallery + full-screen detail shell, so all three states
+// read identically. Virginia's agreements are derived rather than published —
+// Transfer Virginia issues course equivalencies and degree requirements
+// separately, and scripts/va/buildVaDocuments.js performs the join.
+const VA_FIGURE_IDS = [
+  'coverage-heatmap', 'course-type-coverage', 'transfer-credit-rate',
+  'transfer-extra-units', 'transfer-extra-cost',
+]
+const NO_RELEASES = new Set()
+
+function VisualsTab() {
+  const { majors, isLoading, isError } = useMajors({ state: 'va' })
+  const vaMajor = majors[0] || null
+  const [selectedKey, setSelectedKey] = useState(null)
+
+  const gallery = useMemo(() => VA_FIGURE_IDS
+    .map((id) => getAnalysisById(id))
+    .filter(Boolean)
+    .map((analysis) => ({ kind: 'analysis', key: `analysis:${analysis.id}`, at: analysis.published_at, analysis }))
+    .sort((a, b) => (a.analysis.figureNo ?? 99) - (b.analysis.figureNo ?? 99)), [])
+
+  if (isLoading) return <div className='py-10 flex justify-center'><Spinner /></div>
+  if (isError || !vaMajor) {
+    return <Alert type='error'>Could not load the Virginia major registry.</Alert>
+  }
+
+  const selectedItem = gallery.find((item) => item.key === selectedKey) || null
+  const selectedDetails = selectedItem
+    ? itemDetails(selectedItem, { isAdmin: false, releasedSet: NO_RELEASES, selectedMajor: vaMajor })
+    : null
+
+  return (
+    <div className='flex flex-col gap-5'>
+      <div className='flex items-end justify-between gap-6'>
+        <div>
+          <h1 className='text-heading'>Visual library</h1>
+          <p className='mt-1 text-body text-ink-muted'>
+            The same five figures the California library renders, computed from the
+            Virginia corpus. Agreements are derived by joining Transfer Virginia&rsquo;s
+            course equivalencies to each four-year&rsquo;s published requirements.
+          </p>
+        </div>
+        <Badge variant='neutral'>{gallery.length} visuals</Badge>
+      </div>
+      <section className='surface-card flex items-center gap-3 px-[22px] py-4'>
+        <p className='text-label shrink-0'>Major</p>
+        <div className='ml-auto min-w-52'>
+          <p className='text-body-strong'>{vaMajor.label}</p>
+        </div>
+      </section>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'>
+        {gallery.map((item) => (
+          <VisualThumbnailCard key={item.key} item={item}
+            selectedMajor={vaMajor}
+            onOpen={() => setSelectedKey(item.key)} />
+        ))}
+      </div>
+
+      <FullScreenPanel open={!!selectedItem} onClose={() => setSelectedKey(null)}
+        title={selectedDetails?.title} subtitle={selectedDetails?.source}
+        ariaLabel={selectedDetails ? `${selectedDetails.title} visual detail` : 'Visual detail'}>
+        {selectedItem && (
+          <BuiltInAnalysisCard analysis={selectedItem.analysis} selectedMajor={vaMajor} />
+        )}
+      </FullScreenPanel>
+    </div>
+  )
+}
 
 const PRIMARY_VA_COHORT = 'schev_public_four_year'
 const OTHER_VA_COHORT = 'other_four_year'
@@ -105,6 +189,9 @@ export default function VirginiaPage() {
                 {tab === 'universities' && <UniversitiesPane onRoute={setRoute} />}
                 {tab === 'courses' && <CoursesTab />}
                 {tab === 'prerequisites' && <VirginiaPrerequisitesTab />}
+                {/* Guarded by the flag as well as the tab list, so the pane
+                    cannot render even if `tab` is set some other way. */}
+                {tab === 'visuals' && VA_VISUALS_READY && <VisualsTab />}
               </>
             )}
         </PageContainer>
@@ -207,6 +294,11 @@ function buildVerificationIndex(coverage = []) {
       documents: docs.length,
       readable: readable.length,
       verified: readable.filter((d) => d.verified).length,
+      // A parser-only document can be read but not signed. The server keeps
+      // these out of its verification denominator so progress never asks for an
+      // impossible action; the same rule has to hold here or the page and the
+      // API report different numbers for the same corpus.
+      verifiable: readable.filter((d) => d.catalog_accepted).length,
       groups: readable[0]?.groups ?? 0,
       receivers: readable[0]?.receivers ?? 0,
     })
@@ -237,6 +329,7 @@ function VerificationPanel() {
   const levels = useMemo(() => {
     const rows = data?.coverage ?? []
     const index = buildVerificationIndex(rows)
+    const totals = data?.verification ?? {}
     return ['community_college', 'four_year'].map((level) => {
       // The public four-year cohort is the Virginia analogue of the UC
       // receiving side. Private/professional partners remain available in the
@@ -244,17 +337,30 @@ function VerificationPanel() {
       const scoped = rows.filter((r) => r.level === level
         && (level !== 'four_year' || r.cohort === PRIMARY_VA_COHORT))
       const states = scoped.map((r) => index.get(coverageSlugOf(r)))
-      const readable = states.filter((s) => s && s.readable)
+      const cc = level === 'community_college'
       return {
         level,
-        label: level === 'community_college' ? 'A.S. degrees' : 'B.S. degrees',
-        verified: readable.filter((s) => s.state === 'verified').length,
-        readable: readable.length,
-        needsRecord: states.filter((s) => s
+        label: cc ? 'A.S. degrees' : 'B.S. degrees',
+        // The bar reports the server's own figure rather than a second one
+        // derived here. The server applies the acceptance gate — a parser-only
+        // document is readable but cannot be signed, so it is excluded from the
+        // denominator and the progress figure never asks for an impossible
+        // action. Recomputing locally dropped that gate, which put a different
+        // number on the page than the API reported for the same corpus.
+        verified: cc ? totals.as_verified ?? 0 : totals.bs_verified ?? 0,
+        verifiable: cc ? totals.as_verifiable ?? 0 : totals.bs_verifiable ?? 0,
+        // Institution-level context for what the bar cannot show: a school with
+        // nothing collected yet holds no document, so it is absent from the
+        // denominator entirely. Naming it keeps the bar from reading as the
+        // whole job — it is progress through what exists, not through the cohort.
+        cohort: states.filter((s) => s && s.state !== 'url_only' && s.state !== 'no_program').length,
+        awaiting: states.filter((s) => s
           && (s.state === 'needs_collection' || s.state === 'needs_composition')).length,
       }
     })
   }, [data])
+
+  const totals = data?.verification
 
   if (isLoading) return <div className='flex justify-center py-8'><Spinner /></div>
   if (isError || !data?.coverage?.length) return null
@@ -270,13 +376,19 @@ function VerificationPanel() {
       <div className='grid gap-4 sm:grid-cols-2'>
         {levels.map((l) => (
           <div key={l.level}>
-            <ProgressBar label={`${l.label} verified`} value={l.verified} total={l.readable} tone='success' />
+            <ProgressBar label={`${l.label} verified`} value={l.verified} total={l.verifiable} tone='success' />
             <p className='text-tag text-ink-subtle mt-1.5'>
-              {l.needsRecord} still need a reviewable catalog record
+              {l.awaiting} of {l.cohort} institutions still need a reviewable catalog record
             </p>
           </div>
         ))}
       </div>
+      {totals && totals.reviewable > totals.verifiable && (
+        <p className='text-tag text-ink-subtle mt-4'>
+          {totals.reviewable - totals.verifiable} of {totals.documents} collected documents are
+          readable but not yet acceptable, so they sit outside the bars above.
+        </p>
+      )}
     </Panel>
   )
 }

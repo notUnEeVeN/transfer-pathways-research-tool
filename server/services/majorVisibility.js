@@ -88,11 +88,19 @@ function invalidateVisibilityCache() {
  * onboarding has one source of truth (`config/majors.js`) and fails closed.
  * Account-level access remains enforced upstream by requireAuditAccess.
  *
+ * State majors are IN scope: statehood partitions corpora, it is not a
+ * visibility restriction, and a state figure that reaches this layer has
+ * already selected its corpus. Deriving from the CA-only default silently
+ * zeroed every Massachusetts analysis cell (the CA pair set filtered out all
+ * ma: agreements while the MA degree rows still rendered).
+ *
  * The settings helpers remain for backwards-compatible Admin/settings reads;
  * they no longer decide what enters a website query or figure.
  */
 async function majorScope() {
-  return normalizePairs(listMajors().flatMap((major) => programPairs(major)));
+  return normalizePairs(
+    listMajors({ includeStates: true }).flatMap((major) => programPairs(major))
+  );
 }
 
 // True when a (schoolId, major) combination is inside the scope. `null`

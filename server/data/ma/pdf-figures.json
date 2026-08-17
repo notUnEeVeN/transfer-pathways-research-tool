@@ -1,0 +1,27 @@
+{
+  "source": "2027_SIGCSE_Virtual_MA_Transfer_Pathways.pdf (final SIGCSE submission), Figure 3, page 4 — per-pair transfer credit rate as printed. Transcribed 2026-08-14 from the embedded figure image at 3x scale; every column mean reproduces the printed Average row (79/86/36/38/65/80/53/92/89/58/74), enforced as an import gate. This is a NEWER revision of the tally than the repo's CurrComp Master.xlsx.",
+  "fig3_pct_as": {
+    "printed_average_row": {
+      "Bridgewater": 79, "Fitchburg": 86, "Framingham": 36, "MCLA": 38,
+      "Salem": 65, "UMass Amherst": 80, "UMass Boston": 53, "UMass Dartmouth": 92,
+      "UMass Lowell": 89, "Westfield": 58, "Worcester": 74
+    },
+    "cells": {
+      "Berkshire": { "MCLA": 38, "Westfield": 43 },
+      "Bristol": { "Bridgewater": 90, "UMass Boston": 58, "UMass Dartmouth": 90 },
+      "Bunker Hill": { "Bridgewater": 51, "Fitchburg": 82, "Framingham": 28, "Salem": 70, "UMass Boston": 51, "UMass Lowell": 100 },
+      "Cape Cod": { "Bridgewater": 87, "UMass Dartmouth": 90 },
+      "Greenfield": { "MCLA": 37, "UMass Amherst": 97, "Westfield": 69 },
+      "Holyoke": { "UMass Amherst": 48, "Westfield": 55 },
+      "Massasoit": { "Bridgewater": 100, "Framingham": 55, "Salem": 71, "UMass Boston": 62, "UMass Dartmouth": 95 },
+      "MassBay": { "Bridgewater": 91, "Fitchburg": 100, "Framingham": 34, "Salem": 71, "UMass Boston": 51, "UMass Lowell": 100, "Worcester": 75 },
+      "Middlesex": { "Fitchburg": 100, "Framingham": 33, "Salem": 53, "UMass Boston": 63, "UMass Lowell": 100, "Worcester": 82 },
+      "Mount Wachusett": { "Fitchburg": 90, "Framingham": 41, "Worcester": 70 },
+      "North Shore": { "Bridgewater": 97, "Framingham": 34, "Salem": 83, "UMass Boston": 52, "UMass Lowell": 100 },
+      "Northern Essex": { "Salem": 69, "UMass Boston": 48, "UMass Lowell": 73 },
+      "Quinsigamond": { "Fitchburg": 100, "Framingham": 38, "UMass Lowell": 100, "Worcester": 100 },
+      "Roxbury": { "Bridgewater": 39, "Fitchburg": 41, "Framingham": 27, "Salem": 38, "UMass Boston": 42, "UMass Lowell": 52, "Worcester": 56 },
+      "Springfield Technical": { "UMass Amherst": 95, "Westfield": 67, "Worcester": 60 }
+    }
+  }
+}

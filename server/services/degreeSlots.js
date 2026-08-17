@@ -107,11 +107,187 @@ function normalizeRequirementName(value) {
   return text || null;
 }
 
+/**
+ * The Massachusetts paper's published measure (final SIGCSE submission,
+ * Figure 1): required COURSES at every level — department, college, or campus
+ * — with general education excluded, binary articulated-or-not per course.
+ * Upper-division requirements rarely articulate, which is exactly why their
+ * statewide average is 38.2%.
+ *
+ * Counting is per course, never per requirement slot: a "one complete series"
+ * requirement of three courses is three, and an articulated series covers all
+ * of them (series articulation is all-or-nothing). A choose-N pool prices the
+ * N cheapest alternatives. Course counts come, in order, from: the choose-N
+ * ask; the enumerated receivers with series expanded; a stated
+ * section_advisement; the four-unit assumption over an authored unit total
+ * (two Berkeley "coursework outside the major" blocks are the only such
+ * sections in the corpus); the receiver count.
+ *
+ * Excluded as GE: the breadth tier, ge_area receivers, GE-area fallbacks on
+ * course receivers (Berkeley's R&C), assumed-satisfiable overlays (AH&I,
+ * elective capacity), and GE-titled blocks. A bare "GE" only marks a block as
+ * general education when it NAMES the block ("GE: Crossroads…"), never when a
+ * major group notes double-counting ("also satisfies GE…"); the loose
+ * word-match applies only on the university-only tier, where annotations do
+ * not occur but "Upper-division campus GE experiences" does. Excluded as
+ * padding: free-elective blocks that exist only to reach the unit total —
+ * room, not requirements.
+ */
+const NAMED_GE_TITLE = /^\s*GE\b|general education|american cultures|american history/i;
+const NAMED_PADDING_TITLE = /unrestricted electives?|free electives?|elective capacity|elective units|elective credits|transfer cap reached|to reach the \d+/i;
+// The loose word-match on the university-only tier reads only the title HEAD
+// — the part before an em dash or parenthesis. Annotations routinely mention
+// GE while describing major coursework ("Upper-division major coursework —
+// 17 courses (incl. I&C SCI 139W = GE writing…)"), and matching the whole
+// title GE-excluded Irvine's and Merced's entire upper divisions from the
+// coverage denominator while every other campus counted theirs. A block that
+// IS university GE names it in the head ("Upper-division campus GE
+// experiences") and still matches.
+const titleHead = (title) => String(title || '').split(/\s+[—–]\s+|\(/)[0];
+const namedGeTitled = (g, s) => NAMED_GE_TITLE.test(String(g.title || ''))
+  || (resolveSectionTier(g, s) === 'nontransferable' && /\bGE\b/.test(titleHead(g.title)));
+const namedPadding = (g) => NAMED_PADDING_TITLE.test(String(g.title || ''));
+const namedGeFlavored = (g, s) => namedGeTitled(g, s)
+  || resolveSectionTier(g, s) === 'breadth'
+  || s.assume_satisfiable
+  || (Array.isArray(s.ge_areas) && s.ge_areas.length > 0)
+  || (s.receivers || []).some((r) => r.receiving?.kind === 'ge_area'
+    || r.assume_satisfiable
+    || (Array.isArray(r.ge_areas) && r.ge_areas.length));
+// A requirement the SOURCE itself says no community college can satisfy —
+// senior residency work, capstones taken in the major department — is not an
+// articulation failure; it is not an articulation question at all. Counting it
+// in the denominator asks "can a community college teach the senior year",
+// which caps the figure far below 100% for structural reasons and makes two
+// corpora incomparable whenever they enumerate upper-division work to
+// different depths. Virginia flags 238 of its 613 sections this way; the
+// Massachusetts corpus flags none, so its figure is unchanged.
+const notCollegeArticulable = (s) => s.cc_articulable === false;
+const inNamedRequirementPopulation = (g, s) => !namedPadding(g)
+  && !namedGeFlavored(g, s)
+  && !notCollegeArticulable(s);
+
+function namedRequirementCourses(requirementGroups, { articulated = null, articulatedRequirements = null } = {}) {
+  const evaluated = articulated != null;
+  const expansion = (r) => (r.receiving?.kind === 'series'
+    ? (r.receiving.parent_ids || []).length || 1
+    : 1);
+  const blockSatisfied = (declared) => {
+    const names = (Array.isArray(declared) ? declared : [declared])
+      .map(normalizeRequirementName)
+      .filter(Boolean);
+    return names.length > 0 && names.every((name) => articulatedRequirements?.has(name));
+  };
+
+  const sectionCourses = (g, s) => {
+    const recvs = s.receivers || [];
+    const ask = s.section_advisement;
+    const groupBlock = evaluated && blockSatisfied(g.assist_requirement);
+    const recvCovered = (r) => groupBlock
+      || (evaluated && (receiverArticulated(r.receiving, articulated)
+        || (r.assist_requirement && blockSatisfied(r.assist_requirement))));
+
+    if (ask != null && Number(ask) < recvs.length) {
+      // Choose-N: the requirement costs the N cheapest alternatives; covered
+      // by articulated picks, clamped so a longer articulated path cannot
+      // exceed the priced ask.
+      const n = Math.max(0, Number(ask));
+      const cheapestFirst = [...recvs].sort((a, b) => expansion(a) - expansion(b));
+      const total = cheapestFirst.slice(0, n).reduce((sum, r) => sum + expansion(r), 0);
+      const covered = cheapestFirst.filter(recvCovered).slice(0, n)
+        .reduce((sum, r) => sum + expansion(r), 0);
+      return { total, covered: Math.min(total, covered) };
+    }
+    const enumerated = recvs.length > 0
+      && recvs.every((r) => ['course', 'series'].includes(r.receiving?.kind));
+    if (enumerated) {
+      const total = recvs.reduce((sum, r) => sum + expansion(r), 0);
+      const covered = recvs.reduce((sum, r) => sum + (recvCovered(r) ? expansion(r) : 0), 0);
+      return { total, covered: Math.min(total, covered) };
+    }
+    // Unenumerated blocks (requirement/category receivers): a stated count,
+    // else the documented four-unit assumption over an authored unit total,
+    // else one per receiver. They cover only through a declared ASSIST block.
+    const total = ask != null
+      ? Number(ask)
+      : s.unit_advisement != null
+        ? Math.max(1, Math.round(Number(s.unit_advisement) / ASSUMED_UNITS_PER_COURSE))
+        : (recvs.length || 1);
+    const covered = groupBlock || recvs.some(recvCovered) ? total : 0;
+    return { total, covered };
+  };
+
+  // A general-education section under the GE-on variant: counted at the same
+  // course derivation, and articulable everywhere below the upper division —
+  // IGETC/Cal-GETC certification clears lower-division GE by the modelling
+  // standard, which also keeps the variant independent of how each document
+  // happens to encode its GE blocks. Upper-division GE still counts against.
+  const geSectionCourses = (g, s) => {
+    const recvs = s.receivers || [];
+    const ask = s.section_advisement;
+    const total = ask != null
+      ? Number(ask)
+      : s.unit_advisement != null
+        ? Math.max(1, Math.round(Number(s.unit_advisement) / ASSUMED_UNITS_PER_COURSE))
+        : (recvs.length || 1);
+    const covered = evaluated && resolveSectionTier(g, s) !== 'nontransferable' ? total : 0;
+    return { total, covered };
+  };
+
+  const out = { total: 0, covered: 0, with_ge: { total: 0, covered: 0 } };
+  const addBase = (c) => {
+    out.total += c.total;
+    out.covered += c.covered;
+    out.with_ge.total += c.total;
+    out.with_ge.covered += c.covered;
+  };
+  const addGe = (c) => {
+    out.with_ge.total += c.total;
+    out.with_ge.covered += c.covered;
+  };
+
+  for (const g of requirementGroups || []) {
+    if (namedPadding(g)) continue;
+    // Sections the source marks as work no community college can satisfy leave
+    // the population entirely — see `notCollegeArticulable`.
+    const sections = (g.sections || []).filter((s) => !notCollegeArticulable(s));
+    if (!sections.length) continue;
+    const isOr = String(g.group_conjunction || '').toLowerCase() === 'or' && sections.length > 1;
+    if (!isOr) {
+      for (const s of sections) {
+        if (namedGeFlavored(g, s)) addGe(geSectionCourses(g, s));
+        else addBase(sectionCourses(g, s));
+      }
+      continue;
+    }
+    // An Or group costs one path: best-covered ratio wins; ties go to the
+    // cheapest path, so an unevaluated template prices the choice the same
+    // way the unit budget does. (Every Or alternative in the corpus is a
+    // named-requirement path; a hypothetical all-GE choice falls back to the
+    // same rule over its GE pricing.)
+    const base = sections.filter((s) => !namedGeFlavored(g, s));
+    const pool = base.length ? base : sections;
+    const stats = pool.map((s) => (base.length ? sectionCourses(g, s) : geSectionCourses(g, s)));
+    const ratio = (x) => (x.total ? x.covered / x.total : 0);
+    let pick = stats[0];
+    for (const candidate of stats.slice(1)) {
+      if (ratio(candidate) > ratio(pick)
+        || (ratio(candidate) === ratio(pick) && candidate.total < pick.total)) {
+        pick = candidate;
+      }
+    }
+    if (base.length) addBase(pick);
+    else addGe(pick);
+  }
+  return out;
+}
+
 function buildDegreeGroups(requirementGroups, ctx = {}) {
   const {
     articulated = null, optionsByParent = new Map(),
     universityCoursesById = {}, coursesById = new Map(), ccGeAreas = null,
     categoryOf = null, articulatedRequirements = null,
+    excludeGeFromCategories = false,
   } = ctx;
   const evaluated = articulated != null;
 
@@ -145,12 +321,29 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       bucket.lower_division_covered += evaluated ? covered : 0;
     }
   };
-  const bump = (category, total, covered) => {
-    if (!byCategory) return;
-    const categories = (Array.isArray(category) ? category : [category]).filter(Boolean);
-    if (!categories.length) return;
+  const commitBump = (categories, total, covered) => {
     addTo(byCategory, categories[0], total, covered);
     for (const one of categories) addTo(byCategoryMulti, one, total, covered);
+  };
+  // Inside an Or group the course-type contributions buffer per alternative,
+  // and only the picked path's are committed — the rollup must collapse the
+  // same way the slot and unit totals do, or the typed slots sum every
+  // alternative (Berkeley MCB: 94 typed slots against a 26-slot degree).
+  let sectionBumps = null;
+  // With `excludeGeFromCategories`, GE-titled and padding groups stay out of
+  // the course-type rollup, matching the named-requirement population. The
+  // Massachusetts corpus opts in (config `courseTypes.excludeGeGroups`): its
+  // Figure 2 compares major coursework against the paper's matrix, which
+  // carries no GE columns. California does NOT opt in — its verified course-
+  // type figure counts GE blocks in Non-STEM, and that published semantic
+  // stays untouched. The same predicates the named lens uses decide.
+  let bumpExcluded = false;
+  const bump = (category, total, covered) => {
+    if (!byCategory || bumpExcluded) return;
+    const categories = (Array.isArray(category) ? category : [category]).filter(Boolean);
+    if (!categories.length) return;
+    if (sectionBumps) { sectionBumps.push([categories, total, covered]); return; }
+    commitBump(categories, total, covered);
   };
 
   const byTier = {};
@@ -195,7 +388,9 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         covered: gCovered - mark.gCovered,
         unitsTotal: unitsTotal - mark.unitsTotal,
         unitsCovered: unitsCovered - mark.unitsCovered,
+        bumps: sectionBumps || [],
       });
+      sectionBumps = null;
       mark = null;
     };
 
@@ -236,7 +431,12 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     );
 
     for (const s of g.sections || []) {
-      if (isOr) { closeSection(); mark = { gTotal, gCovered, unitsTotal, unitsCovered }; }
+      bumpExcluded = excludeGeFromCategories && (namedPadding(g) || namedGeTitled(g, s));
+      if (isOr) {
+        closeSection();
+        mark = { gTotal, gCovered, unitsTotal, unitsCovered };
+        sectionBumps = [];
+      }
       const ask = s.section_advisement ?? 1;
       const recvs = s.receivers || [];
       const kind = recvs[0]?.receiving?.kind;
@@ -373,11 +573,14 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       // template reports its primary alternative rather than an arbitrary one.
       const ratio = (x) => (x.total ? x.covered / x.total : 0);
       const pick = sectionStats.reduce((a, b) => (ratio(b) > ratio(a) ? b : a),
-        sectionStats[0] || { total: 0, covered: 0, unitsTotal: 0, unitsCovered: 0 });
+        sectionStats[0] || { total: 0, covered: 0, unitsTotal: 0, unitsCovered: 0, bumps: [] });
       gTotal = pick.total;
       gCovered = pick.covered;
       unitsTotal = unitsBefore + pick.unitsTotal;
       unitsCovered = coveredUnitsBefore + pick.unitsCovered;
+      for (const [categories, bTotal, bCovered] of pick.bumps || []) {
+        commitBump(categories, bTotal, bCovered);
+      }
     }
     total += gTotal;
     covered += gCovered;
@@ -397,6 +600,19 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       // the primary percentage is not distorted by whole-unit rounding.
       covered: evaluated ? +(unitsCovered.toFixed(1)) : null,
     },
+    // The Massachusetts paper's population, counted the paper's way: binary
+    // per required COURSE, at every level — GE excluded (their published
+    // measure) and GE included (our extension for GE-heavy majors).
+    named_requirements: (() => {
+      const c = namedRequirementCourses(requirementGroups, { articulated, articulatedRequirements });
+      return {
+        courses: { total: c.total, covered: evaluated ? c.covered : null },
+        courses_with_ge: {
+          total: c.with_ge.total,
+          covered: evaluated ? c.with_ge.covered : null,
+        },
+      };
+    })(),
     groups,
   };
 }
@@ -529,16 +745,56 @@ function buildLedgerGroups(requirementGroups, ctx = {}) {
 // the page's numbers move with the data, never a hand-kept figure.
 const ASSUMED_UNITS_PER_COURSE = 4;
 
+/**
+ * One tier for a section, resolved the way every reader must resolve it.
+ *
+ * Two vocabularies mark university-only work and both are legitimate: the CS
+ * documents say `tier: 'nontransferable'`, the bio/econ documents say
+ * `course_level: 'upper_division'` with `cc_articulable: false`. Whichever the
+ * group uses, the group's word is final — a group that can only be discharged
+ * after transferring is university-only in its entirety, and a section-level
+ * `tier: 'transferable'` beneath it is editor residue, not a fact. Berkeley MCB
+ * carried fifteen such sections, and readers that let the section win reported
+ * all 392 of its mis-summed units as lower division.
+ *
+ * Under any other group a section may still state its own tier (the CS
+ * documents put upper-division sections inside mixed groups this way).
+ */
+function resolveSectionTier(group, section) {
+  const universityOnly = /^upper/.test(String(group.course_level || ''))
+    || group.cc_articulable === false
+    || group.tier === 'nontransferable';
+  if (universityOnly) return 'nontransferable';
+  const tier = section.tier || group.tier;
+  return TIERS.includes(tier) ? tier : 'transferable';
+}
+
+function sectionUnits(section) {
+  const slots = Number(section.section_advisement) || (section.receivers || []).length || 0;
+  return section.unit_advisement != null
+    ? Number(section.unit_advisement)
+    : slots * ASSUMED_UNITS_PER_COURSE;
+}
+
 function computeUnitBudget(requirementGroups) {
   const perTier = { transferable: 0, breadth: 0, nontransferable: 0 };
   for (const g of requirementGroups || []) {
-    for (const s of g.sections || []) {
-      const slots = Number(s.section_advisement) || (s.receivers || []).length || 0;
-      const units = s.unit_advisement != null
-        ? Number(s.unit_advisement)
-        : slots * ASSUMED_UNITS_PER_COURSE;
-      const tier = TIERS.includes(s.tier || g.tier) ? (s.tier || g.tier) : 'transferable';
-      perTier[tier] += units;
+    const sections = g.sections || [];
+    const isOr = String(g.group_conjunction || '').toLowerCase() === 'or' && sections.length > 1;
+    if (isOr) {
+      // A choice costs one path. Price it at the cheapest alternative a
+      // college can actually reach — a path with a recorded reach of zero
+      // articulates nowhere and cannot set the price; unrecorded reach is
+      // assumed live. Same convention as degreeTransferBudget's groupUnits,
+      // so the denominator and the budget agree about every document.
+      const reachable = sections.filter((s) => (s.articulation_reach ?? 1) > 0);
+      const pick = (reachable.length ? reachable : sections)
+        .reduce((a, b) => (sectionUnits(b) < sectionUnits(a) ? b : a));
+      perTier[resolveSectionTier(g, pick)] += sectionUnits(pick);
+      continue;
+    }
+    for (const s of sections) {
+      perTier[resolveSectionTier(g, s)] += sectionUnits(s);
     }
   }
   return {
@@ -565,5 +821,12 @@ module.exports = {
   loadUniversityCourses,
   loadCollegeGeAreas,
   computeUnitBudget,
+  resolveSectionTier,
   degreeUnitSystem,
+  // The classification predicates the figure readers apply, exported so the
+  // display taxonomy (normalizeDegreeCategories.js) derives from EXACTLY the
+  // rules the figures use — the display can then never contradict the math.
+  namedPadding,
+  namedGeFlavored,
+  notCollegeArticulable,
 };

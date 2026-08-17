@@ -17,48 +17,65 @@ export function useDataSummary() {
   })
 }
 
-export function useColleges() {
+// The Massachusetts paper's published per-pair values, imported as diff
+// targets for the reproduction (see server/data/ma/PROVENANCE.md).
+export function useMaBaselines() {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ['institutions', 'community-college', user?.uid],
+    queryKey: ['ma-baselines', user?.uid],
+    queryFn: () => apiClient.get('/ma/baselines').then((r) => r.data),
+    enabled: !!user?.uid,
+    staleTime: Infinity,
+  })
+}
+
+// Institution and course hooks default to the unstamped California corpus;
+// pass { state: 'ma' } for the Massachusetts import. Ids for state docs are
+// stored fully qualified (ma:cc:9101), so the state prefixes the id string.
+export function useColleges({ state } = {}) {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ['institutions', 'community-college', state ?? 'ca', user?.uid],
     queryFn: () => apiClient
-      .get('/assist/institutions', { params: { kind: 'community_college' } })
+      .get('/assist/institutions', { params: { kind: 'community_college', ...(state ? { state } : {}) } })
       .then((r) => r.data.rows.map((row) => ({ ...row, id: row.source_id }))),
     enabled: !!user?.uid,
     staleTime: Infinity,
   })
 }
 
-export function useSchools() {
+export function useSchools({ state } = {}) {
   const { user } = useAuth()
   return useQuery({
-    queryKey: ['institutions', 'university', user?.uid],
+    queryKey: ['institutions', 'university', state ?? 'ca', user?.uid],
     queryFn: () => apiClient
-      .get('/assist/institutions', { params: { kind: 'university' } })
+      .get('/assist/institutions', { params: { kind: 'university', ...(state ? { state } : {}) } })
       .then((r) => ({ uc: r.data.rows.map((row) => ({ ...row, id: row.source_id })) })),
     enabled: !!user?.uid,
     staleTime: Infinity,
   })
 }
 
-export function useCcCourses(collegeId) {
+export function useCcCourses(collegeId, { state } = {}) {
   const { user } = useAuth()
+  const institutionId = state ? `${state}:cc:${collegeId}` : `cc:${collegeId}`
   return useQuery({
-    queryKey: ['cc-courses', user?.uid, collegeId],
+    queryKey: ['cc-courses', user?.uid, institutionId],
     queryFn: () => apiClient
-      .get('/assist/courses', { params: { institution_id: `cc:${collegeId}` } })
+      .get('/assist/courses', { params: { institution_id: institutionId } })
       .then((r) => r.data.rows),
     enabled: !!user?.uid && collegeId != null,
     staleTime: 10 * 60 * 1000,
   })
 }
 
-export function useUniversityCourses(schoolId) {
+export function useUniversityCourses(schoolId, { state } = {}) {
   const { user } = useAuth()
+  const institutionId = state ? `${state}:uni:${schoolId}` : `uc:${schoolId}`
   return useQuery({
-    queryKey: ['university-courses', user?.uid, schoolId],
+    queryKey: ['university-courses', user?.uid, institutionId],
     queryFn: () => apiClient
-      .get('/assist/courses', { params: { institution_id: `uc:${schoolId}` } })
+      .get('/assist/courses', { params: { institution_id: institutionId } })
       .then((r) => r.data.rows),
     enabled: !!user?.uid && schoolId != null,
     staleTime: 10 * 60 * 1000,
@@ -127,6 +144,20 @@ export function useCoverage(params = {}, options = {}) {
 // The result is edited frequently, so it is never persisted and every mount
 // fetches the current calculation (an in-memory result may bridge that fetch).
 // degree_type: 'ast' | 'local_as' | 'local_other'.
+export function usePathwayComplexity(options = {}) {
+  const { user } = useAuth()
+  const { enabled = true, majorSlug = 'cs', ...queryOptions } = options
+  const scopedMajor = String(majorSlug || '').trim() || 'cs'
+  return useQuery({
+    queryKey: ['pathway-complexity', 'v1', scopedMajor, user?.uid],
+    queryFn: () => apiClient
+      .get('/analysis/pathway-complexity', { params: { majorSlug: scopedMajor } })
+      .then((r) => r.data),
+    enabled: Boolean(user) && enabled,
+    ...queryOptions,
+  })
+}
+
 export function useTransferCreditRate(degreeType = 'local_as', options = {}) {
   const { user } = useAuth()
   const type = ['ast', 'local_as', 'local_other'].includes(degreeType) ? degreeType : 'local_as'

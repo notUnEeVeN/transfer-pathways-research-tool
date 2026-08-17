@@ -107,6 +107,11 @@ beforeAll(async () => {
     { _id: 'cc:10', source_id: 10, kind: 'community_college', district: 'North', region: 'Bay', counties_served: ['Alpha'] },
     { _id: 'cc:20', source_id: 20, kind: 'community_college', district: 'North', region: 'Bay', counties_served: ['Alpha', 'Beta'] },
     { _id: 'cc:30', source_id: 30, kind: 'community_college', district: 'South', region: 'Bay', counties_served: ['Gamma'] },
+    // Massachusetts rows must never enter a California analysis: every CA
+    // figure in this suite runs with these present, so any bleed fails the
+    // existing row-count expectations.
+    { _id: 'ma:uni:9001', source_id: 9001, kind: 'university', state: 'ma', academic_calendar: 'semester' },
+    { _id: 'ma:cc:9101', source_id: 9101, kind: 'community_college', state: 'ma', district: 'MA District' },
   ]);
   await db.collection('curated_requirements').insertMany([
     {
@@ -573,11 +578,38 @@ describe('coverageData', () => {
       pct_degree_requirement_slots: 66.7,
       degree_unit_system: 'quarter',
       degree_units_stated_minimum: 120,
-      degree_units_modeled_total: 28,
-      degree_units_with_equivalent: 16,
-      pct_degree_units: 57.1,
-      pct_articulated: 57.1,
+      // Unit coverage is now measured against the degree's stated minimum, not
+      // the sum of the modelled groups. The old denominator moved per college —
+      // an Or group collapses to whichever path that college covers best — so
+      // rows of one heatmap were not comparable, and the numerator could exceed
+      // the transfer cap.
+      //
+      // This fixture models 28 of 120 units, so the unnamed 92 count as free
+      // electives, which transfer. That is why it reads 90% rather than 57%:
+      // the figure describes the degree, and this degree is barely described.
+      // `modeled_share` is what a consumer gates on before trusting it.
+      degree_units_modeled_total: 120,
+      // The 70-unit semester cap now binds. This fixture names 28 of 120 units,
+      // so the unnamed 92 are elective and transfer — but only up to the cap,
+      // which is what stops a thinly modelled degree reading as 90% covered.
+      degree_units_with_equivalent: 70,
+      pct_degree_units: 58.3,
+      degree_units_satisfied: 16,
+      pct_articulated: 58.3,
       fully_articulated: false,
+      // The Massachusetts paper's published Figure 1 population — named
+      // course requirements at every level, GE excluded — counted the paper's
+      // way, binary per required course. Here that is the two
+      // major-preparation courses plus the two stated upper-division courses;
+      // R&C (breadth) and the assumed AH&I overlay stay out.
+      named_requirement_courses_total: 4,
+      named_requirement_courses_articulated: 2,
+      pct_named_requirement_courses: 50,
+      // GE-on adds R&C (breadth) and the assumed AH&I course, both articulable
+      // below the upper division.
+      named_requirement_courses_with_ge_total: 6,
+      named_requirement_courses_with_ge_articulated: 4,
+      pct_named_requirement_courses_with_ge: 66.7,
     });
     expect(alpha.degree_requirements_by_tier).toMatchObject({
       transferable: { total: 3, covered: 3 },
@@ -598,16 +630,31 @@ describe('coverageData', () => {
       receivers_required: 6,
       receivers_articulated: 2,
       pct_degree_requirement_slots: 33.3,
-      degree_units_with_equivalent: 8,
-      pct_articulated: 28.6,
+      // Satisfies 8 of the 28 modelled units; the 92 unnamed units are elective
+      // and transfer, so 100 of 120 carry. Slot coverage (33.3%) is the measure
+      // that still describes how much of the *named* requirement it meets.
+      degree_units_satisfied: 8,
+      degree_units_with_equivalent: 70,
+      pct_articulated: 58.3,
     });
     const gamma = rows.find((r) => r.community_college_id === 30);
     expect(gamma).toMatchObject({
       receivers_required: 6,
       receivers_articulated: 1,
       pct_degree_requirement_slots: 16.7,
-      degree_units_with_equivalent: 4,
-      pct_articulated: 14.3,
+      degree_units_satisfied: 4,
+      degree_units_with_equivalent: 70,
+      pct_articulated: 58.3,
+      // No agreement: only the assumed AH&I slot counts overall, and that slot
+      // is outside the paper's named-requirement population — so this lens
+      // reads an honest zero rather than inheriting the assumed credit.
+      named_requirement_courses_total: 4,
+      named_requirement_courses_articulated: 0,
+      pct_named_requirement_courses: 0,
+      // Certification clears lower-division GE even with no major agreement.
+      named_requirement_courses_with_ge_total: 6,
+      named_requirement_courses_with_ge_articulated: 2,
+      pct_named_requirement_courses_with_ge: 33.3,
     });
   });
 
@@ -619,7 +666,8 @@ describe('coverageData', () => {
       receivers_required: 6,
       receivers_articulated: 4,
       pct_degree_requirement_slots: 66.7,
-      pct_articulated: 57.1,
+      // Pooled across the district the same way, against the stated minimum.
+      pct_articulated: 58.3,
     });
   });
 });
@@ -1061,6 +1109,69 @@ describe('coverageData named ASSIST blocks and not-modelable groups', () => {
     for (const group of flagged) {
       expect(group).toHaveProperty('label');
       expect(Number.isInteger(group.index)).toBe(true);
+    }
+  });
+});
+
+describe('unit-lens gating for corpora the unit model does not describe', () => {
+  it('nulls every unit-lens field on ma-cs rows while the course lens stays live', async () => {
+    // Self-contained: seed a minimal Massachusetts degree + agreement against
+    // the sentinel institutions, assert, then remove what was added.
+    const added = {
+      degree: {
+        _id: 'degree:9001:ma-cs', kind: 'degree', school_id: 9001, school: 'Testfield',
+        program: 'Computer Science, B.S.', major_slug: 'ma-cs', state: 'ma',
+        total_units: 120, unit_system: 'semester',
+        requirement_groups: [{
+          title: 'Lower-division major requirements', tier: 'transferable',
+          group_conjunction: 'And',
+          sections: [{
+            section_advisement: 2,
+            unit_advisement: 7,
+            tier: 'transferable',
+            receivers: [
+              { receiving: { kind: 'course', parent_id: 9001000, code: 'COMP 151', name: 'Computer Science I' } },
+              { receiving: { kind: 'course', parent_id: 9001001, code: 'COMP 152', name: 'Computer Science II' } },
+            ],
+          }],
+        }],
+      },
+      agreement: {
+        _id: 'ma:agreement:9001:9101', university_id: 'ma:uni:9001', college_id: 'ma:cc:9101',
+        uc_school_id: 9001, community_college_id: 9101,
+        major: 'Computer Science, B.S.', state: 'ma', pairing: 'booleans-only',
+        requirement_groups: [{
+          sections: [{
+            receivers: [
+              { receiving: { kind: 'course', parent_id: 9001000, code: 'COMP 151', name: 'Computer Science I' }, articulation_status: 'articulated', options: [] },
+              { receiving: { kind: 'course', parent_id: 9001001, code: 'COMP 152', name: 'Computer Science II' }, articulation_status: 'not_articulated', options: [] },
+            ],
+          }],
+        }],
+      },
+    };
+    await db.collection('curated_requirements').insertOne(added.degree);
+    await db.collection('assist_agreements').insertOne(added.agreement);
+    try {
+      const rows = await coverageData(db, db, { requirements: 'degree', majorSlug: 'ma-cs' });
+      expect(rows.length).toBeGreaterThan(0);
+      for (const row of rows) {
+        // The California unit-budget model does not describe this corpus, so
+        // no client — however stale — may receive unit numbers to render.
+        expect(row.pct_degree_units).toBeNull();
+        expect(row.degree_units_with_equivalent).toBeNull();
+        expect(row.degree_units_satisfied).toBeNull();
+        expect(row.degree_transfer_cap).toBeNull();
+        expect(row.pct_articulated).toBeNull();
+        // The stated minimum is real and stays.
+        expect(row.degree_units_stated_minimum).toBe(120);
+      }
+      // The paper's course lens is unaffected: one of two named courses.
+      const cell = rows.find((row) => row.community_college_id === 9101);
+      expect(cell.pct_named_requirement_courses).toBe(50);
+    } finally {
+      await db.collection('curated_requirements').deleteOne({ _id: added.degree._id });
+      await db.collection('assist_agreements').deleteOne({ _id: added.agreement._id });
     }
   });
 });

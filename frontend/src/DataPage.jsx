@@ -9,6 +9,7 @@ import { Alert, Button, EmptyState, Input, LoadingLogo, PageContainer, Select, S
 import CampusPrerequisites from './CampusPrerequisites'
 import DatasetSummaryPanel from './components/DatasetSummaryPanel'
 import SubNav from './components/SubNav'
+import VisualsPage from './visuals/VisualsPage'
 import DistrictsTab, { CampusMinimums } from './DataReferences'
 import PrerequisitesTab from './prereqs/PrerequisitesTab'
 import ConceptGraphView from './prereqs/ConceptGraphView'
@@ -39,8 +40,11 @@ import MajorVerificationDots, { MajorVerificationLegend } from './shared/majors/
 import RevisionHistory from './components/RevisionHistory'
 
 /**
- * Data explorer — the partners' access point into the research database.
- * Everything shown is server-scoped to the caller's granted subset.
+ * California — the partners' access point into the research database.
+ * Everything shown is server-scoped to the caller's granted subset. Every
+ * state tab (California, Virginia, Massachusetts) follows this same layout:
+ * Overview → Community Colleges → four-year campuses → Prerequisites →
+ * Visuals, plus whatever is state-specific (Districts here).
  *
  *   Overview               — counts, refresh time, and majors per school
  *   UC Campuses            — UC-campus hub: majors tracked, the four-year
@@ -54,6 +58,8 @@ import RevisionHistory from './components/RevisionHistory'
  *                             joined by community college
  *   Prerequisites          — the concept DAG, its editors, and per-college coverage
  *   Districts              — community-college district geography (editable)
+ *   Visuals                — the figure gallery (moved here from the top bar
+ *                             when visuals became a per-state concern)
  *
  * Every requirement view renders through the shared RequirementsLedger
  * (completion checks off — there's no student here), and every view surfaces
@@ -69,6 +75,7 @@ const DATA_TAB_ROUTES = {
   institutions: { path: '/api/assist/institutions?kind=university' },
   prerequisites: { path: '/api/curated/prerequisite-graph' },
   districts: { path: '/api/assist/institutions?kind=community_college' },
+  visuals: { path: '/api/gallery' },
 }
 
 export default function DataPage({ onNavigate = () => {} }) {
@@ -109,11 +116,13 @@ export default function DataPage({ onNavigate = () => {} }) {
           { value: 'institutions',  label: 'UC Campuses' },
           { value: 'prerequisites', label: 'Prerequisites' },
           { value: 'districts',     label: 'Districts' },
+          { value: 'visuals',       label: 'Visuals' },
         ],
       }} route={route} />
       <div className='flex-1 min-h-0 overflow-auto'>
         <PageContainer>
           {tab === 'overview' && <DatasetSummaryPanel onNavigate={changeTab} />}
+          {tab === 'visuals' && <VisualsPage onNavigate={onNavigate} />}
           {tab === 'articulation' && (
             <AgreementsBrowser onRoute={reportRoute} homeRequest={agreementsHomeRequest} />
           )}
@@ -1359,21 +1368,38 @@ function DegreeVerificationNotes({ notes, onSave, saving, author }) {
 // community college can supply (major prep, then GE/breadth) before what must
 // happen at the university — instead of one undifferentiated list. Groups
 // keep their authored order within each section.
-const DEGREE_TIER_SECTIONS = [
-  { tier: 'transferable', label: 'Lower division · major preparation', sub: 'Transferable from a community college' },
-  { tier: 'breadth', label: 'General education & breadth', sub: 'Satisfiable through community-college coursework' },
-  { tier: 'nontransferable', label: 'Upper division · at the university', sub: 'Completed after transfer' },
+// One canonical organization for EVERY degree document, regardless of which
+// campus or state authored it. California documents carry a stamped
+// `category` derived from the exact classifier functions the figure engine
+// uses (scripts/normalizeDegreeCategories.js); unstamped documents (Virginia,
+// Massachusetts) fall back to their tier, which maps onto the same buckets.
+const DEGREE_CATEGORY_SECTIONS = [
+  { category: 'lower-division', label: 'Lower division · major preparation', sub: 'Transferable from a community college' },
+  { category: 'general-education', label: 'General education & breadth', sub: 'Satisfied through IGETC / area certification' },
+  { category: 'upper-division', label: 'Upper division · at the university', sub: 'Completed after transfer' },
+  { category: 'electives', label: 'Elective capacity', sub: 'Unit room to the degree total — any qualifying course counts' },
+  { category: 'unit-accounting', label: 'Unit accounting', sub: 'Where units are earned, not courses to take' },
 ]
 
+const TIER_FALLBACK_CATEGORY = {
+  transferable: 'lower-division',
+  breadth: 'general-education',
+  nontransferable: 'upper-division',
+}
+
+export const degreeGroupCategory = (g) => g.category
+  || TIER_FALLBACK_CATEGORY[g.tier || 'transferable']
+  || 'lower-division'
+
 export function TieredDegreeLedger({ groups, ...ledgerProps }) {
-  const buckets = DEGREE_TIER_SECTIONS.map((section) => ({
+  const buckets = DEGREE_CATEGORY_SECTIONS.map((section) => ({
     ...section,
-    groups: groups.filter((g) => (g.tier || 'transferable') === section.tier),
+    groups: groups.filter((g) => degreeGroupCategory(g) === section.category),
   })).filter((section) => section.groups.length > 0)
   return (
     <Stack gap='cozy'>
       {buckets.map((section) => (
-        <section key={section.tier} aria-label={section.label}>
+        <section key={section.category} aria-label={section.label}>
           <div className='flex items-baseline gap-2.5 mb-2.5 mt-1'>
             <h4 className='text-label'>{section.label}</h4>
             <span className='text-tag text-ink-subtle'>{section.sub}</span>

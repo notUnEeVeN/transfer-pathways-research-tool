@@ -12,7 +12,9 @@ const {
   loadUniversityCourses,
   loadCollegeGeAreas,
   degreeUnitSystem,
+  normalizeRequirementName,
 } = require('./degreeSlots');
+const { computeTransferBudget } = require('./degreeTransferBudget');
 const { defaultMajor, getMajor, programPairClause } = require('../config/majors');
 
 const COLLECTION = 'curated_requirements';
@@ -52,11 +54,20 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId, major
     .toArray();
   const optionsByParent = new Map();
   const articulated = new Set();
+  // ASSIST also publishes requirements as NAMED blocks carrying no course id
+  // (UC Irvine's biology "Mathematics Requirement"). A parent_id-keyed scan
+  // drops them, so collect their names too — the heatmap's pipeline does, and
+  // this per-college evaluation must agree with it about the same college.
+  const articulatedRequirements = new Set();
   for (const agr of agreements) {
     for (const g of agr.requirement_groups || []) {
       for (const s of g.sections || []) {
         for (const r of s.receivers || []) {
           if (r.articulation_status !== 'articulated') continue;
+          if (r.receiving?.kind === 'requirement' && typeof r.receiving.name === 'string') {
+            const name = normalizeRequirementName(r.receiving.name);
+            if (name) articulatedRequirements.add(name);
+          }
           const pids = r.receiving?.kind === 'series' ? (r.receiving.parent_ids || []) : [r.receiving?.parent_id];
           for (const pid of pids) {
             if (pid == null) continue;
@@ -88,15 +99,33 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId, major
   );
 
   const { total, covered, by_tier, units } = buildDegreeGroups(degree.requirement_groups, {
-    articulated, optionsByParent, universityCoursesById, coursesById, ccGeAreas,
+    articulated, articulatedRequirements, optionsByParent, universityCoursesById, coursesById, ccGeAreas,
   });
   // Merged agreement-shaped groups so the frontend renders this tab through the
   // shared RequirementsLedger, matching the Rendered tab.
   const ledger = buildLedgerGroups(degree.requirement_groups, { articulated, optionsByParent, coursesById, ccGeAreas });
   const unitSystem = degreeUnitSystem(degree, university?.academic_calendar);
-  const unitPct = units.total
-    ? Math.round((100 * units.covered) / units.total)
-    : null;
+
+  // What the college satisfies is not what the student carries. The transfer
+  // cap limits unit credit, and requirements that can only be met on campus
+  // limit it further, so the honest figure runs the satisfied units through the
+  // budget rather than reporting them raw.
+  //
+  // Two things were wrong with dividing covered by modeled units:
+  //
+  //   - The denominator moved per college. An Or group collapses to whichever
+  //     path that college covers best, so UC Davis Biology was measured against
+  //     180 units at American River and 190 at Barstow. Rows of one heatmap
+  //     were not comparable to each other.
+  //   - The numerator could exceed what transfers. Allan Hancock read 109
+  //     covered units against a 105-unit cap.
+  //
+  // The degree's own stated minimum is fixed for every college, which is what a
+  // column of percentages needs to mean the same thing all the way down.
+  const budget = computeTransferBudget(degree, { satisfiedUnits: units.covered });
+  const unitTotal = Number(degree.total_units) || units.total;
+  const unitCovered = Math.min(budget.transferred, unitTotal);
+  const unitPct = unitTotal ? Math.round((100 * unitCovered) / unitTotal) : null;
 
   return {
     school_id,
@@ -114,11 +143,23 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId, major
       // hand-authored requirement groups, which can legitimately exceed the
       // university-wide minimum for a particular program.
       units: {
-        total: units.total,
-        covered: units.covered,
+        total: unitTotal,
+        covered: unitCovered,
         pct: unitPct,
         unit_system: unitSystem,
         stated_minimum: degree.total_units ?? null,
+        // Requirements this college can discharge, before the cap is applied.
+        // A student may satisfy every general education requirement and still
+        // carry fewer units than that work was worth, and the gap between these
+        // two numbers is the thing a four-year-versus-college comparison wants.
+        satisfied: budget.satisfied,
+        transfer_cap: budget.cap,
+        binding: budget.binding,
+        university_units: budget.university.total,
+        university_required: budget.university.required,
+        // The old measure, kept so a change in the headline can be traced.
+        modeled_total: units.total,
+        modeled_covered: units.covered,
       },
     },
     requirement_groups: ledger.requirement_groups,

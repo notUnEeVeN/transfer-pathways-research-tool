@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { listRequirements, putRequirement, putPrerequisite, deleteRequirement, putCourseConcept, prerequisiteGraph, asDegrees } = cjs('./CanonicalData');
+const { listRequirements, putRequirement, putPrerequisite, deleteRequirement, putCourseConcept, prerequisiteGraph, asDegrees, listInstitutions, listCourses } = cjs('./CanonicalData');
 const { getMajor } = cjs('../config/majors');
 
 let mongo;
@@ -878,5 +878,51 @@ describe('asDegrees endpoint', () => {
     expect(res.body.degrees).toHaveLength(1);
     expect(res.body.degrees[0].doc.major_slug).toBe('bio');
     expect(res.body.degrees[0].doc._id).toBe('as_degree:110:bio:ast');
+  });
+});
+
+describe('state scoping for institutions and courses', () => {
+  beforeEach(async () => {
+    await db.collection('assist_institutions').insertMany([
+      { _id: 'cc:1', institution_id: 'cc:1', source_id: 1, kind: 'community_college', name: 'Allan Hancock College' },
+      { _id: 'uc:79', institution_id: 'uc:79', source_id: 79, kind: 'university', name: 'UC Berkeley' },
+      { _id: 'ma:cc:9101', institution_id: 'ma:cc:9101', source_id: 9101, kind: 'community_college', name: 'Berkshire', state: 'ma' },
+      { _id: 'ma:uni:9001', institution_id: 'ma:uni:9001', source_id: 9001, kind: 'university', name: 'Bridgewater State', state: 'ma' },
+    ]);
+    await db.collection('assist_courses').insertMany([
+      { _id: 'course:cc:1:1', institution_id: 'cc:1', source_id: 1, prefix: 'CS', number: '111', title: 'Intro' },
+      { _id: 'course:ma:cc:9101:1', institution_id: 'ma:cc:9101', source_id: 9101001, prefix: 'CSC', number: '101', title: 'Programming I' },
+      { _id: 'course:ma:uni:9001:1', institution_id: 'ma:uni:9001', source_id: 9001001, prefix: 'COMP', number: '101', title: 'CS I' },
+    ]);
+  });
+
+  it('lists only California institutions by default', async () => {
+    const res = await run(listInstitutions, request({ query: {} }));
+    expect(res.statusCode).toBe(200);
+    expect(res.body.rows.map((row) => row.institution_id).sort()).toEqual(['cc:1', 'uc:79']);
+  });
+
+  it('lists only Massachusetts institutions with state=ma, still honoring kind', async () => {
+    const all = await run(listInstitutions, request({ query: { state: 'ma' } }));
+    expect(all.body.rows.map((row) => row.institution_id).sort()).toEqual(['ma:cc:9101', 'ma:uni:9001']);
+
+    const ccs = await run(listInstitutions, request({ query: { state: 'ma', kind: 'community_college' } }));
+    expect(ccs.body.rows.map((row) => row.institution_id)).toEqual(['ma:cc:9101']);
+  });
+
+  it('rejects an unknown state value', async () => {
+    const res = await run(listInstitutions, request({ query: { state: 'tx' } }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toMatch(/state/);
+  });
+
+  it('serves courses for ma: community-college and university ids', async () => {
+    const cc = await run(listCourses, request({ query: { institution_id: 'ma:cc:9101' } }));
+    expect(cc.statusCode).toBe(200);
+    expect(cc.body.rows.map((row) => row._id)).toEqual(['course:ma:cc:9101:1']);
+
+    const uni = await run(listCourses, request({ query: { institution_id: 'ma:uni:9001' } }));
+    expect(uni.statusCode).toBe(200);
+    expect(uni.body.rows.map((row) => row._id)).toEqual(['course:ma:uni:9001:1']);
   });
 });

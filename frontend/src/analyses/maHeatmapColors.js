@@ -11,6 +11,40 @@ export const PAPER_RED_LOW_TO_HIGH_GRADIENT = `linear-gradient(90deg, ${PAPER_RE
   `rgb(${rgb.join(' ')}) ${(100 * index) / (stops.length - 1)}%`
 )).join(', ')})`
 
+// The paper's Figure 6 is the one diverging figure: negative deltas ramp
+// green (a transfer pathway lighter than the resident curriculum), positive
+// deltas ramp through the shared red palette, and zero sits at white. The
+// green stops mirror the red ramp's luminance so the two directions read
+// with equal weight.
+export const PAPER_GREEN_STOPS = [
+  [255, 255, 255], [229, 245, 224], [199, 233, 192], [161, 217, 155],
+  [116, 196, 118], [65, 171, 93], [35, 139, 69], [0, 109, 44], [0, 68, 27],
+]
+
+function rampColor(stops, t) {
+  const position = Math.max(0, Math.min(1, t)) * (stops.length - 1)
+  const index = Math.min(stops.length - 2, Math.floor(position))
+  const fraction = position - index
+  const lo = stops[index]
+  const hi = stops[index + 1]
+  const rgb = lo.map((channel, i) => Math.round(channel + (hi[i] - channel) * fraction))
+  const luminance = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255
+  return {
+    backgroundColor: `rgb(${rgb.join(' ')})`,
+    color: luminance > 0.55 ? '#1a1a1a' : 'white',
+  }
+}
+
+/** Diverging cell color for signed deltas; scale = { maxAbs }. */
+export function paperDivergingCellColor(value, scale) {
+  if (!Number.isFinite(value)) {
+    return { backgroundColor: 'var(--color-surface)', color: 'var(--color-ink-subtle)' }
+  }
+  const maxAbs = Math.max(1, scale?.maxAbs ?? 1)
+  const t = Math.min(1, Math.abs(value) / maxAbs)
+  return rampColor(value < 0 ? PAPER_GREEN_STOPS : PAPER_RED_STOPS, t)
+}
+
 export function paperRedCellColor(value, scale) {
   if (!Number.isFinite(value)) {
     return { backgroundColor: 'var(--color-surface)', color: 'var(--color-ink-subtle)' }

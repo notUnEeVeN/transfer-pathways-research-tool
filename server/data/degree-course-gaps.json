@@ -1,0 +1,551 @@
+{
+ "generated_at": "2026-08-15T18:49:03.780Z",
+ "report": [
+  {
+   "doc": "degree:132:cs",
+   "school": "UC Santa Cruz",
+   "catalog_courses": 1415,
+   "catalogue_rows": 1119,
+   "sections": [
+    {
+     "group": "Lower-division foundations — CSE 16, CSE 40, ECE 30 (chart's Math Courses block)",
+     "tier": "transferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "CSE 40 (no ASSIST articulation)",
+       "conjunction": "single",
+       "resolved": [
+        {
+         "code": "CSE 40",
+         "parent_id": "uc:132:CSE 40",
+         "title": "Machine Learning Basics: Data Analysis and Empirical Methods",
+         "units": 5,
+         "source": "catalogue"
+        }
+       ],
+       "slot_units": 5,
+       "fillable": true,
+       "reason": "ok"
+      }
+     ],
+     "reconciles": true,
+     "verdict": "FILL"
+    },
+    {
+     "group": "Lower-division foundations — CSE 16, CSE 40, ECE 30 (chart's Math Courses block)",
+     "tier": "transferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "ECE 30 (no ASSIST articulation)",
+       "conjunction": "single",
+       "resolved": [
+        {
+         "code": "ECE 30",
+         "parent_id": null,
+         "title": null,
+         "units": null,
+         "source": null
+        }
+       ],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "not in catalogue: ECE 30"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "not in catalogue: ECE 30"
+    },
+    {
+     "group": "Science — GE Scientific Inquiry (SI, 1 course; the only science demand in the major)",
+     "tier": "transferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "Scientific Inquiry — 1 course (IGETC Area 5A/5B); full IGETC waives it, and the major itself requires no physics",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "no course code in the label"
+    },
+    {
+     "group": "American History & Institutions",
+     "tier": "transferable",
+     "stated_units": null,
+     "per_slot_units": null,
+     "class": "ge-area",
+     "slots": [
+      {
+       "label": "American History & Institutions — assumed satisfiable (UC-wide; a U.S. history/government course exists at every CC)",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": null,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "left as ge-area"
+    },
+    {
+     "group": "GE: Composition (C) — 1 course",
+     "tier": "breadth",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "ge-area",
+     "slots": [
+      {
+       "label": "Composition — 1 course (IGETC Area 1A/1B); full IGETC waives all UCSC GE except the upper-division DC requirement",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "left as ge-area"
+    },
+    {
+     "group": "GE: humanities, arts & social analysis — TA, IM, CC, ER, PE (5 courses)",
+     "tier": "breadth",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "ge-area",
+     "slots": [
+      {
+       "label": "Textual Analysis (TA) — IGETC 3B",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "left as ge-area"
+    },
+    {
+     "group": "GE: humanities, arts & social analysis — TA, IM, CC, ER, PE (5 courses)",
+     "tier": "breadth",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "ge-area",
+     "slots": [
+      {
+       "label": "Interpreting Arts & Media (IM) — IGETC 3A",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "left as ge-area"
+    },
+    {
+     "group": "GE: humanities, arts & social analysis — TA, IM, CC, ER, PE (5 courses)",
+     "tier": "breadth",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "ge-area",
+     "slots": [
+      {
+       "label": "Cross-Cultural Analysis (CC) — IGETC 3B / Area 4",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "left as ge-area"
+    },
+    {
+     "group": "GE: humanities, arts & social analysis — TA, IM, CC, ER, PE (5 courses)",
+     "tier": "breadth",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "ge-area",
+     "slots": [
+      {
+       "label": "Ethnicity & Race (ER) — IGETC Area 7 / 4C Ethnic Studies",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "left as ge-area"
+    },
+    {
+     "group": "GE: humanities, arts & social analysis — TA, IM, CC, ER, PE (5 courses)",
+     "tier": "breadth",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "ge-area",
+     "slots": [
+      {
+       "label": "Perspectives (PE: Environmental / Human Behavior / Technology & Society) — IGETC Area 4 or 5",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "left as ge-area"
+    },
+    {
+     "group": "GE: Practice (PR) — one 2-credit collaborative/creative/service course",
+     "tier": "breadth",
+     "stated_units": 2,
+     "per_slot_units": 2,
+     "class": "ge-area",
+     "slots": [
+      {
+       "label": "Practice (PR) — no IGETC analog course-for-course, but full IGETC certification satisfies it; assumed for the transfer lens",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": 2,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "left as ge-area"
+    },
+    {
+     "group": "Unrestricted electives — 18 units to reach the 180-unit minimum (CC-transferable)",
+     "tier": "breadth",
+     "stated_units": 18,
+     "per_slot_units": 18,
+     "class": "open-capacity",
+     "slots": [
+      {
+       "label": "Unrestricted electives — any UC-transferable coursework closes the 162→180 gap; CC units count (within the 105-quarter-unit transfer cap)",
+       "conjunction": "single",
+       "resolved": [],
+       "slot_units": 18,
+       "fillable": false,
+       "reason": "no course code in the label"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "left as open-capacity"
+    },
+    {
+     "group": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
+     "tier": "nontransferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "CSE 101 — Introduction to Data Structures & Algorithms",
+       "conjunction": "single",
+       "resolved": [
+        {
+         "code": "CSE 101",
+         "parent_id": "uc:132:CSE 101",
+         "title": "Introduction to Data Structures and Algorithms",
+         "units": 5,
+         "source": "catalogue"
+        }
+       ],
+       "slot_units": 5,
+       "fillable": true,
+       "reason": "ok"
+      }
+     ],
+     "reconciles": true,
+     "verdict": "FILL"
+    },
+    {
+     "group": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
+     "tier": "nontransferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "CSE 101M — Mathematical Thinking for Computer Science",
+       "conjunction": "single",
+       "resolved": [
+        {
+         "code": "CSE 101M",
+         "parent_id": "uc:132:CSE 101M",
+         "title": "Mathematical Thinking for Computer Science",
+         "units": 5,
+         "source": "catalogue"
+        }
+       ],
+       "slot_units": 5,
+       "fillable": true,
+       "reason": "ok"
+      }
+     ],
+     "reconciles": true,
+     "verdict": "FILL"
+    },
+    {
+     "group": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
+     "tier": "nontransferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "CSE 102 or CSE 103 — Analysis of Algorithms / Computational Models",
+       "conjunction": "or",
+       "resolved": [
+        {
+         "code": "CSE 102",
+         "parent_id": "uc:132:CSE 102",
+         "title": "Introduction to Analysis of Algorithms",
+         "units": 5,
+         "source": "catalogue"
+        },
+        {
+         "code": "CSE 103",
+         "parent_id": "uc:132:CSE 103",
+         "title": "Computational Models",
+         "units": 5,
+         "source": "catalogue"
+        }
+       ],
+       "slot_units": 5,
+       "fillable": true,
+       "reason": "ok"
+      }
+     ],
+     "reconciles": true,
+     "verdict": "FILL"
+    },
+    {
+     "group": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
+     "tier": "nontransferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "CSE 107 or STAT 131 — Probability and Statistics (also carries the SR GE)",
+       "conjunction": "or",
+       "resolved": [
+        {
+         "code": "CSE 107",
+         "parent_id": "uc:132:CSE 107",
+         "title": "Probability and Statistics for Engineers",
+         "units": 5,
+         "source": "catalogue"
+        },
+        {
+         "code": "STAT 131",
+         "parent_id": "uc:132:STAT 131",
+         "title": "Introduction to Probability Theory",
+         "units": 5,
+         "source": "catalogue"
+        }
+       ],
+       "slot_units": 5,
+       "fillable": true,
+       "reason": "ok"
+      }
+     ],
+     "reconciles": true,
+     "verdict": "FILL"
+    },
+    {
+     "group": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
+     "tier": "nontransferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "CSE 114A — Foundations of Programming Languages",
+       "conjunction": "single",
+       "resolved": [
+        {
+         "code": "CSE 114A",
+         "parent_id": "uc:132:CSE 114A",
+         "title": "Foundations of Programming Languages",
+         "units": 5,
+         "source": "catalogue"
+        }
+       ],
+       "slot_units": 5,
+       "fillable": true,
+       "reason": "ok"
+      }
+     ],
+     "reconciles": true,
+     "verdict": "FILL"
+    },
+    {
+     "group": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
+     "tier": "nontransferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "CSE 120 — Computer Architecture",
+       "conjunction": "single",
+       "resolved": [
+        {
+         "code": "CSE 120",
+         "parent_id": "uc:132:CSE 120",
+         "title": "Computer Architecture",
+         "units": 5,
+         "source": "catalogue"
+        }
+       ],
+       "slot_units": 5,
+       "fillable": true,
+       "reason": "ok"
+      }
+     ],
+     "reconciles": true,
+     "verdict": "FILL"
+    },
+    {
+     "group": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
+     "tier": "nontransferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "CSE 130 — Principles of Computer Systems Design",
+       "conjunction": "single",
+       "resolved": [
+        {
+         "code": "CSE 130",
+         "parent_id": "uc:132:CSE 130",
+         "title": "Principles of Computer Systems Design",
+         "units": 5,
+         "source": "catalogue"
+        }
+       ],
+       "slot_units": 5,
+       "fillable": true,
+       "reason": "ok"
+      }
+     ],
+     "reconciles": true,
+     "verdict": "FILL"
+    },
+    {
+     "group": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
+     "tier": "nontransferable",
+     "stated_units": 20,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "Upper-division electives — 4 courses (CSE 100–189/195, CMPM, or up to 2 math electives; the Comprehensive-requirement capstone counts as one)",
+       "conjunction": "range",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "range/category — no discrete course to name"
+      },
+      {
+       "label": "Upper-division electives — 4 courses (CSE 100–189/195, CMPM, or up to 2 math electives; the Comprehensive-requirement capstone counts as one)",
+       "conjunction": "range",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "range/category — no discrete course to name"
+      },
+      {
+       "label": "Upper-division electives — 4 courses (CSE 100–189/195, CMPM, or up to 2 math electives; the Comprehensive-requirement capstone counts as one)",
+       "conjunction": "range",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "range/category — no discrete course to name"
+      },
+      {
+       "label": "Upper-division electives — 4 courses (CSE 100–189/195, CMPM, or up to 2 math electives; the Comprehensive-requirement capstone counts as one)",
+       "conjunction": "range",
+       "resolved": [],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "range/category — no discrete course to name"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "range/category — no discrete course to name"
+    },
+    {
+     "group": "Upper-division major coursework — 12 courses (60 units, at UCSC)",
+     "tier": "nontransferable",
+     "stated_units": 5,
+     "per_slot_units": 5,
+     "class": "named",
+     "slots": [
+      {
+       "label": "Disciplinary Communication (DC) — CSE 115A, CSE 185E/185S, or CSE 195 senior thesis; the one GE piece IGETC does not waive",
+       "conjunction": "or",
+       "resolved": [
+        {
+         "code": "CSE 115A",
+         "parent_id": "uc:132:CSE 115A",
+         "title": "Introduction to Software Engineering",
+         "units": 5,
+         "source": "catalogue"
+        },
+        {
+         "code": "CSE 185E",
+         "parent_id": "uc:132:CSE 185E",
+         "title": "Technical Writing for Computer Science and Engineering",
+         "units": 5,
+         "source": "catalogue"
+        },
+        {
+         "code": "CSE 185S",
+         "parent_id": null,
+         "title": null,
+         "units": null,
+         "source": null
+        },
+        {
+         "code": "CSE 195",
+         "parent_id": "uc:132:CSE 195",
+         "title": "Senior Thesis Research",
+         "units": 5,
+         "source": "catalogue"
+        }
+       ],
+       "slot_units": 5,
+       "fillable": false,
+       "reason": "not in catalogue: CSE 185S"
+      }
+     ],
+     "reconciles": false,
+     "verdict": "not in catalogue: CSE 185S"
+    }
+   ]
+  }
+ ]
+}

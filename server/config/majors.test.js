@@ -9,6 +9,20 @@ describe('majors config', () => {
   it('cs is the default; bio and econ are onboarded alongside it', () => {
     expect(defaultMajor().slug).toBe('cs');
     expect(listMajors().map((m) => m.slug)).toEqual(['cs', 'bio', 'econ']);
+    expect(listMajors({ includeStates: true }).map((m) => m.slug))
+      .toEqual(['cs', 'bio', 'econ', 'ma-cs', 'va-cs']);
+  });
+
+  it('keeps the state majors out of the default picker payload', () => {
+    // Each state tab addresses its own major directly; the California major
+    // picker must never offer them.
+    expect(serializeMajors().map((m) => m.slug)).toEqual(['cs', 'bio', 'econ']);
+    expect(serializeMajors({ state: 'ma' }).map((m) => m.slug)).toEqual(['ma-cs']);
+    expect(serializeMajors({ state: 'va' }).map((m) => m.slug)).toEqual(['va-cs']);
+    const ma = getMajor('ma-cs');
+    expect(ma.state).toBe('ma');
+    expect(Object.keys(ma.programs)).toHaveLength(11);
+    expect(ma.degreeAnalysisSlots).toEqual(['local_as']);
   });
 
   it('cs program pins are byte-identical to every analysis compatibility pin', () => {
@@ -109,7 +123,7 @@ describe('majors config', () => {
     expect(majorScopeFromQuery({}))
       .toEqual({ slug: null, majorPrograms: null, majorContains: '' });
     expect(majorScopeFromQuery({ major: 'nope' }))
-      .toEqual({ error: 'unknown major: nope', known: ['cs', 'bio', 'econ'] });
+      .toEqual({ error: 'unknown major: nope', known: ['cs', 'bio', 'econ', 'ma-cs', 'va-cs'] });
   });
 
   it('majorScopeFromQuery prefers the slug when both are supplied', () => {

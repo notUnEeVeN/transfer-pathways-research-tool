@@ -237,8 +237,15 @@ export default function AsDegreeSchoolView({
   degreeTypes = null,
   showDegreeTitle = true,
   onDegreeTypeChange = null,
+  // State corpora address their colleges fully qualified (ma:cc:9101) and
+  // carry their own major slug; California callers omit both.
+  state = null,
+  major = 'cs',
 }) {
-  const q = useAsDegreeDetail(collegeId != null ? `cc:${collegeId}` : null)
+  const collegeRef = collegeId != null
+    ? (state ? `${state}:cc:${collegeId}` : `cc:${collegeId}`)
+    : null
+  const q = useAsDegreeDetail(collegeRef, major)
   const allDegrees = q.data?.degrees || []
   const allowedDegreeTypes = onlyDegreeType ? [onlyDegreeType] : degreeTypes
   const degrees = allowedDegreeTypes

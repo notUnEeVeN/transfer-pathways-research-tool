@@ -365,6 +365,32 @@ describe('asDegreeDetail', () => {
     expect(localOther.coverage_pct).toBe(null);
     expect(await asDegreeDetail(db, 'cc:999')).toBe(null);
   });
+
+  it('resolves a Massachusetts college: ma:cc ids and ma:sending course docs', async () => {
+    await db.collection('assist_institutions').insertOne(
+      { _id: 'ma:cc:9101', kind: 'community_college', source_id: 9101,
+        name: 'Berkshire Community College', state: 'ma' });
+    await db.collection('assist_courses').insertOne(
+      { _id: 'ma:sending:9101001', institution_id: 'ma:cc:9101', course_id: 9101001,
+        prefix: 'CSC', number: '101', title: 'Programming I', units: 3, state: 'ma' });
+    await db.collection('curated_requirements').insertOne({
+      _id: 'as_degree:ma:9101:local_as', kind: 'as_degree', college_id: 'ma:cc:9101',
+      community_college_id: 9101, major_slug: 'ma-cs', degree_type: 'local_as',
+      status: 'found', state: 'ma',
+      requirement_groups: [{
+        title: 'Associate degree requirements',
+        sections: [{ section_advisement: 1, receivers: [receiver(9101001)] }],
+      }],
+    });
+
+    const detail = await asDegreeDetail(db, 'ma:cc:9101', { major: 'ma-cs' });
+    expect(detail.college_name).toBe('Berkshire Community College');
+    expect(detail.degrees).toHaveLength(1);
+    expect(detail.degrees[0].doc._id).toBe('as_degree:ma:9101:local_as');
+    // Courses keep the cc:<id> key the shared frontend view looks up.
+    expect(detail.degrees[0].courses_by_id['cc:9101001']).toMatchObject(
+      { course_id: 9101001, code: 'CSC 101', title: 'Programming I', units: 3 });
+  });
 });
 
 describe('major scoping', () => {

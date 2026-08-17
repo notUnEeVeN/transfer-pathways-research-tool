@@ -2,10 +2,16 @@
 
 Discovery for a second-state build alongside Maryland. Everything below was
 verified by fetching the site, not from documentation. Companion:
-[`state-expansion-feasibility.md`](state-expansion-feasibility.md),
-[`maryland-integration.md`](maryland-integration.md).
+[`state-expansion-feasibility.md`](state-expansion-feasibility.md).
 
 Investigated 2026-07-28.
+
+> **Outcome:** Virginia was subsequently built and shipped as a live state tab;
+> Maryland was parked under [`deprecated/maryland/`](../deprecated/maryland/).
+> This document is the original discovery record. Current Virginia docs:
+> [`virginia-courses.md`](virginia-courses.md),
+> [`virginia-degree-collection.md`](virginia-degree-collection.md),
+> [`virginia-prerequisite-qa.md`](virginia-prerequisite-qa.md).
 
 ## The shape of the data
 

@@ -22,6 +22,14 @@ const {
   majorScopeFromQuery, getMajor, listMajors, defaultMajor, programPairs,
 } = require('../config/majors');
 const { AS_DEGREE_SLOTS } = require('../config/asDegreeSlots');
+const { pathwayComplexityCached } = require('../services/analysis/pathwayComplexity');
+
+// Committed Figure-6 reproductions for paper corpora (prerequisite edges come
+// from the papers' own recovered workbooks, not from a live prerequisite
+// projection). One entry per paper state.
+const PAPER_COMPLEXITY_SNAPSHOTS = {
+  ma: require('../data/ma/complexity-validation.json'),
+};
 const { asDegreesExportData } = require('../services/asDegreeView');
 const { majorScope, scopeTag } = require('../services/majorVisibility');
 const { getReleasedIds, getDisabledIds } = require('../services/analysisReleases');
@@ -172,7 +180,7 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
   if (!Number.isFinite(schoolId) || !Number.isFinite(communityCollegeId) || !major) {
     return res.status(400).json({ error: 'school_id, major, and community_college_id are required' });
   }
-  const configuredMajor = listMajors().find((entry) => programPairs(entry).some((pair) => (
+  const configuredMajor = listMajors({ includeStates: true }).find((entry) => programPairs(entry).some((pair) => (
     pair.school_id === schoolId && pair.major.trim() === major
   )));
   if (!configuredMajor) {
@@ -192,6 +200,54 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
 // structures are editable in the Data tab, so this endpoint deliberately
 // bypasses the short analysis cache;
 // an explicit frontend refresh must never receive a pre-edit result.
+exports.pathwayComplexity = asyncHandler(async (req, res) => {
+  // The MA paper's Figure 6 measure over our pathways. Metric validated against
+  // the paper's own published scores (58/60 exact); see
+  // services/analysis/pathwayComplexity.js for assembly rules and limits.
+  const slug = String(req.query.majorSlug || '').trim() || defaultMajor().slug;
+  const major = getMajor(slug);
+  if (!major) return res.status(400).json({ error: `unknown major: ${slug}` });
+  // A paper corpus without prerequisite data serves its committed Figure-6
+  // reproduction instead of a live assembly: our scorer run over the paper's
+  // own recovered pathway workbooks, which carry the prerequisite/corequisite
+  // edges the published scores were computed from. Regenerate with
+  // scripts/ma/complexityCheck.js; keyed by state so a future paper corpus
+  // cannot inherit Massachusetts's snapshot.
+  if (!major.capabilities.prerequisites && major.capabilities.paperBaselines) {
+    const snapshot = PAPER_COMPLEXITY_SNAPSHOTS[major.state];
+    if (!snapshot) {
+      return res.status(400).json({ error: 'capability_required', capability: 'prerequisites', major: major.slug });
+    }
+    return res.json({ mode: 'paper', ...snapshot });
+  }
+  for (const capability of ['asDegrees', 'degreeTemplates', 'prerequisites']) {
+    if (!major.capabilities[capability]) {
+      return res.status(400).json({ error: 'capability_required', capability, major: major.slug });
+    }
+  }
+  const requestedType = String(req.query.degree_type || '').trim();
+  if (requestedType && !AS_DEGREE_SLOTS.includes(requestedType)) {
+    return res.status(400).json({ error: `degree_type must be one of ${AS_DEGREE_SLOTS.join(', ')}` });
+  }
+  const degreeType = requestedType
+    || (major.degreeAnalysisSlots || []).find((slot) => AS_DEGREE_SLOTS.includes(slot))
+    || 'ast';
+  const pairs = await majorScope(req);
+  // Served from the analysis cache — the ~10s full-corpus assembly runs once
+  // (or on ?refresh=1) and visibility scoping is applied to the cached rows,
+  // mirroring the service's own degree-level check.
+  const { rows, computed_at, cached } = await pathwayComplexityCached(req.app.locals.db, {
+    majorSlug: slug, degreeType, refresh: String(req.query.refresh || '') === '1',
+  });
+  const visible = pairs === null ? rows : rows.filter((row) => {
+    const programs = major.programs?.[row.school_id] || [];
+    return programs.some((program) => pairs.some(
+      (pair) => pair.school_id === Number(row.school_id) && pair.major === program,
+    ));
+  });
+  res.json({ rows: visible, degree_type: degreeType, computed_at, cached });
+});
+
 exports.transferCreditRate = asyncHandler(async (req, res) => {
   // Asking for a major whose associate-degree layer has not been gathered is
   // a client bug, not an empty result, so say so plainly.

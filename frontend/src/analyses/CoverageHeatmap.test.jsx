@@ -29,6 +29,12 @@ const degreeRow = {
   degree_unit_system: 'quarter',
   pct_articulated: 55,
   fully_articulated: false,
+  named_requirement_courses_total: 24,
+  named_requirement_courses_articulated: 6,
+  pct_named_requirement_courses: 25,
+  named_requirement_courses_with_ge_total: 32,
+  named_requirement_courses_with_ge_articulated: 14,
+  pct_named_requirement_courses_with_ge: 43.8,
 }
 
 describe('CoverageHeatmap requirement basis', () => {
@@ -60,7 +66,97 @@ describe('CoverageHeatmap requirement basis', () => {
     expect(screen.getByLabelText(/Potential graduation-unit coverage: 55%/)).toBeTruthy()
     expect(screen.getByLabelText(/99 of 180 modeled quarter units have a community-college equivalent/)).toBeTruthy()
     expect(screen.getByLabelText(/Secondary slot count: 16 of 40 requirements have an equivalent/)).toBeTruthy()
-    expect(screen.getByText(/Each campus is calculated in its own native quarter or semester units/)).toBeTruthy()
+    // The measure panel is the single home for the definition; the figure
+    // itself carries no explanatory footnote.
+    expect(screen.queryByText(/Each campus is calculated in its own native quarter or semester units/)).toBeNull()
+  })
+
+  it('locks a corpus without unit modeling into the paper lens: no basis select, no toggle-off', () => {
+    const onMeasureChange = vi.fn()
+    render(<CoverageHeatmap majorSlug='ma-cs'
+      majorCapabilities={{ transferMinimums: false, unitCoverage: false }}
+      onMeasureChange={onMeasureChange} />)
+
+    // The California unit lenses compute garbage for this corpus, so they are
+    // simply absent — the course lens is the figure, not a comparison state.
+    // The GE sub-toggle is absent too: the paper's matrix carries no GE, and
+    // the GE-included variant is a California extension, not a reproduction.
+    expect(screen.queryByText('Requirement basis')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'MA-paper equivalent' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Include GE' })).toBeNull()
+    expect(useCoverage).toHaveBeenLastCalledWith(
+      expect.objectContaining({ majorSlug: 'ma-cs', requirements: 'degree' }),
+      expect.any(Object)
+    )
+    expect(onMeasureChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ expression: expect.stringMatching(/required courses/) })
+    )
+  })
+
+  it('elevates the MA-paper equivalent to its own toggle over the same degree rows', () => {
+    const onMeasureChange = vi.fn()
+    render(<CoverageHeatmap onMeasureChange={onMeasureChange} />)
+
+    // The definition of the current state lives in the measure panel, which
+    // the figure keeps in sync — nothing is explained in figure footnotes.
+    expect(onMeasureChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ expression: expect.stringMatching(/modeled graduation units/) })
+    )
+
+    // Not a dropdown entry: the comparison is important enough to stand alone.
+    fireEvent.click(screen.getByRole('button', { name: '4-year graduation plan (by units)' }))
+    expect(screen.queryByRole('option', { name: /MA-paper equivalent/ })).toBeNull()
+    fireEvent.click(screen.getByRole('option', { name: 'ASSIST minimums' }))
+    expect(onMeasureChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ expression: expect.stringMatching(/ASSIST/) })
+    )
+
+    const toggle = screen.getByRole('button', { name: 'MA-paper equivalent' })
+    expect(toggle.getAttribute('aria-pressed')).toBe('false')
+    fireEvent.click(toggle)
+
+    // The lens reads the degree response regardless of the basis selection,
+    // and the basis select goes quiet while it is active.
+    expect(toggle.getAttribute('aria-pressed')).toBe('true')
+    expect(useCoverage).toHaveBeenLastCalledWith(
+      expect.objectContaining({ requirements: 'degree' }),
+      expect.any(Object)
+    )
+    expect(screen.getByLabelText(/MA-equivalent articulation: 25%/)).toBeTruthy()
+    expect(screen.getByLabelText(/6 of 24 required courses articulate/)).toBeTruthy()
+    expect(onMeasureChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        expression: expect.stringMatching(/required courses/),
+        watchFor: expect.stringMatching(/38\.2%/),
+      })
+    )
+
+    // GE-heavy majors read artificially low with GE excluded, so MA mode
+    // carries its own GE sub-toggle; the paper-faithful GE-off state is the
+    // default and the GE-on state is clearly our extension.
+    const geToggle = screen.getByRole('button', { name: 'Include GE' })
+    expect(geToggle.getAttribute('aria-pressed')).toBe('false')
+    fireEvent.click(geToggle)
+    expect(screen.getByLabelText(/MA-equivalent articulation: 43.8%/)).toBeTruthy()
+    expect(screen.getByLabelText(/14 of 32 required courses articulate/)).toBeTruthy()
+    expect(onMeasureChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        expression: expect.stringMatching(/general education included/),
+        watchFor: expect.stringMatching(/not a figure they published/),
+      })
+    )
+    fireEvent.click(geToggle)
+    expect(screen.getByLabelText(/MA-equivalent articulation: 25%/)).toBeTruthy()
+
+    // Toggling off returns to the basis the dropdown still holds, and the GE
+    // sub-toggle leaves with its parent.
+    fireEvent.click(toggle)
+    expect(toggle.getAttribute('aria-pressed')).toBe('false')
+    expect(screen.queryByRole('button', { name: 'Include GE' })).toBeNull()
+    expect(useCoverage).toHaveBeenLastCalledWith(
+      expect.objectContaining({ requirements: 'assist' }),
+      expect.any(Object)
+    )
   })
 
   it('keeps both existing minimums modes selectable for CS', () => {

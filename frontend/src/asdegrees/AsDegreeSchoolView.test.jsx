@@ -125,10 +125,16 @@ describe('AsDegreeSchoolView', () => {
     expect(screen.getByText('12 qualifying courses')).toBeInTheDocument()
   })
 
-  it('calls the detail hook with the cc: prefixed id', () => {
+  it('calls the detail hook with the cc: prefixed id and the cs default major', () => {
     mockDetail.mockReturnValue({ data: { degrees: [degree()] }, isLoading: false, isError: false })
     render(<AsDegreeSchoolView collegeId={41} />)
-    expect(mockDetail).toHaveBeenCalledWith('cc:41')
+    expect(mockDetail).toHaveBeenCalledWith('cc:41', 'cs')
+  })
+
+  it('qualifies the college ref and major for a state corpus', () => {
+    mockDetail.mockReturnValue({ data: { degrees: [degree()] }, isLoading: false, isError: false })
+    render(<AsDegreeSchoolView collegeId={9101} state='ma' major='ma-cs' />)
+    expect(mockDetail).toHaveBeenCalledWith('ma:cc:9101', 'ma-cs')
   })
 
   it('shows a degree selector and switches when a college has several degrees', () => {

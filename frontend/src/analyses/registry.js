@@ -42,6 +42,7 @@ import MultiCampusPathways, { MultiCampusPathwaysPreview } from './MultiCampusPa
 import TransferCreditRate from './TransferCreditRate'
 import TransferExtraUnits from './TransferExtraUnits'
 import TransferExtraCost from './TransferExtraCost'
+import PathwayComplexity from './PathwayComplexity'
 import PaperCreditLoss, { PaperCreditLossPreview } from './PaperCreditLoss'
 import PaperDistrictHeatmap, { PaperDistrictHeatmapPreview } from './PaperDistrictHeatmap'
 import PaperArticulationHistogram, { PaperArticulationHistogramPreview } from './PaperArticulationHistogram'
@@ -206,6 +207,13 @@ export const ANALYSES = [
     }),
     title: 'Degree credit toward graduation',
     description: 'Shows what share of complete or lower-division bachelor’s requirements is fulfilled by the selected associate degree.',
+    // On the Massachusetts corpus the card opens on the paper's own Figure 3
+    // and shows the published per-pair values as printed.
+    stateTitles: { ma: 'Transfer credit rate', va: 'Transfer credit rate' },
+    stateDescriptions: {
+      ma: 'The paper’s Figure 3 as published: the share of each associate degree’s credits that apply on transfer, per studied pair — unstudied pairs stay blank. Our recomputation sits in the Overview’s comparison panel.',
+      va: 'The share of each VCCS associate degree’s credits that apply toward the bachelor’s on transfer. Computed from Transfer Virginia’s published course equivalencies; the verified cohort filters to associate degrees a reviewer has confirmed.',
+    },
     provenance: 'ma',
     figureNo: 3,
     author_label: ANALYSIS_AUTHOR,
@@ -243,6 +251,25 @@ export const ANALYSES = [
     Component: TransferExtraCost,
   },
   {
+    id: 'pathway-complexity',
+    ...selectedMajor({
+      // Live scoring needs prerequisite graphs; the Massachusetts corpus
+      // instead renders the committed reproduction of the paper's own
+      // figure (its recovered workbooks carry the prerequisite edges), so
+      // either capability satisfies the gate.
+      requiredCapabilities: ['asDegrees', 'assistAgreements', 'degreeTemplates', 'prerequisites|paperBaselines'],
+      datasets: ['associate degrees', 'articulation agreements', 'four-year degree templates', 'prerequisite graphs'],
+      pendingReason: 'Associate degrees, degree templates and prerequisite graphs must all be present before pathway complexity can be scored.',
+    }),
+    title: 'Curricular complexity of transfer pathways',
+    description: 'Scores each transfer pathway’s prerequisite graph with the paper’s Figure 6 measure — delay and blocking factors summed per course — against the campus’s own curriculum. The metric reproduced the paper’s published scores on 58 of 60 of their own pathways.',
+    provenance: 'ma',
+    figureNo: 6,
+    author_label: ANALYSIS_AUTHOR,
+    published_at: '2026-08-15T09:00:00',
+    Component: PathwayComplexity,
+  },
+  {
     id: 'coverage-heatmap',
     ...selectedMajor({
       requiredCapabilities: ['assistAgreements', 'degreeTemplates'],
@@ -251,6 +278,13 @@ export const ANALYSES = [
     }),
     title: 'Potential graduation-unit coverage',
     description: 'Shows what share of each university program’s modeled graduation units has a community-college equivalent.',
+    // On the Massachusetts corpus the unit model is gated off and the figure
+    // IS the paper's course measure, so the card carries that name.
+    stateTitles: { ma: 'Requirement articulation', va: 'Requirement articulation' },
+    stateDescriptions: {
+      ma: 'Shows the share of each university’s required courses — every level, GE excluded — with an articulating community-college course: the paper’s Figure 1 measure, published mean 38.2%.',
+      va: 'Shows the share of each four-year’s required courses — GE excluded — with an equivalent published by a community college. Requirements Virginia itself marks as work no community college can satisfy (senior residency, capstones) are outside the population, so the measure is comparable with California and Massachusetts.',
+    },
     provenance: 'ma',
     figureNo: 1,
     author_label: ANALYSIS_AUTHOR,

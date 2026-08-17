@@ -1,0 +1,27 @@
+{
+ "changed": [
+  {
+   "major": "cs",
+   "school_id": 120,
+   "cells": 115,
+   "total_before": 14,
+   "total_after": 31,
+   "mean_before": 46.45,
+   "mean_after": 20.99
+  },
+  {
+   "major": "cs",
+   "school_id": 144,
+   "cells": 115,
+   "total_before": 17,
+   "total_after": 26,
+   "mean_before": 70.14,
+   "mean_after": 45.86
+  }
+ ],
+ "unchanged_majors": [
+  "bio",
+  "econ",
+  "ma-cs"
+ ]
+}

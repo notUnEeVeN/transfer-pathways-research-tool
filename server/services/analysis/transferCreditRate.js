@@ -39,7 +39,9 @@ const ASSUMED_UNITS_PER_COURSE = 4;
 const EPSILON = 1e-7;
 const { defaultMajor, getMajor, programPairClause, programPairs } = require('../../config/majors');
 const { AS_DEGREE_SLOTS: DEGREE_TYPES } = require('../../config/asDegreeSlots');
-const { computeUnitBudget } = require('../degreeSlots');
+const { computeUnitBudget, resolveSectionTier } = require('../degreeSlots');
+const { majorDocumentClause } = require('../../config/majorDocumentScope');
+const { stateClause } = require('../../config/stateScope');
 
 const round1 = (value) => +(Number(value) || 0).toFixed(1);
 
@@ -515,7 +517,13 @@ function assumedRole(section, receivers) {
 
 function sectionCampusUnits(section, ask) {
   const stated = Number(section.unit_advisement);
-  return Number.isFinite(stated) && stated > 0 ? stated : ask * ASSUMED_UNITS_PER_COURSE;
+  // Zero is an authored figure, not a missing one: Berkeley's American
+  // Cultures requirement double-counts with breadth and is stated at 0 units.
+  // Re-pricing it at the per-course assumption invented four units of GE
+  // demand on both Berkeley documents.
+  return section.unit_advisement != null && Number.isFinite(stated) && stated >= 0
+    ? stated
+    : ask * ASSUMED_UNITS_PER_COURSE;
 }
 
 function bestUsableOption(options, planSet, unitsById) {
@@ -542,102 +550,153 @@ function hasGeFallback(section, receivers) {
     || receivers.some((receiver) => (receiver.ge_areas || []).length > 0);
 }
 
-// Apply the feasible AS plan to the full UC template. The return capacities
-// remain in campus-native units; the caller converts them to the CC system.
-function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem, collegeSystem) {
-  const optionsByPid = agreementOptionsByPid(agreements);
-  const directIds = new Set();
-  const lowerDirectIds = new Set();
-  let directAppliedUnits = 0;
-  let lowerDirectAppliedUnits = 0;
-  let geCampusUnits = 0;
-  let lowerGeCampusUnits = 0;
-  let electiveCampusUnits = 0;
-  let lowerElectiveCampusUnits = 0;
+// One requirement section applied against the AS plan, mutating `state`.
+// Kept separate from the group walk so an `Or` group can try each alternative
+// on a cloned state and commit only the winner.
+function evaluateSection(section, group, ctx, state) {
+  const {
+    optionsByPid, planSet, unitsById, campusSystem, collegeSystem,
+  } = ctx;
+  // A group marked university-only is university-only in its entirety, in
+  // either vocabulary; a section's own tier only counts under ordinary groups
+  // (shared rule with the unit budget, via degreeSlots).
+  const isLowerDivision = resolveSectionTier(group, section) !== 'nontransferable';
+  const receivers = section.receivers || [];
+  if (!receivers.length) return;
+  const ask = Math.max(0, Number(section.section_advisement) || receivers.length);
+  if (!ask) return;
+  const campusUnits = sectionCampusUnits(section, ask);
 
-  for (const group of template.requirement_groups || []) {
-    for (const section of group.sections || []) {
-      const tier = section.tier || group.tier || 'transferable';
-      const isLowerDivision = tier !== 'nontransferable';
-      const receivers = section.receivers || [];
-      if (!receivers.length) continue;
-      const ask = Math.max(0, Number(section.section_advisement) || receivers.length);
-      if (!ask) continue;
-      const campusUnits = sectionCampusUnits(section, ask);
+  const role = assumedRole(section, receivers);
+  if (role === 'elective') {
+    state.electiveCampusUnits += campusUnits;
+    if (isLowerDivision) state.lowerElectiveCampusUnits += campusUnits;
+    return;
+  }
+  if (role === 'zero') return;
+  if (role === 'ge') {
+    state.geCampusUnits += campusUnits;
+    if (isLowerDivision) state.lowerGeCampusUnits += campusUnits;
+    return;
+  }
 
-      const role = assumedRole(section, receivers);
-      if (role === 'elective') {
-        electiveCampusUnits += campusUnits;
-        if (isLowerDivision) lowerElectiveCampusUnits += campusUnits;
-        continue;
-      }
-      if (role === 'zero') continue;
-      if (role === 'ge') {
-        geCampusUnits += campusUnits;
-        if (isLowerDivision) lowerGeCampusUnits += campusUnits;
-        continue;
-      }
+  const geReceivers = receivers.filter((receiver) => receiver.receiving?.kind === 'ge_area');
+  if (geReceivers.length) {
+    state.geCampusUnits += campusUnits;
+    if (isLowerDivision) state.lowerGeCampusUnits += campusUnits;
+    return;
+  }
 
-      const geReceivers = receivers.filter((receiver) => receiver.receiving?.kind === 'ge_area');
-      if (geReceivers.length) {
-        geCampusUnits += campusUnits;
-        if (isLowerDivision) lowerGeCampusUnits += campusUnits;
-        continue;
-      }
-
-      const candidates = receivers
-        .map((receiver) => directCandidate(receiver, optionsByPid, planSet, unitsById))
-        .filter(Boolean);
-      const available = [...candidates];
-      const selected = [];
-      const sectionCapacity = campusUnitsToCollege(
-        campusUnits,
-        campusSystem,
-        collegeSystem
-      );
-      let sectionAppliedUnits = 0;
-      while (available.length && selected.length < ask) {
-        available.sort((a, b) => {
-          const newA = unitsForIds(a.ids.filter((id) => !directIds.has(id)), unitsById);
-          const newB = unitsForIds(b.ids.filter((id) => !directIds.has(id)), unitsById);
-          return newB - newA || a.ids.join(',').localeCompare(b.ids.join(','));
-        });
-        const candidate = available.shift();
-        selected.push(candidate);
-        const newlyAppliedIds = candidate.ids.filter((id) => !directIds.has(id));
-        const rawNewUnits = unitsForIds(newlyAppliedIds, unitsById);
-        // Articulation can require a larger CC bundle for a smaller UC course.
-        // Only the authored UC requirement capacity counts in the named bucket;
-        // any excess may still land in explicit elective room later.
-        const capacityRemaining = Math.max(0, sectionCapacity - sectionAppliedUnits);
-        const appliedHere = Math.min(rawNewUnits, capacityRemaining);
-        sectionAppliedUnits += appliedHere;
-        directAppliedUnits += appliedHere;
-        if (isLowerDivision) lowerDirectAppliedUnits += appliedHere;
-        for (const id of candidate.ids) {
-          directIds.add(id);
-          if (isLowerDivision) lowerDirectIds.add(id);
-        }
-      }
-
-      if (hasGeFallback(section, receivers) && selected.length < ask) {
-        const fallbackUnits = campusUnits * ((ask - selected.length) / ask);
-        geCampusUnits += fallbackUnits;
-        if (isLowerDivision) lowerGeCampusUnits += fallbackUnits;
-      }
+  const candidates = receivers
+    .map((receiver) => directCandidate(receiver, optionsByPid, planSet, unitsById))
+    .filter(Boolean);
+  const available = [...candidates];
+  const selected = [];
+  const sectionCapacity = campusUnitsToCollege(
+    campusUnits,
+    campusSystem,
+    collegeSystem
+  );
+  let sectionAppliedUnits = 0;
+  while (available.length && selected.length < ask) {
+    available.sort((a, b) => {
+      const newA = unitsForIds(a.ids.filter((id) => !state.directIds.has(id)), unitsById);
+      const newB = unitsForIds(b.ids.filter((id) => !state.directIds.has(id)), unitsById);
+      return newB - newA || a.ids.join(',').localeCompare(b.ids.join(','));
+    });
+    const candidate = available.shift();
+    selected.push(candidate);
+    const newlyAppliedIds = candidate.ids.filter((id) => !state.directIds.has(id));
+    const rawNewUnits = unitsForIds(newlyAppliedIds, unitsById);
+    // Articulation can require a larger CC bundle for a smaller UC course.
+    // Only the authored UC requirement capacity counts in the named bucket;
+    // any excess may still land in explicit elective room later.
+    const capacityRemaining = Math.max(0, sectionCapacity - sectionAppliedUnits);
+    const appliedHere = Math.min(rawNewUnits, capacityRemaining);
+    sectionAppliedUnits += appliedHere;
+    state.directAppliedUnits += appliedHere;
+    if (isLowerDivision) state.lowerDirectAppliedUnits += appliedHere;
+    for (const id of candidate.ids) {
+      state.directIds.add(id);
+      if (isLowerDivision) state.lowerDirectIds.add(id);
     }
   }
 
+  if (hasGeFallback(section, receivers) && selected.length < ask) {
+    const fallbackUnits = campusUnits * ((ask - selected.length) / ask);
+    state.geCampusUnits += fallbackUnits;
+    if (isLowerDivision) state.lowerGeCampusUnits += fallbackUnits;
+  }
+}
+
+function cloneEvaluationState(state) {
   return {
-    directIds,
-    lowerDirectIds,
-    directAppliedUnits,
-    lowerDirectAppliedUnits,
-    geCampusUnits,
-    lowerGeCampusUnits,
-    electiveCampusUnits,
-    lowerElectiveCampusUnits,
+    ...state,
+    directIds: new Set(state.directIds),
+    lowerDirectIds: new Set(state.lowerDirectIds),
   };
+}
+
+// How much a candidate state advanced past a base state, in campus units, so
+// alternative paths priced in different unit systems compare on one scale.
+function campusGain(candidate, base, collegeSystem, campusSystem) {
+  return collegeUnitsToCampus(
+    candidate.directAppliedUnits - base.directAppliedUnits,
+    collegeSystem,
+    campusSystem
+  )
+    + (candidate.geCampusUnits - base.geCampusUnits)
+    + (candidate.electiveCampusUnits - base.electiveCampusUnits);
+}
+
+// Apply the feasible AS plan to the full UC template. The return capacities
+// remain in campus-native units; the caller converts them to the CC system.
+function evaluateTemplate(template, agreements, planSet, unitsById, campusSystem, collegeSystem) {
+  const ctx = {
+    optionsByPid: agreementOptionsByPid(agreements),
+    planSet,
+    unitsById,
+    campusSystem,
+    collegeSystem,
+  };
+  let state = {
+    directIds: new Set(),
+    lowerDirectIds: new Set(),
+    directAppliedUnits: 0,
+    lowerDirectAppliedUnits: 0,
+    geCampusUnits: 0,
+    lowerGeCampusUnits: 0,
+    electiveCampusUnits: 0,
+    lowerElectiveCampusUnits: 0,
+  };
+
+  for (const group of template.requirement_groups || []) {
+    const sections = group.sections || [];
+    const isOr = String(group.group_conjunction || '').toLowerCase() === 'or' && sections.length > 1;
+    if (!isOr) {
+      for (const section of sections) evaluateSection(section, group, ctx, state);
+      continue;
+    }
+    // A choice is one requirement. A student completes exactly one path, so
+    // only one alternative may earn capacity or demand — crediting each
+    // articulated alternative would satisfy the same requirement several
+    // times over. Follow the path this college does best by, the same rule
+    // the coverage ledger uses; ties keep the authored order. Note the
+    // denominator prices the cheapest reachable path instead: a student whose
+    // college articulates only the longer sequence genuinely brings more
+    // units than the cheapest path asks, and the aggregate clamps keep
+    // fulfilled within required.
+    let best = null;
+    for (const section of sections) {
+      const candidate = cloneEvaluationState(state);
+      evaluateSection(section, group, ctx, candidate);
+      const gain = campusGain(candidate, state, collegeSystem, campusSystem);
+      if (!best || gain > best.gain + EPSILON) best = { state: candidate, gain };
+    }
+    if (best) state = best.state;
+  }
+
+  return state;
 }
 
 function applyAssociateUnits({
@@ -710,27 +769,25 @@ async function transferCreditRateData(db, _auditDb, {
   const configuredMajor = slug ? getMajor(slug) : null;
   const exactPrograms = majorPrograms || configuredMajor?.programs || null;
   const legacySlug = defaultMajor().slug;
+  // The shared scoping rule: rows stamped with the slug always match, and
+  // unstamped legacy rows belong to the default major alone. A bare top-level
+  // equality here silently dropped the legacy branch — an equality on
+  // `major_slug` can never match a document missing the field.
+  const scope = majorDocumentClause(slug || legacySlug);
   const degreeQuery = {
     kind: 'as_degree', degree_type: type, status: 'found',
-    major_slug: majorSlug || 'cs',
+    ...scope,
     ...(verifiedOnly ? { 'verification.verified': true } : {}),
   };
-  const templateQuery = { kind: 'degree' };
-  if (slug) {
-    const dimensional = [{ major_slug: slug }];
-    // Existing CS documents predate major_slug; no other major may claim an
-    // unstamped row. Editing one stamps it permanently.
-    if (slug === legacySlug) dimensional.push({ major_slug: { $exists: false } });
-    degreeQuery.$or = dimensional;
-    templateQuery.$or = dimensional;
-  }
+  const templateQuery = { kind: 'degree', ...scope };
   const [degrees, templates, institutions, universities] = await Promise.all([
     db.collection('curated_requirements')
       .find(degreeQuery).toArray(),
     db.collection('curated_requirements').find(templateQuery).toArray(),
     db.collection('assist_institutions')
-      .find({ kind: 'community_college' }, { projection: { name: 1, source_id: 1 } }).toArray(),
-    db.collection('assist_institutions').find({ kind: 'university' }, {
+      .find({ kind: 'community_college', ...stateClause(configuredMajor?.state) },
+        { projection: { name: 1, source_id: 1 } }).toArray(),
+    db.collection('assist_institutions').find({ kind: 'university', ...stateClause(configuredMajor?.state) }, {
       projection: {
         source_id: 1, academic_calendar: 1, tuition_annual_resident_usd: 1,
         tuition_per_credit_usd: 1, tuition_per_credit_standard_load_usd: 1,
@@ -776,7 +833,13 @@ async function transferCreditRateData(db, _auditDb, {
         school_id: Number(template.school_id),
         school: template.school,
         unitSystem: unitSystemOfTemplate(template),
-        fullRequiredUnits: budget.modeled_units,
+        // The full-degree denominator is the campus's stated graduation
+        // minimum, the same fixed measure the coverage heatmap divides by. The
+        // modeled sum is only a fallback: it moves with modelling completeness,
+        // so a thinly modelled degree read as more complete, and before the
+        // Or-collapse Berkeley MCB's summed alternatives (392 modeled against
+        // 120 stated) held the whole column near 11%.
+        fullRequiredUnits: Number(template.total_units) || budget.modeled_units,
         lowerRequiredUnits: budget.per_tier.transferable + budget.per_tier.breadth,
       };
     })
@@ -790,11 +853,16 @@ async function transferCreditRateData(db, _auditDb, {
         community_college_id: { $in: collegeIds },
         ...(exactPrograms ? programPairClause(exactPrograms) : {}),
       },
-      { projection: { uc_school_id: 1, community_college_id: 1, major: 1, requirement_groups: 1 } }
+      { projection: { uc_school_id: 1, community_college_id: 1, major: 1, pairing: 1, requirement_groups: 1 } }
     ).toArray()
     : [];
   const agreementsByPair = new Map();
   for (const agreement of agreements) {
+    // A booleans-only agreement records requirement-level verdicts with no
+    // course mappings (Massachusetts pairs outside the paper's 50-mile
+    // study). Credit accounting cannot run on it; the cell stays blank the
+    // way the paper left the pair unstudied.
+    if (agreement.pairing === 'booleans-only') continue;
     const key = `${agreement.uc_school_id}:${agreement.community_college_id}`;
     if (!agreementsByPair.has(key)) agreementsByPair.set(key, []);
     agreementsByPair.get(key).push(agreement);
@@ -1059,6 +1127,72 @@ async function transferCreditRateData(db, _auditDb, {
 
   rows.sort((a, b) => String(a.college_name).localeCompare(String(b.college_name))
     || String(a.school).localeCompare(String(b.school)));
+
+  // A paper corpus carries the study's published per-pair values alongside our
+  // recomputation — BOTH revisions: the repo workbook's tally (`pct_as`) and
+  // the final PDF's printed Figure 3 (`pct_as_pdf`), which is a newer revision
+  // of the same hand tally. The figure's source selector shows any of the
+  // three against each other; which one a cell displays is an explicit
+  // choice, never an accident of pipeline.
+  if (configuredMajor?.capabilities?.paperBaselines && configuredMajor?.state) {
+    const published = await db.collection('ma_paper_baselines')
+      .find({ measure: { $in: ['pct_as', 'pct_as_pdf'] }, community_college_id: { $ne: null } },
+        { projection: { measure: 1, school_id: 1, community_college_id: 1, value: 1 } })
+      .toArray();
+    const byPair = new Map();
+    for (const row of published) {
+      byPair.set(`${row.measure}|${row.school_id}|${row.community_college_id}`, row.value);
+    }
+
+    // The paper mixed GE-inclusive and GE-skipping counts cell by cell (its
+    // matching cells are provably GE-inclusive; its under-counts sit between
+    // the CS-only floor and the GE-inclusive total). So the figure serves OUR
+    // recomputation in BOTH flavors: the numerator restricted to receivers of
+    // the university's analyzed course list ("CS-only") next to the full
+    // GE-inclusive rate. GE here is the university-side complement of the
+    // paper's own Figure-1 course list — their partition, not a label of ours;
+    // AS courses are never classified.
+    const [maDegrees, maAgreements, maSending] = await Promise.all([
+      db.collection('curated_requirements')
+        .find({ kind: 'degree', state: configuredMajor.state },
+          { projection: { school_id: 1, requirement_groups: 1 } }).toArray(),
+      db.collection('assist_agreements')
+        .find({ state: configuredMajor.state, pairing: 'order-approximate' },
+          { projection: { uc_school_id: 1, community_college_id: 1, requirement_groups: 1 } }).toArray(),
+      db.collection('assist_courses')
+        .find({ state: configuredMajor.state, side: 'sending' },
+          { projection: { course_id: 1, units: 1 } }).toArray(),
+    ]);
+    const geParentIdsBySchool = new Map(maDegrees.map((degree) => [Number(degree.school_id), new Set(
+      (degree.requirement_groups || [])
+        .filter((group) => /^\s*GE\b/i.test(group.title || ''))
+        .flatMap((group) => group.sections.flatMap((section) => section.receivers.map((r) => r.receiving.parent_id)))
+    )]));
+    const maUnitsById = new Map(maSending.map((course) => [course.course_id, course.units || 0]));
+    const csOnlyByPair = new Map();
+    for (const agreement of maAgreements) {
+      const ge = geParentIdsBySchool.get(Number(agreement.uc_school_id)) || new Set();
+      let csUnits = 0;
+      for (const receiver of agreement.requirement_groups?.[0]?.sections?.[0]?.receivers || []) {
+        if (receiver.articulation_status !== 'articulated' || !(receiver.options || []).length) continue;
+        if (ge.has(receiver.receiving.parent_id)) continue;
+        csUnits += receiver.options.flatMap((option) => option.course_ids || [])
+          .reduce((sum, id) => sum + (maUnitsById.get(id) || 0), 0);
+      }
+      csOnlyByPair.set(`${agreement.uc_school_id}|${agreement.community_college_id}`, csUnits);
+    }
+
+    for (const row of rows) {
+      const repo = byPair.get(`pct_as|${row.school_id}|${row.community_college_id}`);
+      const pdf = byPair.get(`pct_as_pdf|${row.school_id}|${row.community_college_id}`);
+      row.published_as_transfer_pct = repo != null ? +(repo * 100).toFixed(1) : null;
+      row.published_pdf_as_transfer_pct = pdf != null ? +(pdf * 100).toFixed(1) : null;
+      const csUnits = csOnlyByPair.get(`${row.school_id}|${row.community_college_id}`);
+      row.as_cs_only_utilization_pct = csUnits != null && row.as_total_units
+        ? +((csUnits / row.as_total_units) * 100).toFixed(1)
+        : null;
+    }
+  }
   return rows;
 }
 

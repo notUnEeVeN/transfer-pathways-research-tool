@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Select, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
+import { COVERAGE_HEATMAP_MEASURES } from './measures'
 import {
   PAPER_RED_LOW_TO_HIGH_GRADIENT,
   paperRedCellColor,
@@ -13,14 +14,26 @@ const ROW_MODES = [
   { value: 'county', label: 'County', noun: 'counties', header: 'County served' },
 ]
 
-// The denominator for each heatmap cell. Full-degree coverage follows MA Fig. 1
-// and reads the editable four-year templates; the two prior minimums views stay
-// available for direct comparison.
+// The denominator for each heatmap cell. Full-degree coverage reads the
+// editable four-year templates; the two prior minimums views stay available
+// for direct comparison.
 const REQ_MODES = [
   { value: 'degree', label: '4-year graduation plan (by units)' },
   { value: 'assist', label: 'ASSIST minimums' },
   { value: 'paper', label: 'Hand-curated minimums' },
 ]
+
+// The MA-paper equivalent stands apart from the basis dropdown as its own
+// toggle — the cross-state comparison is the point of the port, so it should
+// not hide among the bases. It reproduces the final Massachusetts paper's
+// Figure 1 over the degree response: required courses at every level, GE
+// excluded, binary per course. Its GE sub-toggle is our extension for
+// GE-heavy majors, whose GE-excluded reading is dominated by the upper
+// division.
+const MA_MODE = 'ma-courses'
+const MA_GE_MODE = 'ma-courses-ge'
+const MA_MODES = new Set([MA_MODE, MA_GE_MODE])
+const requirementsParam = (mode) => (MA_MODES.has(mode) ? 'degree' : mode)
 
 const intFmt = new Intl.NumberFormat()
 const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
@@ -96,6 +109,8 @@ function numberOrNull(value) {
 }
 
 function rowCoverageValue(row, reqMode) {
+  if (reqMode === MA_MODE) return numberOrNull(row.pct_named_requirement_courses)
+  if (reqMode === MA_GE_MODE) return numberOrNull(row.pct_named_requirement_courses_with_ge)
   return reqMode === 'degree'
     ? numberOrNull(row.pct_degree_units ?? row.pct_articulated)
     : numberOrNull(row.pct_articulated)
@@ -103,6 +118,12 @@ function rowCoverageValue(row, reqMode) {
 
 function cellCoverageValue(cell, reqMode) {
   if (!cell) return null
+  if (reqMode === MA_MODE) {
+    return cell.maSlotsTotal > 0 ? (cell.maSlotsArticulated / cell.maSlotsTotal) * 100 : null
+  }
+  if (reqMode === MA_GE_MODE) {
+    return cell.maGeTotal > 0 ? (cell.maGeArticulated / cell.maGeTotal) * 100 : null
+  }
   if (reqMode === 'degree' && cell.hasDegreeUnits && cell.degreeUnitsModeled > 0) {
     return (cell.degreeUnitsCovered / cell.degreeUnitsModeled) * 100
   }
@@ -147,6 +168,10 @@ function buildHeatmap(rows, reqMode) {
         degreeUnitsCovered: 0,
         hasDegreeUnits: false,
         degreeUnitSystem: null,
+        maSlotsTotal: 0,
+        maSlotsArticulated: 0,
+        maGeTotal: 0,
+        maGeArticulated: 0,
       }
       cell.sum += value
       cell.n += 1
@@ -159,6 +184,10 @@ function buildHeatmap(rows, reqMode) {
         cell.degreeUnitsCovered += coveredUnits
         cell.hasDegreeUnits = true
       }
+      cell.maSlotsTotal += numberOrNull(r.named_requirement_courses_total) || 0
+      cell.maSlotsArticulated += numberOrNull(r.named_requirement_courses_articulated) || 0
+      cell.maGeTotal += numberOrNull(r.named_requirement_courses_with_ge_total) || 0
+      cell.maGeArticulated += numberOrNull(r.named_requirement_courses_with_ge_articulated) || 0
       if (r.degree_unit_system) cell.degreeUnitSystem = r.degree_unit_system
       cellMap.set(cellKey, cell)
     }
@@ -203,12 +232,18 @@ function cellTitle(row, col, cell, value, reqMode) {
     row.name,
     col.school,
     col.major,
-    reqMode === 'degree'
-      ? `Potential graduation-unit coverage: ${pct(value)}`
-      : `Coverage: ${pct(value)}`,
+    MA_MODES.has(reqMode)
+      ? `MA-equivalent articulation: ${pct(value)}`
+      : reqMode === 'degree'
+        ? `Potential graduation-unit coverage: ${pct(value)}`
+        : `Coverage: ${pct(value)}`,
   ]
   if (cell) {
-    if (reqMode === 'degree') {
+    if (reqMode === MA_MODE) {
+      bits.push(`${intFmt.format(cell.maSlotsArticulated)} of ${intFmt.format(cell.maSlotsTotal)} required courses articulate (every level, series expanded, GE excluded — the paper's binary counting)`)
+    } else if (reqMode === MA_GE_MODE) {
+      bits.push(`${intFmt.format(cell.maGeArticulated)} of ${intFmt.format(cell.maGeTotal)} required courses articulate (every level, GE included — lower-division GE cleared by certification)`)
+    } else if (reqMode === 'degree') {
       if (cell.hasDegreeUnits) {
         const unitSystem = cell.degreeUnitSystem === 'quarter' ? 'quarter' : 'semester'
         bits.push(`${unitFmt.format(cell.degreeUnitsCovered)} of ${unitFmt.format(cell.degreeUnitsModeled)} modeled ${unitSystem} units have a community-college equivalent`)
@@ -306,7 +341,9 @@ function Legend({ reqMode, scale }) {
   return (
     <div className='flex flex-wrap items-center gap-3 text-caption text-ink-subtle'>
       <span className='text-label'>
-        {reqMode === 'degree' ? 'Potential graduation-unit coverage' : 'Coverage'}
+        {MA_MODES.has(reqMode)
+          ? 'MA-equivalent requirement articulation'
+          : reqMode === 'degree' ? 'Potential graduation-unit coverage' : 'Coverage'}
       </span>
       <div className='w-64 max-w-full' aria-label={`Coverage color scale from ${pct(scale.min)} to ${pct(scale.max)}`}>
         <div
@@ -332,9 +369,21 @@ export default function CoverageHeatmap({
   presentation = false,
   majorSlug = 'cs',
   majorCapabilities,
+  onMeasureChange,
+  // The Massachusetts tab opens on the paper's own measure; California
+  // callers leave this false.
+  defaultMaEquivalent = false,
 }) {
   const [rowModeValue, setRowModeValue] = useState('college')
   const [reqMode, setReqMode] = useState('degree')
+  // A corpus can declare that the California unit-budget lenses do not model
+  // it (Massachusetts: no transfer cap, no GE netting — the unit measure
+  // computes garbage). There the paper's course lens is the only basis, so
+  // the MA-equivalent state is forced on and its toggle disappears.
+  const unitLensAvailable = majorCapabilities?.unitCoverage !== false
+  const [maToggle, setMaEquivalent] = useState(defaultMaEquivalent)
+  const maEquivalent = unitLensAvailable ? maToggle : true
+  const [maIncludeGe, setMaIncludeGe] = useState(false)
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   // Hand-curated website minimums only exist for CS. Prefer the registry's
   // explicit capability when the caller has it, while failing closed for an
@@ -353,11 +402,21 @@ export default function CoverageHeatmap({
 
   // Fetch on mount with no polling; template saves invalidate this query and
   // Refresh remains available for externally edited data.
-  const activeReqMode = presentation
+  const basisMode = presentation
     ? 'degree'
     : reqModes.some((m) => m.value === reqMode) ? reqMode : 'degree'
+  const activeReqMode = !presentation && maEquivalent
+    ? (maIncludeGe ? MA_GE_MODE : MA_MODE)
+    : basisMode
+
+  // The figure's statistic changes with its controls, so the "How this is
+  // measured" panel beside it must follow. The definitions live in
+  // measures.js; the figure only reports which one is active.
+  useEffect(() => {
+    onMeasureChange?.(COVERAGE_HEATMAP_MEASURES[activeReqMode] || COVERAGE_HEATMAP_MEASURES.degree)
+  }, [activeReqMode, onMeasureChange])
   const coverage = useCoverage(
-    { majorSlug, groupBy: rowMode.value, requirements: activeReqMode },
+    { majorSlug, groupBy: rowMode.value, requirements: requirementsParam(activeReqMode) },
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
@@ -393,10 +452,39 @@ export default function CoverageHeatmap({
               ))}
             </div>
           </div>
-          {!presentation && (
+          {!presentation && unitLensAvailable && (
             <div className='flex flex-col min-w-64'>
               <span className='field-label'>Requirement basis</span>
-              <Select value={activeReqMode} onChange={setReqMode} options={reqModes} />
+              <Select value={basisMode} onChange={setReqMode} options={reqModes} disabled={maEquivalent} />
+            </div>
+          )}
+          {!presentation && unitLensAvailable && (
+            <div className='flex flex-col'>
+              <span className='field-label'>Massachusetts comparison</span>
+              <div className='flex gap-2'>
+                <button
+                  type='button'
+                  aria-pressed={maEquivalent}
+                  onClick={() => setMaEquivalent((v) => !v)}
+                  className={`h-9 px-3 rounded-lg border text-button transition-colors ${maEquivalent
+                    ? 'border-primary bg-primary-soft text-primary'
+                    : 'border-border-strong bg-surface text-ink-muted hover:bg-surface-hover'}`}
+                >
+                  MA-paper equivalent
+                </button>
+                {maEquivalent && (
+                  <button
+                    type='button'
+                    aria-pressed={maIncludeGe}
+                    onClick={() => setMaIncludeGe((v) => !v)}
+                    className={`h-9 px-3 rounded-lg border text-button transition-colors ${maIncludeGe
+                      ? 'border-primary bg-primary-soft text-primary'
+                      : 'border-border-strong bg-surface text-ink-muted hover:bg-surface-hover'}`}
+                  >
+                    Include GE
+                  </button>
+                )}
+              </div>
             </div>
           )}
           <Button variant='secondary' leadingIcon={ArrowPathIcon} onClick={() => coverage.refetch()}>
@@ -428,10 +516,39 @@ export default function CoverageHeatmap({
             ))}
           </div>
         </div>
-        {!presentation && (
+        {!presentation && unitLensAvailable && (
           <div className='flex flex-col min-w-64'>
             <span className='field-label'>Requirement basis</span>
-            <Select value={activeReqMode} onChange={setReqMode} options={reqModes} />
+            <Select value={basisMode} onChange={setReqMode} options={reqModes} disabled={maEquivalent} />
+          </div>
+        )}
+        {!presentation && unitLensAvailable && (
+          <div className='flex flex-col'>
+            <span className='field-label'>Massachusetts comparison</span>
+            <div className='flex gap-2'>
+              <button
+                type='button'
+                aria-pressed={maEquivalent}
+                onClick={() => setMaEquivalent((v) => !v)}
+                className={`h-9 px-3 rounded-lg border text-button transition-colors ${maEquivalent
+                  ? 'border-primary bg-primary-soft text-primary'
+                  : 'border-border-strong bg-surface text-ink-muted hover:bg-surface-hover'}`}
+              >
+                MA-paper equivalent
+              </button>
+              {maEquivalent && (
+                <button
+                  type='button'
+                  aria-pressed={maIncludeGe}
+                  onClick={() => setMaIncludeGe((v) => !v)}
+                  className={`h-9 px-3 rounded-lg border text-button transition-colors ${maIncludeGe
+                    ? 'border-primary bg-primary-soft text-primary'
+                    : 'border-border-strong bg-surface text-ink-muted hover:bg-surface-hover'}`}
+                >
+                  Include GE
+                </button>
+              )}
+            </div>
           </div>
         )}
         <Button
@@ -448,14 +565,11 @@ export default function CoverageHeatmap({
         </div>
       </div>
 
+      {/* The definition of the active statistic lives in the measure panel
+          beside the figure (measures.js), not in figure footnotes. */}
       <div data-export-root className='flex flex-col gap-6'>
         <HeatmapTable model={model} rowMode={rowMode} reqMode={activeReqMode} />
         <Legend reqMode={activeReqMode} scale={model.colorScale} />
-        {activeReqMode === 'degree' && (
-          <p className='text-caption text-ink-subtle max-w-4xl'>
-            Percentage of modeled UC graduation units with a community-college equivalent. Each campus is calculated in its own native quarter or semester units. Requirement-slot counts remain available in each cell tooltip as secondary context.
-          </p>
-        )}
       </div>
     </Stack>
   )

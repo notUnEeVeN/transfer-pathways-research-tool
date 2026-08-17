@@ -117,6 +117,14 @@ describe('course type coverage', () => {
     })
   })
 
+  it('prefers a passed major object over the registry, so state corpora render columns', () => {
+    // ma-cs is not in the California registry (bySlug misses), which used to
+    // leave columnsFor(null) empty and the whole figure blank on the MA tab.
+    render(<CourseTypeCoverage majorSlug='ma-cs' major={CS_MAJOR} />)
+    expect(screen.getByText('Requirements counted')).toBeInTheDocument()
+    expect(screen.queryAllByText(/Computing|Math/).length).toBeGreaterThan(0)
+  })
+
   it('averages each campus over its colleges and drops types it does not require', () => {
     const model = buildCourseTypeModel(rows(), 'whole-degree', CS_COLUMNS)
     const byKey = Object.fromEntries(model.columns.map((column) => [column.key, column]))

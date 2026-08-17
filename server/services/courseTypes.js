@@ -29,14 +29,39 @@ const COURSE_TYPES = ['computing', 'math', 'science', 'non_stem'];
 const COMPUTING_PREFIXES = new Set([
   'CS', 'CSE', 'ECS', 'CMPSC', 'COM SCI', 'COMPSCI', 'I&C SCI', 'IN4MATX',
   'EECS', 'COGS', 'ICS',
+  // Massachusetts receiving prefixes (paper import).
+  'COMP', 'CSCI', 'CSC', 'CIS', 'CAIS', 'CICS',
+  // Virginia receiving prefixes. CMSC and CPSC are Computer Science at several
+  // four-years; SWE is software engineering; CMDA is Virginia Tech's
+  // Computational Modeling and Data Analytics.
+  'CMSC', 'CPSC', 'SWE', 'CMDA', 'ITP', 'ITN',
 ]);
-const MATH_PREFIXES = new Set(['MATH', 'MAT', 'STAT', 'STATS', 'PSTAT', 'AM']);
+const MATH_PREFIXES = new Set(['MATH', 'MAT', 'STAT', 'STATS', 'PSTAT', 'AM',
+  // Massachusetts.
+  'MTH', 'MA']);
 // MA counts engineering with science.
 const SCIENCE_PREFIXES = new Set([
   'PHYS', 'PHYSICS', 'PHY', 'CHEM', 'CHE', 'BILD', 'BIOL', 'BIOLOGY', 'MCELLBI',
   'ASTRON', 'BIS', 'ENGR', 'EE', 'ECE', 'EC ENGR', 'MAE', 'ME', 'NANO', 'ENSC',
   'BIEN', 'ENGRCS', 'ESM',
+  // Massachusetts.
+  'PHS', 'PHYSIC', 'BIO', 'EGR', 'EECE',
+  // Virginia. Engineering counts with science, as in the Massachusetts rule:
+  // ENGE is Virginia Tech's engineering education, OEAS is Old Dominion's
+  // ocean and earth sciences, GEOL/GEOS the geoscience prefixes.
+  //
+  // ENVS is deliberately NOT here. Virginia does not need it, and at UC Santa
+  // Cruz the prefix belongs to Environmental *Studies* — "ENVS 25
+  // Environmental Politics, Economics and Justice" is not a science course, so
+  // adding the prefix would mis-type four courses in a verified California
+  // figure.
+  'ENGE', 'OEAS', 'GEOL', 'GEOS',
 ]);
+
+// Structural placeholder codes (the Massachusetts import mints SLOT/ELEC ids
+// for uncoded requirements like "Natural Science Elective"): the code carries
+// no discipline, so the requirement's own text decides.
+const PLACEHOLDER_PREFIXES = new Set(['SLOT', 'ELEC', 'XXXX', '']);
 
 // Discrete math by any name: the paper's single documented exception.
 const DISCRETE_MATH = /discrete\s*(math|structure)|\bCSE\s*0*20\b|\bCMPSC\s*0*40\b|\bCSE\s*0*16\b|\bECS\s*0*20\b|\bCS\s*0*111\b|\bMATH\s*0*61\b/i;
@@ -49,7 +74,7 @@ const TEXT_RULES = [
   [DISCRETE_MATH, 'math'],
   // Blocks the template names as major coursework are computing even when one
   // course inside also carries a writing designation (UC Irvine's I&C SCI 139W).
-  [/upper-?division (major|elective)|major (field|coursework)|technical elective|systems elective|theory\/?\s?abstraction|applications of computing|computing elective|project in computer science/i, 'computing'],
+  [/upper[-\s]?(division|level) (major|elective)|major (field|coursework)|technical elective|systems elective|theory\/?\s?abstraction|applications of computing|computing elective|project in computer science/i, 'computing'],
   // Writing, communication, ethics and breadth: often satisfied by a
   // computing-prefixed course, but not computing coursework.
   [/writing|composition|disciplinary communication|communication \(|\bethic/i, 'non_stem'],
@@ -70,6 +95,7 @@ function typeOfCourseCode(prefix, number = '', title = '') {
   if (DISCRETE_MATH.test(code)) return 'math';
   // Whole prefix first — several UC codes contain punctuation ("I&C SCI").
   const whole = normalizePrefix(prefix);
+  if (PLACEHOLDER_PREFIXES.has(whole)) return typeOfText(title);
   if (COMPUTING_PREFIXES.has(whole)) return 'computing';
   if (MATH_PREFIXES.has(whole)) return 'math';
   if (SCIENCE_PREFIXES.has(whole)) return 'science';

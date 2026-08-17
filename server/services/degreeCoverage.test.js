@@ -117,4 +117,47 @@ describe('degree coverage major isolation', () => {
       schoolId: 79, communityCollegeId: 101, majorSlug: 'cs',
     })).toBeNull();
   });
+
+  // ASSIST also publishes requirements as NAMED blocks with no course id (UC
+  // Irvine's biology "Mathematics Requirement"). The heatmap credits them via
+  // its named-requirement pipeline; this per-college evaluation must agree, or
+  // the Data tab and the figure disagree about the same college.
+  it('credits a template group satisfied by an articulated named ASSIST block', async () => {
+    await db.collection('curated_requirements').insertOne({
+      _id: 'degree:79:cs',
+      kind: 'degree',
+      school_id: 79,
+      school: 'UC Berkeley',
+      major_slug: 'cs',
+      program: 'Electrical Engineering & Computer Sciences, B.S.',
+      requirement_groups: [{
+        title: 'Mathematics',
+        tier: 'transferable',
+        assist_requirement: 'Mathematics Requirement',
+        sections: [{
+          section_advisement: 1,
+          receivers: [{ receiving: { kind: 'course', parent_id: 10 } }],
+        }],
+      }],
+    });
+    await db.collection('assist_agreements').insertOne({
+      uc_school_id: 79,
+      community_college_id: 101,
+      major: 'Electrical Engineering & Computer Sciences, B.S.',
+      requirement_groups: [{
+        sections: [{
+          receivers: [{
+            receiving: { kind: 'requirement', name: 'Mathematics  Requirement' },
+            articulation_status: 'articulated',
+            options: [],
+          }],
+        }],
+      }],
+    });
+
+    const result = await evaluateDegreeAtCollege(db, {
+      schoolId: 79, communityCollegeId: 101, majorSlug: 'cs',
+    });
+    expect(result.completion.covered).toBe(1);
+  });
 });

@@ -96,20 +96,33 @@ export function sourceForItem(item, { getAnalysis = getAnalysisById } = {}) {
  * numbered port. A published copy inherits its built-in's figure number, so a
  * re-published paper figure keeps the same pill.
  */
-export function figureRefForItem(item, { getAnalysis = getAnalysisById } = {}) {
+export function figureNoForItem(item, { getAnalysis = getAnalysisById } = {}) {
   if (!item) return null
   const analysis = item.kind === 'analysis'
     ? item.analysis
     : (item.figure?.visual?.id ? getAnalysis(item.figure.visual.id) : null)
-  const figureNo = analysis?.figureNo
+  return analysis?.figureNo ?? null
+}
+
+export function figureRefForItem(item, { getAnalysis = getAnalysisById } = {}) {
+  const figureNo = figureNoForItem(item, { getAnalysis })
   if (!figureNo) return null
   return `${SOURCE_META[sourceForItem(item, { getAnalysis })].label} Fig. ${figureNo}`
 }
 
 /**
- * Bucket a flat gallery into lane groups, in SOURCE_ORDER, preserving each
- * item's incoming order within its lane. Empty lanes are dropped so the page
- * never renders a headed-but-empty shelf.
+ * Bucket a flat gallery into lane groups, in SOURCE_ORDER. Empty lanes are
+ * dropped so the page never renders a headed-but-empty shelf.
+ *
+ * Within a lane, ported figures read in their SOURCE PAPER's figure order —
+ * "MA Fig. 1" through "MA Fig. 5" — because that is the order the papers
+ * present them in and the order anyone citing them expects. The gallery
+ * arrives sorted newest-first, which for a set of ports is an arbitrary
+ * shuffle of their figure numbers.
+ *
+ * Unnumbered items (our own analyses, published figures) keep the incoming
+ * newest-first order: the sort is stable, and the comparator returns 0 for any
+ * pair without figure numbers.
  *
  * @returns Array<{ id, meta, items }>
  */
@@ -118,7 +131,16 @@ export function groupGalleryBySource(gallery, opts) {
   for (const item of gallery || []) {
     buckets.get(sourceForItem(item, opts)).push(item)
   }
+  const byFigureNo = (a, b) => {
+    const aNo = figureNoForItem(a, opts)
+    const bNo = figureNoForItem(b, opts)
+    if (aNo && bNo) return aNo - bNo
+    // A numbered port leads the lane's unnumbered companions.
+    if (aNo) return -1
+    if (bNo) return 1
+    return 0
+  }
   return SOURCE_ORDER
-    .map((id) => ({ id, meta: SOURCE_META[id], items: buckets.get(id) }))
+    .map((id) => ({ id, meta: SOURCE_META[id], items: buckets.get(id).sort(byFigureNo) }))
     .filter((group) => group.items.length > 0)
 }

@@ -11,10 +11,10 @@ import SubNav from './components/SubNav'
 import ReviewTab from './DesktopReview'
 import AdminPage from './AdminPage'
 import DataPage from './DataPage'
-import VisualsPage from './visuals/VisualsPage'
 import ApiPage from './DataApiDocs'
 import TasksPage from './tasks/TasksPage'
 import VirginiaPage from './virginia/VirginiaPage'
+import MassachusettsPage from './massachusetts/MassachusettsPage'
 import SignInScreen from './SignInScreen'
 import DocHead from './pages/Audit/components/DocHead'
 // Stats components reused individually for a spacious full-width dashboard.
@@ -150,11 +150,18 @@ function Shell() {
 
 // The authenticated, approved console. Reached only through the gate above, so
 // access is guaranteed here — every view can fetch without a per-view guard.
+//
+// Adding a view takes THREE registrations or the tab silently bounces to
+// California: this whitelist (safeConsoleView normalizes unknown values), the
+// TopBar tabs array, and the `view === '…'` branch in Console's switch.
+//
+// `data` is the California view — the value predates the state tabs and stays
+// stable so bookmarked URLs and stored prefs keep working.
 function availableConsoleViews(role) {
   return new Set([
     'data',
-    'visuals',
     'virginia',
+    'massachusetts',
     'audit',
     'tasks',
     'api',
@@ -163,6 +170,9 @@ function availableConsoleViews(role) {
 }
 
 function safeConsoleView(candidate, role) {
+  // Visuals moved from the top bar into each state page; legacy deep links
+  // land on California, which hosts the original gallery as a sub-tab.
+  if (candidate === 'visuals') return 'data'
   return availableConsoleViews(role).has(candidate) ? candidate : 'data'
 }
 
@@ -219,17 +229,13 @@ function Console({ role, user }) {
               statsSeen={statsSeen} reviewSeen={reviewSeen} />
           )}
           {view === 'data' && <DataPage onNavigate={setView} />}
-          {view === 'visuals' && (
-            <div className='h-full overflow-auto'>
-              <PageContainer><VisualsPage onNavigate={setView} /></PageContainer>
-            </div>
-          )}
           {view === 'tasks' && (
             <div className='h-full overflow-auto'>
               <PageContainer><TasksPage /></PageContainer>
             </div>
           )}
           {view === 'virginia' && <VirginiaPage />}
+          {view === 'massachusetts' && <MassachusettsPage />}
           {view === 'api' && <ApiPage />}
           {view === 'admin' && role === 'admin' && <div className='h-full overflow-auto'><AdminPage /></div>}
         </div>
@@ -245,9 +251,9 @@ function Console({ role, user }) {
 // fixed colors without fighting Tabs' token-based active/inactive styling.
 function TopBar({ view, setView, role, user }) {
   const tabs = [
-    { value: 'data', label: 'Data' },
-    { value: 'visuals', label: 'Visuals' },
+    { value: 'data', label: 'California' },
     { value: 'virginia', label: 'Virginia' },
+    { value: 'massachusetts', label: 'Massachusetts' },
     { value: 'audit', label: 'Audit' },
     { value: 'tasks', label: 'Tasks' },
     { value: 'api', label: 'API' },

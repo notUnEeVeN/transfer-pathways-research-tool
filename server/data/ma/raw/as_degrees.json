@@ -1,0 +1,2818 @@
+{
+ "Berkshire": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 1,
+    "name": "Fundamental Computer Literacy",
+    "number": "102",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 2,
+    "name": "C++ Programming I",
+    "number": "124",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 3,
+    "name": "C++ Programming II",
+    "number": "125",
+    "prefix": "CIS",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 4,
+    "name": "Data Structures",
+    "number": "211",
+    "prefix": "CIS",
+    "prereqs": [
+     3
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 5,
+    "name": "Computer Science I with Java",
+    "number": "231",
+    "prefix": "CIS",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 6,
+    "name": "Computer Science II With Java",
+    "number": "232",
+    "prefix": "CIS",
+    "prereqs": [
+     5
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 7,
+    "name": "Calculus I",
+    "number": "151",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 8,
+    "name": "Calculus II",
+    "number": "152",
+    "prefix": "MAT",
+    "prereqs": [
+     7
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 9,
+    "name": "Physics I: Mechanics",
+    "number": "161",
+    "prefix": "ENT",
+    "prereqs": [
+     7
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 10,
+    "name": "Physics II: Electricity, Magnetism, & Light",
+    "number": "261",
+    "prefix": "ENT",
+    "prereqs": [
+     7,
+     9
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 11,
+    "name": "Digital Circuits",
+    "number": "233",
+    "prefix": "ENT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 12,
+    "name": "Elementary Statistics",
+    "number": "123",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 13,
+    "name": "Professional Elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 14,
+    "name": "Composition I",
+    "number": "101",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 15,
+    "name": "Composition II",
+    "number": "102",
+    "prefix": "ENG",
+    "prereqs": [
+     14
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 16,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 17,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 18,
+    "name": "Communication",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Bristol": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 43,
+    "name": "Principles of Economics-Micro",
+    "number": "112",
+    "prefix": "ECN",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 44,
+    "name": "Composition I: College Writing",
+    "number": "101",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 45,
+    "name": "Coposition II: Writing about Literature",
+    "number": "102",
+    "prefix": "ENG",
+    "prereqs": [
+     44
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 46,
+    "name": "Technical Writing",
+    "number": "215",
+    "prefix": "ENG",
+    "prereqs": [
+     44
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 47,
+    "name": "Calculus I",
+    "number": "214",
+    "prefix": "MTH",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 48,
+    "name": "Calculus II",
+    "number": "215",
+    "prefix": "MTH",
+    "prereqs": [
+     47
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 49,
+    "name": "Discrete Structures I",
+    "number": "243",
+    "prefix": "MTH",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 50,
+    "name": "Discrete Structures II",
+    "number": "244",
+    "prefix": "MTH",
+    "prereqs": [
+     49
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 51,
+    "name": "General Physics I",
+    "number": "211",
+    "prefix": "PHY",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 52,
+    "name": "General Physics II",
+    "number": "212",
+    "prefix": "PHY",
+    "prereqs": [
+     51
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 53,
+    "name": "The West and the World I",
+    "number": "111",
+    "prefix": "HST",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 54,
+    "name": "The West and the World II",
+    "number": "112",
+    "prefix": "HST",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 55,
+    "name": "Human Expression",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 57,
+    "name": "Object-Oriented Concepts",
+    "number": "123",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 58,
+    "name": "Object Oriented JAVA Programming I",
+    "number": "157",
+    "prefix": "CIS",
+    "prereqs": [
+     57
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 59,
+    "name": "Introduction to Procedural Programming",
+    "number": "158",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 60,
+    "name": "Object-Oriented Java Programming II",
+    "number": "257",
+    "prefix": "CIS",
+    "prereqs": [
+     58
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 61,
+    "name": "Software Specifications and Design",
+    "number": "260",
+    "prefix": "CIS",
+    "prereqs": [
+     59
+    ]
+   },
+   {
+    "coreqs": [
+     59,
+     49
+    ],
+    "credits": 4.0,
+    "id": 62,
+    "name": "Introduction to Computer Systems",
+    "number": "261",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 63,
+    "name": "Computer Organization and Design",
+    "number": "262",
+    "prefix": "CIS",
+    "prereqs": [
+     62
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 64,
+    "name": "Human Expression",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Bunker Hill": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 32,
+    "name": "Intro to Comp Sci & Object Oriented Prog",
+    "number": "120",
+    "prefix": "CSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 33,
+    "name": "Calculus I",
+    "number": "281",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 34,
+    "name": "College Writing I",
+    "number": "111",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 35,
+    "name": "GE CCC",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 36,
+    "name": "GE E",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 37,
+    "name": "C++ Programming",
+    "number": "237",
+    "prefix": "CSC",
+    "prereqs": [
+     32
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 38,
+    "name": "Calculus II",
+    "number": "282",
+    "prefix": "MAT",
+    "prereqs": [
+     33
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 39,
+    "name": "College Writing II",
+    "number": "112",
+    "prefix": "ENG",
+    "prereqs": [
+     34
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 40,
+    "name": "JAVA Programming",
+    "number": "239",
+    "prefix": "CSC",
+    "prereqs": [
+     32
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 41,
+    "name": "CS Elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 42,
+    "name": "Advanced Java Programming",
+    "number": "285",
+    "prefix": "CSC",
+    "prereqs": [
+     40
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 43,
+    "name": "Data Structures",
+    "number": "242",
+    "prefix": "CSC",
+    "prereqs": [
+     40
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 44,
+    "name": "Physics I",
+    "number": "251",
+    "prefix": "PHY",
+    "prereqs": [
+     33
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 45,
+    "name": "GE CW",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [
+     38
+    ],
+    "credits": 4.0,
+    "id": 46,
+    "name": "Physics II",
+    "number": "252",
+    "prefix": "PHY",
+    "prereqs": [
+     44
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 47,
+    "name": "CS Elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 48,
+    "name": "CS elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 49,
+    "name": "CS Elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Cape Cod": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 43,
+    "name": "English Composition I",
+    "number": "101",
+    "prefix": "ENL",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 44,
+    "name": "Calculus I",
+    "number": "240",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 45,
+    "name": "Physics I",
+    "number": "151",
+    "prefix": "PHY",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 46,
+    "name": "Computer Programming I: C++",
+    "number": "120",
+    "prefix": "CSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 47,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 49,
+    "name": "English Composition II",
+    "number": "102",
+    "prefix": "ENL",
+    "prereqs": [
+     43
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 50,
+    "name": "Calculus II",
+    "number": "250",
+    "prefix": "MTH",
+    "prereqs": [
+     44
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 51,
+    "name": "Computer Programming II: Java",
+    "number": "130",
+    "prefix": "CSC",
+    "prereqs": [
+     46
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 52,
+    "name": "Physics II",
+    "number": "152",
+    "prefix": "PHY",
+    "prereqs": [
+     45
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 53,
+    "name": "Data Structures",
+    "number": "230",
+    "prefix": "CSC",
+    "prereqs": [
+     51
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 54,
+    "name": "Procedural Programming",
+    "number": "125",
+    "prefix": "CSC",
+    "prereqs": [
+     46
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 55,
+    "name": "Humanities",
+    "number": "",
+    "prefix": "",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 56,
+    "name": "Humanities",
+    "number": "",
+    "prefix": "",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 57,
+    "name": "Social Science",
+    "number": "",
+    "prefix": "",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 58,
+    "name": "Introduction to Computer Systems",
+    "number": "240",
+    "prefix": "CSC",
+    "prereqs": [
+     48
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 59,
+    "name": "Computer Organizational & Architecture",
+    "number": "250",
+    "prefix": "CSC",
+    "prereqs": [
+     51
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 60,
+    "name": "Discrete Mathematics & Proofs",
+    "number": "220",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 61,
+    "name": "STEM elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 62,
+    "name": "STEM elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Greenfield": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 1,
+    "name": "English Composition I",
+    "number": "101",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 2,
+    "name": "English Composition II",
+    "number": "112",
+    "prefix": "ENG",
+    "prereqs": [
+     1
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 3,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 4,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 5,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 6,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [
+     11
+    ],
+    "credits": 4.0,
+    "id": 7,
+    "name": "General Physics I",
+    "number": "111",
+    "prefix": "PHY",
+    "prereqs": []
+   },
+   {
+    "coreqs": [
+     12
+    ],
+    "credits": 4.0,
+    "id": 8,
+    "name": "General Physics II",
+    "number": "112",
+    "prefix": "PHY",
+    "prereqs": [
+     7
+    ]
+   },
+   {
+    "coreqs": [
+     12
+    ],
+    "credits": 4.0,
+    "id": 9,
+    "name": "Introduction to Discrete Computation",
+    "number": "201",
+    "prefix": "CSC",
+    "prereqs": [
+     11
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 10,
+    "name": "Data Structures",
+    "number": "254",
+    "prefix": "CSC",
+    "prereqs": [
+     15
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 11,
+    "name": "Calculus with Analytic Geometry I",
+    "number": "201",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 12,
+    "name": "Calculus with Analytic Geometry II",
+    "number": "202",
+    "prefix": "MAT",
+    "prereqs": [
+     11
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 13,
+    "name": "Linear Algebra",
+    "number": "205",
+    "prefix": "MAT",
+    "prereqs": [
+     12
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 14,
+    "name": "Programming Foundations",
+    "number": "101",
+    "prefix": "CSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 15,
+    "name": "Java Programming",
+    "number": "251",
+    "prefix": "CSC",
+    "prereqs": [
+     14
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 16,
+    "name": "Multivariate Calculus",
+    "number": "203",
+    "prefix": "MAT",
+    "prereqs": [
+     12
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 17,
+    "name": "Biology I",
+    "number": "126",
+    "prefix": "BIOL",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Holyoke": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 1,
+    "name": "Programming Fundamentals I",
+    "number": "106",
+    "prefix": "CSI",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 2,
+    "name": "Computer Concepts with Applications",
+    "number": "111",
+    "prefix": "CSI",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 3,
+    "name": "Programming Fundamentals II",
+    "number": "218",
+    "prefix": "CSI",
+    "prereqs": [
+     1,
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 4,
+    "name": "Applied Database Management",
+    "number": "242",
+    "prefix": "CSI",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 5,
+    "name": "Java Programming I",
+    "number": "254",
+    "prefix": "CSI",
+    "prereqs": [
+     1,
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 6,
+    "name": "Data Structures",
+    "number": "258",
+    "prefix": "CSI",
+    "prereqs": [
+     3
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 7,
+    "name": "Calculus I",
+    "number": "113D",
+    "prefix": "MTH",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 8,
+    "name": "Calculus II",
+    "number": "114D",
+    "prefix": "MTH",
+    "prereqs": [
+     7
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 9,
+    "name": "Discrete Mathematics",
+    "number": "230D",
+    "prefix": "MTH",
+    "prereqs": [
+     7
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 10,
+    "name": "Systems Analysis and Design",
+    "number": "214",
+    "prefix": "CSI",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 11,
+    "name": "Composition I",
+    "number": "101A",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 12,
+    "name": "Composition II",
+    "number": "102A",
+    "prefix": "ENG",
+    "prereqs": [
+     12
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 13,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 14,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 15,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 16,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 17,
+    "name": "Physics for Engineers and Science Majors I",
+    "number": "111E",
+    "prefix": "PHS",
+    "prereqs": [
+     7
+    ]
+   },
+   {
+    "coreqs": [
+     8
+    ],
+    "credits": 4.0,
+    "id": 18,
+    "name": "Physics for Engineers and Science Majors II",
+    "number": "112E",
+    "prefix": "PHS",
+    "prereqs": [
+     17
+    ]
+   }
+  ],
+  "system": "semester"
+ },
+ "MassBay": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 33,
+    "name": "Programming I",
+    "number": "120",
+    "prefix": "CS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 34,
+    "name": "Introduction to Computation",
+    "number": "205",
+    "prefix": "CS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 35,
+    "name": "English Composition",
+    "number": "101",
+    "prefix": "EN",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 36,
+    "name": "Calculus I",
+    "number": "200",
+    "prefix": "MA",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 37,
+    "name": "Programming II",
+    "number": "200",
+    "prefix": "CS",
+    "prereqs": [
+     33
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 38,
+    "name": "Computer Architecture and Assembly Language",
+    "number": "214",
+    "prefix": "CS",
+    "prereqs": [
+     33
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 39,
+    "name": "English Composition II",
+    "number": "102",
+    "prefix": "EN",
+    "prereqs": [
+     35
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 40,
+    "name": "Calculus II",
+    "number": "201",
+    "prefix": "MA",
+    "prereqs": [
+     36
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 41,
+    "name": "Critical Thinking",
+    "number": "100",
+    "prefix": "CT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 42,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 43,
+    "name": "Data Structures",
+    "number": "208",
+    "prefix": "CS",
+    "prereqs": [
+     36
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 44,
+    "name": "Systems Programming with C",
+    "number": "212",
+    "prefix": "CS",
+    "prereqs": [
+     33
+    ]
+   },
+   {
+    "coreqs": [
+     36
+    ],
+    "credits": 4.0,
+    "id": 45,
+    "name": "Engineering Physics I",
+    "number": "103",
+    "prefix": "PY",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 46,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 47,
+    "name": "Software Design",
+    "number": "225",
+    "prefix": "CS",
+    "prereqs": [
+     37
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 48,
+    "name": "Introduction to Linear Algebra",
+    "number": "210",
+    "prefix": "MA",
+    "prereqs": [
+     40
+    ]
+   },
+   {
+    "coreqs": [
+     40
+    ],
+    "credits": 4.0,
+    "id": 49,
+    "name": "Engineering Physics II",
+    "number": "104",
+    "prefix": "PY",
+    "prereqs": [
+     45,
+     36
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 50,
+    "name": "CS Elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 51,
+    "name": "Humanities/SS",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Massasoit": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 1,
+    "name": "Fundamentals of Computer Science",
+    "number": "101",
+    "prefix": "COSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 2,
+    "name": "Introduction to Java Programming",
+    "number": "157",
+    "prefix": "COSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 3,
+    "name": "English Composition I",
+    "number": "101",
+    "prefix": "ENGL",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 4,
+    "name": "History Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 5,
+    "name": "Advanced Java Programming",
+    "number": "168",
+    "prefix": "COSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 6,
+    "name": "English Composition II",
+    "number": "102",
+    "prefix": "ENGL",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 7,
+    "name": "General Psychology",
+    "number": "101",
+    "prefix": "PSYC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 8,
+    "name": "History Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 9,
+    "name": "Computer Architecture",
+    "number": "236",
+    "prefix": "COSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 10,
+    "name": "Calculus I",
+    "number": "221",
+    "prefix": "MATH",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 11,
+    "name": "Lab Science I",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 12,
+    "name": "Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 13,
+    "name": "Literature Elective",
+    "number": "xxx",
+    "prefix": "ENGL",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 14,
+    "name": "Data Structures and Algorithms",
+    "number": "237",
+    "prefix": "COSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 15,
+    "name": "Discrete Math",
+    "number": "218",
+    "prefix": "MATH",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 16,
+    "name": "Calculus II",
+    "number": "222",
+    "prefix": "MATH",
+    "prereqs": [
+     10
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 17,
+    "name": "Lab Science II",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 18,
+    "name": "Literature Elective",
+    "number": "xxx",
+    "prefix": "ENGL",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 19,
+    "name": "Free Elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 20,
+    "name": "Free Elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Middlesex": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 36,
+    "name": "English Composition I",
+    "number": "101",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 37,
+    "name": "Programming I",
+    "number": "151",
+    "prefix": "CSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [
+     37
+    ],
+    "credits": 3.0,
+    "id": 38,
+    "name": "Operating Systems Basics and Security",
+    "number": "156",
+    "prefix": "CSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 39,
+    "name": "Technology and Society",
+    "number": "103",
+    "prefix": "ETH",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 40,
+    "name": "Behavioral Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 41,
+    "name": "English Composition II",
+    "number": "102",
+    "prefix": "ENG",
+    "prereqs": [
+     36
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 42,
+    "name": "Programming II",
+    "number": "252",
+    "prefix": "CSC",
+    "prereqs": [
+     36,
+     37
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 43,
+    "name": "Public Speaking and Professional Presentations",
+    "number": "103",
+    "prefix": "COM",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 44,
+    "name": "Calculus I for Engineering and Science",
+    "number": "290",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 45,
+    "name": "Programming III",
+    "number": "255",
+    "prefix": "CSC",
+    "prereqs": [
+     36,
+     42
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 46,
+    "name": "Computer Organization/Assembly Language",
+    "number": "202",
+    "prefix": "CSC",
+    "prereqs": [
+     36,
+     42
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 47,
+    "name": "Calculus II for Engineering and Science",
+    "number": "291",
+    "prefix": "MAT",
+    "prereqs": [
+     44
+    ]
+   },
+   {
+    "coreqs": [
+     44
+    ],
+    "credits": 4.0,
+    "id": 48,
+    "name": "Physics for Engineering and Science I",
+    "number": "171",
+    "prefix": "PHY",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 49,
+    "name": "Data Structures",
+    "number": "258",
+    "prefix": "CSC",
+    "prereqs": [
+     36,
+     45
+    ]
+   },
+   {
+    "coreqs": [
+     47
+    ],
+    "credits": 4.0,
+    "id": 50,
+    "name": "Physics for Engineering and Science II",
+    "number": "172",
+    "prefix": "PHY",
+    "prereqs": [
+     48
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 51,
+    "name": "Discrete Math",
+    "number": "250",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 52,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Mount Wachusett": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 25,
+    "name": "Computer Science I",
+    "number": "150",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 26,
+    "name": "College Writing I",
+    "number": "101",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 27,
+    "name": "Calculus I",
+    "number": "211",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 28,
+    "name": "Statistics",
+    "number": "143",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 29,
+    "name": "Lab Science I",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 30,
+    "name": "Computer Science II",
+    "number": "152",
+    "prefix": "CIS",
+    "prereqs": [
+     1
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 31,
+    "name": "College Writing II",
+    "number": "102",
+    "prefix": "ENG",
+    "prereqs": [
+     26
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 32,
+    "name": "Calculus II",
+    "number": "212",
+    "prefix": "MAT",
+    "prereqs": [
+     8
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 33,
+    "name": "Discrete Mathematics",
+    "number": "180",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 34,
+    "name": "Lab Science II",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 35,
+    "name": "Systems Programming",
+    "number": "250",
+    "prefix": "CIS",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 36,
+    "name": "Linear Algebra",
+    "number": "220",
+    "prefix": "MAT",
+    "prereqs": [
+     8
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 37,
+    "name": "Humanities Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 38,
+    "name": "Social Science Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 39,
+    "name": "Algorithms and Data Structures",
+    "number": "252",
+    "prefix": "CIS",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 40,
+    "name": "Database Design and Implementation",
+    "number": "224",
+    "prefix": "CIS",
+    "prereqs": [
+     1
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 41,
+    "name": "Speech",
+    "number": "113",
+    "prefix": "SPC",
+    "prereqs": [
+     26
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 42,
+    "name": "History Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 43,
+    "name": "Literature Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "North Shore": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 1,
+    "name": "Composition 1",
+    "number": "101",
+    "prefix": "CMP",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 2,
+    "name": "Computer Science 1",
+    "number": "101",
+    "prefix": "CPS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 3,
+    "name": "Database Theory and Applications",
+    "number": "170",
+    "prefix": "CPS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 4,
+    "name": "Calculus 1",
+    "number": "251",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 5,
+    "name": "Calculus 2",
+    "number": "252",
+    "prefix": "MAT",
+    "prereqs": [
+     4
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 6,
+    "name": "Composition 2",
+    "number": "102",
+    "prefix": "CMP",
+    "prereqs": [
+     1
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 7,
+    "name": "Computer Science 2",
+    "number": "102",
+    "prefix": "CPS",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [
+     4
+    ],
+    "credits": 4.0,
+    "id": 8,
+    "name": "Physics 1",
+    "number": "201",
+    "prefix": "PHY",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 9,
+    "name": "Data Structures",
+    "number": "203",
+    "prefix": "CPS",
+    "prereqs": [
+     7
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 10,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 11,
+    "name": "Discrete Structures",
+    "number": "241",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 12,
+    "name": "Physics 2",
+    "number": "203",
+    "prefix": "PHY",
+    "prereqs": [
+     8,
+     5
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 13,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 14,
+    "name": "UNIX",
+    "number": "218",
+    "prefix": "CPS",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 15,
+    "name": "OOP in C++",
+    "number": "224",
+    "prefix": "CPS",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 16,
+    "name": "Computer Organization and Architecture",
+    "number": "226",
+    "prefix": "CPS",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 17,
+    "name": "Introduction to Digital Logic Design",
+    "number": "216",
+    "prefix": "EGS",
+    "prereqs": [
+     12
+    ]
+   }
+  ],
+  "system": "semester"
+ },
+ "Northern Essex": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 38,
+    "name": "Data Management",
+    "number": "113",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 39,
+    "name": "Information Security",
+    "number": "115",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 1.0,
+    "id": 40,
+    "name": "Introduction to Linux",
+    "number": "117",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 41,
+    "name": "C Programming",
+    "number": "154",
+    "prefix": "CIS",
+    "prereqs": [
+     55
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 42,
+    "name": "Computer Science I",
+    "number": "160",
+    "prefix": "CIS",
+    "prereqs": [
+     41
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 43,
+    "name": "Computer Science II",
+    "number": "252",
+    "prefix": "CIS",
+    "prereqs": [
+     42
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 44,
+    "name": "English Composition I",
+    "number": "101",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 45,
+    "name": "English Composition II",
+    "number": "102",
+    "prefix": "ENG",
+    "prereqs": [
+     44
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 46,
+    "name": "Free Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 47,
+    "name": "Humanities Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 48,
+    "name": "Social Science Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 49,
+    "name": "Microcomputers",
+    "number": "225",
+    "prefix": "CIS",
+    "prereqs": [
+     41
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 50,
+    "name": "Calculus I",
+    "number": "251",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 51,
+    "name": "Calculus II",
+    "number": "252",
+    "prefix": "MAT",
+    "prereqs": [
+     50
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 52,
+    "name": "C++ Programming Language",
+    "number": "240",
+    "prefix": "CIS",
+    "prereqs": [
+     41
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 53,
+    "name": "Fundamentals of Digital Logic",
+    "number": "101",
+    "prefix": "CTE",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 54,
+    "name": "Lab Science",
+    "number": "xxx",
+    "prefix": "",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 55,
+    "name": "Introduction to Computer Science",
+    "number": "140",
+    "prefix": "CIS",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Quinsigamond": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 1,
+    "name": "Computer Science I",
+    "number": "108",
+    "prefix": "CSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 2,
+    "name": "Composition I",
+    "number": "101",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 3,
+    "name": "Calculus I",
+    "number": "233",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 4,
+    "name": "Lab Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 5,
+    "name": "Compuer Science II",
+    "number": "109",
+    "prefix": "CSC",
+    "prereqs": [
+     1
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 6,
+    "name": "Composition II",
+    "number": "102",
+    "prefix": "ENG",
+    "prereqs": [
+     2
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 7,
+    "name": "Calculus II",
+    "number": "234",
+    "prefix": "MAT",
+    "prereqs": [
+     3
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 8,
+    "name": "Lab Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 9,
+    "name": "Programming with Data Structures",
+    "number": "211",
+    "prefix": "CSC",
+    "prereqs": [
+     5
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 10,
+    "name": "Discrete Mathematics",
+    "number": "125",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 11,
+    "name": "Probability & Statistics for Engineers and Scientists",
+    "number": "237",
+    "prefix": "MAT",
+    "prereqs": [
+     7
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 12,
+    "name": "Speech Communication Skills",
+    "number": "101",
+    "prefix": "SPH",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 13,
+    "name": "Humanities Elec",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 14,
+    "name": "Introduction to Archictecture and Assembly Language",
+    "number": "208",
+    "prefix": "CSC",
+    "prereqs": [
+     5
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 15,
+    "name": "Introduction to Software Engineering",
+    "number": "212",
+    "prefix": "CSC",
+    "prereqs": [
+     5
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 16,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 17,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Roxbury": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 1,
+    "name": "The College Experience",
+    "number": "102",
+    "prefix": "ACS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 2,
+    "name": "English Comp. I",
+    "number": "101",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 3,
+    "name": "Intro to Progr",
+    "number": "102",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 4,
+    "name": "Visual Basic",
+    "number": "122",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 5,
+    "name": "English Comp. II",
+    "number": "102",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 6,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 7,
+    "name": "Microcomp Apps",
+    "number": "141",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 8,
+    "name": "Linux Oper. Systems",
+    "number": "130",
+    "prefix": "IST",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 9,
+    "name": "Java I",
+    "number": "255",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 10,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 11,
+    "name": "Relational DB",
+    "number": "281",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 12,
+    "name": "Java II",
+    "number": "271",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 13,
+    "name": "Lab Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 14,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 15,
+    "name": "Network Fundamentals",
+    "number": "142",
+    "prefix": "IST",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 16,
+    "name": "Web Dsgn Fluen",
+    "number": "155",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 17,
+    "name": "Soc Issues & Ethics",
+    "number": "210",
+    "prefix": "IST",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 18,
+    "name": "Internship",
+    "number": "298",
+    "prefix": "CIS",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 19,
+    "name": "Calculus I (w/applc)",
+    "number": "201",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 20,
+    "name": "Free Elective",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   }
+  ],
+  "system": "semester"
+ },
+ "Springfield Technical": {
+  "cip": "11.0701",
+  "courses": [
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 35,
+    "name": "Intro to Python Programming",
+    "number": "113",
+    "prefix": "CSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 36,
+    "name": "Calculus I",
+    "number": "131",
+    "prefix": "MAT",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 37,
+    "name": "English Composition 1",
+    "number": "101",
+    "prefix": "ENG",
+    "prereqs": []
+   },
+   {
+    "coreqs": [
+     36
+    ],
+    "credits": 4.0,
+    "id": 38,
+    "name": "Intro to the Java Programming Language",
+    "number": "111",
+    "prefix": "CSC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 39,
+    "name": "Intermediate Topics in Python",
+    "number": "114",
+    "prefix": "CSC",
+    "prereqs": [
+     35
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 40,
+    "name": "Calculus 2",
+    "number": "132",
+    "prefix": "MAT",
+    "prereqs": [
+     36
+    ]
+   },
+   {
+    "coreqs": [
+     40
+    ],
+    "credits": 4.0,
+    "id": 41,
+    "name": "Classical Physics 1",
+    "number": "231",
+    "prefix": "PHY",
+    "prereqs": [
+     36
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 42,
+    "name": "English Composition 2",
+    "number": "102",
+    "prefix": "ENG",
+    "prereqs": [
+     37
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 43,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 44,
+    "name": "Computer Organization and Digital Logic",
+    "number": "210",
+    "prefix": "CSC",
+    "prereqs": [
+     38
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 45,
+    "name": "Data Structures and Algorithms",
+    "number": "220",
+    "prefix": "CSC",
+    "prereqs": [
+     38
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 46,
+    "name": "Classical Physics 2",
+    "number": "232",
+    "prefix": "PHY",
+    "prereqs": [
+     41,
+     40
+    ]
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 47,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 48,
+    "name": "Social Science",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 49,
+    "name": "Humanities",
+    "number": "xxx",
+    "prefix": "ELEC",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 3.0,
+    "id": 50,
+    "name": "Computer and Network Security",
+    "number": "220",
+    "prefix": "CSE",
+    "prereqs": []
+   },
+   {
+    "coreqs": [],
+    "credits": 4.0,
+    "id": 51,
+    "name": "Discrete Structures",
+    "number": "220",
+    "prefix": "MAT",
+    "prereqs": [
+     40
+    ]
+   }
+  ],
+  "system": "semester"
+ }
+}

@@ -301,11 +301,14 @@ function diamond(x, y, size) {
   return `M${x} ${y - size} L${x + size} ${y} L${x} ${y + size} L${x - size} ${y} Z`
 }
 
-export default function CourseTypeCoverage({ majorSlug = 'cs', majorLabel = '' }) {
+export default function CourseTypeCoverage({ majorSlug = 'cs', majorLabel = '', major: majorProp = null }) {
   const [scope, setScope] = useState('lower-division')
   const [variant, setVariant] = useState('faithful')
+  // The California registry only lists unstamped majors, so a state corpus
+  // (ma-cs) resolves to nothing here — its host page passes the full major
+  // object instead, and the prop wins whenever it is provided.
   const { bySlug } = useMajors()
-  const major = bySlug.get(majorSlug) || null
+  const major = majorProp || bySlug.get(majorSlug) || null
   // A major with no extended axis set renders the port and nothing else, so
   // Computer Science keeps exactly the controls it had.
   const hasExtended = Boolean(major?.courseTypes?.axes?.extended)

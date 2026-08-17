@@ -18,4 +18,21 @@ describe('GET /majors', () => {
       .toEqual(['Electrical Engineering & Computer Sciences, B.S.']);
     expect(round.majors[0].capabilities.asDegrees).toBe(true);
   });
+
+  it('serves a state corpus with ?state=, defaulting to its first major', async () => {
+    const json = vi.fn();
+    await listMajorsEndpoint({ query: { state: 'ma' } }, { json }, vi.fn());
+    const payload = json.mock.calls[0][0];
+    expect(payload.majors.map((m) => m.slug)).toEqual(['ma-cs']);
+    expect(payload.default).toBe('ma-cs');
+    expect(payload.majors[0].capabilities.degreeTemplates).toBe(true);
+  });
+
+  it('400s on an unknown state', async () => {
+    const json = vi.fn();
+    const status = vi.fn(() => ({ json }));
+    await listMajorsEndpoint({ query: { state: 'tx' } }, { status, json }, vi.fn());
+    expect(status).toHaveBeenCalledWith(400);
+    expect(json.mock.calls[0][0].error).toMatch(/state/);
+  });
 });

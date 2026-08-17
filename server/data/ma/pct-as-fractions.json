@@ -1,0 +1,419 @@
+{
+ "Resident": {
+  "Bridgewater": {
+   "literal": 1.0
+  },
+  "Fitchburg": {
+   "literal": 1.0
+  },
+  "Framingham": {
+   "literal": 1.0
+  },
+  "MCLA": {
+   "literal": 1.0
+  },
+  "Salem": {
+   "literal": 1.0
+  },
+  "UMass Amherst": {
+   "literal": 1.0
+  },
+  "UMass Boston": {
+   "literal": 1.0
+  },
+  "UMass Dartmouth": {
+   "literal": 1.0
+  },
+  "UMass Lowell": {
+   "literal": 1.0
+  },
+  "Westfield": {
+   "literal": 1.0
+  },
+  "Worcester": {
+   "literal": 1.0
+  }
+ },
+ "Berkshire": {
+  "MCLA": {
+   "n": 25.0,
+   "d": 65.0
+  },
+  "Westfield": {
+   "n": 28.0,
+   "d": 65.0
+  }
+ },
+ "Bristol": {
+  "Bridgewater": {
+   "n": 51.0,
+   "d": 69.0
+  },
+  "UMass Boston": {
+   "n": 40.0,
+   "d": 69.0
+  },
+  "UMass Dartmouth": {
+   "n": 54.0,
+   "d": 69.0
+  }
+ },
+ "Bunker Hill": {
+  "Bridgewater": {
+   "n": 31.0,
+   "d": 61.0
+  },
+  "Fitchburg": {
+   "n": 50.0,
+   "d": 61.0
+  },
+  "Framingham": {
+   "n": 17.0,
+   "d": 61.0
+  },
+  "Salem": {
+   "n": 43.0,
+   "d": 61.0
+  },
+  "UMass Boston": {
+   "n": 31.0,
+   "d": 61.0
+  },
+  "UMass Lowell": {
+   "n": 61.0,
+   "d": 61.0
+  }
+ },
+ "Cape Cod": {
+  "Bridgewater": {
+   "n": 52.0,
+   "d": 69.0
+  },
+  "UMass Dartmouth": {
+   "n": 47.0,
+   "d": 69.0
+  }
+ },
+ "Greenfield": {
+  "MCLA": {
+   "n": 23.0,
+   "d": 62.0
+  },
+  "UMass Amherst": {
+   "n": 59.0,
+   "d": 62.0
+  },
+  "Westfield": {
+   "n": 43.0,
+   "d": 62.0
+  }
+ },
+ "Holyoke": {
+  "UMass Amherst": {
+   "n": 31.0,
+   "d": 64.0
+  },
+  "Westfield": {
+   "n": 35.0,
+   "d": 64.0
+  }
+ },
+ "Massasoit": {
+  "Bridgewater": {
+   "n": 65.0,
+   "d": 65.0
+  },
+  "Framingham": {
+   "n": 36.0,
+   "d": 65.0
+  },
+  "Salem": {
+   "n": 46.0,
+   "d": 65.0
+  },
+  "UMass Boston": {
+   "n": 40.0,
+   "d": 65.0
+  },
+  "UMass Dartmouth": {
+   "n": 35.0,
+   "d": 65.0
+  }
+ },
+ "MassBay": {
+  "Bridgewater": {
+   "n": 58.0,
+   "d": 68.0
+  },
+  "Fitchburg": {
+   "n": 68.0,
+   "d": 68.0
+  },
+  "Framingham": {
+   "n": 23.0,
+   "d": 68.0
+  },
+  "Salem": {
+   "n": 48.0,
+   "d": 68.0
+  },
+  "UMass Boston": {
+   "n": 35.0,
+   "d": 68.0
+  },
+  "UMass Lowell": {
+   "n": 68.0,
+   "d": 68.0
+  },
+  "Worcester": {
+   "n": 51.0,
+   "d": 68.0
+  }
+ },
+ "Middlesex": {
+  "Fitchburg": {
+   "n": 57.0,
+   "d": 60.0
+  },
+  "Framingham": {
+   "n": 20.0,
+   "d": 60.0
+  },
+  "Salem": {
+   "n": 32.0,
+   "d": 60.0
+  },
+  "UMass Boston": {
+   "n": 38.0,
+   "d": 60.0
+  },
+  "UMass Lowell": {
+   "n": 60.0,
+   "d": 60.0
+  },
+  "Worcester": {
+   "n": 49.0,
+   "d": 60.0
+  }
+ },
+ "Mount Wachusett": {
+  "Fitchburg": {
+   "n": 57.0,
+   "d": 63.0
+  },
+  "Framingham": {
+   "n": 26.0,
+   "d": 63.0
+  },
+  "Worcester": {
+   "n": 44.0,
+   "d": 63.0
+  }
+ },
+ "North Shore": {
+  "Bridgewater": {
+   "n": 57.0,
+   "d": 64.0
+  },
+  "Framingham": {
+   "n": 22.0,
+   "d": 64.0
+  },
+  "Salem": {
+   "n": 53.0,
+   "d": 64.0
+  },
+  "UMass Boston": {
+   "n": 33.0,
+   "d": 64.0
+  },
+  "UMass Lowell": {
+   "n": 64.0,
+   "d": 64.0
+  }
+ },
+ "Northern Essex": {
+  "Salem": {
+   "n": 44.0,
+   "d": 64.0
+  },
+  "UMass Boston": {
+   "n": 31.0,
+   "d": 64.0
+  },
+  "UMass Lowell": {
+   "n": 47.0,
+   "d": 64.0
+  }
+ },
+ "Quinsigamond": {
+  "Fitchburg": {
+   "n": 60.0,
+   "d": 60.0
+  },
+  "Framingham": {
+   "n": 23.0,
+   "d": 60.0
+  },
+  "UMass Lowell": {
+   "n": 60.0,
+   "d": 60.0
+  },
+  "Worcester": {
+   "n": 60.0,
+   "d": 60.0
+  }
+ },
+ "Roxbury": {
+  "Bridgewater": {
+   "n": 27.0,
+   "d": 64.0
+  },
+  "Fitchburg": {
+   "n": 26.0,
+   "d": 64.0
+  },
+  "Framingham": {
+   "n": 17.0,
+   "d": 64.0
+  },
+  "Salem": {
+   "n": 24.0,
+   "d": 64.0
+  },
+  "UMass Boston": {
+   "n": 27.0,
+   "d": 64.0
+  },
+  "UMass Lowell": {
+   "n": 33.0,
+   "d": 64.0
+  },
+  "Worcester": {
+   "n": 36.0,
+   "d": 64.0
+  }
+ },
+ "Springfield Technical": {
+  "UMass Amherst": {
+   "n": 35.0,
+   "d": 63.0
+  },
+  "Westfield": {
+   "n": 42.0,
+   "d": 63.0
+  },
+  "Worcester": {
+   "n": 38.0,
+   "d": 63.0
+  }
+ },
+ "Max": {
+  "Bridgewater": {
+   "raw": "=MAX(B3:B17)"
+  },
+  "Fitchburg": {
+   "raw": "=MAX(C3:C17)"
+  },
+  "Framingham": {
+   "raw": "=MAX(D3:D17)"
+  },
+  "MCLA": {
+   "raw": "=MAX(E3:E17)"
+  },
+  "Salem": {
+   "raw": "=MAX(F3:F17)"
+  },
+  "UMass Amherst": {
+   "raw": "=MAX(G3:G17)"
+  },
+  "UMass Boston": {
+   "raw": "=MAX(H3:H17)"
+  },
+  "UMass Dartmouth": {
+   "raw": "=MAX(I3:I17)"
+  },
+  "UMass Lowell": {
+   "raw": "=MAX(J3:J17)"
+  },
+  "Westfield": {
+   "raw": "=MAX(K3:K17)"
+  },
+  "Worcester": {
+   "raw": "=MAX(L3:L17)"
+  }
+ },
+ "Upper Quartile": {
+  "Bridgewater": {
+   "raw": "=QUARTILE(B3:B17, 3)"
+  },
+  "Fitchburg": {
+   "raw": "=QUARTILE(C3:C17, 3)"
+  },
+  "Framingham": {
+   "raw": "=QUARTILE(D3:D17, 3)"
+  },
+  "MCLA": {
+   "raw": "=QUARTILE(E3:E17, 3)"
+  },
+  "Salem": {
+   "raw": "=QUARTILE(F3:F17, 3)"
+  },
+  "UMass Amherst": {
+   "raw": "=QUARTILE(G3:G17, 3)"
+  },
+  "UMass Boston": {
+   "raw": "=QUARTILE(H3:H17, 3)"
+  },
+  "UMass Dartmouth": {
+   "raw": "=QUARTILE(I3:I17, 3)"
+  },
+  "UMass Lowell": {
+   "raw": "=QUARTILE(J3:J17, 3)"
+  },
+  "Westfield": {
+   "raw": "=QUARTILE(K3:K17, 3)"
+  },
+  "Worcester": {
+   "raw": "=QUARTILE(L3:L17, 3)"
+  }
+ },
+ "Median": {
+  "Bridgewater": {
+   "raw": "=MEDIAN(B3:B17)"
+  },
+  "Fitchburg": {
+   "raw": "=MEDIAN(C3:C17)"
+  },
+  "Framingham": {
+   "raw": "=MEDIAN(D3:D17)"
+  },
+  "MCLA": {
+   "raw": "=MEDIAN(E3:E17)"
+  },
+  "Salem": {
+   "raw": "=MEDIAN(F3:F17)"
+  },
+  "UMass Amherst": {
+   "raw": "=MEDIAN(G3:G17)"
+  },
+  "UMass Boston": {
+   "raw": "=MEDIAN(H3:H17)"
+  },
+  "UMass Dartmouth": {
+   "raw": "=MEDIAN(I3:I17)"
+  },
+  "UMass Lowell": {
+   "raw": "=MEDIAN(J3:J17)"
+  },
+  "Westfield": {
+   "raw": "=MEDIAN(K3:K17)"
+  },
+  "Worcester": {
+   "raw": "=MEDIAN(L3:L17)"
+  },
+  "None": {
+   "raw": "=MEDIAN(B20:L20)"
+  }
+ }
+}

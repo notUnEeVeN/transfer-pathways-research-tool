@@ -1,0 +1,2840 @@
+{
+ "fig1": {
+  "formula": "Lower =COUNTIF(<lower cols>,TRUE)/COUNTA(<lower cols>); Upper (=ALL levels) over every course column",
+  "universities": [
+   {
+    "name": "Bridgewater",
+    "headers": [
+     "Computer Science I (COMP 151)",
+     "Computer Science II (COMP 152)",
+     "Introduction to Computer Organization (COMP 206)",
+     "Data Structures and Algorithms (COMP 250)",
+     "Linear Algebra (MATH 120 or MATH 202)",
+     "Discrete Mathematics I (MATH 130)",
+     "Single Variable Calculus I (MATH 161)",
+     "Single Variable Calculus II (MATH 162)",
+     "Statistical Methods I  (MATH 200)",
+     "Natural Science Elective",
+     "Natural Science Elective",
+     "Organization of Programming Languages (COMP 340)",
+     "Operating Systems (COMP 350)",
+     "Software Engineering (COMP 390)",
+     "Computer Networks (COMP 430)",
+     "Analysis of Algorithms (COMP 435)",
+     "Senior Design and Development (COMP 490)",
+     "Upper Level Elective (3000)",
+     "Upper Level Elective (3000)",
+     "Upper Level Elective (3000)",
+     "Upper Level Elective (3000)",
+     "Upper Level Elective (3000)"
+    ],
+    "lower_formula_range": [
+     5,
+     15
+    ],
+    "lower_course_count": 11,
+    "course_count": 22,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.5454545454545454,
+      "stored_all": 0.2727272727272727,
+      "mt": null,
+      "n_bools": 22,
+      "recomputed_lower": 0.5454545454545454,
+      "recomputed_all": 0.2727272727272727
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.9090909090909091,
+      "stored_all": 0.5454545454545454,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.9090909090909091,
+      "recomputed_all": 0.5454545454545454
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.36363636363636365,
+      "stored_all": 0.18181818181818182,
+      "mt": null,
+      "n_bools": 22,
+      "recomputed_lower": 0.36363636363636365,
+      "recomputed_all": 0.18181818181818182
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.8181818181818182,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.8181818181818182,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.9090909090909091,
+      "stored_all": 0.5454545454545454,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.9090909090909091,
+      "recomputed_all": 0.5454545454545454
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.5454545454545454,
+      "stored_all": 0.2727272727272727,
+      "mt": null,
+      "n_bools": 22,
+      "recomputed_lower": 0.5454545454545454,
+      "recomputed_all": 0.2727272727272727
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.9090909090909091,
+      "stored_all": 0.5454545454545454,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.9090909090909091,
+      "recomputed_all": 0.5454545454545454
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 0.9090909090909091,
+      "stored_all": 0.5454545454545454,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.9090909090909091,
+      "recomputed_all": 0.5454545454545454
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.9090909090909091,
+      "stored_all": 0.5454545454545454,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.9090909090909091,
+      "recomputed_all": 0.5454545454545454
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.2727272727272727,
+      "stored_all": 0.13636363636363635,
+      "mt": null,
+      "n_bools": 22,
+      "recomputed_lower": 0.2727272727272727,
+      "recomputed_all": 0.13636363636363635
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.8181818181818182,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.8181818181818182,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.9090909090909091,
+      "stored_all": 0.5454545454545454,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.9090909090909091,
+      "recomputed_all": 0.5454545454545454
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.9090909090909091,
+      "stored_all": 0.5454545454545454,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.9090909090909091,
+      "recomputed_all": 0.5454545454545454
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.45454545454545453,
+      "stored_all": 0.22727272727272727,
+      "mt": null,
+      "n_bools": 22,
+      "recomputed_lower": 0.45454545454545453,
+      "recomputed_all": 0.22727272727272727
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.9090909090909091,
+      "stored_all": 0.5454545454545454,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.9090909090909091,
+      "recomputed_all": 0.5454545454545454
+     }
+    ]
+   },
+   {
+    "name": "Fitchburg",
+    "headers": [
+     "Computer Science I (CSC 1500)",
+     "Computer Science II (CSC 1550)",
+     "Digital Electronics (CSC 1650)",
+     "Systems Programming (CSC 2560)",
+     "Computer Organization (CSC 2600)",
+     "Discrete Mathematics (CSC 1900)",
+     "Calculus I (MATH 2300)",
+     "Business Statistics (MATH 1800)",
+     "Calculus II (MATH 2400)",
+     "Linear Algebra (MATH 2600)",
+     "Natural Science Elective",
+     "Natural Science Elective",
+     "Upper Level Elective (3000)",
+     "Upper Level Elective (3000)",
+     "Upper Level Elective (3000)",
+     "Upper Level Elective (3000)",
+     "Upper Level Elective (3000)",
+     "Web Programming (CSC 3050)",
+     "Operating Systems (CSC 3100)",
+     "Programming Languages (CSC 3200)",
+     "Algorithms and Data Structures (CSC 3700)",
+     "Ethics and Impacts of Computing Solutions (CSC 4100)",
+     "Software Engineering (CSC 4400)"
+    ],
+    "lower_formula_range": [
+     5,
+     16
+    ],
+    "lower_course_count": 12,
+    "course_count": 23,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.6956521739130435,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.6956521739130435
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.9166666666666666,
+      "stored_all": 0.6521739130434783,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 0.9166666666666666,
+      "recomputed_all": 0.6521739130434783
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.75,
+      "stored_all": 0.6521739130434783,
+      "mt": null,
+      "n_bools": 23,
+      "recomputed_lower": 0.75,
+      "recomputed_all": 0.6521739130434783
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.7391304347826086,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.7391304347826086
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.6521739130434783,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.6521739130434783
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.75,
+      "stored_all": 0.4782608695652174,
+      "mt": null,
+      "n_bools": 23,
+      "recomputed_lower": 0.75,
+      "recomputed_all": 0.4782608695652174
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.782608695652174,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.782608695652174
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.8260869565217391,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.8260869565217391
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.8260869565217391,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.8260869565217391
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.8333333333333334,
+      "stored_all": 0.7391304347826086,
+      "mt": null,
+      "n_bools": 23,
+      "recomputed_lower": 0.8333333333333334,
+      "recomputed_all": 0.7391304347826086
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.7391304347826086,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.7391304347826086
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.6956521739130435,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.6956521739130435
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.8260869565217391,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.8260869565217391
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.6666666666666666,
+      "stored_all": 0.4782608695652174,
+      "mt": null,
+      "n_bools": 23,
+      "recomputed_lower": 0.6666666666666666,
+      "recomputed_all": 0.4782608695652174
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.7391304347826086,
+      "mt": "MT",
+      "n_bools": 23,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.7391304347826086
+     }
+    ]
+   },
+   {
+    "name": "Framingham",
+    "headers": [
+     "Introduction to Information Technology (CSCI 120)",
+     "Computer Science I using Java (CSCI 130)",
+     "Computer Science Professional Exploration Seminar (CSCI 200)",
+     "Computer Science II using Java (CSCI 215)",
+     "Introduction to Operating Systems using UNIX (CSCI 258)",
+     "Discrete Mathematics I (MATH 206)",
+     "Probability and Statistics (STAT 157)",
+     "Data Structures (CSCI 217)",
+     "Natural Science",
+     "DataBase Management (CSCI 360)",
+     "Discrete Structures (CSCI 317)",
+     "Analysis of Algorithms (CSCI 347)",
+     "Computer Architecture & Assembly Language (CSCI 352)",
+     "Software Engineering (CSCI 362)",
+     "Theory of Computing (CSCI 460)",
+     "Operating Systems Internals (CSCI 465)",
+     "Computer Networking (CSCI 477)",
+     "Upper Level Elective",
+     "Upper Level Elective",
+     "Upper Level Elective"
+    ],
+    "lower_formula_range": [
+     5,
+     13
+    ],
+    "lower_course_count": 9,
+    "course_count": 20,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.2222222222222222,
+      "stored_all": 0.1,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.2222222222222222,
+      "recomputed_all": 0.1
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.1111111111111111,
+      "stored_all": 0.05,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.1111111111111111,
+      "recomputed_all": 0.05
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.3333333333333333,
+      "stored_all": 0.2,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.3333333333333333,
+      "recomputed_all": 0.2
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.2222222222222222,
+      "stored_all": 0.1,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.2222222222222222,
+      "recomputed_all": 0.1
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.1111111111111111,
+      "stored_all": 0.1,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.1111111111111111,
+      "recomputed_all": 0.1
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.4444444444444444,
+      "stored_all": 0.2,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.4444444444444444,
+      "recomputed_all": 0.2
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.2222222222222222,
+      "stored_all": 0.1,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.2222222222222222,
+      "recomputed_all": 0.1
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 0.2222222222222222,
+      "stored_all": 0.15,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.2222222222222222,
+      "recomputed_all": 0.15
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.1111111111111111,
+      "stored_all": 0.05,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.1111111111111111,
+      "recomputed_all": 0.05
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.1111111111111111,
+      "stored_all": 0.05,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.1111111111111111,
+      "recomputed_all": 0.05
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.3333333333333333,
+      "stored_all": 0.2,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.3333333333333333,
+      "recomputed_all": 0.2
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.2222222222222222,
+      "stored_all": 0.1,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.2222222222222222,
+      "recomputed_all": 0.1
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.3333333333333333,
+      "stored_all": 0.15,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.3333333333333333,
+      "recomputed_all": 0.15
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.2222222222222222,
+      "stored_all": 0.1,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.2222222222222222,
+      "recomputed_all": 0.1
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.2222222222222222,
+      "stored_all": 0.1,
+      "mt": null,
+      "n_bools": 20,
+      "recomputed_lower": 0.2222222222222222,
+      "recomputed_all": 0.1
+     }
+    ]
+   },
+   {
+    "name": "MCLA",
+    "headers": [
+     "Introduction to Computer Science (CSCI  101)",
+     "Programming in Java I (CSCI 121)",
+     "Programming in Java II (CSCI 122)",
+     "Network Theory and Administration I (CSCI 210)",
+     "Programming in Java III (CSCI 221)",
+     "Data Structures and Algorithms (CSCI 361)",
+     "Digital Circuit Design CSCI 235)",
+     "Programming in Java IV (CSCI 222)",
+     "Web Development (CSCI 236)",
+     "Database Development (CSCI 243",
+     "General Physics (PHYS 131) or Intro to Mechanics (PHYS 151)",
+     "Discrete Mathematics (MATH 250)",
+     "Business Writing and Presentation (ENGL 306)",
+     "Operating Systems (CSCI 362)",
+     "Programming in C++ (CSCI 330)",
+     "Computer Organization & Assembly Language (CSCI 318)",
+     "Object Oriented Design (CSCI 328)",
+     "Server Side Software Development (CSCI 343)",
+     "Junior Qualification Symposium (CSCI 390)",
+     "Senior Project I (CSCI 461)",
+     "Software Engineering (CSCI 452)",
+     "Senior Project II (CSCI 462)",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (300)"
+    ],
+    "lower_formula_range": [
+     5,
+     17
+    ],
+    "lower_course_count": 13,
+    "course_count": 25,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.23076923076923078,
+      "stored_all": 0.16,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.23076923076923078,
+      "recomputed_all": 0.16
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.3076923076923077,
+      "stored_all": 0.2,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.3076923076923077,
+      "recomputed_all": 0.2
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.3076923076923077,
+      "stored_all": 0.2,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.3076923076923077,
+      "recomputed_all": 0.2
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.3076923076923077,
+      "stored_all": 0.2,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.3076923076923077,
+      "recomputed_all": 0.2
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.15384615384615385,
+      "stored_all": 0.12,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.15384615384615385,
+      "recomputed_all": 0.12
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.38461538461538464,
+      "stored_all": 0.2,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.38461538461538464,
+      "recomputed_all": 0.2
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.38461538461538464,
+      "stored_all": 0.24,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.38461538461538464,
+      "recomputed_all": 0.24
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 0.23076923076923078,
+      "stored_all": 0.12,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.23076923076923078,
+      "recomputed_all": 0.12
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.23076923076923078,
+      "stored_all": 0.12,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.23076923076923078,
+      "recomputed_all": 0.12
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.15384615384615385,
+      "stored_all": 0.08,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.15384615384615385,
+      "recomputed_all": 0.08
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.5384615384615384,
+      "stored_all": 0.32,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.5384615384615384,
+      "recomputed_all": 0.32
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.07692307692307693,
+      "stored_all": 0.04,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.07692307692307693,
+      "recomputed_all": 0.04
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.46153846153846156,
+      "stored_all": 0.28,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.46153846153846156,
+      "recomputed_all": 0.28
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.38461538461538464,
+      "stored_all": 0.2,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.38461538461538464,
+      "recomputed_all": 0.2
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.3076923076923077,
+      "stored_all": 0.16,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.3076923076923077,
+      "recomputed_all": 0.16
+     }
+    ]
+   },
+   {
+    "name": "Salem",
+    "headers": [
+     "Survery of Computer Science (CSC 105)",
+     "Software Design and Programming I (CSC 110)",
+     "Software Design and Programming II (CSC 115)",
+     "Data Structures and Algorithms (CSC 260)",
+     "Computer Architecture and Organization (CSC 295)",
+     "Concepts of Programming Languages (CSC 299)",
+     "Statistics (MAT 147)",
+     "Discrete Structures (MAT 214A)",
+     "Calculus I (MAT 220)",
+     "Calculus II (MAT 221)",
+     "CSC Elective",
+     "CSC Elective",
+     "CSC Elective",
+     "Natural Science Elective",
+     "Natural Science Elective",
+     "Natural Science Elective",
+     "Natural Science Elective",
+     "Math Elective (post calc II)",
+     "Upper Level Elective (3000)",
+     "Software Engineering I (CSC 300)",
+     "Operating System Principles (CSC 381)",
+     "Analysis of Algorithms (CSC 415)",
+     "Computer Science Capstone Project Specifications (CSC 520)",
+     "Computer Science Capstone Project (CSC 521)"
+    ],
+    "lower_formula_range": [
+     5,
+     21
+    ],
+    "lower_course_count": 17,
+    "course_count": 24,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.5294117647058824,
+      "stored_all": 0.4166666666666667,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.5294117647058824,
+      "recomputed_all": 0.4166666666666667
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.47058823529411764,
+      "stored_all": 0.375,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.47058823529411764,
+      "recomputed_all": 0.375
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.7647058823529411,
+      "stored_all": 0.625,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.7647058823529411,
+      "recomputed_all": 0.625
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.7647058823529411,
+      "stored_all": 0.5833333333333334,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.7647058823529411,
+      "recomputed_all": 0.5833333333333334
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.4117647058823529,
+      "stored_all": 0.3333333333333333,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.4117647058823529,
+      "recomputed_all": 0.3333333333333333
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.4117647058823529,
+      "stored_all": 0.3333333333333333,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.4117647058823529,
+      "recomputed_all": 0.3333333333333333
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.4117647058823529,
+      "stored_all": 0.2916666666666667,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.4117647058823529,
+      "recomputed_all": 0.2916666666666667
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 0.7647058823529411,
+      "stored_all": 0.5833333333333334,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.7647058823529411,
+      "recomputed_all": 0.5833333333333334
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.6470588235294118,
+      "stored_all": 0.5,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.6470588235294118,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.47058823529411764,
+      "stored_all": 0.375,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.47058823529411764,
+      "recomputed_all": 0.375
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.8235294117647058,
+      "stored_all": 0.7083333333333334,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.8235294117647058,
+      "recomputed_all": 0.7083333333333334
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.7647058823529411,
+      "stored_all": 0.6666666666666666,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.7647058823529411,
+      "recomputed_all": 0.6666666666666666
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.5294117647058824,
+      "stored_all": 0.375,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.5294117647058824,
+      "recomputed_all": 0.375
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.5294117647058824,
+      "stored_all": 0.4166666666666667,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.5294117647058824,
+      "recomputed_all": 0.4166666666666667
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.47058823529411764,
+      "stored_all": 0.375,
+      "mt": null,
+      "n_bools": 24,
+      "recomputed_lower": 0.47058823529411764,
+      "recomputed_all": 0.375
+     }
+    ]
+   },
+   {
+    "name": "UMass Amherst",
+    "headers": [
+     "Foundations of Programming (CICS 110)",
+     "Object Oriented Programming (CICS 160)",
+     "Data Structures (CICS 210)",
+     "Programming Methodology (COMPSCI 220)",
+     "Introduction to the C Programming Language (COMPSCI 198C)",
+     "Computer Systems Principles (COMPSCI 230)",
+     "Reasoning About Uncertainty (COMPSCI 240)",
+     "Introduction to Computation (COMPSCI 250)",
+     "Calculus I (MATH 131)",
+     "Calculus II (MATH 132)",
+     "Multivariate Calculus (MATH 233) OR Statistics I (STATISTIC 515)",
+     "Introduction to Linear Algebra (MATH 235)",
+     "Natural Science Elective",
+     "Natural Science Elective",
+     "Introduction to Algorithms (COMPSCI 311)",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)"
+    ],
+    "lower_formula_range": [
+     5,
+     18
+    ],
+    "lower_course_count": 14,
+    "course_count": 22,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.6428571428571429,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.6428571428571429,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.5714285714285714,
+      "stored_all": 0.45454545454545453,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.5714285714285714,
+      "recomputed_all": 0.45454545454545453
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.5,
+      "stored_all": 0.3181818181818182,
+      "mt": null,
+      "n_bools": 22,
+      "recomputed_lower": 0.5,
+      "recomputed_all": 0.3181818181818182
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.6428571428571429,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.6428571428571429,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.6428571428571429,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.6428571428571429,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.5714285714285714,
+      "stored_all": 0.36363636363636365,
+      "mt": null,
+      "n_bools": 22,
+      "recomputed_lower": 0.5714285714285714,
+      "recomputed_all": 0.36363636363636365
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.6428571428571429,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.6428571428571429,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 0.6428571428571429,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.6428571428571429,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.6428571428571429,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.6428571428571429,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.5,
+      "stored_all": 0.3181818181818182,
+      "mt": null,
+      "n_bools": 22,
+      "recomputed_lower": 0.5,
+      "recomputed_all": 0.3181818181818182
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.6428571428571429,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.6428571428571429,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.5714285714285714,
+      "stored_all": 0.45454545454545453,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.5714285714285714,
+      "recomputed_all": 0.45454545454545453
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.6428571428571429,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.6428571428571429,
+      "recomputed_all": 0.5
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.35714285714285715,
+      "stored_all": 0.22727272727272727,
+      "mt": null,
+      "n_bools": 22,
+      "recomputed_lower": 0.35714285714285715,
+      "recomputed_all": 0.22727272727272727
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.6428571428571429,
+      "stored_all": 0.5,
+      "mt": "MT",
+      "n_bools": 22,
+      "recomputed_lower": 0.6428571428571429,
+      "recomputed_all": 0.5
+     }
+    ]
+   },
+   {
+    "name": "UMass Boston",
+    "headers": [
+     "Introduction to Computing (CS 110)",
+     "Intermediate Computing with Data Structures (CS 210)",
+     "Applied Discrete Mathematics (CS 220)",
+     "Programming in C (CS 240)",
+     "Social Issues and Ethics in Computing (CS 285L)",
+     "Calculus I (MATH 140)",
+     "Calculus II (MATH 141)",
+     "Linear Algebra I (MATH 260)",
+     "Fundamentals of Physics I and Lab (PHYSIC 113 and PHYSIC 181) ",
+     "Fundamentals of Physics II and Lab (PHYSIC 114 and PHYSIC 182)",
+     "Probability and Statistics (MATH 345)",
+     "Advanced Data Structures and Algorithms (CS 310)",
+     "Computer Architecture and Organization (CS 341)",
+     "An Introduction to Software Engineering (CS 410)",
+     "An Introduction to the Theory of Computation (CS 420)",
+     "An Introduction to Operating Systems (CS 444)",
+     "Introduction to Internetworking (CS 446)",
+     "Introductoin to Computer Security (CS 449) ",
+     "Compilers (CS451)",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)"
+    ],
+    "lower_formula_range": [
+     5,
+     14
+    ],
+    "lower_course_count": 10,
+    "course_count": 21,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.2,
+      "stored_all": 0.09523809523809523,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.2,
+      "recomputed_all": 0.09523809523809523
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.5,
+      "stored_all": 0.23809523809523808,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.5,
+      "recomputed_all": 0.23809523809523808
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.6,
+      "stored_all": 0.2857142857142857,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.6,
+      "recomputed_all": 0.2857142857142857
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.6,
+      "stored_all": 0.2857142857142857,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.6,
+      "recomputed_all": 0.2857142857142857
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.3,
+      "stored_all": 0.14285714285714285,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.3,
+      "recomputed_all": 0.14285714285714285
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.2,
+      "stored_all": 0.09523809523809523,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.2,
+      "recomputed_all": 0.09523809523809523
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.6,
+      "stored_all": 0.2857142857142857,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.6,
+      "recomputed_all": 0.2857142857142857
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 0.6,
+      "stored_all": 0.2857142857142857,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.6,
+      "recomputed_all": 0.2857142857142857
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.7,
+      "stored_all": 0.3333333333333333,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.7,
+      "recomputed_all": 0.3333333333333333
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.2,
+      "stored_all": 0.09523809523809523,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.2,
+      "recomputed_all": 0.09523809523809523
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.5,
+      "stored_all": 0.23809523809523808,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.5,
+      "recomputed_all": 0.23809523809523808
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.6,
+      "stored_all": 0.2857142857142857,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.6,
+      "recomputed_all": 0.2857142857142857
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.6,
+      "stored_all": 0.2857142857142857,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.6,
+      "recomputed_all": 0.2857142857142857
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.4,
+      "stored_all": 0.19047619047619047,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.4,
+      "recomputed_all": 0.19047619047619047
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.4,
+      "stored_all": 0.19047619047619047,
+      "mt": null,
+      "n_bools": 21,
+      "recomputed_lower": 0.4,
+      "recomputed_all": 0.19047619047619047
+     }
+    ]
+   },
+   {
+    "name": "UMass Lowell",
+    "headers": [
+     "Computing I (COMP 1010)",
+     "Computing II (COMP 1020)",
+     "Computing III (COMP 2010)",
+     "Computing IV (COMP 2040)",
+     "Assembly Language Programming (COMP 2030)",
+     "Logic Design (EECE 2650)",
+     "College Writing I (ENGL 1010)",
+     "College Writing II (ENGL 1020)",
+     "Oral & Written Communication for Computer Science (ENGL 2200)",
+     "Calculus I (MATH 1310)",
+     "Calculus II (MATH 1320)",
+     "Discrete Structures I (MATH 2190)",
+     "General Elective (any course)",
+     "General Elective (any course)",
+     "General Elective (any course)",
+     "General Elective (any course)",
+     "Natural Science Elective",
+     "Natural Science Elective",
+     "Natural Science Elective",
+     "Natural Science Elective",
+     "Technical Elective (3000 if COMP)",
+     "Technical Elective (3000 if COMP)",
+     "Upper Level Elective (3000)",
+     "Upper Level Elective (3000)",
+     "Discrete Structures II (MATH 3220)",
+     "Probability & Statistics I (MATH 3860)",
+     "Foundations of Computer Science (COMP 3040)",
+     "Computer Architecture (COMP 3050)",
+     "Organization of Programming Languages (COMP 3010)",
+     "Operating Systems (COMP 3080)",
+     "Analysis of Algorithms (COMP 4040)"
+    ],
+    "lower_formula_range": [
+     5,
+     26
+    ],
+    "lower_course_count": 22,
+    "course_count": 31,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.8181818181818182,
+      "stored_all": 0.5806451612903226,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.8181818181818182,
+      "recomputed_all": 0.5806451612903226
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.8636363636363636,
+      "stored_all": 0.6129032258064516,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.8636363636363636,
+      "recomputed_all": 0.6129032258064516
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.9090909090909091,
+      "stored_all": 0.6774193548387096,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.9090909090909091,
+      "recomputed_all": 0.6774193548387096
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.8181818181818182,
+      "stored_all": 0.5806451612903226,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.8181818181818182,
+      "recomputed_all": 0.5806451612903226
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.8181818181818182,
+      "stored_all": 0.5806451612903226,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.8181818181818182,
+      "recomputed_all": 0.5806451612903226
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.7272727272727273,
+      "stored_all": 0.5161290322580645,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.7272727272727273,
+      "recomputed_all": 0.5161290322580645
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.8636363636363636,
+      "stored_all": 0.6129032258064516,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.8636363636363636,
+      "recomputed_all": 0.6129032258064516
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 1,
+      "stored_all": 0.7096774193548387,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 1.0,
+      "recomputed_all": 0.7096774193548387
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.9545454545454546,
+      "stored_all": 0.6774193548387096,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.9545454545454546,
+      "recomputed_all": 0.6774193548387096
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.7727272727272727,
+      "stored_all": 0.5483870967741935,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.7727272727272727,
+      "recomputed_all": 0.5483870967741935
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.9545454545454546,
+      "stored_all": 0.6774193548387096,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.9545454545454546,
+      "recomputed_all": 0.6774193548387096
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.9545454545454546,
+      "stored_all": 0.6774193548387096,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.9545454545454546,
+      "recomputed_all": 0.6774193548387096
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.9545454545454546,
+      "stored_all": 0.6774193548387096,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.9545454545454546,
+      "recomputed_all": 0.6774193548387096
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.7272727272727273,
+      "stored_all": 0.5161290322580645,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.7272727272727273,
+      "recomputed_all": 0.5161290322580645
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.8636363636363636,
+      "stored_all": 0.6129032258064516,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.8636363636363636,
+      "recomputed_all": 0.6129032258064516
+     }
+    ]
+   },
+   {
+    "name": "UMass Dartmouth",
+    "headers": [
+     "Object-Oriented Prog I (CIS 180)",
+     "Object-Oriented Prog II (CIS 181)",
+     "Intro to Procedural Program (CIS 190)",
+     "Intro to Computer Systems (CIS 272)",
+     "Comp Organiztn & Design (CIS 273)",
+     "Software Spec & Design (CIS 280)",
+     "Calculus for Applied Science and Engineering I (MTH 153 or MTH 151)",
+     "Calculus for Applied Science and Engineering II (MTH 154 or MTH 152)",
+     "Discrete Mathematics I (MTH 181)",
+     "Discrete Mathematics II (MTH 182)",
+     "Introduction to Engineering and Computing (EGR 111)",
+     "Any Elective",
+     "Math Elective",
+     "Natural Science",
+     "Natural Science",
+     "Natural Science",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)",
+     "Upper Level Elective (400)",
+     "Algorithms & Data Struct (CIS 360)",
+     "Models of Computation (CIS 361)",
+     "Design Of Operating Syst (CIS 370)",
+     "Paral&Distr Sftware Syst (CIS 481)",
+     "Senior Software Engineering Project I (CIS 498)",
+     "Senior Software Engineering Project II (CIS 499)",
+     "Emperical Meth Comp Sci (CIS 362)"
+    ],
+    "lower_formula_range": [
+     5,
+     20
+    ],
+    "lower_course_count": 16,
+    "course_count": 31,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.8125,
+      "stored_all": 0.41935483870967744,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.8125,
+      "recomputed_all": 0.41935483870967744
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.9375,
+      "stored_all": 0.4838709677419355,
+      "mt": "MT",
+      "n_bools": 31,
+      "recomputed_lower": 0.9375,
+      "recomputed_all": 0.4838709677419355
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.625,
+      "stored_all": 0.3870967741935484,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.625,
+      "recomputed_all": 0.3870967741935484
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.6875,
+      "stored_all": 0.3548387096774194,
+      "mt": "MT",
+      "n_bools": 31,
+      "recomputed_lower": 0.6875,
+      "recomputed_all": 0.3548387096774194
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.8125,
+      "stored_all": 0.41935483870967744,
+      "mt": "MT",
+      "n_bools": 31,
+      "recomputed_lower": 0.8125,
+      "recomputed_all": 0.41935483870967744
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.625,
+      "stored_all": 0.3225806451612903,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.625,
+      "recomputed_all": 0.3225806451612903
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.875,
+      "stored_all": 0.45161290322580644,
+      "mt": "MT",
+      "n_bools": 31,
+      "recomputed_lower": 0.875,
+      "recomputed_all": 0.45161290322580644
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 0.625,
+      "stored_all": 0.3548387096774194,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.625,
+      "recomputed_all": 0.3548387096774194
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.6875,
+      "stored_all": 0.3870967741935484,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.6875,
+      "recomputed_all": 0.3870967741935484
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.375,
+      "stored_all": 0.1935483870967742,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.375,
+      "recomputed_all": 0.1935483870967742
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.5625,
+      "stored_all": 0.3225806451612903,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.5625,
+      "recomputed_all": 0.3225806451612903
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.5,
+      "stored_all": 0.25806451612903225,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.5,
+      "recomputed_all": 0.25806451612903225
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.875,
+      "stored_all": 0.4838709677419355,
+      "mt": "MT",
+      "n_bools": 31,
+      "recomputed_lower": 0.875,
+      "recomputed_all": 0.4838709677419355
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.4375,
+      "stored_all": 0.22580645161290322,
+      "mt": null,
+      "n_bools": 31,
+      "recomputed_lower": 0.4375,
+      "recomputed_all": 0.22580645161290322
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.5625,
+      "stored_all": 0.3870967741935484,
+      "mt": "MT",
+      "n_bools": 31,
+      "recomputed_lower": 0.5625,
+      "recomputed_all": 0.3870967741935484
+     }
+    ]
+   },
+   {
+    "name": "Westfield",
+    "headers": [
+     "Computer Science Principles (CAIS 0102)",
+     "Computer Science/Program Design I (CAIS 0120)",
+     "Computer Science/Program Design II (CAIS 0220)",
+     "Data Structures/Algorithm Analysis (CAIS 0230)",
+     "Computer Organization and Architecture (CAIS 0236)",
+     "Software Engineering (CAIS 0240)",
+     "Introduction to Digital Electronics and Microprocessors (CAIS 0265)",
+     "Introduction to Computer Security (CAIS 0290)",
+     "Calculus I (MATH 0105)",
+     "Calculus II (MATH 0106)",
+     "Discrete Structures (MATH 0220)",
+     "Natural Science",
+     "Natural Science",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (300)",
+     "Applied Statistical and Experimental Design (MATH 0333)",
+     "Mathematical Statistics I (MATH 0340)",
+     "Business and Technical Writing (ENGL 0392)",
+     "Computer Science Seminar (CAIS 0302)",
+     "Elements of Systems Programming (CAIS 0305)",
+     "Organization of Programming Languages (CAIS 0307)",
+     "Database Management (CAIS 0310)",
+     "Operating Systems (CAIS 0339)",
+     "Introduction to Networking (CAIS 0347)",
+     "Introduction to the Theory of Computation (CAIS 0351)",
+     "Computer Science Senior Project (CAIS 0363)"
+    ],
+    "lower_formula_range": [
+     5,
+     17
+    ],
+    "lower_course_count": 13,
+    "course_count": 26,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.38461538461538464,
+      "stored_all": 0.23076923076923078,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.38461538461538464,
+      "recomputed_all": 0.23076923076923078
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.46153846153846156,
+      "stored_all": 0.34615384615384615,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.46153846153846156,
+      "recomputed_all": 0.34615384615384615
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.3076923076923077,
+      "stored_all": 0.15384615384615385,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.3076923076923077,
+      "recomputed_all": 0.15384615384615385
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.3076923076923077,
+      "stored_all": 0.19230769230769232,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.3076923076923077,
+      "recomputed_all": 0.19230769230769232
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.5384615384615384,
+      "stored_all": 0.2692307692307692,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.5384615384615384,
+      "recomputed_all": 0.2692307692307692
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.6153846153846154,
+      "stored_all": 0.4230769230769231,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.6153846153846154,
+      "recomputed_all": 0.4230769230769231
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.38461538461538464,
+      "stored_all": 0.19230769230769232,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.38461538461538464,
+      "recomputed_all": 0.19230769230769232
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 0.46153846153846156,
+      "stored_all": 0.2692307692307692,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.46153846153846156,
+      "recomputed_all": 0.2692307692307692
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.6153846153846154,
+      "stored_all": 0.34615384615384615,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.6153846153846154,
+      "recomputed_all": 0.34615384615384615
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.3076923076923077,
+      "stored_all": 0.19230769230769232,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.3076923076923077,
+      "recomputed_all": 0.19230769230769232
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.38461538461538464,
+      "stored_all": 0.23076923076923078,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.38461538461538464,
+      "recomputed_all": 0.23076923076923078
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.46153846153846156,
+      "stored_all": 0.2692307692307692,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.46153846153846156,
+      "recomputed_all": 0.2692307692307692
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.6153846153846154,
+      "stored_all": 0.38461538461538464,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.6153846153846154,
+      "recomputed_all": 0.38461538461538464
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.3076923076923077,
+      "stored_all": 0.19230769230769232,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.3076923076923077,
+      "recomputed_all": 0.19230769230769232
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.5384615384615384,
+      "stored_all": 0.3076923076923077,
+      "mt": null,
+      "n_bools": 26,
+      "recomputed_lower": 0.5384615384615384,
+      "recomputed_all": 0.3076923076923077
+     }
+    ]
+   },
+   {
+    "name": "Worcester",
+    "headers": [
+     "Basics of Computer Science (CS 101)",
+     " Introduction to Programming (CS 140)",
+     "Computer Networking and Security (CS 155)",
+     "Discrete Structures I (CS 225)",
+     "Discrete Structures II (CS 295)",
+     "Data Structures (CS 242)",
+     "Algorithm Analysis (CS 248)",
+     "Computer Organization and Architecture (CS 254)",
+     "Unix Systems Programming (CS 282)",
+     "Database Design and Applications (CS 286)",
+     "Public Speaking (CM 110)",
+     "Technical Writing (EN 252)",
+     "Technology, Public Policy, and Urban Society (UR 230) OR Computing Ethics (PH 134)",
+     "Calculus I (MA 200)",
+     "Natural Science",
+     "Natural Science",
+     "Math/Natural Science Elective",
+     "Math/Natural Science Elective",
+     "Statistics I (MA 150) OR Probability and Statistics (MA 302)",
+     "Software Process Management (CS 348)",
+     "Operating Systems (CS 373)",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (300)",
+     "Upper Level Elective (300)"
+    ],
+    "lower_formula_range": [
+     5,
+     22
+    ],
+    "lower_course_count": 18,
+    "course_count": 25,
+    "rows": [
+     {
+      "cc": "Berkshire",
+      "blanks": 0,
+      "stored_lower": 0.5,
+      "stored_all": 0.4,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.5,
+      "recomputed_all": 0.4
+     },
+     {
+      "cc": "Bristol",
+      "blanks": 0,
+      "stored_lower": 0.4444444444444444,
+      "stored_all": 0.36,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.4444444444444444,
+      "recomputed_all": 0.36
+     },
+     {
+      "cc": "Bunker Hill",
+      "blanks": 0,
+      "stored_lower": 0.3888888888888889,
+      "stored_all": 0.36,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.3888888888888889,
+      "recomputed_all": 0.36
+     },
+     {
+      "cc": "Cape Cod",
+      "blanks": 0,
+      "stored_lower": 0.3888888888888889,
+      "stored_all": 0.32,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.3888888888888889,
+      "recomputed_all": 0.32
+     },
+     {
+      "cc": "Greenfield",
+      "blanks": 0,
+      "stored_lower": 0.3333333333333333,
+      "stored_all": 0.28,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.3333333333333333,
+      "recomputed_all": 0.28
+     },
+     {
+      "cc": "Holyoke",
+      "blanks": 0,
+      "stored_lower": 0.6111111111111112,
+      "stored_all": 0.48,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.6111111111111112,
+      "recomputed_all": 0.48
+     },
+     {
+      "cc": "Massasoit",
+      "blanks": 0,
+      "stored_lower": 0.6111111111111112,
+      "stored_all": 0.48,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.6111111111111112,
+      "recomputed_all": 0.48
+     },
+     {
+      "cc": "MassBay",
+      "blanks": 0,
+      "stored_lower": 0.6111111111111112,
+      "stored_all": 0.48,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.6111111111111112,
+      "recomputed_all": 0.48
+     },
+     {
+      "cc": "Middlesex",
+      "blanks": 0,
+      "stored_lower": 0.5,
+      "stored_all": 0.44,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.5,
+      "recomputed_all": 0.44
+     },
+     {
+      "cc": "Mount Wachusett",
+      "blanks": 0,
+      "stored_lower": 0.3888888888888889,
+      "stored_all": 0.32,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.3888888888888889,
+      "recomputed_all": 0.32
+     },
+     {
+      "cc": "North Shore",
+      "blanks": 0,
+      "stored_lower": 0.3333333333333333,
+      "stored_all": 0.32,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.3333333333333333,
+      "recomputed_all": 0.32
+     },
+     {
+      "cc": "Northern Essex",
+      "blanks": 0,
+      "stored_lower": 0.5,
+      "stored_all": 0.4,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.5,
+      "recomputed_all": 0.4
+     },
+     {
+      "cc": "Quinsigamond",
+      "blanks": 0,
+      "stored_lower": 0.8333333333333334,
+      "stored_all": 0.68,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.8333333333333334,
+      "recomputed_all": 0.68
+     },
+     {
+      "cc": "Roxbury",
+      "blanks": 0,
+      "stored_lower": 0.4444444444444444,
+      "stored_all": 0.32,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.4444444444444444,
+      "recomputed_all": 0.32
+     },
+     {
+      "cc": "Springfield Technical",
+      "blanks": 0,
+      "stored_lower": 0.5,
+      "stored_all": 0.4,
+      "mt": null,
+      "n_bools": 25,
+      "recomputed_lower": 0.5,
+      "recomputed_all": 0.4
+     }
+    ]
+   }
+  ],
+  "summary": {
+   "cells": 165,
+   "recomputed_exactly": 165,
+   "mean_stored_all": 0.3821,
+   "mean_recomputed_all": 0.3821
+  }
+ },
+ "fig2": {
+  "typing_rule": "keyword prefix rule in theirMath.py (their repo has none)",
+  "universities": [
+   {
+    "name": "Bridgewater",
+    "type_columns": {
+     "Computing": 15,
+     "Math": 5,
+     "Science": 2
+    },
+    "type_columns_lower": {
+     "Computing": 4,
+     "Math": 5,
+     "Science": 2
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.28,
+     "Math": 0.6533,
+     "Science": 1.0
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.7167,
+     "Math": 0.6533,
+     "Science": 1.0
+    }
+   },
+   {
+    "name": "Fitchburg",
+    "type_columns": {
+     "Computing": 16,
+     "Math": 5,
+     "Science": 2
+    },
+    "type_columns_lower": {
+     "Computing": 5,
+     "Math": 5,
+     "Science": 2
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.5792,
+     "Math": 0.9733,
+     "Science": 1.0
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.8533,
+     "Math": 0.9733,
+     "Science": 1.0
+    }
+   },
+   {
+    "name": "Framingham",
+    "type_columns": {
+     "Computing": 16,
+     "Math": 3,
+     "Science": 1
+    },
+    "type_columns_lower": {
+     "Computing": 6,
+     "Math": 2,
+     "Science": 1
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.0583,
+     "Math": 0.1333,
+     "Science": 1.0
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.1222,
+     "Math": 0.1667,
+     "Science": 1.0
+    }
+   },
+   {
+    "name": "MCLA",
+    "type_columns": {
+     "Computing": 21,
+     "Humanities": 2,
+     "Science": 1,
+     "Math": 1
+    },
+    "type_columns_lower": {
+     "Computing": 9,
+     "Humanities": 2,
+     "Science": 1,
+     "Math": 1
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.1143,
+     "Humanities": 0.3333,
+     "Science": 0.9333,
+     "Math": 0.4
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.2074,
+     "Humanities": 0.3333,
+     "Science": 0.9333,
+     "Math": 0.4
+    }
+   },
+   {
+    "name": "Salem",
+    "type_columns": {
+     "Computing": 12,
+     "Math": 5,
+     "Humanities": 3,
+     "Science": 4
+    },
+    "type_columns_lower": {
+     "Computing": 6,
+     "Math": 4,
+     "Humanities": 3,
+     "Science": 4
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.1333,
+     "Math": 0.8267,
+     "Humanities": 0.4667,
+     "Science": 1.0
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.2111,
+     "Math": 0.8167,
+     "Humanities": 0.4667,
+     "Science": 1.0
+    }
+   },
+   {
+    "name": "UMass Amherst",
+    "type_columns": {
+     "Computing": 16,
+     "Math": 4,
+     "Science": 2
+    },
+    "type_columns_lower": {
+     "Computing": 8,
+     "Math": 4,
+     "Science": 2
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.2458,
+     "Math": 0.95,
+     "Science": 1.0
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.3083,
+     "Math": 0.95,
+     "Science": 1.0
+    }
+   },
+   {
+    "name": "UMass Boston",
+    "type_columns": {
+     "Computing": 14,
+     "Math": 5,
+     "Science": 2
+    },
+    "type_columns_lower": {
+     "Computing": 4,
+     "Math": 4,
+     "Science": 2
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.0905,
+     "Math": 0.4667,
+     "Science": 0.5333
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.3167,
+     "Math": 0.5833,
+     "Science": 0.5333
+    }
+   },
+   {
+    "name": "UMass Lowell",
+    "type_columns": {
+     "Computing": 14,
+     "Science": 6,
+     "Humanities": 6,
+     "Math": 5
+    },
+    "type_columns_lower": {
+     "Computing": 7,
+     "Science": 6,
+     "Humanities": 6,
+     "Math": 3
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.3381,
+     "Science": 0.9667,
+     "Humanities": 1.0,
+     "Math": 0.52
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.6667,
+     "Science": 0.9667,
+     "Humanities": 1.0,
+     "Math": 0.8667
+    }
+   },
+   {
+    "name": "UMass Dartmouth",
+    "type_columns": {
+     "Computing": 21,
+     "Math": 5,
+     "Science": 4,
+     "Humanities": 1
+    },
+    "type_columns_lower": {
+     "Computing": 6,
+     "Math": 5,
+     "Science": 4,
+     "Humanities": 1
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.2159,
+     "Math": 0.52,
+     "Science": 0.7833,
+     "Humanities": 1.0
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.6556,
+     "Math": 0.52,
+     "Science": 0.7833,
+     "Humanities": 1.0
+    }
+   },
+   {
+    "name": "Westfield",
+    "type_columns": {
+     "Computing": 18,
+     "Math": 5,
+     "Science": 2,
+     "Humanities": 1
+    },
+    "type_columns_lower": {
+     "Computing": 8,
+     "Math": 3,
+     "Science": 2
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.1074,
+     "Math": 0.5333,
+     "Science": 1.0,
+     "Humanities": 0.3333
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.1583,
+     "Math": 0.8444,
+     "Science": 1.0
+    }
+   },
+   {
+    "name": "Worcester",
+    "type_columns": {
+     "Computing": 15,
+     "Math": 6,
+     "Humanities": 2,
+     "Science": 2
+    },
+    "type_columns_lower": {
+     "Computing": 9,
+     "Math": 5,
+     "Humanities": 2,
+     "Science": 2
+    },
+    "share_of_cells_articulating": {
+     "Computing": 0.1733,
+     "Math": 0.6889,
+     "Humanities": 0.6667,
+     "Science": 1.0
+    },
+    "share_of_lower_cells_articulating": {
+     "Computing": 0.2593,
+     "Math": 0.64,
+     "Humanities": 0.6667,
+     "Science": 1.0
+    }
+   }
+  ],
+  "hardcoded_in_notebook": {
+   "Computing": [
+    0.72,
+    0.88,
+    0.15,
+    0.19,
+    0.3,
+    0.4,
+    0.32,
+    0.66,
+    0.61,
+    0.16,
+    0.25
+   ],
+   "Math": [
+    0.65,
+    0.96,
+    0.17,
+    0.4,
+    0.82,
+    0.98,
+    0.67,
+    0.52,
+    0.87,
+    0.84,
+    1.0
+   ],
+   "Science": [
+    1,
+    1,
+    1,
+    0.93,
+    1,
+    1,
+    0.53,
+    0.78,
+    0.97,
+    1,
+    1
+   ],
+   "Humanities": [
+    null,
+    null,
+    null,
+    0.67,
+    null,
+    null,
+    null,
+    1,
+    1,
+    1,
+    0.47
+   ]
+  }
+ },
+ "currcomp": {
+  "pct_as": {
+   "cells": {
+    "MCLA": {
+     "Berkshire": 0.3846153846,
+     "Greenfield": 0.3709677419
+    },
+    "Westfield": {
+     "Berkshire": 0.4307692308,
+     "Greenfield": 0.6935483871,
+     "Holyoke": 0.546875,
+     "Springfield Technical": 0.6666666667
+    },
+    "Bridgewater": {
+     "Bristol": 0.7391304348,
+     "Bunker Hill": 0.5081967213,
+     "Cape Cod": 0.7536231884,
+     "Massasoit": 1,
+     "MassBay": 0.8529411765,
+     "North Shore": 0.890625,
+     "Roxbury": 0.421875
+    },
+    "UMass Boston": {
+     "Bristol": 0.5797101449,
+     "Bunker Hill": 0.5081967213,
+     "Massasoit": 0.6153846154,
+     "MassBay": 0.5147058824,
+     "Middlesex": 0.6333333333,
+     "North Shore": 0.515625,
+     "Northern Essex": 0.484375,
+     "Roxbury": 0.421875
+    },
+    "UMass Dartmouth": {
+     "Bristol": 0.7826086957,
+     "Cape Cod": 0.6811594203,
+     "Massasoit": 0.5384615385
+    },
+    "Fitchburg": {
+     "Bunker Hill": 0.8196721311,
+     "MassBay": 1,
+     "Middlesex": 0.95,
+     "Mount Wachusett": 0.9047619048,
+     "Quinsigamond": 1,
+     "Roxbury": 0.40625
+    },
+    "Framingham": {
+     "Bunker Hill": 0.2786885246,
+     "Massasoit": 0.5538461538,
+     "MassBay": 0.3382352941,
+     "Middlesex": 0.3333333333,
+     "Mount Wachusett": 0.4126984127,
+     "North Shore": 0.34375,
+     "Quinsigamond": 0.3833333333,
+     "Roxbury": 0.265625
+    },
+    "Salem": {
+     "Bunker Hill": 0.7049180328,
+     "Massasoit": 0.7076923077,
+     "MassBay": 0.7058823529,
+     "Middlesex": 0.5333333333,
+     "North Shore": 0.828125,
+     "Northern Essex": 0.6875,
+     "Roxbury": 0.375
+    },
+    "UMass Lowell": {
+     "Bunker Hill": 1,
+     "MassBay": 1,
+     "Middlesex": 1,
+     "North Shore": 1,
+     "Northern Essex": 0.734375,
+     "Quinsigamond": 1,
+     "Roxbury": 0.515625
+    },
+    "UMass Amherst": {
+     "Greenfield": 0.9516129032,
+     "Holyoke": 0.484375,
+     "Springfield Technical": 0.5555555556
+    },
+    "Worcester": {
+     "MassBay": 0.75,
+     "Middlesex": 0.8166666667,
+     "Mount Wachusett": 0.6984126984,
+     "Quinsigamond": 1,
+     "Roxbury": 0.5625,
+     "Springfield Technical": 0.6031746032
+    }
+   },
+   "resident": {
+    "Bridgewater": 1.0,
+    "Fitchburg": 1.0,
+    "Framingham": 1.0,
+    "MCLA": 1.0,
+    "Salem": 1.0,
+    "UMass Amherst": 1.0,
+    "UMass Boston": 1.0,
+    "UMass Dartmouth": 1.0,
+    "UMass Lowell": 1.0,
+    "Westfield": 1.0,
+    "Worcester": 1.0
+   },
+   "stats": {
+    "n_cells": 61,
+    "mean_cells": 0.6515,
+    "median_cells": 0.6333,
+    "mean_with_resident": 0.7047,
+    "mean_of_university_means": 0.6415,
+    "median_of_university_means": 0.6638,
+    "mean_delta_vs_resident": -0.3485,
+    "median_delta_vs_resident": -0.3667
+   }
+  },
+  "credit_hours": {
+   "cells": {
+    "MCLA": {
+     "Berkshire": 146.0,
+     "Greenfield": 147.0
+    },
+    "Westfield": {
+     "Berkshire": 151.0,
+     "Greenfield": 134.0,
+     "Holyoke": 144.0,
+     "Springfield Technical": 134.0
+    },
+    "Bridgewater": {
+     "Bristol": 130.0,
+     "Bunker Hill": 149.0,
+     "Cape Cod": 131.0,
+     "Massasoit": 125.0,
+     "MassBay": 132.0,
+     "North Shore": 133.0,
+     "Roxbury": 155.0
+    },
+    "UMass Boston": {
+     "Bristol": 146.0,
+     "Bunker Hill": 126.0,
+     "Massasoit": 141.0,
+     "MassBay": 127.0,
+     "Middlesex": 142.0,
+     "North Shore": 144.0,
+     "Northern Essex": 155.0,
+     "Roxbury": 159.0
+    },
+    "UMass Dartmouth": {
+     "Bristol": 132.0,
+     "Cape Cod": 136.0,
+     "Massasoit": 151.0
+    },
+    "Fitchburg": {
+     "Bunker Hill": 126.0,
+     "MassBay": 120.0,
+     "Middlesex": 120.0,
+     "Mount Wachusett": 125.0,
+     "Quinsigamond": 120.0,
+     "Roxbury": 150.0
+    },
+    "Framingham": {
+     "Bunker Hill": 155.0,
+     "Massasoit": 144.0,
+     "MassBay": 162.0,
+     "Middlesex": 159.0,
+     "Mount Wachusett": 153.0,
+     "North Shore": 154.0,
+     "Quinsigamond": 146.0,
+     "Roxbury": 158.0
+    },
+    "Salem": {
+     "Bunker Hill": 129.0,
+     "Massasoit": 127.0,
+     "MassBay": 125.0,
+     "Middlesex": 142.0,
+     "North Shore": 126.0,
+     "Northern Essex": 131.0,
+     "Roxbury": 152.0
+    },
+    "UMass Lowell": {
+     "Bunker Hill": 124.0,
+     "MassBay": 125.0,
+     "Middlesex": 122.0,
+     "North Shore": 126.0,
+     "Northern Essex": 142.0,
+     "Quinsigamond": 122.0,
+     "Roxbury": 152.0
+    },
+    "UMass Amherst": {
+     "Greenfield": 122.0,
+     "Holyoke": 125.0,
+     "Springfield Technical": 131.0
+    },
+    "Worcester": {
+     "MassBay": 128.0,
+     "Middlesex": 127.0,
+     "Mount Wachusett": 132.0,
+     "Quinsigamond": 120.0,
+     "Roxbury": 145.0,
+     "Springfield Technical": 132.0
+    }
+   },
+   "resident": {
+    "Bridgewater": 120.0,
+    "Fitchburg": 120.0,
+    "Framingham": 122.0,
+    "MCLA": 120.0,
+    "Salem": 121.0,
+    "UMass Amherst": 121.0,
+    "UMass Boston": 120.0,
+    "UMass Dartmouth": 120.0,
+    "UMass Lowell": 121.0,
+    "Westfield": 120.0,
+    "Worcester": 120.0
+   },
+   "stats": {
+    "n_cells": 61,
+    "mean_cells": 137.1967,
+    "median_cells": 133.0,
+    "mean_with_resident": 134.6389,
+    "mean_of_university_means": 136.9811,
+    "median_of_university_means": 136.4286,
+    "mean_delta_vs_resident": 16.6557,
+    "median_delta_vs_resident": 13.0
+   }
+  },
+  "complexity": {
+   "cells": {
+    "MCLA": {
+     "Berkshire": 210.0,
+     "Greenfield": 218.0
+    },
+    "Westfield": {
+     "Berkshire": 197.0,
+     "Greenfield": 154.0,
+     "Holyoke": 177.0,
+     "Springfield Technical": 180.0
+    },
+    "Bridgewater": {
+     "Bristol": 165.0,
+     "Bunker Hill": 180.0,
+     "Cape Cod": 113.0,
+     "MassBay": 108.0,
+     "North Shore": 129.0
+    },
+    "UMass Boston": {
+     "Bristol": 170.0,
+     "Bunker Hill": 192.0,
+     "MassBay": 181.0,
+     "Middlesex": 203.0,
+     "North Shore": 204.0,
+     "Northern Essex": 201.0
+    },
+    "UMass Dartmouth": {
+     "Bristol": 170.0,
+     "Cape Cod": 183.0
+    },
+    "Fitchburg": {
+     "Bunker Hill": 179.0,
+     "MassBay": 102.0,
+     "Middlesex": 122.0,
+     "Mount Wachusett": 119.0,
+     "Quinsigamond": 120.0
+    },
+    "Framingham": {
+     "Bunker Hill": 181.0,
+     "MassBay": 186.0,
+     "Middlesex": 196.0,
+     "Mount Wachusett": 182.0,
+     "North Shore": 186.0,
+     "Quinsigamond": 179.0
+    },
+    "Salem": {
+     "Bunker Hill": 164.0,
+     "MassBay": 140.0,
+     "Middlesex": 195.0,
+     "North Shore": 128.0,
+     "Northern Essex": 211.0
+    },
+    "UMass Lowell": {
+     "Bunker Hill": 169.0,
+     "MassBay": 157.0,
+     "Middlesex": 174.0,
+     "North Shore": 162.0,
+     "Northern Essex": 215.0,
+     "Quinsigamond": 159.0
+    },
+    "UMass Amherst": {
+     "Greenfield": 191.0,
+     "Holyoke": 210.0,
+     "Springfield Technical": 219.0
+    },
+    "Worcester": {
+     "MassBay": 104.0,
+     "Middlesex": 118.0,
+     "Mount Wachusett": 128.0,
+     "Quinsigamond": 96.0,
+     "Springfield Technical": 135.0
+    }
+   },
+   "resident": {
+    "Bridgewater": 160.0,
+    "Fitchburg": 138.0,
+    "Framingham": 139.0,
+    "MCLA": 160.0,
+    "Salem": 157.0,
+    "UMass Amherst": 185.0,
+    "UMass Boston": 169.0,
+    "UMass Dartmouth": 202.0,
+    "UMass Lowell": 143.0,
+    "Westfield": 150.0,
+    "Worcester": 105.0
+   },
+   "stats": {
+    "n_cells": 49,
+    "mean_cells": 166.5714,
+    "median_cells": 177.0,
+    "mean_with_resident": 164.5,
+    "mean_of_university_means": 170.4424,
+    "median_of_university_means": 176.5,
+    "mean_delta_vs_resident": 15.8571,
+    "median_delta_vs_resident": 23.0
+   }
+  },
+  "cost": {
+   "cells": {
+    "MCLA": {
+     "Berkshire": 13201.5,
+     "Greenfield": 13709.25
+    },
+    "Westfield": {
+     "Berkshire": 15970.16667,
+     "Greenfield": 7212.333333,
+     "Holyoke": 12364,
+     "Springfield Technical": 7212.333333
+    },
+    "Bridgewater": {
+     "Bristol": 4889.166667,
+     "Bunker Hill": 14178.58333,
+     "Cape Cod": 5378.083333,
+     "Massasoit": 2444.583333,
+     "MassBay": 5867,
+     "North Shore": 6355.916667,
+     "Roxbury": 17112.08333
+    },
+    "UMass Boston": {
+     "Bristol": 18085.16667,
+     "Bunker Hill": 4173.5,
+     "Massasoit": 14607.25,
+     "MassBay": 4869.083333,
+     "Middlesex": 15302.83333,
+     "North Shore": 16694,
+     "Northern Essex": 24345.41667,
+     "Roxbury": 27127.75
+    },
+    "UMass Dartmouth": {
+     "Bristol": 7806,
+     "Cape Cod": 10408,
+     "Massasoit": 20165.5
+    },
+    "Fitchburg": {
+     "Bunker Hill": 2836.5,
+     "MassBay": 0,
+     "Middlesex": 0,
+     "Mount Wachusett": 2363.75,
+     "Quinsigamond": 0,
+     "Roxbury": 14182.5
+    },
+    "Framingham": {
+     "Bunker Hill": 17383.33333,
+     "Massasoit": 11920,
+     "MassBay": 20860,
+     "Middlesex": 19370,
+     "Mount Wachusett": 16390,
+     "North Shore": 16886.66667,
+     "Quinsigamond": 12913.33333,
+     "Roxbury": 18873.33333
+    },
+    "Salem": {
+     "Bunker Hill": 4626.9,
+     "Massasoit": 3598.7,
+     "MassBay": 2570.5,
+     "Middlesex": 11310.2,
+     "North Shore": 3084.6,
+     "Northern Essex": 5655.1,
+     "Roxbury": 16451.2
+    },
+    "UMass Lowell": {
+     "Bunker Hill": 2827.666667,
+     "MassBay": 3534.583333,
+     "Middlesex": 1413.833333,
+     "North Shore": 4241.5,
+     "Northern Essex": 15552.16667,
+     "Quinsigamond": 1413.833333,
+     "Roxbury": 22621.33333
+    },
+    "UMass Amherst": {
+     "Greenfield": 1481,
+     "Holyoke": 3702.5,
+     "Springfield Technical": 8145.5
+    },
+    "Worcester": {
+     "MassBay": 3928.666667,
+     "Middlesex": 3437.583333,
+     "Mount Wachusett": 5893,
+     "Quinsigamond": 0,
+     "Roxbury": 12277.08333,
+     "Springfield Technical": 5893
+    }
+   },
+   "resident": {
+    "Bridgewater": 0,
+    "Fitchburg": 0,
+    "Framingham": 993.3333333,
+    "MCLA": 0,
+    "Salem": 514.1,
+    "UMass Amherst": 740.5,
+    "UMass Boston": 0,
+    "UMass Dartmouth": 0,
+    "UMass Lowell": 706.9166667,
+    "Westfield": 0,
+    "Worcester": 0
+   },
+   "stats": {
+    "n_cells": 61,
+    "mean_cells": 9624.9077,
+    "median_cells": 7212.3333,
+    "mean_with_resident": 8195.4752,
+    "mean_of_university_means": 9498.7468,
+    "median_of_university_means": 8032.2024,
+    "mean_delta_vs_resident": 9318.0997,
+    "median_delta_vs_resident": 7212.3333
+   }
+  }
+ }
+}

@@ -23,6 +23,31 @@ describe('course types', () => {
     expect(typeOfCourseCode('EE/CS', '120A', 'Logic Design')).toBe('computing');
   });
 
+  it('types the Massachusetts receiving prefixes', () => {
+    expect(typeOfCourseCode('COMP', '151', 'Computer Science I')).toBe('computing');
+    expect(typeOfCourseCode('CSCI', '120', 'Introduction to Information Technology')).toBe('computing');
+    expect(typeOfCourseCode('CSC', '1500', 'Computer Science I')).toBe('computing');
+    expect(typeOfCourseCode('CIS', '180', 'Object-Oriented Prog I')).toBe('computing');
+    expect(typeOfCourseCode('CAIS', '0102', 'Computer Science Principles')).toBe('computing');
+    expect(typeOfCourseCode('CICS', '110', 'Foundations of Programming')).toBe('computing');
+    expect(typeOfCourseCode('MTH', '153', 'Calculus for Applied Science')).toBe('math');
+    expect(typeOfCourseCode('MA', '200', 'Calculus I')).toBe('math');
+    expect(typeOfCourseCode('PHYSIC', '113', 'Fundamentals of Physics I and Lab')).toBe('science');
+    expect(typeOfCourseCode('PHS', '101', 'General Physics I')).toBe('science');
+    expect(typeOfCourseCode('EGR', '111', 'Introduction to Engineering and Computing')).toBe('science');
+    // Their discrete-structures courses stay math, per the documented rule.
+    expect(typeOfCourseCode('CS', '225', 'Discrete Structures I')).toBe('math');
+    // Philosophy-listed ethics stays out of computing.
+    expect(typeOfCourseCode('PH', '134', 'Computing Ethics')).toBe('non_stem');
+  });
+
+  it('types a placeholder-coded requirement by its own text, not the minted code', () => {
+    expect(typeOfCourseCode('SLOT', '13', 'Natural Science Elective')).toBe('science');
+    expect(typeOfCourseCode('ELEC', '4', 'Upper Level Elective (3000)')).toBe('computing');
+    expect(typeOfCourseCode('ELEC', '7', 'Arts')).toBe('non_stem');
+    expect(typeOfCourseCode('XXXX', '1', 'First Year Seminar')).toBe('non_stem');
+  });
+
   it('types free-text blocks by their documented rules', () => {
     expect(typeOfText('Upper-division major coursework — 20 courses')).toBe('computing');
     expect(typeOfText('Technical electives — 8 courses, at least 32 units')).toBe('computing');

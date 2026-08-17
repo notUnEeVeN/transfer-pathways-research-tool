@@ -6,6 +6,7 @@ const { startInMemoryMongo } = cjs('../test/mongoHarness');
 const {
   coverage: coverageEndpoint,
   transferCreditRate: transferCreditRateEndpoint,
+  pathwayComplexity: pathwayComplexityEndpoint,
   exportCsAstDegrees,
   exportLocalCsAsDegrees,
   _parseMultiCampusPathwayParams,
@@ -106,7 +107,7 @@ describe('major scope resolution', () => {
 
   it('reports unknown slugs with the onboarded list', () => {
     expect(_resolveMajorScope({ majorSlug: 'underwater-basket-weaving' }))
-      .toEqual({ error: 'unknown major: underwater-basket-weaving', known: ['cs', 'bio', 'econ'] });
+      .toEqual({ error: 'unknown major: underwater-basket-weaving', known: ['cs', 'bio', 'econ', 'ma-cs', 'va-cs'] });
   });
 });
 
@@ -189,6 +190,69 @@ describe('associate-degree analysis request scope', () => {
     const response = await run(transferCreditRateEndpoint, { majorSlug: 'bio' });
 
     expect(response.statusCode).toBe(200);
+  });
+});
+
+describe('pathway complexity paper corpora', () => {
+  it('serves the committed Massachusetts reproduction instead of a live assembly', async () => {
+    const response = await run(pathwayComplexityEndpoint, { majorSlug: 'ma-cs' });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.mode).toBe('paper');
+    // The validation snapshot: 11 resident curricula + 61 transfer pathways,
+    // with exactly the two published-score divergences the audit documented.
+    expect(response.body.pathways).toHaveLength(72);
+    expect(response.body.misses.map((m) => m.pathway)).toEqual([
+      'Bridgewater (resident)',
+      'UMass Dartmouth x Bristol',
+    ]);
+    expect(response.body.headline_plus_15.over_scored_pathways).toBeCloseTo(15.94, 2);
+  });
+
+  it('keeps Virginia on the live path rather than borrowing a snapshot', async () => {
+    // va-cs declares the prerequisites capability (the graph service and tab
+    // exist) but its requisite collections are not yet imported, so the live
+    // assembly finds no pathways. The guard that matters: paperBaselines is
+    // false, so Virginia must never inherit the Massachusetts snapshot.
+    const response = await run(pathwayComplexityEndpoint, { majorSlug: 'va-cs' });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.mode).toBeUndefined();
+    expect(response.body.rows).toEqual([]);
+  });
+
+  it('serves live corpora from the analysis cache without recomputing', async () => {
+    // A cached full-corpus result: the endpoint must serve these rows
+    // (scoped to the configured pairs) and report cached: true. The row uses
+    // a real configured cs campus so the scope filter keeps it; cs's default
+    // degree type is its first analysis slot, local_as.
+    const csSchoolId = Number(Object.keys(getMajor('cs').programs)[0]);
+    await db.collection('analysis_cache').replaceOne(
+      { _id: 'pathway-complexity:cs:local_as' },
+      {
+        _id: 'pathway-complexity:cs:local_as',
+        kind: 'pathway-complexity',
+        major_slug: 'cs',
+        degree_type: 'local_as',
+        computed_at: '2026-08-17T00:00:00.000Z',
+        rows: [{
+          school_id: csSchoolId, school: 'UC Example', community_college_id: 10,
+          college_name: 'Example College', complexity: 120,
+          resident_complexity: 100, delta_vs_resident: 20, edge_info_pct: 80,
+        }],
+      },
+      { upsert: true },
+    );
+
+    const response = await run(pathwayComplexityEndpoint, { majorSlug: 'cs' });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.cached).toBe(true);
+    expect(response.body.computed_at).toBe('2026-08-17T00:00:00.000Z');
+    expect(response.body.rows).toHaveLength(1);
+    expect(response.body.rows[0].college_name).toBe('Example College');
+
+    await db.collection('analysis_cache').deleteOne({ _id: 'pathway-complexity:cs:local_as' });
   });
 });
 

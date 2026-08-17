@@ -164,8 +164,11 @@ function duplicateLocalOtherIds(docs) {
 async function loadCourses(db, docs) {
   const ids = collectCourseIds(docs);
   if (!ids.length) return [];
+  // California sending courses store as cc:<id>; state imports qualify the
+  // same numeric id (Massachusetts: ma:sending:<id>). The id spaces are
+  // reserved and disjoint, so querying both forms cannot cross-match.
   return db.collection('assist_courses')
-    .find({ _id: { $in: ids.map((id) => `cc:${id}`) } },
+    .find({ _id: { $in: ids.flatMap((id) => [`cc:${id}`, `ma:sending:${id}`]) } },
       { projection: { course_id: 1, prefix: 1, number: 1, title: 1, units: 1, concept: 1 } })
     .toArray();
 }

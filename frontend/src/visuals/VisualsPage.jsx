@@ -111,10 +111,12 @@ function LiveThumbnail({
   figureOnly = false,
   majorSlug = 'cs',
   majorLabel = '',
+  major = null,
   majorCapabilities = null,
   degreeAnalysisSlots = null,
   degreeSlotLabels = null,
   unavailableMessage = 'Interactive preview unavailable',
+  componentProps = null,
 }) {
   if (!Component) {
     return (
@@ -132,10 +134,11 @@ function LiveThumbnail({
         transition-transform duration-300 ease-out group-hover:scale-[.341666]'
         style={figureOnly ? { display: 'grid', alignItems: 'center' } : undefined}>
         <Component publicationOptions={publicationOptions || {}}
-          majorSlug={majorSlug} majorLabel={majorLabel}
+          majorSlug={majorSlug} majorLabel={majorLabel} major={major}
           majorCapabilities={majorCapabilities}
           degreeAnalysisSlots={degreeAnalysisSlots}
-          degreeSlotLabels={degreeSlotLabels} />
+          degreeSlotLabels={degreeSlotLabels}
+          {...(componentProps || {})} />
       </div>
     </div>
   )
@@ -151,7 +154,7 @@ function analysisCopy(analysis, selectedMajor) {
   }
 }
 
-function itemDetails(item, { isAdmin, releasedSet, selectedMajor = null }) {
+export function itemDetails(item, { isAdmin, releasedSet, selectedMajor = null }) {
   if (item.kind === 'figure') {
     const fig = item.figure
     return {
@@ -180,6 +183,10 @@ export function VisualThumbnailCard({
   releasedSet = new Set(),
   onOpen,
   selectedMajor = null,
+  // Extra props for the live figure (e.g. the Massachusetts tab defaulting
+  // the coverage heatmap to its paper-native lens). Page-level, not registry
+  // metadata, because the same figure renders differently per host page.
+  componentProps = null,
 }) {
   const { previewRef, ready } = useDeferredPreview()
   const details = itemDetails(item, { isAdmin, releasedSet, selectedMajor })
@@ -225,10 +232,12 @@ export function VisualThumbnailCard({
               Component={previewComponent} publicationOptions={figure?.visual?.options}
               figureOnly={figureOnlyPreview} majorSlug={previewMajorSlug}
               majorLabel={previewMajorLabel}
+              major={item.kind === 'analysis' ? selectedMajor : null}
               majorCapabilities={item.kind === 'analysis' ? selectedMajor?.capabilities : null}
               degreeAnalysisSlots={item.kind === 'analysis' ? selectedMajor?.degreeAnalysisSlots : null}
               degreeSlotLabels={item.kind === 'analysis' ? selectedMajor?.degreeSlotLabels : null}
-              unavailableMessage={unavailableMessage} />)}
+              unavailableMessage={unavailableMessage}
+              componentProps={item.kind === 'analysis' ? componentProps : null} />)}
         {!ready && <div className='absolute inset-0 grid place-items-center'><Spinner /></div>}
         <div className='absolute inset-0 z-10 grid place-items-center bg-primary/0 transition-colors
           duration-200 group-hover:bg-primary/18 group-focus-within:bg-primary/18' aria-hidden='true'>
@@ -533,6 +542,8 @@ export function BuiltInAnalysisCard({
   isAdmin = false,
   releasedSet = new Set(),
   availability: providedAvailability = null,
+  // See VisualThumbnailCard: page-level extra props for the live figure.
+  componentProps = null,
 }) {
   const availability = providedAvailability
     || resolveAnalysisAvailability(analysis, selectedMajor)
@@ -540,6 +551,10 @@ export function BuiltInAnalysisCard({
   const majorLabel = selectedMajor?.label || selectedMajor?.slug || 'the selected major'
   const fixedMajorLabel = analysis?.majorScope?.label || analysis?.majorScope?.slug || 'its configured major'
   const scopeBadge = <AvailabilityBadge availability={availability} />
+  // A figure with internal states (the coverage heatmap's MA-paper toggle)
+  // reports its active measure so the panel always defines what is on screen;
+  // figures without states never call this and keep their static entry.
+  const [measureOverride, setMeasureOverride] = useState(null)
 
   return (
     <AnalysisCard title={analysisCopy(analysis, selectedMajor).title}
@@ -576,11 +591,14 @@ export function BuiltInAnalysisCard({
           <Component key={`${analysis.id}:${availability.effectiveMajorSlug}`}
             majorSlug={availability.effectiveMajorSlug}
             majorLabel={selectedMajor?.label || ''}
+            major={selectedMajor || null}
             majorCapabilities={selectedMajor?.capabilities || null}
             degreeAnalysisSlots={selectedMajor?.degreeAnalysisSlots || null}
-            degreeSlotLabels={selectedMajor?.degreeSlotLabels || null} />
+            degreeSlotLabels={selectedMajor?.degreeSlotLabels || null}
+            onMeasureChange={setMeasureOverride}
+            {...(componentProps || {})} />
           {/* Kept out of exports — a downloaded figure should read as a figure. */}
-          <MeasurePanel measure={measureFor(analysis.id)} className='mt-5' data-export-exclude />
+          <MeasurePanel measure={measureOverride || measureFor(analysis.id)} className='mt-5' data-export-exclude />
         </>
       )}
     </AnalysisCard>

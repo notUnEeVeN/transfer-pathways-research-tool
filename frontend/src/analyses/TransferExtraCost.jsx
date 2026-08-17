@@ -4,7 +4,7 @@ import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import {
   EvidenceCohortControl, EvidenceSummary, TransferMethodNote, buildRateMatrix,
-  degreeModesForMajor, methodDetail, methodWarningCount, paperRedCellColor,
+  defaultDegreeMode, degreeModesForMajor, methodDetail, methodWarningCount, paperRedCellColor,
   shortenSchool, unitSystemName,
 } from './TransferCreditRate'
 
@@ -137,17 +137,23 @@ function CostTable({ model, view }) {
 
 export default function TransferExtraCost({
   majorSlug = 'cs', majorLabel = '', degreeAnalysisSlots = null,
-  degreeSlotLabels = null,
+  degreeSlotLabels = null, major = null,
 }) {
   const degreeModes = useMemo(() => degreeModesForMajor({
     majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
   }), [majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels])
-  const [degreeType, setDegreeType] = useState(() => degreeModes[0]?.value || 'local_as')
+  const [degreeType, setDegreeType] = useState(() => defaultDegreeMode(degreeModes))
+  // See TransferCreditRate: a state corpus has one source, no curation cohorts.
+  // A paper corpus shows another author's published values; being
+  // state-scoped is not the test. Virginia is state-scoped but the data is
+  // ours and verified, so it keeps the California control set. Mirrors the
+  // server's own join condition (`capabilities.paperBaselines && state`).
+  const paperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
   const [verifiedOnly, setVerifiedOnly] = useState(false)
   const [loadView, setLoadView] = useState('minimum')
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
-      setDegreeType(degreeModes[0]?.value || 'local_as')
+      setDegreeType(defaultDegreeMode(degreeModes))
     }
   }, [degreeModes, degreeType])
   const view = LOAD_VIEWS.find((v) => v.value === loadView) || LOAD_VIEWS[0]
@@ -200,7 +206,7 @@ export default function TransferExtraCost({
           ))}
         </div>
       </div>
-      <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />
+      {!paperCorpus && <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />}
       <Button variant='secondary' leadingIcon={ArrowPathIcon}
         loading={query.isFetching && !query.isLoading} onClick={() => query.refetch()}>
         Refresh
@@ -230,6 +236,7 @@ export default function TransferExtraCost({
         <div className='surface-card px-4 py-3'>
           <p className='text-label'>
             <EvidenceSummary verifiedOnly={verifiedOnly}
+              sourceLabel={paperCorpus ? 'Paper-source associate degrees (recovered workbooks)' : null}
               collegeCount={model.rows.length} cellCount={model.valueCount} />
           </p>
           {missingTuition.length > 0 && (

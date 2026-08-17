@@ -1,0 +1,478 @@
+{
+ "generated_at": "2026-08-14T23:56:04.779Z",
+ "fig1_requirements_heatmap": {
+  "cells": 165,
+  "exact": 165,
+  "worst": 0.04761904761904745,
+  "verdict": "EXACT: every cell reproduces the published ratio"
+ },
+ "fig3_transfer_credit_rate": {
+  "pairs": 61,
+  "our_mean": 68.6,
+  "their_mean": 65.2,
+  "buckets": {
+   "exact": 6,
+   "close": 16,
+   "published-sum-drift": 6,
+   "tally-vs-overlay": 33
+  },
+  "note": "Aggregate means nearly coincide while individual cells spread: the published tallies and the recovered pathway overlays are two hand artifacts of one study, and they disagree with each other per pair. Our recomputation follows the overlays (the course-level record).",
+  "cells": [
+   {
+    "pair": "UMass Boston/Bunker Hill",
+    "ours": 100,
+    "theirs": 50.8,
+    "delta": 49.2,
+    "bucket": "published-sum-drift"
+   },
+   {
+    "pair": "UMass Amherst/Holyoke",
+    "ours": 90.6,
+    "theirs": 48.4,
+    "delta": 42.2,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Lowell/Roxbury",
+    "ours": 10.9,
+    "theirs": 51.6,
+    "delta": -40.7,
+    "bucket": "published-sum-drift"
+   },
+   {
+    "pair": "Worcester/Springfield Technical",
+    "ours": 88.5,
+    "theirs": 60.3,
+    "delta": 28.2,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Amherst/Springfield Technical",
+    "ours": 83.6,
+    "theirs": 55.6,
+    "delta": 28,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "MCLA/Berkshire",
+    "ours": 66.2,
+    "theirs": 38.5,
+    "delta": 27.7,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Dartmouth/Cape Cod",
+    "ours": 43.5,
+    "theirs": 68.1,
+    "delta": -24.6,
+    "bucket": "published-sum-drift"
+   },
+   {
+    "pair": "Worcester/Mount Wachusett",
+    "ours": 90.5,
+    "theirs": 69.8,
+    "delta": 20.7,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Bridgewater/Roxbury",
+    "ours": 23.4,
+    "theirs": 42.2,
+    "delta": -18.8,
+    "bucket": "published-sum-drift"
+   },
+   {
+    "pair": "Westfield/Springfield Technical",
+    "ours": 85.2,
+    "theirs": 66.7,
+    "delta": 18.5,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "MCLA/Greenfield",
+    "ours": 54.8,
+    "theirs": 37.1,
+    "delta": 17.7,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Boston/Roxbury",
+    "ours": 25,
+    "theirs": 42.2,
+    "delta": -17.2,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Bridgewater/Bristol",
+    "ours": 90.3,
+    "theirs": 73.9,
+    "delta": 16.4,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Westfield/Berkshire",
+    "ours": 58.5,
+    "theirs": 43.1,
+    "delta": 15.4,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Bridgewater/Bunker Hill",
+    "ours": 65.6,
+    "theirs": 50.8,
+    "delta": 14.8,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Salem/MassBay",
+    "ours": 85.3,
+    "theirs": 70.6,
+    "delta": 14.7,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Worcester/MassBay",
+    "ours": 89.7,
+    "theirs": 75,
+    "delta": 14.7,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Westfield/Holyoke",
+    "ours": 68.8,
+    "theirs": 54.7,
+    "delta": 14.1,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Fitchburg/Bunker Hill",
+    "ours": 95.1,
+    "theirs": 82,
+    "delta": 13.1,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Framingham/Bunker Hill",
+    "ours": 41,
+    "theirs": 27.9,
+    "delta": 13.1,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Salem/Northern Essex",
+    "ours": 81.3,
+    "theirs": 68.8,
+    "delta": 12.5,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Salem/Middlesex",
+    "ours": 65,
+    "theirs": 53.3,
+    "delta": 11.7,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Lowell/Quinsigamond",
+    "ours": 88.3,
+    "theirs": 100,
+    "delta": -11.7,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Westfield/Greenfield",
+    "ours": 80.6,
+    "theirs": 69.4,
+    "delta": 11.2,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Bridgewater/Cape Cod",
+    "ours": 65.2,
+    "theirs": 75.4,
+    "delta": -10.2,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Framingham/Middlesex",
+    "ours": 23.3,
+    "theirs": 33.3,
+    "delta": -10,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Dartmouth/Massasoit",
+    "ours": 44.6,
+    "theirs": 53.8,
+    "delta": -9.2,
+    "bucket": "published-sum-drift"
+   },
+   {
+    "pair": "Framingham/Quinsigamond",
+    "ours": 46.7,
+    "theirs": 38.3,
+    "delta": 8.4,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Worcester/Middlesex",
+    "ours": 90,
+    "theirs": 81.7,
+    "delta": 8.3,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Salem/Bunker Hill",
+    "ours": 78.7,
+    "theirs": 70.5,
+    "delta": 8.2,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Amherst/Greenfield",
+    "ours": 87.1,
+    "theirs": 95.2,
+    "delta": -8.1,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Salem/Roxbury",
+    "ours": 45.3,
+    "theirs": 37.5,
+    "delta": 7.8,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Boston/MassBay",
+    "ours": 44.1,
+    "theirs": 51.5,
+    "delta": -7.4,
+    "bucket": "published-sum-drift"
+   },
+   {
+    "pair": "Framingham/MassBay",
+    "ours": 26.5,
+    "theirs": 33.8,
+    "delta": -7.3,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Lowell/Middlesex",
+    "ours": 93.3,
+    "theirs": 100,
+    "delta": -6.7,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Boston/Bristol",
+    "ours": 51.4,
+    "theirs": 58,
+    "delta": -6.6,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Lowell/North Shore",
+    "ours": 93.8,
+    "theirs": 100,
+    "delta": -6.2,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "UMass Boston/Massasoit",
+    "ours": 55.4,
+    "theirs": 61.5,
+    "delta": -6.1,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Bridgewater/MassBay",
+    "ours": 91.2,
+    "theirs": 85.3,
+    "delta": 5.9,
+    "bucket": "tally-vs-overlay"
+   },
+   {
+    "pair": "Fitchburg/Middlesex",
+    "ours": 100,
+    "theirs": 95,
+    "delta": 5,
+    "bucket": "close"
+   },
+   {
+    "pair": "Worcester/Quinsigamond",
+    "ours": 95,
+    "theirs": 100,
+    "delta": -5,
+    "bucket": "close"
+   },
+   {
+    "pair": "UMass Lowell/Bunker Hill",
+    "ours": 95.1,
+    "theirs": 100,
+    "delta": -4.9,
+    "bucket": "close"
+   },
+   {
+    "pair": "Fitchburg/Mount Wachusett",
+    "ours": 95.2,
+    "theirs": 90.5,
+    "delta": 4.7,
+    "bucket": "close"
+   },
+   {
+    "pair": "Framingham/Massasoit",
+    "ours": 50.8,
+    "theirs": 55.4,
+    "delta": -4.6,
+    "bucket": "close"
+   },
+   {
+    "pair": "UMass Lowell/Northern Essex",
+    "ours": 68.8,
+    "theirs": 73.4,
+    "delta": -4.6,
+    "bucket": "close"
+   },
+   {
+    "pair": "UMass Lowell/MassBay",
+    "ours": 95.6,
+    "theirs": 100,
+    "delta": -4.4,
+    "bucket": "close"
+   },
+   {
+    "pair": "UMass Dartmouth/Bristol",
+    "ours": 75,
+    "theirs": 78.3,
+    "delta": -3.3,
+    "bucket": "close"
+   },
+   {
+    "pair": "Salem/Massasoit",
+    "ours": 69.2,
+    "theirs": 70.8,
+    "delta": -1.6,
+    "bucket": "close"
+   },
+   {
+    "pair": "UMass Boston/Middlesex",
+    "ours": 61.7,
+    "theirs": 63.3,
+    "delta": -1.6,
+    "bucket": "close"
+   },
+   {
+    "pair": "Bridgewater/North Shore",
+    "ours": 87.5,
+    "theirs": 89.1,
+    "delta": -1.6,
+    "bucket": "close"
+   },
+   {
+    "pair": "Fitchburg/MassBay",
+    "ours": 98.5,
+    "theirs": 100,
+    "delta": -1.5,
+    "bucket": "close"
+   },
+   {
+    "pair": "Framingham/North Shore",
+    "ours": 35.9,
+    "theirs": 34.4,
+    "delta": 1.5,
+    "bucket": "close"
+   },
+   {
+    "pair": "Salem/North Shore",
+    "ours": 81.3,
+    "theirs": 82.8,
+    "delta": -1.5,
+    "bucket": "close"
+   },
+   {
+    "pair": "UMass Boston/North Shore",
+    "ours": 53.1,
+    "theirs": 51.6,
+    "delta": 1.5,
+    "bucket": "close"
+   },
+   {
+    "pair": "UMass Boston/Northern Essex",
+    "ours": 46.9,
+    "theirs": 48.4,
+    "delta": -1.5,
+    "bucket": "close"
+   },
+   {
+    "pair": "Bridgewater/Massasoit",
+    "ours": 100,
+    "theirs": 100,
+    "delta": 0,
+    "bucket": "exact"
+   },
+   {
+    "pair": "Framingham/Mount Wachusett",
+    "ours": 41.3,
+    "theirs": 41.3,
+    "delta": 0,
+    "bucket": "exact"
+   },
+   {
+    "pair": "Fitchburg/Quinsigamond",
+    "ours": 100,
+    "theirs": 100,
+    "delta": 0,
+    "bucket": "exact"
+   },
+   {
+    "pair": "Fitchburg/Roxbury",
+    "ours": 40.6,
+    "theirs": 40.6,
+    "delta": 0,
+    "bucket": "exact"
+   },
+   {
+    "pair": "Framingham/Roxbury",
+    "ours": 26.6,
+    "theirs": 26.6,
+    "delta": 0,
+    "bucket": "exact"
+   },
+   {
+    "pair": "Worcester/Roxbury",
+    "ours": 56.3,
+    "theirs": 56.3,
+    "delta": 0,
+    "bucket": "exact"
+   }
+  ]
+ },
+ "known_source_drifts": [
+  "Bridgewater/Massasoit: COMP 430 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Bridgewater/Roxbury: COMP 151 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Bridgewater: resident plan sums 123 against the published 120",
+  "Bridgewater/Massasoit: pathway sums 120 against the published 125",
+  "Bridgewater/Roxbury: pathway sums 182 against the published 155",
+  "Fitchburg/Quinsigamond: CSC 4400 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Fitchburg/Roxbury: MATH 2300 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Fitchburg/Quinsigamond: pathway sums 121 against the published 120",
+  "Salem/MassBay: CSC 260 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Salem/MassBay: SLOT 16 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Salem/Massasoit: SLOT 14 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Salem/Massasoit: SLOT 15 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Salem/Massasoit: SLOT 16 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Salem/North Shore: CSC 295 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Salem/Roxbury: SLOT 16 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "UMass Amherst/Springfield Technical: COMPSCI 250 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "UMass Boston/MassBay: MATH 260 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "UMass Boston/Massasoit: MATH 260 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "UMass Boston/Roxbury: PHYSIC 113 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "UMass Boston/Bunker Hill: pathway sums 119 against the published 126",
+  "UMass Boston/MassBay: pathway sums 151 against the published 127",
+  "UMass Dartmouth/Cape Cod: pathway sums 138 against the published 136",
+  "UMass Dartmouth/Massasoit: pathway sums 148 against the published 151",
+  "UMass Lowell/Roxbury: pathway sums 185 against the published 152",
+  "Westfield: resident plan sums 121 against the published 120",
+  "Worcester/Quinsigamond: CS 225 left the pathway but the heatmap says not articulated (overlay vs boolean)"
+ ]
+}

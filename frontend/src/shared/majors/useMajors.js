@@ -52,7 +52,7 @@ export const CS_FALLBACK = [{
   },
 }]
 
-export function useMajors() {
+export function useMajors({ state } = {}) {
   const { user } = useAuth()
   const query = useQuery({
     // Versioned so an entry persisted by an older build (before the
@@ -60,15 +60,22 @@ export function useMajors() {
     // v5 adds proof-aware per-agreement pathway readiness. A persisted older
     // response must not make an exploratory solver card appear ready (or hide
     // the audited CS version) until the browser cache expires.
-    queryKey: ['majors', 'v5', user?.uid],
-    queryFn: () => apiClient.get('/majors').then((r) => r.data),
+    // v6 adds the unitCoverage capability: a stale payload without it would
+    // re-open the California unit lenses on the Massachusetts heatmap.
+    queryKey: ['majors', 'v6', state ?? 'ca', user?.uid],
+    queryFn: () => apiClient
+      .get('/majors', { params: state ? { state } : {} })
+      .then((r) => r.data),
     enabled: !!user?.uid,
     staleTime: Infinity,
   })
-  const majors = query.data?.majors?.length ? query.data.majors : CS_FALLBACK
+  // The CS resilience fallback is a California shape; a state corpus that
+  // fails to load must surface as empty + isError, never as California CS.
+  const fallback = state ? [] : CS_FALLBACK
+  const majors = query.data?.majors?.length ? query.data.majors : fallback
   return {
     majors,
-    defaultSlug: query.data?.default || CS_FALLBACK[0].slug,
+    defaultSlug: query.data?.default || fallback[0]?.slug || null,
     bySlug: new Map(majors.map((m) => [m.slug, m])),
     isLoading: query.isLoading,
     isError: query.isError,

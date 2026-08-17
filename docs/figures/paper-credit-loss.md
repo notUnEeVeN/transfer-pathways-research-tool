@@ -18,7 +18,7 @@ data — with every difference named at the course level.**
 ## How to read this note
 
 For the reminder version, start with
-[`../visualization-quick-reference.md`](../visualization-quick-reference.md).
+[`../visualizations.md`](../visualizations.md).
 
 This page is the full receipt trail:
 

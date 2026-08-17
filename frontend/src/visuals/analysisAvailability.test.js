@@ -65,6 +65,34 @@ describe('resolveAnalysisAvailability', () => {
     expect(result.reason).toBe('Prerequisite concepts have not been mapped yet.')
   })
 
+  it('satisfies an OR requirement when any alternative capability is ready', () => {
+    // The pathway-complexity gate: live scoring needs prerequisites, but a
+    // paper corpus (Massachusetts) renders its committed reproduction via
+    // paperBaselines instead.
+    const scope = {
+      mode: 'selected',
+      requiredCapabilities: ['prerequisites|paperBaselines'],
+      pendingReason: 'Prerequisite graphs are needed before complexity can be scored.',
+    }
+
+    const viaSecondAlternative = resolveAnalysisAvailability({ majorScope: scope }, major({
+      slug: 'ma-cs',
+      label: 'Computer Science (MA)',
+      capabilities: { prerequisites: false, paperBaselines: true },
+    }))
+    expect(viaSecondAlternative.available).toBe(true)
+    expect(viaSecondAlternative.effectiveMajorSlug).toBe('ma-cs')
+
+    const neitherReady = resolveAnalysisAvailability({ majorScope: scope }, major({
+      slug: 'va-cs',
+      label: 'Computer Science (VA)',
+      capabilities: { prerequisites: false, paperBaselines: false },
+    }))
+    expect(neitherReady.available).toBe(false)
+    expect(neitherReady.status).toBe('data_pending')
+    expect(neitherReady.missingCapabilities).toEqual(['prerequisites|paperBaselines'])
+  })
+
   it('allows a fixed-major visual only when that major is selected', () => {
     const analysis = {
       majorScope: {
@@ -148,6 +176,7 @@ describe('analysis registry major scopes', () => {
       'course-type-coverage': ['assistAgreements', 'degreeTemplates', 'courseTypeFigures'],
       'transfer-credit-rate': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       'transfer-extra-units': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
+      'pathway-complexity': ['asDegrees', 'assistAgreements', 'degreeTemplates', 'prerequisites|paperBaselines'],
       'transfer-extra-cost': ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       'income-access': ['assistAgreements'],
       'credit-loss': ['assistAgreements', 'agreementPathways'],

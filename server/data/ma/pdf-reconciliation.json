@@ -1,0 +1,1417 @@
+{
+ "generated_at": "2026-08-15T00:13:07.136Z",
+ "method": "One verdict per studied pair: our recomputation vs the final PDF, diagnosed against the workbook's own removals (real matcher), the matrix verdicts, and our matcher's recovery.",
+ "their_algorithm": "Recovered from the tally tab itself: each cell is a typed fraction =N/D with no cell references — N is a hand COUNT of transferred credits, D a hand-typed AS total. Nothing recomputes when the pathway tabs change.",
+ "denominator_audit": [
+  "Bristol: typed 69 vs their own AS sheet 72 (every cell in the row inherits the error)",
+  "Springfield Technical: typed 63 vs their own AS sheet 61 (every cell in the row inherits the error)"
+ ],
+ "summary": {
+  "pairs": 61,
+  "mean_ours": 68.6,
+  "mean_pdf": 67.7,
+  "verdicts": {
+   "tally-drift": 25,
+   "agrees": 16,
+   "above-ceiling": 20
+  },
+  "our_side_pairs": 0,
+  "mixed_pairs": 0
+ },
+ "cells": [
+  {
+   "pair": "UMass Dartmouth × Massasoit",
+   "pdf": 95,
+   "repo": 53.8,
+   "ours": 44.6,
+   "delta_ours_vs_pdf": -50.4,
+   "their_typed_fraction": "35/65",
+   "their_counted_units": 35,
+   "their_typed_as_total": 65,
+   "as_sheet_total": 65,
+   "workbook": {
+    "removed_rows": 9,
+    "removed_units": 31,
+    "credited_rows": 9,
+    "credited_units": 29,
+    "ours_if_losses_recovered": 44.6,
+    "ceiling": 44.6
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 95% exceeds everything the workbook could yield under any definition (ceiling ≈ 44.6%). Their number overstates their own record by ≥ 50.4pp."
+  },
+  {
+   "pair": "UMass Boston × Bunker Hill",
+   "pdf": 51,
+   "repo": 50.8,
+   "ours": 100,
+   "delta_ours_vs_pdf": 49,
+   "their_typed_fraction": "31/61",
+   "their_counted_units": 31,
+   "their_typed_as_total": 61,
+   "as_sheet_total": 61,
+   "workbook": {
+    "removed_rows": 18,
+    "removed_units": 62,
+    "credited_rows": 18,
+    "credited_units": 61,
+    "ours_if_losses_recovered": 100,
+    "ceiling": 100
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (18/18 removed rows credited), yet the printed value is 49pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "UMass Dartmouth × Cape Cod",
+   "pdf": 90,
+   "repo": 68.1,
+   "ours": 43.5,
+   "delta_ours_vs_pdf": -46.5,
+   "their_typed_fraction": "47/69",
+   "their_counted_units": 47,
+   "their_typed_as_total": 69,
+   "as_sheet_total": 69,
+   "workbook": {
+    "removed_rows": 8,
+    "removed_units": 29,
+    "credited_rows": 8,
+    "credited_units": 30,
+    "ours_if_losses_recovered": 43.5,
+    "ceiling": 43.5
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 90% exceeds everything the workbook could yield under any definition (ceiling ≈ 43.5%). Their number overstates their own record by ≥ 46.5pp."
+  },
+  {
+   "pair": "UMass Amherst × Holyoke",
+   "pdf": 48,
+   "repo": 48.4,
+   "ours": 90.6,
+   "delta_ours_vs_pdf": 42.6,
+   "their_typed_fraction": "31/64",
+   "their_counted_units": 31,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 16,
+    "removed_units": 52,
+    "credited_rows": 16,
+    "credited_units": 58,
+    "ours_if_losses_recovered": 90.6,
+    "ceiling": 90.6
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (16/16 removed rows credited), yet the printed value is 42.6pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "UMass Lowell × Roxbury",
+   "pdf": 52,
+   "repo": 51.6,
+   "ours": 10.9,
+   "delta_ours_vs_pdf": -41.1,
+   "their_typed_fraction": "33/64",
+   "their_counted_units": 33,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 2,
+    "removed_units": 7,
+    "credited_rows": 2,
+    "credited_units": 7,
+    "ours_if_losses_recovered": 10.9,
+    "ceiling": 10.9
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 52% exceeds everything the workbook could yield under any definition (ceiling ≈ 10.9%). Their number overstates their own record by ≥ 41.1pp."
+  },
+  {
+   "pair": "Worcester × Springfield Technical",
+   "pdf": 60,
+   "repo": 60.3,
+   "ours": 88.5,
+   "delta_ours_vs_pdf": 28.5,
+   "their_typed_fraction": "38/63",
+   "their_counted_units": 38,
+   "their_typed_as_total": 63,
+   "as_sheet_total": 61,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 50,
+    "credited_rows": 15,
+    "credited_units": 54,
+    "ours_if_losses_recovered": 88.5,
+    "ceiling": 88.5
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (15/15 removed rows credited), yet the printed value is 28.5pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "MCLA × Berkshire",
+   "pdf": 38,
+   "repo": 38.5,
+   "ours": 66.2,
+   "delta_ours_vs_pdf": 28.2,
+   "their_typed_fraction": "25/65",
+   "their_counted_units": 25,
+   "their_typed_as_total": 65,
+   "as_sheet_total": 65,
+   "workbook": {
+    "removed_rows": 11,
+    "removed_units": 36,
+    "credited_rows": 11,
+    "credited_units": 43,
+    "ours_if_losses_recovered": 66.2,
+    "ceiling": 66.2
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (11/11 removed rows credited), yet the printed value is 28.2pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Bridgewater × Cape Cod",
+   "pdf": 87,
+   "repo": 75.4,
+   "ours": 65.2,
+   "delta_ours_vs_pdf": -21.8,
+   "their_typed_fraction": "52/69",
+   "their_counted_units": 52,
+   "their_typed_as_total": 69,
+   "as_sheet_total": 69,
+   "workbook": {
+    "removed_rows": 12,
+    "removed_units": 38,
+    "credited_rows": 12,
+    "credited_units": 45,
+    "ours_if_losses_recovered": 65.2,
+    "ceiling": 65.2
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 87% exceeds everything the workbook could yield under any definition (ceiling ≈ 65.2%). Their number overstates their own record by ≥ 21.8pp."
+  },
+  {
+   "pair": "Worcester × Mount Wachusett",
+   "pdf": 70,
+   "repo": 69.8,
+   "ours": 90.5,
+   "delta_ours_vs_pdf": 20.5,
+   "their_typed_fraction": "44/63",
+   "their_counted_units": 44,
+   "their_typed_as_total": 63,
+   "as_sheet_total": 63,
+   "workbook": {
+    "removed_rows": 17,
+    "removed_units": 56,
+    "credited_rows": 17,
+    "credited_units": 57,
+    "ours_if_losses_recovered": 90.5,
+    "ceiling": 90.5
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (17/17 removed rows credited), yet the printed value is 20.5pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Westfield × Springfield Technical",
+   "pdf": 67,
+   "repo": 66.7,
+   "ours": 85.2,
+   "delta_ours_vs_pdf": 18.2,
+   "their_typed_fraction": "42/63",
+   "their_counted_units": 42,
+   "their_typed_as_total": 63,
+   "as_sheet_total": 61,
+   "workbook": {
+    "removed_rows": 14,
+    "removed_units": 48,
+    "credited_rows": 14,
+    "credited_units": 52,
+    "ours_if_losses_recovered": 85.2,
+    "ceiling": 85.2
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (14/14 removed rows credited), yet the printed value is 18.2pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "MCLA × Greenfield",
+   "pdf": 37,
+   "repo": 37.1,
+   "ours": 54.8,
+   "delta_ours_vs_pdf": 17.8,
+   "their_typed_fraction": "23/62",
+   "their_counted_units": 23,
+   "their_typed_as_total": 62,
+   "as_sheet_total": 62,
+   "workbook": {
+    "removed_rows": 10,
+    "removed_units": 35,
+    "credited_rows": 10,
+    "credited_units": 34,
+    "ours_if_losses_recovered": 54.8,
+    "ceiling": 54.8
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (10/10 removed rows credited), yet the printed value is 17.8pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "UMass Boston × Roxbury",
+   "pdf": 42,
+   "repo": 42.2,
+   "ours": 25,
+   "delta_ours_vs_pdf": -17,
+   "their_typed_fraction": "27/64",
+   "their_counted_units": 27,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 6,
+    "removed_units": 20,
+    "credited_rows": 5,
+    "credited_units": 16,
+    "loss_rows": [
+     {
+      "code": "ENGL 102",
+      "name": "Freshman English II",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 29.7,
+    "ceiling": 29.7
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 42% exceeds everything the workbook could yield under any definition (ceiling ≈ 29.7%). Their number overstates their own record by ≥ 12.3pp."
+  },
+  {
+   "pair": "Bridgewater × Roxbury",
+   "pdf": 39,
+   "repo": 42.2,
+   "ours": 23.4,
+   "delta_ours_vs_pdf": -15.6,
+   "their_typed_fraction": "27/64",
+   "their_counted_units": 27,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 6,
+    "removed_units": 19,
+    "credited_rows": 5,
+    "credited_units": 15,
+    "loss_rows": [
+     {
+      "code": "XXXX 299",
+      "name": "Second Year Seminar",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 28.1,
+    "ceiling": 28.1
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 39% exceeds everything the workbook could yield under any definition (ceiling ≈ 28.1%). Their number overstates their own record by ≥ 10.9pp."
+  },
+  {
+   "pair": "Westfield × Berkshire",
+   "pdf": 43,
+   "repo": 43.1,
+   "ours": 58.5,
+   "delta_ours_vs_pdf": 15.5,
+   "their_typed_fraction": "28/65",
+   "their_counted_units": 28,
+   "their_typed_as_total": 65,
+   "as_sheet_total": 65,
+   "workbook": {
+    "removed_rows": 10,
+    "removed_units": 35,
+    "credited_rows": 10,
+    "credited_units": 38,
+    "ours_if_losses_recovered": 58.5,
+    "ceiling": 58.5
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (10/10 removed rows credited), yet the printed value is 15.5pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "UMass Dartmouth × Bristol",
+   "pdf": 90,
+   "repo": 78.3,
+   "ours": 75,
+   "delta_ours_vs_pdf": -15,
+   "their_typed_fraction": "54/69",
+   "their_counted_units": 54,
+   "their_typed_as_total": 69,
+   "as_sheet_total": 72,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 54,
+    "credited_rows": 15,
+    "credited_units": 54,
+    "ours_if_losses_recovered": 75,
+    "ceiling": 75
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 90% exceeds everything the workbook could yield under any definition (ceiling ≈ 75%). Their number overstates their own record by ≥ 15.0pp."
+  },
+  {
+   "pair": "Worcester × MassBay",
+   "pdf": 75,
+   "repo": 75,
+   "ours": 89.7,
+   "delta_ours_vs_pdf": 14.7,
+   "their_typed_fraction": "51/68",
+   "their_counted_units": 51,
+   "their_typed_as_total": 68,
+   "as_sheet_total": 68,
+   "workbook": {
+    "removed_rows": 17,
+    "removed_units": 56,
+    "credited_rows": 17,
+    "credited_units": 61,
+    "ours_if_losses_recovered": 89.7,
+    "ceiling": 89.7
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (17/17 removed rows credited), yet the printed value is 14.7pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Bridgewater × Bunker Hill",
+   "pdf": 51,
+   "repo": 50.8,
+   "ours": 65.6,
+   "delta_ours_vs_pdf": 14.6,
+   "their_typed_fraction": "31/61",
+   "their_counted_units": 31,
+   "their_typed_as_total": 61,
+   "as_sheet_total": 61,
+   "workbook": {
+    "removed_rows": 11,
+    "removed_units": 37,
+    "credited_rows": 11,
+    "credited_units": 40,
+    "ours_if_losses_recovered": 65.6,
+    "ceiling": 65.6
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (11/11 removed rows credited), yet the printed value is 14.6pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Salem × MassBay",
+   "pdf": 71,
+   "repo": 70.6,
+   "ours": 85.3,
+   "delta_ours_vs_pdf": 14.3,
+   "their_typed_fraction": "48/68",
+   "their_counted_units": 48,
+   "their_typed_as_total": 68,
+   "as_sheet_total": 68,
+   "workbook": {
+    "removed_rows": 17,
+    "removed_units": 61,
+    "credited_rows": 16,
+    "credited_units": 58,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "Free Elective",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 89.7,
+    "ceiling": 89.7
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (16/17 removed rows credited), yet the printed value is 14.3pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Westfield × Holyoke",
+   "pdf": 55,
+   "repo": 54.7,
+   "ours": 68.8,
+   "delta_ours_vs_pdf": 13.8,
+   "their_typed_fraction": "35/64",
+   "their_counted_units": 35,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 12,
+    "removed_units": 41,
+    "credited_rows": 12,
+    "credited_units": 44,
+    "ours_if_losses_recovered": 68.8,
+    "ceiling": 68.8
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (12/12 removed rows credited), yet the printed value is 13.8pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Fitchburg × Bunker Hill",
+   "pdf": 82,
+   "repo": 82,
+   "ours": 95.1,
+   "delta_ours_vs_pdf": 13.1,
+   "their_typed_fraction": "50/61",
+   "their_counted_units": 50,
+   "their_typed_as_total": 61,
+   "as_sheet_total": 61,
+   "workbook": {
+    "removed_rows": 17,
+    "removed_units": 55,
+    "credited_rows": 17,
+    "credited_units": 58,
+    "ours_if_losses_recovered": 95.1,
+    "ceiling": 95.1
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (17/17 removed rows credited), yet the printed value is 13.1pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Framingham × Bunker Hill",
+   "pdf": 28,
+   "repo": 27.9,
+   "ours": 41,
+   "delta_ours_vs_pdf": 13,
+   "their_typed_fraction": "17/61",
+   "their_counted_units": 17,
+   "their_typed_as_total": 61,
+   "as_sheet_total": 61,
+   "workbook": {
+    "removed_rows": 7,
+    "removed_units": 28,
+    "credited_rows": 7,
+    "credited_units": 25,
+    "ours_if_losses_recovered": 41,
+    "ceiling": 41
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (7/7 removed rows credited), yet the printed value is 13pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Salem × Northern Essex",
+   "pdf": 69,
+   "repo": 68.8,
+   "ours": 81.3,
+   "delta_ours_vs_pdf": 12.3,
+   "their_typed_fraction": "44/64",
+   "their_counted_units": 44,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 54,
+    "credited_rows": 15,
+    "credited_units": 52,
+    "ours_if_losses_recovered": 81.3,
+    "ceiling": 81.3
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (15/15 removed rows credited), yet the printed value is 12.3pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Salem × Middlesex",
+   "pdf": 53,
+   "repo": 53.3,
+   "ours": 65,
+   "delta_ours_vs_pdf": 12,
+   "their_typed_fraction": "32/60",
+   "their_counted_units": 32,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 11,
+    "removed_units": 39,
+    "credited_rows": 11,
+    "credited_units": 39,
+    "ours_if_losses_recovered": 65,
+    "ceiling": 65
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (11/11 removed rows credited), yet the printed value is 12pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "UMass Lowell × Quinsigamond",
+   "pdf": 100,
+   "repo": 100,
+   "ours": 88.3,
+   "delta_ours_vs_pdf": -11.7,
+   "their_typed_fraction": "60/60",
+   "their_counted_units": 60,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 53,
+    "credited_rows": 15,
+    "credited_units": 53,
+    "ours_if_losses_recovered": 88.3,
+    "ceiling": 88.3
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 100% exceeds everything the workbook could yield under any definition (ceiling ≈ 88.3%). Their number overstates their own record by ≥ 11.7pp."
+  },
+  {
+   "pair": "Westfield × Greenfield",
+   "pdf": 69,
+   "repo": 69.4,
+   "ours": 80.6,
+   "delta_ours_vs_pdf": 11.6,
+   "their_typed_fraction": "43/62",
+   "their_counted_units": 43,
+   "their_typed_as_total": 62,
+   "as_sheet_total": 62,
+   "workbook": {
+    "removed_rows": 14,
+    "removed_units": 49,
+    "credited_rows": 14,
+    "credited_units": 50,
+    "ours_if_losses_recovered": 80.6,
+    "ceiling": 80.6
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (14/14 removed rows credited), yet the printed value is 11.6pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "UMass Amherst × Springfield Technical",
+   "pdf": 95,
+   "repo": 55.6,
+   "ours": 83.6,
+   "delta_ours_vs_pdf": -11.4,
+   "their_typed_fraction": "35/63",
+   "their_counted_units": 35,
+   "their_typed_as_total": 63,
+   "as_sheet_total": 61,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 50,
+    "credited_rows": 14,
+    "credited_units": 51,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "free elective",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 88.5,
+    "ceiling": 88.5
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 95% exceeds everything the workbook could yield under any definition (ceiling ≈ 88.5%). Their number overstates their own record by ≥ 6.5pp."
+  },
+  {
+   "pair": "UMass Amherst × Greenfield",
+   "pdf": 97,
+   "repo": 95.2,
+   "ours": 87.1,
+   "delta_ours_vs_pdf": -9.9,
+   "their_typed_fraction": "59/62",
+   "their_counted_units": 59,
+   "their_typed_as_total": 62,
+   "as_sheet_total": 62,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 54,
+    "credited_rows": 15,
+    "credited_units": 54,
+    "ours_if_losses_recovered": 87.1,
+    "ceiling": 87.1
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 97% exceeds everything the workbook could yield under any definition (ceiling ≈ 87.1%). Their number overstates their own record by ≥ 9.9pp."
+  },
+  {
+   "pair": "Framingham × Middlesex",
+   "pdf": 33,
+   "repo": 33.3,
+   "ours": 23.3,
+   "delta_ours_vs_pdf": -9.7,
+   "their_typed_fraction": "20/60",
+   "their_counted_units": 20,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 4,
+    "removed_units": 16,
+    "credited_rows": 4,
+    "credited_units": 14,
+    "ours_if_losses_recovered": 23.3,
+    "ceiling": 23.3
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 33% exceeds everything the workbook could yield under any definition (ceiling ≈ 23.3%). Their number overstates their own record by ≥ 9.7pp."
+  },
+  {
+   "pair": "Bridgewater × North Shore",
+   "pdf": 97,
+   "repo": 89.1,
+   "ours": 87.5,
+   "delta_ours_vs_pdf": -9.5,
+   "their_typed_fraction": "57/64",
+   "their_counted_units": 57,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 49,
+    "credited_rows": 15,
+    "credited_units": 56,
+    "ours_if_losses_recovered": 87.5,
+    "ceiling": 87.5
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 97% exceeds everything the workbook could yield under any definition (ceiling ≈ 87.5%). Their number overstates their own record by ≥ 9.5pp."
+  },
+  {
+   "pair": "Salem × Bunker Hill",
+   "pdf": 70,
+   "repo": 70.5,
+   "ours": 78.7,
+   "delta_ours_vs_pdf": 8.7,
+   "their_typed_fraction": "43/61",
+   "their_counted_units": 43,
+   "their_typed_as_total": 61,
+   "as_sheet_total": 61,
+   "workbook": {
+    "removed_rows": 14,
+    "removed_units": 50,
+    "credited_rows": 14,
+    "credited_units": 48,
+    "ours_if_losses_recovered": 78.7,
+    "ceiling": 78.7
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (14/14 removed rows credited), yet the printed value is 8.7pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Framingham × Quinsigamond",
+   "pdf": 38,
+   "repo": 38.3,
+   "ours": 46.7,
+   "delta_ours_vs_pdf": 8.7,
+   "their_typed_fraction": "23/60",
+   "their_counted_units": 23,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 8,
+    "removed_units": 32,
+    "credited_rows": 8,
+    "credited_units": 28,
+    "ours_if_losses_recovered": 46.7,
+    "ceiling": 46.7
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (8/8 removed rows credited), yet the printed value is 8.7pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Worcester × Middlesex",
+   "pdf": 82,
+   "repo": 81.7,
+   "ours": 90,
+   "delta_ours_vs_pdf": 8,
+   "their_typed_fraction": "49/60",
+   "their_counted_units": 49,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 50,
+    "credited_rows": 15,
+    "credited_units": 54,
+    "ours_if_losses_recovered": 90,
+    "ceiling": 90
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (15/15 removed rows credited), yet the printed value is 8pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Framingham × MassBay",
+   "pdf": 34,
+   "repo": 33.8,
+   "ours": 26.5,
+   "delta_ours_vs_pdf": -7.5,
+   "their_typed_fraction": "23/68",
+   "their_counted_units": 23,
+   "their_typed_as_total": 68,
+   "as_sheet_total": 68,
+   "workbook": {
+    "removed_rows": 5,
+    "removed_units": 20,
+    "credited_rows": 5,
+    "credited_units": 18,
+    "ours_if_losses_recovered": 26.5,
+    "ceiling": 26.5
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 34% exceeds everything the workbook could yield under any definition (ceiling ≈ 26.5%). Their number overstates their own record by ≥ 7.5pp."
+  },
+  {
+   "pair": "Salem × Roxbury",
+   "pdf": 38,
+   "repo": 37.5,
+   "ours": 45.3,
+   "delta_ours_vs_pdf": 7.3,
+   "their_typed_fraction": "24/64",
+   "their_counted_units": 24,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 9,
+    "removed_units": 30,
+    "credited_rows": 9,
+    "credited_units": 29,
+    "ours_if_losses_recovered": 45.3,
+    "ceiling": 45.3
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (9/9 removed rows credited), yet the printed value is 7.3pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "UMass Boston × MassBay",
+   "pdf": 51,
+   "repo": 51.5,
+   "ours": 44.1,
+   "delta_ours_vs_pdf": -6.9,
+   "their_typed_fraction": "35/68",
+   "their_counted_units": 35,
+   "their_typed_as_total": 68,
+   "as_sheet_total": 68,
+   "workbook": {
+    "removed_rows": 9,
+    "removed_units": 29,
+    "credited_rows": 8,
+    "credited_units": 30,
+    "loss_rows": [
+     {
+      "code": "ENGL 102",
+      "name": "Freshman English II",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 48.5,
+    "ceiling": 48.5
+   },
+   "verdict": "tally-drift",
+   "explanation": "The printed value is 6.9pp higher than the workbook overlay yields (8/9 rows credited; ceiling 48.5%); the tally does not reconcile to the workbook it sits beside."
+  },
+  {
+   "pair": "UMass Lowell × Middlesex",
+   "pdf": 100,
+   "repo": 100,
+   "ours": 93.3,
+   "delta_ours_vs_pdf": -6.7,
+   "their_typed_fraction": "60/60",
+   "their_counted_units": 60,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 16,
+    "removed_units": 56,
+    "credited_rows": 16,
+    "credited_units": 56,
+    "ours_if_losses_recovered": 93.3,
+    "ceiling": 93.3
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 100% exceeds everything the workbook could yield under any definition (ceiling ≈ 93.3%). Their number overstates their own record by ≥ 6.7pp."
+  },
+  {
+   "pair": "UMass Boston × Bristol",
+   "pdf": 58,
+   "repo": 58,
+   "ours": 51.4,
+   "delta_ours_vs_pdf": -6.6,
+   "their_typed_fraction": "40/69",
+   "their_counted_units": 40,
+   "their_typed_as_total": 69,
+   "as_sheet_total": 72,
+   "workbook": {
+    "removed_rows": 11,
+    "removed_units": 35,
+    "credited_rows": 11,
+    "credited_units": 37,
+    "ours_if_losses_recovered": 51.4,
+    "ceiling": 51.4
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 58% exceeds everything the workbook could yield under any definition (ceiling ≈ 51.4%). Their number overstates their own record by ≥ 6.6pp."
+  },
+  {
+   "pair": "UMass Boston × Massasoit",
+   "pdf": 62,
+   "repo": 61.5,
+   "ours": 55.4,
+   "delta_ours_vs_pdf": -6.6,
+   "their_typed_fraction": "40/65",
+   "their_counted_units": 40,
+   "their_typed_as_total": 65,
+   "as_sheet_total": 65,
+   "workbook": {
+    "removed_rows": 12,
+    "removed_units": 38,
+    "credited_rows": 11,
+    "credited_units": 36,
+    "loss_rows": [
+     {
+      "code": "ENGL 102",
+      "name": "Freshman English II",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 60,
+    "ceiling": 60
+   },
+   "verdict": "tally-drift",
+   "explanation": "The printed value is 6.6pp higher than the workbook overlay yields (11/12 rows credited; ceiling 60%); the tally does not reconcile to the workbook it sits beside."
+  },
+  {
+   "pair": "UMass Lowell × North Shore",
+   "pdf": 100,
+   "repo": 100,
+   "ours": 93.8,
+   "delta_ours_vs_pdf": -6.2,
+   "their_typed_fraction": "64/64",
+   "their_counted_units": 64,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 16,
+    "removed_units": 56,
+    "credited_rows": 16,
+    "credited_units": 60,
+    "ours_if_losses_recovered": 93.8,
+    "ceiling": 93.8
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 100% exceeds everything the workbook could yield under any definition (ceiling ≈ 93.8%). Their number overstates their own record by ≥ 6.2pp."
+  },
+  {
+   "pair": "Fitchburg × Mount Wachusett",
+   "pdf": 90,
+   "repo": 90.5,
+   "ours": 95.2,
+   "delta_ours_vs_pdf": 5.2,
+   "their_typed_fraction": "57/63",
+   "their_counted_units": 57,
+   "their_typed_as_total": 63,
+   "as_sheet_total": 63,
+   "workbook": {
+    "removed_rows": 18,
+    "removed_units": 58,
+    "credited_rows": 18,
+    "credited_units": 60,
+    "ours_if_losses_recovered": 95.2,
+    "ceiling": 95.2
+   },
+   "verdict": "tally-drift",
+   "explanation": "Our recovery of the workbook is essentially complete (18/18 removed rows credited), yet the printed value is 5.2pp LOWER — the hand tally under-credits its own workbook by that much."
+  },
+  {
+   "pair": "Worcester × Quinsigamond",
+   "pdf": 100,
+   "repo": 100,
+   "ours": 95,
+   "delta_ours_vs_pdf": -5,
+   "their_typed_fraction": "60/60",
+   "their_counted_units": 60,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 17,
+    "removed_units": 56,
+    "credited_rows": 16,
+    "credited_units": 57,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "GP",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 100,
+    "ceiling": 100
+   },
+   "verdict": "tally-drift",
+   "explanation": "The printed value is 5pp higher than the workbook overlay yields (16/17 rows credited; ceiling 100%); the tally does not reconcile to the workbook it sits beside."
+  },
+  {
+   "pair": "UMass Lowell × Bunker Hill",
+   "pdf": 100,
+   "repo": 100,
+   "ours": 95.1,
+   "delta_ours_vs_pdf": -4.9,
+   "their_typed_fraction": "61/61",
+   "their_counted_units": 61,
+   "their_typed_as_total": 61,
+   "as_sheet_total": 61,
+   "workbook": {
+    "removed_rows": 17,
+    "removed_units": 58,
+    "credited_rows": 17,
+    "credited_units": 58,
+    "ours_if_losses_recovered": 95.1,
+    "ceiling": 95.1
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 100% exceeds everything the workbook could yield under any definition (ceiling ≈ 95.1%). Their number overstates their own record by ≥ 4.9pp."
+  },
+  {
+   "pair": "UMass Lowell × MassBay",
+   "pdf": 100,
+   "repo": 100,
+   "ours": 95.6,
+   "delta_ours_vs_pdf": -4.4,
+   "their_typed_fraction": "68/68",
+   "their_counted_units": 68,
+   "their_typed_as_total": 68,
+   "as_sheet_total": 68,
+   "workbook": {
+    "removed_rows": 18,
+    "removed_units": 61,
+    "credited_rows": 18,
+    "credited_units": 65,
+    "ours_if_losses_recovered": 95.6,
+    "ceiling": 95.6
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 100% exceeds everything the workbook could yield under any definition (ceiling ≈ 95.6%). Their number overstates their own record by ≥ 4.4pp."
+  },
+  {
+   "pair": "Framingham × Massasoit",
+   "pdf": 55,
+   "repo": 55.4,
+   "ours": 50.8,
+   "delta_ours_vs_pdf": -4.2,
+   "their_typed_fraction": "36/65",
+   "their_counted_units": 36,
+   "their_typed_as_total": 65,
+   "as_sheet_total": 65,
+   "workbook": {
+    "removed_rows": 10,
+    "removed_units": 40,
+    "credited_rows": 10,
+    "credited_units": 33,
+    "ours_if_losses_recovered": 50.8,
+    "ceiling": 50.8
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 55% exceeds everything the workbook could yield under any definition (ceiling ≈ 50.8%). Their number overstates their own record by ≥ 4.2pp."
+  },
+  {
+   "pair": "UMass Lowell × Northern Essex",
+   "pdf": 73,
+   "repo": 73.4,
+   "ours": 68.8,
+   "delta_ours_vs_pdf": -4.2,
+   "their_typed_fraction": "47/64",
+   "their_counted_units": 47,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 13,
+    "removed_units": 43,
+    "credited_rows": 13,
+    "credited_units": 44,
+    "ours_if_losses_recovered": 68.8,
+    "ceiling": 68.8
+   },
+   "verdict": "above-ceiling",
+   "explanation": "The printed 73% exceeds everything the workbook could yield under any definition (ceiling ≈ 68.8%). Their number overstates their own record by ≥ 4.2pp."
+  },
+  {
+   "pair": "Framingham × North Shore",
+   "pdf": 34,
+   "repo": 34.4,
+   "ours": 35.9,
+   "delta_ours_vs_pdf": 1.9,
+   "their_typed_fraction": "22/64",
+   "their_counted_units": 22,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 6,
+    "removed_units": 24,
+    "credited_rows": 6,
+    "credited_units": 23,
+    "ours_if_losses_recovered": 35.9,
+    "ceiling": 35.9
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ 1.9pp)."
+  },
+  {
+   "pair": "Salem × Massasoit",
+   "pdf": 71,
+   "repo": 70.8,
+   "ours": 69.2,
+   "delta_ours_vs_pdf": -1.8,
+   "their_typed_fraction": "46/65",
+   "their_counted_units": 46,
+   "their_typed_as_total": 65,
+   "as_sheet_total": 65,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 52,
+    "credited_rows": 14,
+    "credited_units": 45,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "Diversity",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 73.8,
+    "ceiling": 73.8
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ -1.8pp)."
+  },
+  {
+   "pair": "Salem × North Shore",
+   "pdf": 83,
+   "repo": 82.8,
+   "ours": 81.3,
+   "delta_ours_vs_pdf": -1.7,
+   "their_typed_fraction": "53/64",
+   "their_counted_units": 53,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 15,
+    "removed_units": 56,
+    "credited_rows": 14,
+    "credited_units": 52,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "Free Elective",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 85.9,
+    "ceiling": 85.9
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ -1.7pp)."
+  },
+  {
+   "pair": "Fitchburg × MassBay",
+   "pdf": 100,
+   "repo": 100,
+   "ours": 98.5,
+   "delta_ours_vs_pdf": -1.5,
+   "their_typed_fraction": "68/68",
+   "their_counted_units": 68,
+   "their_typed_as_total": 68,
+   "as_sheet_total": 68,
+   "workbook": {
+    "removed_rows": 21,
+    "removed_units": 69,
+    "credited_rows": 19,
+    "credited_units": 68,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "Free Elective",
+      "credits": 4
+     },
+     {
+      "code": "ELEC XXX",
+      "name": "Free Elective",
+      "credits": 4
+     }
+    ],
+    "ours_if_losses_recovered": 100,
+    "ceiling": 100
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ -1.5pp)."
+  },
+  {
+   "pair": "UMass Boston × Middlesex",
+   "pdf": 63,
+   "repo": 63.3,
+   "ours": 61.7,
+   "delta_ours_vs_pdf": -1.3,
+   "their_typed_fraction": "38/60",
+   "their_counted_units": 38,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 10,
+    "removed_units": 33,
+    "credited_rows": 10,
+    "credited_units": 37,
+    "ours_if_losses_recovered": 61.7,
+    "ceiling": 61.7
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ -1.3pp)."
+  },
+  {
+   "pair": "UMass Boston × North Shore",
+   "pdf": 52,
+   "repo": 51.6,
+   "ours": 53.1,
+   "delta_ours_vs_pdf": 1.1,
+   "their_typed_fraction": "33/64",
+   "their_counted_units": 33,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 9,
+    "removed_units": 31,
+    "credited_rows": 9,
+    "credited_units": 34,
+    "ours_if_losses_recovered": 53.1,
+    "ceiling": 53.1
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ 1.1pp)."
+  },
+  {
+   "pair": "UMass Boston × Northern Essex",
+   "pdf": 48,
+   "repo": 48.4,
+   "ours": 46.9,
+   "delta_ours_vs_pdf": -1.1,
+   "their_typed_fraction": "31/64",
+   "their_counted_units": 31,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 8,
+    "removed_units": 27,
+    "credited_rows": 8,
+    "credited_units": 30,
+    "ours_if_losses_recovered": 46.9,
+    "ceiling": 46.9
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ -1.1pp)."
+  },
+  {
+   "pair": "Fitchburg × Roxbury",
+   "pdf": 41,
+   "repo": 40.6,
+   "ours": 40.6,
+   "delta_ours_vs_pdf": -0.4,
+   "their_typed_fraction": "26/64",
+   "their_counted_units": 26,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 9,
+    "removed_units": 29,
+    "credited_rows": 8,
+    "credited_units": 26,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "Free Elective",
+      "credits": 4
+     }
+    ],
+    "ours_if_losses_recovered": 46.9,
+    "ceiling": 46.9
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ -0.4pp)."
+  },
+  {
+   "pair": "Framingham × Roxbury",
+   "pdf": 27,
+   "repo": 26.6,
+   "ours": 26.6,
+   "delta_ours_vs_pdf": -0.4,
+   "their_typed_fraction": "17/64",
+   "their_counted_units": 17,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 5,
+    "removed_units": 20,
+    "credited_rows": 5,
+    "credited_units": 17,
+    "ours_if_losses_recovered": 26.6,
+    "ceiling": 26.6
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ -0.4pp)."
+  },
+  {
+   "pair": "Bridgewater × Bristol",
+   "pdf": 90,
+   "repo": 73.9,
+   "ours": 90.3,
+   "delta_ours_vs_pdf": 0.3,
+   "their_typed_fraction": "51/69",
+   "their_counted_units": 51,
+   "their_typed_as_total": 69,
+   "as_sheet_total": 72,
+   "workbook": {
+    "removed_rows": 19,
+    "removed_units": 59,
+    "credited_rows": 19,
+    "credited_units": 65,
+    "ours_if_losses_recovered": 90.3,
+    "ceiling": 90.3
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ 0.3pp)."
+  },
+  {
+   "pair": "Framingham × Mount Wachusett",
+   "pdf": 41,
+   "repo": 41.3,
+   "ours": 41.3,
+   "delta_ours_vs_pdf": 0.3,
+   "their_typed_fraction": "26/63",
+   "their_counted_units": 26,
+   "their_typed_as_total": 63,
+   "as_sheet_total": 63,
+   "workbook": {
+    "removed_rows": 8,
+    "removed_units": 32,
+    "credited_rows": 8,
+    "credited_units": 26,
+    "ours_if_losses_recovered": 41.3,
+    "ceiling": 41.3
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ 0.3pp)."
+  },
+  {
+   "pair": "Worcester × Roxbury",
+   "pdf": 56,
+   "repo": 56.3,
+   "ours": 56.3,
+   "delta_ours_vs_pdf": 0.3,
+   "their_typed_fraction": "36/64",
+   "their_counted_units": 36,
+   "their_typed_as_total": 64,
+   "as_sheet_total": 64,
+   "workbook": {
+    "removed_rows": 11,
+    "removed_units": 36,
+    "credited_rows": 11,
+    "credited_units": 36,
+    "ours_if_losses_recovered": 56.3,
+    "ceiling": 56.3
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ 0.3pp)."
+  },
+  {
+   "pair": "Bridgewater × MassBay",
+   "pdf": 91,
+   "repo": 85.3,
+   "ours": 91.2,
+   "delta_ours_vs_pdf": 0.2,
+   "their_typed_fraction": "58/68",
+   "their_counted_units": 58,
+   "their_typed_as_total": 68,
+   "as_sheet_total": 68,
+   "workbook": {
+    "removed_rows": 17,
+    "removed_units": 53,
+    "credited_rows": 17,
+    "credited_units": 62,
+    "ours_if_losses_recovered": 91.2,
+    "ceiling": 91.2
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ 0.2pp)."
+  },
+  {
+   "pair": "Bridgewater × Massasoit",
+   "pdf": 100,
+   "repo": 100,
+   "ours": 100,
+   "delta_ours_vs_pdf": 0,
+   "their_typed_fraction": "65/65",
+   "their_counted_units": 65,
+   "their_typed_as_total": 65,
+   "as_sheet_total": 65,
+   "workbook": {
+    "removed_rows": 23,
+    "removed_units": 74,
+    "credited_rows": 20,
+    "credited_units": 65,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "Social Science",
+      "credits": 3
+     },
+     {
+      "code": "ELEC XXX",
+      "name": "Global Culture",
+      "credits": 3
+     },
+     {
+      "code": "ELEC XXX",
+      "name": "Global Culture",
+      "credits": 3
+     }
+    ],
+    "ours_if_losses_recovered": 100,
+    "ceiling": 100
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ 0pp)."
+  },
+  {
+   "pair": "Fitchburg × Middlesex",
+   "pdf": 100,
+   "repo": 95,
+   "ours": 100,
+   "delta_ours_vs_pdf": 0,
+   "their_typed_fraction": "57/60",
+   "their_counted_units": 57,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 18,
+    "removed_units": 60,
+    "credited_rows": 17,
+    "credited_units": 60,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "Free Elective",
+      "credits": 4
+     }
+    ],
+    "ours_if_losses_recovered": 100,
+    "ceiling": 100
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ 0pp)."
+  },
+  {
+   "pair": "Fitchburg × Quinsigamond",
+   "pdf": 100,
+   "repo": 100,
+   "ours": 100,
+   "delta_ours_vs_pdf": 0,
+   "their_typed_fraction": "60/60",
+   "their_counted_units": 60,
+   "their_typed_as_total": 60,
+   "as_sheet_total": 60,
+   "workbook": {
+    "removed_rows": 18,
+    "removed_units": 58,
+    "credited_rows": 17,
+    "credited_units": 60,
+    "loss_rows": [
+     {
+      "code": "ELEC XXX",
+      "name": "Free Elective",
+      "credits": 4
+     }
+    ],
+    "ours_if_losses_recovered": 100,
+    "ceiling": 100
+   },
+   "verdict": "agrees",
+   "explanation": "Matches the printed value within rounding (Δ 0pp)."
+  }
+ ]
+}

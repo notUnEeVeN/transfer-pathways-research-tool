@@ -32,8 +32,9 @@ vi.mock('@frontend/query/hooks/useAudit', () => ({
   filterToParams: (filter) => filter,
 }))
 
-vi.mock('./DataPage', () => ({ default: () => <div>Data page stub</div> }))
-vi.mock('./visuals/VisualsPage', () => ({ default: () => <div>Visuals page stub</div> }))
+vi.mock('./DataPage', () => ({ default: () => <div>California page stub</div> }))
+vi.mock('./virginia/VirginiaPage', () => ({ default: () => <div>Virginia page stub</div> }))
+vi.mock('./massachusetts/MassachusettsPage', () => ({ default: () => <div>Massachusetts page stub</div> }))
 vi.mock('./DataApiDocs', () => ({ default: () => <div>API page stub</div> }))
 vi.mock('./tasks/TasksPage', () => ({ default: () => <div>Tasks page stub</div> }))
 vi.mock('./AdminPage', () => ({ default: () => <div>Admin page stub</div> }))
@@ -54,22 +55,25 @@ describe('App chrome', () => {
     expect(screen.getByText('Research console')).toBeInTheDocument()
 
     // The top nav now carries proper tab semantics: each nav pill has
-    // role="tab" and aria-selected (the accessibility fix).
-    for (const label of ['Data', 'Visuals', 'Audit', 'Tasks', 'API', 'Admin']) {
+    // role="tab" and aria-selected (the accessibility fix). States lead;
+    // Visuals lives inside each state page, not up here.
+    for (const label of ['California', 'Virginia', 'Massachusetts', 'Audit', 'Tasks', 'API', 'Admin']) {
       expect(screen.getByRole('tab', { name: label })).toBeInTheDocument()
     }
+    expect(screen.queryByRole('tab', { name: 'Data' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('tab', { name: 'Visuals' })).not.toBeInTheDocument()
 
     expect(screen.getByRole('button', { name: 'Sign out' })).toBeInTheDocument()
     expect(screen.getByText('researcher@example.edu')).toBeInTheDocument()
   })
 
   it('opens a valid deep-linked view and preserves unrelated URL state while navigating', () => {
-    window.history.replaceState({}, '', '/console?major=bio&view=visuals#coverage')
+    window.history.replaceState({}, '', '/console?major=bio&view=virginia#coverage')
 
     render(<App />)
 
-    expect(screen.getByText('Visuals page stub')).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Visuals' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByText('Virginia page stub')).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Virginia' })).toHaveAttribute('aria-selected', 'true')
 
     fireEvent.click(screen.getByRole('tab', { name: 'API' }))
     let url = new URL(window.location.href)
@@ -78,9 +82,9 @@ describe('App chrome', () => {
     expect(url.searchParams.get('major')).toBe('bio')
     expect(url.hash).toBe('#coverage')
 
-    fireEvent.click(screen.getByRole('tab', { name: 'Data' }))
+    fireEvent.click(screen.getByRole('tab', { name: 'California' }))
     url = new URL(window.location.href)
-    expect(screen.getByText('Data page stub')).toBeInTheDocument()
+    expect(screen.getByText('California page stub')).toBeInTheDocument()
     expect(url.searchParams.has('view')).toBe(false)
     expect(url.searchParams.get('major')).toBe('bio')
     expect(url.hash).toBe('#coverage')
@@ -91,11 +95,11 @@ describe('App chrome', () => {
     render(<App />)
 
     act(() => {
-      window.history.pushState({}, '', '/?major=econ&view=visuals#figures')
+      window.history.pushState({}, '', '/?major=econ&view=massachusetts#figures')
       window.dispatchEvent(new PopStateEvent('popstate'))
     })
-    expect(screen.getByText('Visuals page stub')).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Visuals' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByText('Massachusetts page stub')).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Massachusetts' })).toHaveAttribute('aria-selected', 'true')
 
     act(() => {
       window.history.pushState({}, '', '/?major=econ&view=api#figures')
@@ -105,6 +109,18 @@ describe('App chrome', () => {
     expect(screen.getByRole('tab', { name: 'API' })).toHaveAttribute('aria-selected', 'true')
   })
 
+  it('lands legacy visuals deep-links on California, where Visuals now lives', () => {
+    window.history.replaceState({}, '', '/console?major=bio&view=visuals#coverage')
+
+    render(<App />)
+
+    const url = new URL(window.location.href)
+    expect(screen.getByText('California page stub')).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'California' })).toHaveAttribute('aria-selected', 'true')
+    expect(url.searchParams.has('view')).toBe(false)
+    expect(url.searchParams.get('major')).toBe('bio')
+  })
+
   it('falls back safely and canonicalizes invalid or unauthorized views', () => {
     accessState.role = 'partner'
     window.history.replaceState({}, '', '/console?major=bio&view=admin#coverage')
@@ -112,7 +128,7 @@ describe('App chrome', () => {
     render(<App />)
 
     const url = new URL(window.location.href)
-    expect(screen.getByText('Data page stub')).toBeInTheDocument()
+    expect(screen.getByText('California page stub')).toBeInTheDocument()
     expect(screen.queryByRole('tab', { name: 'Admin' })).not.toBeInTheDocument()
     expect(url.searchParams.has('view')).toBe(false)
     expect(url.searchParams.get('major')).toBe('bio')

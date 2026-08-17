@@ -39,14 +39,25 @@ describe('majorScope', () => {
   });
 
   it('always returns the configured exact pairs, independent of old settings', async () => {
-    const expected = listMajors().flatMap((major) => programPairs(major));
-    expect(expected).toHaveLength(27);
+    const expected = listMajors({ includeStates: true }).flatMap((major) => programPairs(major));
+    // 27 California pairs, the Massachusetts corpus's 11, and Virginia's 16.
+    expect(expected).toHaveLength(54);
     expect(await majorScope(reqFor('admin-1', [CS_AT_1]))).toEqual(expected);
     invalidateVisibilityCache();
     expect(await majorScope(reqFor('partner-1', [CS_AT_1]))).toEqual(expected);
     invalidateVisibilityCache();
     const unconfigured = { school_id: 79, major: 'Computer Science, B.A.' };
     expect(await majorScope(reqFor('partner-1', null))).not.toContainEqual(unconfigured);
+  });
+
+  it('includes state-major pairs — a scoped Massachusetts analysis must see its agreements', async () => {
+    const scope = await majorScope(reqFor('partner-1', null));
+    // Statehood partitions corpora; it is not a visibility restriction. When
+    // this derived from the CA-only listMajors() default, every MA analysis
+    // cell silently zeroed: the pair filter dropped all ma: agreements while
+    // the degree rows still rendered.
+    expect(scope).toContainEqual({ school_id: 9001, major: 'Computer Science, B.S.' });
+    expect(scope.filter((pair) => pair.school_id >= 9001 && pair.school_id <= 9011)).toHaveLength(11);
   });
 
   it('drops exact duplicate pairs, preserving order', () => {
