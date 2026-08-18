@@ -21,7 +21,7 @@ import { useCoverage, usePrereqGraph, useTransferCreditRate } from './useData'
 describe('useCoverage', () => {
   beforeEach(() => mocks.useQuery.mockReset())
 
-  it('versions every dimension and discards inactive computed snapshots', () => {
+  it('versions every dimension and holds the computed snapshot for the session', () => {
     useCoverage({
       majorSlug: 'econ', groupBy: 'district', requirements: 'assist',
     })
@@ -32,8 +32,24 @@ describe('useCoverage', () => {
         'econ', '', 'district', 'assist', null,
       ],
       enabled: true,
-      gcTime: 0,
+      // Survives unmount now: Compare opens and closes panes constantly, and
+      // recomputing per mount made reading a request storm. Freshness comes
+      // from curated-save invalidation and the explicit refresh instead.
+      gcTime: 24 * 60 * 60 * 1000,
+      staleTime: 30 * 60 * 1000,
     }))
+  })
+
+  // The half of the policy that keeps it honest: a query a curated save marked
+  // stale must recompute on its next mount, or an edit made on the Data tab
+  // would paint a superseded number here.
+  it('still recomputes on mount once a curated save has invalidated it', () => {
+    useCoverage({ majorSlug: 'econ' })
+
+    const { refetchOnMount } = mocks.useQuery.mock.calls.at(-1)[0]
+    expect(typeof refetchOnMount).toBe('function')
+    expect(refetchOnMount({ state: { isInvalidated: true, dataUpdatedAt: Date.now() } })).toBe('always')
+    expect(refetchOnMount({ state: { isInvalidated: false, dataUpdatedAt: Date.now() } })).toBe(false)
   })
 })
 

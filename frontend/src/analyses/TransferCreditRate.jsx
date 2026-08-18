@@ -389,13 +389,18 @@ function RateTable({ model, scope, maSource = 'auto' }) {
 
 export default function TransferCreditRate({
   majorSlug = 'cs', majorLabel = '', degreeAnalysisSlots = null,
-  degreeSlotLabels = null, onMeasureChange, major = null,
+  degreeSlotLabels = null, onMeasureChange, onViewChange, major = null,
+  defaultDegreeType = null, defaultScope = 'lower-division',
+  defaultMaEquivalent = null, defaultMaSource = 'pdf', defaultMaGeOn = true,
+  defaultVerifiedOnly = false,
 }) {
   const degreeModes = useMemo(() => degreeModesForMajor({
     majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
   }), [majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels])
-  const [degreeType, setDegreeType] = useState(() => defaultDegreeMode(degreeModes))
-  const [scope, setScope] = useState('lower-division')
+  // The opening cohort is major-specific (A.S.-T only where the major has
+  // one), so the seed overrides it only when a view actually pinned a slot.
+  const [degreeType, setDegreeType] = useState(() => defaultDegreeType ?? defaultDegreeMode(degreeModes))
+  const [scope, setScope] = useState(defaultScope)
   // A PAPER corpus (the Massachusetts import) has exactly one source — the
   // recovered workbooks — so the California verified/unverified curation
   // cohorts do not exist there and the control disappears. It also OPENS on
@@ -409,7 +414,7 @@ export default function TransferCreditRate({
   // compare against, which is exactly the server's own join condition
   // (`capabilities.paperBaselines && state` in transferCreditRate.js).
   const paperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
-  const [maToggle, setMaEquivalent] = useState(paperCorpus)
+  const [maToggle, setMaEquivalent] = useState(defaultMaEquivalent ?? paperCorpus)
   // Locked on for a paper corpus: the published measure is the figure there,
   // and the toggle to leave it is not rendered.
   const maEquivalent = paperCorpus ? true : maToggle
@@ -417,9 +422,9 @@ export default function TransferCreditRate({
   // PDF as printed (default), the repo workbook's older tally, or our
   // recomputation — with a GE toggle on ours (default ON, their stated
   // method), because the paper's own counts mixed the two approaches.
-  const [maSource, setMaSource] = useState('pdf')
-  const [maGeOn, setMaGeOn] = useState(true)
-  const [verifiedOnly, setVerifiedOnly] = useState(false)
+  const [maSource, setMaSource] = useState(defaultMaSource)
+  const [maGeOn, setMaGeOn] = useState(defaultMaGeOn)
+  const [verifiedOnly, setVerifiedOnly] = useState(defaultVerifiedOnly)
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
       setDegreeType(defaultDegreeMode(degreeModes))
@@ -434,6 +439,21 @@ export default function TransferCreditRate({
       ? TRANSFER_CREDIT_RATE_MEASURES[MA_AS_SIDE_SCOPE]
       : TRANSFER_CREDIT_RATE_MEASURES.default)
   }, [maEquivalent, onMeasureChange])
+  // What a pinned view saves is the reader's own selection: `maToggle`, not
+  // `maEquivalent`, because the latter is forced on for a paper corpus and
+  // reopening on a forced value would credit the reader with a choice the
+  // figure made. Same for `maSource`, which carries 'ours' whether or not the
+  // GE toggle is resolving it to 'ours-cs'.
+  useEffect(() => {
+    onViewChange?.({
+      defaultDegreeType: degreeType,
+      defaultScope: scope,
+      defaultVerifiedOnly: verifiedOnly,
+      defaultMaEquivalent: maToggle,
+      defaultMaSource: maSource,
+      defaultMaGeOn: maGeOn,
+    })
+  }, [degreeType, scope, verifiedOnly, maToggle, maSource, maGeOn, onViewChange])
   const effectiveMaSource = maSource === 'ours' && !maGeOn ? 'ours-cs' : maSource
   const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly })
   const rows = query.data?.rows || []
@@ -556,36 +576,15 @@ export default function TransferCreditRate({
     <Stack gap='section'>
       {controls}
       <div data-export-root className='flex flex-col gap-3'>
-        <div className='surface-card px-4 py-3'>
-          <p className='text-label'>
-            {maEquivalent
-              ? 'MA-paper equivalent — associate-degree credit applied'
-              : REQUIREMENT_SCOPES.find((item) => item.value === scope)?.label}
-            <span className='text-ink-subtle'> · </span>
-            <EvidenceSummary verifiedOnly={verifiedOnly}
-              sourceLabel={paperCorpus ? 'Paper-source associate degrees (recovered workbooks)' : null}
-              collegeCount={model.rows.length} cellCount={model.valueCount} />
-          </p>
-          <p className='mt-1 text-caption text-ink-muted'>{scopeDescription(activeScope, paperCorpus ? effectiveMaSource : 'auto')}</p>
-          {verifiedOnly && !paperCorpus && (
-            <p className='mt-1 text-caption text-ink-muted'>
-              The associate-degree sources are human-verified; bachelor’s graduation templates are treated as valid for this comparison.
-            </p>
-          )}
-        </div>
         <RateTable model={model} scope={activeScope} maSource={paperCorpus ? effectiveMaSource : 'auto'} />
-        <TransferMethodNote warningCount={warningCount}>
-          {maEquivalent
-            ? 'The denominator is the associate degree’s own units — the Massachusetts paper’s transfer credit rate, general education included (their statewide average was 68% over pairs within 50 driving miles; this figure runs statewide). Associate-degree units are applied at most once to articulated courses, general education or breadth, and documented elective room. Blank cells lack enough curated information.'
-            : 'The denominator is the receiving bachelor’s requirements, not the associate degree. The full view includes university-only upper-division work; the lower-division view excludes that tier. Associate-degree units are applied at most once to articulated courses, general education or breadth, and documented elective room. Blank cells lack enough curated information.'}
-          {verifiedOnly
-            ? ' This high-fidelity state limits the associate-degree side to programs marked human-verified. Other method and modeling warnings remain visible.'
-            : rows.some((row) => row.source_verified !== true
-              || row.source_analysis_ready === false
-              || /needs[_\s-]+human[_\s-]+verification/i.test(row.degree_research_status || ''))
-              && ' This all-record state is exploratory because it can include associate-degree or bachelor’s sources still awaiting review.'}
-        </TransferMethodNote>
       </div>
     </Stack>
   )
 }
+
+// The props a pinned view may seed. Every `viewKnobs` entry on the registry
+// must name one of these; the contract test fails the build otherwise.
+TransferCreditRate.viewProps = [
+  'defaultDegreeType', 'defaultScope', 'defaultVerifiedOnly',
+  'defaultMaEquivalent', 'defaultMaSource', 'defaultMaGeOn',
+]

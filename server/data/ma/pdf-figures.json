@@ -2,26 +2,317 @@
   "source": "2027_SIGCSE_Virtual_MA_Transfer_Pathways.pdf (final SIGCSE submission), Figure 3, page 4 — per-pair transfer credit rate as printed. Transcribed 2026-08-14 from the embedded figure image at 3x scale; every column mean reproduces the printed Average row (79/86/36/38/65/80/53/92/89/58/74), enforced as an import gate. This is a NEWER revision of the tally than the repo's CurrComp Master.xlsx.",
   "fig3_pct_as": {
     "printed_average_row": {
-      "Bridgewater": 79, "Fitchburg": 86, "Framingham": 36, "MCLA": 38,
-      "Salem": 65, "UMass Amherst": 80, "UMass Boston": 53, "UMass Dartmouth": 92,
-      "UMass Lowell": 89, "Westfield": 58, "Worcester": 74
+      "Bridgewater": 79,
+      "Fitchburg": 86,
+      "Framingham": 36,
+      "MCLA": 38,
+      "Salem": 65,
+      "UMass Amherst": 80,
+      "UMass Boston": 53,
+      "UMass Dartmouth": 92,
+      "UMass Lowell": 89,
+      "Westfield": 58,
+      "Worcester": 74
     },
     "cells": {
-      "Berkshire": { "MCLA": 38, "Westfield": 43 },
-      "Bristol": { "Bridgewater": 90, "UMass Boston": 58, "UMass Dartmouth": 90 },
-      "Bunker Hill": { "Bridgewater": 51, "Fitchburg": 82, "Framingham": 28, "Salem": 70, "UMass Boston": 51, "UMass Lowell": 100 },
-      "Cape Cod": { "Bridgewater": 87, "UMass Dartmouth": 90 },
-      "Greenfield": { "MCLA": 37, "UMass Amherst": 97, "Westfield": 69 },
-      "Holyoke": { "UMass Amherst": 48, "Westfield": 55 },
-      "Massasoit": { "Bridgewater": 100, "Framingham": 55, "Salem": 71, "UMass Boston": 62, "UMass Dartmouth": 95 },
-      "MassBay": { "Bridgewater": 91, "Fitchburg": 100, "Framingham": 34, "Salem": 71, "UMass Boston": 51, "UMass Lowell": 100, "Worcester": 75 },
-      "Middlesex": { "Fitchburg": 100, "Framingham": 33, "Salem": 53, "UMass Boston": 63, "UMass Lowell": 100, "Worcester": 82 },
-      "Mount Wachusett": { "Fitchburg": 90, "Framingham": 41, "Worcester": 70 },
-      "North Shore": { "Bridgewater": 97, "Framingham": 34, "Salem": 83, "UMass Boston": 52, "UMass Lowell": 100 },
-      "Northern Essex": { "Salem": 69, "UMass Boston": 48, "UMass Lowell": 73 },
-      "Quinsigamond": { "Fitchburg": 100, "Framingham": 38, "UMass Lowell": 100, "Worcester": 100 },
-      "Roxbury": { "Bridgewater": 39, "Fitchburg": 41, "Framingham": 27, "Salem": 38, "UMass Boston": 42, "UMass Lowell": 52, "Worcester": 56 },
-      "Springfield Technical": { "UMass Amherst": 95, "Westfield": 67, "Worcester": 60 }
+      "Berkshire": {
+        "MCLA": 38,
+        "Westfield": 43
+      },
+      "Bristol": {
+        "Bridgewater": 90,
+        "UMass Boston": 58,
+        "UMass Dartmouth": 90
+      },
+      "Bunker Hill": {
+        "Bridgewater": 51,
+        "Fitchburg": 82,
+        "Framingham": 28,
+        "Salem": 70,
+        "UMass Boston": 51,
+        "UMass Lowell": 100
+      },
+      "Cape Cod": {
+        "Bridgewater": 87,
+        "UMass Dartmouth": 90
+      },
+      "Greenfield": {
+        "MCLA": 37,
+        "UMass Amherst": 97,
+        "Westfield": 69
+      },
+      "Holyoke": {
+        "UMass Amherst": 48,
+        "Westfield": 55
+      },
+      "Massasoit": {
+        "Bridgewater": 100,
+        "Framingham": 55,
+        "Salem": 71,
+        "UMass Boston": 62,
+        "UMass Dartmouth": 95
+      },
+      "MassBay": {
+        "Bridgewater": 91,
+        "Fitchburg": 100,
+        "Framingham": 34,
+        "Salem": 71,
+        "UMass Boston": 51,
+        "UMass Lowell": 100,
+        "Worcester": 75
+      },
+      "Middlesex": {
+        "Fitchburg": 100,
+        "Framingham": 33,
+        "Salem": 53,
+        "UMass Boston": 63,
+        "UMass Lowell": 100,
+        "Worcester": 82
+      },
+      "Mount Wachusett": {
+        "Fitchburg": 90,
+        "Framingham": 41,
+        "Worcester": 70
+      },
+      "North Shore": {
+        "Bridgewater": 97,
+        "Framingham": 34,
+        "Salem": 83,
+        "UMass Boston": 52,
+        "UMass Lowell": 100
+      },
+      "Northern Essex": {
+        "Salem": 69,
+        "UMass Boston": 48,
+        "UMass Lowell": 73
+      },
+      "Quinsigamond": {
+        "Fitchburg": 100,
+        "Framingham": 38,
+        "UMass Lowell": 100,
+        "Worcester": 100
+      },
+      "Roxbury": {
+        "Bridgewater": 39,
+        "Fitchburg": 41,
+        "Framingham": 27,
+        "Salem": 38,
+        "UMass Boston": 42,
+        "UMass Lowell": 52,
+        "Worcester": 56
+      },
+      "Springfield Technical": {
+        "UMass Amherst": 95,
+        "Westfield": 67,
+        "Worcester": 60
+      }
     }
+  },
+  "fig4_extra_hours": {
+    "transcribed_at": "2026-08-17",
+    "method": "Embedded figure image extracted from the final PDF at native resolution (page 4, xref 11) and read at 3x, the same procedure used for Figure 3.",
+    "gate": "Our transcription reproduces the figure's own printed Average row on 10 of 11 columns exactly; MCLA computes 26.5 and prints 26 (the figure rounds half down).",
+    "cells": {
+      "Berkshire": {
+        "MCLA": 26,
+        "Westfield": 31
+      },
+      "Bristol": {
+        "Bridgewater": 0,
+        "UMass Boston": 26,
+        "UMass Dartmouth": 0
+      },
+      "Bunker Hill": {
+        "Bridgewater": 29,
+        "Fitchburg": 6,
+        "Framingham": 35,
+        "Salem": 9,
+        "UMass Boston": 6,
+        "UMass Lowell": 4
+      },
+      "Cape Cod": {
+        "Bridgewater": 0,
+        "UMass Dartmouth": 0
+      },
+      "Greenfield": {
+        "MCLA": 27,
+        "UMass Amherst": 0,
+        "Westfield": 14
+      },
+      "Holyoke": {
+        "UMass Amherst": 0,
+        "Westfield": 24
+      },
+      "MassBay": {
+        "Bridgewater": 0,
+        "Fitchburg": 0,
+        "Framingham": 42,
+        "Salem": 5,
+        "UMass Boston": 7,
+        "UMass Lowell": 5,
+        "Worcester": 8
+      },
+      "Middlesex": {
+        "Fitchburg": 0,
+        "Framingham": 39,
+        "Salem": 22,
+        "UMass Boston": 22,
+        "UMass Lowell": 2,
+        "Worcester": 7
+      },
+      "Mount Wachusett": {
+        "Fitchburg": 0,
+        "Framingham": 33,
+        "Worcester": 12
+      },
+      "North Shore": {
+        "Bridgewater": 0,
+        "Framingham": 34,
+        "Salem": 6,
+        "UMass Boston": 24,
+        "UMass Lowell": 6
+      },
+      "Northern Essex": {
+        "Salem": 11,
+        "UMass Boston": 35,
+        "UMass Lowell": 22
+      },
+      "Quinsigamond": {
+        "Fitchburg": 0,
+        "Framingham": 26,
+        "UMass Lowell": 2,
+        "Worcester": 0
+      },
+      "Springfield Technical": {
+        "UMass Amherst": 0,
+        "Westfield": 14,
+        "Worcester": 12
+      }
+    },
+    "printed_average_row": {
+      "Bridgewater": 6,
+      "Fitchburg": 1,
+      "Framingham": 35,
+      "MCLA": 26,
+      "Salem": 11,
+      "UMass Amherst": 0,
+      "UMass Boston": 20,
+      "UMass Dartmouth": 0,
+      "UMass Lowell": 7,
+      "Westfield": 21,
+      "Worcester": 8
+    },
+    "cell_count": 49
+  },
+  "fig5_extra_cost": {
+    "transcribed_at": "2026-08-17",
+    "method": "Same procedure, page 5 xref for Figure 5.",
+    "gate": "Figure 5 = Figure 4 x a per-campus per-credit rate, consistent to the cent on all 35 priced cells. Overall mean $7,129, which is the figure the paper states in its own text.",
+    "per_credit_rates": {
+      "MCLA": 508,
+      "Westfield": 515,
+      "UMass Boston": 696,
+      "Bridgewater": 489,
+      "Fitchburg": 473,
+      "Framingham": 497,
+      "Salem": 514,
+      "UMass Lowell": 707,
+      "Worcester": 491
+    },
+    "cells": {
+      "Berkshire": {
+        "MCLA": 13202,
+        "Westfield": 15970
+      },
+      "Bristol": {
+        "Bridgewater": 0,
+        "UMass Boston": 18085,
+        "UMass Dartmouth": 0
+      },
+      "Bunker Hill": {
+        "Bridgewater": 14179,
+        "Fitchburg": 2836,
+        "Framingham": 17383,
+        "Salem": 4627,
+        "UMass Boston": 4174,
+        "UMass Lowell": 2828
+      },
+      "Cape Cod": {
+        "Bridgewater": 0,
+        "UMass Dartmouth": 0
+      },
+      "Greenfield": {
+        "MCLA": 13709,
+        "UMass Amherst": 0,
+        "Westfield": 7212
+      },
+      "Holyoke": {
+        "UMass Amherst": 0,
+        "Westfield": 12364
+      },
+      "MassBay": {
+        "Bridgewater": 0,
+        "Fitchburg": 0,
+        "Framingham": 20860,
+        "Salem": 2570,
+        "UMass Boston": 4869,
+        "UMass Lowell": 3535,
+        "Worcester": 3929
+      },
+      "Middlesex": {
+        "Fitchburg": 0,
+        "Framingham": 19370,
+        "Salem": 11310,
+        "UMass Boston": 15303,
+        "UMass Lowell": 1414,
+        "Worcester": 3438
+      },
+      "Mount Wachusett": {
+        "Fitchburg": 0,
+        "Framingham": 16390,
+        "Worcester": 5893
+      },
+      "North Shore": {
+        "Bridgewater": 0,
+        "Framingham": 16887,
+        "Salem": 3085,
+        "UMass Boston": 16694,
+        "UMass Lowell": 4242
+      },
+      "Northern Essex": {
+        "Salem": 5655,
+        "UMass Boston": 24345,
+        "UMass Lowell": 15552
+      },
+      "Quinsigamond": {
+        "Fitchburg": 0,
+        "Framingham": 12913,
+        "UMass Lowell": 1414,
+        "Worcester": 0
+      },
+      "Springfield Technical": {
+        "UMass Amherst": 0,
+        "Westfield": 7212,
+        "Worcester": 5893
+      }
+    },
+    "printed_average_row": {
+      "Bridgewater": 2836,
+      "Fitchburg": 567,
+      "Framingham": 17301,
+      "MCLA": 13455,
+      "Salem": 5449,
+      "UMass Amherst": 0,
+      "UMass Boston": 13912,
+      "UMass Dartmouth": 0,
+      "UMass Lowell": 4831,
+      "Westfield": 10690,
+      "Worcester": 3830
+    }
+  },
+  "fig7_summary_is_stale": {
+    "finding": "The paper's Figure 7 summary table contradicts its own Figures 4 and 5 on 7 of 11 columns, and matches the repo workbook on those same columns. Figure 7 carries the OLDER tally; Figures 4 and 5 are the newer computation and are internally consistent with each other and with the paper's stated totals (13 extra hours, $7,129). Figure 7's other two rows (transfer rate, complexity) DO match Figures 3 and 6, so only the credit-hours and cost rows are stale.",
+    "fig4_vs_fig7_agree": "4 of 11 columns",
+    "fig7_vs_repo_agree": "7 of 11 columns"
   }
 }

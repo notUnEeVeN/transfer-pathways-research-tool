@@ -266,7 +266,44 @@ const VA_STATE = {
   no_program: { label: 'No CS-specific degree', variant: 'neutral' },
 }
 
-const VERIFY_ELIGIBLE_COLLECTION_STATUSES = new Set(['catalog_accepted', 'analysis_ready'])
+/** The two outcomes that will never carry a tick, however long anyone waits. */
+const SETTLED_STATES = new Set(['url_only', 'no_program'])
+
+/**
+ * Whether one document counts as verified.
+ *
+ * The signed verdict, and only the verdict — the server's rule, not
+ * California's. A note here is not evidence of verification: Virginia's note
+ * field was used as a working scratchpad during collection, and most live
+ * documents carrying one hold the source URLs they were built from. Counting
+ * those would have reported the four-year job as 14 of 18 done when two
+ * documents had been signed. `has_notes` is still surfaced separately, because
+ * "somebody wrote something here" is useful — it just is not a sign-off.
+ */
+const docVerified = (doc) => doc?.verified === true
+
+/**
+ * Whether a person is allowed to sign one document off.
+ *
+ * LIVE, and nothing else: status `extracted`, and the primary of its kind
+ * wherever the API distinguishes one. `acceptance` is the parser's verdict on
+ * its own parse — informational at most, and deliberately absent from this
+ * rule. Gating on it emptied the denominator for eleven live A.S. documents
+ * that were never given an acceptance block at all, which is what left
+ * verifiers looking at degrees they could read but not sign.
+ */
+const docLive = (doc) => (typeof doc?.live === 'boolean'
+  ? doc.live
+  : doc?.status === 'extracted' && doc?.primary !== false)
+
+/**
+ * The first figure the API actually reported, else the one derived here.
+ *
+ * The server owns the eligibility rule, so its own count wins whenever it sends
+ * one; the local derivation exists only so an older or partial response still
+ * draws a truthful bar rather than a zero.
+ */
+const reported = (candidates, fallback) => candidates.find((v) => Number.isFinite(v)) ?? fallback
 
 /** Coverage rows keyed by institution slug, so a rail can read its own state. */
 const coverageSlugOf = (row) => row?.institution_slug
@@ -277,7 +314,7 @@ function buildVerificationIndex(coverage = []) {
   for (const row of coverage) {
     const slug = coverageSlugOf(row)
     const docs = [...(row.documents?.as_degree ?? []), ...(row.documents?.degree ?? [])]
-    const readable = docs.filter((d) => d.status === 'extracted')
+    const live = docs.filter(docLive)
     const state = row.collection_status === 'no_program'
       ? 'no_program'
       : row.collection_status === 'catalog_url_only'
@@ -286,21 +323,14 @@ function buildVerificationIndex(coverage = []) {
           ? 'needs_composition'
           : !docs.length || row.collection_status === 'not_collected'
             ? 'needs_collection'
-            : !readable.length
+            : !live.length
               ? (docs.some((d) => d.status === 'no_program') ? 'no_program' : 'url_only')
-              : readable.every((d) => d.verified) ? 'verified' : 'in_review'
+              : live.every(docVerified) ? 'verified' : 'in_review'
     index.set(slug, {
       state,
       documents: docs.length,
-      readable: readable.length,
-      verified: readable.filter((d) => d.verified).length,
-      // A parser-only document can be read but not signed. The server keeps
-      // these out of its verification denominator so progress never asks for an
-      // impossible action; the same rule has to hold here or the page and the
-      // API report different numbers for the same corpus.
-      verifiable: readable.filter((d) => d.catalog_accepted).length,
-      groups: readable[0]?.groups ?? 0,
-      receivers: readable[0]?.receivers ?? 0,
+      live: live.length,
+      verified: live.filter(docVerified).length,
     })
   }
   return index
@@ -316,12 +346,17 @@ function coverageForInstitution(coverage, institution) {
 }
 
 /**
- * The overview states progress and stops there.
+ * The overview answers three questions and stops there: how much is verified,
+ * how much is left, and what is standing in the way.
  *
- * An earlier version put the whole worklist here as a table, which buried the
- * one number a reader wants behind six columns they did not ask for. Working
- * through the degrees happens in the rails, where the degree itself is one
- * click away; this panel only answers "how much is left".
+ * The last two used to read as a single number, which hid the fact that they
+ * are different jobs belonging to different people. A degree nobody has
+ * collected needs a researcher at a catalog page; a collected one needs a
+ * verifier at a source page; an institution that publishes no CS degree needs
+ * nobody at all. The card names all three so a reader can tell which pile they
+ * are looking at, and so "no progress" can never be mistaken for "no work
+ * possible". Working through the degrees still happens in the rails, where the
+ * document itself is one click away.
  */
 function VerificationPanel() {
   const { data, isLoading, isError } = useVaCoverage()
@@ -331,65 +366,108 @@ function VerificationPanel() {
     const index = buildVerificationIndex(rows)
     const totals = data?.verification ?? {}
     return ['community_college', 'four_year'].map((level) => {
-      // The public four-year cohort is the Virginia analogue of the UC
-      // receiving side. Private/professional partners remain available in the
-      // Universities tab, but do not inflate the primary verification job.
-      const scoped = rows.filter((r) => r.level === level
-        && (level !== 'four_year' || r.cohort === PRIMARY_VA_COHORT))
-      const states = scoped.map((r) => index.get(coverageSlugOf(r)))
       const cc = level === 'community_college'
+      // Two populations, deliberately kept apart. The bar counts documents
+      // across the whole level, which is what the endpoint's totals count; the
+      // institution lines below are scoped to the cohort its rail opens on —
+      // the public four-year cohort is the Virginia analogue of the UC
+      // receiving side, and private partners must not inflate that job. Each
+      // line states its own denominator so the two cannot be read as one.
+      const levelStates = rows.filter((r) => r.level === level)
+        .map((r) => index.get(coverageSlugOf(r))).filter(Boolean)
+      const scoped = rows
+        .filter((r) => r.level === level && (level !== 'four_year' || r.cohort === PRIMARY_VA_COHORT))
+        .map((r) => index.get(coverageSlugOf(r))).filter(Boolean)
+      const expecting = scoped.filter((s) => !SETTLED_STATES.has(s.state))
+      // `*_live` is the count of documents a person is allowed to sign;
+      // `*_verifiable` is the older name for the same per-level figure.
+      const live = reported(
+        cc ? [totals.as_live, totals.as_verifiable] : [totals.bs_live, totals.bs_verifiable],
+        levelStates.reduce((n, s) => n + s.live, 0),
+      )
+      const verified = reported(
+        [cc ? totals.as_verified : totals.bs_verified],
+        levelStates.reduce((n, s) => n + s.verified, 0),
+      )
       return {
         level,
         label: cc ? 'A.S. degrees' : 'B.S. degrees',
-        // The bar reports the server's own figure rather than a second one
-        // derived here. The server applies the acceptance gate — a parser-only
-        // document is readable but cannot be signed, so it is excluded from the
-        // denominator and the progress figure never asks for an impossible
-        // action. Recomputing locally dropped that gate, which put a different
-        // number on the page than the API reported for the same corpus.
-        verified: cc ? totals.as_verified ?? 0 : totals.bs_verified ?? 0,
-        verifiable: cc ? totals.as_verifiable ?? 0 : totals.bs_verifiable ?? 0,
-        // Institution-level context for what the bar cannot show: a school with
-        // nothing collected yet holds no document, so it is absent from the
-        // denominator entirely. Naming it keeps the bar from reading as the
-        // whole job — it is progress through what exists, not through the cohort.
-        cohort: states.filter((s) => s && s.state !== 'url_only' && s.state !== 'no_program').length,
-        awaiting: states.filter((s) => s
-          && (s.state === 'needs_collection' || s.state === 'needs_composition')).length,
+        live,
+        verified,
+        // Clamped: two figures that arrived from different places must never
+        // subtract into a negative count of outstanding work on screen.
+        waiting: Math.max(0, live - verified),
+        // A school with nothing collected holds no document, so it is absent
+        // from the bar entirely. Counting it here is what keeps the bar from
+        // reading as the whole job.
+        cohort: expecting.length,
+        awaiting: expecting.filter((s) => !s.live).length,
+        settled: scoped.length - expecting.length,
       }
     })
   }, [data])
 
-  const totals = data?.verification
-
   if (isLoading) return <div className='flex justify-center py-8'><Spinner /></div>
   if (isError || !data?.coverage?.length) return null
 
+  const live = levels.reduce((n, l) => n + l.live, 0)
+  const verified = levels.reduce((n, l) => n + l.verified, 0)
+
   return (
-    <Panel title='Verification progress'>
+    <Panel title='Verification progress'
+      action={live > 0
+        ? <Badge variant={verified === live ? 'success' : 'accent'}>{verified} of {live} verified</Badge>
+        : null}>
       <p className='text-caption ink-subtle mb-4'>
-        A collected Virginia degree is not verified until a person has checked it against every
-        cited source layer. Work through them in the Community Colleges and
-        Universities tabs, where the status pills filter the list. B.S. progress uses SCHEV's
-        15 public four-year institutions; additional Virginia partners stay in the secondary view.
+        A degree counts as verified when a person has checked it against its cited sources and
+        signed it off. Notes are welcome but they are not a signature — the note box here has been
+        used for source links and working remarks, so it records what someone was thinking, not
+        that the document was approved. Every live document can be signed; a parser's verdict on
+        its own parse decides nothing about who may read a page. Work through them in the Community
+        Colleges and Universities tabs, where the status pills filter the list.
       </p>
       <div className='grid gap-4 sm:grid-cols-2'>
         {levels.map((l) => (
-          <div key={l.level}>
-            <ProgressBar label={`${l.label} verified`} value={l.verified} total={l.verifiable} tone='success' />
-            <p className='text-tag text-ink-subtle mt-1.5'>
-              {l.awaiting} of {l.cohort} institutions still need a reviewable catalog record
-            </p>
+          <div key={l.level} className='surface-sunken rounded-[10px] p-4'>
+            {l.live > 0 ? (
+              <ProgressBar label={`${l.label} verified`} value={l.verified} total={l.live} tone='success' />
+            ) : (
+              // Never a 0-of-0 bar. An empty track reads as "nobody has done
+              // any of this" when the truth is that there is nothing here yet
+              // to do, and the two send a reader to entirely different work.
+              <>
+                <p className='text-tag text-ink-subtle'>{l.label} verified</p>
+                <p className='text-caption ink-subtle mt-1'>
+                  Nothing collected at this level yet, so there is nothing to verify.
+                </p>
+              </>
+            )}
+            <ul className='mt-3 space-y-1'>
+              <JobLine name='Waiting for a person'
+                detail={`${l.waiting} collected documents`} />
+              {l.cohort > 0 && (
+                <JobLine name='Not collected yet'
+                  detail={`${l.awaiting} of ${l.cohort} institutions`} />
+              )}
+              {l.settled > 0 && (
+                <JobLine name='Nothing to sign'
+                  detail={`${l.settled} institutions — URL only, or no CS-specific degree`} />
+              )}
+            </ul>
           </div>
         ))}
       </div>
-      {totals && totals.reviewable > totals.verifiable && (
-        <p className='text-tag text-ink-subtle mt-4'>
-          {totals.reviewable - totals.verifiable} of {totals.documents} collected documents are
-          readable but not yet acceptable, so they sit outside the bars above.
-        </p>
-      )}
     </Panel>
+  )
+}
+
+/** One named job and its own count, so no two lines share a denominator. */
+function JobLine({ name, detail }) {
+  return (
+    <li className='flex flex-wrap items-baseline justify-between gap-x-3 text-tag'>
+      <span className='text-ink-muted'>{name}</span>
+      <span className='text-ink-subtle'>{detail}</span>
+    </li>
   )
 }
 
@@ -782,8 +860,8 @@ function UniversityCourses({ university }) {
  *
  * Two sources can exist for the same school and both are shown: the
  * institution's own catalog (the spine) and Transfer Virginia's program map
- * (corroboration). They are never merged, and corroboration or parser-only
- * records remain visibly incomplete until the catalog-acceptance gate passes.
+ * (corroboration). They are never merged, and each is signed off on its own —
+ * a half-done school is genuinely half-done and says so.
  *
  * `url_only` is a real outcome, not a failure: some institutions publish no
  * machine-readable course list at the configured official source, so the
@@ -968,12 +1046,12 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
   const fromCatalog = doc.source === 'institution_catalog'
   const verified = !!doc.verification?.verified
   const dirty = notes !== (doc.verification?.notes ?? '')
-  // Read this from the stored record, never `editDoc`: typing a status into the
-  // JSON editor must not unlock a signed verdict before the record is saved and
-  // accepted. This machine gate stays deliberately separate from the only
-  // researcher-facing verdict: verified or unverified.
-  const canVerify = doc.acceptance?.accepted === true
-    || VERIFY_ELIGIBLE_COLLECTION_STATUSES.has(doc.collection_status)
+  // There is no client-side gate on the verdict. A document that reached this
+  // pane is one the server served for this institution, and the server owns
+  // which of those may be signed; re-deriving that rule here is how eleven A.S.
+  // degrees with no `acceptance` block became unverifiable for everyone. The
+  // parse verdict is not shown at all, for the same reason the rails have no
+  // "flagged by the parser" state — on screen it gets read as a verdict.
 
   const commit = (nextVerified) => save.mutate({
     ...editDoc,
@@ -1077,7 +1155,7 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
           <Button onClick={saveEdits} disabled={save.isPending || (!draft && !dirty)}>
             {save.isPending ? 'Saving…' : 'Save changes'}
           </Button>
-          <Button onClick={() => commit(true)} disabled={save.isPending || !canVerify}>
+          <Button onClick={() => commit(true)} disabled={save.isPending}>
             {verified ? 'Re-verify' : 'Mark verified'}
           </Button>
           {verified && (
@@ -1094,12 +1172,6 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
           {save.isPending && <Spinner />}
           {save.isError && <span className='text-caption text-danger'>Save failed.</span>}
         </div>
-        {!canVerify && (
-          <p className='text-caption ink-subtle mt-2'>
-            Verification unavailable: this document has not passed catalog acceptance.
-          </p>
-        )}
-
         {showHistory && (
           <div className='mt-3'>
             {revisions.isLoading ? <Spinner />

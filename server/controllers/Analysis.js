@@ -41,6 +41,7 @@ const {
 const { transferCreditRateData } = require('../services/analysis/transferCreditRate');
 const { multiCampusPathwaysData } = require('../services/analysis/pathwayPlanner');
 const { loadMultiCampusSnapshot } = require('../services/analysis/pathwaySnapshot');
+const { curationEpoch } = require('../services/curationEpoch');
 
 const TTL_MS = 60 * 1000;
 const cache = new Map(); // key → { at, rows }
@@ -148,12 +149,17 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false, responseParams 
     }
     const exactScope = programPairs(params.majorPrograms)
       .map((pair) => `${pair.school_id}:${pair.major}`).join(',');
-    const key = `${name}|${params.majorSlug || ''}|x:${exactScope}|q:${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|complete:${params.requireCompleteDistrictMatrix ? 1 : 0}|v:${scopeTag(params.visiblePairs)}`;
-    // Degree templates are editable in the Data tab. The frontend invalidates
-    // its query after a save; bypassing the short analysis cache here makes the
-    // next request reflect that edit immediately.
+    // The curation epoch is part of the key, so any write to hand-curated data
+    // retires every memoized analysis at once. Without it the client's
+    // post-save refetch is answered out of this cache with the pre-edit rows,
+    // and the browser then holds that answer as fresh.
+    const key = `${name}|e:${curationEpoch()}|${params.majorSlug || ''}|x:${exactScope}|q:${params.majorContains}|${params.schoolIds.join(',')}|g:${params.groupBy}|r:${params.requirements}|p:${params.pin || ''}|complete:${params.requireCompleteDistrictMatrix ? 1 : 0}|v:${scopeTag(params.visiblePairs)}`;
+    // Degree templates are editable in the Data tab, and `?refresh=1` is the
+    // reader asking for a recomputation outright — neither may be served from
+    // the memo.
     const liveDegreeCoverage = name === 'coverage' && params.requirements === 'degree';
-    const rows = liveDegreeCoverage
+    const forced = String(req.query.refresh || '') === '1';
+    const rows = (liveDegreeCoverage || forced)
       ? await computeFn(db, auditDb, params)
       : await cached(key, () => computeFn(db, auditDb, params));
     if (req.query.format === 'csv') {

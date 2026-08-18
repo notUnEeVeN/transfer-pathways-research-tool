@@ -3,6 +3,7 @@ import React from 'react'
 // Content width by page kind. The gutter (px-6 md:px-12) and band (py-10) are
 // fixed — only the max-width changes with the page's job.
 const widths = {
+  full: 'max-w-none', // side-by-side figures — every pixel is a pixel of chart
   wide: 'max-w-7xl', // data-dense pages — the institution directory, visuals
   form: 'max-w-3xl', // settings + multi-field forms
   narrow: 'max-w-2xl' // focused single-column — sign-in, upgrade prompts

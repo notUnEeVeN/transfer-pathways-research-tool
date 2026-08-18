@@ -2,6 +2,23 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import apiClient from '../../api/apiClient'
 import { useAuth } from '../../hooks/useAuth'
 import { qk } from '../keys'
+import { ANALYSIS_KEY_PREFIX, consumeForceRefresh, markForceRefresh, markAnalysesForForceRefresh } from '../refresh'
+
+/**
+ * Retire every computed analysis after a curated write.
+ *
+ * Invalidation alone is not enough for the analyses the SERVER caches:
+ * pathway-complexity reads a permanent Mongo document unless the request asks
+ * for a recomputation, so a bare invalidate refetches and gets the pre-edit
+ * matrix straight back. Marking first is what makes the refetch honest.
+ */
+function flushComputedAnalyses(qc) {
+  markAnalysesForForceRefresh(qc)
+  return qc.invalidateQueries({
+    predicate: (query) => String(query.queryKey[0] || '').startsWith(ANALYSIS_KEY_PREFIX),
+  })
+}
+
 
 // Data-explorer hooks. Everything the server returns here is already scoped
 // to the caller's visibility (admins: everything ported; partners: the
@@ -102,6 +119,52 @@ export function useAgreementsBatch(collegeId, schoolId) {
   })
 }
 
+// ── computed analyses: the session cache ──
+//
+// Every /analysis/* result is a derived number, and the surfaces that read
+// them (Visuals, Compare) edit nothing they are derived from. So an analysis is
+// fetched once and held for the session. The freshness that used to come from
+// refetching now comes from the two events that can actually know a number
+// moved: a curated save invalidates the whole `analysis-` prefix (the
+// predicates further down this file), and the reader asks for a recomputation
+// through ../refresh.js. Mounting is deliberately not one of those events —
+// Compare mounts and unmounts panes as they open, close and re-key, and paying
+// for a recomputation per mount turned reading into a request storm.
+//
+// The window is finite rather than Infinity so a tab left open overnight still
+// recovers on its own, and analyses are never written to IndexedDB
+// (shouldPersistQuery), so a reload recomputes everything from the server.
+const ANALYSIS_SESSION_TIME = 30 * 60 * 1000
+
+const ANALYSIS_SESSION_CACHE = {
+  staleTime: ANALYSIS_SESSION_TIME,
+  // Survives unmount: closing a pane and reopening it reads the same result.
+  gcTime: 24 * 60 * 60 * 1000,
+  // No refetch on mount — but not a flat `false`, which would also swallow the
+  // invalidation this policy leans on: a query a curated save marked stale must
+  // recompute the next time it is mounted, or an edit made on the Data tab
+  // would paint a superseded number here.
+  refetchOnMount: (query) => {
+    if (query.state.isInvalidated) return 'always'
+    const age = Date.now() - (query.state.dataUpdatedAt || 0)
+    return age >= ANALYSIS_SESSION_TIME ? 'always' : false
+  },
+}
+
+// Call sites choose WHAT is fetched; caching is decided here. Several figures
+// still pass the `staleTime: 0` they needed when a visual had to recompute on
+// every mount, so the caching keys are dropped from what a caller passes rather
+// than spread over the policy — one pane must not be able to reopen the storm
+// for the whole session. Everything else (enabled, refetchInterval, select)
+// rides through untouched.
+const CACHE_POLICY_OPTIONS = ['staleTime', 'gcTime', 'refetchOnMount']
+
+function withSessionCache(queryOptions = {}, overrides = {}) {
+  const passthrough = { ...queryOptions }
+  for (const key of CACHE_POLICY_OPTIONS) delete passthrough[key]
+  return { ...ANALYSIS_SESSION_CACHE, ...overrides, ...passthrough }
+}
+
 // Scoped per-agreement articulation coverage (the papers' heatmap input).
 // One fetch covers the whole visible subset; components index client-side.
 export function useCoverage(params = {}, options = {}) {
@@ -129,32 +192,52 @@ export function useCoverage(params = {}, options = {}) {
         })
         .then((r) => r.data),
     enabled: !!user?.uid && enabled,
-    // Coverage is a computed snapshot, not source data. Drop it as soon as no
-    // visual observes it so navigating away and back always waits for one
-    // current response instead of painting an older in-memory result first.
-    gcTime: 0,
-    staleTime: 5 * 60 * 1000,
-    ...queryOptions,
+    // Coverage is a computed snapshot, not source data. It used to be dropped
+    // the moment no visual observed it, so a return trip always waited for one
+    // current response rather than painting an older in-memory result. That
+    // guarantee now comes from the curated-save invalidation plus the explicit
+    // refresh, which is what lets every Compare pane that opens and closes stop
+    // paying for a fresh statewide computation.
+    ...withSessionCache(queryOptions),
   })
 }
 
 // Per college × campus, the share of all bachelor's requirements and of only
 // lower-division requirements fulfilled by the selected major's associate
 // degree.
-// The result is edited frequently, so it is never persisted and every mount
-// fetches the current calculation (an in-memory result may bridge that fetch).
-// degree_type: 'ast' | 'local_as' | 'local_other'.
+// The inputs are edited constantly, so the root key carries the `analysis-`
+// prefix: without it this result was matched by neither the curated-save
+// invalidation nor the persister's analysis exclusion, and a hand edit could
+// leave a stale figure standing — across reloads, since it was being written
+// to IndexedDB. degree_type: 'ast' | 'local_as' | 'local_other'.
 export function usePathwayComplexity(options = {}) {
   const { user } = useAuth()
   const { enabled = true, majorSlug = 'cs', ...queryOptions } = options
   const scopedMajor = String(majorSlug || '').trim() || 'cs'
   return useQuery({
-    queryKey: ['pathway-complexity', 'v1', scopedMajor, user?.uid],
-    queryFn: () => apiClient
-      .get('/analysis/pathway-complexity', { params: { majorSlug: scopedMajor } })
-      .then((r) => r.data),
+    queryKey: [`${ANALYSIS_KEY_PREFIX}pathway-complexity`, 'v1', scopedMajor, user?.uid],
+    // Alone among the analyses this one is backed by a PERMANENT server-side
+    // cache (analysis_cache in Mongo), so a plain refetch returns the same
+    // stored document forever and an explicit Refresh would be a lie. A refetch
+    // the reader asked for carries ?refresh=1, which is the endpoint's own
+    // instruction to reassemble. `meta.forceRefresh` is set by
+    // shared/query/refresh.js for exactly that case.
+    queryFn: async ({ queryKey }) => {
+      const forced = consumeForceRefresh(queryKey)
+      try {
+        const r = await apiClient.get('/analysis/pathway-complexity', {
+          params: { majorSlug: scopedMajor, ...(forced ? { refresh: 1 } : {}) },
+        })
+        return r.data
+      } catch (error) {
+        // Put the mark back: a retry that dropped it would be answered from
+        // the permanent cache and look like a successful recomputation.
+        if (forced) markForceRefresh(queryKey)
+        throw error
+      }
+    },
     enabled: Boolean(user) && enabled,
-    ...queryOptions,
+    ...withSessionCache(queryOptions),
   })
 }
 
@@ -179,15 +262,22 @@ export function useTransferCreditRate(degreeType = 'local_as', options = {}) {
         })
         .then((r) => r.data),
     enabled: !!user?.uid && enabled,
-    ...queryOptions,
-    staleTime: 0,
-    refetchOnMount: 'always',
+    // This matrix moves whenever a degree template is saved, which is why it
+    // used to refetch on every mount. The save itself now says so — it
+    // invalidates this query — and a reader who wants to be sure asks for the
+    // recomputation, so the three figures built on this response no longer
+    // re-run it between them each time a pane opens.
+    ...withSessionCache(queryOptions),
   })
 }
 
 // Per-college ASSIST-vs-hand-curated minimums comparison for one (campus, major,
 // college). Returns the unified per-requirement table + per-side summaries;
 // powers the Data tab's college comparison view (Level 2).
+// Deliberately NOT on the analysis session cache: this one is read while the
+// minimums beside it are being edited, and on that surface a five-minute-old
+// comparison is a wrong comparison. It keeps refetching on mount; the
+// `analysis-` prefix still lets a save invalidate it and Refresh reach it.
 export function useRequirementComparison({ schoolId, major, communityCollegeId } = {}, options = {}) {
   const { user } = useAuth()
   const school_id = Number(schoolId)
@@ -233,8 +323,7 @@ function useAnalysisEndpoint(key, path, params = {}, options = {}) {
         })
         .then((r) => r.data),
     enabled: !!user?.uid && enabled,
-    staleTime: 5 * 60 * 1000,
-    ...queryOptions,
+    ...withSessionCache(queryOptions),
   })
 }
 
@@ -282,16 +371,16 @@ export function useMultiCampusPathways(params = {}, options = {}) {
       })
       .then((r) => r.data),
     enabled: !!user?.uid && enabled && ready,
-    staleTime: 5 * 60 * 1000,
-    refetchOnMount: false,
-    ...queryOptions,
+    ...withSessionCache(queryOptions),
   })
 }
 
 // One manually generated artifact contains every non-empty combination of the
-// nine configured UC goals. A mount refresh checks for a newly generated file,
-// while the previously persisted artifact remains renderable during that
-// request. Campus switching itself never creates another query.
+// nine configured UC goals. Campus switching itself never creates another
+// query. Nothing in the app can tell this query that a new file was generated
+// outside it — no save invalidates an artifact — so the check that used to ride
+// every mount now rides the two moments a reader controls: an explicit refresh,
+// and a reload (the artifact is never persisted).
 export function useMultiCampusPathwaysSnapshot(options = {}) {
   const { user } = useAuth()
   const { enabled = true, ...queryOptions } = options
@@ -301,17 +390,15 @@ export function useMultiCampusPathwaysSnapshot(options = {}) {
       .get('/analysis/multi-campus-pathways/snapshot')
       .then((response) => response.data),
     enabled: !!user?.uid && enabled,
-    staleTime: 5 * 60 * 1000,
-    gcTime: Infinity,
-    refetchOnMount: 'always',
-    refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: (failureCount, error) => {
       const status = Number(error?.response?.status)
       if ([401, 403, 409].includes(status)) return false
       return failureCount < 2
     },
-    ...queryOptions,
+    // One small file, and the only analysis with no cheaper way back: hold it
+    // for the whole session rather than the usual window.
+    ...withSessionCache(queryOptions, { gcTime: Infinity }),
   })
 }
 
@@ -393,9 +480,7 @@ export function useSaveDegreeRequirement() {
         qc.invalidateQueries({ queryKey: ['degree-requirement-documents'] }),
         qc.invalidateQueries({ queryKey: ['degree-requirements'] }),
         qc.invalidateQueries({ queryKey: ['degree-evaluation'] }),
-        qc.invalidateQueries({
-          predicate: (query) => String(query.queryKey[0] || '').startsWith('analysis-'),
-        }),
+        flushComputedAnalyses(qc),
       ])
     },
   })
@@ -581,6 +666,10 @@ export function useSaveAsDegree() {
       qc.invalidateQueries({ queryKey: ['as-degree-availability'] }),
       qc.invalidateQueries({ queryKey: ['as-degree-verification'] }),
       qc.invalidateQueries({ queryKey: ['as-degree-detail'] }),
+      // These records are the credit-rate and pathway-complexity inputs. The
+      // flush used to be redundant — those figures recomputed on every mount —
+      // and became load-bearing the moment they started holding a result.
+      flushComputedAnalyses(qc),
     ]),
   })
 }
@@ -634,7 +723,12 @@ export function useFigures() {
     queryFn: () => apiClient.get('/gallery').then((r) => r.data),
     enabled: !!user?.uid,
     // Teammates publish from their notebooks while the tab is open.
+    // The poll pauses in a background tab, so this is also one of the two
+    // queries that still refetch on focus (see client.js): coming back to a
+    // gallery that is up to 30s behind a colleague's publish is the one case
+    // where waiting for the next tick is worse than one small request.
     refetchInterval: 30 * 1000,
+    refetchOnWindowFocus: true,
   })
 }
 
@@ -691,8 +785,9 @@ export function useTasks() {
     queryFn: () => apiClient.get('/tasks').then((r) => r.data),
     enabled: !!user?.uid,
     // Teammates edit the shared board while the tab is open (same reasoning
-    // as useFigures).
+    // as useFigures, including the focus refetch the poll cannot cover).
     refetchInterval: 30 * 1000,
+    refetchOnWindowFocus: true,
     staleTime: 15 * 1000,
   })
 }

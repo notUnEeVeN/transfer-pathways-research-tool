@@ -571,6 +571,10 @@ function programPairClause(majorOrPrograms, {
  * `{ state: 'ma' }`).
  */
 function serializeMajors({ state } = {}) {
+  // 'all' is the cross-corpus registry, used only by the compare-tab pane
+  // picker. Every other caller keeps its scoped payload, so the California
+  // picker can never list a state major.
+  if (state === 'all') return [...MAJORS];
   if (state) return MAJORS.filter((major) => major.state === state);
   return MAJORS.filter((major) => !major.state);
 }

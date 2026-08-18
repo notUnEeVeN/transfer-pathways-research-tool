@@ -112,9 +112,18 @@ export function useSaveVaDegree(institution) {
   return useMutation({
     mutationFn: (doc) => apiClient.put(`/va/degrees/${encodeURIComponent(doc._id)}`, doc)
       .then((r) => r.data),
-    onSuccess: () => qc.invalidateQueries({
-      queryKey: ['va', `degrees:${institution || 'none'}`, user?.uid],
-    }),
+    // Signing has to move every surface that reports the job, not just the card
+    // that was signed. The overview bar, the college rail pill and the
+    // institution list all read `coverage` / `institutions`, and leaving those
+    // cached meant a verifier watched their own signature not register.
+    onSuccess: () => Promise.all([
+      qc.invalidateQueries({ queryKey: ['va', `degrees:${institution || 'none'}`, user?.uid] }),
+      qc.invalidateQueries({ queryKey: ['va', 'coverage', user?.uid] }),
+      qc.invalidateQueries({
+        predicate: (query) => query.queryKey[0] === 'va'
+          && String(query.queryKey[1] || '').startsWith('institutions'),
+      }),
+    ]),
   })
 }
 

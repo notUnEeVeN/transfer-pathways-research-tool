@@ -170,9 +170,13 @@ beforeEach(() => {
   state.revisions = ok({ revisions: [] })
   // Coverage now carries each institution's documents and their verification
   // state, which is what the overview worklist is built from.
+  //
+  // `catalog_accepted: false` on a live document is the shape that broke the
+  // page: the parser never accepted it, and the overview must count it anyway.
   const doc = (over = {}) => ({
     doc_id: 'va:as:x:cs', source: 'institution_catalog', status: 'extracted',
-    verified: false, validation: 'pass', groups: 8, receivers: 60, ...over,
+    verified: false, has_notes: false, catalog_accepted: false,
+    validation: 'pass', groups: 8, receivers: 60, ...over,
   })
   state.coverage = ok({
     coverage: [
@@ -237,9 +241,12 @@ beforeEach(() => {
     ],
     collected: 2,
     total: 4,
+    // The server's own totals, in the shape it reports now: LIVE documents per
+    // level and how many of them a person has signed. Nothing here is gated on
+    // catalog acceptance.
     verification: {
-      documents: 4, verifiable: 2, verified: 1,
-      as_verifiable: 1, as_verified: 0, bs_verifiable: 1, bs_verified: 1,
+      documents: 4, live: 2, verified: 1,
+      as_live: 1, as_verified: 0, bs_live: 1, bs_verified: 1,
     },
   })
   state.matrix = ok({
@@ -410,20 +417,82 @@ describe('Virginia prerequisite drill-ins', () => {
 
 
 describe('verification progress', () => {
-  it('states how much is left rather than listing it all on the landing view', () => {
+  const bar = (label) => screen.getByLabelText(label).getAttribute('aria-valuetext')
+
+  it('runs each bar through the live documents the server reports', () => {
     render(<VirginiaPage />)
     expect(screen.getByText('Verification progress')).toBeTruthy()
-    // The bars report the server's own gated figures, not a second count
-    // derived in the component. One A.S. document is acceptable and unsigned;
-    // one B.S. document is acceptable and signed. Wytheville publishes nothing
-    // readable, so it holds no document and cannot appear in either.
-    expect(screen.getByLabelText('A.S. degrees verified').getAttribute('aria-valuetext')).toBe('0 of 1')
-    expect(screen.getByLabelText('B.S. degrees verified').getAttribute('aria-valuetext')).toBe('1 of 1')
-    // The caption carries what a document-based bar cannot: institutions with
-    // nothing collected yet are absent from the denominator, so the bar is
-    // progress through what exists rather than through the cohort.
-    expect(screen.getByText(/0 of \d+ institutions still need a reviewable catalog record/)).toBeTruthy()
-    expect(screen.getByText(/3 of \d+ institutions still need a reviewable catalog record/)).toBeTruthy()
+    // One live A.S. document, unsigned; one live B.S. document, signed.
+    // Wytheville publishes nothing readable, so it holds no live document and
+    // cannot appear in either denominator.
+    expect(bar('A.S. degrees verified')).toBe('0 of 1')
+    expect(bar('B.S. degrees verified')).toBe('1 of 1')
+    expect(screen.getByText('1 of 2 verified')).toBeTruthy()
+  })
+
+  // The endpoint reported these counts as `*_verifiable` before the acceptance
+  // gate came out of it. Same figure, older name — the page must not blank out
+  // against an API that has not been redeployed yet.
+  it('accepts the older per-level field name for the same figure', () => {
+    state.coverage.data.verification = {
+      documents: 4, verifiable: 2, verified: 1,
+      as_verifiable: 1, as_verified: 0, bs_verifiable: 1, bs_verified: 1,
+    }
+    render(<VirginiaPage />)
+    expect(bar('A.S. degrees verified')).toBe('0 of 1')
+    expect(bar('B.S. degrees verified')).toBe('1 of 1')
+  })
+
+  // The whole bug in one test. Blue Ridge's A.S. document is live and carries
+  // `catalog_accepted: false` — the parser never signed off on its own parse.
+  // A person is still allowed to verify it, so it must be inside the bar.
+  it('counts a live document that never passed catalog acceptance', () => {
+    delete state.coverage.data.verification
+    render(<VirginiaPage />)
+    expect(bar('A.S. degrees verified')).toBe('0 of 1')
+    expect(bar('B.S. degrees verified')).toBe('1 of 1')
+  })
+
+  // Virginia's note field is not California's. There a note is created BY the
+  // act of verifying; here it is a working box that mostly holds the source
+  // URLs a document was built from, and one live document's note reads "lots of
+  // missing classes". Counting notes reported the four-year job as 14 of 18
+  // done when two documents had been signed.
+  it('does not count a working note as a verification', () => {
+    delete state.coverage.data.verification
+    state.coverage.data.coverage[0].documents.as_degree[0].has_notes = true
+    render(<VirginiaPage />)
+    expect(bar('A.S. degrees verified')).toBe('0 of 1')
+  })
+
+  it('never draws a 0-of-0 bar, and says in words why there is none', () => {
+    delete state.coverage.data.verification
+    // Strip the only live B.S. document, leaving that level with nothing that
+    // can be signed.
+    state.coverage.data.coverage.find((r) => r._id === 'va:cov:uni:gmu').documents.degree = []
+    render(<VirginiaPage />)
+    expect(screen.queryByLabelText('B.S. degrees verified')).toBeNull()
+    // ProgressBar prints its own "0/0" counter above the track, so its absence
+    // is the proof no empty bar was drawn anywhere on the panel.
+    expect(screen.queryByText('0/0')).toBeNull()
+    expect(screen.getByText(/Nothing collected at this level yet/)).toBeTruthy()
+    // The other level is untouched and still shows real progress.
+    expect(bar('A.S. degrees verified')).toBe('0 of 1')
+  })
+
+  // Three different jobs, three different people. Collapsing them into one
+  // "outstanding" number was what made the page unreadable.
+  it('separates work waiting on a person from work waiting on collection', () => {
+    render(<VirginiaPage />)
+    expect(screen.getAllByText('Waiting for a person').length).toBe(2)
+    expect(screen.getAllByText('1 collected documents').length).toBe(1)
+    // Community colleges: Blue Ridge is collected, so nothing is outstanding.
+    // Public four-years: three of the four hold no live document at all.
+    expect(screen.getByText('0 of 1 institutions')).toBeTruthy()
+    expect(screen.getByText('3 of 4 institutions')).toBeTruthy()
+    // Settled outcomes are named as their own pile so they never read as
+    // unfinished work: Wytheville is URL-only, Danville publishes no CS degree.
+    expect(screen.getByText(/2 institutions — URL only, or no CS-specific degree/)).toBeTruthy()
   })
 })
 
@@ -493,7 +562,11 @@ describe('degree editing', () => {
   })
 })
 
-describe('degree verification gates', () => {
+// The client owns no eligibility rule. A document the server served for this
+// institution is one a person may sign; the parser's opinion of its own parse
+// is not a permission system, and treating it as one is what stopped partners
+// verifying eleven A.S. degrees that had no `acceptance` block at all.
+describe('nothing on the client gates the verdict', () => {
   const openAssociateDegree = async () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
@@ -504,32 +577,14 @@ describe('degree verification gates', () => {
   }
 
   it.each([
-    ['captured_only', true],
-    ['major_only', true],
-    ['catalog_accepted', false],
-    ['analysis_ready', false],
-  ])('keeps %s as an internal gate while showing one verification verdict', async (status, disabled) => {
+    ['captured_only'],
+    ['major_only'],
+    ['catalog_accepted'],
+    ['analysis_ready'],
+  ])('lets a person verify a %s document', async (status) => {
     const doc = state.degrees.data.degrees[0]
     doc.collection_status = status
-    // Exercise collection_status as an independent allow-list. The two
-    // accepted statuses must unlock Verify even when a nested verdict is not
-    // present in an older API response.
     delete doc.acceptance
-    await openAssociateDegree()
-
-    expect(screen.getByText('Unverified')).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(disabled)
-    if (disabled) {
-      expect(screen.getByText(/Verification unavailable: this document has not passed catalog acceptance/i)).toBeTruthy()
-    } else {
-      expect(screen.queryByText(/Verification unavailable/i)).toBeNull()
-    }
-  })
-
-  it('accepts the nested catalog verdict when collection_status is absent', async () => {
-    const doc = state.degrees.data.degrees[0]
-    delete doc.collection_status
-    doc.acceptance = { accepted: true, ready_for_analysis: false }
     await openAssociateDegree()
 
     expect(screen.getByText('Unverified')).toBeTruthy()
@@ -537,7 +592,33 @@ describe('degree verification gates', () => {
     expect(screen.queryByText(/Verification unavailable/i)).toBeNull()
   })
 
-  it('keeps a corroborating major-only document editable without calling it complete', async () => {
+  it('lets a person verify a document carrying no acceptance metadata at all', async () => {
+    const doc = state.degrees.data.degrees[0]
+    delete doc.collection_status
+    delete doc.acceptance
+    const fireEvent = await openAssociateDegree()
+
+    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(false)
+    fireEvent.click(screen.getByRole('button', { name: 'Mark verified' }))
+    expect(state.saved[0].verification.verified).toBe(true)
+  })
+
+  it('lets a person verify a document the parser explicitly failed', async () => {
+    const doc = state.degrees.data.degrees[0]
+    doc.collection_status = 'captured_only'
+    doc.acceptance = { accepted: false, catalog: { failed: ['no_total_credits'] } }
+    await openAssociateDegree()
+
+    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(false)
+    // The failure is readable in the JSON panel, which shows the whole stored
+    // document by design, but it is never promoted to a status of its own —
+    // shown as a category it gets read as a verdict, and only a person at the
+    // source page is one.
+    expect(screen.queryByText(/Verification unavailable/i)).toBeNull()
+    expect(screen.getAllByText('Unverified').length).toBe(1)
+  })
+
+  it('keeps a corroborating major-only document editable and signable', async () => {
     const doc = state.degrees.data.degrees[0]
     doc.source = 'transfer_virginia'
     doc.collection_status = 'major_only'
@@ -546,8 +627,7 @@ describe('degree verification gates', () => {
 
     expect(screen.getByText('Transfer Virginia map')).toBeTruthy()
     expect(screen.getByText('Unverified')).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(true)
-    expect(screen.getByText(/Verification unavailable: this document has not passed catalog acceptance/i)).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(false)
     const notes = screen.getByPlaceholderText(/your own notes/i)
     expect(notes.disabled).toBe(false)
     fireEvent.change(notes, { target: { value: 'major layer checked; GE still missing' } })
@@ -558,7 +638,7 @@ describe('degree verification gates', () => {
     })
   })
 
-  it('lets a verified legacy document be reopened without allowing re-verification', async () => {
+  it('lets a verified legacy document be reopened and signed again', async () => {
     const doc = state.degrees.data.degrees[0]
     delete doc.collection_status
     delete doc.acceptance
@@ -566,9 +646,7 @@ describe('degree verification gates', () => {
     const fireEvent = await openAssociateDegree()
 
     expect(screen.getAllByText('Verified').length).toBeGreaterThanOrEqual(1)
-    expect(screen.queryByText(/Completeness not recorded/i)).toBeNull()
-    expect(screen.getByRole('button', { name: 'Re-verify' }).disabled).toBe(true)
-    expect(screen.getByText(/Verification unavailable: this document has not passed catalog acceptance/i)).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Re-verify' }).disabled).toBe(false)
     const reopen = screen.getByRole('button', { name: 'Reopen' })
     expect(reopen.disabled).toBe(false)
     fireEvent.click(reopen)

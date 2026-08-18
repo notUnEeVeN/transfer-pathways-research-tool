@@ -11,8 +11,11 @@ const { serializeMajors, defaultMajor, listMajors } = require('../config/majors'
 // Every state that has a configured major, derived rather than listed, so a
 // new state corpus serves its registry the moment it lands in config.
 // California is the unstamped default registry and carries no `state`.
+// 'all' is not a corpus: it is the cross-state registry the compare tab's pane
+// picker reads, and it has to be listed here because this gate runs before
+// serializeMajors ever sees the value.
 const configuredStates = () => new Set([
-  'ca',
+  'ca', 'all',
   ...listMajors({ includeStates: true }).map((major) => major.state).filter(Boolean),
 ]);
 

@@ -35,6 +35,16 @@ const MA_GE_MODE = 'ma-courses-ge'
 const MA_MODES = new Set([MA_MODE, MA_GE_MODE])
 const requirementsParam = (mode) => (MA_MODES.has(mode) ? 'degree' : mode)
 
+/**
+ * The coverage request this figure makes, in one place. A delta adapter
+ * differencing two panes must import this rather than re-derive it: the MA
+ * lenses read the degree response, and a second derivation that forgot would
+ * difference rows the figure beside it never drew.
+ */
+export function coverageQueryArgs({ majorSlug, rowMode, reqMode }) {
+  return { majorSlug, groupBy: rowMode, requirements: requirementsParam(reqMode) }
+}
+
 const intFmt = new Intl.NumberFormat()
 const pctFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
 const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
@@ -370,12 +380,16 @@ export default function CoverageHeatmap({
   majorSlug = 'cs',
   majorCapabilities,
   onMeasureChange,
+  onViewChange,
+  defaultRowMode = 'college',
+  defaultReqMode = 'degree',
   // The Massachusetts tab opens on the paper's own measure; California
   // callers leave this false.
   defaultMaEquivalent = false,
+  defaultMaIncludeGe = false,
 }) {
-  const [rowModeValue, setRowModeValue] = useState('college')
-  const [reqMode, setReqMode] = useState('degree')
+  const [rowModeValue, setRowModeValue] = useState(defaultRowMode)
+  const [reqMode, setReqMode] = useState(defaultReqMode)
   // A corpus can declare that the California unit-budget lenses do not model
   // it (Massachusetts: no transfer cap, no GE netting — the unit measure
   // computes garbage). There the paper's course lens is the only basis, so
@@ -383,7 +397,7 @@ export default function CoverageHeatmap({
   const unitLensAvailable = majorCapabilities?.unitCoverage !== false
   const [maToggle, setMaEquivalent] = useState(defaultMaEquivalent)
   const maEquivalent = unitLensAvailable ? maToggle : true
-  const [maIncludeGe, setMaIncludeGe] = useState(false)
+  const [maIncludeGe, setMaIncludeGe] = useState(defaultMaIncludeGe)
   const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
   // Hand-curated website minimums only exist for CS. Prefer the registry's
   // explicit capability when the caller has it, while failing closed for an
@@ -415,8 +429,23 @@ export default function CoverageHeatmap({
   useEffect(() => {
     onMeasureChange?.(COVERAGE_HEATMAP_MEASURES[activeReqMode] || COVERAGE_HEATMAP_MEASURES.degree)
   }, [activeReqMode, onMeasureChange])
+
+  // A pinned comparison must reopen on the controls the reader actually
+  // selected, so the figure reports its own settings rather than the state its
+  // seed props described. `maToggle`, never the `maEquivalent` a corpus without
+  // the unit lens forces: pinning a value nobody chose would follow the view
+  // into a corpus where that toggle is the reader's to set.
+  useEffect(() => {
+    onViewChange?.({
+      defaultRowMode: rowMode.value,
+      defaultReqMode: reqMode,
+      defaultMaEquivalent: maToggle,
+      defaultMaIncludeGe: maIncludeGe,
+    })
+  }, [rowMode.value, reqMode, maToggle, maIncludeGe, onViewChange])
+
   const coverage = useCoverage(
-    { majorSlug, groupBy: rowMode.value, requirements: requirementsParam(activeReqMode) },
+    coverageQueryArgs({ majorSlug, rowMode: rowMode.value, reqMode: activeReqMode }),
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
@@ -574,3 +603,12 @@ export default function CoverageHeatmap({
     </Stack>
   )
 }
+
+// The props a pinned view may seed. Every `viewKnobs` entry on the registry
+// must name one of these; the contract test fails the build otherwise.
+CoverageHeatmap.viewProps = [
+  'defaultRowMode',
+  'defaultReqMode',
+  'defaultMaEquivalent',
+  'defaultMaIncludeGe',
+]

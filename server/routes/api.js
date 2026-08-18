@@ -71,6 +71,9 @@ router.get('/analysis/credit-loss', ...guarded, analysisController.creditLoss);
 router.get('/analysis/transfer-credit-rate', ...guarded, analysisController.transferCreditRate);
 router.get('/analysis/pathway-complexity',  ...guarded, analysisController.pathwayComplexity);
 router.get('/ma/baselines', ...guarded, massachusettsController.baselines);
+// The committed reproduction artifacts behind the Massachusetts verdicts, so a
+// displayed number names a file instead of a JSX literal.
+router.get('/ma/evidence',  ...guarded, massachusettsController.evidence);
 router.get('/analysis/multi-campus-pathways/snapshot', ...guarded, analysisController.multiCampusPathwaysSnapshot);
 router.get('/analysis/multi-campus-pathways', ...guarded, analysisController.multiCampusPathways);
 router.get('/analysis/choice-cost', ...guarded, analysisController.choiceCost);
@@ -175,6 +178,22 @@ router.delete('/tasks/:id/log/:logId',           tasksController.deleteLogNote);
 router.post('/tasks/:id/log/:logId/resolve',     jsonBody, tasksController.resolveLogNote);
 router.put('/tasks/:id',       jsonBody, tasksController.update);
 router.delete('/tasks/:id',    tasksController.remove);
+
+// ───────── Saved comparisons (compare-tab exhibits + their notes) ─────────
+// Open to every console user, like tasks: a comparison is team working state,
+// not a verified artefact, so there is no admin gate. Deleting one is
+// author-or-admin; editing or deleting a note is author-only (the service
+// enforces both). '/comparisons/:id/notes' is registered after '/comparisons/:id'
+// only because the paths cannot collide — an id never contains a slash.
+const comparisonsController = require('../controllers/Comparisons');
+router.get   ('/comparisons',                   ...guarded, comparisonsController.list);
+router.post  ('/comparisons',                   ...guarded, jsonBody, comparisonsController.create);
+router.get   ('/comparisons/:id',               ...guarded, comparisonsController.get);
+router.patch ('/comparisons/:id',               ...guarded, jsonBody, comparisonsController.update);
+router.delete('/comparisons/:id',               ...guarded, comparisonsController.remove);
+router.post  ('/comparisons/:id/notes',         ...guarded, jsonBody, comparisonsController.addNote);
+router.patch ('/comparisons/:id/notes/:noteId', ...guarded, jsonBody, comparisonsController.editNote);
+router.delete('/comparisons/:id/notes/:noteId', ...guarded, comparisonsController.deleteNote);
 
 // ───────── Admin (dataset visibility + partner access) ─────────
 // Admins come from ADMIN_UIDS (env); partners from team_members (managed

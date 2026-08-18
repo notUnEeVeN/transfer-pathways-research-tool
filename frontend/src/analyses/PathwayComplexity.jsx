@@ -133,7 +133,7 @@ function DeltaMatrix({ model, columnLabel = (name) => name }) {
  * its university's entire column, which is exactly the argument the flag
  * makes visible.
  */
-function paperEntries(data, view = 'published') {
+export function paperEntries(data, view = 'published') {
   const pathways = data?.pathways || []
   const residentByUni = new Map(pathways
     .filter((p) => p.cc == null)
@@ -197,14 +197,14 @@ const PAPER_VIEWS = [
   { value: 'diff', label: 'Difference' },
 ]
 
-export default function PathwayComplexity({ majorSlug = 'cs' }) {
+export default function PathwayComplexity({ majorSlug = 'cs', defaultPaperView = 'published' }) {
   const query = usePathwayComplexity({ majorSlug })
   const data = query.data
   const isPaper = data?.mode === 'paper'
   const rows = data?.rows || []
   // The paper corpus opens on the figure as printed — the comparison baseline —
   // and toggles to our recomputation or the per-cell difference.
-  const [paperView, setPaperView] = useState('published')
+  const [paperView, setPaperView] = useState(defaultPaperView)
 
   const model = useMemo(() => buildDeltaModel(
     isPaper ? paperEntries(data, paperView) : liveEntries(rows),
@@ -256,36 +256,11 @@ export default function PathwayComplexity({ majorSlug = 'cs' }) {
 
       <DeltaMatrix model={model} columnLabel={isPaper ? (name) => name : shortenSchool} />
 
-      {isPaper && (misses.length > 0 || (data?.figure_cell_misses || []).length > 0) && (
-        <p className='text-caption text-warning max-w-[78ch]'>
-          * Cells where the printed figure disagrees with their own files ({flaggedCount} of{' '}
-          {model.valueCount}). Two typed scores drifted —{' '}
-          {misses.map((m) => `${m.pathway} (published ${m.theirs}, their sheet computes ${m.ours})`).join('; ')} —
-          and a drifted resident score shifts its university&rsquo;s entire column of deltas.
-          {(data?.figure_cell_misses || []).length > 0 && (
-            <> And typed into the figure itself:{' '}
-            {(data.figure_cell_misses).map((f) => `${f.cc} × ${f.uni} prints ${signedInt(f.printed_delta)} though their own complexity tab computes ${signedInt(f.tab_delta)}`).join('; ')}
-            {' '}— proven by the printed column average, which is only reachable with the printed cell.</>
-          )}
-        </p>
-      )}
-
       <p className='text-caption text-ink-muted max-w-[78ch]'>
         {isPaper ? (
-          paperView === 'published' ? (
-            <>The paper&rsquo;s Figure 6 as printed: each cell is their published transfer-minus-resident
-            structural complexity delta, h(G) = Σ (delay + blocking). This is the comparison
-            baseline — toggle to <em>Ours (recomputed)</em> for the same quantity computed by our
-            implementation from their recovered workbooks (58 of 60 published scores match to the
-            integer), or to <em>Difference</em> to isolate exactly where the printed figure departs
-            from their own files.</>
-          ) : paperView === 'ours' ? (
-            <>Our recomputation of the paper&rsquo;s Figure 6: each cell is the transfer-minus-resident
-            complexity delta computed by our implementation from the paper&rsquo;s own recovered
-            workbooks — their prerequisite and corequisite edges, their course lists. It matches
-            their published scores on 58 of 60 pathways to the integer and reproduces the paper&rsquo;s
-            +15 headline; green cells are pathways genuinely lighter than the resident degree.</>
-          ) : (
+          paperView === 'published' ? null
+          : paperView === 'ours' ? null
+          : (
             <>Recomputed minus published, per cell: +0 wherever the printed figure is faithful to
             their own saved workbooks — which is everywhere except the flagged cells. The nonzero
             cells all trace to the two typed scores above, not to any methodological difference:
@@ -307,3 +282,7 @@ export default function PathwayComplexity({ majorSlug = 'cs' }) {
     </div>
   )
 }
+
+// The props a pinned view may seed. Every `viewKnobs` entry on the registry
+// must name one of these; the contract test fails the build otherwise.
+PathwayComplexity.viewProps = ['defaultPaperView']

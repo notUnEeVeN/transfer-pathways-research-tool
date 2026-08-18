@@ -3,8 +3,18 @@
 Every number here can be regenerated from their own files. Technical detail:
 [`ma-paper-audit.md`](ma-paper-audit.md). Per-cell records: `server/data/ma/*.json`.
 
-**The one-line summary: we checked 385 of their published numbers; 69 are wrong;
-every wrong one comes from a value someone typed by hand instead of calculating.**
+**The one-line summary: we have now checked every figure in the paper against
+its own files. Figures 1, 2, 4 and 5 are correct. The errors are in Figure 3
+(45 of 61 cells), Figure 6 (two drifted scores plus one cell typed into the
+chart), and Figure 7, whose credit-hours and cost rows contradict the paper's
+own Figures 4 and 5 on 7 of 11 columns.**
+
+**Correction (2026-08-17).** There are three artifacts, not two: the **paper**
+(newest), their **GitHub repo** workbook, and **our** computation. An earlier
+version of this note treated repo numbers as the paper's. Figure 2 is not an
+error at all — we had been auditing the repo notebook's hard-coded bars. Figure
+4 is still unverified against the paper for the same reason. Every claim below
+now names which artifact it is about.
 
 Their spreadsheet has detail sheets (one per college-university pair, listing every
 course) and summary tabs (the numbers that became the figures). The summary tabs
@@ -22,34 +32,29 @@ zero errors. Every figure a person typed has errors. That's the whole story.
   their stored values, our engine). This also proves our engine isn't the source
   of any disagreement elsewhere.
 
-## Figure 2 — course types · 37 checked, 14 wrong
+## Figure 2 — course types · reproduces correctly
 
-- The published bars are typed into the plotting notebook by hand ("Sorry for hard
-  coding these :(" — their own comment). Their own analysis matrix says different
-  numbers for 14 of them.
-- **The tell — a column swap.** UMass Lowell and UMass Dartmouth sit next to each
-  other, and their values are exchanged in two rows at once:
-
-  | | published | their own matrix |
-  |---|---|---|
-  | Lowell · Math | 52 | 86.7 |
-  | Dartmouth · Math | 87 | 52.0 |
-  | Lowell · Science | 78 | 96.7 |
-  | Dartmouth · Science | 97 | 78.3 |
-
-  Each school's published number is the *other school's* matrix value. One
-  misaligned copy of two adjacent columns explains all four cells; no
-  methodology could.
-- **Worcester Math: published 100, their matrix says 64.** Worcester's discrete-math
-  courses (CS 225/295) articulate poorly. 100 is only reachable if discrete math is
-  left out of Math — violating the paper's own stated rule that discrete math
-  always counts as math. So the bar contradicts both their data and their rule.
-- **MCLA Humanities: published 67, matrix says 33.3** — likely typed from an
-  earlier version of the matrix. The other nine misses drift 3–10 points the same
-  way.
-- Why we're sure: every comparison here is their chart against their own matrix —
-  we are not the reference. Our engine independently reproduces their matrix on 36
-  of 38 entries, so the matrix itself is sound; only the typed bars drifted.
+- **The paper's Figure 2 is right, and we should stop saying otherwise.** Its
+  numbers reproduce from their own data almost exactly: computing 21.2% against
+  the 22% they state, math 60.6% against 60%, science 92.9% against 93%. The
+  spread of the plotted dots matches too — computing runs 6% to 58% in the data,
+  and their highest computing dot is Fitchburg at 58%.
+- **What we had actually been auditing was their GitHub notebook, not the
+  paper.** The notebook hard-codes its bars (their own comment: "Sorry for hard
+  coding these :("), and those hard-coded values are a *different measure* —
+  they average 42.2% for computing where the paper says 22%.
+- **The difference is the denominator, and it is not an error.** The notebook's
+  bars count only lower-division requirements; the paper counts the whole
+  degree. Upper-division computing courses can never be taught at a community
+  college, so including them roughly halves the computing figure. Both numbers
+  are defensible; they answer different questions. The paper picked the harder
+  one.
+- **Why our site can look different:** our own course-type figure opens on the
+  lower-division view, which is the articulation question. Set it to whole
+  degree and it lines up with the paper.
+- The one loose end is non-STEM: only 6 of their 11 universities carry a
+  non-STEM column at all, the whole-degree average over those six is 63%, and
+  the paper reports 76%. Small, uneven sample — worth a question, not a claim.
 
 ## Figure 3 — % of AS credits that transfer · 61 checked, 45 wrong
 
@@ -101,25 +106,23 @@ patterns, with the exact cells:
   such cell we can point to the specific rows on their sheet that the typed count
   missed or exceeded.
 
-## Figure 4 — credits to graduate · 61 checked, 7 wrong
+## Figure 4 — credits to graduate · 49 cells checked, 0 wrong
 
-- Same hand-typed pipeline, but mostly done carefully: 54 of 61 match the sum of
-  their own sheet within one credit.
-- **Boston × MassBay is published as 127 credit hours — their own file sums to
-  148 in one revision and 151 in the other.** 127 matches neither; it's a third
-  number from a version that no longer exists.
-- Both **Roxbury** rows are typed *below* what their unworked stub sheets sum to —
-  a subtraction was done somewhere and never saved.
-- Small but telling: **Bridgewater's own resident sheet sums to 123 credits while
-  the published Resident row says 120** — the same three-credit drift that shows
-  up again in Figure 6 below.
+- **Figure 4 is right.** We transcribed all 49 printed cells from the PDF and
+  they reproduce the figure's own Average row on 10 of 11 columns exactly (MCLA
+  computes 26.5 and prints 26 — the figure rounds half down). Its overall mean
+  is 12.9 extra hours, which is the "13" the paper states in its own text.
+- Our earlier "7 wrong" was the **repo workbook's** Credit Hours tab, not this
+  figure. The repo is the older tally.
 
-## Figure 5 — cost of extra credits · 57 checked, 0 of its own
+## Figure 5 — cost of extra credits · 0 wrong
 
-- The one summary tab that IS formula-linked: (credits − 120) × the campus's
-  per-credit rate, consistent to the cent.
-- It can't have its own errors — it just multiplies Figure 4's, including the
-  7 bad cells above.
+- **Figure 5 is right, and it is Figure 4 priced.** Cost = (hours above 120) ×
+  the campus's per-credit rate, and that holds **to the cent on all 35 priced
+  cells**. The implied rates are stable per campus — Fitchburg $473, Bridgewater
+  $489, Worcester $491, Framingham $497, MCLA $508, Salem $514, Westfield $515,
+  UMass Boston $696, UMass Lowell $707.
+- Its overall mean is **$7,129 — exactly the figure the paper states**.
 
 ## Figure 6 — curricular complexity · 60 scores checked, 2 wrong · plus 1 wrong cell in the printed figure
 
@@ -147,6 +150,31 @@ patterns, with the exact cells:
   curricula to the integer rules out implementation differences. We also settled
   a detail their README doesn't state: corequisites count as graph edges —
   scoring with them matches 58 of 60; without them, only 17 of 60.
+
+## Figure 7 — the summary table · THIS is the one that's wrong
+
+- **The paper contradicts itself.** Figure 7's *Avg Extra Credit Hours* and
+  *Avg Extra Cost* rows disagree with Figures 4 and 5 on **7 of 11 columns**:
+
+  | | Fig 4 | Fig 7 | repo workbook |
+  |---|---|---|---|
+  | Bridgewater | 5.8 | 9.1 | 16.4 |
+  | Fitchburg | 1.2 | 6.0 | 6.8 |
+  | Framingham | 34.8 | 33.9 | 33.9 |
+  | Salem | 10.6 | 13.1 | 13.1 |
+  | UMass Boston | 20.0 | 22.5 | 22.5 |
+  | UMass Lowell | 6.8 | 10.4 | 10.4 |
+  | Worcester | 7.8 | 10.7 | 10.7 |
+
+- **The direction is knowable.** On six of those seven, Figure 7 equals the repo
+  workbook to the decimal. Figure 7 is the older tally; Figures 4 and 5 were
+  regenerated and the summary table was never updated to match.
+- **It is only those two rows.** Figure 7's *Avg % AS Transfer* row matches
+  Figure 3, and its *Avg Extra Curr. Complexity* row matches Figure 6. So this
+  is a stale-row problem, not a broken table.
+- Why we're sure: Figures 4 and 5 agree with each other to the cent, and both
+  agree with the paper's own prose totals (13 hours, $7,129). Figure 7 agrees
+  with neither, and instead matches a file the paper superseded.
 
 ## MassTransfer map — not checked
 

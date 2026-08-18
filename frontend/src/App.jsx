@@ -15,6 +15,7 @@ import ApiPage from './DataApiDocs'
 import TasksPage from './tasks/TasksPage'
 import VirginiaPage from './virginia/VirginiaPage'
 import MassachusettsPage from './massachusetts/MassachusettsPage'
+import ComparePage from './compare/ComparePage'
 import SignInScreen from './SignInScreen'
 import DocHead from './pages/Audit/components/DocHead'
 // Stats components reused individually for a spacious full-width dashboard.
@@ -162,6 +163,9 @@ function availableConsoleViews(role) {
     'data',
     'virginia',
     'massachusetts',
+    // Compare is top-level rather than a sub-tab of a state because a
+    // comparison spans states.
+    'compare',
     'audit',
     'tasks',
     'api',
@@ -236,6 +240,7 @@ function Console({ role, user }) {
           )}
           {view === 'virginia' && <VirginiaPage />}
           {view === 'massachusetts' && <MassachusettsPage />}
+          {view === 'compare' && <ComparePage />}
           {view === 'api' && <ApiPage />}
           {view === 'admin' && role === 'admin' && <div className='h-full overflow-auto'><AdminPage /></div>}
         </div>
@@ -254,6 +259,7 @@ function TopBar({ view, setView, role, user }) {
     { value: 'data', label: 'California' },
     { value: 'virginia', label: 'Virginia' },
     { value: 'massachusetts', label: 'Massachusetts' },
+    { value: 'compare', label: 'Compare' },
     { value: 'audit', label: 'Audit' },
     { value: 'tasks', label: 'Tasks' },
     { value: 'api', label: 'API' },

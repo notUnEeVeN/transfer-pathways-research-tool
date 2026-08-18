@@ -35,6 +35,26 @@
  * research, 'ma' recreates the MA paper's figures on California data, and 'new'
  * is original to this paper. A published figure inherits the same lane from the
  * built-in it renders; anything without a lane falls back to 'new'.
+ *
+ * Two further fields are optional and read only by the Compare tab. Both
+ * degrade gracefully: a figure declaring neither still panes, still saves and
+ * still takes notes.
+ *
+ *   viewKnobs: [{ key, label, type: 'select'|'toggle', options, default, prop,
+ *                 appliesWhen(major) }]
+ *     The controls a comparison may PIN. `prop` names the `default*` prop the
+ *     figure already reads as a useState seed, so pinning a control never
+ *     turns the figure into a controlled component. Every `prop` must appear
+ *     in `Component.viewProps` — compare/viewKnobs.test.js fails otherwise,
+ *     because a knob the figure does not read would silently render the wrong
+ *     state under a caption claiming it was pinned.
+ *
+ *   comparable: { grain, unit, tolerance, useData(view), cells(data, view) }
+ *     How two panes of this figure are differenced. `useData` is the figure's
+ *     OWN hook (react-query dedupes, so the panes and the delta overlay share
+ *     one request), and `cells` may only call functions the figure's module
+ *     exports. That constraint is the whole point: the difference shown is the
+ *     figure's own number by construction, not a second reading of the data.
  */
 
 import CoverageHeatmap from './CoverageHeatmap'
@@ -42,7 +62,7 @@ import MultiCampusPathways, { MultiCampusPathwaysPreview } from './MultiCampusPa
 import TransferCreditRate from './TransferCreditRate'
 import TransferExtraUnits from './TransferExtraUnits'
 import TransferExtraCost from './TransferExtraCost'
-import PathwayComplexity from './PathwayComplexity'
+import PathwayComplexity, { paperEntries } from './PathwayComplexity'
 import PaperCreditLoss, { PaperCreditLossPreview } from './PaperCreditLoss'
 import PaperDistrictHeatmap, { PaperDistrictHeatmapPreview } from './PaperDistrictHeatmap'
 import PaperArticulationHistogram, { PaperArticulationHistogramPreview } from './PaperArticulationHistogram'
@@ -53,6 +73,7 @@ import IncomeAccess from './IncomeAccess'
 import PriceOfPlace, { PriceOfPlacePreview } from './PriceOfPlace'
 import PaperGate, { PaperGatePreview } from './PaperGate'
 import CreditLoss from './CreditLoss'
+import { usePathwayComplexity } from '../shared/query/hooks/useData'
 
 // The built-in analyses render as first-class figures in the Visuals gallery,
 // credited to the console owner and dated alongside locally published
@@ -185,6 +206,21 @@ export const ANALYSES = [
   },
   {
     id: 'course-type-coverage',
+    // The controls a saved comparison pins, so it reopens on the reading it
+    // was saved with. Each `prop` seeds the figure's own useState.
+    viewKnobs: [
+      {
+        key: 'scope', label: 'Scope', type: 'select',
+        prop: 'defaultScope', default: 'lower-division',
+        options: [{ value: 'lower-division', label: 'Lower division' }, { value: 'whole-degree', label: 'Whole degree' }],
+      },
+      {
+        key: 'variant', label: 'Category grouping', type: 'select',
+        prop: 'defaultVariant', default: 'faithful',
+        options: [{ value: 'faithful', label: 'Paper categories' }, { value: 'extended', label: 'Extended categories' }],
+        appliesWhen: (major) => Boolean(major?.courseTypes?.axes?.extended),
+      },
+    ],
     ...selectedMajor({
       requiredCapabilities: ['assistAgreements', 'degreeTemplates', 'courseTypeFigures'],
       datasets: ['articulation agreements', 'four-year degree templates', 'course-type rules'],
@@ -200,6 +236,42 @@ export const ANALYSES = [
   },
   {
     id: 'transfer-credit-rate',
+    // The controls a saved comparison pins, so it reopens on the reading it
+    // was saved with. Each `prop` seeds the figure's own useState.
+    viewKnobs: [
+      {
+        key: 'degree', label: 'Associate degree', type: 'select',
+        prop: 'defaultDegreeType', default: 'ast',
+        options: [{ value: 'ast', label: 'A.S.-T' }, { value: 'local_as', label: 'Local A.S.' }, { value: 'local_other', label: 'Other local' }],
+      },
+      {
+        key: 'scope', label: 'Scope', type: 'select',
+        prop: 'defaultScope', default: 'lower-division',
+        options: [{ value: 'lower-division', label: 'Lower division' }, { value: 'full-degree', label: 'Full degree' }],
+        appliesWhen: (major) => !(major?.state && major?.capabilities?.paperBaselines),
+      },
+      {
+        key: 'ma-equivalent', label: 'MA-paper-equivalent lens', type: 'toggle',
+        prop: 'defaultMaEquivalent', default: false,
+        appliesWhen: (major) => !(major?.state && major?.capabilities?.paperBaselines),
+      },
+      {
+        key: 'verified', label: 'Verified sources only', type: 'toggle',
+        prop: 'defaultVerifiedOnly', default: false,
+        appliesWhen: (major) => !(major?.state && major?.capabilities?.paperBaselines),
+      },
+      {
+        key: 'source', label: 'Source', type: 'select',
+        prop: 'defaultMaSource', default: 'pdf',
+        options: [{ value: 'pdf', label: 'Final paper' }, { value: 'repo', label: 'Repo workbook' }, { value: 'ours', label: 'Ours' }],
+        appliesWhen: (major) => Boolean(major?.state && major?.capabilities?.paperBaselines),
+      },
+      {
+        key: 'ge', label: 'Include general education', type: 'toggle',
+        prop: 'defaultMaGeOn', default: true,
+        appliesWhen: (major) => Boolean(major?.state && major?.capabilities?.paperBaselines),
+      },
+    ],
     ...selectedMajor({
       requiredCapabilities: ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       datasets: ['associate degrees', 'ASSIST articulation agreements', 'four-year degree templates'],
@@ -222,6 +294,20 @@ export const ANALYSES = [
   },
   {
     id: 'transfer-extra-units',
+    // The controls a saved comparison pins, so it reopens on the reading it
+    // was saved with. Each `prop` seeds the figure's own useState.
+    viewKnobs: [
+      {
+        key: 'degree', label: 'Associate degree', type: 'select',
+        prop: 'defaultDegreeType', default: 'ast',
+        options: [{ value: 'ast', label: 'A.S.-T' }, { value: 'local_as', label: 'Local A.S.' }, { value: 'local_other', label: 'Other local' }],
+      },
+      {
+        key: 'verified', label: 'Verified sources only', type: 'toggle',
+        prop: 'defaultVerifiedOnly', default: false,
+        appliesWhen: (major) => !(major?.state && major?.capabilities?.paperBaselines),
+      },
+    ],
     ...selectedMajor({
       requiredCapabilities: ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       datasets: ['associate degrees', 'ASSIST articulation agreements', 'four-year degree templates'],
@@ -237,6 +323,20 @@ export const ANALYSES = [
   },
   {
     id: 'transfer-extra-cost',
+    // The controls a saved comparison pins, so it reopens on the reading it
+    // was saved with. Each `prop` seeds the figure's own useState.
+    viewKnobs: [
+      {
+        key: 'degree', label: 'Associate degree', type: 'select',
+        prop: 'defaultDegreeType', default: 'ast',
+        options: [{ value: 'ast', label: 'A.S.-T' }, { value: 'local_as', label: 'Local A.S.' }, { value: 'local_other', label: 'Other local' }],
+      },
+      {
+        key: 'verified', label: 'Verified sources only', type: 'toggle',
+        prop: 'defaultVerifiedOnly', default: false,
+        appliesWhen: (major) => !(major?.state && major?.capabilities?.paperBaselines),
+      },
+    ],
     ...selectedMajor({
       requiredCapabilities: ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       datasets: ['associate degrees', 'ASSIST articulation agreements', 'four-year degree templates', 'campus tuition and fees'],
@@ -268,9 +368,86 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-08-15T09:00:00',
     Component: PathwayComplexity,
+    viewKnobs: [
+      {
+        key: 'source',
+        label: 'Source',
+        type: 'select',
+        prop: 'defaultPaperView',
+        options: [
+          { value: 'published', label: 'Paper (published)' },
+          { value: 'ours', label: 'Ours (recomputed)' },
+          { value: 'diff', label: 'Difference' },
+        ],
+        default: 'published',
+        // The control exists only where the server answers `mode: 'paper'`,
+        // which is the paper-baseline corpora that cannot be scored live
+        // (Analysis.js). California carries paperBaselines too but has its own
+        // prerequisite graphs, so its matrix is computed, not reproduced, and
+        // has no published/recomputed distinction to pin.
+        appliesWhen: (major) => Boolean(
+          major?.capabilities?.paperBaselines && !major?.capabilities?.prerequisites,
+        ),
+      },
+    ],
+    comparable: {
+      grain: 'college×campus',
+      unit: 'score-delta',
+      tolerance: 0,
+      useData: (view) => usePathwayComplexity({ majorSlug: view.major }),
+      // paperEntries is the figure's own reading, including the printed-cell
+      // overrides and the resident-score anchoring. Re-deriving the delta here
+      // would let the overlay disagree with the matrix beside it.
+      cells: (data, view) => {
+        if (!data) return []
+        if (data.mode === 'paper') {
+          return paperEntries(data, view?.knobs?.source ?? 'published').map((entry) => ({
+            rowKey: entry.row,
+            rowLabel: entry.row,
+            colKey: entry.column,
+            colLabel: entry.column,
+            value: entry.delta,
+          }))
+        }
+        return (data.rows || []).map((row) => ({
+          rowKey: row.college_name,
+          rowLabel: row.college_name,
+          colKey: row.school,
+          colLabel: row.school,
+          value: row.delta_vs_resident,
+        }))
+      },
+    },
   },
   {
     id: 'coverage-heatmap',
+    // The controls a saved comparison pins, so it reopens on the reading it
+    // was saved with. Each `prop` seeds the figure's own useState.
+    viewKnobs: [
+      {
+        key: 'rows', label: 'Row grouping', type: 'select',
+        prop: 'defaultRowMode', default: 'college',
+        options: [{ value: 'college', label: 'Colleges' }, { value: 'district', label: 'Districts' }, { value: 'county', label: 'Counties' }],
+      },
+      {
+        key: 'basis', label: 'Requirement basis', type: 'select',
+        prop: 'defaultReqMode', default: 'degree',
+        options: [{ value: 'degree', label: 'Graduation model' }, { value: 'assist', label: 'ASSIST agreements' }, { value: 'paper', label: 'Curated minimums' }],
+        // The whole basis control lives inside the unit-lens block; a corpus
+        // without it is forced onto the paper's course lens.
+        appliesWhen: (major) => major?.capabilities?.unitCoverage !== false,
+      },
+      {
+        key: 'ma-equivalent', label: 'MA-paper-equivalent lens', type: 'toggle',
+        prop: 'defaultMaEquivalent', default: false,
+        appliesWhen: (major) => major?.capabilities?.unitCoverage !== false,
+      },
+      {
+        key: 'ma-include-ge', label: 'Include general education', type: 'toggle',
+        prop: 'defaultMaIncludeGe', default: false,
+        appliesWhen: (major) => major?.capabilities?.unitCoverage !== false,
+      },
+    ],
     ...selectedMajor({
       requiredCapabilities: ['assistAgreements', 'degreeTemplates'],
       datasets: ['articulation agreements', 'four-year degree templates'],

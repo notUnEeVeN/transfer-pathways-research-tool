@@ -81,8 +81,6 @@ describe('PathwayComplexity', () => {
     expect(screen.getByText('+20*')).toBeInTheDocument()
     expect(screen.getAllByText('+26').length).toBeGreaterThan(0)
     expect(screen.getByText('−3*')).toBeInTheDocument()
-    expect(screen.getByText(/published 160, their sheet computes 164/)).toBeInTheDocument()
-    expect(screen.getByText(/North Shore × Salem prints −3 though their own complexity tab computes \+12/)).toBeInTheDocument()
 
     // Our recomputation of the same matrix.
     fireEvent.click(screen.getByRole('button', { name: 'Ours (recomputed)' }))

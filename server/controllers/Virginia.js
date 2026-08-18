@@ -53,6 +53,65 @@ const EDITABLE_KINDS = new Set(['as_degree', 'degree']);
 const escapeRegex = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const intOr = (v, d) => (Number.isFinite(Number(v)) ? Number(v) : d);
 
+/**
+ * The document a person is actually being asked to check: the current
+ * extraction for its institution. `status` retires a whole record
+ * (`superseded`, `out_of_scope`) and `primary: false` retires a duplicate that
+ * lost to a richer sibling while keeping its status. Liveness is the *only*
+ * gate on verification — see `coverage` below for why.
+ */
+const isLiveDocument = (doc) => doc?.status === 'extracted' && doc?.primary !== false;
+
+const ownerKindKey = (doc) => `${doc?.community_college_id || doc?.college_id || doc?.school_id}|${doc?.kind}`;
+
+/**
+ * Reduce a set of live documents to ONE per institution and kind.
+ *
+ * Five community colleges hold two live A.S. documents each — Transfer
+ * Virginia's program map and the college's own catalog. The corpus marks the
+ * winner `primary: true` and leaves the loser unmarked, so a `primary !== false`
+ * test lets both through and counted those colleges twice in the denominator.
+ *
+ * A signed document always wins. The import flag records which source we
+ * preferred; a signature records that a person read one of them, and losing
+ * that would silently discard the work this whole change exists to stop
+ * discarding. Where neither or both are signed, `primary: true` decides.
+ */
+function oneLivePerOwner(docs) {
+  const best = new Map();
+  for (const doc of docs) {
+    const key = ownerKindKey(doc);
+    const held = best.get(key);
+    if (!held) { best.set(key, doc); continue; }
+    const score = (d) => (d.verification?.verified === true ? 2 : 0) + (d.primary === true ? 1 : 0);
+    if (score(doc) > score(held)) best.set(key, doc);
+  }
+  return [...best.values()];
+}
+
+/**
+ * Verified-ness: the signed verdict, and only the verdict.
+ *
+ * California counts a note as verification because there a note is CREATED BY
+ * the act of verifying — `verification_notes` is an append-only array, and a
+ * row in it is a person recording what they walked. Virginia's field is not
+ * that. `verification.notes` here is a single free-text box that has been used
+ * as a working scratchpad during COLLECTION: of the 13 live documents carrying
+ * a note but no verdict, twelve hold the source URLs the document was built
+ * from and one reads "lots of missing classes" — a defect report, the opposite
+ * of a sign-off. Counting those as verified would have moved the four-year bar
+ * from 2 to 14 and told the team a job was done that nobody had done.
+ *
+ * So the rule matches the rest of the console in the sense that matters — a
+ * PERSON signs, the verdict is stamped server-side, a revision is recorded —
+ * and deliberately not in the one place the underlying field means something
+ * different. Note text is never read, parsed or rewritten here.
+ */
+const verificationNoteText = (doc) => (typeof doc?.verification?.notes === 'string'
+  ? doc.verification.notes.trim()
+  : '');
+const isVerifiedDocument = (doc) => doc?.verification?.verified === true;
+
 /** Resolver used when a researcher asks to sign a Virginia degree. */
 function degreeCourseResolver(doc, catalogCodes = new Set()) {
   const titleCodes = new Set(Object.keys(doc.course_titles || {})
@@ -216,14 +275,18 @@ exports.institutions = asyncHandler(async (req, res) => {
     });
   }
 
+  // Whichever document the overview counts, not whichever one came from the
+  // college's own catalog. Filtering by source here hid the two signed records
+  // that came from Transfer Virginia's program map, so a college could read
+  // Unverified in the rail while the overview counted it as done.
   const degrees = await db.collection(REQUIREMENTS)
     .find({
-      source: 'institution_catalog',
       status: { $nin: ['superseded', 'out_of_scope'] },
     },
-      { projection: { college_id: 1, school_id: 1, codes_seen: 1, total_units: 1, verification: 1, offers_cs: 1 } })
+      { projection: { college_id: 1, school_id: 1, community_college_id: 1, kind: 1, primary: 1, status: 1, codes_seen: 1, total_units: 1, verification: 1, offers_cs: 1 } })
     .toArray();
-  const byOwner = new Map(degrees.map((d) => [d.college_id || d.school_id, d]));
+  const byOwner = new Map(oneLivePerOwner(degrees.filter(isLiveDocument))
+    .map((d) => [d.college_id || d.school_id, d]));
 
   res.json({
     cohorts: cohortSummary(),
@@ -250,7 +313,9 @@ exports.institutions = asyncHandler(async (req, res) => {
         needs_collection: collectionStatus === 'not_collected' || collectionStatus === 'catalog_url_only',
         degree_courses: d ? (d.codes_seen || []).length : 0,
         degree_units: d?.total_units ?? null,
-        degree_verified: !!d?.verification?.verified,
+        // Same verified rule as the coverage overview: the signed verdict alone, so the
+        // rails and the progress bars can never disagree about one document.
+        degree_verified: Boolean(d) && isVerifiedDocument(d),
       };
     }),
   });
@@ -746,15 +811,26 @@ function verificationState(doc) {
   const groups = doc.requirement_groups || [];
   const catalogAccepted = doc.acceptance?.accepted === true
     || ['catalog_accepted', 'analysis_ready'].includes(doc.collection_status);
+  const owner = doc.college_id || doc.school_id || '';
   return {
     doc_id: doc._id,
+    kind: doc.kind ?? null,
+    owner_id: owner || null,
+    institution_slug: owner.replace(/^va:(cc|uni):/, '') || null,
     source: doc.source,
     status: doc.status,
-    verified: doc.verification?.verified === true,
+    primary: doc.primary ?? null,
+    live: isLiveDocument(doc),
+    verified: isVerifiedDocument(doc),
+    // The verdict flag on its own, for a caller that wants to show *how* a
+    // document was verified. `verified` above is the console-wide rule.
+    verdict_signed: doc.verification?.verified === true,
     verified_by_label: doc.verification?.verified_by_label ?? null,
     verified_at: doc.verification?.verified_at ?? null,
-    has_notes: Boolean(doc.verification?.notes),
+    has_notes: verificationNoteText(doc).length > 0,
     collection_status: doc.collection_status ?? null,
+    // Informational only. Acceptance is the parser's verdict on its own parse;
+    // it says where to look hardest, and it decides nothing about verification.
     catalog_accepted: catalogAccepted,
     analysis_ready: doc.acceptance?.ready_for_analysis === true
       || doc.collection_status === 'analysis_ready',
@@ -791,7 +867,11 @@ exports.coverage = asyncHandler(async (req, res) => {
     db.collection(COVERAGE).find({}).sort({ institution: 1 }).toArray(),
     db.collection(REQUIREMENTS).find({ status: { $nin: ['superseded', 'out_of_scope'] } }, {
       projection: {
-        kind: 1, source: 1, status: 1, verification: 1, college_id: 1, school_id: 1,
+        // `primary` is part of the liveness test, so it must be projected —
+        // an absent field reads as "not retired", which would quietly put a
+        // retired duplicate back into the verification denominator.
+        kind: 1, source: 1, status: 1, primary: 1, verification: 1,
+        college_id: 1, school_id: 1,
         requirement_groups: 1, total_units: 1, catalog_url: 1, source_url: 1,
         collection_status: 1, acceptance: 1,
         'provenance.validation.verdict': 1,
@@ -831,15 +911,21 @@ exports.coverage = asyncHandler(async (req, res) => {
   }
 
   // Coverage rows are keyed `va:cov:<cc|uni>:<slug>` and documents by
-  // `va:cc:<slug>` / `va:uni:<slug>`, so the slug is the join.
+  // `va:cc:<slug>` / `va:uni:<slug>`, so the slug is the join. The states are
+  // built once and the totals below count *them*, not the joined rows, so a
+  // document whose institution has no coverage row still reaches the figures
+  // instead of disappearing from the job.
+  const states = oneLivePerOwner(docs.filter(isLiveDocument))
+    .concat(docs.filter((d) => !isLiveDocument(d)))
+    .map(verificationState);
   const bySlug = new Map();
-  for (const doc of docs) {
-    const owner = doc.college_id || doc.school_id || '';
-    const slug = owner.replace(/^va:(cc|uni):/, '');
-    if (!slug) continue;
-    if (!bySlug.has(slug)) bySlug.set(slug, { as_degree: [], degree: [] });
-    const bucket = bySlug.get(slug)[doc.kind];
-    if (bucket) bucket.push(verificationState(doc));
+  for (const state of states) {
+    if (!state.institution_slug) continue;
+    if (!bySlug.has(state.institution_slug)) {
+      bySlug.set(state.institution_slug, { as_degree: [], degree: [] });
+    }
+    const bucket = bySlug.get(state.institution_slug)[state.kind];
+    if (bucket) bucket.push(state);
   }
 
   const enriched = rows.map((row) => {
@@ -881,12 +967,36 @@ exports.coverage = asyncHandler(async (req, res) => {
     return a.institution.localeCompare(b.institution);
   });
 
-  const all = enriched.flatMap((r) => [...r.documents.as_degree, ...r.documents.degree]);
-  // A parser-only document is reviewable but cannot be signed under the
-  // acceptance gate. Keep it out of the verification denominator so the
-  // progress figure never asks researchers to complete an impossible action.
-  const reviewable = all.filter((d) => d.status === 'extracted');
-  const verifiable = reviewable.filter((d) => d.catalog_accepted);
+  // A document is verifiable when it is live, and by nothing else. Acceptance
+  // used to narrow this denominator, which had two costs a progress bar must
+  // never pay: eleven live A.S. records could not be signed at all, and seven
+  // already-signed records were dropped from the count of work done. Acceptance
+  // is the machine grading its own parse — it stays on each document as context
+  // and has no say in whether a person may sign one, or whether their signature
+  // counts once given.
+  const live = states.filter((d) => d.live);
+  const asDocuments = live.filter((d) => d.kind === 'as_degree');
+  const bsDocuments = live.filter((d) => d.kind !== 'as_degree');
+  const isPrimaryFourYear = (d) => decorateInstitution({
+    institution_slug: d.institution_slug, level: 'four_year',
+  }).is_primary;
+
+  const institutionTotals = (institutionRows) => ({
+    institutions: institutionRows.length,
+    // Institutions with no current source-prescribed CS path are not a gap.
+    offering: institutionRows.filter((r) => r.collection_status !== 'no_program').length,
+    not_collected: institutionRows.filter((r) => r.collection_status === 'not_collected').length,
+    needs_collection: institutionRows.filter((r) => r.needs_collection).length,
+  });
+  const documentTotals = (documentStates) => ({
+    live: documentStates.length,
+    verified: documentStates.filter((d) => d.verified).length,
+    verdict_signed: documentStates.filter((d) => d.verdict_signed).length,
+    noted: documentStates.filter((d) => d.has_notes).length,
+  });
+  const communityCollegeRows = enriched.filter((r) => r.level === 'community_college');
+  const primaryFourYearRows = enriched.filter((r) => r.level === 'four_year' && r.is_primary);
+  const otherFourYearRows = enriched.filter((r) => r.level === 'four_year' && !r.is_primary);
 
   res.json({
     coverage: enriched,
@@ -894,14 +1004,43 @@ exports.coverage = asyncHandler(async (req, res) => {
     total: rows.length,
     public_four_year: primaryCohort.institution_slugs.length,
     verification: {
-      documents: all.length,
-      reviewable: reviewable.length,
-      verifiable: verifiable.length,
-      verified: verifiable.filter((d) => d.verified).length,
-      as_verifiable: verifiable.filter((d) => d.doc_id.startsWith('va:as:')).length,
-      as_verified: verifiable.filter((d) => d.doc_id.startsWith('va:as:') && d.verified).length,
-      bs_verifiable: verifiable.filter((d) => d.doc_id.startsWith('va:degree:')).length,
-      bs_verified: verifiable.filter((d) => d.doc_id.startsWith('va:degree:') && d.verified).length,
+      documents: states.length,
+      // Live is the whole denominator now, so `reviewable` and `verifiable`
+      // are the same figure under their older names. They are still emitted so
+      // a caller that has not been redeployed keeps reading a real number.
+      live: live.length,
+      reviewable: live.length,
+      verifiable: live.length,
+      verified: live.filter((d) => d.verified).length,
+      as_live: asDocuments.length,
+      as_verifiable: asDocuments.length,
+      as_verified: asDocuments.filter((d) => d.verified).length,
+      bs_live: bsDocuments.length,
+      bs_verifiable: bsDocuments.length,
+      bs_verified: bsDocuments.filter((d) => d.verified).length,
+      // Per level, the three facts a progress panel needs: how much live work
+      // exists, how much of it is signed off, and how many institutions are
+      // still holding nothing at all. The four-year block is scoped to SCHEV's
+      // public cohort, which is what the panel says it is reporting.
+      levels: {
+        community_college: {
+          cohort: TWO_YEAR_COHORT_ID,
+          ...institutionTotals(communityCollegeRows),
+          ...documentTotals(asDocuments),
+        },
+        four_year: {
+          cohort: PRIMARY_COHORT_ID,
+          ...institutionTotals(primaryFourYearRows),
+          ...documentTotals(bsDocuments.filter(isPrimaryFourYear)),
+        },
+      },
+      // Private and out-of-cohort four-year partners hold real, sometimes
+      // signed, documents. Naming them keeps the cohort-scoped block above from
+      // reading as the whole corpus and keeps their signatures counted.
+      outside_primary_cohort: {
+        ...institutionTotals(otherFourYearRows),
+        ...documentTotals(bsDocuments.filter((d) => !isPrimaryFourYear(d))),
+      },
     },
   });
 });
@@ -972,13 +1111,12 @@ exports.putDegree = asyncHandler(async (req, res) => {
       ? 'catalog_accepted'
       : (canonical.collection_status === 'captured_only' ? 'captured_only' : 'major_only');
 
+  // Acceptance is recorded, never enforced. A researcher signing a document is
+  // stating that they read the institution's page and that this is what it
+  // says; an incomplete parse is a reason for them to look harder, not grounds
+  // for the parser to refuse their signature. Refusing it here is what left
+  // eleven live A.S. records unverifiable by anyone.
   const requestedVerified = canonical.verification?.verified === true;
-  if (requestedVerified && !canonical.acceptance.accepted) {
-    return res.status(400).json({
-      error: 'This degree is not catalog-complete and cannot be verified yet.',
-      acceptance_failures: canonical.acceptance.catalog.failed,
-    });
-  }
 
   const changedAfterVerification = before?.verification?.verified === true
     && verificationMaterialChanges(before, canonical).length > 0;

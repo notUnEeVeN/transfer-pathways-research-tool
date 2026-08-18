@@ -1,4 +1,4 @@
-import React, { useId, useMemo, useState } from 'react'
+import React, { useEffect, useId, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
@@ -301,9 +301,12 @@ function diamond(x, y, size) {
   return `M${x} ${y - size} L${x + size} ${y} L${x} ${y + size} L${x - size} ${y} Z`
 }
 
-export default function CourseTypeCoverage({ majorSlug = 'cs', majorLabel = '', major: majorProp = null }) {
-  const [scope, setScope] = useState('lower-division')
-  const [variant, setVariant] = useState('faithful')
+export default function CourseTypeCoverage({
+  majorSlug = 'cs', majorLabel = '', major: majorProp = null,
+  defaultScope = 'lower-division', defaultVariant = 'faithful', onViewChange,
+}) {
+  const [scope, setScope] = useState(defaultScope)
+  const [variant, setVariant] = useState(defaultVariant)
   // The California registry only lists unstamped majors, so a state corpus
   // (ma-cs) resolves to nothing here — its host page passes the full major
   // object instead, and the prop wins whenever it is provided.
@@ -326,6 +329,12 @@ export default function CourseTypeCoverage({ majorSlug = 'cs', majorLabel = '', 
     () => buildCourseTypeModel(rows, scope, columnSpecs), [rows, scope, columnSpecs]
   )
   const label = majorLabel || major?.label || 'degree'
+  // The reader's own selection, not `activeVariant`: a major with no extended
+  // axis set is forced back to 'faithful', and pinning that would save a
+  // grouping nobody chose.
+  useEffect(() => {
+    onViewChange?.({ defaultScope: scope, defaultVariant: variant })
+  }, [scope, variant, onViewChange])
 
   if (coverage.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -381,3 +390,7 @@ export default function CourseTypeCoverage({ majorSlug = 'cs', majorLabel = '', 
     </Stack>
   )
 }
+
+// The props a pinned view may seed. Every `viewKnobs` entry on the registry
+// must name one of these; the contract test fails the build otherwise.
+CourseTypeCoverage.viewProps = ['defaultScope', 'defaultVariant']

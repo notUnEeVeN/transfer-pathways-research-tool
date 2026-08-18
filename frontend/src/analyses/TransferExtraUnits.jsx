@@ -112,23 +112,29 @@ function ExtraTable({ model }) {
 export default function TransferExtraUnits({
   majorSlug = 'cs', majorLabel = '', degreeAnalysisSlots = null,
   degreeSlotLabels = null, major = null,
+  defaultDegreeType = null, defaultVerifiedOnly = false, onViewChange,
 }) {
   const degreeModes = useMemo(() => degreeModesForMajor({
     majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
   }), [majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels])
-  const [degreeType, setDegreeType] = useState(() => defaultDegreeMode(degreeModes))
+  // The seed prop is null, not a slot literal: a major without an A.S.-T has
+  // to resolve its own opening cohort, so only a pinned value may override it.
+  const [degreeType, setDegreeType] = useState(() => defaultDegreeType || defaultDegreeMode(degreeModes))
   // See TransferCreditRate: a state corpus has one source, no curation cohorts.
   // A paper corpus shows another author's published values; being
   // state-scoped is not the test. Virginia is state-scoped but the data is
   // ours and verified, so it keeps the California control set. Mirrors the
   // server's own join condition (`capabilities.paperBaselines && state`).
   const paperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
-  const [verifiedOnly, setVerifiedOnly] = useState(false)
+  const [verifiedOnly, setVerifiedOnly] = useState(defaultVerifiedOnly)
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
       setDegreeType(defaultDegreeMode(degreeModes))
     }
   }, [degreeModes, degreeType])
+  useEffect(() => {
+    onViewChange?.({ defaultDegreeType: degreeType, defaultVerifiedOnly: verifiedOnly })
+  }, [degreeType, verifiedOnly, onViewChange])
   const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly })
   const rows = query.data?.rows || []
   const model = useMemo(
@@ -212,3 +218,7 @@ export default function TransferExtraUnits({
     </Stack>
   )
 }
+
+// The props a pinned view may seed. Every `viewKnobs` entry on the registry
+// must name one of these; the contract test fails the build otherwise.
+TransferExtraUnits.viewProps = ['defaultDegreeType', 'defaultVerifiedOnly']

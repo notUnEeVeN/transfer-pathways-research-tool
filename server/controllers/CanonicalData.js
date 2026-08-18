@@ -8,6 +8,8 @@ const { diffDocs } = require('../services/docDiff');
 const { defaultMajor, getMajor, listMajors } = require('../config/majors');
 const { AS_DEGREE_SLOTS, parseAsDegreeRowId } = require('../config/asDegreeSlots');
 const { stateClause } = require('../config/stateScope');
+// Any curated write retires the analysis memo; see services/curationEpoch.js.
+const { bumpCurationEpoch } = require('../services/curationEpoch');
 
 const COLLECTIONS = Object.freeze({
   institutions: 'assist_institutions',
@@ -544,6 +546,7 @@ exports.putRequirement = asyncHandler(async (req, res) => {
   const before = REVISIONED_KINDS.has(kind)
     ? await db.collection(COLLECTIONS.requirements).findOne({ _id: canonicalId })
     : null;
+  bumpCurationEpoch();
   await db.collection(COLLECTIONS.requirements).replaceOne(
     { _id: canonicalId }, canonical, { upsert: true }
   );
@@ -610,6 +613,7 @@ exports.deleteRequirement = asyncHandler(async (req, res) => {
   }
   const result = await req.app.locals.db.collection(COLLECTIONS.requirements)
     .deleteOne({ _id: canonicalId });
+  bumpCurationEpoch();
   if (!result.deletedCount) return res.status(404).json({ error: 'no such row' });
   res.json({ ok: true });
 });
@@ -656,12 +660,14 @@ exports.putPrerequisite = asyncHandler(async (req, res) => {
   };
   await req.app.locals.db.collection(COLLECTIONS.prerequisites)
     .replaceOne({ _id: id }, canonical, { upsert: true });
+  bumpCurationEpoch();
   res.json({ ok: true, id });
 });
 
 exports.deletePrerequisite = asyncHandler(async (req, res) => {
   const id = decodeURIComponent(String(req.params.id));
   const result = await req.app.locals.db.collection(COLLECTIONS.prerequisites).deleteOne({ _id: id });
+  bumpCurationEpoch();
   if (!result.deletedCount) return res.status(404).json({ error: 'no such row' });
   res.json({ ok: true });
 });
@@ -742,6 +748,7 @@ exports.putCourseConcept = asyncHandler(async (req, res) => {
   const course = await db.collection(COLLECTIONS.courses)
     .findOne({ _id: id, side: 'sending' }, { projection: { title: 1 } });
   if (!course) return res.status(404).json({ error: 'no such sending course' });
+  bumpCurationEpoch();
   await db.collection(COLLECTIONS.courses).updateOne(
     { _id: id },
     { $set: {

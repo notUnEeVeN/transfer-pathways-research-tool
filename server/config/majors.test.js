@@ -25,6 +25,22 @@ describe('majors config', () => {
     expect(ma.degreeAnalysisSlots).toEqual(['local_as']);
   });
 
+  it('state:"all" is the cross-corpus registry and changes no existing payload', () => {
+    // The compare tab's pane picker is the only caller of 'all'. Regression
+    // first, byte-for-byte against the independent listMajors path: every
+    // other caller's payload is untouched by the branch, and in particular the
+    // default payload still stamps no state-scoped major into a California
+    // picker.
+    expect(JSON.stringify(serializeMajors())).toBe(JSON.stringify(listMajors()));
+    expect(JSON.stringify(serializeMajors({ state: 'ma' })))
+      .toBe(JSON.stringify([getMajor('ma-cs')]));
+    expect(serializeMajors().some((major) => major.state)).toBe(false);
+
+    expect(serializeMajors({ state: 'all' }).map((m) => m.slug))
+      .toEqual(['cs', 'bio', 'econ', 'ma-cs', 'va-cs']);
+    expect(serializeMajors({ state: 'all' })).toEqual(listMajors({ includeStates: true }));
+  });
+
   it('cs program pins are byte-identical to every analysis compatibility pin', () => {
     expect(getMajor('cs').programs).toEqual(PAPER_MAJORS);
   });

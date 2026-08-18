@@ -797,7 +797,7 @@ describe('Virginia degree verification gate', () => {
     expect(stored.requirement_groups[0].title).toBe(current.requirement_groups[0].title);
   });
 
-  it('rejects a verification claim for a parser-only partial document', async () => {
+  it('lets a person sign a partial document and reports the failed parse as context', async () => {
     const partial = acceptedDegreeForPut();
     partial.requirement_layers.ge_college.status = 'missing';
     partial.verification.verified = true;
@@ -808,10 +808,70 @@ describe('Virginia degree verification gate', () => {
       user: { uid: 'researcher-1', name: 'Researcher One' },
     }));
 
-    expect(response.statusCode).toBe(400);
-    expect(response.body.error).toContain('not catalog-complete');
-    expect(response.body.acceptance_failures).toContain('four_year_layers');
-    expect(await db.collection('va_requirements').findOne({ _id: partial._id })).toBeNull();
+    expect(response.statusCode).toBe(200);
+    // The parse still fails, and the caller is still told so — it just does not
+    // veto the signature of the person who read the catalog page.
+    expect(response.body.acceptance).toMatchObject({ accepted: false });
+    expect(response.body.acceptance.catalog.failed).toContain('four_year_layers');
+    const stored = await db.collection('va_requirements').findOne({ _id: partial._id });
+    expect(stored.acceptance.accepted).toBe(false);
+    expect(stored.verification).toMatchObject({
+      verified: true, verified_by: 'researcher-1', verified_by_label: 'Researcher One',
+    });
+    const revisions = await db.collection('va_revisions').find({ doc_id: partial._id }).toArray();
+    expect(revisions).toHaveLength(1);
+    expect(revisions[0]).toMatchObject({ by_uid: 'researcher-1', verified: true, created: true });
+  });
+
+  it('never takes the verdict or the verifier label from the request body', async () => {
+    const degree = acceptedDegreeForPut();
+    degree.verification = {
+      verified: true,
+      verified_by: 'somebody-else',
+      verified_by_label: 'Somebody Else',
+      verified_at: new Date('2020-01-01T00:00:00.000Z'),
+    };
+
+    const response = await run(putDegree, request({}, {
+      params: { id: degree._id },
+      body: degree,
+      user: { uid: 'researcher-9', name: 'Researcher Nine' },
+    }));
+
+    expect(response.statusCode).toBe(200);
+    const stored = await db.collection('va_requirements').findOne({ _id: degree._id });
+    expect(stored.verification.verified_by).toBe('researcher-9');
+    expect(stored.verification.verified_by_label).toBe('Researcher Nine');
+    expect(new Date(stored.verification.verified_at).getUTCFullYear())
+      .toBeGreaterThan(2020);
+  });
+
+  it('clears the verifier stamp when a signed document is reopened', async () => {
+    const degree = acceptedDegreeForPut();
+    degree.verification = {
+      verified: true,
+      verified_by: 'researcher-1',
+      verified_by_label: 'Researcher One',
+      verified_at: new Date('2026-08-01T00:00:00.000Z'),
+      notes: 'Walked the catalog, the GE page and the graduation page.',
+    };
+    await db.collection('va_requirements').insertOne(degree);
+    const reopened = structuredClone(degree);
+    reopened.verification.verified = false;
+
+    const response = await run(putDegree, request({}, {
+      params: { id: reopened._id },
+      body: reopened,
+      user: { uid: 'researcher-2', name: 'Researcher Two' },
+    }));
+
+    expect(response.statusCode).toBe(200);
+    const stored = await db.collection('va_requirements').findOne({ _id: reopened._id });
+    expect(stored.verification).toMatchObject({
+      verified: false, verified_by: null, verified_by_label: null, verified_at: null,
+    });
+    // Reopening a verdict never edits the note a person wrote.
+    expect(stored.verification.notes).toBe('Walked the catalog, the GE page and the graduation page.');
   });
 
   it('server-validates and stamps a complete degree instead of trusting body acceptance', async () => {
@@ -904,37 +964,149 @@ describe('Virginia degree verification gate', () => {
 });
 
 describe('Virginia verification coverage', () => {
-  it('keeps major-only records reviewable but out of the verifiable denominator', async () => {
+  const coverageRow = (id, institution, level, rest = {}) => ({
+    _id: id, institution, level, ...rest,
+  });
+  const asDocument = (slug, suffix, rest = {}) => ({
+    _id: `va:as:${slug}:cs:${suffix}`, kind: 'as_degree', college_id: `va:cc:${slug}`,
+    status: 'extracted', source: 'institution_catalog', requirement_groups: [], ...rest,
+  });
+  const bsDocument = (slug, rest = {}) => ({
+    _id: `va:degree:${slug}:cs`, kind: 'degree', school_id: `va:uni:${slug}`,
+    status: 'extracted', source: 'institution_catalog', requirement_groups: [], ...rest,
+  });
+
+  it('counts every live document as verifiable, whatever the parser made of it', async () => {
     await db.collection('va_coverage').insertMany([
-      { _id: 'va:cov:uni:accepted-university', institution: 'Accepted University' },
-      { _id: 'va:cov:uni:partial-university', institution: 'Partial University' },
+      coverageRow('va:cov:cc:sample-community-college', 'Sample Community College', 'community_college'),
+      coverageRow('va:cov:cc:second-community-college', 'Second Community College', 'community_college'),
+      coverageRow('va:cov:uni:george-mason-university', 'George Mason University', 'four_year'),
     ]);
     await db.collection('va_requirements').insertMany([
-      {
-        _id: 'va:degree:accepted-university:cs', kind: 'degree',
-        school_id: 'va:uni:accepted-university', status: 'extracted',
-        source: 'institution_catalog', requirement_groups: [],
-        collection_status: 'catalog_accepted', acceptance: { accepted: true, ready_for_analysis: false },
-        verification: { verified: true },
-      },
-      {
-        _id: 'va:degree:partial-university:cs', kind: 'degree',
-        school_id: 'va:uni:partial-university', status: 'extracted',
-        source: 'institution_catalog', requirement_groups: [],
-        collection_status: 'major_only', acceptance: { accepted: false, ready_for_analysis: false },
+      // The shape that could not be signed before: `acceptance` was never
+      // computed for it at all, so the gate read it as a failure.
+      asDocument('sample-community-college', 'A', {
+        source: 'transferva_program_map', primary: true,
+        verification: { verified: true, verified_by_label: 'Roy Martinez' },
+      }),
+      asDocument('second-community-college', 'B', {
+        collection_status: 'major_only',
+        acceptance: { accepted: false, ready_for_analysis: false, catalog: { failed: ['as_units'] } },
         verification: { verified: false },
-      },
+      }),
+      bsDocument('george-mason-university', {
+        collection_status: 'catalog_accepted',
+        acceptance: { accepted: true, ready_for_analysis: false },
+        verification: { verified: false, notes: 'https://catalog.gmu.edu/mason-core/' },
+      }),
     ]);
 
     const response = await run(coverage, request());
 
     expect(response.body.verification).toMatchObject({
-      documents: 2, reviewable: 2, verifiable: 1, verified: 1,
-      bs_verifiable: 1, bs_verified: 1,
+      documents: 3, live: 3, reviewable: 3, verifiable: 3, verified: 1,
+      as_live: 2, as_verifiable: 2, as_verified: 1,
+      // The B.S. document carries only a source link, which is not a sign-off.
+      bs_live: 1, bs_verifiable: 1, bs_verified: 0,
     });
-    const partial = response.body.coverage.find((row) => row.institution === 'Partial University');
-    expect(partial.documents.degree[0]).toMatchObject({
-      collection_status: 'major_only', catalog_accepted: false, analysis_ready: false,
+    const college = response.body.coverage.find((row) => row.institution === 'Sample Community College');
+    const unaccepted = college.documents.as_degree.find((d) => d.doc_id.endsWith(':A'));
+    // Acceptance survives as context on the document, and only as context.
+    expect(unaccepted).toMatchObject({ live: true, verified: true, catalog_accepted: false });
+    const second = response.body.coverage.find((row) => row.institution === 'Second Community College');
+    expect(second.documents.as_degree.find((d) => d.doc_id.endsWith(':B'))).toMatchObject({
+      live: true, verified: false, catalog_accepted: false, collection_status: 'major_only',
     });
+  });
+
+  // Virginia's `verification.notes` is a single free-text box that was used as a
+  // working scratchpad during collection — most of the live documents carrying
+  // one hold the source URLs they were built from, and one reads "lots of
+  // missing classes". Counting those as verified would report a job nobody did,
+  // so only the signed verdict counts here. California differs because there a
+  // note is created BY the act of verifying.
+  it('does not treat a collection note as a verification verdict', async () => {
+    const sourceUrl = 'https://catalog.example.edu/mason-core/';
+    await db.collection('va_coverage').insertMany([
+      coverageRow('va:cov:cc:sample-community-college', 'Sample Community College', 'community_college'),
+      coverageRow('va:cov:cc:second-community-college', 'Second Community College', 'community_college'),
+    ]);
+    await db.collection('va_requirements').insertMany([
+      asDocument('sample-community-college', 'NOTED', { verification: { verified: false, notes: sourceUrl } }),
+      asDocument('second-community-college', 'SIGNED', { verification: { verified: true } }),
+    ]);
+
+    const response = await run(coverage, request());
+
+    expect(response.body.verification).toMatchObject({ live: 2, verified: 1 });
+    const college = response.body.coverage.find((row) => row.institution === 'Sample Community College');
+    expect(college.documents.as_degree.find((d) => d.doc_id.endsWith(':NOTED'))).toMatchObject({
+      verified: false, has_notes: true,
+    });
+    const second = response.body.coverage.find((row) => row.institution === 'Second Community College');
+    expect(second.documents.as_degree.find((d) => d.doc_id.endsWith(':SIGNED'))).toMatchObject({
+      verified: true,
+    });
+    // Reading coverage never touches the text a person wrote.
+    const stored = await db.collection('va_requirements')
+      .findOne({ _id: 'va:as:sample-community-college:cs:NOTED' });
+    expect(stored.verification.notes).toBe(sourceUrl);
+  });
+
+  it('reports live work, verified work and uncollected institutions per level', async () => {
+    await db.collection('va_coverage').insertMany([
+      coverageRow('va:cov:cc:sample-community-college', 'Sample Community College', 'community_college', { outcome: 'captured' }),
+      coverageRow('va:cov:cc:empty-community-college', 'Empty Community College', 'community_college'),
+      coverageRow('va:cov:uni:george-mason-university', 'George Mason University', 'four_year', { outcome: 'captured' }),
+      coverageRow('va:cov:uni:randolph-macon-college', 'Randolph-Macon College', 'four_year', { outcome: 'captured' }),
+    ]);
+    await db.collection('va_requirements').insertMany([
+      asDocument('sample-community-college', 'A', { verification: { verified: true } }),
+      bsDocument('george-mason-university', { verification: { verified: false, notes: 'Walked the Mason Core pages.' } }),
+      bsDocument('randolph-macon-college', { verification: { verified: true } }),
+    ]);
+
+    const response = await run(coverage, request());
+    const { levels, outside_primary_cohort: outside } = response.body.verification;
+
+    expect(levels.community_college).toMatchObject({
+      cohort: 'virginia_two_year',
+      institutions: 2, not_collected: 1, live: 1, verified: 1,
+    });
+    // The four-year block is the SCHEV public cohort, which the coverage rows
+    // fill out to 15 whether or not anything has been collected for them yet.
+    expect(levels.four_year).toMatchObject({
+      cohort: 'schev_public_four_year',
+      // One live document carrying a working note but no signed verdict: it is
+      // live, it is not verified, and the note is reported separately so the
+      // page can distinguish "somebody wrote something" from "somebody signed".
+      institutions: 15, not_collected: 14, live: 1, verified: 0,
+      verdict_signed: 0, noted: 1,
+    });
+    // Randolph-Macon is a private partner: outside the bar, never uncounted.
+    expect(outside).toMatchObject({ institutions: 1, live: 1, verified: 1 });
+    expect(levels.community_college.live + levels.four_year.live + outside.live)
+      .toBe(response.body.verification.live);
+    expect(levels.community_college.verified + levels.four_year.verified + outside.verified)
+      .toBe(response.body.verification.verified);
+  });
+
+  it('does not mark a degree verified in the rails on the strength of a source link', async () => {
+    await db.collection('va_institutions').insertOne({
+      _id: 'va:inst:george-mason-university', name: 'George Mason University',
+      level: 'four_year', course_count: 0, receives_count: 0,
+    });
+    await db.collection('va_requirements').insertOne(bsDocument('george-mason-university', {
+      codes_seen: ['CS112'], total_units: 120,
+      collection_status: 'major_only', acceptance: { accepted: false, ready_for_analysis: false },
+      verification: { verified: false, notes: 'https://catalog.gmu.edu/mason-core/' },
+    }));
+
+    const response = await run(institutions, request({ level: 'four_year' }));
+
+    // The note here is the catalog URL the document was built from, not a
+    // sign-off, so the rail must still show the degree as unverified.
+    expect(response.body.institutions.find((row) => row.name === 'George Mason University'))
+      .toMatchObject({ degree_status: 'full', degree_verified: false });
   });
 });

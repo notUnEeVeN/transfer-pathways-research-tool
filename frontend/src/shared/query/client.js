@@ -1,6 +1,7 @@
 import { QueryClient } from '@tanstack/react-query'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import { get, set, del } from 'idb-keyval'
+import { ANALYSIS_KEY_PREFIX } from './refresh'
 
 /**
  * TanStack Query is the single data layer for the app. The QueryClient lives
@@ -20,7 +21,14 @@ export const queryClient = new QueryClient({
       staleTime: 5 * 60 * 1000,
       // Keep in memory for 24 h between mounts.
       gcTime: 24 * 60 * 60 * 1000,
-      refetchOnWindowFocus: true,
+      // Coming back to the tab does not reload the console. Focus refetching
+      // was the single largest source of unasked-for loading here — every
+      // stale query in the app fired at once, on a surface where the reader
+      // had usually left the tab precisely to go read something else. The two
+      // queries that genuinely need it (the shared task board and the figure
+      // gallery, both written by teammates while a tab sits open) turn it back
+      // on for themselves in hooks/useData.js.
+      refetchOnWindowFocus: false,
       refetchOnReconnect: true,
       retry: 2,
       // 30s axios timeout is gone — handled here. Failed queries surface
@@ -37,14 +45,19 @@ export const queryClient = new QueryClient({
  * Persist source/catalog queries, but never computed analyses. Analysis
  * results depend on the current algorithm and canonical dataset; rehydrating
  * an old result can otherwise paint one answer before the live request paints
- * another. Individual hooks may still retain them briefly in memory when that
- * is safe; coverage snapshots are discarded as soon as their visual unmounts.
+ * another. Analyses are held in memory for the session instead (see the
+ * session-cache block in hooks/useData.js), so this exclusion is also what
+ * bounds that: a reload starts every analysis from the server again.
+ *
+ * `comparisons` is excluded for a different reason: it holds written notes, and
+ * a note saved a minute ago must never be shadowed on first paint by a 24h-old
+ * copy of the document it lives in.
  */
 export function shouldPersistQuery(query) {
   const rootKey = String(query?.queryKey?.[0] || '')
   return query?.state?.status === 'success'
-    && !['access-me', 'majors'].includes(rootKey)
-    && !rootKey.startsWith('analysis-')
+    && !['access-me', 'majors', 'comparisons'].includes(rootKey)
+    && !rootKey.startsWith(ANALYSIS_KEY_PREFIX)
 }
 
 const idbStorage = {

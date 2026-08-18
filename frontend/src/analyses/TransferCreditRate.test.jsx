@@ -82,9 +82,6 @@ describe('TransferCreditRate', () => {
       .toHaveStyle({ backgroundColor: 'rgb(255 255 255)' })
     expect(screen.getByLabelText(/CC Alpha\s+UC Merced\s+Lower-division requirements fulfilled: 100%/i))
       .toHaveStyle({ backgroundColor: 'rgb(103 0 13)' })
-    expect(screen.getByText(/Transferable and breadth requirements; university-only work is excluded/i)).toBeInTheDocument()
-    expect(screen.getByRole('note')).toHaveTextContent('The denominator is the receiving bachelor’s requirements')
-    expect(screen.getByRole('note')).toHaveTextContent('1 cell includes a method warning')
   })
 
   it('offers the MA-paper equivalent: the associate degree’s own transfer credit rate', () => {
@@ -123,7 +120,6 @@ describe('TransferCreditRate', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferCreditRate />)
     fireEvent.click(screen.getByRole('button', { name: 'All bachelor’s requirements' }))
-    expect(screen.getByText(/complete modeled graduation plan, including upper-division and university-only work/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/CC Alpha\s+UC Berkeley\s+Bachelor’s requirements fulfilled: 45.2%/i))
       .toHaveAttribute('aria-label', expect.stringMatching(/54.2 of 120 semester units/i))
     expect(screen.getByLabelText(/CC Alpha\s+UC Merced\s+Bachelor’s requirements fulfilled: 50%/i))
@@ -144,10 +140,6 @@ describe('TransferCreditRate', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Verified programs only' }))
 
     expect(mockRate).toHaveBeenLastCalledWith('ast', { majorSlug: 'cs', verifiedOnly: true })
-    expect(screen.getByText(/Verified associate-degree programs only/i)).toBeInTheDocument()
-    expect(screen.getByText(/bachelor’s graduation templates are treated as valid/i)).toBeInTheDocument()
-    expect(screen.getByRole('note')).toHaveTextContent(/high-fidelity state limits the associate-degree side/i)
-    expect(screen.getByText(/Transferable and breadth requirements; university-only work is excluded/i)).toBeInTheDocument()
   })
 
   it('drops the curation-cohort control for a paper corpus, which has exactly one source', () => {
@@ -158,7 +150,6 @@ describe('TransferCreditRate', () => {
 
     expect(screen.queryByText('Associate-degree evidence')).toBeNull()
     expect(screen.queryByRole('button', { name: 'Verified programs only' })).toBeNull()
-    expect(screen.getByText(/Paper-source associate degrees/)).toBeInTheDocument()
     expect(mockRate).toHaveBeenLastCalledWith('local_as', { majorSlug: 'ma-cs', verifiedOnly: false })
   })
 
@@ -197,7 +188,6 @@ describe('TransferCreditRate', () => {
     // bachelor-side scope switch are not rendered on a paper corpus.
     expect(screen.queryByRole('button', { name: 'MA-paper equivalent' })).toBeNull()
     expect(screen.queryByText('Requirements counted')).toBeNull()
-    expect(screen.getByText(/MA-paper equivalent — associate-degree credit applied/)).toBeInTheDocument()
 
     // Default source: the final paper as printed; no GE toggle until Ours.
     expect(screen.getByRole('button', { name: 'Final paper' }).getAttribute('aria-pressed')).toBe('true')
@@ -237,7 +227,6 @@ describe('TransferCreditRate', () => {
     expect(screen.getByRole('button', { name: 'Economics A.A.-T / A.S.-T' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Local Economics A.A.' }))
     expect(mockRate).toHaveBeenLastCalledWith('local_other', { majorSlug: 'econ', verifiedOnly: false })
-    expect(screen.getByRole('note')).toHaveTextContent(/all-record state is exploratory/i)
   })
 
   it('shows an empty state when the cohort has no records', () => {
