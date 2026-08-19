@@ -1,7 +1,18 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import CourseTypeCoverage, { buildCourseTypeModel, columnsFor } from './CourseTypeCoverage'
+import CourseTypeCoverage, {
+  MA_FIGURE2_ARCHIVE_DIRECT,
+  MA_FIGURE2_FINAL_PDF,
+  FAITHFUL_COMPARISON_ROLES,
+  buildCourseTypeModel,
+  buildMaFigure2ArchiveDirectModel,
+  buildMaFigure2PdfModel,
+  columnsFor,
+  courseTypeComparisonCells,
+  courseTypeComparisonContract,
+  courseTypeViewForPane,
+} from './CourseTypeCoverage'
 import { useCoverage } from '../shared/query/hooks/useData'
 import { useMajors } from '../shared/majors/useMajors'
 
@@ -14,8 +25,14 @@ vi.mock('../shared/majors/useMajors', () => ({ useMajors: vi.fn() }))
 const CS_MAJOR = {
   slug: 'cs',
   label: 'Computer Science',
+  degreeTemplateEvidence: {
+    total: 9, explicitlyVerified: 9,
+    catalogYears: 'not recorded on the legacy CS templates',
+    staleResearchStatus: 0,
+  },
   courseTypes: {
     module: 'cs',
+    excludeGeGroups: true,
     axes: {
       faithful: [
         { key: 'computing', label: 'Computing', categories: ['computing'] },
@@ -25,6 +42,14 @@ const CS_MAJOR = {
       ],
     },
   },
+}
+
+const MA_MAJOR = {
+  ...CS_MAJOR,
+  slug: 'ma-cs',
+  label: 'Computer Science (MA)',
+  state: 'ma',
+  degreeTemplateEvidence: null,
 }
 
 const BIO_MAJOR = {
@@ -117,12 +142,222 @@ describe('course type coverage', () => {
     })
   })
 
-  it('prefers a passed major object over the registry, so state corpora render columns', () => {
+  it('prefers a passed major object and opens a state corpus on the final paper', () => {
     // ma-cs is not in the California registry (bySlug misses), which used to
     // leave columnsFor(null) empty and the whole figure blank on the MA tab.
-    render(<CourseTypeCoverage majorSlug='ma-cs' major={CS_MAJOR} />)
-    expect(screen.getByText('Requirements counted')).toBeInTheDocument()
+    render(<CourseTypeCoverage majorSlug='ma-cs' major={MA_MAJOR} />)
+    expect(screen.getByRole('button', { name: 'Final paper' }))
+      .toHaveAttribute('aria-pressed', 'true')
+    expect(screen.queryByText('Requirements counted')).toBeNull()
     expect(screen.queryAllByText(/Computing|Math/).length).toBeGreaterThan(0)
+  })
+
+  it('keeps the bachelor-template evidence receipt inside exports', () => {
+    const { container } = render(<CourseTypeCoverage majorSlug='cs' />)
+    const exportRoot = container.querySelector('[data-export-root]')
+    expect(within(exportRoot).getByText(/9\/9 bachelor templates explicitly verified/i))
+      .toBeInTheDocument()
+    expect(within(exportRoot).getByText(/catalog years: not recorded/i))
+      .toBeInTheDocument()
+  })
+
+  it('freezes the final-PDF populations, visible point values, and provenance gate', () => {
+    const model = buildMaFigure2PdfModel(columnsFor(MA_MAJOR))
+    const byKey = Object.fromEntries(model.columns.map((column) => [column.key, column]))
+
+    expect(MA_FIGURE2_FINAL_PDF.source.sha256)
+      .toBe('5024b34ae6dd40f0fe735f75844d8c341de27b9df668756905a78f03f35c488a')
+    expect(MA_FIGURE2_FINAL_PDF.source.pdf_page).toBe(3)
+    expect(model.columns.map((column) => column.points.length)).toEqual([11, 11, 11, 5])
+    expect(byKey.computing.points.map((point) => point.value))
+      .toEqual([5, 9, 11, 11, 18, 20, 22, 25, 29, 30, 58])
+    expect(byKey.math.points.map((point) => point.value))
+      .toEqual([13, 40, 47, 52, 52, 53, 63, 65, 83, 97, 98])
+    expect(byKey.science.points.map((point) => point.value))
+      .toEqual([53, 78, 93, 97, 100, 100, 100, 100, 100, 100, 100])
+    expect(byKey.non_stem.points.map((point) => point.value))
+      .toEqual([47, 67, 67, 100, 100])
+    expect(model.columns.map((column) => Number(column.mean.toFixed(1))))
+      .toEqual([21.6, 60.3, 92.8, 76.2])
+    expect(model.columns.map((column) => column.paperProseMean)).toEqual([22, 60, 93, 76])
+    expect(model.columns.every((column) => column.points.every((point) => point.anonymous)))
+      .toBe(true)
+  })
+
+  it('freezes our reviewed recalculation separately from the final paper', () => {
+    const model = buildMaFigure2ArchiveDirectModel(columnsFor(MA_MAJOR))
+    const byKey = Object.fromEntries(model.columns.map((column) => [column.key, column]))
+
+    expect(MA_FIGURE2_ARCHIVE_DIRECT.source.repository_commit)
+      .toBe('f0be157a419b23e90d206cef72ee5cba09b8274f')
+    expect(MA_FIGURE2_ARCHIVE_DIRECT.source.workbook_sha256)
+      .toBe('f9d8650db1789d8a5c911656af29ddd3e31c1c1fcdb62707d6dd9aaedef998ff')
+    expect(MA_FIGURE2_ARCHIVE_DIRECT.reconstruction.identity_limit)
+      .toMatch(/multiset overlap.*never an observation-index or campus join/i)
+    expect(byKey.computing.points.map((point) => point.value))
+      .toEqual([6, 9, 11, 11, 18, 20, 22, 25, 28, 29, 58])
+    expect(byKey.math.points.map((point) => point.value))
+      .toEqual([13, 40, 47, 52, 52, 53, 63, 65, 83, 95, 97])
+    expect(byKey.science.points.map((point) => point.value))
+      .toEqual([53, 78, 93, 97, 100, 100, 100, 100, 100, 100, 100])
+    expect(byKey.non_stem.points.map((point) => point.value))
+      .toEqual([33, 47, 67, 100, 100])
+    expect(model.columns.map((column) => Number(column.mean.toFixed(1))))
+      .toEqual([21.5, 60, 92.8, 69.4])
+    expect(model.columns.every((column) => column.points.every((point) => point.anonymous)))
+      .toBe(true)
+  })
+
+  it('renders the final paper locally, then switches only to our recalculation', () => {
+    const onViewChange = vi.fn()
+    const { container } = render(
+      <CourseTypeCoverage majorSlug='ma-cs' major={MA_MAJOR} onViewChange={onViewChange} />
+    )
+
+    expect(container.querySelectorAll('[data-point]')).toHaveLength(38)
+    expect(screen.getByText(/Printed point counts: Computing n=11, Math n=11, Science n=11, Non-STEM n=5/i))
+      .toBeInTheDocument()
+    expect(screen.getByRole('img', {
+      name: /Non-STEM, Printed observation 1: 47 percent of required non-stem courses have an equivalent in final PDF Figure 2/i,
+    })).toBeInTheDocument()
+    expect(screen.getByRole('img', {
+      name: /Non-STEM average across 5 plotted observations: 76.2 percent; paper prose reports 76 percent/i,
+    })).toBeInTheDocument()
+    expect(screen.getByText('Frozen source artifact')).toBeInTheDocument()
+    expect(onViewChange).toHaveBeenLastCalledWith({
+      defaultScope: 'whole-degree', defaultVariant: 'faithful', defaultMaSource: 'pdf',
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Our recalculation' }))
+
+    expect(screen.queryByText('Requirements counted')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Refresh data' })).toBeNull()
+    expect(container.querySelectorAll('[data-point]')).toHaveLength(38)
+    expect(screen.getByText(/Our Figure 2 recalculation · 11 universities × 15 community colleges/i))
+      .toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Archived requirement reconstruction' })).toBeNull()
+    expect(onViewChange).toHaveBeenLastCalledWith({
+      defaultScope: 'whole-degree', defaultVariant: 'faithful', defaultMaSource: 'archive-direct',
+    })
+  })
+
+  it('opens the reviewed direct rerun as a frozen, anonymous whole-degree artifact', () => {
+    const onViewChange = vi.fn()
+    const { container } = render(
+      <CourseTypeCoverage majorSlug='ma-cs' major={MA_MAJOR}
+        defaultMaSource='archive-direct' defaultScope='lower-division'
+        onViewChange={onViewChange} />
+    )
+
+    expect(screen.getByRole('button', { name: 'Our recalculation' }))
+      .toHaveAttribute('aria-pressed', 'true')
+    expect(screen.queryByText('Requirements counted')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Refresh data' })).toBeNull()
+    expect(screen.getByText('Frozen source artifact')).toBeInTheDocument()
+    expect(container.querySelectorAll('[data-point]')).toHaveLength(38)
+    expect(screen.getByText(/Our Figure 2 recalculation · 11 universities × 15 community colleges/i))
+      .toBeInTheDocument()
+    expect(screen.getByText(/cannot be paired by campus or observation index/i))
+      .toBeInTheDocument()
+    expect(screen.getByRole('img', {
+      name: /Non-STEM, Recalculated observation 1: 33 percent.*our Figure 2 recalculation.*identity is not assigned/i,
+    })).toBeInTheDocument()
+    expect(onViewChange).toHaveBeenLastCalledWith({
+      defaultScope: 'whole-degree',
+      defaultVariant: 'faithful',
+      defaultMaSource: 'archive-direct',
+    })
+  })
+
+  it('does not let a live-endpoint failure block the frozen final-PDF exhibit', () => {
+    useCoverage.mockReturnValue({
+      data: null, isLoading: false, isError: true, isFetching: false, refetch,
+    })
+
+    const { container } = render(<CourseTypeCoverage majorSlug='ma-cs' major={MA_MAJOR} />)
+
+    expect(container.querySelectorAll('[data-point]')).toHaveLength(38)
+    expect(screen.queryByText(/Could not load degree requirement coverage/i)).toBeNull()
+  })
+
+  it('normalizes a legacy archived view to our direct whole-degree recalculation', () => {
+    render(<CourseTypeCoverage majorSlug='ma-cs' major={MA_MAJOR}
+      defaultMaSource='archive' defaultScope='lower-division' />)
+
+    expect(screen.getByRole('button', { name: 'Our recalculation' }))
+      .toHaveAttribute('aria-pressed', 'true')
+    expect(screen.queryByRole('button', { name: 'Lower-division only' })).toBeNull()
+    expect(screen.getByRole('img', {
+      name: /Computing, Recalculated observation 1:/i,
+    })).toBeInTheDocument()
+    expect(screen.getByText(/Our Figure 2 recalculation · 11 universities × 15 community colleges/i))
+      .toBeInTheDocument()
+  })
+
+  it('locks the comparison contract to the PDF scope and never invents campus joins', () => {
+    const pane = {
+      major: 'ma-cs',
+      knobs: { 'ma-source': 'pdf', scope: 'lower-division', variant: 'extended' },
+    }
+    const view = courseTypeViewForPane(pane, MA_MAJOR)
+    const cells = courseTypeComparisonCells({ rows: rows() }, pane, MA_MAJOR)
+    const contract = courseTypeComparisonContract(pane, MA_MAJOR)
+
+    expect(view).toMatchObject({
+      paperCorpus: true, maSource: 'pdf', scope: 'whole-degree', variant: 'faithful',
+    })
+    expect(cells).toHaveLength(38)
+    expect(new Set(cells.map((cell) => cell.rowKey)).size).toBe(38)
+    expect(cells.every((cell) => cell.rowLabel.startsWith('Printed observation '))).toBe(true)
+    expect([...new Set(cells.map((cell) => cell.colKey))])
+      .toEqual(FAITHFUL_COMPARISON_ROLES.map((role) => role.key))
+    expect(contract.semantics.scope).toBe('whole-degree')
+    expect(contract.semantics.general_education).toBe('excluded')
+    expect(contract.distribution).toEqual({
+      groupBy: 'column', label: 'course type', pooled: false,
+      roles: FAITHFUL_COMPARISON_ROLES.map((role) => role.key),
+    })
+    expect(contract.keys.rows)
+      .toBe('anonymous final-PDF category-local observation; distribution only')
+    expect(contract.context).toMatchObject({
+      source: 'final PDF Figure 2 (unlabeled raster transcription)',
+      pointIdentity: 'anonymous printed university observations',
+    })
+
+    const caContract = courseTypeComparisonContract({
+      major: 'cs', knobs: { scope: 'whole-degree', variant: 'faithful' },
+    }, CS_MAJOR)
+    expect(caContract.semantics).toEqual(contract.semantics)
+    expect(caContract.distribution).toEqual(contract.distribution)
+    expect(caContract.context).not.toEqual(contract.context)
+  })
+
+  it('keeps the direct rerun anonymous and key-incompatible with final-PDF observation indices', () => {
+    const pdfPane = { major: 'ma-cs', knobs: { 'ma-source': 'pdf' } }
+    const directPane = { major: 'ma-cs', knobs: { 'ma-source': 'archive-direct' } }
+    const pdfCells = courseTypeComparisonCells({ rows: rows() }, pdfPane, MA_MAJOR)
+    const directCells = courseTypeComparisonCells({ rows: rows() }, directPane, MA_MAJOR)
+    const pdfContract = courseTypeComparisonContract(pdfPane, MA_MAJOR)
+    const directContract = courseTypeComparisonContract(directPane, MA_MAJOR)
+
+    expect(courseTypeViewForPane(directPane, MA_MAJOR)).toMatchObject({
+      paperCorpus: true,
+      maSource: 'archive-direct',
+      scope: 'whole-degree',
+      variant: 'faithful',
+    })
+    expect(pdfCells).toHaveLength(38)
+    expect(directCells).toHaveLength(38)
+    expect(pdfCells.some((pdf) => directCells.some((direct) => direct.rowKey === pdf.rowKey)))
+      .toBe(false)
+    expect(directContract.keys.rows)
+      .toBe('anonymous recalculation category-local observation; distribution only')
+    expect(directContract.keys.rows).not.toBe(pdfContract.keys.rows)
+    expect(directContract.distribution).toEqual(pdfContract.distribution)
+    expect(directContract.context).toMatchObject({
+      source: 'our recalculation from the authors’ requirement and equivalency data',
+      pointIdentity: 'anonymous recalculated university observations',
+    })
   })
 
   it('averages each campus over its colleges and drops types it does not require', () => {
@@ -162,23 +397,37 @@ describe('course type coverage', () => {
     expect(davis.colleges).toBe(4)
   })
 
-  it('defaults to lower-division requirements and renders one dot per campus per type', () => {
+  it('normalizes faithful CS and Biology columns to the same four semantic roles', () => {
+    const keys = (cells) => [...new Set(cells.map((item) => item.colKey))]
+    const expected = FAITHFUL_COMPARISON_ROLES.map((role) => role.key)
+
+    expect(keys(courseTypeComparisonCells(
+      { rows: rows() }, { major: 'cs', knobs: { variant: 'faithful' } }, CS_MAJOR,
+    ))).toEqual(expected)
+    expect(keys(courseTypeComparisonCells(
+      { rows: bioRows() }, { major: 'bio', knobs: { variant: 'faithful' } }, BIO_MAJOR,
+    ))).toEqual(expected)
+  })
+
+  it('defaults to the paper-comparable whole-degree scope and renders one dot per campus per type', () => {
     const { container } = render(<CourseTypeCoverage />)
 
     expect(container.querySelectorAll('[data-column]')).toHaveLength(4)
     // 3 campuses in three types, 2 in science.
     expect(container.querySelectorAll('[data-point]')).toHaveLength(11)
     expect(container.querySelectorAll('[data-mean]')).toHaveLength(4)
-    expect(screen.getByRole('img', { name: /Computing at Davis: 100 percent of required courses/i })).toBeTruthy()
+    expect(screen.getByRole('img', { name: /Computing at Davis: 40 percent of required courses/i })).toBeTruthy()
     expect(screen.getByRole('img', { name: /Science average across campuses: 100 percent/i })).toBeTruthy()
     expect(screen.getByText('Course Type')).toBeTruthy()
     expect(screen.getByText('Mean')).toBeTruthy()
-
-    fireEvent.click(screen.getByRole('button', { name: 'Whole degree' }))
-    expect(screen.getByRole('img', { name: /Computing at Davis: 40 percent of required courses/i })).toBeTruthy()
+    expect(screen.getByText(/Current computed corpus .* general education excluded/i))
+      .toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'Lower-division only' }))
     expect(screen.getByRole('img', { name: /Computing at Davis: 100 percent of required courses/i })).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Whole degree' }))
+    expect(screen.getByRole('img', { name: /Computing at Davis: 40 percent of required courses/i })).toBeTruthy()
 
     fireEvent.click(screen.getByRole('button', { name: 'Refresh data' }))
     expect(refetch).toHaveBeenCalledOnce()

@@ -21,6 +21,32 @@ const COLLECTIONS = Object.freeze({
   revisions: 'curated_revisions',
 });
 
+// Figure 6 is persisted because assembling every pathway is expensive. A
+// canonical edit must never leave that persisted matrix describing an older
+// verification cohort or requirement graph. Scope associate-degree edits to
+// their major/slot, degree edits to their major, and graph edits to all Figure
+// 6 caches. The next read recomputes the missing variant; the prewarm script
+// restores all variants before a presentation.
+async function retirePathwayComplexityCache(db, { majorSlug = null, degreeType = null } = {}) {
+  const filter = { kind: 'pathway-complexity' };
+  if (majorSlug) filter.major_slug = majorSlug;
+  if (degreeType) filter.degree_type = degreeType;
+  await db.collection('analysis_cache').deleteMany(filter);
+}
+
+async function retireRequirementAnalysis(db, kind, row = {}) {
+  if (kind === 'as_degree') {
+    await retirePathwayComplexityCache(db, {
+      majorSlug: row.major_slug || null,
+      degreeType: row.degree_type || null,
+    });
+  } else if (kind === 'degree') {
+    await retirePathwayComplexityCache(db, { majorSlug: row.major_slug || null });
+  } else if (kind === 'prereq_concept') {
+    await retirePathwayComplexityCache(db);
+  }
+}
+
 // The kinds whose hand edits we log. AI-scraped data enters through the import
 // scripts, never this endpoint, so a revision here is always a human change —
 // exactly the hand-verification trail we want to review. Kept to the verified
@@ -555,6 +581,7 @@ exports.putRequirement = asyncHandler(async (req, res) => {
       docId: canonicalId, kind, before, after: canonical, user: req.user,
     });
   }
+  await retireRequirementAnalysis(db, kind, canonical);
   res.json({ ok: true, id: canonicalId });
 });
 
@@ -584,6 +611,10 @@ exports.deleteRequirement = asyncHandler(async (req, res) => {
   const prefix = `${REQUIREMENT_PREFIX[kind]}:`;
   const rawId = decodeURIComponent(String(req.params.id));
   const canonicalId = rawId.startsWith(prefix) ? rawId : `${prefix}${rawId}`;
+  const cacheScope = ['as_degree', 'degree'].includes(kind)
+    ? await req.app.locals.db.collection(COLLECTIONS.requirements)
+      .findOne({ _id: canonicalId }, { projection: { major_slug: 1, degree_type: 1 } })
+    : {};
   if (kind === 'prereq_concept') {
     const slug = canonicalId.slice(prefix.length);
     const [dependents, mapped, vaMapped, templated] = await Promise.all([
@@ -615,6 +646,7 @@ exports.deleteRequirement = asyncHandler(async (req, res) => {
     .deleteOne({ _id: canonicalId });
   bumpCurationEpoch();
   if (!result.deletedCount) return res.status(404).json({ error: 'no such row' });
+  await retireRequirementAnalysis(req.app.locals.db, kind, cacheScope || {});
   res.json({ ok: true });
 });
 
@@ -661,6 +693,7 @@ exports.putPrerequisite = asyncHandler(async (req, res) => {
   await req.app.locals.db.collection(COLLECTIONS.prerequisites)
     .replaceOne({ _id: id }, canonical, { upsert: true });
   bumpCurationEpoch();
+  await retirePathwayComplexityCache(req.app.locals.db);
   res.json({ ok: true, id });
 });
 
@@ -669,6 +702,7 @@ exports.deletePrerequisite = asyncHandler(async (req, res) => {
   const result = await req.app.locals.db.collection(COLLECTIONS.prerequisites).deleteOne({ _id: id });
   bumpCurationEpoch();
   if (!result.deletedCount) return res.status(404).json({ error: 'no such row' });
+  await retirePathwayComplexityCache(req.app.locals.db);
   res.json({ ok: true });
 });
 
@@ -762,6 +796,7 @@ exports.putCourseConcept = asyncHandler(async (req, res) => {
       concept_curated_at: new Date(),
     } }
   );
+  await retirePathwayComplexityCache(db);
   res.json({ ok: true, id });
 });
 

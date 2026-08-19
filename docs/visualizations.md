@@ -175,59 +175,116 @@ git history, so this is a genuine reproduction, not a recreation — see
 
 ### 6. Degree coverage — their Figure 1
 
-- **Asks:** How much of a full bachelor's CS degree could each community
-  college satisfy before transfer?
-- **How:** Per college-campus pair, divide requirements with a community-college
-  equivalent by all requirements. Lower-division articulations come from
-  ASSIST; GE coverage from the college's catalog tags. Upper-division work
-  stays in the denominator with zero coverage.
-- **Result:** Massachusetts 38.2% (we match their published value on all 165
-  cells). California: CS 37.4%, biology 51.2%, economics 22.9%.
+- **Asks:** What share of a bachelor's named degree and college course
+  requirements has a community-college equivalent?
+- **How:** Per college-campus pair, divide covered named-course observations by
+  all named-course observations. General education and free-elective padding
+  are excluded; upper-division and other university-only named work remains in
+  the denominator as uncovered. Series expand course by course and choose-N
+  blocks contribute the number of courses requested.
+- **Result:** The deposited Massachusetts workbook reruns exactly to 38.2085%.
+  The later final PDF agrees after rounding in 164/165 cells; Cape Cod→UMass
+  Dartmouth is printed 45% versus archived `11/31=35%`, and the unchanged
+  38.2% prose mean is a strong stale-headline candidate. California: CS 31.9%,
+  biology 51.2%, economics 23.7% across 1,035 college×campus cells per major,
+  with no missing or duplicate pair rows.
 - **Caution:** This deliberately counts upper-division work a community college
-  cannot teach — it measures how much of the *whole degree* is completable
-  before transfer. Don't casually average semester and quarter campuses.
+  cannot teach. It is a required-course observation rate, not a share of degree
+  units or a guarantee that the covered courses form one feasible pathway.
 
 ### 7. Transferable requirements by course type — their Figure 2
 
 - **Asks:** Does coverage differ across computing, math, science, and non-STEM?
 - **How:** Categorize every requirement by the four-year's own course code,
   with discrete math always counted as math (their rule, which we copied).
+  Figure 2 exactly partitions Figure 1's named, GE-excluded population, then
+  averages community colleges within campus and campuses within course type.
 - **Result:** California shows their pattern — computing far below the rest.
-  Whole-degree view: computing ~11% vs math ~80%, science ~87%, non-STEM ~78%.
-  Lower-division only: computing rises to ~47% and still trails.
-- **Caution:** Our California denominator includes GE; the Massachusetts
-  tallies exclude their GE-titled groups (their matrix has no GE columns). The
-  pattern is comparable; the exact percentages are not a state-to-state
-  comparison.
+  For CS, whole-degree means are computing 11.5%, math 78.7%, science 63.3%
+  (n=7 campuses), and non-STEM 0% (n=4). Lower-division computing rises to
+  45.7% and still trails math (83.0%).
+- **Caution:** A campus with no requirement of a type contributes no dot, so
+  each category can have a different n. In particular, the two 0% supporting-
+  science campuses materially lower that seven-campus mean. Do not pool the
+  four categories into one state-wide rate.
 
-### 8. Transfer credit rate — their Figure 3
+### 8. Associate-degree credit utilization — their Figure 3
 
-- **Asks:** After an associate degree, what share of the bachelor's
-  requirements is already fulfilled?
+- **Asks:** What share of the associate degree's own units can be applied to
+  the bachelor's degree?
 - **How:** Build a feasible transfer-oriented version of the associate degree
   and apply its units once — to named course requirements, then GE/breadth,
-  then documented elective space.
-- **Result:** Massachusetts 68.6% by our recomputation, against their printed
-  67.7% (quoted 68%). California CS A.S.-T 73.1% across all records, 74.6% for
-  the verified cohort; biology 84.0%; economics 100%.
+  then documented elective space — and divide applied units by total associate
+  units. Quarter-college units are converted to semester equivalents only in
+  the downstream pathway-hour calculation, so this within-degree percentage
+  is invariant to calendar.
+- **Result:** The final Massachusetts PDF's 61 reported cells average 67.7%
+  (quoted as 68%). In the verified California A.S.-T cohort the cell means are
+  CS 74.5% (279/279 computable), biology 83.2% (468/477), and economics 100.0%
+  after rounding (486/495).
 - **Caution:** This is an optimistic best-case student choosing the most
-  transferable options — modeled credit use, not observed transcripts. The
-  California A.S.-T advantage shows up here rather than in raw articulation.
+  transferable options — modeled credit use, not observed transcripts. All
+  486 computable verified Economics cells use modeled GE and/or elective
+  capacity and 478 reach exactly 100%; that does not mean every named course
+  has a direct articulation. Nine Allan Hancock Biology cells and nine Hartnell
+  Economics cells are blank because the stored degree choice cannot be solved
+  with distinct resolved courses.
 
-### 9. Replacement coursework — their Figure 4
+### 9. Pathway hours above 120 — their Figure 4
 
-- **Asks:** How many associate-degree units don't apply and may need replacing?
-- **How:** Total associate units minus what the model can apply, with quarter
-  results converted to semester-equivalent.
+- **Asks:** How many semester-equivalent hours does the modeled transfer
+  pathway require beyond a 120-hour benchmark?
+- **How:** `max(0, resident bachelor requirement hours + unused associate-degree
+  hours − 120)`. Campus and college quarter units are converted consistently to
+  semester equivalents before the identity is evaluated.
+- **Result:** Verified A.S.-T cell means are 15.3 hours for CS, 10.1 for Biology,
+  and 0.01 for Economics. The maxima are 41.3 (Copper Mountain×UCLA), 31.3
+  (Irvine Valley×UC Irvine), and 2.0 (Antelope Valley×UC Irvine).
 - **Caution:** Not observed repeated coursework or time-to-degree. Because the
   model gives students the best reasonable use of GE and electives, read it as
-  a lower bound.
+  a lower bound. It equals unused associate units only when the resident
+  curriculum is exactly 120 semester hours.
+
+### 10. Cost of pathway hours above 120 — their Figure 5
+
+- **Asks:** What would the Figure 4 hours cost at each university's derived
+  per-unit resident price?
+- **How:** Multiply the unrounded Figure 4 value by the campus's annual resident
+  charge divided by 24 semester units (the paper's 12-unit-per-term basis). A
+  labeled sensitivity divides by 30 instead.
+- **Result:** Verified A.S.-T cell means on the 12-unit basis are about $10,593
+  for CS, $6,934 for Biology, and $9 for Economics; maxima are $28,663,
+  $21,196, and $1,353 respectively.
+- **Caution:** California uses official UCOP 2025–26 resident tuition, student-
+  services fees, and campus fees. Massachusetts's published basis excludes
+  fees, so the cross-state dollar levels are not strictly comparable. The
+  heatmap rounds Figure 4 hours to one decimal for display, but Figure 5 retains
+  full internal precision and exposes the exact pricing receipt in the hover.
+
+### 11. Curricular-complexity difference — their Figure 6
+
+- **Asks:** How much does the transfer pathway change curricular complexity
+  relative to completing the bachelor's as a resident student?
+- **How:** For each course graph, sum every course's delay factor plus blocking
+  factor, then compute `h(transfer graph) − h(resident graph)`. The final MA
+  matrix is a literal PDF transcription; the CA v3 model preserves OR
+  prerequisites, consumes receiving series atomically, and fails closed on
+  ambiguous degree pools.
+- **Result:** Massachusetts's 49 printed cells average
+  `715/49=14.5918→+15`. In the verified CA A.S.-T default, 234/279 CS,
+  126/477 Biology, and 414/495 Economics paths are finite; the distributions
+  differ substantially by major.
+- **Caution:** The equation is shared, but final-version Massachusetts graphs
+  are unavailable and California graph coverage is incomplete. Treat this as
+  a directional/exploratory distribution, not a strict cross-state magnitude
+  estimate. The source/edge-completeness receipt and exclusions are part of the
+  figure.
 
 ---
 
 # Our own new figures
 
-### 10. Transfer access and local income
+### 12. Transfer access and local income
 
 - **Asks:** Do districts serving richer areas reach more complete UC pathways?
 - **How:** Each district gets an income estimate for its ZIP-code catchment and
@@ -240,7 +297,7 @@ git history, so this is a genuine reproduction, not a recreation — see
 - Receipts: [`figures/income-access.md`](figures/income-access.md),
   methods notes [`notes_income_gate.md`](notes_income_gate.md).
 
-### 11. Multi-campus preparation (portfolio analysis)
+### 13. Multi-campus preparation (portfolio analysis)
 
 - **Asks:** How much preparation keeps one UC option open, then two, three…?
 - **How:** For each district, find every subset of UC CS programs it can fully
@@ -278,12 +335,13 @@ git history, so this is a genuine reproduction, not a recreation — see
 ## Ten-second summary
 
 > The California figures are close replications: same requirements and methods,
-> newer ASSIST data, only a few new articulations. The Massachusetts tab is a
-> true reproduction of that paper's own data, where we match every
-> formula-computed figure exactly and document 66 hand-typed errors. Our new
-> work adds socioeconomic access and a realistic multi-campus workload
-> analysis. Everything models course and articulation structure — never
-> observed student behavior.
+> newer ASSIST data, with explicit source and cohort receipts. The Massachusetts
+> tab separates the later final PDF from the older public replication package:
+> most displayed headline arithmetic checks, while the repo contains confirmed
+> manual summary conflicts and a smaller set of paper-level or conditional
+> candidates. Our new work adds socioeconomic access and a realistic
+> multi-campus workload analysis. Everything models course and articulation
+> structure — never observed student behavior.
 
 ## Deep links
 

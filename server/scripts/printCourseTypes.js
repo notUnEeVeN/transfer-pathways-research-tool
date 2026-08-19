@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * Print the course-type assignment behind the MA Figure 2 recreation:
- * every requirement slot in every curated UC degree template, grouped by the
- * type courseTypes.js gives it. Local inspection only — the figure itself
- * reads the same typing through the coverage endpoint.
+ * Print a raw course-type assignment diagnostic: every requirement slot in
+ * every curated UC degree template, grouped by the type courseTypes.js gives
+ * it. This intentionally includes GE/padding groups and therefore is NOT the
+ * final Figure 2 denominator; the live coverage endpoint applies each major's
+ * `courseTypes.excludeGeGroups` policy.
  *
  * Usage (from server/):  node scripts/printCourseTypes.js
  */

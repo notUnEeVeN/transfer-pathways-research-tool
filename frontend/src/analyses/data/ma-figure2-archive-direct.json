@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "artifact_id": "ma-archive-direct-figure-2-v1",
+  "source": {
+    "repository": "transferpaper",
+    "repository_commit": "f0be157a419b23e90d206cef72ee5cba09b8274f",
+    "repository_commit_date": "2024-12-12",
+    "workbook": "Code + Sheets/Mass Heatmap.xlsx",
+    "workbook_sha256": "f9d8650db1789d8a5c911656af29ddd3e31c1c1fcdb62707d6dd9aaedef998ff",
+    "companion_notebook": "Code + Sheets/course_distribution.ipynb",
+    "companion_notebook_sha256": "648b7005c91a8b5a0d5d5c9fa958cac836c8df4c4112c650c23a986b8eb62f5a",
+    "reviewed_at": "2026-08-19"
+  },
+  "measure": {
+    "unit": "percent",
+    "grain": "one anonymous four-year-university observation per course type",
+    "university_count": 11,
+    "community_college_count": 15,
+    "scope": "all degree- and college-level BSCS course requirements; general education excluded",
+    "weighting": "each university observation weighted equally within its course type",
+    "categories": "four-year course code; discrete mathematics always counted as math"
+  },
+  "reconstruction": {
+    "precision_percentage_points": 1,
+    "method": "The deposited requirement workbook was reviewed at its underlying requirement/equivalency rows. For each four-year university and course type, the numerator is articulated Figure 1 named-course observations and the denominator is all Figure 1 named-course observations of that type. Degree- and college-level requirements are included; general education and free-elective padding are excluded. Results are recorded at the final figure's nearest-whole-percentage-point precision.",
+    "identity_limit": "The committed values are sorted category multisets. They preserve the direct raw-data rerun without assigning campus identities to the final PDF's unlabeled dots. Cross-source reconciliation must use multiset overlap within each semantic course-type role, never an observation-index or campus join.",
+    "separation_from_live_archive": "This reviewed paper-rule artifact is distinct from the website's live archived-requirement reconstruction, whose generic typed-requirement heuristic is retained only as a separate sensitivity.",
+    "separation_from_summary_tabs": "The companion notebook's hard-coded plotting arrays and other typed summary cells are not inputs to these values."
+  },
+  "columns": [
+    {
+      "key": "computing",
+      "label": "Computing",
+      "points_pct": [6, 9, 11, 11, 18, 20, 22, 25, 28, 29, 58]
+    },
+    {
+      "key": "math",
+      "label": "Math",
+      "points_pct": [13, 40, 47, 52, 52, 53, 63, 65, 83, 95, 97]
+    },
+    {
+      "key": "science",
+      "label": "Science",
+      "points_pct": [53, 78, 93, 97, 100, 100, 100, 100, 100, 100, 100]
+    },
+    {
+      "key": "non_stem",
+      "label": "Non-STEM",
+      "points_pct": [33, 47, 67, 100, 100]
+    }
+  ]
+}

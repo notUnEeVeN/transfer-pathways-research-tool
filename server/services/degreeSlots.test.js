@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildDegreeGroups, buildLedgerGroups, computeUnitBudget, degreeUnitSystem,
 } from './degreeSlots';
+import { getMajor } from '../config/majors';
 
 const breadthGroups = [{
   title: 'Humanities & Social Sciences breadth',
@@ -194,8 +195,8 @@ describe('buildDegreeGroups named ASSIST requirements', () => {
       categoryOf: () => ['computing'],
     };
 
-    // Default (California): GE receivers keep counting, the verified figure
-    // semantics stay untouched.
+    // The base evaluator is source-neutral: callers that do not opt in keep
+    // GE receivers in their category rollup.
     const kept = buildDegreeGroups(groups, ctx);
     expect(kept.by_category.computing).toMatchObject({ total: 2, covered: 2 });
 
@@ -205,6 +206,52 @@ describe('buildDegreeGroups named ASSIST requirements', () => {
     expect(excluded.by_category.computing).toMatchObject({ total: 1, covered: 1 });
     expect(excluded.total).toBe(kept.total);
   });
+
+  it.each(['cs', 'bio', 'econ'])(
+    'keeps %s GE/padding out of Figure 2 without changing overall coverage',
+    (majorSlug) => {
+      const groups = [
+        {
+          title: 'Lower-division major requirements',
+          sections: [{ receivers: [{ receiving: { kind: 'course', parent_id: 1 } }] }],
+        },
+        {
+          title: 'GE: general education breadth',
+          sections: [{ receivers: [{ receiving: { kind: 'course', parent_id: 2 } }] }],
+        },
+        {
+          title: 'UC-transferable elective capacity to reach the 120-unit minimum',
+          sections: [{ receivers: [{ receiving: { kind: 'course', parent_id: 3 } }] }],
+        },
+      ];
+      const ctx = {
+        articulated: new Set([1, 3]),
+        categoryOf: () => ['non_stem'],
+      };
+      const allGroups = buildDegreeGroups(groups, ctx);
+      const courseTypeFigure = buildDegreeGroups(groups, {
+        ...ctx,
+        excludeGeFromCategories: Boolean(
+          getMajor(majorSlug)?.courseTypes?.excludeGeGroups,
+        ),
+      });
+
+      expect(getMajor(majorSlug).courseTypes.excludeGeGroups).toBe(true);
+      expect(allGroups.by_category.non_stem).toMatchObject({ total: 3, covered: 2 });
+      expect(courseTypeFigure.by_category.non_stem)
+        .toMatchObject({ total: 1, covered: 1 });
+      expect(courseTypeFigure.by_category_multi.non_stem)
+        .toMatchObject({ total: 1, covered: 1 });
+
+      // Category bumps are the only changed output. The coverage heatmap and
+      // every overall slot/unit field retain the complete degree population.
+      expect(courseTypeFigure.total).toBe(allGroups.total);
+      expect(courseTypeFigure.covered).toBe(allGroups.covered);
+      expect(courseTypeFigure.units).toEqual(allGroups.units);
+      expect(courseTypeFigure.by_tier).toEqual(allGroups.by_tier);
+      expect(courseTypeFigure.groups).toEqual(allGroups.groups);
+    },
+  );
 });
 
 describe('buildDegreeGroups receiver-level ASSIST blocks', () => {
@@ -391,21 +438,25 @@ describe('buildDegreeGroups alternative (Or) groups', () => {
   });
 
   it('collapses the course-type rollup to the picked path too', () => {
-    // The slot/unit collapse alone left by_category summing every alternative:
-    // Berkeley MCB's twelve tracks reported 94 typed slots against a 26-slot
-    // degree, so the course-type figure disagreed with the heatmap it sits by.
+    // The slot/unit collapse alone left by_category summing every alternative.
+    // Figure 2 now follows Figure 1's course population, so the picked
+    // two-course series contributes two typed courses, not one receiver slot.
     const result = buildDegreeGroups(orGroups, {
       articulated: new Set([51, 52]),
       categoryOf: () => 'math',
+      excludeGeFromCategories: true,
     });
-    expect(result.by_category.math.total).toBe(1);
-    expect(result.by_category.math.covered).toBe(1);
+    expect(result.by_category.math.total).toBe(2);
+    expect(result.by_category.math.covered).toBe(2);
+    // The multi-category diagnostic intentionally retains receiver-slot grain.
     expect(result.by_category_multi.math.total).toBe(1);
   });
 
   it('types the template of an Or group by one alternative as well', () => {
-    const result = buildDegreeGroups(orGroups, { categoryOf: () => 'math' });
-    expect(result.by_category.math.total).toBe(1);
+    const result = buildDegreeGroups(orGroups, {
+      categoryOf: () => 'math', excludeGeFromCategories: true,
+    });
+    expect(result.by_category.math.total).toBe(2);
   });
 });
 
@@ -514,12 +565,59 @@ describe('buildDegreeGroups named-requirement rollup (MA-paper population)', () 
       .named_requirements.courses).toEqual({ total: 3, covered: 0 });
   });
 
-  it('leaves out sections the source says no community college can satisfy', () => {
-    // Virginia flags senior residency work `cc_articulable: false`. Counting it
-    // as an unarticulated requirement caps the figure far below 100% for
-    // structural reasons and makes corpora that enumerate upper-division work
-    // to different depths incomparable — Virginia's mean read 14.6% against
-    // Massachusetts' 38.2% on what is nominally the same measure.
+  it('partitions the exact named-course population into Figure 2 categories', () => {
+    const groups = [
+      {
+        title: 'Required science sequence', tier: 'transferable',
+        sections: [{ section_advisement: 1, receivers: [{
+          receiving: { kind: 'series', parent_ids: [301, 302, 303] },
+        }] }],
+      },
+      {
+        title: 'GE: Humanities breadth', tier: 'breadth',
+        sections: [{ section_advisement: 2, receivers: [{
+          receiving: { kind: 'ge_area', code: 'H/SS' }, ge_areas: ['3A'],
+        }] }],
+      },
+      {
+        title: 'Upper-division computing', tier: 'nontransferable',
+        sections: [{ section_advisement: 2, unit_advisement: 8, receivers: [{
+          receiving: { kind: 'requirement', name: 'Upper-division computing' },
+        }] }],
+      },
+    ];
+    const categoryOf = ({ receiver, section }) => {
+      const parent = receiver?.receiving?.parent_id;
+      if (parent === 301) return ['science'];
+      if (parent === 302 || parent === 303) return ['math'];
+      if (/upper-division/i.test(section?.receivers?.[0]?.receiving?.name || '')) {
+        return ['computing'];
+      }
+      return ['non_stem'];
+    };
+    const result = buildDegreeGroups(groups, {
+      articulated: new Set([301, 302, 303]),
+      categoryOf,
+      excludeGeFromCategories: true,
+    });
+    expect(result.named_requirements.courses).toEqual({ total: 5, covered: 3 });
+    expect(result.by_category).toMatchObject({
+      science: { total: 1, covered: 1, lower_division_total: 1, lower_division_covered: 1 },
+      math: { total: 2, covered: 2, lower_division_total: 2, lower_division_covered: 2 },
+      computing: { total: 2, covered: 0, lower_division_total: 0, lower_division_covered: 0 },
+    });
+    const totals = Object.values(result.by_category).reduce((sum, bucket) => ({
+      total: sum.total + bucket.total,
+      covered: sum.covered + bucket.covered,
+    }), { total: 0, covered: 0 });
+    expect(totals).toEqual(result.named_requirements.courses);
+    expect(result.by_category.non_stem).toBeUndefined();
+  });
+
+  it('keeps university-only named courses as uncovered paper observations', () => {
+    // The paper counts degree/college requirements other than GE. A source flag
+    // saying the second course cannot articulate explains its zero; it does not
+    // remove that named requirement from the paper-equivalent denominator.
     const groups = [{
       title: 'Major requirements',
       tier: 'transferable',
@@ -536,9 +634,9 @@ describe('buildDegreeGroups named-requirement rollup (MA-paper population)', () 
         },
       ],
     }];
-    // Only the articulable section is in the population, and it is covered.
+    // Both named courses are in the population; only the first is covered.
     expect(buildDegreeGroups(groups, { articulated: new Set([401]) })
-      .named_requirements.courses).toEqual({ total: 1, covered: 1 });
+      .named_requirements.courses).toEqual({ total: 2, covered: 1 });
   });
 
   it('keeps a section whose articulability the source never states', () => {
@@ -554,6 +652,50 @@ describe('buildDegreeGroups named-requirement rollup (MA-paper population)', () 
     }];
     expect(buildDegreeGroups(groups, { articulated: new Set() })
       .named_requirements.courses).toEqual({ total: 1, covered: 0 });
+  });
+
+  it('does not treat a breadth tier as GE without GE semantics', () => {
+    const groups = [{
+      title: 'College writing requirement',
+      tier: 'breadth',
+      sections: [{
+        section_advisement: 1,
+        receivers: [{ receiving: { kind: 'course', parent_id: 411 } }],
+      }],
+    }];
+    expect(buildDegreeGroups(groups, { articulated: new Set([411]) })
+      .named_requirements.courses).toEqual({ total: 1, covered: 1 });
+  });
+
+  it('keeps a named School requirement despite a GE-shaped open-course carrier', () => {
+    const groups = [{
+      title: 'School additional Social Sciences — two distinct courses',
+      tier: 'breadth',
+      sections: [{
+        section_advisement: 2,
+        assume_satisfiable: true,
+        receivers: [{
+          receiving: { kind: 'ge_area', name: 'Two additional Social Sciences courses' },
+          assume_satisfiable: true,
+        }],
+      }],
+    }];
+    expect(buildDegreeGroups(groups, { articulated: new Set() })
+      .named_requirements.courses).toEqual({ total: 2, covered: 2 });
+  });
+
+  it('still excludes an explicitly named College GE requirement', () => {
+    const groups = [{
+      title: 'Campus/College GE remaining after major overlap',
+      tier: 'breadth',
+      sections: [{
+        section_advisement: 2,
+        assume_satisfiable: true,
+        receivers: [{ receiving: { kind: 'ge_area' }, assume_satisfiable: true }],
+      }],
+    }];
+    expect(buildDegreeGroups(groups, { articulated: new Set() })
+      .named_requirements.courses).toEqual({ total: 0, covered: 0 });
   });
 
   it('prices a choose-one between alternative series at the cheapest path', () => {

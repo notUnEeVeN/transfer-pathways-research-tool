@@ -4,8 +4,7 @@ import { usePathwayComplexity } from '../../shared/query/hooks/useData'
 import { CA_DIFFERENCE_COLORS } from '../../analyses/californiaFigureStyle'
 
 /**
- * The breakdown for the MA paper's Figure 6, printed against their own saved
- * workbooks.
+ * Raw-data rerun audit for the MA paper's Figure 6.
  *
  * Everything on screen is read from server/data/ma/complexity-validation.json
  * — the same payload both panes render, through the same query key, so there
@@ -16,7 +15,9 @@ import { CA_DIFFERENCE_COLORS } from '../../analyses/californiaFigureStyle'
  * difference matrix. The exported figure stays the figure.
  */
 
-const SOURCE_LABELS = { published: 'Printed figure', ours: 'Recomputed', diff: 'Difference' }
+const SOURCE_LABELS = {
+  published: 'Final PDF', ours: 'Deposited-graph rerun', diff: 'Raw rerun − PDF',
+}
 
 // Half rounds AWAY from zero, matching the figure's own print convention so a
 // cell here reads exactly as the cell in the matrix above it.
@@ -35,8 +36,8 @@ function Block({ title, children }) {
   )
 }
 
-/** Published score, published resident, our score, our resident, and both deltas. */
-function CellReceipt({ rowKey, colKey, pathways, override }) {
+/** Final-PDF delta, deposited-graph rerun, then the typed tab as a secondary clue. */
+function CellReceipt({ rowKey, colKey, pathways, finalPdf, artifact }) {
   const pair = pathways.find((p) => p.cc === rowKey && p.uni === colKey)
   const resident = pathways.find((p) => p.cc == null && p.uni === colKey)
   if (!pair || !resident) {
@@ -47,19 +48,21 @@ function CellReceipt({ rowKey, colKey, pathways, override }) {
     : null
   const oursDelta = pair.ours - resident.ours
   const rows = [
-    ['Their published transfer score', pair.theirs, `${pair.their_hours ?? '—'} published hours`],
-    ['Their published resident score', resident.theirs, `${resident.their_hours ?? '—'} published hours`],
-    ['Their own tab computes Δ', tabDelta, 'transfer minus resident, from their Curricular Complexity tab'],
-    ['Our recomputed transfer score', pair.ours, 'their prerequisite and corequisite edges, their course list'],
-    ['Our recomputed resident score', resident.ours, null],
-    ['Our Δ', oursDelta, 'the same quantity, computed from their saved files'],
+    ['Final PDF Δ', finalPdf, 'literal Figure 6 transcription'],
+    ['Raw-graph transfer score', pair.ours, 'deposited course list and prerequisite/corequisite edges'],
+    ['Raw-graph resident score', resident.ours, null],
+    ['Raw-graph rerun Δ', oursDelta, 'transfer minus resident'],
+    ['Typed archive-tab Δ', tabDelta, 'secondary forensic clue only'],
   ]
+  const secondaryNote = artifact?.classification === 'final_pdf_vs_archived_tab'
+    ? 'Secondary clue: the deposited typed score tab agrees with the raw-graph rerun; both differ from the final PDF, consistent with an unprovided later graph or pathway revision.'
+    : artifact
+      ? 'Secondary clue: the deposited typed score tab differs from the raw-graph rerun, making a manual score carry-forward plausible.'
+      : null
   return (
     <div className='flex flex-col gap-1 bg-surface-sunken rounded-lg px-3 py-2'>
-      {override && (
-        <p className='text-caption text-warning'>
-          The figure prints {signedInt(override.printed_delta)} for this cell.
-        </p>
+      {secondaryNote && (
+        <p className='text-caption text-warning'>{secondaryNote}</p>
       )}
       {rows.map(([label, value, note]) => (
         <div key={label} className='flex items-baseline gap-2 text-caption'>
@@ -81,7 +84,8 @@ export default function MaComplexityFigure6({
   // for the same object so either caller name renders.
   const cellJoin = join || delta
   const majorSlug = panes[0]?.major || 'ma-cs'
-  const query = usePathwayComplexity({ majorSlug })
+  const degreeType = panes[0]?.knobs?.degree || 'local_as'
+  const query = usePathwayComplexity({ majorSlug, degreeType })
   const [openKey, setOpenKey] = useState(null)
 
   if (query.isLoading) return <div className='py-6 flex justify-center'><Spinner /></div>
@@ -91,21 +95,22 @@ export default function MaComplexityFigure6({
   const coreqs = data.coreq_treatment || {}
   const withCoreqs = coreqs.with_coreqs || {}
   const withoutCoreqs = coreqs.without_coreqs || {}
-  const figureCellMisses = data.figure_cell_misses || []
+  const finalPdfCells = data.final_pdf?.cells || {}
+  const artifactDifferences = data.artifact_differences || []
   const pathways = data.pathways || []
-  const headline = data.headline_plus_15 || {}
-  const overrideFor = (rowKey, colKey) => figureCellMisses
-    .find((miss) => miss.cc === rowKey && miss.uni === colKey) || null
+  const headline = data.headline_means || {}
+  const artifactFor = (rowKey, colKey) => artifactDifferences
+    .find((entry) => entry.cc === rowKey && entry.uni === colKey) || null
 
   const baselinePane = panes.find((pane) => pane.id === comparison?.baseline_pane) || panes[0]
   const subjectPane = panes.find((pane) => pane !== baselinePane) || panes[1]
   const paneName = (pane) => pane?.label || SOURCE_LABELS[pane?.knobs?.source ?? 'published']
 
-  // Ranked by the size of the disagreement, so the argument leads with its
-  // strongest cell rather than with whatever sorts first alphabetically.
+  // Ranked by absolute artifact difference, without assigning a cause.
   const ranked = [...(cellJoin?.cells || [])]
     .filter((cell) => !cell.agrees)
     .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta))
+  const reproduced = Math.max(0, (cellJoin?.matched ?? 0) - ranked.length)
   const activeKey = selectedCell ?? openKey
   // The workspace anchors a note to the cell object, so the whole cell travels
   // upward — collapsing sends null, which is the signal to clear the anchor.
@@ -118,68 +123,49 @@ export default function MaComplexityFigure6({
   return (
     <div className='surface-card p-4 flex flex-col gap-4' data-export-exclude>
       <div className='flex flex-wrap items-center gap-2'>
-        <p className='text-label'>Where Figure 6 disagrees with their own workbook</p>
+        <p className='text-label'>Figure 6 raw-data rerun audit</p>
         {cellJoin && (
-          <Badge variant='neutral'>
-            {ranked.length} of {cellJoin.matched} cells disagree
-          </Badge>
+          <>
+            <Badge variant='neutral'>{reproduced} of {cellJoin.matched} cells reproduce</Badge>
+            <Badge variant='danger'>
+              {ranked.length} potential raw-rerun disagreement{ranked.length === 1 ? '' : 's'}
+            </Badge>
+          </>
         )}
       </div>
 
-      {/* The whole argument, in the fewest words it survives being said in.
-          Everything below is the receipt for one of these two points. */}
       <div className='flex flex-col gap-3'>
         <p className='text-caption text-ink-muted'>
-          Almost every cell matches. The rest are two different problems.
+          We applied the paper&rsquo;s complexity formula to the deposited course graphs and compared
+          those results directly with the final PDF. Every mismatch is a potential paper error or
+          an unexplained final-input revision. The final-version graphs were not deposited, so the
+          available evidence cannot decide between those explanations.
         </p>
-
-        <div className='flex flex-col gap-1'>
-          <p className='text-body-strong text-ink'>1 · Two scores are 4 points off</p>
-          <p className='text-caption text-ink-muted max-w-[70ch]'>
-            Their sheets compute 164 and 174. The paper printed 160 and 170. The credits on one
-            of those sheets moved too, so the sheet was edited after it went into the complexity
-            tool and the figure kept the old number.
-          </p>
-          <p className='text-caption text-ink-muted max-w-[70ch]'>
-            One of the two is a <em>resident</em> score. Every cell in that university&rsquo;s column
-            is measured against it, so one stale number marks the whole column.
-          </p>
-        </div>
-
-        <div className='flex flex-col gap-1'>
-          <p className='text-body-strong text-ink'>2 · One cell contradicts their own spreadsheet</p>
-          <p className='text-caption text-ink-muted max-w-[70ch]'>
-            Springfield Technical × UMass Amherst. The figure prints −28. Their own tab computes
-            +34. That is 62 points, and it flips the sign.
-          </p>
-          <p className='text-caption text-ink-muted max-w-[70ch]'>
-            It is not a swapped row or column — no other cell holds −28, and Springfield&rsquo;s row
-            is +34, +30, +30. The number was typed into the chart. Their own printed average for
-            that column, +1.0, only works with −28 in it.
-          </p>
-        </div>
       </div>
 
-      <Block title='Reproduction'>
+      <Block title='Formula check inside the deposited repository'>
         <p className='text-caption text-ink-muted max-w-[70ch]'>
-          {withCoreqs.exact} of {withCoreqs.compared} published scores reproduce exactly from their
-          own workbooks. Dropping corequisites drops that to {withoutCoreqs.exact}, so the
-          disagreements are in their files, not in the method.
+          {withCoreqs.exact} of {withCoreqs.compared} scores in the archived repository tab
+          reproduce from the archived workbook graphs. Ignoring corequisites matches{' '}
+          {withoutCoreqs.exact}; this supports treating corequisites as graph edges for the archived
+          calculation. This component-score check is secondary to the final-PDF/raw-graph comparison.
         </p>
       </Block>
 
-      {Number.isFinite(headline.over_scored_pathways)
-        && Number.isFinite(headline.over_all_pathways) && (
-        <Block title='What the drift does to their headline'>
+      {Number.isFinite(headline.final_pdf?.mean) && (
+        <Block title='Means by source'>
           <p className='text-caption text-ink-muted max-w-[78ch]'>
-            The published “+15” is {headline.over_scored_pathways.toFixed(2)} over the pathways that
-            carry a score, but {headline.over_all_pathways.toFixed(2)} over all{' '}
-            {pathways.filter((p) => p.cc != null).length} transfer pathways in their own file.
+            Final PDF: {headline.final_pdf.mean.toFixed(2)} over {headline.final_pdf.n} printed cells.
+            {' '}Archived score tab: {headline.archived_tab?.mean?.toFixed(2) ?? '—'} over{' '}
+            {headline.archived_tab?.n ?? '—'} cells. Recomputed archived workbooks on that scored
+            cohort: {headline.recomputed_archived_workbooks_scored?.mean?.toFixed(2) ?? '—'}.
+            Recomputed across all archived workbook pathways:{' '}
+            {headline.recomputed_all_archived_workbooks?.mean?.toFixed(2) ?? '—'}.
           </p>
         </Block>
       )}
 
-      <Block title={`Per cell · ${paneName(subjectPane)} minus ${paneName(baselinePane)}`}>
+      <Block title={`Potential disagreements · ${paneName(subjectPane)} minus ${paneName(baselinePane)}`}>
         {!ranked.length ? (
           <p className='text-caption text-ink-muted'>
             {cellJoin?.matched
@@ -206,7 +192,8 @@ export default function MaComplexityFigure6({
                   </button>
                   {open && (
                     <CellReceipt rowKey={cell.rowKey} colKey={cell.colKey} pathways={pathways}
-                      override={overrideFor(cell.rowKey, cell.colKey)} />
+                      finalPdf={finalPdfCells?.[cell.rowKey]?.[cell.colKey]}
+                      artifact={artifactFor(cell.rowKey, cell.colKey)} />
                   )}
                 </li>
               )

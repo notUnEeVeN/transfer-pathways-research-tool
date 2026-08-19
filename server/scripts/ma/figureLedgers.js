@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 /**
- * The Figure-3 forensic treatment, applied to the rest of the figures:
- * per-cell ledgers comparing what the paper published against what its own
- * source artifacts contain and against our recomputation, each material
- * difference resolved to a verdict.
+ * Archive-vintage ledgers for the deposited Massachusetts repository.
  *
- *   Fig 1  (heatmap)      already gated: 165/165 exact, three ways — asserted here.
- *   Fig 2  (course types) their notebook's hard-coded arrays vs their own
+ * IMPORTANT: the deposited spreadsheets/notebooks are from the repository's
+ * 2024-12-12 snapshot, while the final PDF was created in June 2026. This
+ * report diagnoses the archived artifacts and our recomputation of them. It
+ * does not call an archived literal a value "published" in the later paper.
+ *
+ *   Fig 1  (heatmap)      archive workbook: 165/165 exact; the later PDF is
+ *                         separately checked against its transcription.
+ *   Fig 2  (course types) archive notebook's hard-coded arrays vs its own
  *                         matrix (engine typing rule) vs our engine output.
- *   Fig 4  (credit hours) their typed per-pair hours vs the sum of their own
+ *   Fig 4  (credit hours) archive typed per-pair hours vs the sum of its own
  *                         pathway sheet vs our reconstruction of the same sum.
- *   Fig 5  (cost)         verified as formula-linked to Fig 4 — it can carry
- *                         no independent errors; the identity is re-checked.
+ *   Fig 5  (cost)         archive formula identity linking it to archive Fig 4.
  *   MT     (MassTransfer) the imported flags vs the workbook column.
  *
  *   node scripts/ma/figureLedgers.js
@@ -25,6 +27,7 @@ const { coverageData } = require('../../services/analysis/pathways');
 const { removedResidentByMatching, MA_SCHOOL_IDS, MA_CC_IDS } = require('./buildMaDocuments');
 
 const theirMath = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../data/ma/their-math.json'), 'utf8'));
+const pdfFigures = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../data/ma/pdf-figures.json'), 'utf8'));
 const raw = {
   heatmap: JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../data/ma/raw/heatmap.json'), 'utf8')),
   as_degrees: JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../data/ma/raw/as_degrees.json'), 'utf8')),
@@ -40,11 +43,23 @@ async function main() {
   // ── Fig 1: assert the standing gate result ───────────────────────────────
   const cov = await coverageData(db, null, { requirements: 'degree', majorSlug: 'ma-cs' });
   const named = cov.map((row) => row.pct_named_requirement_courses).filter(Number.isFinite);
+  const archiveMean = +(named.reduce((a, b) => a + b, 0) / named.length).toFixed(1);
   const fig1 = {
-    verdict: 'exact',
-    cells: named.length,
-    mean_ours: +(named.reduce((a, b) => a + b, 0) / named.length).toFixed(1),
-    note: 'Their spreadsheet formulas recompute 165/165 from the raw booleans; our engine matches all 165 stored values; means identical at 38.2%. No errors on either side.',
+    scope: '2024 archived repository; final PDF checked only through its literal transcription gate',
+    verdict: 'archive exact; final PDF visibly differs from the archive in 1 of 165 cells',
+    archive_cells: named.length,
+    archive_mean_ours: archiveMean,
+    // Retained for the presentation-safe controller's legacy summary field.
+    mean_ours: archiveMean,
+    archive_formula_gate: {
+      cells_checked: theirMath.fig1.summary.cells,
+      cells_recomputed_exactly: theirMath.fig1.summary.recomputed_exactly,
+    },
+    final_pdf_archive_rounding_gate: pdfFigures.fig1_course_articulation.archive_rounding_gate,
+    final_pdf_printed_matrix_gate: pdfFigures.fig1_course_articulation.printed_matrix_gate,
+    final_pdf_prose_mean: pdfFigures.fig1_course_articulation.published_prose_mean,
+    final_pdf_audit_note: pdfFigures.fig1_course_articulation.audit_note,
+    note: 'Our engine and the archived workbook agree on all 165 archive cells (archive mean 38.2%). The June 2026 final PDF changes Cape Cod × UMass Dartmouth from the archive-rounded 35% to 45%, so archive exactness is not a claim that all 165 final-PDF cells match.',
   };
 
   // ── Fig 2: hard-coded arrays vs their matrix vs ours ─────────────────────
@@ -68,16 +83,17 @@ async function main() {
       else verdict = 'hand-entry drift vs their own matrix';
       fig2.entries.push({
         entry: `${uni.name} · ${type}`,
-        published: +(hard * 100).toFixed(0),
-        their_matrix: +(matrix * 100).toFixed(1),
-        delta_published_vs_matrix: delta,
+        archive_notebook_value: +(hard * 100).toFixed(0),
+        archive_matrix_value: +(matrix * 100).toFixed(1),
+        delta_archive_notebook_vs_matrix: delta,
         verdict,
       });
-      fig2.verdicts[verdict === 'agrees' ? 'agrees' : 'published-vs-own-matrix'] =
-        (fig2.verdicts[verdict === 'agrees' ? 'agrees' : 'published-vs-own-matrix'] || 0) + 1;
+      fig2.verdicts[verdict === 'agrees' ? 'agrees' : 'archive-notebook-vs-own-matrix'] =
+        (fig2.verdicts[verdict === 'agrees' ? 'agrees' : 'archive-notebook-vs-own-matrix'] || 0) + 1;
     }
   });
-  fig2.note = 'Our engine reproduces their matrix on 36/38 entries within 2pp (audited separately); every published deviation is theirs.';
+  fig2.scope = '2024 archived notebook and matrices only';
+  fig2.note = 'The values called archive_notebook_value are hard-coded bars in the deposited GitHub notebook, not values transcribed from the June 2026 final PDF. This ledger diagnoses disagreements inside the archive; it does not establish a final-paper error.';
 
   // ── Fig 4: typed hours vs their own sheet sum vs our reconstruction ──────
   const nameForSchool = Object.fromEntries(Object.entries(MA_SCHOOL_IDS).map(([n, i]) => [i, n]));
@@ -100,17 +116,23 @@ async function main() {
       else verdict = 'typed hours contradict their own sheet';
       fig4.cells.push({
         pair: `${uniName} × ${cc}`,
-        typed_hours: typed,
-        their_sheet_sum: sheetSum,
-        our_reconstruction: ourSum,
-        delta_typed_vs_sheet: deltaTypedVsSheet,
-        delta_ours_vs_sheet: deltaOursVsSheet,
+        archive_typed_hours: typed,
+        archive_pathway_sheet_sum: sheetSum,
+        archive_reconstruction: ourSum,
+        delta_archive_typed_vs_sheet: deltaTypedVsSheet,
+        delta_archive_reconstruction_vs_sheet: deltaOursVsSheet,
         verdict,
       });
       fig4.verdicts[verdict] = (fig4.verdicts[verdict] || 0) + 1;
     }
   }
-  fig4.note = 'The Credit Hours tab is typed literals. Verdicts compare each typed value against the sum of their own pathway sheet; our reconstruction of the same sum is shown beside it (differences there are matcher fuzz on typo rows, listed per pair in pdf-reconciliation.json).';
+  fig4.scope = '2024 archived workbook only';
+  fig4.final_pdf_transcription = {
+    artifact: 'server/data/ma/pdf-figures.json#fig4_extra_hours',
+    cells: pdfFigures.fig4_extra_hours.cell_count,
+    gate: pdfFigures.fig4_extra_hours.gate,
+  };
+  fig4.note = 'The archive Credit Hours tab contains typed literals. Verdicts here compare those archive literals with sums of archive pathway sheets. The later final-PDF Figure 4 has been transcribed separately (49 cells); archive discrepancies are not automatically final-paper discrepancies.';
 
   // ── Fig 5: formula identity, re-checked ──────────────────────────────────
   let costChecked = 0; let costWorst = 0;
@@ -131,10 +153,12 @@ async function main() {
     }
   }
   const fig5 = {
-    verdict: 'no independent errors possible',
-    cells_checked: costChecked,
-    worst_rate_spread_usd: +costWorst.toFixed(2),
-    note: 'Cost cells are live formulas: (Credit Hours − 120) × a per-university rate, consistent to the cent. Every Fig-5 error is a Fig-4 error multiplied by the rate; our cost figure prices with the identical derived rates.',
+    scope: '2024 archived workbook formula identity; final PDF checked separately',
+    verdict: 'no independent arithmetic discrepancy found in the archived cost formulas',
+    archive_cells_checked: costChecked,
+    archive_worst_rate_spread_usd: +costWorst.toFixed(2),
+    final_pdf_gate: pdfFigures.fig5_extra_cost.gate,
+    note: 'In the archive, Cost = (Credit Hours − 120) × a per-university rate, consistent to the cent. The final PDF is a later artifact and its separately transcribed Figure 5 is likewise formula-linked to its Figure 4; this archive check alone is not a verdict on final-PDF inputs.',
   };
 
   // ── MassTransfer: imported flags vs the workbook column ──────────────────
@@ -165,22 +189,35 @@ async function main() {
       note: 'The MassTransfer map figure was never ported and the MT column is not imported — a completeness gap, not an error; nothing on our side displays it. The workbook marks 38 of 165 pairs as having an A2B agreement.',
     };
 
-  const report = { generated_at: new Date().toISOString(), fig1, fig2, fig4, fig5, mass_transfer: mt };
+  const report = {
+    generated_at: new Date().toISOString(),
+    artifact_scope: 'Archive-vintage diagnostic. Cell ledgers are computed from the repository snapshot last committed 2024-12-12; the final PDF created 2026-06-26 is a later artifact and appears only through explicitly named final-PDF transcription gates.',
+    source_warning: 'Never quote an archive_notebook_value, archive_typed_hours, or archive matrix value as a final-paper value. Archive↔PDF disagreement proves version divergence unless the final PDF also violates an internal arithmetic, population, or scope invariant.',
+    source_vintages: {
+      archived_repository: { as_of: '2024-12-12', role: 'inputs diagnosed by this ledger' },
+      final_pdf: { created: '2026-06-26', transcription: 'server/data/ma/pdf-figures.json' },
+    },
+    fig1,
+    fig2,
+    fig4,
+    fig5,
+    mass_transfer: mt,
+  };
   fs.writeFileSync(path.resolve(__dirname, '../../data/ma/figure-ledgers.json'), JSON.stringify(report, null, 1));
 
   console.log('Fig 1:', fig1.verdict, '—', fig1.note.split(';')[0]);
   console.log('Fig 2 verdicts:', JSON.stringify(fig2.verdicts));
   const fig2Bad = fig2.entries.filter((entry) => entry.verdict !== 'agrees');
-  fig2Bad.sort((a, b) => Math.abs(b.delta_published_vs_matrix) - Math.abs(a.delta_published_vs_matrix))
-    .forEach((entry) => console.log('  ', entry.entry.padEnd(28), 'published', String(entry.published).padStart(4),
-      '| their matrix', String(entry.their_matrix).padStart(5), '→', entry.verdict));
+  fig2Bad.sort((a, b) => Math.abs(b.delta_archive_notebook_vs_matrix) - Math.abs(a.delta_archive_notebook_vs_matrix))
+    .forEach((entry) => console.log('  ', entry.entry.padEnd(28), 'archive notebook', String(entry.archive_notebook_value).padStart(4),
+      '| archive matrix', String(entry.archive_matrix_value).padStart(5), '→', entry.verdict));
   console.log('Fig 4 verdicts:', JSON.stringify(fig4.verdicts));
   fig4.cells.filter((cell) => cell.verdict !== 'agrees')
-    .sort((a, b) => Math.abs(b.delta_typed_vs_sheet) - Math.abs(a.delta_typed_vs_sheet))
+    .sort((a, b) => Math.abs(b.delta_archive_typed_vs_sheet) - Math.abs(a.delta_archive_typed_vs_sheet))
     .slice(0, 12)
-    .forEach((cell) => console.log('  ', cell.pair.padEnd(34), 'typed', String(cell.typed_hours).padStart(6),
-      '| their sheet', String(cell.their_sheet_sum).padStart(6), '| ours', String(cell.our_reconstruction).padStart(6), '→', cell.verdict));
-  console.log('Fig 5:', fig5.verdict, '| worst per-university rate spread $' + fig5.worst_rate_spread_usd);
+    .forEach((cell) => console.log('  ', cell.pair.padEnd(34), 'archive typed', String(cell.archive_typed_hours).padStart(6),
+      '| archive sheet', String(cell.archive_pathway_sheet_sum).padStart(6), '| reconstructed', String(cell.archive_reconstruction).padStart(6), '→', cell.verdict));
+  console.log('Fig 5:', fig5.verdict, '| archive worst per-university rate spread $' + fig5.archive_worst_rate_spread_usd);
   console.log('MassTransfer:', mt.verdict, '(' + mt.cells + ' cells)');
   await client.close();
 }

@@ -16,10 +16,11 @@ import MaComparisonPanel from './MaComparisonPanel'
 /**
  * Massachusetts: the "Lost in Transfer" paper's state, imported into our
  * structures and rendered by the SAME components California uses — that
- * identity is the point. The data provenance is the paper's own repository
- * (part recovered from its git history; see server/data/ma/PROVENANCE.md),
- * the published per-pair values ride along as baselines, and the Overview's
- * comparison panel shows our recomputation against them.
+ * identity is the point. The course-level data come from the paper's older
+ * repository (part recovered from git history; see server/data/ma/PROVENANCE.md),
+ * while the final-PDF figure matrices are separate immutable baselines. The
+ * Overview keeps those source vintages visible instead of treating the older
+ * repository as the final paper.
  *
  * The page follows the layout every state tab shares — Overview, Community
  * Colleges, Universities, Prerequisites, Visuals — adapted to what this
@@ -39,7 +40,7 @@ const TAB_ROUTES = {
   colleges: { path: '/api/assist/institutions?kind=community_college&state=ma' },
   universities: { path: '/api/assist/institutions?kind=university&state=ma' },
   prerequisites: null,
-  visuals: { path: '/api/analysis/coverage?major=ma-cs' },
+  visuals: { path: '/api/analysis/coverage?majorSlug=ma-cs&requirements=degree&groupBy=college' },
 }
 
 export default function MassachusettsPage() {
@@ -62,7 +63,7 @@ export default function MassachusettsPage() {
           {tab === 'prerequisites' && (
             <EmptyState
               title='No prerequisite graph for Massachusetts'
-              description='The recovered pathway workbooks carry course sequences, but nobody has modeled them into the prerequisite concept graph the California and Virginia tabs use. The corpus here is exactly what the paper published.' />
+              description='The recovered repository workbooks carry course sequences, but nobody has modeled them into the prerequisite concept graph the California and Virginia tabs use. They predate the final PDF and should not be mistaken for its complete underlying corpus.' />
           )}
           {tab === 'visuals' && <VisualsTab />}
         </PageContainer>
@@ -77,7 +78,8 @@ function OverviewTab() {
   const colleges = useColleges({ state: 'ma' })
   const schools = useSchools({ state: 'ma' })
   const baselines = useMaBaselines()
-  const studiedPairs = baselines.data?.measures?.pct_as?.cells?.length
+  const studiedPairs = baselines.data?.measures?.pct_as_pdf?.cells?.length
+    ?? baselines.data?.measures?.pct_as?.cells?.length
 
   if (colleges.isLoading || schools.isLoading) {
     return <div className='py-10 flex justify-center'><Spinner /></div>
@@ -101,9 +103,10 @@ function OverviewTab() {
           same data structures California uses and rendered by the same figure
           components — 11 public universities, 15 community colleges, 165
           articulation pairs, and 61 studied transfer pathways, recovered from the
-          paper&rsquo;s repository (three workbooks exist only in its git history).
-          Published per-pair values are kept as baselines so every recomputation
-          can be diffed against the paper it came from.
+          paper&rsquo;s repository (13 workbook files exist only in its git history:
+          two aggregate workbooks and 11 university pathway workbooks).
+          Each figure keeps only two readings: the final paper and our direct
+          recalculation from the authors&rsquo; source files.
         </p>
         <div className='mt-4'>
           <StatStrip tiles={[
@@ -295,9 +298,9 @@ function UniversityDegree({ school }) {
 // rendered through the same thumbnail-gallery + full-screen detail the
 // California Visuals tab uses, so the two states read identically. The
 // heatmap's page-level extra: the MA-paper lens is this corpus's native
-// state, so it opens toggled on. Figures 1–5 recompute from the imported
-// corpus; Figure 6 (pathway complexity) renders the committed reproduction
-// of the paper's own scores — its card explains the distinction.
+// state, so it opens toggled on. Figures with readable final-PDF matrices open
+// on those transcriptions; archive/model readings remain explicit controls.
+// Figure 1 is the course-level reconstruction that exactly reproduces 38.2%.
 const MA_FIGURE_IDS = [
   'coverage-heatmap', 'course-type-coverage', 'transfer-credit-rate',
   'transfer-extra-units', 'transfer-extra-cost', 'pathway-complexity',
@@ -334,10 +337,10 @@ function VisualsTab() {
         <div>
           <h1 className='text-heading'>Visual library</h1>
           <p className='mt-1 text-body text-ink-muted'>
-            The paper&rsquo;s six figures — Figures 1–5 recomputed by the California engine
-            from the imported corpus, Figure 6 reproduced from the paper&rsquo;s own pathway
-            workbooks — every card opens the same interactive visual the California
-            library renders.
+            The paper&rsquo;s six figures on one source-aware surface. Final-PDF values
+            are the default wherever a matrix or plotted points can be transcribed;
+            older repository and recomputed readings remain separate controls. Every
+            card uses the same interactive component as the California library.
           </p>
         </div>
         <Badge variant='neutral'>{gallery.length} visuals</Badge>
@@ -359,6 +362,7 @@ function VisualsTab() {
 
       <FullScreenPanel open={!!selectedItem} onClose={() => setSelectedKey(null)}
         title={selectedDetails?.title} subtitle={selectedDetails?.source}
+        contentOwnsHeader
         ariaLabel={selectedDetails ? `${selectedDetails.title} visual detail` : 'Visual detail'}>
         {selectedItem && (
           <BuiltInAnalysisCard analysis={selectedItem.analysis} selectedMajor={maMajor}

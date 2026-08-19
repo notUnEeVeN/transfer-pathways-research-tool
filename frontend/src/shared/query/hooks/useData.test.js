@@ -16,7 +16,9 @@ vi.mock('../../hooks/useAuth', () => ({
 }))
 
 import apiClient from '../../api/apiClient'
-import { useCoverage, usePrereqGraph, useTransferCreditRate } from './useData'
+import {
+  useCoverage, usePathwayComplexity, usePrereqGraph, useTransferCreditRate,
+} from './useData'
 
 describe('useCoverage', () => {
   beforeEach(() => mocks.useQuery.mockReset())
@@ -66,11 +68,48 @@ describe('useTransferCreditRate', () => {
 
     const queryOptions = mocks.useQuery.mock.calls[0][0]
     expect(queryOptions.queryKey).toEqual([
-      'analysis-transfer-credit-rate', 'v6', 'user-1', 'bio', 'ast', 'verified',
+      'analysis-transfer-credit-rate', 'v7', 'user-1', 'bio', 'ast', 'verified',
     ])
     await queryOptions.queryFn()
     expect(apiClient.get).toHaveBeenCalledWith('/analysis/transfer-credit-rate', {
       params: { degree_type: 'ast', majorSlug: 'bio', verified_only: true },
+    })
+  })
+})
+
+describe('usePathwayComplexity', () => {
+  beforeEach(() => {
+    mocks.useQuery.mockReset()
+    apiClient.get.mockReset()
+  })
+
+  it('persists the major, degree, and default verified cohort in the cache key and request', async () => {
+    apiClient.get.mockResolvedValue({ data: { rows: [] } })
+
+    usePathwayComplexity({ majorSlug: 'cs', degreeType: 'local_as' })
+
+    const queryOptions = mocks.useQuery.mock.calls[0][0]
+    expect(queryOptions.queryKey).toEqual([
+      'analysis-pathway-complexity', 'v3', 'cs', 'local_as', 'verified', 'user-1',
+    ])
+    await queryOptions.queryFn({ queryKey: queryOptions.queryKey })
+    expect(apiClient.get).toHaveBeenCalledWith('/analysis/pathway-complexity', {
+      params: { majorSlug: 'cs', degree_type: 'local_as', verified_only: true },
+    })
+  })
+
+  it('keeps the all-resolved sensitivity in a distinct cache key and request', async () => {
+    apiClient.get.mockResolvedValue({ data: { rows: [] } })
+
+    usePathwayComplexity({ majorSlug: 'bio', degreeType: 'ast', verifiedOnly: false })
+
+    const queryOptions = mocks.useQuery.mock.calls[0][0]
+    expect(queryOptions.queryKey).toEqual([
+      'analysis-pathway-complexity', 'v3', 'bio', 'ast', 'all', 'user-1',
+    ])
+    await queryOptions.queryFn({ queryKey: queryOptions.queryKey })
+    expect(apiClient.get).toHaveBeenCalledWith('/analysis/pathway-complexity', {
+      params: { majorSlug: 'bio', degree_type: 'ast', verified_only: false },
     })
   })
 })

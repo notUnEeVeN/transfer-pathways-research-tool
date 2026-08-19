@@ -12,9 +12,9 @@ import { exportAnalysisCard } from './exportCard'
  * transparent border so the whole thing reads as ONE card with sections set
  * off by spacing, not a stack of cards-inside-a-card.
  *
- * `source` is the small provenance line under the title. `badge` (admin only)
- * shows release status; partners never see unreleased analyses, so they get no
- * badge. `actions` are extra header controls (e.g. a figure's edit/delete).
+ * `source` is the small provenance line under the title. `badge` shows the one
+ * release/access state for the visual. `actions` are extra header controls
+ * (e.g. a figure's edit/delete).
  *
  * Two export modes:
  *   - Live analyses (default): PDF + high-res PNG captured from the DOM (skips
@@ -42,7 +42,7 @@ function DownloadButton({ onClick, disabled, children }) {
 
 export default function AnalysisCard({
   title, source, badge, exportName, children, downloadFormats, onDownload, actions,
-  exportable = true,
+  exportable = true, scopeInHeader = false,
 }) {
   const cardRef = useRef(null)
   const [exporting, setExporting] = useState(null) // 'pdf' | 'png' | null
@@ -67,7 +67,8 @@ export default function AnalysisCard({
   }
 
   return (
-    <section ref={cardRef} className='surface-card analysis-card px-6 py-[22px] flex flex-col gap-[18px]'>
+    <section ref={cardRef} className='surface-card analysis-card px-6 py-[22px] flex flex-col gap-[18px]'
+      data-scope-in-header={scopeInHeader ? 'true' : undefined}>
       {/* Whole header stays out of exports — the file is the figure alone
           (LaTeX supplies the caption via \caption{}), not a screenshot. */}
       <div className='flex flex-wrap items-start gap-3' data-export-exclude>

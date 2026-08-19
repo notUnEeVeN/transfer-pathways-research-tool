@@ -135,7 +135,8 @@ describe('associate-degree analysis request scope', () => {
       majorSlug: 'econ',
       degree_type: 'ast',
       verified_only: true,
-      degree_templates_assumed_valid: true,
+      degree_templates_assumed_valid: false,
+      degree_template_evidence: 'per-template explicit verification record',
     });
   });
 
@@ -199,14 +200,15 @@ describe('pathway complexity paper corpora', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.mode).toBe('paper');
-    // The validation snapshot: 11 resident curricula + 61 transfer pathways,
-    // with exactly the two published-score divergences the audit documented.
+    // The validation snapshot: 11 resident curricula + 61 transfer pathways.
+    // Final PDF, archived tab and independent recomputation stay distinct.
     expect(response.body.pathways).toHaveLength(72);
-    expect(response.body.misses.map((m) => m.pathway)).toEqual([
-      'Bridgewater (resident)',
+    expect(response.body.archive_score_differences.map((m) => m.pathway)).toEqual([
       'UMass Dartmouth x Bristol',
     ]);
-    expect(response.body.headline_plus_15.over_scored_pathways).toBeCloseTo(15.94, 2);
+    expect(response.body.final_pdf.summary).toEqual({ n: 49, sum: 715, mean: 14.591837 });
+    expect(response.body.headline_means.final_pdf.mean).toBeCloseTo(14.59, 2);
+    expect(response.body.artifact_differences).toHaveLength(2);
   });
 
   it('keeps Virginia on the live path rather than borrowing a snapshot', async () => {
@@ -224,22 +226,45 @@ describe('pathway complexity paper corpora', () => {
   it('serves live corpora from the analysis cache without recomputing', async () => {
     // A cached full-corpus result: the endpoint must serve these rows
     // (scoped to the configured pairs) and report cached: true. The row uses
-    // a real configured cs campus so the scope filter keeps it; cs's default
-    // degree type is its first analysis slot, local_as.
+    // a real configured cs campus so the scope filter keeps it. Figure 6 opens
+    // on A.S.-T even though older analyses list local_as first.
     const csSchoolId = Number(Object.keys(getMajor('cs').programs)[0]);
-    await db.collection('analysis_cache').replaceOne(
-      { _id: 'pathway-complexity:cs:local_as' },
+    await db.collection('curated_requirements').insertMany([
       {
-        _id: 'pathway-complexity:cs:local_as',
+        _id: 'as_degree:figure6:found', kind: 'as_degree', status: 'found',
+        major_slug: 'cs', degree_type: 'ast', community_college_id: 10,
+        verification: { verified: true },
+      },
+      {
+        _id: 'as_degree:figure6:none-found', kind: 'as_degree', status: 'none_found',
+        major_slug: 'cs', degree_type: 'ast', verification: { verified: true },
+      },
+    ]);
+    await db.collection('analysis_cache').replaceOne(
+      { _id: 'pathway-complexity:v3:cs:ast:verified' },
+      {
+        _id: 'pathway-complexity:v3:cs:ast:verified',
         kind: 'pathway-complexity',
+        model_version: 'v3',
         major_slug: 'cs',
-        degree_type: 'local_as',
+        degree_type: 'ast',
+        verified_only: true,
         computed_at: '2026-08-17T00:00:00.000Z',
-        rows: [{
-          school_id: csSchoolId, school: 'UC Example', community_college_id: 10,
-          college_name: 'Example College', complexity: 120,
-          resident_complexity: 100, delta_vs_resident: 20, edge_info_pct: 80,
-        }],
+        rows: [
+          {
+            school_id: csSchoolId, school: 'UC Example', community_college_id: 10,
+            college_name: 'Example College', record_id: 'as_degree:10:cs:ast',
+            complexity: 120, resident_complexity: 100, delta_vs_resident: 20,
+            edge_info_pct: 80, method_status: 'ok',
+          },
+          {
+            school_id: csSchoolId, school: 'UC Example', community_college_id: 11,
+            college_name: 'Ambiguous College', record_id: 'as_degree:11:cs:ast',
+            complexity: null, resident_complexity: 100, delta_vs_resident: null,
+            method_status: 'excluded', exclusion_reason: 'ambiguous_named_unit_pool',
+            method_warning: 'The stored grouping is ambiguous.',
+          },
+        ],
       },
       { upsert: true },
     );
@@ -248,11 +273,91 @@ describe('pathway complexity paper corpora', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.cached).toBe(true);
+    expect(response.body.degree_type).toBe('ast');
+    expect(response.body.verified_only).toBe(true);
+    expect(response.body.model_version).toBe('v3');
     expect(response.body.computed_at).toBe('2026-08-17T00:00:00.000Z');
-    expect(response.body.rows).toHaveLength(1);
+    expect(response.body.rows).toHaveLength(2);
     expect(response.body.rows[0].college_name).toBe('Example College');
+    // The earlier export fixture contributes one unverified found A.S.-T;
+    // the none_found sentinel above must not inflate any cohort count.
+    expect(response.body.source_cohort).toEqual({
+      degree_documents_total: 2,
+      degree_documents_verified: 1,
+      degree_documents_included: 1,
+      unverified_degree_documents_omitted: 1,
+      omitted_unverified_degree_documents: [{
+        record_id: 'as_degree:10:ast',
+        community_college_id: 10,
+        college_name: 'Example College',
+      }],
+    });
+    expect(response.body.exclusions).toMatchObject({
+      degree_count: 1,
+      pathway_count: 1,
+      degrees: [{
+        record_id: 'as_degree:11:cs:ast',
+        college_name: 'Ambiguous College',
+        reason: 'ambiguous_named_unit_pool',
+      }],
+    });
 
-    await db.collection('analysis_cache').deleteOne({ _id: 'pathway-complexity:cs:local_as' });
+    await db.collection('analysis_cache').deleteOne({ _id: 'pathway-complexity:v3:cs:ast:verified' });
+    await db.collection('curated_requirements').deleteMany({
+      _id: { $in: ['as_degree:figure6:found', 'as_degree:figure6:none-found'] },
+    });
+  });
+
+  it('keeps verified and all-resolved Figure 6 cohorts in separate caches', async () => {
+    const csSchoolId = Number(Object.keys(getMajor('cs').programs)[0]);
+    const cachedRow = (college_name, delta_vs_resident) => ({
+      school_id: csSchoolId,
+      school: 'UC Example',
+      community_college_id: 10,
+      college_name,
+      record_id: `as_degree:10:cs:ast:${college_name}`,
+      complexity: 100 + delta_vs_resident,
+      resident_complexity: 100,
+      delta_vs_resident,
+      method_status: 'ok',
+    });
+    await db.collection('analysis_cache').insertMany([
+      {
+        _id: 'pathway-complexity:v3:cs:ast:verified',
+        rows: [cachedRow('Verified College', 1)],
+        computed_at: '2026-08-18T00:00:00.000Z',
+      },
+      {
+        _id: 'pathway-complexity:v3:cs:ast:all',
+        rows: [cachedRow('All Sources College', 2)],
+        computed_at: '2026-08-18T00:00:00.000Z',
+      },
+    ]);
+
+    const verified = await run(pathwayComplexityEndpoint, { majorSlug: 'cs' });
+    const all = await run(pathwayComplexityEndpoint, {
+      majorSlug: 'cs', verified_only: 'false',
+    });
+    expect(verified.body.rows[0].college_name).toBe('Verified College');
+    expect(verified.body.verified_only).toBe(true);
+    expect(all.body.rows[0].college_name).toBe('All Sources College');
+    expect(all.body.verified_only).toBe(false);
+  });
+
+  it('rejects an invalid Figure 6 verification cohort', async () => {
+    const response = await run(pathwayComplexityEndpoint, {
+      majorSlug: 'cs', verified_only: 'sometimes',
+    });
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toMatch(/verified_only must be true or false/i);
+  });
+
+  it('rejects an unknown Figure 6 associate-degree slot', async () => {
+    const response = await run(pathwayComplexityEndpoint, {
+      majorSlug: 'cs', degree_type: 'certificate',
+    });
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toMatch(/degree_type must be one of/i);
   });
 });
 

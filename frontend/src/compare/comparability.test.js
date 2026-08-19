@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { assessComparability } from './comparability'
+import { assessComparability, resolveComparisonContract } from './comparability'
 
-// Mirrors the real capability shape: California majors leave unitCoverage
-// unset, the two state corpora set it false and read the course lens instead.
 const MAJORS = {
   cs: { slug: 'cs', label: 'Computer Science', capabilities: {} },
   bio: { slug: 'bio', label: 'Biology', capabilities: {} },
@@ -16,106 +14,150 @@ const MAJORS = {
   },
 }
 
+const courseLens = (pane, major) => (
+  major.capabilities?.unitCoverage === false || pane.knobs?.['ma-equivalent'] === true
+)
+
+const ANALYSES = {
+  'coverage-heatmap': {
+    comparisonContract: (pane, major) => ({
+      measure: courseLens(pane, major) ? 'course-coverage' : 'unit-coverage',
+      unit: 'percentage points',
+      grain: 'college × campus',
+      keys: { rows: pane.knobs?.rows || 'college', columns: 'campus' },
+      semantics: {
+        denominator: courseLens(pane, major) ? 'required courses' : 'graduation units',
+        ge: Boolean(pane.knobs?.ge),
+        weighting: 'cell equal',
+      },
+      context: { source: pane.knobs?.source || 'live' },
+      distribution: pane.knobs?.grouped === false
+        ? {}
+        : { groupBy: 'column', label: 'course type', pooled: false },
+    }),
+  },
+  'pathway-complexity': {
+    comparisonContract: (pane) => ({
+      measure: 'complexity delta', unit: 'score points', grain: 'college × campus',
+      keys: { rows: 'college', columns: 'campus' },
+      semantics: { denominator: 'resident curriculum', weighting: 'cell equal' },
+      context: { source: pane.knobs?.source || 'published' },
+    }),
+  },
+  plain: {},
+}
+
 const pane = (id, figure, major, knobs = {}) => ({ id, figure, major, knobs })
+const assess = (panes, majors = MAJORS) => assessComparability(panes, majors, ANALYSES)
+
+describe('comparison contracts', () => {
+  it('resolves and normalizes a figure declaration', () => {
+    const contract = resolveComparisonContract(
+      pane('p1', 'coverage-heatmap', 'cs'), MAJORS.cs, ANALYSES,
+    )
+    expect(contract).toMatchObject({
+      measure: 'unit-coverage', unit: 'percentage points',
+      keys: { rows: 'college' }, semantics: { denominator: 'graduation units' },
+      distribution: { groupBy: 'column', pooled: false },
+    })
+  })
+
+  it('fails closed when the figure has not declared a contract', () => {
+    const result = assess([
+      pane('p1', 'plain', 'cs'), pane('p2', 'plain', 'bio'),
+    ])
+    expect(result.join).toBe('refused')
+    expect(result.warnings.map((warning) => warning.code)).toContain('missing_contract')
+  })
+})
 
 describe('assessComparability', () => {
-  it('aligns two pinned readings of one figure for one major', () => {
-    const result = assessComparability([
+  it('aligns two source readings and discloses the changed context', () => {
+    const result = assess([
       pane('p1', 'pathway-complexity', 'ma-cs', { source: 'published' }),
       pane('p2', 'pathway-complexity', 'ma-cs', { source: 'ours' }),
-    ], MAJORS)
+    ])
 
     expect(result.level).toBe('same-cells')
     expect(result.join).toBe('aligned')
-    expect(result.warnings).toEqual([])
+    expect(result.warnings.map((warning) => warning.code)).toContain('context_difference')
   })
 
-  // California majors share the district x campus key space, so a cell-by-cell
-  // difference across majors is measured, not invented.
-  it('aligns different majors within one corpus', () => {
-    const result = assessComparability([
+  it('aligns different majors within one corpus when keys and measure match', () => {
+    const result = assess([
       pane('p1', 'coverage-heatmap', 'cs'),
       pane('p2', 'coverage-heatmap', 'bio'),
-    ], MAJORS)
-
+    ])
     expect(result.level).toBe('same-cells')
     expect(result.join).toBe('aligned')
   })
 
-  // Bristol Community College is not Ohlone. Refusing is the honest output.
-  it('refuses a cell join across corpora and says why', () => {
-    const result = assessComparability([
-      pane('p1', 'coverage-heatmap', 'ma-cs'),
-      pane('p2', 'coverage-heatmap', 'va-cs'),
-    ], MAJORS)
+  it('uses a distribution, never a cell join, across matching corpora', () => {
+    const result = assess([
+      pane('p1', 'coverage-heatmap', 'cs', { 'ma-equivalent': true }),
+      pane('p2', 'coverage-heatmap', 'ma-cs'),
+    ])
 
     expect(result.level).toBe('same-measure')
     expect(result.join).toBe('disjoint')
-    expect(result.line).toMatch(/no colleges or campuses in common/i)
-    expect(result.warnings.map((w) => w.code)).toContain('disjoint_keys')
+    expect(result.warnings.map((warning) => warning.code)).toContain('disjoint_keys')
   })
 
-  // Disjoint keys are the more fundamental fact, so a cross-corpus pair stays
-  // 'disjoint' (which is what the distribution lens keys off) and carries the
-  // measure problem as a warning rather than being reclassified by it.
-  it('keeps a cross-corpus pair disjoint and reports the measure mismatch alongside', () => {
-    const result = assessComparability([
+  it('refuses a cross-state distribution whose denominator differs', () => {
+    const result = assess([
       pane('p1', 'coverage-heatmap', 'cs'),
       pane('p2', 'coverage-heatmap', 'ma-cs'),
-    ], MAJORS)
-
-    expect(result.join).toBe('disjoint')
-    expect(result.level).toBe('same-measure')
-    const warning = result.warnings.find((w) => w.code === 'measure_mismatch')
-    expect(warning.fix).toMatch(/paper-equivalent|course/i)
-    expect(result.warnings.map((w) => w.code)).toContain('disjoint_keys')
-  })
-
-  it('refuses a same-corpus pair whose panes read different measures', () => {
-    const majors = {
-      ...MAJORS,
-      'cs-course-lens': {
-        slug: 'cs-course-lens', label: 'CS (course lens)', capabilities: { unitCoverage: false },
-      },
-    }
-    const result = assessComparability([
-      pane('p1', 'coverage-heatmap', 'cs'),
-      pane('p2', 'coverage-heatmap', 'cs-course-lens'),
-    ], majors)
-
+    ])
     expect(result.join).toBe('refused')
-    expect(result.level).toBe('same-figure')
-    expect(result.warnings.map((w) => w.code)).toContain('measure_mismatch')
+    expect(result.warnings.map((warning) => warning.code))
+      .toContain('measure_contract_mismatch')
   })
 
-  it('refuses two different figures outright', () => {
-    const result = assessComparability([
+  it('refuses disjoint corpora that request different distribution summaries', () => {
+    const result = assess([
+      pane('p1', 'coverage-heatmap', 'cs', { 'ma-equivalent': true }),
+      pane('p2', 'coverage-heatmap', 'ma-cs', { grouped: false }),
+    ])
+    expect(result.join).toBe('refused')
+    expect(result.warnings.map((warning) => warning.code))
+      .toContain('distribution_contract_mismatch')
+  })
+
+  it('refuses a cell join when the row grouping differs', () => {
+    const result = assess([
+      pane('p1', 'coverage-heatmap', 'cs', { rows: 'college' }),
+      pane('p2', 'coverage-heatmap', 'bio', { rows: 'district' }),
+    ])
+    expect(result.join).toBe('refused')
+    expect(result.warnings.map((warning) => warning.code)).toContain('key_space_mismatch')
+  })
+
+  it('allows an explicit within-corpus lens contrast but names it', () => {
+    const result = assess([
+      pane('p1', 'coverage-heatmap', 'cs', { 'ma-equivalent': true, ge: false }),
+      pane('p2', 'coverage-heatmap', 'bio', { 'ma-equivalent': true, ge: true }),
+    ])
+    expect(result.join).toBe('aligned')
+    expect(result.warnings.map((warning) => warning.code)).toContain('semantic_lens_difference')
+  })
+
+  it('refuses different figures, unknown majors and a single pane', () => {
+    expect(assess([
       pane('p1', 'coverage-heatmap', 'cs'),
       pane('p2', 'pathway-complexity', 'cs'),
-    ], MAJORS)
-
-    expect(result.level).toBe('incomparable')
-    expect(result.join).toBe('refused')
-  })
-
-  it('fails closed on an unconfigured major and on a single pane', () => {
-    expect(assessComparability([
+    ]).join).toBe('refused')
+    expect(assess([
       pane('p1', 'coverage-heatmap', 'cs'),
       pane('p2', 'coverage-heatmap', 'not-a-major'),
-    ], MAJORS).join).toBe('refused')
-
-    expect(assessComparability([pane('p1', 'coverage-heatmap', 'cs')], MAJORS).level)
-      .toBe('incomparable')
-    expect(assessComparability([], MAJORS).join).toBe('refused')
+    ]).join).toBe('refused')
+    expect(assess([pane('p1', 'coverage-heatmap', 'cs')]).level).toBe('incomparable')
   })
 
-  it('accepts a Map of majors as well as a plain object', () => {
-    const asMap = new Map(Object.entries(MAJORS))
+  it('accepts maps as registries', () => {
     const result = assessComparability([
-      pane('p1', 'pathway-complexity', 'ma-cs', { source: 'published' }),
+      pane('p1', 'pathway-complexity', 'ma-cs'),
       pane('p2', 'pathway-complexity', 'ma-cs', { source: 'ours' }),
-    ], asMap)
-
+    ], new Map(Object.entries(MAJORS)), new Map(Object.entries(ANALYSES)))
     expect(result.join).toBe('aligned')
   })
 })

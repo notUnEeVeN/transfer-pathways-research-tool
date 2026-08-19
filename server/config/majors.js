@@ -43,6 +43,15 @@ const MAJORS = [
     // The local A.S. remains the historical CS headline; A.S.-T is its
     // statewide comparison.
     degreeAnalysisSlots: ['local_as', 'ast'],
+    // Audit receipt carried into comparison contracts. Row exports remain the
+    // authoritative, per-template evidence; this summary makes the current
+    // corpus status visible before comparison data has loaded.
+    degreeTemplateEvidence: {
+      total: 9,
+      explicitlyVerified: 9,
+      catalogYears: 'not recorded on the legacy CS templates',
+      staleResearchStatus: 0,
+    },
     // Canonical course categories for the gap figures, and the broad axes they
     // roll up into. Consumed by controllers/Curation.js.
     categories: [
@@ -64,6 +73,11 @@ const MAJORS = [
     // identity and there is no extended variant to toggle into.
     courseTypes: {
       module: 'cs',
+      // The Massachusetts Figure 2 denominator is degree and college
+      // requirements with general education excluded. Keep the California
+      // recreation on that same population; GE-inclusive coverage belongs to
+      // an explicitly different lens, not the default comparison.
+      excludeGeGroups: true,
       axes: {
         faithful: [
           { key: 'computing', label: 'Computing', categories: ['computing'] },
@@ -152,10 +166,21 @@ const MAJORS = [
       { key: 'non_stem', axis: 'non_stem' },
     ],
     // The cohorts the associate-degree figures compare. Biology is a science
-    // award like Computer Science, so it uses the same two: 108 A.S.-T records
-    // and 67 local A.S. records were found across 115 colleges. The 21
-    // local_other records are too thin a cohort to stand as their own series.
+    // award like Computer Science, so it uses the same two. The live corpus has
+    // 98 found A.S.-T and 57 found local A.S. records; each slot also carries
+    // 10 explicit `none_found` sentinels, which are evidence of absence rather
+    // than degree records. The 21 found local_other records are too thin a
+    // cohort to stand as their own series.
     degreeAnalysisSlots: ['local_as', 'ast'],
+    degreeTemplateEvidence: {
+      total: 9,
+      explicitlyVerified: 9,
+      catalogYears: '2025-26 (8 templates); 2026-27 (UC San Diego)',
+      // Explicit verification records are authoritative; this count exposes
+      // the stale pre-verification label without calling the templates
+      // unverified.
+      staleResearchStatus: 9,
+    },
     broadAxes: ['biology', 'math', 'chem_physics', 'non_stem'],
     // Column order mirrors the Computer Science figure's: own discipline,
     // quantitative, supporting science, everything else. The extended variant
@@ -165,6 +190,10 @@ const MAJORS = [
     // source figure does not have.
     courseTypes: {
       module: 'bio',
+      // Match the source figure's degree/college-requirement denominator:
+      // general-education and free-elective padding groups are not course-type
+      // observations in this comparison.
+      excludeGeGroups: true,
       axes: {
         faithful: [
           { key: 'biology', label: 'Biology', categories: ['bio_series'] },
@@ -256,10 +285,18 @@ const MAJORS = [
       128: ['Economics, B.A.'],
       132: ['Economics B.A.'],
     },
-    // Economics has a statewide A.A.-T and local A.A. cohort. No researched
-    // college publishes a general local Economics A.S. in the pinned corpus,
-    // so an empty A.S. control would be misleading.
+    // Economics has a statewide A.A.-T and local A.A. cohort. The A.A.-T slot
+    // contains 97 found degrees plus 18 explicit `none_found` sentinels — not
+    // 115 degree records. No researched college publishes a general local
+    // Economics A.S. in the pinned corpus, so an empty A.S. control would be
+    // misleading.
     degreeAnalysisSlots: ['ast', 'local_other'],
+    degreeTemplateEvidence: {
+      total: 9,
+      explicitlyVerified: 9,
+      catalogYears: '2025-26 (7 templates); 2026-27 (UC Davis and UC San Diego)',
+      staleResearchStatus: 9,
+    },
     // Confirmed against the nine ported templates on 2026-07-23. Principles are
     // NOT split into micro and macro: seven campuses name them, but Berkeley
     // states ECON 1/2 as "Introduction to Economics" and Irvine states
@@ -280,6 +317,9 @@ const MAJORS = [
     // the supporting slot with other social sciences rather than lab science.
     courseTypes: {
       module: 'econ',
+      // Match the Massachusetts Figure 2 population by excluding GE/padding
+      // groups from the typed tallies for the faithful state comparison.
+      excludeGeGroups: true,
       axes: {
         faithful: [
           { key: 'economics', label: 'Economics', categories: ['econ_principles', 'econ_theory'] },
@@ -375,8 +415,7 @@ const MAJORS = [
       module: 'cs',
       // The paper's Figure 2 matrix carries no GE columns, so the GE-titled
       // template group stays out of this corpus's course-type tallies —
-      // matching the named-requirement population. California deliberately
-      // does not set this: its verified figure counts GE blocks in Non-STEM.
+      // matching the named-requirement population and the California ports.
       excludeGeGroups: true,
       axes: {
         faithful: [

@@ -21,7 +21,8 @@
  *     resolved alternative), matching the Or-collapse convention every other
  *     reader uses — so an OR of five codes contributes ONE edge, not five.
  *   - Corequisite sentences count too: the reference tool treats a corequisite
- *     as an edge, which our MA validation confirmed (58/60 with, 17/60 without).
+ *     as an edge, which our corrected MA validation confirmed (59/60 with,
+ *     17/60 without).
  *
  * Rows already parsed are never touched. Idempotent.
  *

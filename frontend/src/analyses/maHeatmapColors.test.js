@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  PAPER_DIVERGING_LOW_TO_HIGH_GRADIENT,
   PAPER_RED_LOW_TO_HIGH_GRADIENT,
   paperRedCellColor,
 } from './maHeatmapColors'
@@ -30,5 +31,13 @@ describe('Massachusetts heatmap color direction', () => {
   it('clamps values outside the scale without reversing the endpoints', () => {
     expect(paperRedCellColor(-1, scale).backgroundColor).toBe('rgb(255 255 255)')
     expect(paperRedCellColor(101, scale).backgroundColor).toBe('rgb(103 0 13)')
+  })
+
+  it('prints the signed Figure 6 ramp from dark green through white to dark red', () => {
+    expect(PAPER_DIVERGING_LOW_TO_HIGH_GRADIENT).toMatch(
+      /^linear-gradient\(90deg, rgb\(0 68 27\) 0%/,
+    )
+    expect(PAPER_DIVERGING_LOW_TO_HIGH_GRADIENT).toContain('rgb(255 255 255) 50%')
+    expect(PAPER_DIVERGING_LOW_TO_HIGH_GRADIENT).toMatch(/rgb\(103 0 13\) 100%\)$/)
   })
 })

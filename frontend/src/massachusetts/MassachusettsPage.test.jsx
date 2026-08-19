@@ -15,22 +15,33 @@ vi.mock('../analyses/CoverageHeatmap', () => ({
     <div data-testid='fig-coverage' data-major={props.majorSlug}
       data-ma-default={String(props.defaultMaEquivalent ?? '')} />
   ),
+  coverageComparisonCells: vi.fn(() => []),
+  coverageComparisonContract: vi.fn(() => null),
+  coverageViewForPane: vi.fn(() => ({})),
 }))
 vi.mock('../analyses/CourseTypeCoverage', () => ({
   __esModule: true,
   default: (props) => <div data-testid='fig-course-types' data-major={props.majorSlug} />,
+  courseTypeComparisonCells: vi.fn(() => []),
+  courseTypeComparisonContract: vi.fn(() => null),
+  courseTypeCoverageParams: vi.fn(() => ({})),
 }))
 vi.mock('../analyses/TransferCreditRate', () => ({
   __esModule: true,
   default: (props) => <div data-testid='fig-credit-rate' data-major={props.majorSlug} />,
+  transferCreditComparisonCells: vi.fn(() => []),
+  transferCreditComparisonContract: vi.fn(() => null),
+  transferCreditViewForPane: vi.fn(() => ({})),
 }))
 vi.mock('../analyses/TransferExtraUnits', () => ({
   __esModule: true,
   default: (props) => <div data-testid='fig-extra-units' data-major={props.majorSlug} />,
+  extraUnitEntries: vi.fn(() => []),
 }))
 vi.mock('../analyses/TransferExtraCost', () => ({
   __esModule: true,
   default: (props) => <div data-testid='fig-extra-cost' data-major={props.majorSlug} />,
+  extraCostEntries: vi.fn(() => []),
 }))
 
 // DataPage's shared primitives are presentational and carry their own tests;
@@ -115,7 +126,17 @@ function seedHooks() {
     rows: [{ school_id: 9001, community_college_id: 9103, pct_named_requirement_courses: 27.3 }],
   }))
   mockRate.mockReturnValue(ok({
-    rows: [{ school_id: 9001, community_college_id: 9103, college_name: 'Bunker Hill Community College', school: 'Bridgewater', as_unit_utilization_pct: 55.7, extra_units: 29 }],
+    rows: [{
+      school_id: 9001,
+      community_college_id: 9103,
+      college_name: 'Bunker Hill Community College',
+      school: 'Bridgewater',
+      published_pdf_as_transfer_pct: 50.8,
+      published_as_transfer_pct: 50.8,
+      as_unit_utilization_pct: 55.7,
+      archive_gray_detail_as_transfer_pct: 52.4,
+      extra_units: 29,
+    }],
   }))
   mockColleges.mockReturnValue(ok([
     { id: 9103, source_id: 9103, name: 'Bunker Hill Community College', institution_id: 'ma:cc:9103' },
@@ -157,6 +178,7 @@ describe('MassachusettsPage', () => {
     // Overview: provenance is stated, not implied, and the comparison panel
     // diffs our recomputation against a published cell.
     expect(screen.getByText(/recovered from the paper/i)).toBeInTheDocument()
+    expect(screen.getByText(/13 workbook files exist only in its git history/i)).toBeInTheDocument()
     expect(screen.getByText('Studied pathways')).toBeInTheDocument()
     expect(screen.getAllByText(/Bunker Hill/).length).toBeGreaterThan(0)
     expect(screen.getAllByText('50.8%').length).toBeGreaterThan(0)
@@ -170,6 +192,10 @@ describe('MassachusettsPage', () => {
     render(<MassachusettsPage />)
     fireEvent.click(screen.getByRole('tab', { name: 'Visuals' }))
     expect(mockMajors).toHaveBeenCalledWith({ state: 'ma' })
+    expect(screen.getByRole('button', {
+      name: 'GET /api/analysis/coverage?majorSlug=ma-cs&requirements=degree&groupBy=college',
+    }))
+      .toBeInTheDocument()
 
     // The same gallery chrome the California library uses.
     expect(screen.getByText('Visual library')).toBeInTheDocument()

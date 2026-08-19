@@ -14,6 +14,103 @@
 
 const keyOf = (cell) => `${cell.rowKey}|${cell.colKey}`
 
+const quantile = (sorted, q) => {
+  if (!sorted.length) return null
+  const position = (sorted.length - 1) * q
+  const lower = Math.floor(position)
+  const upper = sorted[lower + 1]
+  const fraction = position - lower
+  return upper == null ? sorted[lower] : sorted[lower] + fraction * (upper - sorted[lower])
+}
+
+/**
+ * A cross-corpus comparison has no honest cell join. Its valid output is the
+ * distribution of each pane's own cells, with the sample size and weighting
+ * kept visible. Nulls are omitted rather than coerced to zero.
+ */
+export function summarizeCells(cells) {
+  const numeric = (cells || []).filter((cell) => Number.isFinite(cell?.value))
+  const values = numeric.map((cell) => cell.value).sort((a, b) => a - b)
+  const rows = new Set(numeric.map((cell) => cell.rowKey))
+  const columns = new Set(numeric.map((cell) => cell.colKey))
+  if (!values.length) {
+    return {
+      n: 0, omitted: (cells || []).length, rows: 0, columns: 0,
+      mean: null, median: null, q1: null, q3: null, min: null, max: null,
+    }
+  }
+  return {
+    n: values.length,
+    omitted: (cells || []).length - values.length,
+    rows: rows.size,
+    columns: columns.size,
+    mean: values.reduce((sum, value) => sum + value, 0) / values.length,
+    median: quantile(values, 0.5),
+    q1: quantile(values, 0.25),
+    q3: quantile(values, 0.75),
+    min: values[0],
+    max: values[values.length - 1],
+  }
+}
+
+const distributionPair = (baseline, subject) => {
+  const a = summarizeCells(baseline)
+  const b = summarizeCells(subject)
+  return {
+    baseline: a,
+    subject: b,
+    meanDelta: a.mean == null || b.mean == null ? null : b.mean - a.mean,
+    medianDelta: a.median == null || b.median == null ? null : b.median - a.median,
+  }
+}
+
+/**
+ * Compare two disjoint corpora without inventing institution pairs.
+ *
+ * The default is the legacy equal-cell population summary. A figure may instead
+ * declare that its columns are shared semantic groups (Figure 2's course
+ * types, for example). In that case every column gets its own population
+ * contrast. A pooled summary is opt-in because unequal category populations
+ * otherwise change the apparent state mean merely by changing category mix.
+ */
+export function compareDistributions(baseline, subject, distribution = {}) {
+  if (distribution?.groupBy !== 'column') return distributionPair(baseline, subject)
+
+  const groups = new Map()
+  const collect = (cells, side) => {
+    for (const cell of cells || []) {
+      const key = String(cell?.colKey ?? '')
+      if (!groups.has(key)) {
+        groups.set(key, {
+          key,
+          label: cell?.colLabel ?? key,
+          baseline: [],
+          subject: [],
+        })
+      }
+      groups.get(key)[side].push(cell)
+    }
+  }
+  collect(baseline, 'baseline')
+  collect(subject, 'subject')
+
+  const grouped = [...groups.values()].map((group) => ({
+    key: group.key,
+    label: group.label,
+    ...distributionPair(group.baseline, group.subject),
+  }))
+  return {
+    mode: 'grouped',
+    groupBy: 'column',
+    groupLabel: distribution.label || 'column',
+    groups: grouped,
+    // An overall equal-cell number is intentionally absent unless the figure
+    // contract explicitly asks for one. The receipt labels it as pooled when
+    // present, so it can never masquerade as an equal-category statistic.
+    overall: distribution.pooled === true ? distributionPair(baseline, subject) : null,
+  }
+}
+
 /**
  * @param baseline  cells of the pane being compared AGAINST
  * @param subject   cells of the pane being compared
@@ -109,6 +206,73 @@ export function verdictOf(join) {
   }
 }
 
+const round3 = (value) => (Number.isFinite(value) ? Number(value.toFixed(3)) : null)
+
+const pinnableSide = (side) => (side ? {
+  n: side.n ?? 0,
+  mean: round3(side.mean),
+  median: round3(side.median),
+} : null)
+
+/**
+ * The pinnable reading for a pair with no honest cell join.
+ *
+ * Cross-state pairs cannot produce `verdictOf` — there are no shared
+ * institutions to match — so before this they pinned nothing at all and any
+ * later movement in either corpus went unrecorded. What IS stable enough to
+ * pin is each side's own population summary and the gap between them, which
+ * is exactly the claim the distribution receipt puts on screen.
+ *
+ * Grouped distributions (Figure 2's course types) pin their overall pair only
+ * when the figure contract opted into a pooled number; otherwise the groups
+ * are pinned individually so a category-mix change cannot hide inside a single
+ * average.
+ */
+export function distributionVerdictOf(distribution) {
+  if (!distribution) return null
+  if (distribution.mode === 'grouped') {
+    const groups = (distribution.groups || []).map((group) => ({
+      key: group.key,
+      label: group.label,
+      baseline: pinnableSide(group.baseline),
+      subject: pinnableSide(group.subject),
+      mean_delta: round3(group.meanDelta),
+      median_delta: round3(group.medianDelta),
+    }))
+    if (!groups.length && !distribution.overall) return null
+    return {
+      mode: 'grouped',
+      group_by: distribution.groupBy || null,
+      groups,
+      ...(distribution.overall ? {
+        baseline: pinnableSide(distribution.overall.baseline),
+        subject: pinnableSide(distribution.overall.subject),
+        mean_delta: round3(distribution.overall.meanDelta),
+        median_delta: round3(distribution.overall.medianDelta),
+      } : {}),
+    }
+  }
+  if (!distribution.baseline?.n && !distribution.subject?.n) return null
+  return {
+    mode: 'pair',
+    baseline: pinnableSide(distribution.baseline),
+    subject: pinnableSide(distribution.subject),
+    mean_delta: round3(distribution.meanDelta),
+    median_delta: round3(distribution.medianDelta),
+  }
+}
+
+/**
+ * What this comparison should pin: the cell join where one exists, and the
+ * population contrast where one honestly cannot.
+ */
+export function pinnableVerdict(join, distribution) {
+  const verdict = verdictOf(join)
+  if (verdict) return verdict
+  const summary = distributionVerdictOf(distribution)
+  return summary ? { distribution: summary } : null
+}
+
 /**
  * Has the comparison moved since it was pinned? Coverage with
  * requirements=degree deliberately bypasses the server cache so a template
@@ -117,9 +281,53 @@ export function verdictOf(join) {
  */
 export function verdictDrift(pinned, current) {
   if (!pinned || !current) return null
+  if (pinned.distribution || current.distribution) {
+    return distributionDrift(pinned.distribution, current.distribution)
+  }
   const fields = ['matched', 'agreeing', 'dropped', 'mean_delta', 'max_abs_delta', 'max_cell']
   const changes = fields
     .filter((field) => pinned[field] !== current[field])
     .map((field) => ({ field, from: pinned[field], to: current[field] }))
+  return changes.length ? changes : null
+}
+
+// A pinned distribution and a pinned join are different claims, so a pair that
+// gained or lost its join has moved in the way that matters most.
+function distributionDrift(pinned, current) {
+  if (!pinned || !current) {
+    return [{ field: 'comparison basis', from: pinned ? 'distribution' : 'cell join', to: current ? 'distribution' : 'cell join' }]
+  }
+  const sideChanges = (label, from, to) => ['n', 'mean', 'median']
+    .filter((field) => (from?.[field] ?? null) !== (to?.[field] ?? null))
+    .map((field) => ({ field: `${label} ${field}`, from: from?.[field] ?? null, to: to?.[field] ?? null }))
+
+  if (pinned.mode === 'grouped' || current.mode === 'grouped') {
+    const byKey = new Map((current.groups || []).map((group) => [group.key, group]))
+    const changes = []
+    for (const group of pinned.groups || []) {
+      const now = byKey.get(group.key)
+      if (!now) {
+        changes.push({ field: `${group.label} group`, from: 'present', to: 'absent' })
+        continue
+      }
+      changes.push(
+        ...sideChanges(`${group.label} baseline`, group.baseline, now.baseline),
+        ...sideChanges(`${group.label} subject`, group.subject, now.subject),
+      )
+      byKey.delete(group.key)
+    }
+    for (const group of byKey.values()) {
+      changes.push({ field: `${group.label} group`, from: 'absent', to: 'present' })
+    }
+    return changes.length ? changes : null
+  }
+
+  const changes = [
+    ...sideChanges('baseline', pinned.baseline, current.baseline),
+    ...sideChanges('subject', pinned.subject, current.subject),
+    ...['mean_delta', 'median_delta']
+      .filter((field) => (pinned[field] ?? null) !== (current[field] ?? null))
+      .map((field) => ({ field, from: pinned[field] ?? null, to: current[field] ?? null })),
+  ]
   return changes.length ? changes : null
 }

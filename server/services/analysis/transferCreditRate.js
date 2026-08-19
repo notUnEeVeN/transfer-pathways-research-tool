@@ -42,8 +42,36 @@ const { AS_DEGREE_SLOTS: DEGREE_TYPES } = require('../../config/asDegreeSlots');
 const { computeUnitBudget, resolveSectionTier } = require('../degreeSlots');
 const { majorDocumentClause } = require('../../config/majorDocumentScope');
 const { stateClause } = require('../../config/stateScope');
+const maFigureLedgers = require('../../data/ma/figure-ledgers.json');
+const maFigure3GrayDetail = require('../../data/ma/figure3-gray-detail.json');
 
 const round1 = (value) => +(Number(value) || 0).toFixed(1);
+
+// Figure 4's deposited pathway-sheet totals are a source artifact in their
+// own right. Keep them separate from `modeled_hours_above_120`, which is this
+// service's general course-allocation model and can legitimately produce a
+// different total. The ledger is committed and regenerated from the archived
+// workbook; no database row is treated as a substitute for it.
+const maFigure4ArchiveDetailByPair = new Map(
+  (maFigureLedgers.fig4?.cells || []).map((cell) => [cell.pair, cell]),
+);
+
+// Figure 3's audit source is intentionally not the generic allocation model
+// below and not the authors' hand-typed CurrComp summary tab. It is a frozen,
+// reproducible rerun over the gray rows in the deposited pathway XLSX files.
+const maFigure3GrayDetailByPair = new Map(
+  (maFigure3GrayDetail.cells || []).map((cell) => [cell.pair, cell]),
+);
+
+function maFigure3ArchiveGrayDetail(school, collegeName) {
+  const college = String(collegeName || '').replace(/ Community College$/, '');
+  return maFigure3GrayDetailByPair.get(`${school} × ${college}`) || null;
+}
+
+function maFigure4ArchiveDetail(school, collegeName) {
+  const college = String(collegeName || '').replace(/ Community College$/, '');
+  return maFigure4ArchiveDetailByPair.get(`${school} × ${college}`) || null;
+}
 
 function catalogCohorts(value) {
   const matches = String(value || '').matchAll(/\b(20\d{2})\s*[-–/]\s*(?:20)?(\d{2})\b/g);
@@ -740,21 +768,31 @@ function nullMetrics(row, status, warning, namedUnits = null) {
     ...row,
     rate: null,
     as_unit_utilization_pct: null,
+    paper_equivalent_as_unit_utilization_pct: null,
     full_degree_completion_pct: null,
     full_degree_fulfilled_units: null,
     lower_division_completion_pct: null,
     lower_division_fulfilled_units: null,
     prescribed_units: null,
     transferred_units: null,
+    paper_equivalent_transferred_units: null,
     named_units: namedUnits,
     named_transferred_units: null,
     elective_counted_units: null,
     known_nontransferable_units: null,
     extra_units: null,
     extra_units_semester: null,
+    modeled_pathway_units_semester: null,
+    modeled_hours_above_120: null,
+    modeled_hours_above_120_unrounded: null,
     extra_cost_usd: null,
     extra_cost_standard_load_usd: null,
+    modeled_cost_above_120_usd: null,
+    modeled_cost_above_120_standard_load_usd: null,
     tuition_annual_resident_usd: null,
+    tuition_source: null,
+    tuition_source_url: null,
+    tuition_price_year: null,
     method_status: status,
     method_warning: warning,
   };
@@ -762,7 +800,7 @@ function nullMetrics(row, status, warning, namedUnits = null) {
 
 async function transferCreditRateData(db, _auditDb, {
   degreeType = 'local_as', majorSlug = null, majorPrograms = null,
-  verifiedOnly = false, assumeDegreeTemplatesValid = verifiedOnly,
+  verifiedOnly = false, assumeDegreeTemplatesValid = false,
 } = {}) {
   const type = DEGREE_TYPES.includes(degreeType) ? degreeType : 'local_as';
   const slug = String(majorSlug || '').trim();
@@ -791,14 +829,17 @@ async function transferCreditRateData(db, _auditDb, {
       projection: {
         source_id: 1, academic_calendar: 1, tuition_annual_resident_usd: 1,
         tuition_per_credit_usd: 1, tuition_per_credit_standard_load_usd: 1,
+        tuition_source: 1, tuition_source_url: 1, tuition_price_year: 1,
+        tuition_basis: 1,
       },
     }).toArray(),
   ]);
 
-  // Cost of the replacement coursework, following the MA paper: a campus bills a
-  // flat rate per term, so a per-unit price is derived from annual tuition and
-  // fees over a full-time load. Their published figures reproduce as
-  // `annual / (12 units x terms)` — Fitchburg State to within $2.
+  // Cost of the pathway hours, following the MA paper's Figure 5 arithmetic: a
+  // flat campus charge needs an explicit load denominator before it can be
+  // expressed per unit. The importer re-expresses the paper workbook's own
+  // campus-constant rates on this annual/24 convention; California campus rows
+  // carry their annual resident charge directly.
   //
   // Extra units are carried here in SEMESTER-equivalent terms, and the calendar
   // cancels out: for a quarter campus, (extra x 1.5) x (annual / 36) is exactly
@@ -810,6 +851,12 @@ async function transferCreditRateData(db, _auditDb, {
       annual: Number(row.tuition_annual_resident_usd),
       perSemesterUnit: Number(row.tuition_annual_resident_usd) / 24,
       perSemesterUnitStandardLoad: Number(row.tuition_annual_resident_usd) / 30,
+      // Canonical CA rows keep the complete citation in `tuition_basis`, while
+      // imported paper rows use the older flat fields. Read both shapes so a
+      // sourced rate is never mislabeled as unprovenanced by Figure 5.
+      source: row.tuition_source || row.tuition_basis?.source || null,
+      sourceUrl: row.tuition_source_url || row.tuition_basis?.source_url || null,
+      priceYear: row.tuition_price_year || row.tuition_basis?.year || null,
     }]));
 
   const scopedTemplates = exactPrograms
@@ -919,6 +966,11 @@ async function transferCreditRateData(db, _auditDb, {
     for (const campus of campuses) {
       const pair = agreementsByPair.get(`${campus.school_id}:${collegeId}`) || [];
       const matched = agreementsForTemplate(pair, campus.template);
+      const templateVerified = campus.template.verification?.verified === true;
+      const staleTemplateStatus = templateVerified
+        && /needs[_\s-]+human[_\s-]+verification/i.test(
+          String(campus.template.research_status || '')
+        );
       const base = {
         community_college_id: collegeId,
         college_name: nameById.get(collegeId) || doc.college_name || `College ${collegeId}`,
@@ -933,6 +985,13 @@ async function transferCreditRateData(db, _auditDb, {
         degree_unit_system: campus.unitSystem,
         degree_catalog_year: campus.template.catalog_year || null,
         degree_research_status: campus.template.research_status || null,
+        degree_template_verified: templateVerified,
+        degree_template_verified_at: campus.template.verification?.verified_at || null,
+        degree_template_verified_by_label:
+          campus.template.verification?.verified_by_label || null,
+        degree_template_source: campus.template.source || null,
+        degree_template_source_url: campus.template.source_url || null,
+        degree_template_status_conflict: staleTemplateStatus,
         full_degree_required_units: round1(campus.fullRequiredUnits),
         lower_division_required_units: round1(campus.lowerRequiredUnits),
         ge_units: round1(geUnits),
@@ -941,7 +1000,7 @@ async function transferCreditRateData(db, _auditDb, {
           ? true
           : (doc.analysis_ready === false ? false : null),
         source_verified: doc.verification?.verified === true,
-        degree_template_assumed_valid: assumeDegreeTemplatesValid,
+        degree_template_assumed_valid: !templateVerified && assumeDegreeTemplatesValid,
         source_modeling_warning_count: modelingWarningCount,
       };
 
@@ -951,7 +1010,7 @@ async function transferCreditRateData(db, _auditDb, {
           ? 'The associate-degree source is human-verified but is not marked analysis-ready for this model.'
           : 'The associate-degree source is not marked analysis-ready and still requires human verification.');
       }
-      if (!assumeDegreeTemplatesValid
+      if (!templateVerified && !assumeDegreeTemplatesValid
           && /needs[_\s-]+human[_\s-]+verification/i.test(String(campus.template.research_status || ''))) {
         sourceWarnings.push('The four-year graduation template still requires human verification.');
       }
@@ -1054,7 +1113,28 @@ async function transferCreditRateData(db, _auditDb, {
         knownIneligibleUnits: lowerKnownIneligibleUnits,
       });
       const { direct: directApplied, geCounted, electiveCounted, applied } = fullApplication;
+      // MA Figure 3 asks which AS credits replace an actual bachelor
+      // requirement. Named articulations and real GE/breadth capacity count;
+      // unrestricted elective padding does not. Keep the broader application
+      // total alongside it because Figures 4 and 5 still need every credit
+      // that can land toward the 120-hour graduation floor.
+      const paperEquivalentApplied = Math.min(asTotal, directApplied + geCounted);
       const extra = Math.max(0, asTotal - applied);
+      const semesterExtra = toSemesterUnits(extra, collegeSystem);
+      // The paper's Figure 4 is not the unused-AS-unit count by itself. It is
+      // the whole modeled pathway minus the 120-semester-hour bachelor's
+      // benchmark. Algebraically, pathway length is the resident bachelor's
+      // requirement plus AS units that find no home in it:
+      //
+      //   AS + (resident degree - applied AS) = resident degree + unused AS.
+      //
+      // These coincide with `extra_units_semester` at every current CA campus
+      // because its graduation minimum is 120 semester-equivalent units, but
+      // the recovered MA resident plans range from 120 to 123. Keep both
+      // constructs explicit so neither visual can silently relabel the other.
+      const pathwaySemester = toSemesterUnits(campus.fullRequiredUnits, campus.unitSystem)
+        + semesterExtra;
+      const hoursAbove120 = Math.max(0, pathwaySemester - 120);
       const geCountedVerified = Math.min(geVerifiedUnits, geCounted);
       const geCountedAssumed = geCounted - geCountedVerified;
       if (geCountedAssumed > EPSILON) {
@@ -1087,10 +1167,13 @@ async function transferCreditRateData(db, _auditDb, {
         lower_division_completion_pct: lowerCompletion.pct,
         lower_division_fulfilled_units: lowerCompletion.fulfilled,
         as_unit_utilization_pct: asTotal > 0 ? round1((100 * applied) / asTotal) : null,
+        paper_equivalent_as_unit_utilization_pct: asTotal > 0
+          ? round1((100 * paperEquivalentApplied) / asTotal) : null,
         // Backward-compatible name for downloads; v2 defines it as the whole
         // associate degree rather than named+GE prescribed units.
         prescribed_units: round1(asTotal),
         transferred_units: round1(applied),
+        paper_equivalent_transferred_units: round1(paperEquivalentApplied),
         named_units: round1(plan.total),
         named_transferred_units: round1(directApplied),
         ge_demand_units: round1(geDemand),
@@ -1101,22 +1184,43 @@ async function transferCreditRateData(db, _auditDb, {
         elective_counted_units: round1(electiveCounted),
         known_nontransferable_units: round1(fullKnownIneligibleUnits),
         extra_units: round1(extra),
-        extra_units_semester: round1(toSemesterUnits(extra, collegeSystem)),
+        extra_units_semester: round1(semesterExtra),
+        modeled_pathway_units_semester: round1(pathwaySemester),
+        modeled_hours_above_120: round1(hoursAbove120),
+        // Figure 4 displays tenths, but Figure 5 prices the model's underlying
+        // value before display rounding. Export both so the arithmetic receipt
+        // is exact and nobody has to reverse-engineer a rounded heatmap label.
+        modeled_hours_above_120_unrounded: hoursAbove120,
         ...(() => {
           const rate = tuitionBySchool.get(Number(campus.school_id));
-          const semesterExtra = toSemesterUnits(extra, collegeSystem);
           if (!rate) {
             return {
               extra_cost_usd: null,
               extra_cost_standard_load_usd: null,
+              modeled_cost_above_120_usd: null,
+              modeled_cost_above_120_standard_load_usd: null,
               tuition_annual_resident_usd: null,
+              tuition_source: null,
+              tuition_source_url: null,
+              tuition_price_year: null,
             };
           }
           return {
+            // Legacy replacement-coursework costs stay available for exports
+            // that intentionally price unused AS units.
             extra_cost_usd: Math.round(semesterExtra * rate.perSemesterUnit),
             extra_cost_standard_load_usd:
               Math.round(semesterExtra * rate.perSemesterUnitStandardLoad),
+            // Figures 4 and 5 share one numerator: modeled Figure 5 is exactly
+            // modeled Figure 4 multiplied by the selected rate.
+            modeled_cost_above_120_usd:
+              Math.round(hoursAbove120 * rate.perSemesterUnit),
+            modeled_cost_above_120_standard_load_usd:
+              Math.round(hoursAbove120 * rate.perSemesterUnitStandardLoad),
             tuition_annual_resident_usd: rate.annual,
+            tuition_source: rate.source,
+            tuition_source_url: rate.sourceUrl,
+            tuition_price_year: rate.priceYear,
           };
         })(),
         method_status: warnings.length ? 'estimated' : 'ok',
@@ -1129,14 +1233,15 @@ async function transferCreditRateData(db, _auditDb, {
     || String(a.school).localeCompare(String(b.school)));
 
   // A paper corpus carries the study's published per-pair values alongside our
-  // recomputation — BOTH revisions: the repo workbook's tally (`pct_as`) and
-  // the final PDF's printed Figure 3 (`pct_as_pdf`), which is a newer revision
-  // of the same hand tally. The figure's source selector shows any of the
-  // three against each other; which one a cell displays is an explicit
-  // choice, never an accident of pipeline.
+  // recomputation. Figure 3 has both the repo tally and final-PDF revision;
+  // Figures 4 and 5 use the final PDF's printed matrices. Which one a visual
+  // displays is an explicit source choice, never an accident of pipeline.
   if (configuredMajor?.capabilities?.paperBaselines && configuredMajor?.state) {
     const published = await db.collection('ma_paper_baselines')
-      .find({ measure: { $in: ['pct_as', 'pct_as_pdf'] }, community_college_id: { $ne: null } },
+      .find({
+        measure: { $in: ['pct_as', 'pct_as_pdf', 'extra_hours_pdf', 'extra_cost_pdf'] },
+        community_college_id: { $ne: null },
+      },
         { projection: { measure: 1, school_id: 1, community_college_id: 1, value: 1 } })
       .toArray();
     const byPair = new Map();
@@ -1144,13 +1249,13 @@ async function transferCreditRateData(db, _auditDb, {
       byPair.set(`${row.measure}|${row.school_id}|${row.community_college_id}`, row.value);
     }
 
-    // The paper mixed GE-inclusive and GE-skipping counts cell by cell (its
-    // matching cells are provably GE-inclusive; its under-counts sit between
-    // the CS-only floor and the GE-inclusive total). So the figure serves OUR
-    // recomputation in BOTH flavors: the numerator restricted to receivers of
-    // the university's analyzed course list ("CS-only") next to the full
-    // GE-inclusive rate. GE here is the university-side complement of the
-    // paper's own Figure-1 course list — their partition, not a label of ours;
+    // Preserve two archived-sheet reconstructions as diagnostic lenses: the
+    // numerator restricted to receivers in the university's analyzed course
+    // list ("CS-only") and the full GE-inclusive rate. The final PDF is a
+    // later source and is served independently above; disagreement with these
+    // older inputs is version/reconstruction evidence, not proof of a paper
+    // error. GE here is the university-side complement of the archived
+    // Figure-1 course list — that artifact's partition, not a label of ours;
     // AS courses are never classified.
     const [maDegrees, maAgreements, maSending] = await Promise.all([
       db.collection('curated_requirements')
@@ -1185,8 +1290,39 @@ async function transferCreditRateData(db, _auditDb, {
     for (const row of rows) {
       const repo = byPair.get(`pct_as|${row.school_id}|${row.community_college_id}`);
       const pdf = byPair.get(`pct_as_pdf|${row.school_id}|${row.community_college_id}`);
+      const pdfExtraHours = byPair.get(`extra_hours_pdf|${row.school_id}|${row.community_college_id}`);
+      const pdfExtraCost = byPair.get(`extra_cost_pdf|${row.school_id}|${row.community_college_id}`);
       row.published_as_transfer_pct = repo != null ? +(repo * 100).toFixed(1) : null;
       row.published_pdf_as_transfer_pct = pdf != null ? +(pdf * 100).toFixed(1) : null;
+      row.published_pdf_extra_hours = pdfExtraHours != null ? Number(pdfExtraHours) : null;
+      row.published_pdf_extra_cost_usd = pdfExtraCost != null ? Number(pdfExtraCost) : null;
+      const archiveGrayDetail = maFigure3ArchiveGrayDetail(row.school, row.college_name);
+      row.archive_gray_detail_as_transfer_pct = archiveGrayDetail
+        ? Number(archiveGrayDetail.archive_gray_detail_pct) : null;
+      row.archive_gray_detail_numerator_units = archiveGrayDetail
+        ? Number(archiveGrayDetail.archive_gray_units) : null;
+      row.archive_gray_detail_denominator_units = archiveGrayDetail
+        ? Number(archiveGrayDetail.archive_as_total_units) : null;
+      row.archive_gray_detail_blue_units_excluded = archiveGrayDetail
+        ? Number(archiveGrayDetail.archive_blue_only_units_excluded) : null;
+      row.archive_gray_detail_matches_final_pdf = archiveGrayDetail
+        ? Boolean(archiveGrayDetail.matches_final_pdf_at_printed_precision) : null;
+      row.archive_gray_detail_delta_vs_final_pdf_pp = archiveGrayDetail
+        ? Number(archiveGrayDetail.delta_archive_minus_pdf_pp) : null;
+      row.archive_gray_detail_source = archiveGrayDetail
+        ? `Deposited 2024 ${archiveGrayDetail.source_workbook}, ${archiveGrayDetail.source_sheet} sheet; gray replacement-row Column H credits / cleaned AS Column H total; blue unrestricted-elective-only rows excluded; no 100% cap`
+        : null;
+      const archiveDetail = maFigure4ArchiveDetail(row.school, row.college_name);
+      const archivePathwayTotal = archiveDetail
+        && Number.isFinite(Number(archiveDetail.archive_pathway_sheet_sum))
+        ? Number(archiveDetail.archive_pathway_sheet_sum) : null;
+      row.archived_pathway_sheet_total_hours = Number.isFinite(archivePathwayTotal)
+        ? archivePathwayTotal : null;
+      row.archived_pathway_sheet_extra_hours = Number.isFinite(archivePathwayTotal)
+        ? Math.max(0, archivePathwayTotal - 120) : null;
+      row.archived_pathway_sheet_source = archiveDetail
+        ? 'Deposited 2024 pathway sheet; Figure 4 value = max(0, total semester hours - 120)'
+        : null;
       const csUnits = csOnlyByPair.get(`${row.school_id}|${row.community_college_id}`);
       row.as_cs_only_utilization_pct = csUnits != null && row.as_total_units
         ? +((csUnits / row.as_total_units) * 100).toFixed(1)
@@ -1200,4 +1336,9 @@ module.exports = {
   transferCreditRateData,
   GE_DEFAULT_UNITS: GE_DEFAULT_SEMESTER_UNITS,
   normalizeMajor,
+  // Figure 6 must read the same associate-degree choice semantics as the
+  // credit-accounting figures.  Export the deterministic selector instead of
+  // maintaining a second, looser "take every receiver" implementation.
+  associateNamedSections,
+  planAssociateDegree,
 };

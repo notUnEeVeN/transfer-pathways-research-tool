@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { baselinesData } = cjs('./Massachusetts');
+const { baselinesData, evidenceData } = cjs('./Massachusetts');
 
 let mongo;
 let db;
@@ -32,5 +32,18 @@ describe('baselinesData', () => {
     ]);
     expect(payload.measures.credit_hours.cells).toHaveLength(1);
     expect(payload.source).toMatch(/CurrComp Master/);
+  });
+});
+
+describe('evidenceData', () => {
+  it('leads with the final-PDF rule and quarantines legacy verdict prose', () => {
+    const evidence = evidenceData();
+    expect(evidence.authority).toMatch(/Final PDF/);
+    expect(evidence.evidence_rule).toMatch(/version divergence, not a final-paper error/i);
+    expect(evidence.final_pdf).toBeTruthy();
+    expect(evidence.complexity).toBeTruthy();
+    expect(evidence.archived_diagnostics.caution).toMatch(/must not be quoted/i);
+    expect(evidence.archived_diagnostics.reconciliation).not.toHaveProperty('cells');
+    expect(evidence.archived_diagnostics.reconciliation.summary).not.toHaveProperty('verdicts');
   });
 });

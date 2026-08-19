@@ -8,12 +8,14 @@ import { useRefreshAnalyses } from '../shared/query/refresh'
 import { useMajors } from '../shared/majors/useMajors'
 import { useAddNote, useDeleteNote, useEditNote } from '../shared/query/hooks/useComparisons'
 import { assessComparability } from './comparability'
-import { joinCells, verdictOf } from './delta'
+import { compareDistributions, joinCells, pinnableVerdict } from './delta'
 import { fingerprintOf, knobsFor, paneLabel } from './viewKnobs'
 import { breakdownFor, getBreakdown } from './breakdowns/registry'
 import CellSource from './CellSource'
 import ComparisonNotes from './ComparisonNotes'
 import JoinReceipt from './JoinReceipt'
+import DistributionReceipt from './DistributionReceipt'
+import { comparisonColorScaleFor } from './comparisonColorScale'
 import PaneBuilder from './PaneBuilder'
 import VerdictDrift from './VerdictDrift'
 import ViewPane, { PaneChip } from './ViewPane'
@@ -179,6 +181,10 @@ export default function ComparisonWorkspace({
   effectiveRef.current = effective
 
   const panes = effective.panes || []
+  const comparisonColorScale = useMemo(
+    () => comparisonColorScaleFor(panes, cellsByPane),
+    [panes, cellsByPane]
+  )
   const showBuildControls = mode === 'build' || editingViews
   const baselineId = panes.some((pane) => pane.id === comparison.baseline_pane)
     ? comparison.baseline_pane
@@ -253,8 +259,8 @@ export default function ComparisonWorkspace({
   }, [])
 
   const assessment = useMemo(
-    () => assessComparability(panes, majorsBySlug),
-    [panes, majorsBySlug]
+    () => assessComparability(panes, majorsBySlug, visibleAnalysis),
+    [panes, majorsBySlug, visibleAnalysis]
   )
 
   const baselinePane = panes.find((pane) => pane.id === baselineId) || null
@@ -269,6 +275,7 @@ export default function ComparisonWorkspace({
       const major = majorsBySlug.get(pane.major) || null
       const status = cellsByPane[pane.id]?.status || 'loading'
       const joinable = assessment.join === 'aligned' && status === 'ready' && baselineStatus === 'ready'
+      const distributable = assessment.join === 'disjoint' && status === 'ready' && baselineStatus === 'ready'
       return {
         pane,
         analysis,
@@ -279,21 +286,30 @@ export default function ComparisonWorkspace({
             tolerance: analysis?.comparable?.tolerance ?? 0,
           })
           : null,
+        distribution: distributable
+          ? compareDistributions(
+            cellsByPane[baselineId].cells,
+            cellsByPane[pane.id].cells,
+            assessment.contracts?.[0]?.distribution,
+          )
+          : null,
       }
-    }), [panes, baselineId, baselineStatus, cellsByPane, majorsBySlug, assessment.join])
+    }), [panes, baselineId, baselineStatus, cellsByPane, majorsBySlug, assessment])
 
   // One comparison stores one verdict, so it is the baseline against the FIRST
   // other pane in pane order — the pair the reader is looking at when there are
   // only two, and a named, stable choice when there are more.
   const primary = subjects[0] || null
-  const verdict = verdictOf(primary?.join)
+  // A cross-state pair has no cell join, so its pinnable reading is the
+  // population contrast instead. Either way one comparison pins one reading.
+  const verdict = pinnableVerdict(primary?.join, primary?.distribution)
 
   const breakdown = useMemo(() => {
     const explicit = comparison.breakdown_id ? getBreakdown(comparison.breakdown_id) : null
     return explicit || breakdownFor(panes, baselineAnalysis) || null
   }, [comparison.breakdown_id, panes, baselineAnalysis])
 
-  const pin = () => ({ ...verdict, computed_at: new Date().toISOString() })
+  const pin = () => (verdict ? { ...verdict, computed_at: new Date().toISOString() } : null)
   // Panes as they should be INDEXED. A draft restored from ?panes= arrives
   // unstamped, so every save path normalizes rather than trusting whatever
   // route the pane took to get here.
@@ -304,7 +320,7 @@ export default function ComparisonWorkspace({
   const save = async () => {
     setSaveError(null)
     try {
-      await ensureSaved(verdict ? pin() : null, stampedPanes())
+      await ensureSaved(pin(), stampedPanes())
     } catch {
       setSaveError('Could not save this comparison.')
     }
@@ -391,7 +407,8 @@ export default function ComparisonWorkspace({
           reordering the hooks inside. */}
       {panes.map((pane) => (
         <CellSource key={`${pane.id}:${pane.figure}`} pane={pane}
-          analysis={visibleAnalysis(pane.figure)} onCells={reportCells} />
+          analysis={visibleAnalysis(pane.figure)} major={majorsBySlug.get(pane.major) || null}
+          onCells={reportCells} />
       ))}
 
       <section className='surface-card flex flex-col gap-3 p-5'>
@@ -442,7 +459,8 @@ export default function ComparisonWorkspace({
         </section>
 
         <VerdictDrift pinned={comparison.verdict_at_pin} current={verdict}
-          onRepin={() => onChange({ ...comparison, verdict_at_pin: pin() })} repinning={saving} />
+          onRepin={() => onChange({ ...comparison, verdict_at_pin: pin() })} repinning={saving}
+          pinnable={Boolean(verdict) && Boolean(comparison._id)} />
 
         {showBuildControls && (
         <div className={`grid gap-3 ${PANE_GRID[panes.length] || PANE_GRID[3]}`}>
@@ -489,9 +507,11 @@ export default function ComparisonWorkspace({
                 unreadable, which is the whole reason this page is not inside
                 the console's usual 7xl frame. */}
             <div className={`grid gap-4 items-start ${PANE_GRID[panes.length] || PANE_GRID[3]}`}>
-              {panes.map((pane) => (
+              {panes.map((pane, paneIndex) => (
                 <ViewPane key={pane.id} pane={pane} major={majorsBySlug.get(pane.major) || null}
                   analysis={visibleAnalysis(pane.figure)}
+                  comparisonContract={assessment.contracts?.[paneIndex] || null}
+                  comparisonColorScale={comparisonColorScale}
                   isBaseline={pane.id === baselineId}
                   collapsed={collapsed.has(pane.id)}
                   onToggle={() => setCollapsed((current) => {
@@ -519,7 +539,7 @@ export default function ComparisonWorkspace({
                 difference view, so repeating the deltas here was the same
                 picture twice — but a comparison that CANNOT be differenced
                 still has to say so. */}
-            {!primary?.join && (
+            {!primary?.join && !primary?.distribution && (
               <p className='text-caption ink-subtle max-w-[78ch]'>
                 {assessment.join !== 'aligned'
                   ? 'No cell-by-cell difference is shown for these panes — see the note above.'
@@ -532,6 +552,13 @@ export default function ComparisonWorkspace({
             {primary?.join && (
               <JoinReceipt grain={baselineAnalysis?.comparable?.grain || null}
                 assessment={assessment} join={primary.join}
+                baselineLabel={paneLabel(baselinePane, baselineAnalysis, baselineMajor)}
+                subjectLabel={primary.label} />
+            )}
+
+            {primary?.distribution && (
+              <DistributionReceipt distribution={primary.distribution}
+                contract={assessment.contracts?.[0] || null}
                 baselineLabel={paneLabel(baselinePane, baselineAnalysis, baselineMajor)}
                 subjectLabel={primary.label} />
             )}

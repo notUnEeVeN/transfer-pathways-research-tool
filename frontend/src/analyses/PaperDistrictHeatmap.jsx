@@ -144,6 +144,24 @@ function buildLiveModel(rows) {
   }
 }
 
+/**
+ * Exact district row totals from the matrix model. Downstream summaries use
+ * this helper instead of independently recounting campuses, so the histogram
+ * is definitionally a distribution of the heatmap rows (including the same
+ * canonical-campus and district-name filters).
+ */
+export function buildDistrictHeatmapRowTotals(rows = []) {
+  const live = buildLiveModel(rows)
+  return DISTRICTS.map((district) => ({
+    ...district,
+    currentCount: UC_ROWS.reduce(
+      (sum, campus) => sum
+        + (live.cells.get(cellKey(campus.id, district.index))?.complete === true ? 1 : 0),
+      0
+    ),
+  }))
+}
+
 function compare(live) {
   let sameComplete = 0
   let sameMissing = 0

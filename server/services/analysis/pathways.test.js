@@ -3,9 +3,10 @@ import { startInMemoryMongo } from '../../test/mongoHarness';
 import {
   coverageData, requirementComparisonData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData, agreementsExportData,
-  receiversExportData, _settingsMajors, _canonicalCsPrograms,
+  receiversExportData, _maFigure1PdfValue, _roundHalfEven, _settingsMajors, _canonicalCsPrograms,
 } from './pathways';
 import { getMajor, programPairs } from '../../config/majors';
+import maPdfFigures from '../../data/ma/pdf-figures.json';
 
 let mongo;
 let db;
@@ -19,6 +20,55 @@ const recv = (options, { status = 'articulated', hash = 'h', parentId = 1, oc = 
   hash_id: hash,
 });
 const opt = (ids, cc = 'and') => ({ course_ids: ids, course_conjunction: cc });
+
+describe('Massachusetts Figure 1 source separation', () => {
+  it('freezes a complete 165-cell final-PDF matrix with its arithmetic gate', () => {
+    const matrix = maPdfFigures.fig1_course_articulation.printed_cells;
+    const values = Object.values(matrix).flatMap((row) => Object.values(row));
+    expect(Object.keys(matrix)).toHaveLength(15);
+    expect(Object.values(matrix).every((row) => Object.keys(row).length === 11)).toBe(true);
+    expect(values).toHaveLength(165);
+    expect(values.reduce((sum, value) => sum + value, 0)).toBe(6323);
+    expect(values.reduce((sum, value) => sum + value, 0) / values.length)
+      .toBeCloseTo(38.32121212121212);
+    for (const [school, printedAverage] of Object.entries(
+      maPdfFigures.fig1_course_articulation.printed_average_row,
+    )) {
+      const column = Object.values(matrix).map((row) => row[school]);
+      expect(_roundHalfEven(column.reduce((sum, value) => sum + value, 0) / column.length))
+        .toBe(printedAverage);
+    }
+    for (const [college, row] of Object.entries(matrix)) {
+      for (const [school, value] of Object.entries(row)) {
+        expect(_maFigure1PdfValue({
+          majorSlug: 'ma-cs', rowKind: 'college', school, college,
+        })).toBe(value);
+      }
+    }
+  });
+
+  it('serves the revised final-PDF cell, source-renderer rounding, and fails closed', () => {
+    expect(_maFigure1PdfValue({
+      majorSlug: 'ma-cs', rowKind: 'college', school: 'UMass Dartmouth',
+      college: 'Cape Cod Community College', archivedPct: 35.4839,
+    })).toBe(45);
+    expect(_maFigure1PdfValue({
+      majorSlug: 'ma-cs', rowKind: 'college', school: 'Bridgewater',
+      college: 'Berkshire', archivedPct: 27.2727,
+    })).toBe(27);
+    expect(_maFigure1PdfValue({
+      majorSlug: 'cs', rowKind: 'college', school: 'UC Test',
+      college: 'CC Test', archivedPct: 27.2727,
+    })).toBeNull();
+    expect(_maFigure1PdfValue({
+      majorSlug: 'ma-cs', rowKind: 'college', school: 'Unknown University',
+      college: 'Unknown College', archivedPct: 27.2727,
+    })).toBeNull();
+    expect(_roundHalfEven(62.5)).toBe(62);
+    expect(_roundHalfEven(37.5)).toBe(38);
+    expect(_roundHalfEven(62.51)).toBe(63);
+  });
+});
 // "Complete all listed" — the ASSIST parser stores section_advisement = the
 // receiver count for that (agreements.py), so a genuinely-missing receiver
 // leaves the choose-N minimum unmet. (A null advisement would mean "any one".)

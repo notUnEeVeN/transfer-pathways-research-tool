@@ -16,23 +16,43 @@
  * into a new reading belongs in ANALYSES with its own MEASURES entry.
  */
 
-import MaComplexityFigure6 from './MaComplexityFigure6'
+import MaTransferCreditFigure3 from './MaTransferCreditFigure3'
+import MaExtraUnitsFigure4 from './MaExtraUnitsFigure4'
 
-const sourceOf = (pane) => pane?.knobs?.source ?? 'published'
+const transferCreditSourceOf = (pane) => pane?.knobs?.source ?? 'pdf'
+const extraUnitsSourceOf = (pane) => pane?.knobs?.source ?? 'pdf'
+const degreeOf = (pane) => pane?.knobs?.degree ?? 'local_as'
 
 export const BREAKDOWNS = [
   {
-    id: 'ma-complexity-figure-6',
-    title: 'Where Figure 6 disagrees with their own workbook',
-    description: 'Every printed cell against their own Curricular Complexity tab, plus the typed scores that drifted and the headline the drift produced.',
+    id: 'ma-transfer-credit-figure-3',
+    title: 'Figure 3 final paper vs our recalculation',
+    description: 'Whole-percentage reproduction, mean comparison, and the four evidence patterns that remain questions rather than proven errors.',
     appliesTo: (panes) => {
       const list = Array.isArray(panes) ? panes : []
       return list.length === 2
-        && list.every((pane) => pane?.figure === 'pathway-complexity' && pane?.major === 'ma-cs')
-        && list.every((pane) => ['published', 'ours'].includes(sourceOf(pane)))
-        && new Set(list.map(sourceOf)).size === 2
+        && list.every((pane) => pane?.figure === 'transfer-credit-rate' && pane?.major === 'ma-cs')
+        && list.every((pane) => ['pdf', 'archive-gray-detail'].includes(transferCreditSourceOf(pane)))
+        && new Set(list.map(transferCreditSourceOf)).size === 2
     },
-    Component: MaComplexityFigure6,
+    Component: MaTransferCreditFigure3,
+  },
+  {
+    id: 'ma-extra-units-figure-4',
+    title: 'Figure 4 final paper vs our recalculation',
+    description: 'All 13 recalculation differences first; manual-summary and coordinated-zero patterns are secondary explanations.',
+    appliesTo: (panes) => {
+      const list = Array.isArray(panes) ? panes : []
+      return list.length === 2
+        && list.every((pane) => (
+          pane?.figure === 'transfer-extra-units'
+          && pane?.major === 'ma-cs'
+          && degreeOf(pane) === 'local_as'
+        ))
+        && list.every((pane) => ['pdf', 'archive-detail'].includes(extraUnitsSourceOf(pane)))
+        && new Set(list.map(extraUnitsSourceOf)).size === 2
+    },
+    Component: MaExtraUnitsFigure4,
   },
 ]
 

@@ -3,17 +3,33 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, Spinner, Stack, SwitchField } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
 import { majorLabelFor } from '../shared/majors/majorLabel'
-import { buildCoverageMapModel } from './ArticulationCoverageMap'
+import { buildDistrictHeatmapRowTotals } from './PaperDistrictHeatmap'
 import {
   CA_DIFFERENCE_COLORS, CA_FIGURE,
 } from './californiaFigureStyle'
 import { DISTRICTS, UC_ROWS } from './paperDistrictBaseline'
 
-const CS_COVERAGE_PARAMS = {
+const HAND_CURATED_PARAMS = {
   majorSlug: 'cs',
   groupBy: 'district',
   requirements: 'paper',
   pin: 'paper',
+}
+
+const ASSIST_PARAMS = {
+  majorSlug: 'cs',
+  groupBy: 'district',
+  requirements: 'assist',
+  pin: 'settings',
+}
+
+function assistParamsFor(majorSlug) {
+  if (majorSlug === 'cs') return ASSIST_PARAMS
+  return {
+    majorSlug,
+    groupBy: 'district',
+    requirements: 'assist',
+  }
 }
 
 const WIDTH = 960
@@ -26,7 +42,8 @@ const intFmt = new Intl.NumberFormat()
 
 const VERSIONS = [
   { value: 'paper', label: 'Paper baseline' },
-  { value: 'current', label: 'Current data' },
+  { value: 'hand-curated', label: 'Hand-curated minimums' },
+  { value: 'assist', label: 'ASSIST minimums' },
 ]
 
 function finishModel(bins) {
@@ -52,9 +69,10 @@ export function buildPaperArticulationHistogramModel() {
 }
 
 export function buildArticulationHistogramModel(rows = []) {
-  const coverage = buildCoverageMapModel(rows)
   const bins = Array.from({ length: 10 }, (_, count) => ({ count, districts: [] }))
-  for (const district of coverage.districts) bins[district.currentCount].districts.push(district)
+  for (const district of buildDistrictHeatmapRowTotals(rows)) {
+    bins[district.currentCount].districts.push(district)
+  }
   return finishModel(bins)
 }
 
@@ -235,7 +253,7 @@ function roundedTopBarPath(x, y, width, height, radius = 3) {
 
 function ModernHistogramLegend() {
   const items = [
-    { label: 'Current', color: CA_FIGURE.blue },
+    { label: 'Selected source', color: CA_FIGURE.blue },
     { label: 'Added since paper', color: CA_DIFFERENCE_COLORS.gained },
     { label: 'Paper-only', color: CA_DIFFERENCE_COLORS.lost },
   ]
@@ -262,7 +280,10 @@ function ModernHistogramLegend() {
  * baseline deliberately continues through HistogramFigure above so the port
  * remains a byte-for-byte visual reference rather than inheriting this skin.
  */
-function ModernHistogramFigure({ model, paperModel, differences = false, majorLabel = null }) {
+function ModernHistogramFigure({
+  model, paperModel, differences = false, majorLabel = null,
+  sourceLabel = 'ASSIST minimums',
+}) {
   const id = useId().replace(/:/g, '')
   const titleId = `${id}-modern-histogram-title`
   const descriptionId = `${id}-modern-histogram-description`
@@ -287,8 +308,9 @@ function ModernHistogramFigure({ model, paperModel, differences = false, majorLa
           {majorLabel ? `${majorLabel}: ` : ''}distribution of complete campus articulation by district
         </title>
         <desc id={descriptionId}>
-          Current distribution of California community college districts by the number
-          of University of California campuses with complete articulation for {majorLabel || 'the selected major'}.
+          Distribution of California community college districts by the number
+          of University of California campuses with complete articulation for {majorLabel || 'the selected major'},
+          using {sourceLabel}.
         </desc>
         <rect width={width} height={height} fill={CA_FIGURE.background} />
         {majorLabel && (
@@ -297,6 +319,10 @@ function ModernHistogramFigure({ model, paperModel, differences = false, majorLa
             Major: {majorLabel}
           </text>
         )}
+        <text x={differences ? 744 : width - 36} y='30' textAnchor='end'
+          fontSize='14' fill={CA_FIGURE.ink} data-source-label>
+          Source: {sourceLabel}
+        </text>
         {differences && <ModernHistogramLegend />}
 
         <g aria-hidden='true'>
@@ -384,19 +410,17 @@ function ModernHistogramFigure({ model, paperModel, differences = false, majorLa
   )
 }
 
-function useHistogramModels(majorSlug = 'cs', configuredMajorLabel = '') {
+function useHistogramModels(majorSlug = 'cs', configuredMajorLabel = '', version = 'assist') {
   const selectedMajorSlug = String(majorSlug || '').trim().toLowerCase() || 'cs'
   const isComputerScience = selectedMajorSlug === 'cs'
-  // Figure 3's frozen comparison is defined against the CS paper baseline.
-  // Every other major uses its own live ASSIST agreement surface, without a
-  // compatibility pin or hand-curated/paper requirements request.
-  const coverageParams = isComputerScience
-    ? CS_COVERAGE_PARAMS
-    : {
-      majorSlug: selectedMajorSlug,
-      groupBy: 'district',
-      requirements: 'assist',
-    }
+  // ASSIST is the universal default shared with the district heatmap and map.
+  // Computer Science alone retains the historical website-minimums input as
+  // an explicit source; the frozen paper rendering uses that historical
+  // lineage too, although its bars come from the transcribed matrix below.
+  const useHandCurated = isComputerScience && version !== 'assist'
+  const coverageParams = useHandCurated
+    ? HAND_CURATED_PARAMS
+    : assistParamsFor(selectedMajorSlug)
   const coverage = useCoverage(coverageParams, {
     staleTime: 0,
     refetchOnWindowFocus: false,
@@ -408,18 +432,19 @@ function useHistogramModels(majorSlug = 'cs', configuredMajorLabel = '') {
   return {
     coverage, rows, paperModel, currentModel, isComputerScience,
     majorLabel: majorLabelFor(selectedMajorSlug, configuredMajorLabel),
+    sourceLabel: useHandCurated ? 'Hand-curated minimums' : 'ASSIST minimums',
   }
 }
 
-/** Figure-only gallery thumbnail, intentionally pinned to current data. */
+/** Figure-only gallery thumbnail, intentionally pinned to the ASSIST default. */
 export function PaperArticulationHistogramPreview({ majorSlug = 'cs', majorLabel: configuredMajorLabel = '' }) {
-  const { coverage, paperModel, currentModel, majorLabel } = useHistogramModels(
-    majorSlug, configuredMajorLabel
+  const { coverage, paperModel, currentModel, majorLabel, sourceLabel } = useHistogramModels(
+    majorSlug, configuredMajorLabel, 'assist'
   )
   if (coverage.isLoading) return <div className='h-full grid place-items-center'><Spinner /></div>
   if (coverage.isError) return <Alert type='error'>Could not load district articulation coverage.</Alert>
   return <ModernHistogramFigure model={currentModel} paperModel={paperModel}
-    majorLabel={majorLabel} />
+    majorLabel={majorLabel} sourceLabel={sourceLabel} />
 }
 
 // The Maryland branch that once lived here was retired with the rest of the
@@ -432,16 +457,16 @@ function CaPaperArticulationHistogram({
   majorSlug = 'cs',
   majorLabel: configuredMajorLabel = '',
 }) {
-  const [version, setVersion] = useState('current')
+  const [version, setVersion] = useState('assist')
   const [showDiff, setShowDiff] = useState(false)
   const {
-    coverage, rows, paperModel, currentModel, isComputerScience, majorLabel,
-  } = useHistogramModels(majorSlug, configuredMajorLabel)
+    coverage, paperModel, currentModel, isComputerScience, majorLabel, sourceLabel,
+  } = useHistogramModels(majorSlug, configuredMajorLabel, version)
   // A component can survive a page-level major change. Paper state never
   // carries into Biology/Economics, even if it was selected moments earlier.
-  const activeVersion = isComputerScience ? version : 'current'
+  const activeVersion = isComputerScience ? version : 'assist'
   const model = activeVersion === 'paper' ? paperModel : currentModel
-  const diffOn = isComputerScience && activeVersion === 'current' && showDiff
+  const diffOn = isComputerScience && activeVersion !== 'paper' && showDiff
 
   if (coverage.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -495,7 +520,7 @@ function CaPaperArticulationHistogram({
           ? <HistogramFigure model={model} paperModel={paperModel}
               version={activeVersion} differences={false} />
           : <ModernHistogramFigure model={model} paperModel={paperModel}
-              differences={diffOn} majorLabel={majorLabel} />}
+              differences={diffOn} majorLabel={majorLabel} sourceLabel={sourceLabel} />}
       </div>
     </Stack>
   )

@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "artifact_id": "ma-final-pdf-figure-2-v2",
+  "source": {
+    "document": "2027_SIGCSE_Virtual_MA_Transfer_Pathways.pdf",
+    "title": "Lost in Transfer: Examining CS Transfer Pathways from Community College in Massachusetts",
+    "sha256": "5024b34ae6dd40f0fe735f75844d8c341de27b9df668756905a78f03f35c488a",
+    "file_size_bytes": 1008665,
+    "pdf_page": 3,
+    "figure": 2,
+    "embedded_image_object": 5,
+    "embedded_image_dimensions_px": [733, 583],
+    "transcribed_at": "2026-08-18"
+  },
+  "measure": {
+    "unit": "percent",
+    "grain": "one anonymous four-year-university observation per course type",
+    "university_count": 11,
+    "community_college_count": 15,
+    "scope": "all degree- and college-level BSCS course requirements; general education excluded",
+    "weighting": "each plotted university observation weighted equally within its course type",
+    "categories": "four-year course code; discrete mathematics always counted as math"
+  },
+  "transcription": {
+    "precision_percentage_points": 1,
+    "method": "The final PDF's embedded Figure 2 raster was extracted at its native 733 x 583 resolution and checked again at enlarged scale. Visible dot centers were read against the labeled 0-100 percent grid and recorded to the nearest whole percentage point, the strongest precision supported by the unlabeled raster. One Computing point is fully hidden by the mean diamond and one Science point is effectively hidden by its mean diamond; those two values are explicitly identified as inferences below.",
+    "identity_limit": "The plot does not label dots by university. Observation identifiers below preserve count and order only and must not be presented as campus identities.",
+    "archive_cross_check": "The final Computing and Math positions do not equal the archived whole-degree arrays previously stored here; the old artifact had mislabeled those archived values as a final-PDF transcription. Science agrees at raster precision. Non-STEM has only five final-PDF observations and is transcribed from the raster.",
+    "gate": "Category populations are 11, 11, 11, and 5. With the two obscured points inferred as 22 and 93, the rounded arrays imply means of 21.6, 60.3, 92.8, and 76.2 percent; these round to the paper prose results 22, 60, 93, and 76 percent."
+  },
+  "columns": [
+    {
+      "key": "computing",
+      "label": "Computing",
+      "points_pct": [5, 9, 11, 11, 18, 20, 22, 25, 29, 30, 58],
+      "inferred_points": [{ "value_pct": 22, "reason": "fully obscured by the black mean diamond; value inferred from the archived observation and the published mean" }],
+      "paper_prose_mean_pct": 22
+    },
+    {
+      "key": "math",
+      "label": "Math",
+      "points_pct": [13, 40, 47, 52, 52, 53, 63, 65, 83, 97, 98],
+      "inferred_points": [{ "value_pct": 63, "reason": "partially occluded by the black mean diamond; center read to raster precision" }],
+      "paper_prose_mean_pct": 60
+    },
+    {
+      "key": "science",
+      "label": "Science",
+      "points_pct": [53, 78, 93, 97, 100, 100, 100, 100, 100, 100, 100],
+      "inferred_points": [{ "value_pct": 93, "reason": "effectively obscured by the black mean diamond; value inferred from the archived observation and the published mean" }],
+      "paper_prose_mean_pct": 93
+    },
+    {
+      "key": "non_stem",
+      "label": "Non-STEM",
+      "points_pct": [47, 67, 67, 100, 100],
+      "paper_prose_mean_pct": 76
+    }
+  ]
+}

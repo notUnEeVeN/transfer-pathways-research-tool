@@ -57,23 +57,30 @@
  *     figure's own number by construction, not a second reading of the data.
  */
 
-import CoverageHeatmap from './CoverageHeatmap'
+import CoverageHeatmap, {
+  coverageComparisonCells, coverageComparisonContract, coverageViewForPane,
+} from './CoverageHeatmap'
 import MultiCampusPathways, { MultiCampusPathwaysPreview } from './MultiCampusPathways'
-import TransferCreditRate from './TransferCreditRate'
-import TransferExtraUnits from './TransferExtraUnits'
-import TransferExtraCost from './TransferExtraCost'
+import TransferCreditRate, {
+  transferCreditComparisonCells, transferCreditComparisonContract, transferCreditViewForPane,
+} from './TransferCreditRate'
+import TransferExtraUnits, { extraUnitEntries } from './TransferExtraUnits'
+import TransferExtraCost, { extraCostEntries } from './TransferExtraCost'
 import PathwayComplexity, { paperEntries } from './PathwayComplexity'
 import PaperCreditLoss, { PaperCreditLossPreview } from './PaperCreditLoss'
 import PaperDistrictHeatmap, { PaperDistrictHeatmapPreview } from './PaperDistrictHeatmap'
 import PaperArticulationHistogram, { PaperArticulationHistogramPreview } from './PaperArticulationHistogram'
 import ArticulationCoverageMap from './ArticulationCoverageMap'
 import PaperCourseBarriers, { PaperCourseBarriersPreview } from './PaperCourseBarriers'
-import CourseTypeCoverage from './CourseTypeCoverage'
+import CourseTypeCoverage, {
+  courseTypeComparisonCells, courseTypeComparisonContract, courseTypeCoverageParams,
+} from './CourseTypeCoverage'
 import IncomeAccess from './IncomeAccess'
 import PriceOfPlace, { PriceOfPlacePreview } from './PriceOfPlace'
 import PaperGate, { PaperGatePreview } from './PaperGate'
 import CreditLoss from './CreditLoss'
-import { usePathwayComplexity } from '../shared/query/hooks/useData'
+import { degreeTemplateEvidenceLabel } from './templateEvidence'
+import { useCoverage, usePathwayComplexity, useTransferCreditRate } from '../shared/query/hooks/useData'
 
 // The built-in analyses render as first-class figures in the Visuals gallery,
 // credited to the console owner and dated alongside locally published
@@ -94,6 +101,24 @@ const selectedMajor = ({ requiredCapabilities = [], datasets = [], pendingReason
     ...(excludedMajors ? { excludedMajors } : {}),
   },
 })
+
+const paperCorpus = (major) => Boolean(
+  major?.state && major?.capabilities?.paperBaselines,
+)
+
+const comparisonDegree = (view, major) => {
+  if (view?.knobs?.degree) return view.knobs.degree
+  const slots = Array.isArray(major?.degreeAnalysisSlots) ? major.degreeAnalysisSlots : []
+  return slots.includes('ast') ? 'ast' : (slots[0] || 'local_as')
+}
+
+const comparisonSource = (view, major) => (
+  paperCorpus(major) ? (view?.knobs?.source || 'pdf') : 'ours'
+)
+
+const comparisonVerified = (view, major) => (
+  paperCorpus(major) ? false : view?.knobs?.verified !== false
+)
 
 // For the California-paper ports, "selected" also carries a state policy:
 // Computer Science keeps its audited paper/hand-curated/ASSIST comparisons,
@@ -211,14 +236,24 @@ export const ANALYSES = [
     viewKnobs: [
       {
         key: 'scope', label: 'Scope', type: 'select',
-        prop: 'defaultScope', default: 'lower-division',
+        prop: 'defaultScope', default: 'whole-degree',
         options: [{ value: 'lower-division', label: 'Lower division' }, { value: 'whole-degree', label: 'Whole degree' }],
+        appliesWhen: (major) => !paperCorpus(major),
       },
       {
         key: 'variant', label: 'Category grouping', type: 'select',
         prop: 'defaultVariant', default: 'faithful',
         options: [{ value: 'faithful', label: 'Paper categories' }, { value: 'extended', label: 'Extended categories' }],
         appliesWhen: (major) => Boolean(major?.courseTypes?.axes?.extended),
+      },
+      {
+        key: 'ma-source', label: 'Massachusetts source', type: 'select',
+        prop: 'defaultMaSource', default: 'pdf',
+        options: [
+          { value: 'pdf', label: 'Final paper' },
+          { value: 'archive-direct', label: 'Our recalculation' },
+        ],
+        appliesWhen: paperCorpus,
       },
     ],
     ...selectedMajor({
@@ -233,6 +268,14 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-22T09:30:00',
     Component: CourseTypeCoverage,
+    comparisonContract: courseTypeComparisonContract,
+    comparable: {
+      grain: 'university-campus×course-type',
+      unit: 'percentage-points',
+      tolerance: 0.05,
+      useData: (view) => useCoverage(courseTypeCoverageParams(view.major)),
+      cells: courseTypeComparisonCells,
+    },
   },
   {
     id: 'transfer-credit-rate',
@@ -243,6 +286,7 @@ export const ANALYSES = [
         key: 'degree', label: 'Associate degree', type: 'select',
         prop: 'defaultDegreeType', default: 'ast',
         options: [{ value: 'ast', label: 'A.S.-T' }, { value: 'local_as', label: 'Local A.S.' }, { value: 'local_other', label: 'Other local' }],
+        appliesWhen: (major) => !paperCorpus(major),
       },
       {
         key: 'scope', label: 'Scope', type: 'select',
@@ -252,23 +296,33 @@ export const ANALYSES = [
       },
       {
         key: 'ma-equivalent', label: 'MA-paper-equivalent lens', type: 'toggle',
-        prop: 'defaultMaEquivalent', default: false,
+        prop: 'defaultMaEquivalent', default: true,
         appliesWhen: (major) => !(major?.state && major?.capabilities?.paperBaselines),
       },
       {
         key: 'verified', label: 'Verified sources only', type: 'toggle',
-        prop: 'defaultVerifiedOnly', default: false,
-        appliesWhen: (major) => !(major?.state && major?.capabilities?.paperBaselines),
+        prop: 'defaultVerifiedOnly', default: true,
+        appliesWhen: (major) => !paperCorpus(major),
+      },
+      {
+        // Which direction the paper corpus measures in. The bachelor-side
+        // option is the statistic California shows, so pinning it is what
+        // makes a like-for-like cross-state comparison possible at all.
+        key: 'lens', label: 'Measure', type: 'select',
+        prop: 'defaultMaLens', default: 'ma-as-side',
+        options: [
+          { value: 'ma-as-side', label: 'Associate credit used' },
+          { value: 'ma-bachelor-side', label: 'Bachelor’s completed' },
+        ],
+        appliesWhen: (major) => Boolean(major?.state && major?.capabilities?.paperBaselines),
       },
       {
         key: 'source', label: 'Source', type: 'select',
         prop: 'defaultMaSource', default: 'pdf',
-        options: [{ value: 'pdf', label: 'Final paper' }, { value: 'repo', label: 'Repo workbook' }, { value: 'ours', label: 'Ours' }],
-        appliesWhen: (major) => Boolean(major?.state && major?.capabilities?.paperBaselines),
-      },
-      {
-        key: 'ge', label: 'Include general education', type: 'toggle',
-        prop: 'defaultMaGeOn', default: true,
+        options: [
+          { value: 'pdf', label: 'Final paper' },
+          { value: 'archive-gray-detail', label: 'Our recalculation' },
+        ],
         appliesWhen: (major) => Boolean(major?.state && major?.capabilities?.paperBaselines),
       },
     ],
@@ -277,13 +331,13 @@ export const ANALYSES = [
       datasets: ['associate degrees', 'ASSIST articulation agreements', 'four-year degree templates'],
       pendingReason: 'Associate-degree requirements and four-year graduation templates must be present before degree credit can be modeled.',
     }),
-    title: 'Degree credit toward graduation',
-    description: 'Shows what share of complete or lower-division bachelor’s requirements is fulfilled by the selected associate degree.',
+    title: 'Transfer credit rate',
+    description: 'Shows what share of the selected associate degree’s credits replaces named, general-education, or breadth bachelor requirements, divided by the associate degree’s own total; unrestricted elective-only capacity is excluded from this Figure 3 lens.',
     // On the Massachusetts corpus the card opens on the paper's own Figure 3
     // and shows the published per-pair values as printed.
     stateTitles: { ma: 'Transfer credit rate', va: 'Transfer credit rate' },
     stateDescriptions: {
-      ma: 'The paper’s Figure 3 as published: the share of each associate degree’s credits that apply on transfer, per studied pair — unstudied pairs stay blank. Our recomputation sits in the Overview’s comparison panel.',
+      ma: 'The share of each associate degree’s credits that apply on transfer, per studied pair. Switch between the final paper and our recalculation of the same formula from the authors’ source files; unstudied pairs stay blank.',
       va: 'The share of each VCCS associate degree’s credits that apply toward the bachelor’s on transfer. Computed from Transfer Virginia’s published course equivalencies; the verified cohort filters to associate degrees a reviewer has confirmed.',
     },
     provenance: 'ma',
@@ -291,6 +345,24 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-18T09:00:00',
     Component: TransferCreditRate,
+    comparisonContract: transferCreditComparisonContract,
+    comparable: {
+      grain: 'college×campus',
+      unit: 'percentage-points',
+      // The final paper prints whole percentages while our recalculation keeps
+      // the underlying ratios. Half a percentage point makes the same-value
+      // receipt honor ordinary display rounding (42/61 cells reproduce)
+      // instead of treating hidden decimals as disagreements.
+      tolerance: 0.5,
+      useData: (view, major) => {
+        const resolved = transferCreditViewForPane(view, major)
+        return useTransferCreditRate(resolved.degreeType, {
+          majorSlug: view.major,
+          verifiedOnly: resolved.verifiedOnly,
+        })
+      },
+      cells: transferCreditComparisonCells,
+    },
   },
   {
     id: 'transfer-extra-units',
@@ -301,25 +373,83 @@ export const ANALYSES = [
         key: 'degree', label: 'Associate degree', type: 'select',
         prop: 'defaultDegreeType', default: 'ast',
         options: [{ value: 'ast', label: 'A.S.-T' }, { value: 'local_as', label: 'Local A.S.' }, { value: 'local_other', label: 'Other local' }],
+        appliesWhen: (major) => !paperCorpus(major),
       },
       {
         key: 'verified', label: 'Verified sources only', type: 'toggle',
-        prop: 'defaultVerifiedOnly', default: false,
-        appliesWhen: (major) => !(major?.state && major?.capabilities?.paperBaselines),
+        prop: 'defaultVerifiedOnly', default: true,
+        appliesWhen: (major) => !paperCorpus(major),
+      },
+      {
+        key: 'source', label: 'Source', type: 'select',
+        prop: 'defaultSource', default: 'pdf',
+        options: [
+          { value: 'pdf', label: 'Final paper' },
+          { value: 'archive-detail', label: 'Our recalculation' },
+        ],
+        appliesWhen: paperCorpus,
       },
     ],
     ...selectedMajor({
       requiredCapabilities: ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       datasets: ['associate degrees', 'ASSIST articulation agreements', 'four-year degree templates'],
-      pendingReason: 'Associate-degree requirements and four-year graduation templates must be present before replacement coursework can be modeled.',
+      pendingReason: 'Associate-degree requirements and four-year graduation templates must be present before pathway hours above 120 can be modeled.',
     }),
-    title: 'Modeled replacement coursework',
-    description: 'Estimates how many associate-degree units may need to be replaced because they do not apply to university graduation requirements.',
+    title: 'Pathway hours above 120',
+    description: 'Shows total pathway semester hours above the 120-hour bachelor’s benchmark. Massachusetts can switch directly between the final paper and our recalculation of the same formula.',
     provenance: 'ma',
     figureNo: 4,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-18T09:05:00',
     Component: TransferExtraUnits,
+    comparisonContract: (view, major) => {
+      const source = comparisonSource(view, major)
+      const degree = comparisonDegree(view, major)
+      return {
+        measure: 'pathway-hours-above-120',
+        unit: 'semester hours',
+        grain: 'community college × university campus',
+        keys: { rows: 'community college', columns: 'university campus' },
+        semantics: {
+          formula: 'max(0, semester-equivalent pathway total - 120)',
+          benchmark: '120 semester hours',
+          weighting: 'each finite college×campus cell weighted equally',
+        },
+        context: {
+          source: source === 'pdf'
+            ? 'final PDF Figure 4'
+            : source === 'archive-detail'
+              ? 'our recalculation from the authors’ source pathway sheets'
+              : 'recomputed pathway model',
+          bachelor_template_evidence: degreeTemplateEvidenceLabel(major),
+          exclusions: source === 'archive-detail'
+            ? 'restricted to the same 49 pathways printed in final paper Figure 4'
+            : 'unresolved associate-degree choice cells remain blank and are excluded from distributions; the figure receipt reports the live count',
+          cohort: `${degree}; ${comparisonVerified(view, major)
+            ? 'verified sources'
+            : source === 'pdf'
+              ? 'paper-reported pairs'
+              : source === 'archive-detail'
+                ? 'authors’ source files for the same 49 final-paper pathways'
+                : 'all sourced programs'}`,
+        },
+      }
+    },
+    comparable: {
+      grain: 'college×campus',
+      unit: 'semester-hours-above-120',
+      tolerance: 0.1,
+      useData: (view, major) => useTransferCreditRate(
+        comparisonDegree(view, major),
+        {
+          majorSlug: view.major,
+          verifiedOnly: comparisonVerified(view, major),
+        },
+      ),
+      cells: (data, view, major) => extraUnitEntries(
+        data, comparisonSource(view, major),
+      ),
+    },
   },
   {
     id: 'transfer-extra-cost',
@@ -330,25 +460,106 @@ export const ANALYSES = [
         key: 'degree', label: 'Associate degree', type: 'select',
         prop: 'defaultDegreeType', default: 'ast',
         options: [{ value: 'ast', label: 'A.S.-T' }, { value: 'local_as', label: 'Local A.S.' }, { value: 'local_other', label: 'Other local' }],
+        appliesWhen: (major) => !paperCorpus(major),
       },
       {
         key: 'verified', label: 'Verified sources only', type: 'toggle',
-        prop: 'defaultVerifiedOnly', default: false,
-        appliesWhen: (major) => !(major?.state && major?.capabilities?.paperBaselines),
+        prop: 'defaultVerifiedOnly', default: true,
+        appliesWhen: (major) => !paperCorpus(major),
+      },
+      {
+        key: 'source', label: 'Source', type: 'select',
+        prop: 'defaultSource', default: 'pdf',
+        options: [
+          { value: 'pdf', label: 'Final paper' },
+          { value: 'archive-detail', label: 'Our recalculation' },
+        ],
+        appliesWhen: paperCorpus,
+      },
+      {
+        key: 'load', label: 'Full-time load', type: 'select',
+        prop: 'defaultLoadView', default: 'minimum',
+        options: [
+          { value: 'minimum', label: 'Minimum load (paper)' },
+          { value: 'standard', label: 'Standard load (15u)' },
+        ],
+        appliesWhen: (major) => !paperCorpus(major),
       },
     ],
     ...selectedMajor({
       requiredCapabilities: ['asDegrees', 'assistAgreements', 'degreeTemplates'],
       datasets: ['associate degrees', 'ASSIST articulation agreements', 'four-year degree templates', 'campus tuition and fees'],
-      pendingReason: 'Associate-degree requirements, four-year graduation templates and published campus tuition must all be present before replacement coursework can be priced.',
+      pendingReason: 'Associate-degree requirements, four-year graduation templates and published campus tuition must all be present before pathway hours above 120 can be priced.',
     }),
-    title: 'Cost of replacement coursework',
-    description: 'Prices the associate-degree units that do not apply, using each campus’s published resident tuition and fees.',
+    title: 'Cost of pathway hours above 120',
+    description: 'Prices the Figure 4 hours-above-120 measure. Massachusetts can switch between the final paper and our recalculation at the paper’s load basis. Cross-state dollar distributions remain blocked because Massachusetts is tuition-only while California combines tuition and fees.',
     provenance: 'ma',
     figureNo: 5,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-08-04T09:00:00',
     Component: TransferExtraCost,
+    comparisonContract: (view, major) => {
+      const source = comparisonSource(view, major)
+      const degree = comparisonDegree(view, major)
+      const load = paperCorpus(major) ? 'minimum' : (view?.knobs?.load || 'minimum')
+      const loadUnits = load === 'standard' ? 15 : 12
+      return {
+        measure: 'cost-of-pathway-hours-above-120',
+        unit: 'USD',
+        grain: 'community college × university campus',
+        keys: { rows: 'community college', columns: 'university campus' },
+        semantics: {
+          formula: 'unrounded Figure 4 hours above 120 × campus annual charge ÷ annual load denominator; one final whole-dollar round',
+          load_basis: `${loadUnits} semester units per term; annual charge divided by ${loadUnits * 2}`,
+          price_basis: paperCorpus(major)
+            ? 'paper-reported Massachusetts tuition charge; fees excluded'
+            : 'UCOP Total Charges by Campus 2025-26 resident tuition + student services fee + campus-based fees; health insurance and living costs excluded',
+          weighting: 'each finite college×campus cell weighted equally',
+        },
+        context: {
+          source: source === 'pdf'
+            ? 'final PDF Figure 5'
+            : source === 'archive-detail'
+              ? 'our recalculation from the authors’ source pathway sheets and campus rates'
+              : 'recomputed pathway model',
+          bachelor_template_evidence: degreeTemplateEvidenceLabel(major),
+          exclusions: source === 'archive-detail'
+            ? 'restricted to the same 49 pathways printed in final paper Figure 5'
+            : 'unresolved associate-degree choice cells remain blank and are excluded from distributions; the figure receipt reports the live count',
+          rate: source === 'pdf'
+            ? 'paper-implied campus rate'
+            : source === 'archive-detail'
+              ? 'authors’ campus charge divided by the paper’s annual-load denominator'
+              : (paperCorpus(major)
+                ? 'CurrComp workbook cost-tab implied campus rate'
+                : 'campus resident tuition-and-fee record'),
+          cohort: `${degree}; ${comparisonVerified(view, major)
+            ? 'verified sources'
+            : source === 'pdf'
+              ? 'paper-reported pairs'
+              : source === 'archive-detail'
+                ? 'authors’ source files for the same 49 final-paper pathways'
+                : 'all sourced programs'}`,
+        },
+      }
+    },
+    comparable: {
+      grain: 'college×campus',
+      unit: 'usd',
+      tolerance: 1,
+      useData: (view, major) => useTransferCreditRate(
+        comparisonDegree(view, major),
+        {
+          majorSlug: view.major,
+          verifiedOnly: comparisonVerified(view, major),
+        },
+      ),
+      cells: (data, view, major) => extraCostEntries(
+        data,
+        comparisonSource(view, major),
+        view?.knobs?.load || 'minimum',
+      ),
+    },
   },
   {
     id: 'pathway-complexity',
@@ -362,22 +573,88 @@ export const ANALYSES = [
       pendingReason: 'Associate degrees, degree templates and prerequisite graphs must all be present before pathway complexity can be scored.',
     }),
     title: 'Curricular complexity of transfer pathways',
-    description: 'Scores each transfer pathway’s prerequisite graph with the paper’s Figure 6 measure — delay and blocking factors summed per course — against the campus’s own curriculum. The metric reproduced the paper’s published scores on 58 of 60 of their own pathways.',
+    description: 'Scores each transfer pathway’s prerequisite graph with the paper’s Figure 6 equation — delay and blocking factors summed per course — against the campus’s own curriculum. Our recalculation reproduces 59 of 60 source-graph scores.',
     provenance: 'ma',
     figureNo: 6,
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-08-15T09:00:00',
     Component: PathwayComplexity,
+    comparisonContract: (view, major) => {
+      const isPaper = paperCorpus(major) && !major?.capabilities?.prerequisites
+      const source = isPaper ? (view?.knobs?.source || 'published') : 'live'
+      const degree = comparisonDegree(view, major)
+      const isArtifactDifference = source === 'diff'
+      return {
+        measure: isArtifactDifference
+          ? 'recomputed-minus-final-pdf-complexity-delta'
+          : 'transfer-minus-resident-curricular-complexity',
+        unit: 'structural-complexity score points',
+        grain: 'community college × university campus',
+        keys: { rows: 'community college', columns: 'university campus' },
+        semantics: {
+          formula: isArtifactDifference
+            ? '(recomputed archived transfer-minus-resident h(G)) - (final-PDF transfer-minus-resident delta)'
+            : 'transfer-pathway h(G) - resident-curriculum h(G), where h(G) = sum(delay factor + blocking factor)',
+          graph: isPaper
+            ? (source === 'published'
+              ? 'literal final-PDF deltas; no archived graph values substituted'
+              : 'our recalculation from the authors’ course graphs; rows are distinct vertices and prerequisite/corequisite references are edges')
+            : 'selected named associate courses plus unmet university requirements and explicit placeholders; unenumerated associate GE courses are absent; CC and UC prerequisites preserve AND-of-OR choice groups; receiving-series articulations are consumed atomically; satisfied UC prerequisite edges are rewired to articulating CC courses',
+          prerequisite_alternative_tiebreak: isPaper
+            ? 'as encoded in the selected paper artifact'
+            : 'when multiple alternatives are already pathway vertices, retain the first in deterministic stored order (UC source order; CC projected id order); all independently required courses remain vertices; this is not a global minimum-complexity optimization',
+          associate_plan: isPaper
+            ? 'paper-reported local A.S. pathway'
+            : 'one deterministic minimum-unit stored-tree plan; ambiguous named choose-by-unit pools are excluded',
+          weighting: 'each finite college×campus pathway weighted equally',
+        },
+        context: {
+          source: source === 'published'
+            ? 'final PDF Figure 6'
+            : source === 'ours'
+              ? 'our recalculation from the authors’ source course graphs'
+              : source === 'diff'
+                ? 'recomputed archived workbooks minus final PDF Figure 6'
+                : 'live pathway-complexity model v3',
+          degree,
+          cohort: isPaper
+            ? (source === 'ours'
+              ? 'our recalculation for the same 49 final-paper Figure 6 pathways'
+              : '49 final-PDF Figure 6 pathways')
+            : `${degree}; ${comparisonVerified(view, major) ? 'verified associate-degree sources only' : 'all resolvable associate-degree sources'}; structurally ambiguous degree templates excluded`,
+        },
+      }
+    },
     viewKnobs: [
+      {
+        key: 'degree',
+        label: 'Associate degree',
+        type: 'select',
+        prop: 'defaultDegreeType',
+        options: [
+          { value: 'ast', label: 'A.S.-T' },
+          { value: 'local_as', label: 'Local A.S.' },
+          { value: 'local_other', label: 'Other local' },
+        ],
+        default: 'ast',
+        appliesWhen: (major) => Boolean(major?.capabilities?.prerequisites),
+      },
+      {
+        key: 'verified',
+        label: 'Verified sources only',
+        type: 'toggle',
+        prop: 'defaultVerifiedOnly',
+        default: true,
+        appliesWhen: (major) => Boolean(major?.capabilities?.prerequisites),
+      },
       {
         key: 'source',
         label: 'Source',
         type: 'select',
         prop: 'defaultPaperView',
         options: [
-          { value: 'published', label: 'Paper (published)' },
-          { value: 'ours', label: 'Ours (recomputed)' },
-          { value: 'diff', label: 'Difference' },
+          { value: 'published', label: 'Final paper' },
+          { value: 'ours', label: 'Our recalculation' },
         ],
         default: 'published',
         // The control exists only where the server answers `mode: 'paper'`,
@@ -394,10 +671,14 @@ export const ANALYSES = [
       grain: 'college×campus',
       unit: 'score-delta',
       tolerance: 0,
-      useData: (view) => usePathwayComplexity({ majorSlug: view.major }),
-      // paperEntries is the figure's own reading, including the printed-cell
-      // overrides and the resident-score anchoring. Re-deriving the delta here
-      // would let the overlay disagree with the matrix beside it.
+      useData: (view, major) => usePathwayComplexity({
+        majorSlug: view.major,
+        degreeType: comparisonDegree(view, major),
+        verifiedOnly: comparisonVerified(view, major),
+      }),
+      // paperEntries reads the complete final-PDF matrix or the separately
+      // recomputed archive. Re-deriving either from a third source here would
+      // let the overlay disagree with the matrix beside it.
       cells: (data, view) => {
         if (!data) return []
         if (data.mode === 'paper') {
@@ -409,7 +690,7 @@ export const ANALYSES = [
             value: entry.delta,
           }))
         }
-        return (data.rows || []).map((row) => ({
+        return (data.rows || []).filter((row) => Number.isFinite(row.delta_vs_resident)).map((row) => ({
           rowKey: row.college_name,
           rowLabel: row.college_name,
           colKey: row.school,
@@ -428,6 +709,7 @@ export const ANALYSES = [
         key: 'rows', label: 'Row grouping', type: 'select',
         prop: 'defaultRowMode', default: 'college',
         options: [{ value: 'college', label: 'Colleges' }, { value: 'district', label: 'Districts' }, { value: 'county', label: 'Counties' }],
+        appliesWhen: (major) => !paperCorpus(major),
       },
       {
         key: 'basis', label: 'Requirement basis', type: 'select',
@@ -439,7 +721,7 @@ export const ANALYSES = [
       },
       {
         key: 'ma-equivalent', label: 'MA-paper-equivalent lens', type: 'toggle',
-        prop: 'defaultMaEquivalent', default: false,
+        prop: 'defaultMaEquivalent', default: true,
         appliesWhen: (major) => major?.capabilities?.unitCoverage !== false,
       },
       {
@@ -447,14 +729,23 @@ export const ANALYSES = [
         prop: 'defaultMaIncludeGe', default: false,
         appliesWhen: (major) => major?.capabilities?.unitCoverage !== false,
       },
+      {
+        key: 'ma-source', label: 'Massachusetts source', type: 'select',
+        prop: 'defaultMaSource', default: 'pdf',
+        options: [
+          { value: 'pdf', label: 'Final paper' },
+          { value: 'archive', label: 'Our recalculation' },
+        ],
+        appliesWhen: paperCorpus,
+      },
     ],
     ...selectedMajor({
       requiredCapabilities: ['assistAgreements', 'degreeTemplates'],
       datasets: ['articulation agreements', 'four-year degree templates'],
       pendingReason: 'Four-year degree requirements must be gathered before graduation-unit coverage can be modeled.',
     }),
-    title: 'Potential graduation-unit coverage',
-    description: 'Shows what share of each university program’s modeled graduation units has a community-college equivalent.',
+    title: 'Requirement articulation',
+    description: 'Shows what share of each university program’s named required courses has a community-college equivalent, matching the Massachusetts Figure 1 denominator; unit-based lenses remain available as secondary views.',
     // On the Massachusetts corpus the unit model is gated off and the figure
     // IS the paper's course measure, so the card carries that name.
     stateTitles: { ma: 'Requirement articulation', va: 'Requirement articulation' },
@@ -467,6 +758,19 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-03T09:05:00',
     Component: CoverageHeatmap,
+    comparisonContract: coverageComparisonContract,
+    comparable: {
+      grain: 'institution-group×university-program',
+      unit: 'percentage-points',
+      // The final MA figure prints whole percentages while the archived
+      // workbook retains the underlying ratios. Half a point is therefore
+      // the honest agreement threshold for the PDF↔archive audit: it treats
+      // ordinary display rounding as agreement and leaves the one material
+      // Cape Cod→UMass Dartmouth difference exposed.
+      tolerance: 0.5,
+      useData: (view, major) => useCoverage(coverageViewForPane(view, major)),
+      cells: coverageComparisonCells,
+    },
   },
   {
     id: 'income-access',

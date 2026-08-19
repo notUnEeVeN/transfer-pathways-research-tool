@@ -176,11 +176,11 @@ describe('built-in visual registry', () => {
       'Articulation coverage across California',
       'Course gaps by campus',
       'Transferable requirements by course type',
-      'Degree credit toward graduation',
-      'Modeled replacement coursework',
-      'Cost of replacement coursework',
+      'Transfer credit rate',
+      'Pathway hours above 120',
+      'Cost of pathway hours above 120',
       'Curricular complexity of transfer pathways',
-      'Potential graduation-unit coverage',
+      'Requirement articulation',
       'Transfer access and local income',
       'Preparation as campus options expand',
       'Minimum transfer coursework',
@@ -260,9 +260,10 @@ describe('visual gallery thumbnails', () => {
       selectedMajor={biology} onOpen={onOpen} />)
 
     expect(screen.getByText('A compact description for the visual library.')).toBeTruthy()
-    expect(screen.getByText('Published')).toBeTruthy()
+    expect(screen.getByText('Available to all')).toBeTruthy()
     expect(screen.getByTestId('live-preview')).toHaveAttribute('data-major', 'bio')
-    expect(screen.getByText('Biology available')).toBeTruthy()
+    expect(screen.queryByText('Biology available')).toBeNull()
+    expect(screen.getByText('Researcher · Jul 18, 2026 · Biology')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Open Sample transfer visual' }))
     expect(onOpen).toHaveBeenCalledOnce()
   })
@@ -339,13 +340,18 @@ describe('visual gallery thumbnails', () => {
       Component: Renderer,
     }
 
-    render(<BuiltInAnalysisCard analysis={analysis} selectedMajor={biology} />)
+    render(<BuiltInAnalysisCard analysis={analysis} selectedMajor={biology}
+      isAdmin releasedSet={new Set()} />)
 
     expect(screen.getByTestId('major-detail')).toHaveAttribute('data-major', 'bio')
     expect(screen.getByTestId('major-detail')).toHaveAttribute('data-templates', 'true')
     expect(screen.getByTestId('major-detail')).toHaveAttribute('data-degree-slots', 'ast,local_as')
     expect(screen.getByTestId('major-detail')).toHaveAttribute('data-transfer-label', 'A.S.-T')
-    expect(screen.getByText('Biology')).toBeTruthy()
+    expect(screen.getByText('Researcher · Jul 18, 2026 · Biology')).toBeTruthy()
+    expect(screen.queryByText('Biology', { selector: ':not(p)' })).toBeNull()
+    expect(screen.getByText('Admin only')).toBeTruthy()
+    expect(screen.queryByText('Biology available')).toBeNull()
+    expect(screen.getAllByText('Dynamic detail')).toHaveLength(1)
   })
 
   it('explains pending detail data without mounting a renderer', () => {

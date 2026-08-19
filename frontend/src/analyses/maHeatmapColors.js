@@ -21,6 +21,18 @@ export const PAPER_GREEN_STOPS = [
   [116, 196, 118], [65, 171, 93], [35, 139, 69], [0, 109, 44], [0, 68, 27],
 ]
 
+// Signed Figure 6 legend: most-negative at dark green, zero at white, and
+// most-positive at dark red. The stops exactly mirror the cell ramps rather
+// than approximating them with a three-color browser interpolation.
+export const PAPER_DIVERGING_LOW_TO_HIGH_GRADIENT = `linear-gradient(90deg, ${[
+  ...[...PAPER_GREEN_STOPS].reverse().map((rgb, index, stops) => (
+    `rgb(${rgb.join(' ')}) ${(50 * index) / (stops.length - 1)}%`
+  )),
+  ...PAPER_RED_STOPS.slice(1).map((rgb, index, stops) => (
+    `rgb(${rgb.join(' ')}) ${50 + (50 * (index + 1)) / stops.length}%`
+  )),
+].join(', ')})`
+
 function rampColor(stops, t) {
   const position = Math.max(0, Math.min(1, t)) * (stops.length - 1)
   const index = Math.min(stops.length - 2, Math.floor(position))

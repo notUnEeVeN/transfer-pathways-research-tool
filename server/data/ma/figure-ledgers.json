@@ -1,852 +1,887 @@
 {
-  "generated_at": "2026-08-15T02:14:45.159Z",
-  "fig1": {
-    "verdict": "exact",
-    "cells": 165,
-    "mean_ours": 38.2,
-    "note": "Their spreadsheet formulas recompute 165/165 from the raw booleans; our engine matches all 165 stored values; means identical at 38.2%. No errors on either side."
+ "generated_at": "2026-08-19T04:17:39.405Z",
+ "artifact_scope": "Archive-vintage diagnostic. Cell ledgers are computed from the repository snapshot last committed 2024-12-12; the final PDF created 2026-06-26 is a later artifact and appears only through explicitly named final-PDF transcription gates.",
+ "source_warning": "Never quote an archive_notebook_value, archive_typed_hours, or archive matrix value as a final-paper value. Archive↔PDF disagreement proves version divergence unless the final PDF also violates an internal arithmetic, population, or scope invariant.",
+ "source_vintages": {
+  "archived_repository": {
+   "as_of": "2024-12-12",
+   "role": "inputs diagnosed by this ledger"
   },
-  "fig2": {
-    "entries": [
-      {
-        "entry": "Bridgewater \u00b7 Computing",
-        "published": 72,
-        "their_matrix": 71.7,
-        "delta_published_vs_matrix": 0.3,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Bridgewater \u00b7 Math",
-        "published": 65,
-        "their_matrix": 65.3,
-        "delta_published_vs_matrix": -0.3,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Bridgewater \u00b7 Science",
-        "published": 100,
-        "their_matrix": 100,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Fitchburg \u00b7 Computing",
-        "published": 88,
-        "their_matrix": 85.3,
-        "delta_published_vs_matrix": 2.7,
-        "verdict": "hand-entry drift vs their own matrix"
-      },
-      {
-        "entry": "Fitchburg \u00b7 Math",
-        "published": 96,
-        "their_matrix": 97.3,
-        "delta_published_vs_matrix": -1.3,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Fitchburg \u00b7 Science",
-        "published": 100,
-        "their_matrix": 100,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Framingham \u00b7 Computing",
-        "published": 15,
-        "their_matrix": 12.2,
-        "delta_published_vs_matrix": 2.8,
-        "verdict": "hand-entry drift vs their own matrix"
-      },
-      {
-        "entry": "Framingham \u00b7 Math",
-        "published": 17,
-        "their_matrix": 16.7,
-        "delta_published_vs_matrix": 0.3,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Framingham \u00b7 Science",
-        "published": 100,
-        "their_matrix": 100,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "MCLA \u00b7 Computing",
-        "published": 19,
-        "their_matrix": 20.7,
-        "delta_published_vs_matrix": -1.7,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "MCLA \u00b7 Math",
-        "published": 40,
-        "their_matrix": 40,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "MCLA \u00b7 Science",
-        "published": 93,
-        "their_matrix": 93.3,
-        "delta_published_vs_matrix": -0.3,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "MCLA \u00b7 Humanities",
-        "published": 67,
-        "their_matrix": 33.3,
-        "delta_published_vs_matrix": 33.7,
-        "verdict": "hand-entry drift vs their own matrix"
-      },
-      {
-        "entry": "Salem \u00b7 Computing",
-        "published": 30,
-        "their_matrix": 21.1,
-        "delta_published_vs_matrix": 8.9,
-        "verdict": "hand-entry drift vs their own matrix"
-      },
-      {
-        "entry": "Salem \u00b7 Math",
-        "published": 82,
-        "their_matrix": 81.7,
-        "delta_published_vs_matrix": 0.3,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Salem \u00b7 Science",
-        "published": 100,
-        "their_matrix": 100,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "UMass Amherst \u00b7 Computing",
-        "published": 40,
-        "their_matrix": 30.8,
-        "delta_published_vs_matrix": 9.2,
-        "verdict": "hand-entry drift vs their own matrix"
-      },
-      {
-        "entry": "UMass Amherst \u00b7 Math",
-        "published": 98,
-        "their_matrix": 95,
-        "delta_published_vs_matrix": 3,
-        "verdict": "hand-entry drift vs their own matrix"
-      },
-      {
-        "entry": "UMass Amherst \u00b7 Science",
-        "published": 100,
-        "their_matrix": 100,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "UMass Boston \u00b7 Computing",
-        "published": 32,
-        "their_matrix": 31.7,
-        "delta_published_vs_matrix": 0.3,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "UMass Boston \u00b7 Math",
-        "published": 67,
-        "their_matrix": 58.3,
-        "delta_published_vs_matrix": 8.7,
-        "verdict": "hand-entry drift vs their own matrix"
-      },
-      {
-        "entry": "UMass Boston \u00b7 Science",
-        "published": 53,
-        "their_matrix": 53.3,
-        "delta_published_vs_matrix": -0.3,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "UMass Lowell \u00b7 Computing",
-        "published": 66,
-        "their_matrix": 66.7,
-        "delta_published_vs_matrix": -0.7,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "UMass Lowell \u00b7 Math",
-        "published": 52,
-        "their_matrix": 86.7,
-        "delta_published_vs_matrix": -34.7,
-        "verdict": "transposed with UMass Dartmouth"
-      },
-      {
-        "entry": "UMass Lowell \u00b7 Science",
-        "published": 78,
-        "their_matrix": 96.7,
-        "delta_published_vs_matrix": -18.7,
-        "verdict": "transposed with UMass Dartmouth"
-      },
-      {
-        "entry": "UMass Lowell \u00b7 Humanities",
-        "published": 100,
-        "their_matrix": 100,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "UMass Dartmouth \u00b7 Computing",
-        "published": 61,
-        "their_matrix": 65.6,
-        "delta_published_vs_matrix": -4.6,
-        "verdict": "hand-entry drift vs their own matrix"
-      },
-      {
-        "entry": "UMass Dartmouth \u00b7 Math",
-        "published": 87,
-        "their_matrix": 52,
-        "delta_published_vs_matrix": 35,
-        "verdict": "transposed with UMass Lowell"
-      },
-      {
-        "entry": "UMass Dartmouth \u00b7 Science",
-        "published": 97,
-        "their_matrix": 78.3,
-        "delta_published_vs_matrix": 18.7,
-        "verdict": "transposed with UMass Lowell"
-      },
-      {
-        "entry": "UMass Dartmouth \u00b7 Humanities",
-        "published": 100,
-        "their_matrix": 100,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Westfield \u00b7 Computing",
-        "published": 16,
-        "their_matrix": 15.8,
-        "delta_published_vs_matrix": 0.2,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Westfield \u00b7 Math",
-        "published": 84,
-        "their_matrix": 84.4,
-        "delta_published_vs_matrix": -0.4,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Westfield \u00b7 Science",
-        "published": 100,
-        "their_matrix": 100,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Worcester \u00b7 Computing",
-        "published": 25,
-        "their_matrix": 25.9,
-        "delta_published_vs_matrix": -0.9,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Worcester \u00b7 Math",
-        "published": 100,
-        "their_matrix": 64,
-        "delta_published_vs_matrix": 36,
-        "verdict": "their own discrete-math-is-math rule not applied (CS 225/295 articulate poorly)"
-      },
-      {
-        "entry": "Worcester \u00b7 Science",
-        "published": 100,
-        "their_matrix": 100,
-        "delta_published_vs_matrix": 0,
-        "verdict": "agrees"
-      },
-      {
-        "entry": "Worcester \u00b7 Humanities",
-        "published": 47,
-        "their_matrix": 66.7,
-        "delta_published_vs_matrix": -19.7,
-        "verdict": "hand-entry drift vs their own matrix"
-      }
-    ],
-    "verdicts": {
-      "agrees": 23,
-      "published-vs-own-matrix": 14
-    },
-    "note": "CORRECTED 2026-08-17. `published` here is their GITHUB NOTEBOOK's hard-coded bars, not the paper's Figure 2. The notebook plots the LOWER-DIVISION share; the paper plots the WHOLE-DEGREE share, and the paper reproduces from their own data almost exactly (computing 21.2 vs the 22 they state, math 60.6 vs 60, science 92.9 vs 93; the plotted computing range 6-58% matches, top dot Fitchburg 58%). So these 14 deviations are the notebook disagreeing with their matrix, NOT the paper being wrong. Open question: non-STEM, where only 6 of 11 universities carry a column, whole-degree averages 63% and the paper reports 76%.",
-    "scope_of_published": "github-notebook-hardcoded (lower-division denominator)",
-    "paper_scope": "whole-degree denominator"
-  },
-  "fig4": {
-    "cells": [
-      {
-        "pair": "MCLA \u00d7 Berkshire",
-        "typed_hours": 146,
-        "their_sheet_sum": 146,
-        "our_reconstruction": 149,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "MCLA \u00d7 Greenfield",
-        "typed_hours": 147,
-        "their_sheet_sum": 147,
-        "our_reconstruction": 147,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Westfield \u00d7 Berkshire",
-        "typed_hours": 151,
-        "their_sheet_sum": 151,
-        "our_reconstruction": 151,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Westfield \u00d7 Greenfield",
-        "typed_hours": 134,
-        "their_sheet_sum": 134,
-        "our_reconstruction": 134,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Westfield \u00d7 Holyoke",
-        "typed_hours": 144,
-        "their_sheet_sum": 144,
-        "our_reconstruction": 144,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Westfield \u00d7 Springfield Technical",
-        "typed_hours": 134,
-        "their_sheet_sum": 134,
-        "our_reconstruction": 134,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Bridgewater \u00d7 Bristol",
-        "typed_hours": 130,
-        "their_sheet_sum": 130,
-        "our_reconstruction": 136,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 6,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Bridgewater \u00d7 Bunker Hill",
-        "typed_hours": 149,
-        "their_sheet_sum": 149,
-        "our_reconstruction": 147,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": -2,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Bridgewater \u00d7 Cape Cod",
-        "typed_hours": 131,
-        "their_sheet_sum": 131,
-        "our_reconstruction": 154,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 23,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Bridgewater \u00d7 Massasoit",
-        "typed_hours": 125,
-        "their_sheet_sum": 120,
-        "our_reconstruction": 114,
-        "delta_typed_vs_sheet": 5,
-        "delta_ours_vs_sheet": -6,
-        "verdict": "typed hours contradict their own sheet"
-      },
-      {
-        "pair": "Bridgewater \u00d7 MassBay",
-        "typed_hours": 132,
-        "their_sheet_sum": 132,
-        "our_reconstruction": 138,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 6,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Bridgewater \u00d7 North Shore",
-        "typed_hours": 133,
-        "their_sheet_sum": 133,
-        "our_reconstruction": 138,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 5,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Bridgewater \u00d7 Roxbury",
-        "typed_hours": 155,
-        "their_sheet_sum": 182,
-        "our_reconstruction": 168,
-        "delta_typed_vs_sheet": -27,
-        "delta_ours_vs_sheet": -14,
-        "verdict": "typed hours contradict their own sheet"
-      },
-      {
-        "pair": "UMass Boston \u00d7 Bristol",
-        "typed_hours": 146,
-        "their_sheet_sum": 146,
-        "our_reconstruction": 157,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 11,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Boston \u00d7 Bunker Hill",
-        "typed_hours": 126,
-        "their_sheet_sum": 119,
-        "our_reconstruction": 119,
-        "delta_typed_vs_sheet": 7,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "typed hours contradict their own sheet"
-      },
-      {
-        "pair": "UMass Boston \u00d7 Massasoit",
-        "typed_hours": 141,
-        "their_sheet_sum": 141,
-        "our_reconstruction": 147,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 6,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Boston \u00d7 MassBay",
-        "typed_hours": 127,
-        "their_sheet_sum": 151,
-        "our_reconstruction": 159,
-        "delta_typed_vs_sheet": -24,
-        "delta_ours_vs_sheet": 8,
-        "verdict": "typed hours contradict their own sheet"
-      },
-      {
-        "pair": "UMass Boston \u00d7 Middlesex",
-        "typed_hours": 142,
-        "their_sheet_sum": 142,
-        "our_reconstruction": 147,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 5,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Boston \u00d7 North Shore",
-        "typed_hours": 144,
-        "their_sheet_sum": 144,
-        "our_reconstruction": 153,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 9,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Boston \u00d7 Northern Essex",
-        "typed_hours": 155,
-        "their_sheet_sum": 155,
-        "our_reconstruction": 157,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 2,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Boston \u00d7 Roxbury",
-        "typed_hours": 159,
-        "their_sheet_sum": 159,
-        "our_reconstruction": 164,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 5,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Dartmouth \u00d7 Bristol",
-        "typed_hours": 132,
-        "their_sheet_sum": 132,
-        "our_reconstruction": 138,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 6,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Dartmouth \u00d7 Cape Cod",
-        "typed_hours": 136,
-        "their_sheet_sum": 138,
-        "our_reconstruction": 160,
-        "delta_typed_vs_sheet": -2,
-        "delta_ours_vs_sheet": 22,
-        "verdict": "typed hours drift small vs their own sheet"
-      },
-      {
-        "pair": "UMass Dartmouth \u00d7 Massasoit",
-        "typed_hours": 151,
-        "their_sheet_sum": 148,
-        "our_reconstruction": 154,
-        "delta_typed_vs_sheet": 3,
-        "delta_ours_vs_sheet": 6,
-        "verdict": "typed hours drift small vs their own sheet"
-      },
-      {
-        "pair": "Fitchburg \u00d7 Bunker Hill",
-        "typed_hours": 126,
-        "their_sheet_sum": 126,
-        "our_reconstruction": 126,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Fitchburg \u00d7 MassBay",
-        "typed_hours": 120,
-        "their_sheet_sum": 120,
-        "our_reconstruction": 119,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": -1,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Fitchburg \u00d7 Middlesex",
-        "typed_hours": 120,
-        "their_sheet_sum": 120,
-        "our_reconstruction": 120,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Fitchburg \u00d7 Mount Wachusett",
-        "typed_hours": 125,
-        "their_sheet_sum": 125,
-        "our_reconstruction": 125,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Fitchburg \u00d7 Quinsigamond",
-        "typed_hours": 120,
-        "their_sheet_sum": 121,
-        "our_reconstruction": 122,
-        "delta_typed_vs_sheet": -1,
-        "delta_ours_vs_sheet": 1,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Fitchburg \u00d7 Roxbury",
-        "typed_hours": 150,
-        "their_sheet_sum": 150,
-        "our_reconstruction": 155,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 5,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Framingham \u00d7 Bunker Hill",
-        "typed_hours": 155,
-        "their_sheet_sum": 155,
-        "our_reconstruction": 155,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Framingham \u00d7 Massasoit",
-        "typed_hours": 144,
-        "their_sheet_sum": 144,
-        "our_reconstruction": 147,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Framingham \u00d7 MassBay",
-        "typed_hours": 162,
-        "their_sheet_sum": 162,
-        "our_reconstruction": 170,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 8,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Framingham \u00d7 Middlesex",
-        "typed_hours": 159,
-        "their_sheet_sum": 159,
-        "our_reconstruction": 166,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 7,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Framingham \u00d7 Mount Wachusett",
-        "typed_hours": 153,
-        "their_sheet_sum": 153,
-        "our_reconstruction": 153,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Framingham \u00d7 North Shore",
-        "typed_hours": 154,
-        "their_sheet_sum": 154,
-        "our_reconstruction": 162,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 8,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Framingham \u00d7 Quinsigamond",
-        "typed_hours": 146,
-        "their_sheet_sum": 146,
-        "our_reconstruction": 150,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 4,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Framingham \u00d7 Roxbury",
-        "typed_hours": 158,
-        "their_sheet_sum": 158,
-        "our_reconstruction": 166,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 8,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Salem \u00d7 Bunker Hill",
-        "typed_hours": 129,
-        "their_sheet_sum": 129,
-        "our_reconstruction": 132,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Salem \u00d7 Massasoit",
-        "typed_hours": 127,
-        "their_sheet_sum": 127,
-        "our_reconstruction": 134,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 7,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Salem \u00d7 MassBay",
-        "typed_hours": 125,
-        "their_sheet_sum": 125,
-        "our_reconstruction": 128,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Salem \u00d7 Middlesex",
-        "typed_hours": 142,
-        "their_sheet_sum": 142,
-        "our_reconstruction": 142,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Salem \u00d7 North Shore",
-        "typed_hours": 126,
-        "their_sheet_sum": 126,
-        "our_reconstruction": 129,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Salem \u00d7 Northern Essex",
-        "typed_hours": 131,
-        "their_sheet_sum": 131,
-        "our_reconstruction": 131,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Salem \u00d7 Roxbury",
-        "typed_hours": 152,
-        "their_sheet_sum": 152,
-        "our_reconstruction": 155,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Lowell \u00d7 Bunker Hill",
-        "typed_hours": 124,
-        "their_sheet_sum": 124,
-        "our_reconstruction": 124,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Lowell \u00d7 MassBay",
-        "typed_hours": 125,
-        "their_sheet_sum": 125,
-        "our_reconstruction": 128,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Lowell \u00d7 Middlesex",
-        "typed_hours": 122,
-        "their_sheet_sum": 122,
-        "our_reconstruction": 125,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Lowell \u00d7 North Shore",
-        "typed_hours": 126,
-        "their_sheet_sum": 126,
-        "our_reconstruction": 129,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Lowell \u00d7 Northern Essex",
-        "typed_hours": 142,
-        "their_sheet_sum": 142,
-        "our_reconstruction": 142,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 0,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Lowell \u00d7 Quinsigamond",
-        "typed_hours": 122,
-        "their_sheet_sum": 122,
-        "our_reconstruction": 128,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 6,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Lowell \u00d7 Roxbury",
-        "typed_hours": 152,
-        "their_sheet_sum": 185,
-        "our_reconstruction": 178,
-        "delta_typed_vs_sheet": -33,
-        "delta_ours_vs_sheet": -7,
-        "verdict": "typed hours contradict their own sheet"
-      },
-      {
-        "pair": "UMass Amherst \u00d7 Greenfield",
-        "typed_hours": 122,
-        "their_sheet_sum": 122,
-        "our_reconstruction": 129,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 7,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Amherst \u00d7 Holyoke",
-        "typed_hours": 125,
-        "their_sheet_sum": 125,
-        "our_reconstruction": 133,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 8,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "UMass Amherst \u00d7 Springfield Technical",
-        "typed_hours": 131,
-        "their_sheet_sum": 131,
-        "our_reconstruction": 132,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 1,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Worcester \u00d7 MassBay",
-        "typed_hours": 128,
-        "their_sheet_sum": 128,
-        "our_reconstruction": 132,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 4,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Worcester \u00d7 Middlesex",
-        "typed_hours": 127,
-        "their_sheet_sum": 127,
-        "our_reconstruction": 130,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Worcester \u00d7 Mount Wachusett",
-        "typed_hours": 132,
-        "their_sheet_sum": 132,
-        "our_reconstruction": 127,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": -5,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Worcester \u00d7 Quinsigamond",
-        "typed_hours": 120,
-        "their_sheet_sum": 120,
-        "our_reconstruction": 124,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 4,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Worcester \u00d7 Roxbury",
-        "typed_hours": 145,
-        "their_sheet_sum": 145,
-        "our_reconstruction": 148,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": 3,
-        "verdict": "agrees"
-      },
-      {
-        "pair": "Worcester \u00d7 Springfield Technical",
-        "typed_hours": 132,
-        "their_sheet_sum": 132,
-        "our_reconstruction": 131,
-        "delta_typed_vs_sheet": 0,
-        "delta_ours_vs_sheet": -1,
-        "verdict": "agrees"
-      }
-    ],
-    "verdicts": {
-      "agrees": 54,
-      "typed hours contradict their own sheet": 5,
-      "typed hours drift small vs their own sheet": 2
-    },
-    "note": "CORRECTED 2026-08-17. `typed_hours` is the REPO workbook's Credit Hours tab, not the paper's Figure 4 (which has never been transcribed). Averaging these per university reproduces the paper's own Figure 7 summary on 7 of 11 columns and differs on four: Bridgewater 16.4 vs 9.1, Fitchburg 6.8 vs 6.0, UMass Amherst 6.0 vs 0.0, UMass Dartmouth 19.7 vs 0.0. The paper prints $0 cost for Amherst and Dartmouth too, so it is internally consistent and the repo is the older revision. These verdicts are about the REPO; transcribe the PDF's Figure 4 (as was done for Figure 3) before claiming anything about the paper.",
-    "scope_of_typed": "repo-workbook Credit Hours tab",
-    "paper_checked": false
-  },
-  "fig5": {
-    "verdict": "no independent errors possible",
-    "cells_checked": 57,
-    "worst_rate_spread_usd": 0,
-    "note": "Cost cells are live formulas: (Credit Hours \u2212 120) \u00d7 a per-university rate, consistent to the cent. Every Fig-5 error is a Fig-4 error multiplied by the rate; our cost figure prices with the identical derived rates."
-  },
-  "mass_transfer": {
-    "verdict": "not imported",
-    "cells": 165,
-    "workbook_true_flags": 38,
-    "note": "The MassTransfer map figure was never ported and the MT column is not imported \u2014 a completeness gap, not an error; nothing on our side displays it. The workbook marks 38 of 165 pairs as having an A2B agreement."
+  "final_pdf": {
+   "created": "2026-06-26",
+   "transcription": "server/data/ma/pdf-figures.json"
   }
+ },
+ "fig1": {
+  "scope": "2024 archived repository; final PDF checked only through its literal transcription gate",
+  "verdict": "archive exact; final PDF visibly differs from the archive in 1 of 165 cells",
+  "archive_cells": 165,
+  "archive_mean_ours": 38.2,
+  "mean_ours": 38.2,
+  "archive_formula_gate": {
+   "cells_checked": 165,
+   "cells_recomputed_exactly": 165
+  },
+  "final_pdf_archive_rounding_gate": {
+   "cells_checked": 165,
+   "cells_matching": 164,
+   "cells_changed": 1
+  },
+  "final_pdf_printed_matrix_gate": {
+   "cell_count": 165,
+   "cell_sum": 6323,
+   "cell_mean": 38.32121212121212
+  },
+  "final_pdf_prose_mean": 38.2,
+  "final_pdf_audit_note": "The archived unrounded matrix averages 38.2085%. If the only final input change is the visible Cape Cod to UMass Dartmouth revision, the hidden-ratio mean is about 38.27% and would round to 38.3%. Under the paper renderer's half-even rule, the 165 archived displayed integers sum to 6313; replacing the visible 35 with 45 makes the final displayed sum 6323 and mean 38.3212%. The paper still says 38.2%, so the headline is a strong stale-value candidate; the final hidden numerator and denominator were not deposited.",
+  "note": "Our engine and the archived workbook agree on all 165 archive cells (archive mean 38.2%). The June 2026 final PDF changes Cape Cod × UMass Dartmouth from the archive-rounded 35% to 45%, so archive exactness is not a claim that all 165 final-PDF cells match."
+ },
+ "fig2": {
+  "entries": [
+   {
+    "entry": "Bridgewater · Computing",
+    "archive_notebook_value": 72,
+    "archive_matrix_value": 71.7,
+    "delta_archive_notebook_vs_matrix": 0.3,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Bridgewater · Math",
+    "archive_notebook_value": 65,
+    "archive_matrix_value": 65.3,
+    "delta_archive_notebook_vs_matrix": -0.3,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Bridgewater · Science",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 100,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Fitchburg · Computing",
+    "archive_notebook_value": 88,
+    "archive_matrix_value": 85.3,
+    "delta_archive_notebook_vs_matrix": 2.7,
+    "verdict": "hand-entry drift vs their own matrix"
+   },
+   {
+    "entry": "Fitchburg · Math",
+    "archive_notebook_value": 96,
+    "archive_matrix_value": 97.3,
+    "delta_archive_notebook_vs_matrix": -1.3,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Fitchburg · Science",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 100,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Framingham · Computing",
+    "archive_notebook_value": 15,
+    "archive_matrix_value": 12.2,
+    "delta_archive_notebook_vs_matrix": 2.8,
+    "verdict": "hand-entry drift vs their own matrix"
+   },
+   {
+    "entry": "Framingham · Math",
+    "archive_notebook_value": 17,
+    "archive_matrix_value": 16.7,
+    "delta_archive_notebook_vs_matrix": 0.3,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Framingham · Science",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 100,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "MCLA · Computing",
+    "archive_notebook_value": 19,
+    "archive_matrix_value": 20.7,
+    "delta_archive_notebook_vs_matrix": -1.7,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "MCLA · Math",
+    "archive_notebook_value": 40,
+    "archive_matrix_value": 40,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "MCLA · Science",
+    "archive_notebook_value": 93,
+    "archive_matrix_value": 93.3,
+    "delta_archive_notebook_vs_matrix": -0.3,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "MCLA · Humanities",
+    "archive_notebook_value": 67,
+    "archive_matrix_value": 33.3,
+    "delta_archive_notebook_vs_matrix": 33.7,
+    "verdict": "hand-entry drift vs their own matrix"
+   },
+   {
+    "entry": "Salem · Computing",
+    "archive_notebook_value": 30,
+    "archive_matrix_value": 21.1,
+    "delta_archive_notebook_vs_matrix": 8.9,
+    "verdict": "hand-entry drift vs their own matrix"
+   },
+   {
+    "entry": "Salem · Math",
+    "archive_notebook_value": 82,
+    "archive_matrix_value": 81.7,
+    "delta_archive_notebook_vs_matrix": 0.3,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Salem · Science",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 100,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "UMass Amherst · Computing",
+    "archive_notebook_value": 40,
+    "archive_matrix_value": 30.8,
+    "delta_archive_notebook_vs_matrix": 9.2,
+    "verdict": "hand-entry drift vs their own matrix"
+   },
+   {
+    "entry": "UMass Amherst · Math",
+    "archive_notebook_value": 98,
+    "archive_matrix_value": 95,
+    "delta_archive_notebook_vs_matrix": 3,
+    "verdict": "hand-entry drift vs their own matrix"
+   },
+   {
+    "entry": "UMass Amherst · Science",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 100,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "UMass Boston · Computing",
+    "archive_notebook_value": 32,
+    "archive_matrix_value": 31.7,
+    "delta_archive_notebook_vs_matrix": 0.3,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "UMass Boston · Math",
+    "archive_notebook_value": 67,
+    "archive_matrix_value": 58.3,
+    "delta_archive_notebook_vs_matrix": 8.7,
+    "verdict": "hand-entry drift vs their own matrix"
+   },
+   {
+    "entry": "UMass Boston · Science",
+    "archive_notebook_value": 53,
+    "archive_matrix_value": 53.3,
+    "delta_archive_notebook_vs_matrix": -0.3,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "UMass Lowell · Computing",
+    "archive_notebook_value": 66,
+    "archive_matrix_value": 66.7,
+    "delta_archive_notebook_vs_matrix": -0.7,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "UMass Lowell · Math",
+    "archive_notebook_value": 52,
+    "archive_matrix_value": 86.7,
+    "delta_archive_notebook_vs_matrix": -34.7,
+    "verdict": "transposed with UMass Dartmouth"
+   },
+   {
+    "entry": "UMass Lowell · Science",
+    "archive_notebook_value": 78,
+    "archive_matrix_value": 96.7,
+    "delta_archive_notebook_vs_matrix": -18.7,
+    "verdict": "transposed with UMass Dartmouth"
+   },
+   {
+    "entry": "UMass Lowell · Humanities",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 100,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "UMass Dartmouth · Computing",
+    "archive_notebook_value": 61,
+    "archive_matrix_value": 65.6,
+    "delta_archive_notebook_vs_matrix": -4.6,
+    "verdict": "hand-entry drift vs their own matrix"
+   },
+   {
+    "entry": "UMass Dartmouth · Math",
+    "archive_notebook_value": 87,
+    "archive_matrix_value": 52,
+    "delta_archive_notebook_vs_matrix": 35,
+    "verdict": "transposed with UMass Lowell"
+   },
+   {
+    "entry": "UMass Dartmouth · Science",
+    "archive_notebook_value": 97,
+    "archive_matrix_value": 78.3,
+    "delta_archive_notebook_vs_matrix": 18.7,
+    "verdict": "transposed with UMass Lowell"
+   },
+   {
+    "entry": "UMass Dartmouth · Humanities",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 100,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Westfield · Computing",
+    "archive_notebook_value": 16,
+    "archive_matrix_value": 15.8,
+    "delta_archive_notebook_vs_matrix": 0.2,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Westfield · Math",
+    "archive_notebook_value": 84,
+    "archive_matrix_value": 84.4,
+    "delta_archive_notebook_vs_matrix": -0.4,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Westfield · Science",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 100,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Worcester · Computing",
+    "archive_notebook_value": 25,
+    "archive_matrix_value": 25.9,
+    "delta_archive_notebook_vs_matrix": -0.9,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Worcester · Math",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 64,
+    "delta_archive_notebook_vs_matrix": 36,
+    "verdict": "their own discrete-math-is-math rule not applied (CS 225/295 articulate poorly)"
+   },
+   {
+    "entry": "Worcester · Science",
+    "archive_notebook_value": 100,
+    "archive_matrix_value": 100,
+    "delta_archive_notebook_vs_matrix": 0,
+    "verdict": "agrees"
+   },
+   {
+    "entry": "Worcester · Humanities",
+    "archive_notebook_value": 47,
+    "archive_matrix_value": 66.7,
+    "delta_archive_notebook_vs_matrix": -19.7,
+    "verdict": "hand-entry drift vs their own matrix"
+   }
+  ],
+  "verdicts": {
+   "agrees": 23,
+   "archive-notebook-vs-own-matrix": 14
+  },
+  "scope": "2024 archived notebook and matrices only",
+  "note": "The values called archive_notebook_value are hard-coded bars in the deposited GitHub notebook, not values transcribed from the June 2026 final PDF. This ledger diagnoses disagreements inside the archive; it does not establish a final-paper error."
+ },
+ "fig4": {
+  "cells": [
+   {
+    "pair": "MCLA × Berkshire",
+    "archive_typed_hours": 146,
+    "archive_pathway_sheet_sum": 146,
+    "archive_reconstruction": 149,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "MCLA × Greenfield",
+    "archive_typed_hours": 147,
+    "archive_pathway_sheet_sum": 147,
+    "archive_reconstruction": 147,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Westfield × Berkshire",
+    "archive_typed_hours": 151,
+    "archive_pathway_sheet_sum": 151,
+    "archive_reconstruction": 151,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Westfield × Greenfield",
+    "archive_typed_hours": 134,
+    "archive_pathway_sheet_sum": 134,
+    "archive_reconstruction": 134,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Westfield × Holyoke",
+    "archive_typed_hours": 144,
+    "archive_pathway_sheet_sum": 144,
+    "archive_reconstruction": 144,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Westfield × Springfield Technical",
+    "archive_typed_hours": 134,
+    "archive_pathway_sheet_sum": 134,
+    "archive_reconstruction": 134,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Bridgewater × Bristol",
+    "archive_typed_hours": 130,
+    "archive_pathway_sheet_sum": 130,
+    "archive_reconstruction": 136,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 6,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Bridgewater × Bunker Hill",
+    "archive_typed_hours": 149,
+    "archive_pathway_sheet_sum": 149,
+    "archive_reconstruction": 147,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": -2,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Bridgewater × Cape Cod",
+    "archive_typed_hours": 131,
+    "archive_pathway_sheet_sum": 131,
+    "archive_reconstruction": 154,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 23,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Bridgewater × Massasoit",
+    "archive_typed_hours": 125,
+    "archive_pathway_sheet_sum": 120,
+    "archive_reconstruction": 114,
+    "delta_archive_typed_vs_sheet": 5,
+    "delta_archive_reconstruction_vs_sheet": -6,
+    "verdict": "typed hours contradict their own sheet"
+   },
+   {
+    "pair": "Bridgewater × MassBay",
+    "archive_typed_hours": 132,
+    "archive_pathway_sheet_sum": 132,
+    "archive_reconstruction": 138,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 6,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Bridgewater × North Shore",
+    "archive_typed_hours": 133,
+    "archive_pathway_sheet_sum": 133,
+    "archive_reconstruction": 138,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 5,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Bridgewater × Roxbury",
+    "archive_typed_hours": 155,
+    "archive_pathway_sheet_sum": 182,
+    "archive_reconstruction": 168,
+    "delta_archive_typed_vs_sheet": -27,
+    "delta_archive_reconstruction_vs_sheet": -14,
+    "verdict": "typed hours contradict their own sheet"
+   },
+   {
+    "pair": "UMass Boston × Bristol",
+    "archive_typed_hours": 146,
+    "archive_pathway_sheet_sum": 146,
+    "archive_reconstruction": 157,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 11,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Boston × Bunker Hill",
+    "archive_typed_hours": 126,
+    "archive_pathway_sheet_sum": 119,
+    "archive_reconstruction": 119,
+    "delta_archive_typed_vs_sheet": 7,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "typed hours contradict their own sheet"
+   },
+   {
+    "pair": "UMass Boston × Massasoit",
+    "archive_typed_hours": 141,
+    "archive_pathway_sheet_sum": 141,
+    "archive_reconstruction": 147,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 6,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Boston × MassBay",
+    "archive_typed_hours": 127,
+    "archive_pathway_sheet_sum": 151,
+    "archive_reconstruction": 159,
+    "delta_archive_typed_vs_sheet": -24,
+    "delta_archive_reconstruction_vs_sheet": 8,
+    "verdict": "typed hours contradict their own sheet"
+   },
+   {
+    "pair": "UMass Boston × Middlesex",
+    "archive_typed_hours": 142,
+    "archive_pathway_sheet_sum": 142,
+    "archive_reconstruction": 147,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 5,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Boston × North Shore",
+    "archive_typed_hours": 144,
+    "archive_pathway_sheet_sum": 144,
+    "archive_reconstruction": 153,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 9,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Boston × Northern Essex",
+    "archive_typed_hours": 155,
+    "archive_pathway_sheet_sum": 155,
+    "archive_reconstruction": 157,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 2,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Boston × Roxbury",
+    "archive_typed_hours": 159,
+    "archive_pathway_sheet_sum": 159,
+    "archive_reconstruction": 164,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 5,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Dartmouth × Bristol",
+    "archive_typed_hours": 132,
+    "archive_pathway_sheet_sum": 132,
+    "archive_reconstruction": 138,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 6,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Dartmouth × Cape Cod",
+    "archive_typed_hours": 136,
+    "archive_pathway_sheet_sum": 138,
+    "archive_reconstruction": 160,
+    "delta_archive_typed_vs_sheet": -2,
+    "delta_archive_reconstruction_vs_sheet": 22,
+    "verdict": "typed hours drift small vs their own sheet"
+   },
+   {
+    "pair": "UMass Dartmouth × Massasoit",
+    "archive_typed_hours": 151,
+    "archive_pathway_sheet_sum": 148,
+    "archive_reconstruction": 154,
+    "delta_archive_typed_vs_sheet": 3,
+    "delta_archive_reconstruction_vs_sheet": 6,
+    "verdict": "typed hours drift small vs their own sheet"
+   },
+   {
+    "pair": "Fitchburg × Bunker Hill",
+    "archive_typed_hours": 126,
+    "archive_pathway_sheet_sum": 126,
+    "archive_reconstruction": 126,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Fitchburg × MassBay",
+    "archive_typed_hours": 120,
+    "archive_pathway_sheet_sum": 120,
+    "archive_reconstruction": 119,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": -1,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Fitchburg × Middlesex",
+    "archive_typed_hours": 120,
+    "archive_pathway_sheet_sum": 120,
+    "archive_reconstruction": 120,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Fitchburg × Mount Wachusett",
+    "archive_typed_hours": 125,
+    "archive_pathway_sheet_sum": 125,
+    "archive_reconstruction": 125,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Fitchburg × Quinsigamond",
+    "archive_typed_hours": 120,
+    "archive_pathway_sheet_sum": 121,
+    "archive_reconstruction": 122,
+    "delta_archive_typed_vs_sheet": -1,
+    "delta_archive_reconstruction_vs_sheet": 1,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Fitchburg × Roxbury",
+    "archive_typed_hours": 150,
+    "archive_pathway_sheet_sum": 150,
+    "archive_reconstruction": 155,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 5,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Framingham × Bunker Hill",
+    "archive_typed_hours": 155,
+    "archive_pathway_sheet_sum": 155,
+    "archive_reconstruction": 155,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Framingham × Massasoit",
+    "archive_typed_hours": 144,
+    "archive_pathway_sheet_sum": 144,
+    "archive_reconstruction": 147,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Framingham × MassBay",
+    "archive_typed_hours": 162,
+    "archive_pathway_sheet_sum": 162,
+    "archive_reconstruction": 170,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 8,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Framingham × Middlesex",
+    "archive_typed_hours": 159,
+    "archive_pathway_sheet_sum": 159,
+    "archive_reconstruction": 166,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 7,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Framingham × Mount Wachusett",
+    "archive_typed_hours": 153,
+    "archive_pathway_sheet_sum": 153,
+    "archive_reconstruction": 153,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Framingham × North Shore",
+    "archive_typed_hours": 154,
+    "archive_pathway_sheet_sum": 154,
+    "archive_reconstruction": 162,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 8,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Framingham × Quinsigamond",
+    "archive_typed_hours": 146,
+    "archive_pathway_sheet_sum": 146,
+    "archive_reconstruction": 150,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 4,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Framingham × Roxbury",
+    "archive_typed_hours": 158,
+    "archive_pathway_sheet_sum": 158,
+    "archive_reconstruction": 166,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 8,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Salem × Bunker Hill",
+    "archive_typed_hours": 129,
+    "archive_pathway_sheet_sum": 129,
+    "archive_reconstruction": 132,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Salem × Massasoit",
+    "archive_typed_hours": 127,
+    "archive_pathway_sheet_sum": 127,
+    "archive_reconstruction": 134,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 7,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Salem × MassBay",
+    "archive_typed_hours": 125,
+    "archive_pathway_sheet_sum": 125,
+    "archive_reconstruction": 128,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Salem × Middlesex",
+    "archive_typed_hours": 142,
+    "archive_pathway_sheet_sum": 142,
+    "archive_reconstruction": 142,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Salem × North Shore",
+    "archive_typed_hours": 126,
+    "archive_pathway_sheet_sum": 126,
+    "archive_reconstruction": 129,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Salem × Northern Essex",
+    "archive_typed_hours": 131,
+    "archive_pathway_sheet_sum": 131,
+    "archive_reconstruction": 131,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Salem × Roxbury",
+    "archive_typed_hours": 152,
+    "archive_pathway_sheet_sum": 152,
+    "archive_reconstruction": 155,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Lowell × Bunker Hill",
+    "archive_typed_hours": 124,
+    "archive_pathway_sheet_sum": 124,
+    "archive_reconstruction": 124,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Lowell × MassBay",
+    "archive_typed_hours": 125,
+    "archive_pathway_sheet_sum": 125,
+    "archive_reconstruction": 128,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Lowell × Middlesex",
+    "archive_typed_hours": 122,
+    "archive_pathway_sheet_sum": 122,
+    "archive_reconstruction": 125,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Lowell × North Shore",
+    "archive_typed_hours": 126,
+    "archive_pathway_sheet_sum": 126,
+    "archive_reconstruction": 129,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Lowell × Northern Essex",
+    "archive_typed_hours": 142,
+    "archive_pathway_sheet_sum": 142,
+    "archive_reconstruction": 142,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 0,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Lowell × Quinsigamond",
+    "archive_typed_hours": 122,
+    "archive_pathway_sheet_sum": 122,
+    "archive_reconstruction": 128,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 6,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Lowell × Roxbury",
+    "archive_typed_hours": 152,
+    "archive_pathway_sheet_sum": 185,
+    "archive_reconstruction": 178,
+    "delta_archive_typed_vs_sheet": -33,
+    "delta_archive_reconstruction_vs_sheet": -7,
+    "verdict": "typed hours contradict their own sheet"
+   },
+   {
+    "pair": "UMass Amherst × Greenfield",
+    "archive_typed_hours": 122,
+    "archive_pathway_sheet_sum": 122,
+    "archive_reconstruction": 129,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 7,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Amherst × Holyoke",
+    "archive_typed_hours": 125,
+    "archive_pathway_sheet_sum": 125,
+    "archive_reconstruction": 133,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 8,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "UMass Amherst × Springfield Technical",
+    "archive_typed_hours": 131,
+    "archive_pathway_sheet_sum": 131,
+    "archive_reconstruction": 132,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 1,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Worcester × MassBay",
+    "archive_typed_hours": 128,
+    "archive_pathway_sheet_sum": 128,
+    "archive_reconstruction": 132,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 4,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Worcester × Middlesex",
+    "archive_typed_hours": 127,
+    "archive_pathway_sheet_sum": 127,
+    "archive_reconstruction": 130,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Worcester × Mount Wachusett",
+    "archive_typed_hours": 132,
+    "archive_pathway_sheet_sum": 132,
+    "archive_reconstruction": 127,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": -5,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Worcester × Quinsigamond",
+    "archive_typed_hours": 120,
+    "archive_pathway_sheet_sum": 120,
+    "archive_reconstruction": 124,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 4,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Worcester × Roxbury",
+    "archive_typed_hours": 145,
+    "archive_pathway_sheet_sum": 145,
+    "archive_reconstruction": 148,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": 3,
+    "verdict": "agrees"
+   },
+   {
+    "pair": "Worcester × Springfield Technical",
+    "archive_typed_hours": 132,
+    "archive_pathway_sheet_sum": 132,
+    "archive_reconstruction": 131,
+    "delta_archive_typed_vs_sheet": 0,
+    "delta_archive_reconstruction_vs_sheet": -1,
+    "verdict": "agrees"
+   }
+  ],
+  "verdicts": {
+   "agrees": 54,
+   "typed hours contradict their own sheet": 5,
+   "typed hours drift small vs their own sheet": 2
+  },
+  "scope": "2024 archived workbook only",
+  "final_pdf_transcription": {
+   "artifact": "server/data/ma/pdf-figures.json#fig4_extra_hours",
+   "cells": 49,
+   "gate": "Our transcription reproduces the figure's own printed Average row on 10 of 11 columns exactly; MCLA computes 26.5 and prints 26 (the figure rounds half down)."
+  },
+  "note": "The archive Credit Hours tab contains typed literals. Verdicts here compare those archive literals with sums of archive pathway sheets. The later final-PDF Figure 4 has been transcribed separately (49 cells); archive discrepancies are not automatically final-paper discrepancies."
+ },
+ "fig5": {
+  "scope": "2024 archived workbook formula identity; final PDF checked separately",
+  "verdict": "no independent arithmetic discrepancy found in the archived cost formulas",
+  "archive_cells_checked": 57,
+  "archive_worst_rate_spread_usd": 0,
+  "final_pdf_gate": "Figure 5 = Figure 4 x a per-campus per-credit rate, consistent to the cent on all 35 priced cells. Overall mean $7,129, which is the figure the paper states in its own text.",
+  "note": "In the archive, Cost = (Credit Hours − 120) × a per-university rate, consistent to the cent. The final PDF is a later artifact and its separately transcribed Figure 5 is likewise formula-linked to its Figure 4; this archive check alone is not a verdict on final-PDF inputs."
+ },
+ "mass_transfer": {
+  "verdict": "not imported",
+  "cells": 165,
+  "workbook_true_flags": 38,
+  "note": "The MassTransfer map figure was never ported and the MT column is not imported — a completeness gap, not an error; nothing on our side displays it. The workbook marks 38 of 165 pairs as having an A2B agreement."
+ }
 }

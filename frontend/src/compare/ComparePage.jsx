@@ -5,11 +5,13 @@ import SubNav from '../components/SubNav'
 import { getAnalysisById } from '../analyses/registry'
 import { fmtDate } from '../shared/fmtDate'
 import { readUrlParam, writeUrlParam } from '../shared/urlState'
+import { useMajors } from '../shared/majors/useMajors'
 import {
   useComparison, useComparisonList, useDeleteComparison, useSaveComparison,
 } from '../shared/query/hooks/useComparisons'
 import ErrorBoundary from '../components/ErrorBoundary'
 import ComparisonWorkspace from './ComparisonWorkspace'
+import { groupSavedComparisons } from './savedComparisonOrder'
 
 /**
  * Compare — a first-class console surface, because a comparison spans states
@@ -90,8 +92,13 @@ const bodyOf = (comparison, verdictAtPin) => ({
 function SavedList({ onOpen }) {
   const list = useComparisonList()
   const rows = list.data?.comparisons || []
+  // State is a property of a major, not a saved-pane field. Read the same
+  // cross-corpus registry as the pane builder so the shelf can distinguish the
+  // six CA–MA exhibits from the MA-only source checks without title parsing.
+  const majorRegistry = useMajors({ state: 'all' })
+  const groups = groupSavedComparisons(rows, majorRegistry.bySlug)
 
-  if (list.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
+  if (list.isLoading || majorRegistry.isLoading) return <div className='flex justify-center py-10'><Spinner /></div>
   if (list.isError) return <Alert type='error'>Could not load the saved comparisons.</Alert>
   if (!rows.length) {
     return (
@@ -101,25 +108,38 @@ function SavedList({ onOpen }) {
   }
 
   return (
-    <ul className='flex flex-col gap-2'>
-      {rows.map((row) => (
-        <li key={row._id}>
-          <button type='button' onClick={() => onOpen(row._id)}
-            className='surface-card flex w-full items-center gap-3 px-[22px] py-3.5 text-left
-              hover:border-border-strong'>
-            <span className='min-w-0 flex-1'>
-              <span className='block truncate text-body-strong text-ink'>{row.title || row._id}</span>
-              <span className='block truncate text-caption ink-subtle'>
-                {row.panes?.length ?? 0} views · {row.note_count ?? 0} notes
-                {row.author_label ? ` · ${row.author_label}` : ''}
-                {row.updated_at ? ` · ${fmtDate(row.updated_at)}` : ''}
-              </span>
-            </span>
-            <span className='shrink-0 text-caption ink-subtle font-mono'>{row._id}</span>
-          </button>
-        </li>
-      ))}
-    </ul>
+    <div className='flex flex-col gap-6'>
+      {groups.map((group) => {
+        const headingId = `saved-comparisons-${group.key}`
+        return (
+          <section key={group.key} aria-labelledby={headingId} className='flex flex-col gap-2'>
+            <div>
+              <h2 id={headingId} className='text-heading text-ink'>{group.title}</h2>
+              {group.description && <p className='mt-0.5 text-caption ink-subtle'>{group.description}</p>}
+            </div>
+            <ul className='flex flex-col gap-2'>
+              {group.comparisons.map((row) => (
+                <li key={row._id}>
+                  <button type='button' onClick={() => onOpen(row._id)}
+                    className='surface-card flex w-full items-center gap-3 px-[22px] py-3.5 text-left
+                      hover:border-border-strong'>
+                    <span className='min-w-0 flex-1'>
+                      <span className='block truncate text-body-strong text-ink'>{row.title || row._id}</span>
+                      <span className='block truncate text-caption ink-subtle'>
+                        {row.panes?.length ?? 0} views · {row.note_count ?? 0} notes
+                        {row.author_label ? ` · ${row.author_label}` : ''}
+                        {row.updated_at ? ` · ${fmtDate(row.updated_at)}` : ''}
+                      </span>
+                    </span>
+                    <span className='shrink-0 text-caption ink-subtle font-mono'>{row._id}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      })}
+    </div>
   )
 }
 

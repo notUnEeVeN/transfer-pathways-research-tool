@@ -62,10 +62,15 @@ function courseKeySet(courses) {
 }
 
 // Where a baseline measure's numbers come from: the repo workbook for the
-// original tabs, the final PDF's printed Figure 3 for the *_pdf revision.
+// original tabs, or the numbered final-PDF figure for a transcribed revision.
 function baselineSource(measure) {
-  return measure.endsWith('_pdf')
-    ? 'final PDF Figure 3 (see data/ma/pdf-figures.json)'
+  const pdfFigures = {
+    pct_as_pdf: 3,
+    extra_hours_pdf: 4,
+    extra_cost_pdf: 5,
+  };
+  return pdfFigures[measure]
+    ? `final PDF Figure ${pdfFigures[measure]} (see data/ma/pdf-figures.json)`
     : 'CurrComp Master.xlsx';
 }
 
@@ -322,6 +327,10 @@ function buildMaDocuments(raw) {
       ...(perCredit != null ? {
         tuition_per_credit_usd: perCredit,
         tuition_annual_resident_usd: +(perCredit * 24).toFixed(2),
+        // This is not an independently sourced annual sticker price. It is the
+        // campus-constant rate recoverable from the paper repository's own Cost
+        // tab, re-expressed on the shared pricer's annual/24 convention.
+        tuition_source: 'CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)',
       } : {}),
     });
 

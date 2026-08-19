@@ -7,6 +7,7 @@ import { BuiltInAnalysisCard, itemDetails } from '../visuals/VisualsPage'
 import { resolveAnalysisAvailability } from '../visuals/analysisAvailability'
 import { getAnalysisById } from '../analyses/registry'
 import { paneLabel, resolveKnobs, viewPropsFor } from './viewKnobs'
+import ContractStrip from './ContractStrip'
 
 /**
  * One pane = the registry's own Component, mounted through the existing
@@ -115,6 +116,8 @@ export function PaneChip({
 export default function ViewPane({
   pane, major, isBaseline = false, onChange, collapsed = false, onToggle,
   analysis: providedAnalysis, onViewChange,
+  comparisonContract = null,
+  comparisonColorScale = null,
   // The refresh affordance is passed in rather than wired here: the query layer
   // is the workspace's business, and one holder of it there can say WHICH pane
   // is refreshing instead of every pane spinning at once.
@@ -200,6 +203,8 @@ export default function ViewPane({
           }} />
       )}
 
+      <ContractStrip contract={comparisonContract} />
+
       {/* A collapsed pane never mounts, so it fires no query at all; an open
           one reads the session cache and only recomputes when a curated save
           invalidates it or the reader asks. */}
@@ -216,7 +221,11 @@ export default function ViewPane({
               <BuiltInAnalysisCard key={`${identity}:${JSON.stringify(seedProps)}`}
                 analysis={analysis} selectedMajor={major}
                 availability={availability}
-                componentProps={{ ...seedProps, onViewChange: handleViewChange }} />
+                componentProps={{
+                  ...seedProps,
+                  ...(comparisonColorScale ? { comparisonColorScale } : {}),
+                  onViewChange: handleViewChange,
+                }} />
             </ErrorBoundary>
           )
       )}

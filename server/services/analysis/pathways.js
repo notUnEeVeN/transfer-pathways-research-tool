@@ -24,6 +24,45 @@ const { assistCourseCategoryCoverage } = require('../assistCourseBarriers');
 const { computeTransferBudget } = require('../degreeTransferBudget');
 const { projectPrereqEdges } = require('../prereqGraph');
 const { majorDocumentClause } = require('../../config/majorDocumentScope');
+const MA_PDF_FIGURES = require('../../data/ma/pdf-figures.json');
+
+const MA_FIG1_PDF = MA_PDF_FIGURES.fig1_course_articulation || {};
+
+// seaborn's `fmt='.0%'` delegates to Python's round-half-to-even behavior.
+// JavaScript's Math.round is half-up for positive values, which would render
+// the archived Salem×Bunker Hill 62.5% cell as 63 even though the PDF prints
+// 62. Literal final-PDF cells must follow the source renderer.
+function roundHalfEven(value) {
+  const lower = Math.floor(value);
+  const fraction = value - lower;
+  if (Math.abs(fraction - 0.5) <= 1e-10) return lower % 2 === 0 ? lower : lower + 1;
+  return Math.round(value);
+}
+
+/**
+ * Figure 1 in the final PDF is a later artifact than Mass Heatmap.xlsx.
+ * Visual comparison establishes that 164 printed cells agree with the
+ * archived ratios and one cell was revised. The complete final display is
+ * frozen in pdf-figures.json: never derive a supposed final-PDF cell from the
+ * mutable archive at request time, and fail closed if a row has no frozen key.
+ */
+function maFigure1PdfValue({ majorSlug, rowKind, school, college }) {
+  if (majorSlug !== 'ma-cs' || rowKind !== 'college') return null;
+  const normalizeInstitution = (value) => String(value || '')
+    .replace(/\s+Community College$/i, '')
+    .replace(/^University of Massachusetts\s+/i, 'UMass ')
+    .trim()
+    .toLowerCase();
+  const collegeKey = Object.keys(MA_FIG1_PDF.printed_cells || {})
+    .find((key) => normalizeInstitution(key) === normalizeInstitution(college));
+  const schoolMap = collegeKey
+    ? MA_FIG1_PDF.printed_cells[collegeKey]
+    : null;
+  const schoolKey = Object.keys(schoolMap || {})
+    .find((key) => normalizeInstitution(key) === normalizeInstitution(school));
+  const printed = schoolKey ? schoolMap[schoolKey] : undefined;
+  return printed != null && Number.isFinite(Number(printed)) ? Number(printed) : null;
+}
 
 const EMPTY_CATEGORY_SLOTS = {
   total: 0, covered: 0, lower_division_total: 0, lower_division_covered: 0,
@@ -981,6 +1020,22 @@ async function degreeRequirementCoverageData(db, {
         requirements_source: 'curated_requirements.degree',
         degree_template_id: String(degree._id),
         degree_template_updated_at: degree.updated_at ?? null,
+        degree_template_catalog_year: degree.catalog_year ?? null,
+        degree_template_source: degree.source ?? null,
+        degree_template_source_url: degree.source_url ?? null,
+        degree_template_verified: degree.verification?.verified === true,
+        degree_template_verified_at: degree.verification?.verified_at ?? null,
+        degree_template_verified_by_label:
+          degree.verification?.verified_by_label ?? null,
+        degree_template_research_status: degree.research_status ?? null,
+        // Bio/Econ currently have authoritative verification records but a
+        // stale pre-verification research-status string. Export the conflict
+        // explicitly so downstream receipts can disclose metadata debt without
+        // incorrectly downgrading a verified template.
+        degree_template_status_conflict: degree.verification?.verified === true
+          && /needs[_\s-]+human[_\s-]+verification/i.test(
+            String(degree.research_status || '')
+          ),
         degree_unit_system: unitSystem,
         degree_units_stated_minimum: degree.total_units ?? null,
         degree_units_modeled_total: unitTotal,
@@ -1005,6 +1060,28 @@ async function degreeRequirementCoverageData(db, {
           ? +((evaluated.named_requirements.courses.covered
             / evaluated.named_requirements.courses.total) * 100).toFixed(1)
           : null,
+        // Literal final-PDF Figure 1 display values are a separate source
+        // from this archived course-level reconstruction. The paper prints
+        // whole percentages; 164/165 equal the rounded archived ratios, while
+        // Cape Cod -> UMass Dartmouth was revised from 35% to 45%.
+        published_pdf_pct_named_requirement_courses: maFigure1PdfValue({
+          majorSlug,
+          rowKind: rowGroup.kind,
+          school: degree.school,
+          college: collegeNames[0],
+        }),
+        published_pdf_named_requirement_column_average:
+          majorSlug === 'ma-cs' && rowGroup.kind === 'college'
+            ? (MA_FIG1_PDF.printed_average_row?.[degree.school] ?? null)
+            : null,
+        published_pdf_named_requirement_prose_mean:
+          majorSlug === 'ma-cs' && rowGroup.kind === 'college'
+            ? (MA_FIG1_PDF.published_prose_mean ?? null)
+            : null,
+        published_pdf_named_requirement_source:
+          majorSlug === 'ma-cs' && rowGroup.kind === 'college'
+            ? 'final PDF Figure 1 (printed whole-percentage transcription)'
+            : null,
         // The GE-included variant — our extension for GE-heavy majors, where
         // lower-division general education counts as articulable everywhere
         // (certification clears it) and upper-division GE counts against.
@@ -1020,16 +1097,23 @@ async function degreeRequirementCoverageData(db, {
         degree_requirements_total: evaluated.total,
         degree_requirements_with_equivalent: evaluated.covered,
         degree_requirements_by_tier: evaluated.by_tier,
-        // Slots by course type, for the MA paper's Figure 2 breakdown and the
-        // CA paper's Figure 5 panels. The keys are the selected major's fine
+        // Required-course observations by type, for the MA paper's Figure 2
+        // breakdown and the CA paper's Figure 5 panels. Series are expanded
+        // course-by-course and choose-N alternatives are priced at the stated
+        // ask; the legacy field names remain for API compatibility. The keys
+        // are the selected major's fine
         // categories; the figures roll them into columns and panels using the
         // axis sets on the major's config entry. Every category is present even
         // when a campus requires nothing in it, so a figure can tell "required
         // and fully covered" from "not required" (the gray bar in Figure 5).
         //
-        // `_by_course_type` holds one primary category per requirement, so its
-        // slots sum to the degree total. `_by_course_category` holds every
-        // category a requirement touches, which is how a combined general-plus-
+        // `_by_course_type` holds one primary category per INCLUDED
+        // observation, so its totals sum to the figure's typed population. For
+        // corpora with `courseTypes.excludeGeGroups`, that population excludes
+        // GE and free-elective padding and therefore deliberately does not sum
+        // to the broader degree-requirement count above; the overall coverage fields
+        // remain unchanged. `_by_course_category` holds every category an
+        // included requirement touches, which is how a combined general-plus-
         // organic chemistry series counts against both — read it only for
         // per-category judgments that are never summed across categories.
         degree_requirements_by_course_type: emptyFilled(courseCategoryKeys,
@@ -1838,6 +1922,8 @@ module.exports = {
   _categoryOfReceiver: categoryOfReceiver,
   _chooseNMinimum: chooseNMinimum,
   _agreementMinSetExact: agreementMinSetExact,
+  _maFigure1PdfValue: maFigure1PdfValue,
+  _roundHalfEven: roundHalfEven,
   _settingsMajors: settingsMajors,
   _canonicalCsPrograms: CANONICAL_CS_PROGRAMS,
   // Temporary private alias for downstream tests/tools that imported the old

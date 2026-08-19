@@ -146,6 +146,7 @@ function VisualsTab() {
 
       <FullScreenPanel open={!!selectedItem} onClose={() => setSelectedKey(null)}
         title={selectedDetails?.title} subtitle={selectedDetails?.source}
+        contentOwnsHeader
         ariaLabel={selectedDetails ? `${selectedDetails.title} visual detail` : 'Visual detail'}>
         {selectedItem && (
           <BuiltInAnalysisCard analysis={selectedItem.analysis} selectedMajor={vaMajor} />

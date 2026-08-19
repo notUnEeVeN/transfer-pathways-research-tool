@@ -114,6 +114,67 @@ describe('createComparison', () => {
 
     await expect(create({ verdict_at_pin: { matched: 'lots' } })).rejects.toThrow(/matched/);
   });
+
+  // Cross-state pairs share no institutions, so they have no cell join to pin.
+  // Their pinnable reading is each corpus's own summary; without it they store
+  // nothing and later movement in either corpus goes unrecorded.
+  it('pins a population contrast for a pair with no cell join', async () => {
+    const doc = await create({
+      verdict_at_pin: {
+        distribution: {
+          mode: 'pair',
+          baseline: { n: 165, mean: 38.2, median: 37 },
+          subject: { n: 1035, mean: 31.9, median: 30 },
+          mean_delta: -6.3,
+          median_delta: -7,
+        },
+      },
+    });
+    expect(doc.verdict_at_pin.distribution.baseline.n).toBe(165);
+    expect(doc.verdict_at_pin.distribution.mean_delta).toBe(-6.3);
+    expect(doc.verdict_at_pin.matched).toBeUndefined();
+    expect(doc.verdict_at_pin.computed_at).toBeInstanceOf(Date);
+  });
+
+  it('keeps a pinned grouped distribution per category and rejects bad numbers', async () => {
+    const doc = await create({
+      verdict_at_pin: {
+        distribution: {
+          mode: 'grouped',
+          group_by: 'column',
+          groups: [
+            { key: 'computing', label: 'Computing', baseline: { n: 11, mean: 22, median: 20 }, subject: { n: 9, mean: 31, median: 30 }, mean_delta: 9, median_delta: 10 },
+            { key: 'non-stem', label: 'Non-STEM', baseline: { n: 5, mean: 76, median: 75 }, subject: { n: 9, mean: 70, median: 71 }, mean_delta: -6, median_delta: -4 },
+          ],
+        },
+      },
+    });
+    expect(doc.verdict_at_pin.distribution.groups.map((g) => g.key)).toEqual(['computing', 'non-stem']);
+    // No pooled overall unless the figure contract asked for one — otherwise a
+    // category-mix change could masquerade as a real shift.
+    expect(doc.verdict_at_pin.distribution.mean_delta).toBeUndefined();
+
+    await expect(create({
+      verdict_at_pin: { distribution: { mode: 'pair', baseline: { n: 'many' } } },
+    })).rejects.toThrow(/baseline\.n/);
+  });
+
+  // An empty population has no mean; storing 0 would claim a reading nobody took.
+  it('allows a null mean on an empty population', async () => {
+    const doc = await create({
+      verdict_at_pin: {
+        distribution: {
+          mode: 'pair',
+          baseline: { n: 0, mean: null, median: null },
+          subject: { n: 12, mean: 5, median: 5 },
+          mean_delta: null,
+          median_delta: null,
+        },
+      },
+    });
+    expect(doc.verdict_at_pin.distribution.baseline.mean).toBeNull();
+    expect(doc.verdict_at_pin.distribution.mean_delta).toBeNull();
+  });
 });
 
 describe('fingerprintOf', () => {

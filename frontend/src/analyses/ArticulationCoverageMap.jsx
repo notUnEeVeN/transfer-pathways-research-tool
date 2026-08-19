@@ -118,8 +118,7 @@ function campusCode(row) {
   const byId = CAMPUS_CODE_BY_ID.get(Number(row.school_id))
   if (byId) return byId
   const school = String(row.school || '')
-  return CAMPUS_CODE_PATTERNS.find(([pattern]) => pattern.test(school))?.[1]
-    || `UC${row.school_id ?? '?'}`
+  return CAMPUS_CODE_PATTERNS.find(([pattern]) => pattern.test(school))?.[1] || null
 }
 
 function compareCampusCodes(left, right) {
@@ -148,7 +147,8 @@ export function buildCoverageMapModel(rows = [], { includePaperBaseline = true }
     const district = districtByName.get(normalizeName(
       row.row_group_label || row.community_college_district
     ))
-    if (!district) {
+    const code = campusCode(row)
+    if (!district || !code) {
       ignoredRows += 1
       continue
     }
@@ -157,11 +157,11 @@ export function buildCoverageMapModel(rows = [], { includePaperBaseline = true }
       countiesByDistrict.get(district.index).add(county)
     }
     if (row.fully_articulated !== true) continue
-    const campusKey = row.school_id == null
-      ? normalizeName(row.school)
-      : String(row.school_id)
     if (!completeCampuses.has(district.index)) completeCampuses.set(district.index, new Map())
-    completeCampuses.get(district.index).set(campusKey, campusCode(row))
+    // Canonical campus code is both the identity and label. This prevents an
+    // unexpected duplicate id/name from becoming a tenth campus and keeps the
+    // map count on the same nine-campus universe as the heatmap/histogram.
+    completeCampuses.get(district.index).set(code, code)
   }
 
   const districts = DISTRICTS.map((district) => {

@@ -28,7 +28,7 @@ export const MEASURES = {
   'paper-articulation-histogram': {
     expression: 'bar height at n = number of districts that are complete for exactly n of the nine UC campuses',
     grain: 'One district contributes to exactly one integer bin from zero through nine.',
-    watchFor: 'This is a distribution of the selected major’s district heatmap row totals, so it inherits its requirement source and district-wide pooling. It shows how common each number of campus options is, but not which campuses or districts produce a bar.',
+    watchFor: 'This is a distribution of the selected major’s district heatmap row totals, so it inherits its requirement source and district-wide pooling. ASSIST is the default shared with the heatmap and map; Computer Science retains the hand-curated minimums and frozen paper matrix as explicitly labeled historical sources. It shows how common each number of campus options is, but not which campuses or districts produce a bar.',
   },
   'paper-articulation-map': {
     expression: 'district coverage = number of UC campuses for which the district is complete under the selected major’s active requirement model',
@@ -41,34 +41,34 @@ export const MEASURES = {
     watchFor: 'The denominator is every district. “Required” means unavoidable in the exact stored ASSIST groups whose is_required flag is true; no campus-specific course selection or waiver is applied. Alternative routes are honored by the shared PMT group logic. A district counts as missing when it cannot complete every unavoidable group in the category, so a panel can still be driven by one course in a mandatory sequence.',
   },
   'course-type-coverage': {
-    expression: 'point = required courses of one course type with a community college equivalent ÷ required courses of that type, averaged across community colleges',
+    expression: 'point = covered required-course observations of one course type ÷ all required-course observations of that type, averaged across community colleges',
     grain: 'One point per university campus per course type; a campus that requires nothing of a type contributes no point.',
-    watchFor: 'Read the scope control first. The default lower-division scope compares the types on coursework a community college can actually teach. The whole-degree scope also counts upper-division work no community college can offer, which suppresses a major’s own-discipline column for a structural reason, not because of articulation. Each point weights every community college equally, and the diamond averages the campus points, not the underlying pairs.',
+    watchFor: 'The default whole-degree scope matches the Massachusetts paper: degree and college requirements are counted, general education is excluded, and upper-division requirements remain even though a community college generally cannot offer them. In computed views, series expand course by course and choose-N blocks contribute their stated ask; the four typed buckets exactly partition Figure 1’s named-course population. The Massachusetts final-paper view is a frozen transcription of the printed dots (11 computing, 11 math, 11 science and 5 non-STEM observations). Each computed campus point weights its community colleges equally, and each diamond averages the plotted campus points.',
   },
   'transfer-credit-rate': {
     expression: 'completion = bachelor’s requirement units fulfilled by the associate degree ÷ bachelor’s requirement units in the selected scope',
     grain: 'One value per community college × UC campus, for one associate degree type.',
-    watchFor: 'Read the scope control first. The default lower-division view excludes the nontransferable tier; the full view includes upper-division and other university-only work. Associate-degree units apply at most once, while general education and elective room use an optimal-student assumption rather than observed transcripts.',
+    watchFor: 'This bachelor-side completion lens is available only when the Massachusetts-equivalent lens is off. Lower-division scope excludes university-only work; full-degree scope includes it. Associate-degree units apply at most once, while general education and elective room use an optimal-student assumption rather than observed transcripts.',
   },
   'transfer-extra-units': {
-    expression: 'replacement units = total units in the associate degree − associate degree units that apply to the UC degree',
+    expression: 'hours above 120 = max(0, resident bachelor requirement hours + unused associate-degree hours − 120)',
     grain: 'One value per community college × UC campus, for one associate degree type.',
-    watchFor: 'This companion measure keeps the associate degree as its denominator, unlike the bachelor’s-requirement completion figure. Every optimistic application assumption pushes replacement units down, so read it as a lower bound rather than observed repeated coursework.',
+    watchFor: 'This is the Massachusetts Figure 4 construct, not simply unused associate-degree credit. The two are equal only when the resident curriculum is exactly 120 semester hours. Massachusetts defaults to the transcribed final-PDF matrix; computed views build the pathway from the resident graduation requirement plus associate credit that cannot be applied. Every optimal-credit assumption pushes the modeled value down, so it is not an observed student outcome.',
   },
   'pathway-complexity': {
     expression: 'h(G) = Σ over pathway courses of (delay factor + blocking factor), on the prerequisite graph of the associate degree’s courses plus every university requirement the transfer does not satisfy; Δ = pathway h(G) − the campus’s own curriculum h(G).',
     grain: 'One score per community college × UC campus × associate-degree type, with the campus resident curriculum as its baseline.',
-    watchFor: 'A negative Δ can be genuine where articulation is strong (a well-aligned associate degree replaces enough of the degree that the pathway is lighter than the resident map) — the opposite of Massachusetts, where weak alignment made every pathway heavier. Edge data is still partial and missing edges understate complexity, so treat small deltas as directional.',
+    watchFor: 'A negative Δ can be genuine where articulation is strong: the final Massachusetts figure itself includes negative cells. The calculation must select one valid associate-degree route rather than treating every alternative course as required. Edge data is still partial. Missing edges lower an individual graph’s score, but the transfer and resident graphs need not be missing the same edges, so the difference between them can move in either direction — treat small deltas as directional and compare only explicitly matched degree types and graph rules.',
   },
   'transfer-extra-cost': {
-    expression: 'cost = replacement units (semester-equivalent) × campus annual resident tuition and fees ÷ (full-time load × 2 semesters)',
+    expression: 'cost = Figure 4 pathway hours above 120 × campus annual resident charge ÷ (full-time load × 2 semesters)',
     grain: 'One dollar value per community college × UC campus, for one associate degree type and one full-time load basis.',
-    watchFor: 'A campus bills a flat rate per term, so the per-unit price is derived, not published — the minimum-load basis divides by 12 units to follow the source paper, and the standard-load basis divides by 15, which is 20% cheaper per unit. Tuition and fees exclude waivable health insurance, room, board and books, and use the cohort that first enrolled in 2025-26; earlier cohorts pay less under UC’s tuition stability plan. It inherits every optimistic assumption in the replacement-units measure, so it is a lower bound on cost, and it prices coursework rather than the extra terms a student may actually enroll for.',
+    watchFor: 'The minimum-load basis divides the annual charge by 24 semester units, following the paper; the 15-unit sensitivity divides by 30 and is therefore 20% lower. The Massachusetts final-PDF values use tuition only and explicitly exclude fees. California uses the official UCOP Total Charges by Campus 2025–26 resident tuition, student-services fee and campus-fee record, excluding health insurance and living costs, so cross-state dollar levels are not strictly equivalent. Cost retains Figure 4’s unrounded internal hours even though the hours heatmap displays one decimal; the hover exposes the exact multiplication receipt. This prices coursework, not extra enrolled terms.',
   },
   'coverage-heatmap': {
-    expression: 'coverage = modeled graduation units with a community college equivalent ÷ all modeled graduation units',
+    expression: 'coverage = named required-course observations with a community college equivalent ÷ all named required-course observations, general education excluded',
     grain: 'One value per community college × UC program.',
-    watchFor: 'The denominator is the whole modeled graduation plan and includes university-only work at zero coverage, so a cell cannot reach 100% unless the program reserves nothing for after transfer. Each campus stays in its own quarter or semester units and is never normalized, so an average across campuses mixes the two systems.',
+    watchFor: 'This is the gallery’s Massachusetts-equivalent default: degree and college requirements at every level, with upper-division work retained as uncovered; series expand course by course and choose-N blocks contribute their stated ask. General education and free-elective padding are excluded. The graduation-unit, ASSIST-agreement and curated-minimum lenses are separate controls and must not be described with this denominator.',
   },
   'income-access': {
     expression: 'point = (income of the district’s catchment, UC campuses whose full selected-major transfer requirement the district articulates); each quartile bar is the mean campus count for one quarter of districts ordered by income',
@@ -121,10 +121,15 @@ export const COVERAGE_HEATMAP_MEASURES = {
 // default state keeps the bachelor-side completion measure.
 export const TRANSFER_CREDIT_RATE_MEASURES = {
   default: MEASURES['transfer-credit-rate'],
+  'ma-bachelor-side': {
+    expression: 'completion = bachelor’s requirement credits the associate degree removes ÷ the bachelor’s degree total',
+    grain: 'One value per community college × university campus.',
+    watchFor: 'The other direction on the same pathways: not how much of the associate degree gets used, but how much of the bachelor’s it finishes. The paper published no such figure — this is ours, and it is the same statistic California shows, which is why the two states can be compared on it. Computed from the authors’ source pathway sheets: 35.8% over their 61 studied pathways, against 36.1% through our import pipeline. Individual cells carry course-name matching noise; read the distribution rather than a single pair.',
+  },
   'ma-as-side': {
-    expression: 'transfer credit rate = associate-degree units that apply ÷ the associate degree’s own units',
+    expression: 'transfer credit rate = associate-degree units replacing named or GE/breadth bachelor requirements ÷ the associate degree’s own units',
     grain: 'One value per community college × university, for one associate degree type.',
-    watchFor: 'On the Massachusetts tab the Source control switches between THREE versions of this one measure: the final paper’s Figure 3 as printed (the newer revision of their hand tally — its per-university averages mean 68%), the repo workbook’s older tally (mean 65.2%), and our recomputation from the paper’s own pathway workbooks (which matches the tally almost exactly wherever the paper’s two artifacts agree; r = 0.99 on those pairs). Every cell’s hover lists all three, so a difference between them is one glance away. Blank cells are pairs the paper did not study (outside 50 driving miles), not zeroes. On California data this state shows our recomputation of the same measure, statewide.',
+    watchFor: 'Massachusetts defaults to the final paper’s 61 printed Figure 3 cells (equal-cell mean 67.74%, reported as 68%). Our recalculation sums gray replacement-row credits over the cleaned AS total, excluding blue unrestricted-elective-only credit and applying no 100% cap. Blank Massachusetts cells are unstudied pairs, never zeroes. California uses the same associate-degree denominator and counts named articulation plus actual GE/breadth credit once, while excluding unrestricted elective-only capacity; verified sources are on by default.',
   },
 }
 

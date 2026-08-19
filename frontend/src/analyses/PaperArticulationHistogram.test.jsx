@@ -6,6 +6,7 @@ import PaperArticulationHistogram, {
   buildArticulationHistogramModel,
   buildPaperArticulationHistogramModel,
 } from './PaperArticulationHistogram'
+import { buildDistrictHeatmapRowTotals } from './PaperDistrictHeatmap'
 import { DISTRICTS, UC_ROWS } from './paperDistrictBaseline'
 import { useCoverage } from '../shared/query/hooks/useData'
 
@@ -23,18 +24,20 @@ function currentRows() {
 }
 
 describe('paper articulation histogram', () => {
-  const refetch = vi.fn()
+  const refetchHandCurated = vi.fn()
+  const refetchAssist = vi.fn()
 
   beforeEach(() => {
-    refetch.mockReset()
+    refetchHandCurated.mockReset()
+    refetchAssist.mockReset()
     useCoverage.mockReset()
-    useCoverage.mockReturnValue({
+    useCoverage.mockImplementation((params) => ({
       data: { rows: currentRows() },
       isLoading: false,
       isError: false,
       isFetching: false,
-      refetch,
-    })
+      refetch: params.requirements === 'assist' ? refetchAssist : refetchHandCurated,
+    }))
   })
 
   it('recomputes the ten Figure 3 bins from current district coverage', () => {
@@ -45,6 +48,29 @@ describe('paper articulation histogram', () => {
     expect(model.bins.reduce((sum, bin) => sum + bin.districts.length, 0)).toBe(72)
   })
 
+  it('is exactly the distribution of canonical district-heatmap row totals', () => {
+    const rows = [
+      ...currentRows(),
+      // Repeated observations collapse into the same heatmap cell, and an
+      // unrelated campus is ignored by both the matrix and its distribution.
+      { ...currentRows()[0] },
+      {
+        school_id: 999,
+        school: 'Unrelated university',
+        row_group_label: DISTRICTS[0].name,
+        fully_articulated: true,
+      },
+    ]
+    const rowTotals = buildDistrictHeatmapRowTotals(rows)
+    const histogram = buildArticulationHistogramModel(rows)
+
+    for (const district of rowTotals) {
+      expect(histogram.bins[district.currentCount].districts)
+        .toContainEqual(expect.objectContaining({ index: district.index }))
+    }
+    expect(histogram.districtCount).toBe(72)
+  })
+
   it('reconstructs the frozen Figure 3 baseline from the paper matrix', () => {
     const model = buildPaperArticulationHistogramModel()
 
@@ -52,19 +78,30 @@ describe('paper articulation histogram', () => {
     expect(model.districtCount).toBe(72)
   })
 
-  it('renders the paper-style histogram without redundant summary cards', () => {
+  it('defaults to ASSIST, retains the historical sources, and refreshes the active source', () => {
     const { container } = render(<PaperArticulationHistogram />)
 
     expect(container.querySelectorAll('[data-histogram-bin]')).toHaveLength(10)
     expect(screen.getByRole('img', { name: /9 complete campuses\. 20 districts/i })).toBeTruthy()
     expect(screen.getByText('Number of UC campuses with complete articulation')).toBeTruthy()
+    expect(screen.getByText('Source: ASSIST minimums')).toBeTruthy()
     expect(screen.queryByText('Map-class agreement')).not.toBeInTheDocument()
+    expect(useCoverage).toHaveBeenLastCalledWith(
+      {
+        majorSlug: 'cs',
+        groupBy: 'district',
+        requirements: 'assist',
+        pin: 'settings',
+      },
+      expect.objectContaining({ refetchOnWindowFocus: false, refetchInterval: false })
+    )
 
     fireEvent.click(screen.getByRole('button', { name: 'Paper baseline' }))
     expect(screen.getByRole('img', { name: /9 complete campuses\. 18 districts/i })).toBeTruthy()
     expect(screen.getByRole('switch', { name: 'Show differences' })).toBeDisabled()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Current data' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Hand-curated minimums' }))
+    expect(screen.getByText('Source: Hand-curated minimums')).toBeTruthy()
     fireEvent.click(screen.getByRole('switch', { name: 'Show differences' }))
     expect(container.querySelectorAll('[data-difference="increase"]')).toHaveLength(2)
     expect(container.querySelectorAll('[data-difference="decrease"]')).toHaveLength(2)
@@ -72,8 +109,8 @@ describe('paper articulation histogram', () => {
     expect(screen.getByRole('img', { name: /8 complete campuses\. 10 districts\. Paper baseline: 12; change: -2/i })).toBeTruthy()
 
     fireEvent.click(screen.getByRole('button', { name: 'Refresh data' }))
-    expect(refetch).toHaveBeenCalledOnce()
-    expect(useCoverage).toHaveBeenCalledWith(
+    expect(refetchHandCurated).toHaveBeenCalledOnce()
+    expect(useCoverage).toHaveBeenLastCalledWith(
       {
         majorSlug: 'cs',
         groupBy: 'district',
@@ -82,6 +119,10 @@ describe('paper articulation histogram', () => {
       },
       expect.objectContaining({ refetchOnWindowFocus: false, refetchInterval: false })
     )
+
+    fireEvent.click(screen.getByRole('button', { name: 'ASSIST minimums' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Refresh data' }))
+    expect(refetchAssist).toHaveBeenCalledOnce()
   })
 
   it('uses the publication skin only for current-data states', () => {
@@ -94,6 +135,8 @@ describe('paper articulation histogram', () => {
     expect(modern.querySelector('path[fill="#2E5C8A"]')).toBeTruthy()
     expect(modern.querySelector('[data-major-label]'))
       .toHaveTextContent('Major: Computer Science')
+    expect(modern.querySelector('[data-source-label]'))
+      .toHaveTextContent('Source: ASSIST minimums')
     expect(modern.querySelector('[data-histogram-value-label]')?.getAttribute('font-size')).toBe('16')
     expect([...modern.querySelectorAll('text')].map((node) => node.textContent))
       .not.toContain('Distribution of complete campus articulation')
@@ -111,6 +154,8 @@ describe('paper articulation histogram', () => {
     expect(modern).toBeTruthy()
     expect(modern.querySelector('[data-major-label]'))
       .toHaveTextContent('Major: Biology')
+    expect(modern.querySelector('[data-source-label]'))
+      .toHaveTextContent('Source: ASSIST minimums')
     expect(modern.querySelector('title')).toHaveTextContent('Biology: distribution of complete campus articulation')
     expect(modern.querySelector('desc')).toHaveTextContent('for Biology')
     expect(container.querySelector('[data-export-exclude]')).toBeNull()
@@ -132,7 +177,7 @@ describe('paper articulation histogram', () => {
     expect(container.querySelector('svg[data-export-width="960"]')).toBeNull()
     expect(screen.queryByText('Version')).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Paper baseline' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Current data' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'ASSIST minimums' })).not.toBeInTheDocument()
     expect(screen.queryByRole('switch', { name: 'Show differences' })).not.toBeInTheDocument()
     expect(screen.queryByText('Added since paper')).not.toBeInTheDocument()
 

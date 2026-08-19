@@ -9,9 +9,9 @@ describe('measure panel', () => {
     render(<MeasurePanel measure={measureFor('coverage-heatmap')} />)
 
     expect(screen.getByText('How this is measured')).toBeInTheDocument()
-    expect(screen.getByText(/modeled graduation units with a community college equivalent/)).toBeInTheDocument()
+    expect(screen.getByText(/named required-course observations with a community college equivalent/)).toBeInTheDocument()
     expect(screen.getByText(/One value per community college × UC program/)).toBeInTheDocument()
-    expect(screen.getByText(/cannot reach 100%/)).toBeInTheDocument()
+    expect(screen.getByText(/upper-division work retained as uncovered/)).toBeInTheDocument()
   })
 
   it('renders nothing when a figure has no definition', () => {

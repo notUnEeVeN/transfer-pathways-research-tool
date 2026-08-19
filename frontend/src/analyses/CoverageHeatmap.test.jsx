@@ -1,7 +1,9 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import CoverageHeatmap, { createCoverageColorScale, makeCellColor } from './CoverageHeatmap'
+import CoverageHeatmap, {
+  buildHeatmap, coverageComparisonCells, createCoverageColorScale, makeCellColor,
+} from './CoverageHeatmap'
 import { paperRedCellColor } from './maHeatmapColors'
 import { useCoverage } from '../shared/query/hooks/useData'
 
@@ -49,7 +51,7 @@ describe('CoverageHeatmap requirement basis', () => {
     })
   })
 
-  it('defaults to live four-year graduation requirements and uses degree-specific language', () => {
+  it('defaults to the paper-equivalent named-course lens', () => {
     const { container } = render(<CoverageHeatmap />)
 
     expect(useCoverage).toHaveBeenCalledWith(
@@ -61,14 +63,43 @@ describe('CoverageHeatmap requirement basis', () => {
     expect(screen.getByRole('button', { name: '4-year graduation plan (by units)' })).toBeTruthy()
     expect(screen.queryByText('Mean unit coverage')).not.toBeInTheDocument()
     expect(screen.queryByText('Coverage cells')).not.toBeInTheDocument()
-    expect(screen.getByText('Potential graduation-unit coverage')).toBeTruthy()
-    expect(screen.getByLabelText('Coverage color scale from 45% to 65%')).toBeTruthy()
-    expect(screen.getByLabelText(/Potential graduation-unit coverage: 55%/)).toBeTruthy()
-    expect(screen.getByLabelText(/99 of 180 modeled quarter units have a community-college equivalent/)).toBeTruthy()
-    expect(screen.getByLabelText(/Secondary slot count: 16 of 40 requirements have an equivalent/)).toBeTruthy()
+    expect(screen.getByText('MA-equivalent requirement articulation')).toBeTruthy()
+    expect(screen.getByLabelText('Coverage color scale from 15% to 35%')).toBeTruthy()
+    expect(screen.getByLabelText(/MA-equivalent articulation: 25%/)).toBeTruthy()
+    expect(screen.getByLabelText(/6 of 24 required courses articulate/)).toBeTruthy()
     // The measure panel is the single home for the definition; the figure
     // itself carries no explanatory footnote.
     expect(screen.queryByText(/Each campus is calculated in its own native quarter or semester units/)).toBeNull()
+  })
+
+  it('keeps the bachelor-template evidence receipt inside exports', () => {
+    const major = {
+      degreeTemplateEvidence: {
+        total: 9,
+        explicitlyVerified: 9,
+        catalogYears: '2025-26 (8 templates); 2026-27 (UC San Diego)',
+        staleResearchStatus: 9,
+      },
+    }
+    const { container } = render(<CoverageHeatmap majorSlug='bio' major={major}
+      majorCapabilities={{ transferMinimums: false }} />)
+    const exportRoot = container.querySelector('[data-export-root]')
+    expect(within(exportRoot).getByText(/9\/9 bachelor templates explicitly verified/i))
+      .toBeInTheDocument()
+    expect(within(exportRoot).getByText(/2025-26.*2026-27/i)).toBeInTheDocument()
+    expect(within(exportRoot).getByText(/9 stale pre-verification research-status labels/i))
+      .toBeInTheDocument()
+  })
+
+  it('uses and exports the fixed shared percentage domain in Comparison', () => {
+    const scale = { min: 0, mid: 50, max: 100, comparisonShared: true }
+    const { container } = render(<CoverageHeatmap comparisonColorScale={scale} />)
+    const exportRoot = container.querySelector('[data-export-root]')
+
+    expect(within(exportRoot).getByText('Shared comparison color domain: 0%–100%'))
+      .toBeInTheDocument()
+    expect(screen.getByLabelText(/MA-equivalent articulation: 25%/))
+      .toHaveStyle({ backgroundColor: paperRedCellColor(25, scale).backgroundColor })
   })
 
   it('locks a corpus without unit modeling into the paper lens: no basis select, no toggle-off', () => {
@@ -93,6 +124,89 @@ describe('CoverageHeatmap requirement basis', () => {
     )
   })
 
+  it('offers Massachusetts Figure 1 only as the final paper or our recalculation', () => {
+    const pdfRow = {
+      ...degreeRow,
+      school: 'University of Massachusetts Dartmouth',
+      major: 'Computer Science, B.S.',
+      community_college: 'Cape Cod Community College',
+      row_group_label: 'Cape Cod Community College',
+      named_requirement_courses_total: 31,
+      named_requirement_courses_articulated: 11,
+      pct_named_requirement_courses: 35.4839,
+      published_pdf_pct_named_requirement_courses: 45,
+      published_pdf_named_requirement_column_average: 37,
+      published_pdf_named_requirement_prose_mean: 38.2,
+    }
+    useCoverage.mockReturnValue({
+      data: { n: 1, rows: [pdfRow] },
+      isLoading: false,
+      isError: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    })
+
+    const pdf = buildHeatmap([pdfRow], 'ma-courses', { maSource: 'pdf' })
+    const archive = buildHeatmap([pdfRow], 'ma-courses', { maSource: 'archive' })
+    expect(pdf.rows[0].values).toEqual([45])
+    expect(pdf.columnMeans).toEqual([37])
+    expect(pdf.paperProseMean).toBe(38.2)
+    expect(archive.rows[0].values[0]).toBeCloseTo(11 / 31 * 100)
+
+    const maMajor = { state: 'ma', capabilities: { paperBaselines: true } }
+    const { container } = render(
+      <CoverageHeatmap majorSlug='ma-cs' major={maMajor}
+        majorCapabilities={{ paperBaselines: true, unitCoverage: false }} />
+    )
+    const exportRoot = container.querySelector('[data-export-root]')
+    expect(within(exportRoot).getByText(/Final paper: Figure 1 as printed/i))
+      .toBeInTheDocument()
+    expect(within(exportRoot).getAllByText('45%').length).toBeGreaterThan(0)
+    expect(within(exportRoot).getByText('37%')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Final paper' }))
+    fireEvent.click(screen.getByRole('option', { name: 'Our recalculation' }))
+    expect(within(exportRoot).getByText(/Our recalculation: the authors’ released course-level data/i))
+      .toBeInTheDocument()
+    expect(within(exportRoot).getAllByText('35.5%').length).toBeGreaterThan(0)
+    expect(screen.queryByText(/Archived workbook reconstruction/i)).toBeNull()
+  })
+
+  it('keeps the exact archived numerator and denominator in the Figure 1 audit adapter', () => {
+    const row = {
+      ...degreeRow,
+      school_id: 9008,
+      school: 'UMass Dartmouth',
+      major: 'Computer Science, B.S.',
+      community_college_id: 201,
+      community_college: 'Cape Cod Community College',
+      row_group_key: '201',
+      row_group_label: 'Cape Cod Community College',
+      named_requirement_courses_total: 31,
+      named_requirement_courses_articulated: 11,
+      // The table displays one decimal, but Compare must retain 11/31 so the
+      // paper's whole-percentage rounding can be audited without double
+      // rounding 35.4839 to 35.5 first.
+      pct_named_requirement_courses: 35.5,
+      published_pdf_pct_named_requirement_courses: 45,
+    }
+    const major = { state: 'ma', capabilities: { paperBaselines: true, unitCoverage: false } }
+    const pdf = coverageComparisonCells(
+      { rows: [row] },
+      { major: 'ma-cs', knobs: { rows: 'college', 'ma-source': 'pdf' } },
+      major,
+    )
+    const archive = coverageComparisonCells(
+      { rows: [row] },
+      { major: 'ma-cs', knobs: { rows: 'college', 'ma-source': 'archive' } },
+      major,
+    )
+
+    expect(pdf[0].value).toBe(45)
+    expect(archive[0].value).toBeCloseTo((11 / 31) * 100, 10)
+    expect(archive[0].value).not.toBe(35.5)
+  })
+
   it('elevates the MA-paper equivalent to its own toggle over the same degree rows', () => {
     const onMeasureChange = vi.fn()
     render(<CoverageHeatmap onMeasureChange={onMeasureChange} />)
@@ -100,8 +214,13 @@ describe('CoverageHeatmap requirement basis', () => {
     // The definition of the current state lives in the measure panel, which
     // the figure keeps in sync — nothing is explained in figure footnotes.
     expect(onMeasureChange).toHaveBeenLastCalledWith(
-      expect.objectContaining({ expression: expect.stringMatching(/modeled graduation units/) })
+      expect.objectContaining({ expression: expect.stringMatching(/required courses/) })
     )
+
+    const toggle = screen.getByRole('button', { name: 'MA-paper equivalent' })
+    expect(toggle.getAttribute('aria-pressed')).toBe('true')
+    fireEvent.click(toggle)
+    expect(toggle.getAttribute('aria-pressed')).toBe('false')
 
     // Not a dropdown entry: the comparison is important enough to stand alone.
     fireEvent.click(screen.getByRole('button', { name: '4-year graduation plan (by units)' }))
@@ -111,8 +230,6 @@ describe('CoverageHeatmap requirement basis', () => {
       expect.objectContaining({ expression: expect.stringMatching(/ASSIST/) })
     )
 
-    const toggle = screen.getByRole('button', { name: 'MA-paper equivalent' })
-    expect(toggle.getAttribute('aria-pressed')).toBe('false')
     fireEvent.click(toggle)
 
     // The lens reads the degree response regardless of the basis selection,
@@ -162,6 +279,7 @@ describe('CoverageHeatmap requirement basis', () => {
   it('keeps both existing minimums modes selectable for CS', () => {
     render(<CoverageHeatmap />)
 
+    fireEvent.click(screen.getByRole('button', { name: 'MA-paper equivalent' }))
     fireEvent.click(screen.getByRole('button', { name: '4-year graduation plan (by units)' }))
     expect(screen.getByRole('option', { name: 'ASSIST minimums' })).toBeTruthy()
     expect(screen.getByRole('option', { name: 'Hand-curated minimums' })).toBeTruthy()
@@ -181,6 +299,7 @@ describe('CoverageHeatmap requirement basis', () => {
       expect.any(Object)
     )
 
+    fireEvent.click(screen.getByRole('button', { name: 'MA-paper equivalent' }))
     fireEvent.click(screen.getByRole('button', { name: '4-year graduation plan (by units)' }))
     expect(screen.getByRole('option', { name: 'ASSIST minimums' })).toBeTruthy()
     expect(screen.queryByRole('option', { name: 'Hand-curated minimums' })).toBeNull()
@@ -189,6 +308,7 @@ describe('CoverageHeatmap requirement basis', () => {
   it('fails closed for non-CS slugs and normalizes stale paper state to degree', () => {
     const { rerender } = render(<CoverageHeatmap majorSlug='cs' />)
 
+    fireEvent.click(screen.getByRole('button', { name: 'MA-paper equivalent' }))
     fireEvent.click(screen.getByRole('button', { name: '4-year graduation plan (by units)' }))
     fireEvent.click(screen.getByRole('option', { name: 'Hand-curated minimums' }))
     expect(useCoverage).toHaveBeenLastCalledWith(

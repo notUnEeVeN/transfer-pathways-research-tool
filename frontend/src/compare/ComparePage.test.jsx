@@ -90,7 +90,28 @@ vi.mock('../analyses/registry', () => {
       }),
       cells: (data) => data,
     },
+    comparisonContract: (view) => ({
+      measure: 'complexity delta', unit: 'score points', grain: 'college × university',
+      keys: { rows: 'college', columns: 'university' },
+      semantics: { denominator: 'resident curriculum', weighting: 'pathway equal' },
+      context: { source: view.knobs?.source || 'published' },
+    }),
     Component: () => null,
+  }
+  // Same adapter contract under a real zero-to-max figure id, so the
+  // integration test can prove the workspace derives one render-only scale
+  // from both panes and forwards it to both mounted registry components.
+  const sharedScaleFigure = {
+    ...knobbed,
+    id: 'transfer-extra-units',
+    title: 'Transfer extra units',
+    figureNo: 4,
+  }
+  const symmetricScaleFigure = {
+    ...knobbed,
+    id: 'pathway-complexity',
+    title: 'Pathway complexity',
+    figureNo: 6,
   }
   const bare = {
     id: 'plain-figure',
@@ -113,7 +134,7 @@ vi.mock('../analyses/registry', () => {
     majorScope: { mode: 'selected', requiredCapabilities: [], datasets: [] },
     Component: () => null,
   }
-  const ANALYSES = [knobbed, bare, outOfScope]
+  const ANALYSES = [knobbed, sharedScaleFigure, symmetricScaleFigure, bare, outOfScope]
   return {
     ANALYSES,
     getAnalysisById: (id) => ANALYSES.find((entry) => entry.id === id) || null,
@@ -171,10 +192,17 @@ vi.mock('../shared/api/apiClient', () => {
       get: (path, config = {}) => {
         if (path === '/access/me') return Promise.resolve({ data: { uid: 'u1', role: 'admin' } })
         if (path === '/analysis/releases') {
-          return Promise.resolve({ data: { released_ids: ['demo-figure', 'plain-figure'], disabled_ids: [] } })
+          return Promise.resolve({ data: { released_ids: ['demo-figure', 'transfer-extra-units', 'pathway-complexity', 'plain-figure'], disabled_ids: [] } })
         }
         if (path === '/majors') {
-          return Promise.resolve({ data: fx.majors[config.params?.state || 'ca'] })
+          const state = config.params?.state || 'ca'
+          if (state === 'all') {
+            return Promise.resolve({ data: {
+              majors: [...fx.majors.ca.majors, ...fx.majors.ma.majors, ...fx.majors.va.majors],
+              default: 'cs',
+            } })
+          }
+          return Promise.resolve({ data: fx.majors[state] })
         }
         if (path === '/comparisons') {
           return Promise.resolve({ data: { comparisons: [...fx.store.docs.values()] } })
@@ -256,13 +284,59 @@ beforeEach(() => {
   fx.store.failNote = false
 })
 
+describe('the saved exhibit shelf', () => {
+  const saved = (id, title, figure, majors, updatedAt) => ({
+    _id: id,
+    title,
+    updated_at: updatedAt,
+    note_count: 0,
+    panes: majors.map((major, index) => ({
+      id: `p${index + 1}`, figure, major, knobs: {}, label: null,
+    })),
+  })
+
+  it('renders state figures first in paper order, then MA source exhibits', async () => {
+    [
+      saved('audit-6', 'Audit six', 'pathway-complexity', ['ma-cs', 'ma-cs'], '2030-01-01T00:00:00Z'),
+      saved('state-4', 'State four', 'transfer-extra-units', ['ma-cs', 'cs'], '2020-01-01T00:00:00Z'),
+      saved('state-1', 'State one', 'ca-only-figure', ['ma-cs', 'cs'], '2021-01-01T00:00:00Z'),
+      saved('audit-2', 'Audit two', 'plain-figure', ['ma-cs', 'ma-cs'], '2031-01-01T00:00:00Z'),
+      saved('state-6', 'State six', 'demo-figure', ['ma-cs', 'cs'], '2019-01-01T00:00:00Z'),
+      saved('state-2', 'State two', 'plain-figure', ['ma-cs', 'cs'], '2029-01-01T00:00:00Z'),
+    ].forEach((doc) => fx.store.docs.set(doc._id, doc))
+
+    openWith({ tab: 'saved' })
+
+    const stateHeading = await screen.findByRole('heading', {
+      name: 'California–Massachusetts state exhibits',
+    })
+    const auditHeading = screen.getByRole('heading', {
+      name: 'Massachusetts recalculation exhibits',
+    })
+    const stateButtons = within(stateHeading.closest('section')).getAllByRole('button')
+    const auditButtons = within(auditHeading.closest('section')).getAllByRole('button')
+
+    expect(stateButtons.map((button) => button.textContent)).toEqual([
+      expect.stringContaining('State one'),
+      expect.stringContaining('State two'),
+      expect.stringContaining('State four'),
+      expect.stringContaining('State six'),
+    ])
+    expect(auditButtons.map((button) => button.textContent)).toEqual([
+      expect.stringContaining('Audit two'),
+      expect.stringContaining('Audit six'),
+    ])
+    expect(screen.getByText(/Figures 3 and 4 only/i)).toBeInTheDocument()
+  })
+})
+
 describe('the difference is the hero', () => {
   // The figures carry their own difference view, so the workspace states the
   // result in words rather than drawing the deltas a second time.
   it('states what the join found in words', async () => {
     openWith({ panes: MA_PAIR })
 
-    expect(await screen.findByText(/every cell is directly comparable/)).toBeInTheDocument()
+    expect(await screen.findByText(/institution keys align/i)).toBeInTheDocument()
     // Tolerance 0, so neither cell agrees — said plainly rather than rounded away.
     expect(screen.getByText(/cells agree/).textContent.replace(/\s+/g, ' '))
       .toContain('0 of 2 cells agree')
@@ -272,12 +346,42 @@ describe('the difference is the hero', () => {
   // mount on open rather than hiding behind a disclosure.
   it('renders every source figure side by side on open', async () => {
     openWith({ panes: MA_PAIR })
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
 
     const cards = await screen.findAllByTestId('figure-card')
     expect(cards).toHaveLength(2)
     expect(cards[0]).toHaveTextContent('demo-figure {"defaultSource":"published"}')
     expect(cards[1]).toHaveTextContent('demo-figure {"defaultSource":"ours"}')
+  })
+
+  it('forwards one combined ready-cell color scale to both Figure 4 panes', async () => {
+    openWith({
+      panes: 'transfer-extra-units@ma-cs?source=published|transfer-extra-units@ma-cs?source=ours',
+    })
+    await screen.findByText(/institution keys align/i)
+
+    const scale = '"comparisonColorScale":{"min":0,"mid":140.5,"max":281,"comparisonShared":true}'
+    await waitFor(() => {
+      const cards = screen.getAllByTestId('figure-card')
+      expect(cards).toHaveLength(2)
+      expect(cards[0]).toHaveTextContent(scale)
+      expect(cards[1]).toHaveTextContent(scale)
+    })
+  })
+
+  it('forwards one symmetric ready-cell color scale to both Figure 6 panes', async () => {
+    openWith({
+      panes: 'pathway-complexity@ma-cs?source=published|pathway-complexity@ma-cs?source=ours',
+    })
+    await screen.findByText(/institution keys align/i)
+
+    const scale = '"comparisonColorScale":{"maxAbs":281,"min":-281,"mid":0,"max":281,"comparisonShared":true}'
+    await waitFor(() => {
+      const cards = screen.getAllByTestId('figure-card')
+      expect(cards).toHaveLength(2)
+      expect(cards[0]).toHaveTextContent(scale)
+      expect(cards[1]).toHaveTextContent(scale)
+    })
   })
 
   // A saved comparison is an exhibit: the assembly controls fold away, leaving
@@ -288,7 +392,7 @@ describe('the difference is the hero', () => {
       baseline_pane: 'p1', verdict_at_pin: null,
     })
     openWith({ cmp: 'cmp-5', tab: 'saved' })
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
 
     expect(screen.queryByRole('button', { name: 'Add a view' })).toBeNull()
     expect(screen.queryByRole('button', { name: 'Remove this view' })).toBeNull()
@@ -308,7 +412,7 @@ describe('the difference is the hero', () => {
       baseline_pane: 'p1', verdict_at_pin: null,
     })
     openWith({ cmp: 'cmp-6', tab: 'saved' })
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
 
     fireEvent.click(screen.getAllByRole('button', { name: 'report diff' })[0])
 
@@ -329,11 +433,11 @@ describe('the difference is the hero', () => {
     })
     // A draft on the bench, and a saved comparison opened beside it.
     openWith({ panes: MA_PAIR, cmp: 'cmp-7', tab: 'saved' })
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
     expect(screen.queryByRole('button', { name: 'Add a view' })).toBeNull()
 
     fireEvent.click(screen.getByRole('tab', { name: 'Workspace' }))
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
 
     // The bench still has its own pair AND its assembly controls.
     expect(screen.getByRole('button', { name: 'Add a view' })).toBeInTheDocument()
@@ -342,16 +446,16 @@ describe('the difference is the hero', () => {
 
   it('states what the join did, permanently', async () => {
     openWith({ panes: MA_PAIR })
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
 
-    expect(screen.getByText('college × university')).toBeInTheDocument()
-    expect(screen.getByText(/matched/)).toBeInTheDocument()
+    expect(screen.getAllByText('college × university').length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/matched/).length).toBeGreaterThan(0)
     expect(screen.getByText('aligned')).toBeInTheDocument()
   })
 
   it('mounts the registry component through BuiltInAnalysisCard with the pinned knob as a prop', async () => {
     openWith({ panes: MA_PAIR })
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
 
     // Each pane seeds the figure with ITS OWN pinned control, which is the
     // whole mechanism: componentProps, not a controlled component.
@@ -364,24 +468,24 @@ describe('the difference is the hero', () => {
     expect(await screen.findAllByTestId('figure-card')).toHaveLength(1)
   })
 
-  it('refuses a cell diff across corpora instead of inventing a correspondence', async () => {
+  it('uses distribution statistics across corpora instead of inventing a correspondence', async () => {
     openWith({ panes: 'demo-figure@ma-cs?source=ours|demo-figure@va-cs?source=ours' })
 
-    // The refusal is not dismissible, and nothing stands in for the difference
-    // it will not show.
-    expect(await screen.findByText(/no cell-by-cell difference exists/)).toBeInTheDocument()
-    expect(screen.getByText(/No cell-by-cell difference is shown/)).toBeInTheDocument()
+    expect(await screen.findByText(/Same statistic, different corpora/)).toBeInTheDocument()
+    expect(screen.getByText('Cross-corpus distribution receipt')).toBeInTheDocument()
+    expect(screen.getByText(/No institutions are paired/)).toBeInTheDocument()
     expect(screen.queryByText(/cells agree/)).not.toBeInTheDocument()
   })
 })
 
 describe('graceful degradation', () => {
-  it('panes a figure that declares no adapter and says so rather than breaking', async () => {
+  it('panes a figure with no comparison contract and explains why no difference is computed', async () => {
     // Same figure, same major, nothing pinned — the degenerate pair a reader
     // assembles before deciding what to change. It must still work.
     openWith({ panes: 'plain-figure@ma-cs|plain-figure@ma-cs' })
 
-    expect(await screen.findByText(/No delta lens for plain-figure yet/)).toBeInTheDocument()
+    expect(await screen.findByText(/has not declared enough methodology/)).toBeInTheDocument()
+    expect(screen.getByText(/No cell-by-cell difference is shown/)).toBeInTheDocument()
     expect(screen.getAllByText('not pinned — showing figure defaults').length).toBe(2)
     // Still a document: the notes rail is live on a figure with no delta lens.
     expect(screen.getByText('No notes yet.')).toBeInTheDocument()
@@ -398,7 +502,7 @@ describe('graceful degradation', () => {
 describe('notes', () => {
   it('ships empty and writes with no save ceremony', async () => {
     openWith({ panes: MA_PAIR })
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
     expect(screen.getByText('No notes yet.')).toBeInTheDocument()
     expect(fx.store.docs.size).toBe(0)
 
@@ -421,7 +525,7 @@ describe('notes', () => {
   it('keeps the typed text in the box when the write fails', async () => {
     fx.store.failNote = true
     openWith({ panes: MA_PAIR })
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
 
     const box = screen.getByLabelText('Add a note')
     fireEvent.change(box, { target: { value: 'Half a thought, not yet finished' } })
@@ -433,7 +537,7 @@ describe('notes', () => {
 
   it('pins the verdict observed at save time', async () => {
     openWith({ panes: MA_PAIR })
-    await screen.findByText(/directly comparable|no colleges or campuses in common|different measures|no delta lens/)
+    await screen.findByText(/institution keys align/i)
 
     fireEvent.click(screen.getByRole('button', { name: 'Save' }))
     await waitFor(() => expect(fx.store.docs.size).toBe(1))

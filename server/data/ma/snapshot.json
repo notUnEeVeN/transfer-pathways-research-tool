@@ -1,12 +1,12 @@
 {
- "generated_at": "2026-08-14T23:56:01.691Z",
+ "generated_at": "2026-08-19T01:21:53.827Z",
  "counts": {
   "institutions": 26,
   "degrees": 11,
   "asDegrees": 15,
   "agreements": 165,
   "courses": 734,
-  "baselines": 337
+  "baselines": 435
  },
  "failures": [],
  "warnings": [
@@ -183,7 +183,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 488.92,
-    "tuition_annual_resident_usd": 11734.08
+    "tuition_annual_resident_usd": 11734.08,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9002",
@@ -194,7 +195,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 472.75,
-    "tuition_annual_resident_usd": 11346
+    "tuition_annual_resident_usd": 11346,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9003",
@@ -205,7 +207,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 496.67,
-    "tuition_annual_resident_usd": 11920.08
+    "tuition_annual_resident_usd": 11920.08,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9004",
@@ -216,7 +219,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 507.75,
-    "tuition_annual_resident_usd": 12186
+    "tuition_annual_resident_usd": 12186,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9005",
@@ -227,7 +231,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 514.1,
-    "tuition_annual_resident_usd": 12338.4
+    "tuition_annual_resident_usd": 12338.4,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9006",
@@ -238,7 +243,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 740.5,
-    "tuition_annual_resident_usd": 17772
+    "tuition_annual_resident_usd": 17772,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9007",
@@ -249,7 +255,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 695.58,
-    "tuition_annual_resident_usd": 16693.92
+    "tuition_annual_resident_usd": 16693.92,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9008",
@@ -260,7 +267,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 650.5,
-    "tuition_annual_resident_usd": 15612
+    "tuition_annual_resident_usd": 15612,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9009",
@@ -271,7 +279,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 706.92,
-    "tuition_annual_resident_usd": 16966.08
+    "tuition_annual_resident_usd": 16966.08,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9010",
@@ -282,7 +291,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 515.17,
-    "tuition_annual_resident_usd": 12364.08
+    "tuition_annual_resident_usd": 12364.08,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    },
    {
     "_id": "ma:uni:9011",
@@ -293,7 +303,8 @@
     "state": "ma",
     "academic_calendar": "semester",
     "tuition_per_credit_usd": 491.08,
-    "tuition_annual_resident_usd": 11785.92
+    "tuition_annual_resident_usd": 11785.92,
+    "tuition_source": "CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)"
    }
   ],
   "degrees": [
@@ -100472,6 +100483,1084 @@
     "value": 0.6,
     "state": "ma",
     "source": "final PDF Figure 3 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9004:9101",
+    "measure": "extra_hours_pdf",
+    "school_id": 9004,
+    "school": "MCLA",
+    "community_college_id": 9101,
+    "college_name": "Berkshire Community College",
+    "value": 26,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9010:9101",
+    "measure": "extra_hours_pdf",
+    "school_id": 9010,
+    "school": "Westfield",
+    "community_college_id": 9101,
+    "college_name": "Berkshire Community College",
+    "value": 31,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9001:9102",
+    "measure": "extra_hours_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9102,
+    "college_name": "Bristol Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9007:9102",
+    "measure": "extra_hours_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9102,
+    "college_name": "Bristol Community College",
+    "value": 26,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9008:9102",
+    "measure": "extra_hours_pdf",
+    "school_id": 9008,
+    "school": "UMass Dartmouth",
+    "community_college_id": 9102,
+    "college_name": "Bristol Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9001:9103",
+    "measure": "extra_hours_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 29,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9002:9103",
+    "measure": "extra_hours_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 6,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9003:9103",
+    "measure": "extra_hours_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 35,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9005:9103",
+    "measure": "extra_hours_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 9,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9007:9103",
+    "measure": "extra_hours_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 6,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9009:9103",
+    "measure": "extra_hours_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 4,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9001:9104",
+    "measure": "extra_hours_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9104,
+    "college_name": "Cape Cod Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9008:9104",
+    "measure": "extra_hours_pdf",
+    "school_id": 9008,
+    "school": "UMass Dartmouth",
+    "community_college_id": 9104,
+    "college_name": "Cape Cod Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9004:9105",
+    "measure": "extra_hours_pdf",
+    "school_id": 9004,
+    "school": "MCLA",
+    "community_college_id": 9105,
+    "college_name": "Greenfield Community College",
+    "value": 27,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9006:9105",
+    "measure": "extra_hours_pdf",
+    "school_id": 9006,
+    "school": "UMass Amherst",
+    "community_college_id": 9105,
+    "college_name": "Greenfield Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9010:9105",
+    "measure": "extra_hours_pdf",
+    "school_id": 9010,
+    "school": "Westfield",
+    "community_college_id": 9105,
+    "college_name": "Greenfield Community College",
+    "value": 14,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9006:9106",
+    "measure": "extra_hours_pdf",
+    "school_id": 9006,
+    "school": "UMass Amherst",
+    "community_college_id": 9106,
+    "college_name": "Holyoke Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9010:9106",
+    "measure": "extra_hours_pdf",
+    "school_id": 9010,
+    "school": "Westfield",
+    "community_college_id": 9106,
+    "college_name": "Holyoke Community College",
+    "value": 24,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9001:9108",
+    "measure": "extra_hours_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9002:9108",
+    "measure": "extra_hours_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9003:9108",
+    "measure": "extra_hours_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 42,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9005:9108",
+    "measure": "extra_hours_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 5,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9007:9108",
+    "measure": "extra_hours_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 7,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9009:9108",
+    "measure": "extra_hours_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 5,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9011:9108",
+    "measure": "extra_hours_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 8,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9002:9109",
+    "measure": "extra_hours_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9003:9109",
+    "measure": "extra_hours_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 39,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9005:9109",
+    "measure": "extra_hours_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 22,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9007:9109",
+    "measure": "extra_hours_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 22,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9009:9109",
+    "measure": "extra_hours_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 2,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9011:9109",
+    "measure": "extra_hours_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 7,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9002:9110",
+    "measure": "extra_hours_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9110,
+    "college_name": "Mount Wachusett Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9003:9110",
+    "measure": "extra_hours_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9110,
+    "college_name": "Mount Wachusett Community College",
+    "value": 33,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9011:9110",
+    "measure": "extra_hours_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9110,
+    "college_name": "Mount Wachusett Community College",
+    "value": 12,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9001:9111",
+    "measure": "extra_hours_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9003:9111",
+    "measure": "extra_hours_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 34,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9005:9111",
+    "measure": "extra_hours_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 6,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9007:9111",
+    "measure": "extra_hours_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 24,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9009:9111",
+    "measure": "extra_hours_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 6,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9005:9112",
+    "measure": "extra_hours_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9112,
+    "college_name": "Northern Essex Community College",
+    "value": 11,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9007:9112",
+    "measure": "extra_hours_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9112,
+    "college_name": "Northern Essex Community College",
+    "value": 35,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9009:9112",
+    "measure": "extra_hours_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9112,
+    "college_name": "Northern Essex Community College",
+    "value": 22,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9002:9113",
+    "measure": "extra_hours_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9113,
+    "college_name": "Quinsigamond Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9003:9113",
+    "measure": "extra_hours_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9113,
+    "college_name": "Quinsigamond Community College",
+    "value": 26,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9009:9113",
+    "measure": "extra_hours_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9113,
+    "college_name": "Quinsigamond Community College",
+    "value": 2,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9011:9113",
+    "measure": "extra_hours_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9113,
+    "college_name": "Quinsigamond Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9006:9115",
+    "measure": "extra_hours_pdf",
+    "school_id": 9006,
+    "school": "UMass Amherst",
+    "community_college_id": 9115,
+    "college_name": "Springfield Technical Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9010:9115",
+    "measure": "extra_hours_pdf",
+    "school_id": 9010,
+    "school": "Westfield",
+    "community_college_id": 9115,
+    "college_name": "Springfield Technical Community College",
+    "value": 14,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_hours_pdf:9011:9115",
+    "measure": "extra_hours_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9115,
+    "college_name": "Springfield Technical Community College",
+    "value": 12,
+    "state": "ma",
+    "source": "final PDF Figure 4 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9004:9101",
+    "measure": "extra_cost_pdf",
+    "school_id": 9004,
+    "school": "MCLA",
+    "community_college_id": 9101,
+    "college_name": "Berkshire Community College",
+    "value": 13202,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9010:9101",
+    "measure": "extra_cost_pdf",
+    "school_id": 9010,
+    "school": "Westfield",
+    "community_college_id": 9101,
+    "college_name": "Berkshire Community College",
+    "value": 15970,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9001:9102",
+    "measure": "extra_cost_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9102,
+    "college_name": "Bristol Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9007:9102",
+    "measure": "extra_cost_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9102,
+    "college_name": "Bristol Community College",
+    "value": 18085,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9008:9102",
+    "measure": "extra_cost_pdf",
+    "school_id": 9008,
+    "school": "UMass Dartmouth",
+    "community_college_id": 9102,
+    "college_name": "Bristol Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9001:9103",
+    "measure": "extra_cost_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 14179,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9002:9103",
+    "measure": "extra_cost_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 2836,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9003:9103",
+    "measure": "extra_cost_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 17383,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9005:9103",
+    "measure": "extra_cost_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 4627,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9007:9103",
+    "measure": "extra_cost_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 4174,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9009:9103",
+    "measure": "extra_cost_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9103,
+    "college_name": "Bunker Hill Community College",
+    "value": 2828,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9001:9104",
+    "measure": "extra_cost_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9104,
+    "college_name": "Cape Cod Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9008:9104",
+    "measure": "extra_cost_pdf",
+    "school_id": 9008,
+    "school": "UMass Dartmouth",
+    "community_college_id": 9104,
+    "college_name": "Cape Cod Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9004:9105",
+    "measure": "extra_cost_pdf",
+    "school_id": 9004,
+    "school": "MCLA",
+    "community_college_id": 9105,
+    "college_name": "Greenfield Community College",
+    "value": 13709,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9006:9105",
+    "measure": "extra_cost_pdf",
+    "school_id": 9006,
+    "school": "UMass Amherst",
+    "community_college_id": 9105,
+    "college_name": "Greenfield Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9010:9105",
+    "measure": "extra_cost_pdf",
+    "school_id": 9010,
+    "school": "Westfield",
+    "community_college_id": 9105,
+    "college_name": "Greenfield Community College",
+    "value": 7212,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9006:9106",
+    "measure": "extra_cost_pdf",
+    "school_id": 9006,
+    "school": "UMass Amherst",
+    "community_college_id": 9106,
+    "college_name": "Holyoke Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9010:9106",
+    "measure": "extra_cost_pdf",
+    "school_id": 9010,
+    "school": "Westfield",
+    "community_college_id": 9106,
+    "college_name": "Holyoke Community College",
+    "value": 12364,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9001:9108",
+    "measure": "extra_cost_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9002:9108",
+    "measure": "extra_cost_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9003:9108",
+    "measure": "extra_cost_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 20860,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9005:9108",
+    "measure": "extra_cost_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 2570,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9007:9108",
+    "measure": "extra_cost_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 4869,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9009:9108",
+    "measure": "extra_cost_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 3535,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9011:9108",
+    "measure": "extra_cost_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9108,
+    "college_name": "MassBay Community College",
+    "value": 3929,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9002:9109",
+    "measure": "extra_cost_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9003:9109",
+    "measure": "extra_cost_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 19370,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9005:9109",
+    "measure": "extra_cost_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 11310,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9007:9109",
+    "measure": "extra_cost_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 15303,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9009:9109",
+    "measure": "extra_cost_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 1414,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9011:9109",
+    "measure": "extra_cost_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9109,
+    "college_name": "Middlesex Community College",
+    "value": 3438,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9002:9110",
+    "measure": "extra_cost_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9110,
+    "college_name": "Mount Wachusett Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9003:9110",
+    "measure": "extra_cost_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9110,
+    "college_name": "Mount Wachusett Community College",
+    "value": 16390,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9011:9110",
+    "measure": "extra_cost_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9110,
+    "college_name": "Mount Wachusett Community College",
+    "value": 5893,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9001:9111",
+    "measure": "extra_cost_pdf",
+    "school_id": 9001,
+    "school": "Bridgewater",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9003:9111",
+    "measure": "extra_cost_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 16887,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9005:9111",
+    "measure": "extra_cost_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 3085,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9007:9111",
+    "measure": "extra_cost_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 16694,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9009:9111",
+    "measure": "extra_cost_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9111,
+    "college_name": "North Shore Community College",
+    "value": 4242,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9005:9112",
+    "measure": "extra_cost_pdf",
+    "school_id": 9005,
+    "school": "Salem",
+    "community_college_id": 9112,
+    "college_name": "Northern Essex Community College",
+    "value": 5655,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9007:9112",
+    "measure": "extra_cost_pdf",
+    "school_id": 9007,
+    "school": "UMass Boston",
+    "community_college_id": 9112,
+    "college_name": "Northern Essex Community College",
+    "value": 24345,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9009:9112",
+    "measure": "extra_cost_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9112,
+    "college_name": "Northern Essex Community College",
+    "value": 15552,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9002:9113",
+    "measure": "extra_cost_pdf",
+    "school_id": 9002,
+    "school": "Fitchburg",
+    "community_college_id": 9113,
+    "college_name": "Quinsigamond Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9003:9113",
+    "measure": "extra_cost_pdf",
+    "school_id": 9003,
+    "school": "Framingham",
+    "community_college_id": 9113,
+    "college_name": "Quinsigamond Community College",
+    "value": 12913,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9009:9113",
+    "measure": "extra_cost_pdf",
+    "school_id": 9009,
+    "school": "UMass Lowell",
+    "community_college_id": 9113,
+    "college_name": "Quinsigamond Community College",
+    "value": 1414,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9011:9113",
+    "measure": "extra_cost_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9113,
+    "college_name": "Quinsigamond Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9006:9115",
+    "measure": "extra_cost_pdf",
+    "school_id": 9006,
+    "school": "UMass Amherst",
+    "community_college_id": 9115,
+    "college_name": "Springfield Technical Community College",
+    "value": 0,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9010:9115",
+    "measure": "extra_cost_pdf",
+    "school_id": 9010,
+    "school": "Westfield",
+    "community_college_id": 9115,
+    "college_name": "Springfield Technical Community College",
+    "value": 7212,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
+   },
+   {
+    "_id": "ma:baseline:extra_cost_pdf:9011:9115",
+    "measure": "extra_cost_pdf",
+    "school_id": 9011,
+    "school": "Worcester",
+    "community_college_id": 9115,
+    "college_name": "Springfield Technical Community College",
+    "value": 5893,
+    "state": "ma",
+    "source": "final PDF Figure 5 (see data/ma/pdf-figures.json)"
    }
   ]
  }

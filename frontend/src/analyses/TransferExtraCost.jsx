@@ -3,73 +3,176 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import {
-  EvidenceCohortControl, EvidenceSummary, TransferMethodNote, buildRateMatrix,
-  defaultDegreeMode, degreeModesForMajor, methodDetail, methodWarningCount, paperRedCellColor,
-  shortenSchool, unitSystemName,
+  EvidenceCohortControl, EvidenceSummary, TransferEvidenceCaveats, buildRateMatrix,
+  defaultDegreeMode, degreeModesForMajor, methodDetail, paperRedCellColor,
+  shortenSchool,
 } from './TransferCreditRate'
+import ColorDomainLegend from './ColorDomainLegend'
 
 /**
- * Cost of the modeled replacement coursework — the MA paper's Figure 5 on
- * California data.
+ * Cost of modeled pathway hours above 120 — the MA paper's Figure 5 construct
+ * on California data, with the final PDF available as an explicit MA source.
  *
- * A UC campus bills a flat rate per term, so a per-unit price has to be derived.
- * The paper derived one the same way (their institutions bill flat above 12
- * credits too), and their published figures reproduce as annual tuition and fees
- * over a 12-unit full-time load — Fitchburg State to within $2. The "standard
- * load" view divides by 15 units instead, the figure UCOP itself calls "a
- * standard, full-time unit load"; it is the same money over a realistic
- * schedule, and it is 20% cheaper per unit.
+ * A flat annual/term charge needs an explicit load denominator before it can be
+ * expressed per unit. The paper's own cost workbook implies one campus-constant
+ * rate and its final Figure 5 uses the 12-unit-per-term basis. The 15-unit view
+ * is an explicitly labeled sensitivity: the same charge over 30 rather than 24
+ * annual semester units, hence 20% less per unit.
  *
- * Rates come from the campus record (UCOP Total Charges by Campus), and the
- * server does the arithmetic so downloads carry the cost too.
+ * Rates come from the campus record, and the server does the modeled arithmetic
+ * so downloads carry both the hours and cost. Source metadata rides the row;
+ * when it is absent the visual says so instead of asserting a provenance.
  */
-const LOAD_VIEWS = [
-  { value: 'minimum', label: 'Minimum load (paper)', field: 'extra_cost_usd', units: 12 },
-  { value: 'standard', label: 'Standard load (15u)', field: 'extra_cost_standard_load_usd', units: 15 },
+export const LOAD_VIEWS = [
+  { value: 'minimum', label: 'Minimum load (paper)', units: 12 },
+  { value: 'standard', label: 'Standard load (15u)', units: 15 },
 ]
+
+export const EXTRA_COST_SOURCES = [
+  { value: 'pdf', label: 'Final paper' },
+  { value: 'archive-detail', label: 'Our recalculation' },
+]
+
+const normalizeMaExtraCostSource = (source) => (
+  source === 'pdf' ? 'pdf' : 'archive-detail'
+)
+
+export function extraCostValue(row, source = 'ours', load = 'minimum') {
+  if (source === 'pdf') {
+    if (load === 'standard') {
+      // The paper publishes only its 12-unit-load value. A 15-unit view is an
+      // explicitly labeled sensitivity using the same dollars spread across
+      // 30 rather than 24 annual semester units: exactly 24/30 = 0.8.
+      return Number.isFinite(row?.published_pdf_extra_cost_usd)
+        ? Math.round(row.published_pdf_extra_cost_usd * 0.8)
+        : null
+    }
+    return row?.published_pdf_extra_cost_usd
+  }
+  if (source === 'archive-detail') {
+    // Match the final Figure 5 matrix's exact 49-pair cohort. Twelve additional
+    // deposited pathways belong to the all-61 summary population and must not
+    // change this audit pane's mean.
+    if (!Number.isFinite(row?.published_pdf_extra_cost_usd)) return null
+    const hours = row?.archived_pathway_sheet_extra_hours
+    const annual = row?.tuition_annual_resident_usd
+    if (!Number.isFinite(hours) || !Number.isFinite(annual)) return null
+    // The recovered MA campus charge is annualized on the same 12-unit-per-
+    // term basis as the paper. Price the deposited Figure 4 numerator itself,
+    // not our general pathway model, and round only the final dollar result.
+    return Math.round(hours * annual / (load === 'standard' ? 30 : 24))
+  }
+  return load === 'standard'
+    ? row?.modeled_cost_above_120_standard_load_usd
+    : row?.modeled_cost_above_120_usd
+}
+
+export function extraCostEntries(data, source = 'ours', load = 'minimum') {
+  return (data?.rows || []).flatMap((row) => {
+    const value = extraCostValue(row, source, load)
+    return Number.isFinite(value) ? [{
+      rowKey: row.college_name,
+      rowLabel: row.college_name,
+      colKey: row.school,
+      colLabel: row.school,
+      value,
+    }] : []
+  })
+}
 
 const money = new Intl.NumberFormat(undefined, {
   style: 'currency', currency: 'USD', maximumFractionDigits: 0,
 })
 const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
+const receiptUnitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 6 })
 const dollars = (value) => (Number.isFinite(value) ? money.format(value) : '')
 
 // Cost is open-ended above zero, and $0 is a real result (nothing extra to take),
 // so anchor the ramp at 0 exactly as the extra-units figure does.
 const costScale = (values) => ({ min: 0, max: Math.max(1, ...values.filter(Number.isFinite)) })
 
-function cellTitle(row, col, cell, view) {
+function cellTitle(row, col, cell, view, source, cost) {
   if (!cell) return `${row.name}\n${col.school}\nNo agreement to verify against`
-  const cost = cell[view.field]
   if (!Number.isFinite(cost)) {
     return [
       row.name,
       col.school,
-      Number.isFinite(cell.extra_units_semester) && cell.tuition_annual_resident_usd == null
-        ? 'No published tuition on file for this campus'
-        : methodDetail(cell) || 'Not enough curated information to model this pair',
+      source === 'pdf'
+        ? 'This pair is not reported in the final paper Figure 5'
+        : (Number.isFinite(source === 'archive-detail'
+          ? cell.archived_pathway_sheet_extra_hours
+          : cell.modeled_hours_above_120) && cell.tuition_annual_resident_usd == null
+          ? 'No tuition rate is on file for this campus'
+          : methodDetail(cell) || 'Not enough curated information to model this pair'),
+    ].filter(Boolean).join('\n')
+  }
+  if (source === 'pdf') {
+    const recalculatedCost = extraCostValue(cell, 'archive-detail', view.value)
+    return [
+      row.name,
+      col.school,
+      view.value === 'minimum'
+        ? `Final paper Figure 5: ${money.format(cost)}`
+        : `15-unit-load sensitivity from final Figure 5: ${money.format(cost)}`,
+      Number.isFinite(cell.published_pdf_extra_hours)
+        ? `${unitFmt.format(cell.published_pdf_extra_hours)} final-paper hours above 120`
+        : null,
+      view.value === 'standard'
+        ? 'Sensitivity only: 80% of the published 12-unit-load cost; it is not a printed paper value.'
+        : 'Transcribed from the final PDF; blank cells are pairs the figure did not report.',
+      Number.isFinite(recalculatedCost)
+        ? `Our recalculation: ${money.format(recalculatedCost)}`
+        : null,
+    ].filter(Boolean).join('\n')
+  }
+  if (source === 'archive-detail') {
+    const annual = cell.tuition_annual_resident_usd
+    const archiveHours = cell.archived_pathway_sheet_extra_hours
+    const denominator = view.units * 2
+    return [
+      row.name,
+      col.school,
+      `Our Figure 5 recalculation: ${money.format(cost)}`,
+      `${unitFmt.format(archiveHours)} recalculated Figure 4 hours above 120 × annual charge ÷ ${denominator}, then rounded once`,
+      Number.isFinite(cell.published_pdf_extra_cost_usd)
+        ? `Final paper Figure 5: ${money.format(cell.published_pdf_extra_cost_usd)}`
+        : null,
+      cell.tuition_source
+        ? `Recovered paper-rate source: ${cell.tuition_source}`
+        : (Number.isFinite(annual) ? 'Recovered paper-rate source metadata is not recorded on the campus row.' : null),
+      cell.tuition_source_url ? `Source URL: ${cell.tuition_source_url}` : null,
+      Number.isFinite(annual)
+        ? `${money.format(annual)} annual resident charge over a ${view.units}-unit-per-term load`
+        : null,
+      view.value === 'standard'
+        ? 'Sensitivity only: the paper publishes the 12-unit-load result, not this 15-unit-load value.'
+        : null,
     ].filter(Boolean).join('\n')
   }
   const annual = cell.tuition_annual_resident_usd
   const perUnit = Number.isFinite(annual) ? annual / (view.units * 2) : null
-  const nativeUnits = unitSystemName(cell.as_unit_system)
   return [
     row.name,
     col.school,
-    `Cost of replacement coursework: ${money.format(cost)}`,
-    `${unitFmt.format(cell.extra_units_semester)} semester-equivalent units`
+    `Cost of modeled pathway hours above 120: ${money.format(cost)}`,
+    `${unitFmt.format(cell.modeled_hours_above_120)} semester hours above 120`
       + (perUnit ? ` at ${money.format(perUnit)} per unit` : ''),
-    Number.isFinite(annual)
-      ? `${money.format(annual)} annual tuition and fees over a ${view.units}-unit load`
+    Number.isFinite(cell.modeled_hours_above_120_unrounded)
+      ? `Pricing receipt: ${receiptUnitFmt.format(cell.modeled_hours_above_120_unrounded)} unrounded hours × annual charge ÷ ${view.units * 2}, then rounded to whole dollars.`
       : null,
-    Number.isFinite(cell.extra_units)
-      ? `${unitFmt.format(cell.extra_units)} ${nativeUnits} in the college's own system`
+    cell.tuition_source
+      ? `Rate source: ${cell.tuition_source}`
+      : (Number.isFinite(annual) ? 'Rate source metadata is not recorded on the campus row.' : null),
+    cell.tuition_source_url ? `Source URL: ${cell.tuition_source_url}` : null,
+    Number.isFinite(annual) && !/CurrComp Master/i.test(cell.tuition_source || '')
+      ? `${money.format(annual)} annual resident tuition and fees over a ${view.units}-unit-per-term load`
       : null,
+    cell.tuition_price_year ? `Price year: ${cell.tuition_price_year}` : null,
     methodDetail(cell),
   ].filter(Boolean).join('\n')
 }
 
-function CostTable({ model, view }) {
+function CostTable({ model, view, source }) {
   return (
     <div className='surface-card overflow-auto max-h-[72vh]'>
       <table className='border-separate border-spacing-0 min-w-full'>
@@ -97,13 +200,14 @@ function CostTable({ model, view }) {
               </th>
               {model.columns.map((col) => {
                 const cell = model.records.get(`${row.key}|${col.key}`)
+                const value = model.cellValue(row.key, col.key)
                 return (
                   <td key={col.key}
-                    title={cellTitle(row, col, cell, view)}
-                    aria-label={cellTitle(row, col, cell, view)}
+                    title={cellTitle(row, col, cell, view, source, value)}
+                    aria-label={cellTitle(row, col, cell, view, source, value)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-16'
-                    style={paperRedCellColor(cell?.[view.field] ?? null, model.colorScale)}>
-                    {dollars(cell?.[view.field] ?? null)}
+                    style={paperRedCellColor(value, model.colorScale)}>
+                    {dollars(value)}
                   </td>
                 )
               })}
@@ -138,7 +242,9 @@ function CostTable({ model, view }) {
 export default function TransferExtraCost({
   majorSlug = 'cs', majorLabel = '', degreeAnalysisSlots = null,
   degreeSlotLabels = null, major = null,
-  defaultDegreeType = null, defaultVerifiedOnly = false, onViewChange,
+  defaultDegreeType = null, defaultVerifiedOnly = true,
+  defaultSource = 'pdf', defaultLoadView = 'minimum', onViewChange,
+  comparisonColorScale = null,
 }) {
   const degreeModes = useMemo(() => degreeModesForMajor({
     majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
@@ -152,29 +258,59 @@ export default function TransferExtraCost({
   // ours and verified, so it keeps the California control set. Mirrors the
   // server's own join condition (`capabilities.paperBaselines && state`).
   const paperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
+  const corpusState = String(major?.state || '').toLowerCase()
+  const californiaCorpus = corpusState === 'ca'
+    || (!corpusState && !String(majorSlug).includes('-'))
   const [verifiedOnly, setVerifiedOnly] = useState(defaultVerifiedOnly)
-  const [loadView, setLoadView] = useState('minimum')
+  const [source, setSource] = useState(defaultSource)
+  const [loadView, setLoadView] = useState(defaultLoadView)
+  const effectiveSource = paperCorpus ? normalizeMaExtraCostSource(source) : 'ours'
+  const effectiveLoadView = paperCorpus ? 'minimum' : loadView
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
       setDegreeType(defaultDegreeMode(degreeModes))
     }
   }, [degreeModes, degreeType])
   useEffect(() => {
-    onViewChange?.({ defaultDegreeType: degreeType, defaultVerifiedOnly: verifiedOnly })
-  }, [degreeType, verifiedOnly, onViewChange])
-  const view = LOAD_VIEWS.find((v) => v.value === loadView) || LOAD_VIEWS[0]
-  const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly })
+    onViewChange?.({
+      defaultDegreeType: degreeType,
+      defaultVerifiedOnly: verifiedOnly,
+      defaultSource: paperCorpus ? effectiveSource : source,
+      defaultLoadView: effectiveLoadView,
+    })
+  }, [degreeType, verifiedOnly, source, paperCorpus, effectiveSource, effectiveLoadView, onViewChange])
+  const view = LOAD_VIEWS.find((v) => v.value === effectiveLoadView) || LOAD_VIEWS[0]
+  const queryVerifiedOnly = paperCorpus ? false : verifiedOnly
+  const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly: queryVerifiedOnly })
   const rows = query.data?.rows || []
-  const model = useMemo(
-    () => buildRateMatrix(rows, (r) => r[view.field], costScale),
-    [rows, view.field]
+  const localModel = useMemo(
+    () => buildRateMatrix(rows, (row) => extraCostValue(row, effectiveSource, view.value), costScale),
+    [rows, effectiveSource, view.value]
   )
-  const warningCount = methodWarningCount(rows)
+  const model = useMemo(() => (
+    Number.isFinite(comparisonColorScale?.min) && Number.isFinite(comparisonColorScale?.max)
+      ? { ...localModel, colorScale: comparisonColorScale }
+      : localModel
+  ), [localModel, comparisonColorScale])
   const missingTuition = useMemo(
     () => [...new Set(rows
-      .filter((r) => Number.isFinite(r.extra_units_semester) && r.tuition_annual_resident_usd == null)
+      .filter((row) => effectiveSource !== 'pdf'
+        && Number.isFinite(effectiveSource === 'archive-detail'
+          ? (Number.isFinite(row.published_pdf_extra_cost_usd)
+            ? row.archived_pathway_sheet_extra_hours
+            : null)
+          : row.modeled_hours_above_120)
+        && row.tuition_annual_resident_usd == null)
       .map((r) => r.school))],
-    [rows]
+    [rows, effectiveSource]
+  )
+  const unprovenancedTuition = useMemo(
+    () => [...new Set(rows
+      .filter((row) => effectiveSource !== 'pdf'
+        && Number.isFinite(row.tuition_annual_resident_usd)
+        && !row.tuition_source)
+      .map((row) => row.school))],
+    [rows, effectiveSource]
   )
 
   if (query.isLoading) {
@@ -186,7 +322,7 @@ export default function TransferExtraCost({
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-      <div className='flex flex-col'>
+      {!paperCorpus && <div className='flex flex-col'>
         <span className='field-label'>Associate degree</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
           {degreeModes.map((mode) => (
@@ -198,20 +334,36 @@ export default function TransferExtraCost({
             </button>
           ))}
         </div>
-      </div>
-      <div className='flex flex-col'>
+      </div>}
+      {paperCorpus && (
+        <div className='flex flex-col' data-control-group='source'>
+          <span className='field-label'>Source</span>
+          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+            {EXTRA_COST_SOURCES.map((item) => (
+              <button key={item.value} type='button' aria-pressed={effectiveSource === item.value}
+                onClick={() => setSource(item.value)}
+                className={`px-3 text-button border-r border-border last:border-r-0 ${
+                  effectiveSource === item.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                }`}>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+      {!paperCorpus && <div className='flex flex-col'>
         <span className='field-label'>Full-time load</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
           {LOAD_VIEWS.map((mode) => (
             <button key={mode.value} type='button' onClick={() => setLoadView(mode.value)}
               className={`px-3 text-button border-r border-border last:border-r-0 ${
-                loadView === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                effectiveLoadView === mode.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
               }`}>
               {mode.label}
             </button>
           ))}
         </div>
-      </div>
+      </div>}
       {!paperCorpus && <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />}
       <Button variant='secondary' leadingIcon={ArrowPathIcon}
         loading={query.isFetching && !query.isLoading} onClick={() => query.refetch()}>
@@ -242,22 +394,38 @@ export default function TransferExtraCost({
         <div className='surface-card px-4 py-3'>
           <p className='text-label'>
             <EvidenceSummary verifiedOnly={verifiedOnly}
-              sourceLabel={paperCorpus ? 'Paper-source associate degrees (recovered workbooks)' : null}
+              sourceLabel={paperCorpus
+                ? (effectiveSource === 'pdf'
+                  ? (view.value === 'minimum'
+                    ? 'Final PDF Figure 5 (reported pairs only)'
+                    : '15-unit-load sensitivity from final PDF Figure 5')
+                  : effectiveSource === 'archive-detail'
+                    ? (view.value === 'minimum'
+                      ? 'Our recalculation from the authors’ Figure 4 data and campus rates (same 49 reported pairs)'
+                      : '15-unit-load sensitivity from our Figure 4 recalculation')
+                    : 'Our reconstruction from the recovered pathway workbooks')
+                : null}
+              cellKind={paperCorpus && effectiveSource === 'pdf'
+                ? (view.value === 'minimum' ? 'reported' : 'sensitivity')
+                : paperCorpus && effectiveSource === 'archive-detail'
+                  ? (view.value === 'minimum' ? 'raw-rerun' : 'sensitivity')
+                  : 'modeled'}
               collegeCount={model.rows.length} cellCount={model.valueCount} />
           </p>
           {missingTuition.length > 0 && (
             <p className='mt-1 text-caption text-ink-muted'>
-              No published tuition on file for {missingTuition.join(', ')}; those columns stay blank rather than assume a rate.
+              No tuition rate is on file for {missingTuition.join(', ')}; those columns stay blank rather than assume one.
             </p>
           )}
+          {unprovenancedTuition.length > 0 && (
+            <p className='mt-1 text-caption text-warning'>
+              Rate source and price-year metadata are not recorded for {unprovenancedTuition.length} {unprovenancedTuition.length === 1 ? 'campus' : 'campuses'} in this view; treat the dollar comparison as provisional until those records are sourced.
+            </p>
+          )}
+          {!paperCorpus && <TransferEvidenceCaveats rows={rows} majorSlug={majorSlug} />}
         </div>
-        <CostTable model={model} view={view} />
-        <TransferMethodNote warningCount={warningCount}>
-          Each cell prices the replacement coursework from the extra-units figure: semester-equivalent units that do not apply, multiplied by a per-unit rate derived from the campus’s annual resident tuition and fees over a {view.units}-unit full-time load. Campuses bill a flat rate per term, so a per-unit price must be derived; the {view.units === 12 ? 'minimum' : 'standard'}-load basis divides annual charges by {view.units} units across each term. Tuition and fees exclude health insurance, room, board and books. This is modeled cost, not an observed student bill.
-          {verifiedOnly
-            ? ' This high-fidelity state limits the associate-degree side to programs marked human-verified.'
-            : ''}
-        </TransferMethodNote>
+        <ColorDomainLegend scale={model.colorScale} formatValue={dollars} />
+        <CostTable model={model} view={view} source={effectiveSource} />
       </div>
     </Stack>
   )
@@ -265,4 +433,6 @@ export default function TransferExtraCost({
 
 // The props a pinned view may seed. Every `viewKnobs` entry on the registry
 // must name one of these; the contract test fails the build otherwise.
-TransferExtraCost.viewProps = ['defaultDegreeType', 'defaultVerifiedOnly']
+TransferExtraCost.viewProps = [
+  'defaultDegreeType', 'defaultVerifiedOnly', 'defaultSource', 'defaultLoadView',
+]

@@ -36,56 +36,129 @@ function loadPdfFigures() {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
+const figurePairs = (cells = {}) => Object.entries(cells)
+  .flatMap(([cc, byUni]) => Object.entries(byUni).map(([uni, value]) => ({
+    cc, uni, value, key: `${cc}|${uni}`,
+  })));
+
+function validatePrintedAverages(label, cells, printedAverages, tolerance, failures) {
+  const columns = {};
+  for (const { uni, value } of figurePairs(cells)) {
+    (columns[uni] = columns[uni] || []).push(value);
+  }
+  for (const [uni, printed] of Object.entries(printedAverages || {})) {
+    const values = columns[uni] || [];
+    const mean = values.reduce((sum, value) => sum + value, 0) / (values.length || 1);
+    if (Math.abs(mean - printed) > tolerance) {
+      failures.push(`${label}: ${uni} column mean ${mean.toFixed(1)} does not reproduce the printed average ${printed}`);
+    }
+  }
+}
+
 /**
- * Fold the final PDF's printed Figure 3 matrix in as its own baseline
- * measure (`pct_as_pdf`). The PDF is a NEWER revision of the tally than the
- * repo workbook, so the two ride side by side — repo (`pct_as`), PDF
- * (`pct_as_pdf`) — and the console's source selector can show either against
- * our recomputation. Two gates guard the transcription: every column mean
- * must reproduce the figure's own printed Average row, and the studied-pair
- * universe must be exactly the repo tally's.
+ * Fold the final PDF's printed Figures 3–5 in as distinct baseline measures.
+ * The PDF is a NEWER revision than the repo workbook, so published values and
+ * our reconstruction ride side by side instead of one silently replacing the
+ * other. Figure 3 must cover the repo tally's whole studied-pair universe;
+ * Figures 4 and 5 share the same 49-pair subset and are one arithmetic chain.
  */
 function mergePdfFigures(raw, pdf) {
-  if (!pdf?.fig3_pct_as) return raw;
-  const { cells, printed_average_row: printedAverages } = pdf.fig3_pct_as;
+  if (!pdf) return raw;
   const failures = [];
-  const columns = {};
-  for (const [cc, byUni] of Object.entries(cells)) {
-    for (const [uni, value] of Object.entries(byUni)) {
-      (columns[uni] = columns[uni] || []).push(value);
+  const baselines = { ...raw.baselines };
+  const repoPairList = figurePairs(raw.baselines?.pct_as?.cells);
+  const repoPairs = new Set(repoPairList.map((pair) => pair.key));
+
+  if (pdf.fig3_pct_as) {
+    const { cells, printed_average_row: printedAverages } = pdf.fig3_pct_as;
+    const pdfPairs = figurePairs(cells);
+    for (const { cc, uni } of pdfPairs) {
       if (raw.baselines?.pct_as?.cells?.[cc]?.[uni] == null) {
         failures.push(`pdf-figures: ${uni}/${cc} is not a studied pair in the repo tally`);
       }
     }
-  }
-  for (const [uni, printed] of Object.entries(printedAverages)) {
-    const values = columns[uni] || [];
-    const mean = values.reduce((sum, value) => sum + value, 0) / (values.length || 1);
-    // The figure prints integers; allow the half-point rounding band.
-    if (Math.abs(mean - printed) > 0.6) {
-      failures.push(`pdf-figures: ${uni} column mean ${mean.toFixed(1)} does not reproduce the printed average ${printed}`);
+    validatePrintedAverages('pdf-figures Figure 3', cells, printedAverages, 0.6, failures);
+    if (repoPairList.length !== pdfPairs.length) {
+      failures.push(`pdf-figures: ${pdfPairs.length} transcribed Figure-3 pairs vs ${repoPairList.length} in the repo tally`);
     }
+
+    const scaled = {};
+    for (const [cc, byUni] of Object.entries(cells)) {
+      scaled[cc] = Object.fromEntries(Object.entries(byUni)
+        .map(([uni, value]) => [uni, value / 100]));
+    }
+    baselines.pct_as_pdf = { cells: scaled };
   }
-  const repoPairs = Object.entries(raw.baselines?.pct_as?.cells || {})
-    .flatMap(([cc, byUni]) => Object.keys(byUni).map((uni) => `${cc}|${uni}`));
-  const pdfPairs = Object.entries(cells)
-    .flatMap(([cc, byUni]) => Object.keys(byUni).map((uni) => `${cc}|${uni}`));
-  if (repoPairs.length !== pdfPairs.length) {
-    failures.push(`pdf-figures: ${pdfPairs.length} transcribed pairs vs ${repoPairs.length} in the repo tally`);
+
+  const hoursFigure = pdf.fig4_extra_hours;
+  const costFigure = pdf.fig5_extra_cost;
+  if (Boolean(hoursFigure) !== Boolean(costFigure)) {
+    failures.push('pdf-figures: Figures 4 and 5 must be transcribed together');
+  } else if (hoursFigure && costFigure) {
+    const hourPairs = figurePairs(hoursFigure.cells);
+    const costPairs = figurePairs(costFigure.cells);
+    const hourByKey = new Map(hourPairs.map((pair) => [pair.key, pair]));
+    const costByKey = new Map(costPairs.map((pair) => [pair.key, pair]));
+
+    if (hourPairs.length !== 49 || hoursFigure.cell_count !== 49) {
+      failures.push(`pdf-figures: Figure 4 must contain exactly 49 cells (found ${hourPairs.length})`);
+    }
+    if (costPairs.length !== hourPairs.length) {
+      failures.push(`pdf-figures: Figure 5 has ${costPairs.length} cells vs Figure 4's ${hourPairs.length}`);
+    }
+    for (const pair of hourPairs) {
+      if (!repoPairs.has(pair.key)) {
+        failures.push(`pdf-figures Figure 4: ${pair.uni}/${pair.cc} is not a studied pair in the repo tally`);
+      }
+      if (!costByKey.has(pair.key)) {
+        failures.push(`pdf-figures Figure 5: missing ${pair.uni}/${pair.cc}`);
+      }
+    }
+    for (const pair of costPairs) {
+      if (!hourByKey.has(pair.key)) {
+        failures.push(`pdf-figures Figure 5: extra ${pair.uni}/${pair.cc}`);
+      }
+    }
+
+    validatePrintedAverages(
+      'pdf-figures Figure 4', hoursFigure.cells,
+      hoursFigure.printed_average_row, 0.6, failures
+    );
+    validatePrintedAverages(
+      'pdf-figures Figure 5', costFigure.cells,
+      costFigure.printed_average_row, 1.1, failures
+    );
+
+    const impliedRates = {};
+    for (const pair of hourPairs) {
+      const cost = costByKey.get(pair.key)?.value;
+      if (!Number.isFinite(cost)) continue;
+      if (pair.value === 0) {
+        if (cost !== 0) failures.push(`pdf-figures Figure 5: ${pair.uni}/${pair.cc} has zero hours but $${cost} cost`);
+        continue;
+      }
+      (impliedRates[pair.uni] = impliedRates[pair.uni] || []).push(cost / pair.value);
+    }
+    for (const [uni, rates] of Object.entries(impliedRates)) {
+      const spread = Math.max(...rates) - Math.min(...rates);
+      // Figure 5 prints whole dollars, so a small implied-rate spread is the
+      // expected inverse of cell-level dollar rounding. Anything larger means
+      // the two transcriptions no longer encode one measure.
+      if (spread > 0.51) {
+        failures.push(`pdf-figures Figure 5: ${uni} implied rate spread is $${spread.toFixed(2)}`);
+      }
+    }
+
+    baselines.extra_hours_pdf = { cells: hoursFigure.cells };
+    baselines.extra_cost_pdf = { cells: costFigure.cells };
   }
+
   if (failures.length) {
     const error = new Error(`pdf-figures transcription failed validation:\n  ${failures.join('\n  ')}`);
     error.failures = failures;
     throw error;
   }
-  const scaled = {};
-  for (const [cc, byUni] of Object.entries(cells)) {
-    scaled[cc] = Object.fromEntries(Object.entries(byUni).map(([uni, value]) => [uni, value / 100]));
-  }
-  return {
-    ...raw,
-    baselines: { ...raw.baselines, pct_as_pdf: { cells: scaled } },
-  };
+  return { ...raw, baselines };
 }
 
 async function upsertAll(collection, docs) {

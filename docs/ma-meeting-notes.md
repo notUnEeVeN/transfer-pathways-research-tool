@@ -1,196 +1,155 @@
-# Massachusetts paper — errors we found, and why we're sure
+# MA/CA meeting notes
 
-Every number here can be regenerated from their own files. Technical detail:
-[`ma-paper-audit.md`](ma-paper-audit.md). Per-cell records: `server/data/ma/*.json`.
+Private briefing. The final paper is the published Massachusetts result.
+**Our recalculation** means applying the paper's formula directly to the
+authors' source files. Old summaries, implementations, and draft methods are
+not additional comparison versions.
 
-**The one-line summary: we have now checked every figure in the paper against
-its own files. Figures 1, 2, 4 and 5 are correct. The errors are in Figure 3
-(45 of 61 cells), Figure 6 (two drifted scores plus one cell typed into the
-chart), and Figure 7, whose credit-hours and cost rows contradict the paper's
-own Figures 4 and 5 on 7 of 11 columns.**
+## Conclusion
 
-**Correction (2026-08-17).** There are three artifacts, not two: the **paper**
-(newest), their **GitHub repo** workbook, and **our** computation. An earlier
-version of this note treated repo numbers as the paper's. Figure 2 is not an
-error at all — we had been auditing the repo notebook's hard-coded bars. Figure
-4 is still unverified against the paper for the same reason. Every claim below
-now names which artifact it is about.
+- The material Massachusetts disagreements are in **Figures 3 and 4**.
+- Figure 5 only prices Figure 4, so its differences are inherited.
+- Figure 2's small anonymous difference is inconsequential.
+- Figure 6 is almost fully validated: one difference fits the same later
+  pathway revision seen in Figures 3 and 4, and one final graph is unavailable.
+- Figure 7 needs a cohort disclosure, not another error comparison.
+- Figure 1 has one minor isolated difference.
 
-Their spreadsheet has detail sheets (one per college-university pair, listing every
-course) and summary tabs (the numbers that became the figures). The summary tabs
-are typed, not linked — so when a detail sheet got corrected, the summary silently
-kept the old number. The two figures their spreadsheet computes with formulas have
-zero errors. Every figure a person typed has errors. That's the whole story.
+The source files predate the final paper. A disagreement could be an
+unpublished final-input revision or a paper error. Call it a
+**non-reproducing value** unless the evidence independently proves an error.
 
----
+## Figure 3 — substantive disagreement
 
-## Figure 1 — requirements heatmap · 165 checked, 0 wrong
+**Formula:** associate-degree credits satisfying bachelor requirements divided
+by total associate-degree credits. These are credits, not courses, and the
+denominator is the associate degree—not the four-year degree.
 
-- Calculated with live formulas. We match all 165 cells exactly, average 38.2% on
-  both sides.
-- Why we're sure: same raw data, same formula, three ways (their formulas re-run,
-  their stored values, our engine). This also proves our engine isn't the source
-  of any disagreement elsewhere.
+Gray credit satisfies a bachelor requirement. Blue credit transfers only as an
+unrestricted elective and is normally excluded. GE credit can be gray when it
+satisfies a real bachelor requirement, so this is not simply “GE in or out.”
 
-## Figure 2 — course types · reproduces correctly
+**Result:** our direct gray-row calculation reproduces **42 of 61** cells. Our
+mean is **64.682%**; the paper's cells average **67.738%**.
 
-- **The paper's Figure 2 is right, and we should stop saying otherwise.** Its
-  numbers reproduce from their own data almost exactly: computing 21.2% against
-  the 22% they state, math 60.6% against 60%, science 92.9% against 93%. The
-  spread of the plotted dots matches too — computing runs 6% to 58% in the data,
-  and their highest computing dot is Fitchburg at 58%.
-- **What we had actually been auditing was their GitHub notebook, not the
-  paper.** The notebook hard-codes its bars (their own comment: "Sorry for hard
-  coding these :("), and those hard-coded values are a *different measure* —
-  they average 42.2% for computing where the paper says 22%.
-- **The difference is the denominator, and it is not an error.** The notebook's
-  bars count only lower-division requirements; the paper counts the whole
-  degree. Upper-division computing courses can never be taught at a community
-  college, so including them roughly halves the computing figure. Both numbers
-  are defensible; they answer different questions. The paper picked the harder
-  one.
-- **Why our site can look different:** our own course-type figure opens on the
-  lower-division view, which is the articulation question. Set it to whole
-  degree and it lines up with the paper.
-- The one loose end is non-STEM: only 6 of their 11 universities carry a
-  non-STEM column at all, the whole-degree average over those six is 63%, and
-  the paper reports 76%. Small, uneven sample — worth a question, not a claim.
+The 19 differences contain four important patterns. These clues overlap:
 
-## Figure 3 — % of AS credits that transfer · 61 checked, 45 wrong
+1. **Nine likely coordinated revisions.** The same nine pathways also change
+   in Figure 4, always coherently: more AS credit applies and excess hours fall
+   to zero. They are Bridgewater with Bristol, Cape Cod, MassBay, and North
+   Shore; Dartmouth with Bristol and Cape Cod; Amherst with Greenfield and
+   STCC; and Fitchburg with Quinsigamond. This looks more like re-articulation
+   than nine independent typos, but only the authors' final sheets can confirm
+   it.
+2. **Selective blue-credit treatment.** Most cells follow the gray-only rule.
+   Fitchburg–Middlesex matches only with all blue credit; Bridgewater–Massasoit,
+   Worcester–Roxbury, and Amherst–STCC require selected blue credit;
+   Fitchburg–MassBay and Fitchburg–Quinsigamond also require a 100% cap. The
+   paper gives no rule for these exceptions.
+3. **Two possible stale denominators.** Westfield–STCC's **67%** is exactly
+   `42/63`; Worcester–STCC's **60%** is exactly `38/63`; but the source AS
+   degree totals **61 credits**. This explanation is conditional on the final
+   numerators still being 42 and 38.
+4. **Four unresolved cells.** Dartmouth–Massasoit is **54% vs 95%**,
+   Bridgewater–Roxbury **42% vs 39%**, Framingham–Massasoit **51% vs 55%**, and
+   Framingham–Middlesex **28% vs 33%**. No consistent treatment of available
+   blue credit produces the paper values.
 
-Every published cell is a typed fraction like `=31/61` with **no cell references**
-— the top is a hand count of transferred credits read off the detail sheet, the
-bottom a hand-typed degree total. Nothing recalculates when a sheet is edited, so
-each cell is frozen at whatever was true the day someone typed it. The four error
-patterns, with the exact cells:
+**Meeting position:** Figure 3 has a real reproducibility problem. A later
+revision may explain much of it; the selective credit rule, possible old
+denominators, and four unresolved cells still require answers.
 
-- **Frozen counts (25 cells too low).** The clearest: **UMass Boston × Bunker
-  Hill**. The typed fraction is `31/61` → printed 51%. Open their own Bunker Hill
-  detail sheet: 18 requirement rows are marked transferred, worth **62 units
-  against a 61-unit associate degree** — their own sheet says *the entire degree
-  transfers* (we print 100%). Nothing on the sheet produces 31; it's a count from
-  an earlier version of the sheet that was never retyped. Same shape at
-  **UMass Amherst × Holyoke**: typed `31/64` → 48%, but the sheet's 16 transferred
-  rows carry 58 units → 91%. And at **MCLA × Berkshire** (typed `25/65` → 38% vs
-  the sheet's 43 units → 66%) the missing credits are exactly the gen-ed rows —
-  counted out, even though the paper's own footnote says gen-ed is included.
-- **Impossible highs (20 cells).** **UMass Dartmouth × Massasoit**: printed 95%,
-  typed `35/65`. Their own sheet removes only 9 rows worth 31 units — the maximum
-  any reading of that sheet can produce is **44.6%**. No definition of gen-ed, no
-  counting choice, reaches 95. **Dartmouth × Cape Cod** prints 90% against a sheet
-  ceiling of about 74%.
-- **One person's habit, one column.** The typed counts minus the sheet's actual
-  totals cluster by university: the **UMass Lowell column runs +3 to +4 in every
-  cell**, with five cells snapped to exactly 100%; the Westfield column runs about
-  −9 everywhere. Different hands filled different columns, each with a consistent
-  bias — that's data entry, not method.
-- **Wrong denominators (2 rows).** **Bridgewater × Bristol** is typed `51/69`,
-  but Bristol's own AS sheet totals **72** units — every cell in that row inherits
-  the wrong bottom. **Worcester × Springfield Technical** divides by 63; the
-  Springfield sheet says **61**.
-- **Numbers with no work behind them.** Roxbury's detail sheets are empty stubs —
-  nothing marked transferred — yet its summary cells carry real percentages
-  (Lowell × Roxbury prints 52%; the sheet supports ~11%). Those numbers came from
-  something never saved. Notably, Roxbury and Massasoit are the two colleges the
-  paper's own footnote elsewhere excludes for missing data.
-- **The revision that proves the direction.** Between their repo workbook and the
-  final PDF, they corrected some cells — and where they did, they landed on us:
-  Bristol × Bridgewater went repo 73.9 → PDF 90, beside our 90.3. When they
-  fixed cells, they fixed them *toward* their own detail sheets, which is what we
-  compute from directly.
-- **The averages still agree** — ours 68.6%, theirs printed 67.7%, quoted 68% —
-  because 25 low and 20 high errors cancel. That's why nobody caught it.
-- Why we're sure: on the 22 pairs where their typed number matches their own
-  sheet, we match them too (correlation 0.994, mean gap 2.2 points). Every
-  disagreement sits where their own two files contradict each other, and for each
-  such cell we can point to the specific rows on their sheet that the typed count
-  missed or exceeded.
+## Figure 4 — substantive disagreement
 
-## Figure 4 — credits to graduate · 49 cells checked, 0 wrong
+**Formula:** `max(0, total transfer-pathway hours - 120)`.
 
-- **Figure 4 is right.** We transcribed all 49 printed cells from the PDF and
-  they reproduce the figure's own Average row on 10 of 11 columns exactly (MCLA
-  computes 26.5 and prints 26 — the figure rounds half down). Its overall mean
-  is 12.9 extra hours, which is the "13" the paper states in its own text.
-- Our earlier "7 wrong" was the **repo workbook's** Credit Hours tab, not this
-  figure. The repo is the older tally.
+**Result:** our direct calculation reproduces **36 of 49** cells. Our mean is
+**15.327 hours**; the paper's cells average **12.918 hours**.
 
-## Figure 5 — cost of extra credits · 0 wrong
+1. **Eleven positive source results become zero in the paper.** Nine are the
+   coordinated pathways above. Amherst–Holyoke (**5 → 0**) and
+   Fitchburg–Mount Wachusett (**5 → 0**) show the same pattern but have no
+   Figure 3 cell to cross-check. A later pathway revision is the likely cause.
+2. **The two strongest carry-forward candidates are UMass Boston.** For
+   Boston–Bunker Hill, total **119** gives **0**, but the paper prints **6**.
+   For Boston–MassBay, total **151** gives **31**, but the paper prints **7**.
+   Those paper values follow a hand-entered summary rather than the detailed
+   source calculation, and neither pathway belongs to the Figure 3 pattern.
+3. **The prose range is definitely wrong.** “Six to 35” combines two cohorts.
+   The 49-pathway positive range is **1.2–34.83**; the 61-pathway range is
+   **6.0–33.88**. Neither produces “six to 35.”
 
-- **Figure 5 is right, and it is Figure 4 priced.** Cost = (hours above 120) ×
-  the campus's per-credit rate, and that holds **to the cent on all 35 priced
-  cells**. The implied rates are stable per campus — Fitchburg $473, Bridgewater
-  $489, Worcester $491, Framingham $497, MCLA $508, Salem $514, Westfield $515,
-  UMass Boston $696, UMass Lowell $707.
-- Its overall mean is **$7,129 — exactly the figure the paper states**.
+**Meeting position:** most Figure 4 differences likely reflect an unpublished
+coordinated revision. The two Boston values are credible manual carry-forward
+errors, and the prose range is a confirmed error.
 
-## Figure 6 — curricular complexity · 60 scores checked, 2 wrong · plus 1 wrong cell in the printed figure
+## Other figures — brief disposition
 
-- Computed by uploading their sheets to curricularanalytics.org (their README
-  says so — no calculator exists in their repo). We implemented the same
-  published math ourselves, ran it on their own sheets, and match **58 of 60
-  scores exactly, to the integer**. Their +15 headline reproduces as +15.9.
-- The two score misses are both +4, and both trace to their files, not the math:
-  - **Bridgewater (resident)**: we compute 164 from the sheet in their repo;
-    they published 160. That sheet is the same one whose credits drifted 123 vs
-    120 (Figure 4 above) — the saved sheet changed after the upload.
-  - **Dartmouth × Bristol**: we compute 174 from their saved sheet; they
-    published 170. Here the credits agree, so the file they uploaded to the
-    website simply wasn't the file they saved.
-- **A third error sits in the printed figure itself: Springfield Technical ×
-  UMass Amherst is printed as −28, but their own Curricular Complexity tab
-  computes +34** (score 219 against Amherst's 185 resident — we reproduce 219
-  from their sheet exactly). The tell is their own Average row: Amherst's
-  printed average is **+1.0**, and (6 + 25 − 28) / 3 = +1.0 to the decimal —
-  only the −28 cell produces it. Averaging their own tab instead gives +21.7.
-  Figure 7 repeats the +1.0. Every other university's printed average matches
-  its tab to rounding, so this is the figure's only such cell — a value typed
-  into the chart, not computed from their data.
-- Why we're sure: matching an independent published tool's output on 58 real
-  curricula to the integer rules out implementation differences. We also settled
-  a detail their README doesn't state: corequisites count as graph edges —
-  scoring with them matches 58 of 60; without them, only 17 of 60.
+- **Figure 1:** **164/165** cells reproduce. Cape Cod–UMass Dartmouth is
+  **35%** in our calculation and **45%** in the paper. The 45% duplicates the
+  neighboring Massasoit value, but a later revision is also possible. Minor
+  isolated note only.
+- **Figure 2:** the anonymous non-STEM dots average **69.4%** in our calculation
+  versus **76.2%** in the paper; one value changes from 33 to 67. The campus
+  cannot be identified, the STEM conclusions reproduce, and the difference is
+  inconsequential.
+- **Figure 5:** the paper correctly prices its Figure 4 values. All 13 different
+  results come directly from Figure 4; there is no independent Figure 5 issue.
+- **Figure 6:** formula and headline validated—**47/49** cells and **59/60**
+  available component scores reproduce. STCC–UMass Amherst is **+34 vs −28**,
+  consistent with the same pathway's Figure 3/4 revision. Bristol–UMass
+  Dartmouth is **−28 vs −32**, but the final graph needed to resolve it is
+  unavailable. This is not a separate large bug.
+- **Figure 7:** arithmetic is internally correct, but the complexity row uses
+  **49 pathways** while transfer rate, hours, and cost use **61**. This is an
+  undisclosed cohort difference, not a new formula error.
 
-## Figure 7 — the summary table · THIS is the one that's wrong
+## CA changes learned from the MA formulas
 
-- **The paper contradicts itself.** Figure 7's *Avg Extra Credit Hours* and
-  *Avg Extra Cost* rows disagree with Figures 4 and 5 on **7 of 11 columns**:
+| Figure | California alignment |
+|---|---|
+| 1 | Use articulated named required courses / all named required courses. Exclude GE; keep uncovered upper-division requirements in the denominator. |
+| 2 | Categorize the same observations as Figure 1. The four types partition that course universe; GE and degree padding are excluded. |
+| 3 | Use **applicable AS credits / total AS credits**. Count each credit once; include named-course and actual GE/breadth requirement credit; exclude unrestricted-elective-only credit. This fixes our former four-year-course denominator. |
+| 4 | Use the full pathway total in `max(0, pathway hours - 120)`, including elective capacity toward the degree floor. Convert quarter units first. |
+| 5 | Price Figure 4's unrounded result and round dollars once. Clearly label the state-specific price bases. |
+| 6 | Preserve OR prerequisites, distinct courses, and series consistently; exclude ambiguous routes rather than guessing. CA is a constructed graph estimate, while MA uses the authors' graphs. |
 
-  | | Fig 4 | Fig 7 | repo workbook |
-  |---|---|---|---|
-  | Bridgewater | 5.8 | 9.1 | 16.4 |
-  | Fitchburg | 1.2 | 6.0 | 6.8 |
-  | Framingham | 34.8 | 33.9 | 33.9 |
-  | Salem | 10.6 | 13.1 | 13.1 |
-  | UMass Boston | 20.0 | 22.5 | 22.5 |
-  | UMass Lowell | 6.8 | 10.4 | 10.4 |
-  | Worcester | 7.8 | 10.7 | 10.7 |
+## Website and comparison shelf
 
-- **The direction is knowable.** On six of those seven, Figure 7 equals the repo
-  workbook to the decimal. Figure 7 is the older tally; Figures 4 and 5 were
-  regenerated and the summary table was never updated to match.
-- **It is only those two rows.** Figure 7's *Avg % AS Transfer* row matches
-  Figure 3, and its *Avg Extra Curr. Complexity* row matches Figure 6. So this
-  is a stale-row problem, not a broken table.
-- Why we're sure: Figures 4 and 5 agree with each other to the cent, and both
-  agree with the paper's own prose totals (13 hours, $7,129). Figure 7 agrees
-  with neither, and instead matches a file the paper superseded.
+Every Massachusetts figure should expose only:
 
-## MassTransfer map — not checked
+- **Final paper** — the published value.
+- **Our recalculation** — the paper formula applied to the authors' source
+  files.
 
-- Raw data, no computation on either side. We never imported that column, so we
-  make no claim about it. Our gap, not their error.
+Do not expose intermediate summaries, older formulas, classifiers, or drafts as
+alternate Massachusetts versions.
 
----
+Keep **eight meeting exhibits**:
 
-## If asked
+- Six CA–MA comparisons, one for each Figure 1–6 visual.
+- Two MA audits: Figure 3 and Figure 4, each Final paper versus Our
+  recalculation.
 
-- **"So the paper is wrong?"** Its headline averages are right — we reproduce
-  them. The per-cell values on the hand-typed figures are unreliable. It's a
-  data-entry problem, not a research-design problem. Their own limitations
-  section says the work was manual and error-prone.
-- **"Could it be your pipeline?"** Zero of the 61 Figure-3 pairs resolved against
-  us, and the two formula-computed figures match us exactly.
-- **"What's different about your approach?"** One program computes every number
-  from the raw course records, the same engine for Massachusetts, California,
-  and Virginia. Their corrections couldn't propagate; ours can't fail to.
+Figures 1, 2, 5, and 6 do not need separate audit exhibits. Their minor,
+inherited, or unresolved-input notes above are enough.
+
+## Questions for the meeting
+
+1. Were the nine overlapping Figure 3/4 pathways re-articulated after the
+   available source files were created? Can we see the final input sheets?
+2. In Figure 3, when does unrestricted-elective credit count, and when is the
+   result capped at 100%?
+3. Why do the STCC cells behave as though the denominator were 63 rather than
+   61 credits, and what produces the four unresolved values?
+4. Why do the Figure 4 Boston detail calculations give 0 and 31 while the paper
+   prints 6 and 7?
+5. Which cohort was intended by the Figure 4 prose range and Figure 7 summary?
+
+## One-sentence conclusion
+
+We now treat the final paper as the Massachusetts result, compare it only with
+our direct recalculation, and apply the recovered formulas to California,
+leaving two material audit questions: Figure 3's credit treatment and Figure
+4's revised hours.

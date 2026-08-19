@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../../test/mongoHarness');
 const { transferCreditRateData } = cjs('./transferCreditRate');
+const maFigure3GrayDetail = cjs('../../data/ma/figure3-gray-detail.json');
 
 let mongo;
 let db;
@@ -62,6 +63,11 @@ async function seedTemplate({
   majorSlug = null,
   researchStatus = null,
   totalUnits = 120,
+  unitSystem = null,
+  annualTuition = null,
+  tuitionSource = null,
+  tuitionBasis = null,
+  verified = null,
   groups,
 }) {
   await db.collection('curated_requirements').insertOne({
@@ -72,6 +78,8 @@ async function seedTemplate({
     school,
     program,
     ...(researchStatus ? { research_status: researchStatus } : {}),
+    ...(typeof verified === 'boolean' ? { verification: { verified } } : {}),
+    ...(unitSystem ? { unit_system: unitSystem } : {}),
     total_units: totalUnits,
     requirement_groups: groups,
   });
@@ -80,6 +88,9 @@ async function seedTemplate({
     kind: 'university',
     source_id: schoolId,
     name: school,
+    ...(annualTuition != null ? { tuition_annual_resident_usd: annualTuition } : {}),
+    ...(tuitionSource ? { tuition_source: tuitionSource } : {}),
+    ...(tuitionBasis ? { tuition_basis: tuitionBasis } : {}),
   });
 }
 
@@ -158,6 +169,24 @@ afterAll(async () => {
 });
 
 describe('transferCreditRateData v4', () => {
+  it('freezes the direct MA Figure 3 gray-row rerun independently of the typed summary tab', () => {
+    expect(maFigure3GrayDetail.summary).toMatchObject({
+      cells: 61,
+      matches_final_pdf_at_printed_precision: 42,
+      mismatches_final_pdf_at_printed_precision: 19,
+    });
+    expect(maFigure3GrayDetail.summary.archive_gray_detail_mean_pct).toBeCloseTo(64.6824664734, 8);
+    expect(maFigure3GrayDetail.objective_duplicate_blocks_removed).toHaveLength(3);
+    const uncapped = maFigure3GrayDetail.cells.find((cell) => cell.pair === 'Fitchburg × MassBay');
+    expect(uncapped).toMatchObject({
+      archive_gray_units: 69,
+      archive_as_total_units: 68,
+      archive_gray_detail_display_pct: 101,
+      final_pdf_pct: 100,
+      matches_final_pdf_at_printed_precision: false,
+    });
+  });
+
   it('limits the high-fidelity cohort to verified records in the exact degree slot', async () => {
     await seedTemplate({
       schoolId: 70,
@@ -204,11 +233,27 @@ describe('transferCreditRateData v4', () => {
       community_college_id: 701,
       degree_type: 'local_as',
       source_verified: true,
-      degree_template_assumed_valid: true,
+      degree_template_verified: false,
+      degree_template_assumed_valid: false,
     });
-    expect(verifiedRows[0].method_warning || '').not.toMatch(/four-year graduation template/i);
+    expect(verifiedRows[0].method_warning).toMatch(/four-year graduation template/i);
     expect(verifiedRows[0].method_warning).toMatch(/human-verified but is not marked analysis-ready/i);
-    expect(verifiedRows[0].method_warning).not.toMatch(/still requires human verification/i);
+    expect(verifiedRows[0].method_warning).toMatch(/still requires human verification/i);
+
+    await db.collection('curated_requirements').updateOne(
+      { _id: 'degree:70' },
+      { $set: { verification: { verified: true, verified_at: '2026-08-18T00:00:00Z' } } },
+    );
+    const explicitlyVerified = await transferCreditRateData(db, null, {
+      degreeType: 'local_as', verifiedOnly: true,
+    });
+    expect(explicitlyVerified[0]).toMatchObject({
+      degree_template_verified: true,
+      degree_template_assumed_valid: false,
+      degree_template_status_conflict: true,
+    });
+    expect(explicitlyVerified[0].method_warning || '')
+      .not.toMatch(/four-year graduation template/i);
   });
 
   it('reports the share of all bachelor requirements and lower-division requirements fulfilled by the AS degree', async () => {
@@ -259,6 +304,11 @@ describe('transferCreditRateData v4', () => {
     expect(cell.ge_counted_units).toBe(8);
     expect(cell.elective_counted_units).toBe(6);
     expect(cell.transferred_units).toBe(18);
+    // Figure 3 follows the MA gray-row rule: named + actual GE/breadth only.
+    // The six units of unrestricted-elective capacity still count for
+    // Figures 4/5, but cannot inflate Figure 3's numerator.
+    expect(cell.paper_equivalent_transferred_units).toBe(12);
+    expect(cell.paper_equivalent_as_unit_utilization_pct).toBe(20);
     expect(cell.degree_unit_system).toBe('semester');
     // The full degree is measured against the campus's stated 120-unit
     // minimum, not the 30 modeled units — a thinly modelled template must not
@@ -274,11 +324,105 @@ describe('transferCreditRateData v4', () => {
     expect(cell.as_unit_utilization_pct).toBe(30);
     expect(cell.extra_units).toBe(42);
     expect(cell.extra_units_semester).toBe(42);
+    expect(cell.modeled_pathway_units_semester).toBe(162);
+    expect(cell.modeled_hours_above_120).toBe(42);
     expect(cell.method_status).toBe('estimated');
     expect(cell.method_warning).toMatch(/elective credit assumes/i);
     expect(cell.transferred_units).toBeLessThanOrEqual(cell.as_total_units);
     expect(cell.rate).toBeGreaterThanOrEqual(0);
     expect(cell.rate).toBeLessThanOrEqual(100);
+  });
+
+  it('separates unused AS units from the paper-style pathway total minus 120', async () => {
+    const seedPair = async ({ schoolId, collegeId, totalUnits, unitSystem }) => {
+      await seedTemplate({
+        schoolId,
+        totalUnits,
+        unitSystem,
+        annualTuition: 24000,
+        tuitionSource: 'Test tuition schedule',
+        groups: [namedGroup([{
+          section_advisement: 1,
+          receivers: [ucCourse(schoolId * 100 + 1)],
+        }])],
+      });
+      await seedAsDegree({
+        collegeId,
+        groups: [asNamedGroup([{
+          section_advisement: 1,
+          receivers: [asReceiver(collegeId * 100 + 1)],
+        }])],
+      });
+      await seedCourses([[collegeId * 100 + 1, 4]]);
+      await seedAgreement({
+        schoolId,
+        collegeId,
+        receivers: [articulated(
+          { kind: 'course', parent_id: schoolId * 100 + 1 },
+          [collegeId * 100 + 1],
+        )],
+      });
+    };
+
+    await seedPair({ schoolId: 28, collegeId: 280, totalUnits: 123, unitSystem: 'semester' });
+    await seedPair({ schoolId: 29, collegeId: 290, totalUnits: 180, unitSystem: 'quarter' });
+
+    const semester = await cellFor({ collegeId: 280, schoolId: 28 });
+    expect(semester.extra_units_semester).toBe(56);
+    expect(semester.modeled_pathway_units_semester).toBe(179);
+    expect(semester.modeled_hours_above_120).toBe(59);
+    expect(semester.extra_cost_usd).toBe(56000);
+    expect(semester.modeled_cost_above_120_usd).toBe(59000);
+    expect(semester.modeled_cost_above_120_standard_load_usd).toBe(47200);
+    expect(semester.tuition_source).toBe('Test tuition schedule');
+
+    // A 180-quarter-unit graduation minimum is exactly 120 semester units, so
+    // the two Figure-4 candidates coincide there.
+    const quarter = await cellFor({ collegeId: 290, schoolId: 29 });
+    expect(quarter.extra_units_semester).toBe(57.3);
+    expect(quarter.modeled_pathway_units_semester).toBe(177.3);
+    expect(quarter.modeled_hours_above_120).toBe(57.3);
+    expect(quarter.modeled_hours_above_120_unrounded).toBeCloseTo(57.333333, 6);
+    expect(quarter.modeled_cost_above_120_usd).toBe(57333);
+  });
+
+  it('reads canonical tuition provenance from tuition_basis', async () => {
+    await seedTemplate({
+      schoolId: 30,
+      school: 'UC Provenance',
+      totalUnits: 120,
+      annualTuition: 12000,
+      tuitionBasis: {
+        year: '2025-26',
+        source: 'UCOP Total Charges by Campus 2025-26',
+        source_url: 'https://www.ucop.edu/example.pdf',
+      },
+      groups: [namedGroup([{
+        section_advisement: 1,
+        receivers: [ucCourse(3001)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 300,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        receivers: [asReceiver(30001)],
+      }])],
+    });
+    await seedCourses([[30001, 4]]);
+    await seedAgreement({
+      schoolId: 30,
+      collegeId: 300,
+      receivers: [articulated(
+        { kind: 'course', parent_id: 3001 },
+        [30001],
+      )],
+    });
+
+    const cell = await cellFor({ collegeId: 300, schoolId: 30 });
+    expect(cell.tuition_source).toBe('UCOP Total Charges by Campus 2025-26');
+    expect(cell.tuition_source_url).toBe('https://www.ucop.edu/example.pdf');
+    expect(cell.tuition_price_year).toBe('2025-26');
   });
 
   it('solves a true unit-based associate-degree choice pool instead of taking every listed course', async () => {
@@ -612,6 +756,8 @@ describe('transferCreditRateData v4', () => {
     expect(cell.elective_demand_units).toBeCloseTo(10, 1);
     expect(cell.elective_counted_units).toBeCloseTo(10, 1);
     expect(cell.transferred_units).toBeCloseTo(36.7, 1);
+    expect(cell.paper_equivalent_transferred_units).toBeCloseTo(26.7, 1);
+    expect(cell.paper_equivalent_as_unit_utilization_pct).toBeCloseTo(44.4, 1);
     expect(cell.extra_units).toBeCloseTo(23.3, 1);
   });
 
@@ -888,6 +1034,9 @@ describe('transferCreditRateData v4', () => {
     expect(cell.transferred_units).toBeNull();
     expect(cell.extra_units).toBeNull();
     expect(cell.extra_units_semester).toBeNull();
+    expect(cell.modeled_pathway_units_semester).toBeNull();
+    expect(cell.modeled_hours_above_120).toBeNull();
+    expect(cell.modeled_cost_above_120_usd).toBeNull();
   });
 
   it('excludes a structurally impossible selected named plan instead of breaking whole-degree bounds', async () => {
@@ -1132,10 +1281,10 @@ describe('transferCreditRateData standardized denominators and vocabulary', () =
     expect(rows.map((row) => row.community_college_id)).toContain(260);
   });
 
-  it('joins the published per-pair value onto paper-corpus rows, and only there', async () => {
+  it('joins published and deposited-detail sources onto paper-corpus rows, and only there', async () => {
     await db.collection('curated_requirements').insertMany([
       {
-        _id: 'degree:9001:ma-cs', kind: 'degree', school_id: 9001, school: 'Testfield',
+        _id: 'degree:9001:ma-cs', kind: 'degree', school_id: 9001, school: 'MCLA',
         program: 'Computer Science, B.S.', major_slug: 'ma-cs', state: 'ma',
         total_units: 120, unit_system: 'semester',
         requirement_groups: [{
@@ -1192,11 +1341,15 @@ describe('transferCreditRateData standardized denominators and vocabulary', () =
     });
     await db.collection('ma_paper_baselines').insertMany([
       { measure: 'pct_as', school_id: 9001, community_college_id: 9101,
-        school: 'Testfield', college_name: 'Berkshire Community College', value: 0.385 },
+        school: 'MCLA', college_name: 'Berkshire Community College', value: 0.385 },
       { measure: 'pct_as_pdf', school_id: 9001, community_college_id: 9101,
-        school: 'Testfield', college_name: 'Berkshire Community College', value: 0.42 },
+        school: 'MCLA', college_name: 'Berkshire Community College', value: 0.42 },
+      { measure: 'extra_hours_pdf', school_id: 9001, community_college_id: 9101,
+        school: 'MCLA', college_name: 'Berkshire Community College', value: 26 },
+      { measure: 'extra_cost_pdf', school_id: 9001, community_college_id: 9101,
+        school: 'MCLA', college_name: 'Berkshire Community College', value: 13202 },
       { measure: 'pct_as', school_id: 9001, community_college_id: null,
-        school: 'Testfield', value: 1 },
+        school: 'MCLA', value: 1 },
     ]);
 
     const rows = await transferCreditRateData(db, null, { degreeType: 'local_as', majorSlug: 'ma-cs' });
@@ -1206,6 +1359,19 @@ describe('transferCreditRateData standardized denominators and vocabulary', () =
     // figure's source selector can show any of the three.
     expect(cell.published_as_transfer_pct).toBe(38.5);
     expect(cell.published_pdf_as_transfer_pct).toBe(42);
+    expect(cell.published_pdf_extra_hours).toBe(26);
+    expect(cell.published_pdf_extra_cost_usd).toBe(13202);
+    expect(cell.archived_pathway_sheet_total_hours).toBe(146);
+    expect(cell.archived_pathway_sheet_extra_hours).toBe(26);
+    expect(cell.archived_pathway_sheet_source).toMatch(/deposited 2024 pathway sheet/i);
+    expect(cell.archive_gray_detail_as_transfer_pct).toBeCloseTo(38.4615384615, 8);
+    expect(cell.archive_gray_detail_numerator_units).toBe(25);
+    expect(cell.archive_gray_detail_denominator_units).toBe(65);
+    expect(cell.archive_gray_detail_blue_units_excluded).toBe(12);
+    expect(cell.archive_gray_detail_matches_final_pdf).toBe(true);
+    expect(cell.archive_gray_detail_delta_vs_final_pdf_pp).toBeCloseTo(0.4615384615, 8);
+    expect(cell.archive_gray_detail_source).toMatch(/gray replacement-row Column H credits/i);
+    expect(cell.archive_gray_detail_source).toMatch(/blue unrestricted-elective-only rows excluded/i);
     expect(cell.as_unit_utilization_pct).toBe(100);
     // The CS-only flavor drops the GE-group receiver's 3 units: 4 of 7.
     expect(cell.as_cs_only_utilization_pct).toBe(57.1);
@@ -1215,6 +1381,16 @@ describe('transferCreditRateData standardized denominators and vocabulary', () =
     for (const row of caRows) {
       expect(row.published_as_transfer_pct).toBeUndefined();
       expect(row.published_pdf_as_transfer_pct).toBeUndefined();
+      expect(row.published_pdf_extra_hours).toBeUndefined();
+      expect(row.published_pdf_extra_cost_usd).toBeUndefined();
+      expect(row.archived_pathway_sheet_total_hours).toBeUndefined();
+      expect(row.archived_pathway_sheet_extra_hours).toBeUndefined();
+      expect(row.archived_pathway_sheet_source).toBeUndefined();
+      expect(row.archive_gray_detail_as_transfer_pct).toBeUndefined();
+      expect(row.archive_gray_detail_numerator_units).toBeUndefined();
+      expect(row.archive_gray_detail_denominator_units).toBeUndefined();
+      expect(row.archive_gray_detail_blue_units_excluded).toBeUndefined();
+      expect(row.archive_gray_detail_source).toBeUndefined();
       expect(row.as_cs_only_utilization_pct).toBeUndefined();
     }
   });

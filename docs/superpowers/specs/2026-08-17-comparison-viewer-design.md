@@ -596,6 +596,14 @@ Adding one is **one component file + one array entry.** Nothing in `ViewPane`, `
 
 ### 6.2 The worked example — MA published-vs-ours **pathway complexity**
 
+> **Historical design example — do not use its evidentiary claims in the
+> presentation.** The final audit established that this section conflates the
+> 2026 final PDF, a 2024 archived tally, and our reconstruction of archived
+> pathway sheets. It also depended on our former duplicate-course-ID scorer
+> bug. The implemented comparison now separates those three sources; the
+> presentation-safe interpretation is in
+> [`../../ma-meeting-notes.md`](../../ma-meeting-notes.md#figure-6--final-15-is-right).
+
 **The comparison:**
 ```js
 { _id: 'ma-fig6-printed-vs-workbook',

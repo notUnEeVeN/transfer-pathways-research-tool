@@ -13,6 +13,8 @@ import { useBodyScrollLock } from '../../../hooks/useBodyScrollLock'
  * gutter (`px-6 md:px-8`) and band (`py-8`), so the panel reads like an in-app
  * page that happens to float above the route. Contents are application-owned;
  * the panel provides chrome (close button, scroll area, optional title bar).
+ * `contentOwnsHeader` keeps only compact close chrome when the child already
+ * owns its title, provenance, and actions.
  */
 export default function FullScreenPanel({
   open,
@@ -22,6 +24,7 @@ export default function FullScreenPanel({
   subtitle,
   leading,
   actions,
+  contentOwnsHeader = false,
   children
 }) {
   const panelRef = useRef(null)
@@ -84,16 +87,20 @@ export default function FullScreenPanel({
               the title block flows under tighter widths while the actions stay
               pinned top-right. */}
           <header className='shrink-0 hairline-b'>
-            <div className='mx-auto w-full max-w-7xl px-6 md:px-8 flex items-start sm:items-center justify-between gap-3 py-3 sm:py-0 sm:h-16'>
-              <div className='flex items-start sm:items-center gap-3 min-w-0'>
-                {leading && <div className='shrink-0'>{leading}</div>}
-                <div className='min-w-0'>
-                  {title && <h2 className='text-heading sm:truncate'>{title}</h2>}
-                  {subtitle && <div className='text-caption mt-0.5'>{subtitle}</div>}
+            <div className={`mx-auto w-full max-w-7xl px-6 md:px-8 flex items-start sm:items-center gap-3 ${
+              contentOwnsHeader ? 'justify-end py-2' : 'justify-between py-3 sm:py-0 sm:h-16'
+            }`}>
+              {!contentOwnsHeader && (
+                <div className='flex items-start sm:items-center gap-3 min-w-0'>
+                  {leading && <div className='shrink-0'>{leading}</div>}
+                  <div className='min-w-0'>
+                    {title && <h2 className='text-heading sm:truncate'>{title}</h2>}
+                    {subtitle && <div className='text-caption mt-0.5'>{subtitle}</div>}
+                  </div>
                 </div>
-              </div>
+              )}
               <div className='flex items-center gap-2 shrink-0'>
-                {actions}
+                {!contentOwnsHeader && actions}
                 <button
                   data-full-screen-close
                   type='button'
@@ -109,7 +116,9 @@ export default function FullScreenPanel({
           {/* Scroll area owns the band; inner column matches the header gutter so
               content lines up with the title above it. */}
           <div className='flex-1 overflow-auto'>
-            <div className='mx-auto w-full max-w-7xl px-6 md:px-8 py-8'>{children}</div>
+            <div className={`mx-auto w-full max-w-7xl px-6 md:px-8 ${
+              contentOwnsHeader ? 'py-5' : 'py-8'
+            }`}>{children}</div>
           </div>
         </motion.div>
       )}

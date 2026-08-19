@@ -1,133 +1,219 @@
 /**
- * Can these panes be compared, and how?
+ * Decide what two or more panes may honestly claim to compare.
  *
- * The tool refuses rather than fuses. Where two panes do not share a key
- * space — Bristol Community College is not Ohlone — no correspondence is
- * invented; the reader is told, permanently and on screen, that only
- * distributions and methodology contrasts exist across that boundary. Stating
- * the limit is the honest output, and it is what keeps a comparison from
- * quietly becoming a claim nobody checked.
+ * Institution overlap is only the last step. First every figure declares a
+ * comparison contract: statistic, unit, grain, key space and the semantic
+ * choices that make the number what it is. This prevents two panes that look
+ * alike from being described as comparable when their denominators differ.
  *
- * One rule decides everything: do the panes' row/column key spaces intersect?
+ * Contract shape:
+ *   { measure, unit, grain, keys, semantics, context, distribution? }
  *
- *   different figures            -> incomparable / refused
- *   same figure, same major      -> same-cells / aligned   (a version diff)
- *   same figure, same state      -> same-cells / aligned   (CA majors share
- *                                   the district x campus key space)
- *   same figure, other state     -> same-measure / disjoint
- *   incompatible measure lenses  -> same-figure / refused, with the fix named
- *
- * Pure and fail-closed: anything it cannot establish resolves to refused.
+ * `semantics` must match for a cross-corpus distribution. `context` is shown
+ * but may differ: source or cohort is often the contrast the reader intended.
  */
 
 const LEVELS = ['incomparable', 'same-figure', 'same-measure', 'same-cells']
 
+const stable = (value) => {
+  if (Array.isArray(value)) return `[${value.map(stable).join(',')}]`
+  if (value && typeof value === 'object') {
+    return `{${Object.keys(value).sort().map((key) => `${key}:${stable(value[key])}`).join(',')}}`
+  }
+  return JSON.stringify(value)
+}
+
+const differentFields = (left = {}, right = {}) => {
+  const keys = new Set([...Object.keys(left || {}), ...Object.keys(right || {})])
+  return [...keys].filter((key) => stable(left?.[key]) !== stable(right?.[key]))
+}
+
+const lookupOf = (source) => {
+  if (typeof source === 'function') return source
+  return (key) => (source instanceof Map ? source.get(key) : source?.[key]) || null
+}
+
+export function resolveComparisonContract(pane, major, analysesById) {
+  const analysis = lookupOf(analysesById)(pane?.figure)
+  if (!analysis || typeof analysis.comparisonContract !== 'function') return null
+  const contract = analysis.comparisonContract(pane, major)
+  if (!contract || typeof contract !== 'object') return null
+  if (['measure', 'unit', 'grain'].some((field) => !contract[field])) return null
+  return {
+    measure: String(contract.measure),
+    unit: String(contract.unit),
+    grain: String(contract.grain),
+    keys: contract.keys && typeof contract.keys === 'object' ? contract.keys : {},
+    semantics: contract.semantics && typeof contract.semantics === 'object'
+      ? contract.semantics : {},
+    context: contract.context && typeof contract.context === 'object'
+      ? contract.context : {},
+    distribution: contract.distribution && typeof contract.distribution === 'object'
+      ? contract.distribution : {},
+  }
+}
+
+const refused = (line, warning) => ({
+  level: warning?.code === 'different_figures' ? 'incomparable' : 'same-figure',
+  join: 'refused',
+  line,
+  warnings: warning ? [warning] : [],
+  contracts: [],
+})
+
 /**
- * @param panes  [{ id, figure, major, knobs }]
- * @param majorsBySlug  Map|object of slug -> major (needs .state, .label, .capabilities)
+ * @param panes [{ id, figure, major, knobs }]
+ * @param majorsBySlug Map|object of slug -> major
+ * @param analysesById Map|object|function of figure id -> registry entry
  */
-export function assessComparability(panes, majorsBySlug) {
+export function assessComparability(panes, majorsBySlug, analysesById) {
   const list = Array.isArray(panes) ? panes : []
-  const lookup = (slug) => (
-    majorsBySlug instanceof Map ? majorsBySlug.get(slug) : majorsBySlug?.[slug]
-  ) || null
+  const majorLookup = lookupOf(majorsBySlug)
 
   if (list.length < 2) {
     return {
-      level: 'incomparable',
-      join: 'refused',
-      line: 'Add a second view to compare.',
-      warnings: [],
+      level: 'incomparable', join: 'refused',
+      line: 'Add a second view to compare.', warnings: [], contracts: [],
     }
   }
 
   const figures = new Set(list.map((pane) => pane.figure))
   if (figures.size > 1) {
-    return {
-      level: 'incomparable',
-      join: 'refused',
-      line: 'These panes render different figures, which compute different things — no difference is shown.',
-      warnings: [{
+    return refused(
+      'These panes render different figures, which compute different things — no difference is shown.',
+      {
         code: 'different_figures',
         text: `Panes name ${[...figures].join(' and ')}.`,
         fix: 'Put both panes on the same figure, or keep them side by side as context only.',
-      }],
-    }
+      },
+    )
   }
 
-  const majors = list.map((pane) => lookup(pane.major))
+  const majors = list.map((pane) => majorLookup(pane.major))
   if (majors.some((major) => !major)) {
-    return {
-      level: 'incomparable',
-      join: 'refused',
-      line: 'One of these panes names a major this console does not have configured.',
-      warnings: [{
+    return refused(
+      'One of these panes names a major this console does not have configured.',
+      {
         code: 'unknown_major',
         text: 'A pane references an unconfigured major slug.',
         fix: 'Rebuild the pane from the picker.',
-      }],
+      },
+    )
+  }
+
+  const contracts = list.map((pane, index) => (
+    resolveComparisonContract(pane, majors[index], analysesById)
+  ))
+  if (contracts.some((contract) => !contract)) {
+    return {
+      ...refused(
+        'This figure has not declared enough methodology to compute a defensible comparison.',
+        {
+          code: 'missing_contract',
+          text: 'At least one pane has no complete measure contract.',
+          fix: 'Use the figures side by side until its unit, grain, denominator, cohort and source are declared.',
+        },
+      ),
+      contracts,
     }
   }
 
+  const first = contracts[0]
+  const identityFields = ['measure', 'unit', 'grain']
+    .filter((field) => contracts.some((contract) => contract[field] !== first[field]))
+  if (identityFields.length) {
+    return {
+      ...refused(
+        'The panes do not compute the same statistic at the same unit and grain, so no difference is shown.',
+        {
+          code: 'measure_contract_mismatch',
+          text: `The declared contracts differ in ${identityFields.join(', ')}.`,
+          fix: 'Choose matching measure settings before interpreting a delta or a distribution.',
+        },
+      ),
+      contracts,
+    }
+  }
+
+  const keyFields = [...new Set(contracts.slice(1)
+    .flatMap((contract) => differentFields(first.keys, contract.keys)))]
+  const semanticFields = [...new Set(contracts.slice(1)
+    .flatMap((contract) => differentFields(first.semantics, contract.semantics)))]
+  const contextFields = [...new Set(contracts.slice(1)
+    .flatMap((contract) => differentFields(first.context, contract.context)))]
+  const distributionFields = [...new Set(contracts.slice(1)
+    .flatMap((contract) => differentFields(first.distribution, contract.distribution)))]
+  const states = new Set(majors.map((major) => major.state || 'ca'))
+  const slugs = new Set(list.map((pane) => pane.major))
   const warnings = []
 
-  // Measure-lens compatibility. `unitCoverage: false` makes the server emit
-  // NULL for every unit-lens field, so a pane reading that lens against one
-  // reading the course lens is comparing a number to an absence.
-  const unitLens = majors.map((major) => major.capabilities?.unitCoverage !== false)
-  const lensMismatch = new Set(unitLens).size > 1
-  if (lensMismatch) {
-    const courseOnly = majors.filter((m) => m.capabilities?.unitCoverage === false)
+  if (contextFields.length) {
     warnings.push({
-      code: 'measure_mismatch',
-      text: `These panes read different measures — the graduation-unit lens against the course lens used by ${courseOnly.map((m) => m.label).join(' and ')}.`,
-      fix: 'Switch the unit-lens pane to its paper-equivalent (course) reading so both panes count the same thing.',
+      code: 'context_difference',
+      text: `The panes intentionally differ in ${contextFields.join(', ')}.`,
+      fix: 'Those source/cohort choices are printed with each pane and are part of the interpretation.',
     })
   }
 
-  const states = new Set(majors.map((major) => major.state || 'ca'))
-  const slugs = new Set(list.map((pane) => pane.major))
-
-  // Disjoint key spaces are the more fundamental fact and are classified first:
-  // two corpora share no institutions, so no cell difference exists whatever
-  // the panes measure. A lens mismatch rides along as a warning, because the
-  // distribution comparison that answers this case still needs both panes on
-  // the same measure.
   if (states.size > 1) {
+    if (distributionFields.length) {
+      return {
+        level: 'same-figure', join: 'refused', contracts,
+        line: 'The corpora request different distribution summaries, so no numeric contrast is shown.',
+        warnings: [...warnings, {
+          code: 'distribution_contract_mismatch',
+          text: `The distribution contracts differ in ${distributionFields.join(', ')}.`,
+          fix: 'Use the same grouping and pooling rule before comparing disjoint corpora.',
+        }],
+      }
+    }
+    if (semanticFields.length) {
+      return {
+        level: 'same-figure', join: 'refused', contracts,
+        line: 'The corpora are disjoint and the panes also use different definitions, so even a distribution contrast would be misleading.',
+        warnings: [...warnings, {
+          code: 'distribution_semantics_mismatch',
+          text: `The cross-state definitions differ in ${semanticFields.join(', ')}.`,
+          fix: 'Match the denominator, scope, GE treatment and weighting before comparing distributions.',
+        }],
+      }
+    }
     return {
-      level: 'same-measure',
-      join: 'disjoint',
-      line: `Same figure, different corpora (${[...states].map((s) => s.toUpperCase()).join(' vs ')}) — these have no colleges or campuses in common, so no cell-by-cell difference exists.`,
+      level: 'same-measure', join: 'disjoint', contracts,
+      line: `Same statistic, different corpora (${[...states].map((s) => s.toUpperCase()).join(' vs ')}) — compare distributions, not institution-by-institution cells.`,
       warnings: [...warnings, {
         code: 'disjoint_keys',
-        text: 'Rows and columns name different institutions in each pane; a matched difference would be invented, not measured.',
-        fix: 'Compare the distributions and the methodology instead of the cells.',
+        text: 'Rows and columns name different institutions; a matched cell difference would be invented.',
+        fix: 'Use the live distribution receipt below, which preserves each corpus’s own institutions.',
       }],
     }
   }
 
-  if (lensMismatch) {
+  if (keyFields.length) {
     return {
-      level: 'same-figure',
-      join: 'refused',
-      line: 'Same figure, different measures — no difference is shown until both panes read the same one.',
-      warnings,
+      level: 'same-figure', join: 'refused', contracts,
+      line: 'These panes use different row or column identities, so their cells cannot be joined safely.',
+      warnings: [...warnings, {
+        code: 'key_space_mismatch',
+        text: `The key-space contracts differ in ${keyFields.join(', ')}.`,
+        fix: 'Match the row grouping and column grain before requesting a cell delta.',
+      }],
     }
   }
 
-  if (slugs.size > 1) {
-    return {
-      level: 'same-cells',
-      join: 'aligned',
-      line: `Same figure and corpus across ${slugs.size} majors — the colleges and campuses match, so every cell is comparable.`,
-      warnings,
-    }
+  if (semanticFields.length) {
+    warnings.push({
+      code: 'semantic_lens_difference',
+      text: `The matched institutions are being read through different lenses: ${semanticFields.join(', ')}.`,
+      fix: 'Treat the delta as a named lens contrast, not disagreement within one definition.',
+    })
   }
 
   return {
-    level: 'same-cells',
-    join: 'aligned',
-    line: 'Same figure, same major, different pinned controls — every cell is directly comparable.',
+    level: 'same-cells', join: 'aligned', contracts,
+    line: slugs.size > 1
+      ? `The institution keys align across ${slugs.size} majors; the receipt reports every matched and unmatched cell.`
+      : 'The institution keys align; the receipt reports every matched and unmatched cell.',
     warnings,
   }
 }

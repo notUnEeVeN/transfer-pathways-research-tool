@@ -1,312 +1,338 @@
 {
- "generated_at": "2026-08-14T23:57:02.606Z",
- "published_headlines": {
+ "generated_at": "2026-08-19T04:17:42.991Z",
+ "artifact_scope": "Version-aware comparison of our engine, the repository snapshot last committed 2024-12-12, and literal transcriptions of the final PDF created 2026-06-26. Unless a field says final_pdf, a recovered notebook/tab value is archival.",
+ "source_warning": "Archive↔PDF disagreement establishes version divergence, not a final-paper error. A final-paper error requires an internal arithmetic, population, or scope contradiction in the final artifact.",
+ "source_vintages": {
+  "archived_repository": {
+   "as_of": "2024-12-12",
+   "math_rerun": "server/data/ma/their-math.json"
+  },
+  "final_pdf": {
+   "created": "2026-06-26",
+   "transcription": "server/data/ma/pdf-figures.json"
+  }
+ },
+ "final_pdf_headlines": {
   "fig1_mean": 38.2,
   "fig3_headline": 68,
   "fig4_headline": 13,
   "fig5_headline": 7129,
   "fig6_headline": 15
  },
- "their_pipeline": {
-  "fig1": "Excel formulas in the workbook (COUNTIF/COUNTA); notebook only plots the stored columns",
-  "fig2": "hard-coded arrays in course_distribution.ipynb; no typing code exists in the repo",
-  "fig3_4_5_6": "hand tabs in CurrComp Master.xlsx; notebook plots them (seaborn boxplots)"
+ "archived_repository_pipeline": {
+  "fig1": "Archived Excel formulas in the workbook (COUNTIF/COUNTA); archived notebook plots stored columns",
+  "fig2": "Hard-coded arrays in archived course_distribution.ipynb; no typing code exists in the deposited repo",
+  "fig3_4_5_6": "Typed/formula tabs in archived CurrComp Master.xlsx; archived notebook plots them"
  },
  "fig1_requirement_articulation": {
   "cells": 165,
   "ours_vs_stored_exact": 165,
   "worst_delta_pp": 0.048,
-  "their_formula_recomputed_exact": 165,
-  "mean_stored": 38.2,
-  "mean_ours": 38.2,
-  "published_mean": 38.2
+  "scope": "archive workbook and our archive-input recomputation",
+  "archive_formula_recomputed_exact": 165,
+  "archive_mean_stored": 38.2,
+  "archive_mean_ours": 38.2,
+  "final_pdf_prose_mean": 38.2,
+  "final_pdf_archive_rounding_gate": {
+   "cells_checked": 165,
+   "cells_matching": 164,
+   "cells_changed": 1
+  },
+  "final_pdf_printed_matrix_gate": {
+   "cell_count": 165,
+   "cell_sum": 6323,
+   "cell_mean": 38.32121212121212
+  },
+  "version_reading": "The engine reproduces the 2024 archive. The June 2026 final PDF differs visibly in one cell, so 165/165 archive agreement is not 165/165 final-PDF agreement."
  },
  "fig2_course_types_lower_division": {
-  "note": "their notebook hard-codes these arrays; the matrix itself supports the lower-division reading",
+  "scope": "2024 archived notebook and matrix only; not a transcription of final-PDF Figure 2",
+  "note": "The archived notebook hard-codes these arrays; the archived matrix supports the lower-division reading. Differences here diagnose the archive, not the June 2026 final PDF.",
   "rows": [
    {
     "university": "Bridgewater",
     "computing": {
      "ours": 71.7,
-     "their_matrix": 71.7,
-     "their_hardcoded": 72
+     "archive_matrix": 71.7,
+     "archive_notebook_hardcoded": 72
     },
     "math": {
      "ours": 65.3,
-     "their_matrix": 65.3,
-     "their_hardcoded": 65
+     "archive_matrix": 65.3,
+     "archive_notebook_hardcoded": 65
     },
     "science": {
      "ours": 100,
-     "their_matrix": 100,
-     "their_hardcoded": 100
+     "archive_matrix": 100,
+     "archive_notebook_hardcoded": 100
     },
     "non_stem": {
      "ours": null,
-     "their_matrix": null,
-     "their_hardcoded": null
+     "archive_matrix": null,
+     "archive_notebook_hardcoded": null
     }
    },
    {
     "university": "Fitchburg",
     "computing": {
      "ours": 85.3,
-     "their_matrix": 85.3,
-     "their_hardcoded": 88
+     "archive_matrix": 85.3,
+     "archive_notebook_hardcoded": 88
     },
     "math": {
      "ours": 97.3,
-     "their_matrix": 97.3,
-     "their_hardcoded": 96
+     "archive_matrix": 97.3,
+     "archive_notebook_hardcoded": 96
     },
     "science": {
      "ours": 100,
-     "their_matrix": 100,
-     "their_hardcoded": 100
+     "archive_matrix": 100,
+     "archive_notebook_hardcoded": 100
     },
     "non_stem": {
      "ours": null,
-     "their_matrix": null,
-     "their_hardcoded": null
+     "archive_matrix": null,
+     "archive_notebook_hardcoded": null
     }
    },
    {
     "university": "Framingham",
     "computing": {
      "ours": 12.2,
-     "their_matrix": 12.2,
-     "their_hardcoded": 15
+     "archive_matrix": 12.2,
+     "archive_notebook_hardcoded": 15
     },
     "math": {
      "ours": 16.7,
-     "their_matrix": 16.7,
-     "their_hardcoded": 17
+     "archive_matrix": 16.7,
+     "archive_notebook_hardcoded": 17
     },
     "science": {
      "ours": 100,
-     "their_matrix": 100,
-     "their_hardcoded": 100
+     "archive_matrix": 100,
+     "archive_notebook_hardcoded": 100
     },
     "non_stem": {
      "ours": null,
-     "their_matrix": null,
-     "their_hardcoded": null
+     "archive_matrix": null,
+     "archive_notebook_hardcoded": null
     }
    },
    {
     "university": "MCLA",
     "computing": {
      "ours": 20.7,
-     "their_matrix": 20.7,
-     "their_hardcoded": 19
+     "archive_matrix": 20.7,
+     "archive_notebook_hardcoded": 19
     },
     "math": {
      "ours": 40,
-     "their_matrix": 40,
-     "their_hardcoded": 40
+     "archive_matrix": 40,
+     "archive_notebook_hardcoded": 40
     },
     "science": {
      "ours": 93.3,
-     "their_matrix": 93.3,
-     "their_hardcoded": 93
+     "archive_matrix": 93.3,
+     "archive_notebook_hardcoded": 93
     },
     "non_stem": {
      "ours": 33.3,
-     "their_matrix": 33.3,
-     "their_hardcoded": 67
+     "archive_matrix": 33.3,
+     "archive_notebook_hardcoded": 67
     }
    },
    {
     "university": "Salem",
     "computing": {
      "ours": 21.1,
-     "their_matrix": 21.1,
-     "their_hardcoded": 30
+     "archive_matrix": 21.1,
+     "archive_notebook_hardcoded": 30
     },
     "math": {
      "ours": 81.7,
-     "their_matrix": 81.7,
-     "their_hardcoded": 82
+     "archive_matrix": 81.7,
+     "archive_notebook_hardcoded": 82
     },
     "science": {
      "ours": 100,
-     "their_matrix": 100,
-     "their_hardcoded": 100
+     "archive_matrix": 100,
+     "archive_notebook_hardcoded": 100
     },
     "non_stem": {
      "ours": 46.7,
-     "their_matrix": 46.7,
-     "their_hardcoded": null
+     "archive_matrix": 46.7,
+     "archive_notebook_hardcoded": null
     }
    },
    {
     "university": "UMass Amherst",
     "computing": {
      "ours": 30.8,
-     "their_matrix": 30.8,
-     "their_hardcoded": 40
+     "archive_matrix": 30.8,
+     "archive_notebook_hardcoded": 40
     },
     "math": {
      "ours": 95,
-     "their_matrix": 95,
-     "their_hardcoded": 98
+     "archive_matrix": 95,
+     "archive_notebook_hardcoded": 98
     },
     "science": {
      "ours": 100,
-     "their_matrix": 100,
-     "their_hardcoded": 100
+     "archive_matrix": 100,
+     "archive_notebook_hardcoded": 100
     },
     "non_stem": {
      "ours": null,
-     "their_matrix": null,
-     "their_hardcoded": null
+     "archive_matrix": null,
+     "archive_notebook_hardcoded": null
     }
    },
    {
     "university": "UMass Boston",
     "computing": {
      "ours": 31.7,
-     "their_matrix": 31.7,
-     "their_hardcoded": 32
+     "archive_matrix": 31.7,
+     "archive_notebook_hardcoded": 32
     },
     "math": {
      "ours": 58.3,
-     "their_matrix": 58.3,
-     "their_hardcoded": 67
+     "archive_matrix": 58.3,
+     "archive_notebook_hardcoded": 67
     },
     "science": {
      "ours": 53.3,
-     "their_matrix": 53.3,
-     "their_hardcoded": 53
+     "archive_matrix": 53.3,
+     "archive_notebook_hardcoded": 53
     },
     "non_stem": {
      "ours": null,
-     "their_matrix": null,
-     "their_hardcoded": null
+     "archive_matrix": null,
+     "archive_notebook_hardcoded": null
     }
    },
    {
     "university": "UMass Lowell",
     "computing": {
      "ours": 66.7,
-     "their_matrix": 66.7,
-     "their_hardcoded": 66
+     "archive_matrix": 66.7,
+     "archive_notebook_hardcoded": 66
     },
     "math": {
      "ours": 86.7,
-     "their_matrix": 86.7,
-     "their_hardcoded": 52
+     "archive_matrix": 86.7,
+     "archive_notebook_hardcoded": 52
     },
     "science": {
      "ours": 96,
-     "their_matrix": 96.7,
-     "their_hardcoded": 78
+     "archive_matrix": 96.7,
+     "archive_notebook_hardcoded": 78
     },
     "non_stem": {
      "ours": 100,
-     "their_matrix": 100,
-     "their_hardcoded": 100
+     "archive_matrix": 100,
+     "archive_notebook_hardcoded": 100
     }
    },
    {
     "university": "UMass Dartmouth",
     "computing": {
      "ours": 65.6,
-     "their_matrix": 65.6,
-     "their_hardcoded": 61
+     "archive_matrix": 65.6,
+     "archive_notebook_hardcoded": 61
     },
     "math": {
      "ours": 52,
-     "their_matrix": 52,
-     "their_hardcoded": 87
+     "archive_matrix": 52,
+     "archive_notebook_hardcoded": 87
     },
     "science": {
      "ours": 78.3,
-     "their_matrix": 78.3,
-     "their_hardcoded": 97
+     "archive_matrix": 78.3,
+     "archive_notebook_hardcoded": 97
     },
     "non_stem": {
      "ours": 100,
-     "their_matrix": 100,
-     "their_hardcoded": 100
+     "archive_matrix": 100,
+     "archive_notebook_hardcoded": 100
     }
    },
    {
     "university": "Westfield",
     "computing": {
      "ours": 15.8,
-     "their_matrix": 15.8,
-     "their_hardcoded": 16
+     "archive_matrix": 15.8,
+     "archive_notebook_hardcoded": 16
     },
     "math": {
      "ours": 84.4,
-     "their_matrix": 84.4,
-     "their_hardcoded": 84
+     "archive_matrix": 84.4,
+     "archive_notebook_hardcoded": 84
     },
     "science": {
      "ours": 100,
-     "their_matrix": 100,
-     "their_hardcoded": 100
+     "archive_matrix": 100,
+     "archive_notebook_hardcoded": 100
     },
     "non_stem": {
      "ours": null,
-     "their_matrix": null,
-     "their_hardcoded": 100
+     "archive_matrix": null,
+     "archive_notebook_hardcoded": 100
     }
    },
    {
     "university": "Worcester",
     "computing": {
      "ours": 28.3,
-     "their_matrix": 25.9,
-     "their_hardcoded": 25
+     "archive_matrix": 25.9,
+     "archive_notebook_hardcoded": 25
     },
     "math": {
      "ours": 64,
-     "their_matrix": 64,
-     "their_hardcoded": 100
+     "archive_matrix": 64,
+     "archive_notebook_hardcoded": 100
     },
     "science": {
      "ours": 100,
-     "their_matrix": 100,
-     "their_hardcoded": 100
+     "archive_matrix": 100,
+     "archive_notebook_hardcoded": 100
     },
     "non_stem": {
      "ours": 46.7,
-     "their_matrix": 66.7,
-     "their_hardcoded": 47
+     "archive_matrix": 66.7,
+     "archive_notebook_hardcoded": 47
     }
    }
   ],
-  "within_2pp_ours_vs_matrix": 36,
+  "within_2pp_ours_vs_archive_matrix": 36,
   "comparisons": 38,
-  "hardcoded_deviations": [
-   "MCLA Humanities: notebook 67 vs their own matrix 33",
-   "Salem Computing: notebook 30 vs their own matrix 21",
-   "UMass Amherst Computing: notebook 40 vs their own matrix 31",
-   "UMass Boston Math: notebook 67 vs their own matrix 58",
-   "UMass Lowell Math: notebook 52 vs their own matrix 87",
-   "UMass Lowell Science: notebook 78 vs their own matrix 97",
-   "UMass Dartmouth Math: notebook 87 vs their own matrix 52",
-   "UMass Dartmouth Science: notebook 97 vs their own matrix 78",
-   "Worcester Math: notebook 100 vs their own matrix 64",
-   "Worcester Humanities: notebook 47 vs their own matrix 67"
+  "archive_hardcoded_deviations": [
+   "MCLA Humanities: archive notebook 67 vs archive matrix 33",
+   "Salem Computing: archive notebook 30 vs archive matrix 21",
+   "UMass Amherst Computing: archive notebook 40 vs archive matrix 31",
+   "UMass Boston Math: archive notebook 67 vs archive matrix 58",
+   "UMass Lowell Math: archive notebook 52 vs archive matrix 87",
+   "UMass Lowell Science: archive notebook 78 vs archive matrix 97",
+   "UMass Dartmouth Math: archive notebook 87 vs archive matrix 52",
+   "UMass Dartmouth Science: archive notebook 97 vs archive matrix 78",
+   "Worcester Math: archive notebook 100 vs archive matrix 64",
+   "Worcester Humanities: archive notebook 47 vs archive matrix 67"
   ]
  },
  "fig3_transfer_credit_rate": {
+  "scope": "Our engine compared with the 2024 archive tab; final-PDF transcription summarized separately",
   "pairs": 61,
   "correlation_r": 0.8045,
   "our_mean": 68.6,
-  "their_mean": 65.1,
+  "archive_mean": 65.1,
   "mean_signed_delta": 3.4,
   "unit": "percent",
   "subgroups": {
-   "note": "clean = pairs whose published tally the pathway workbook corroborates (buckets exact/close); disputed = the rest (tally-vs-overlay and sum-drift)",
+   "note": "clean = pairs whose archived tally the archived pathway workbook corroborates (buckets exact/close); disputed = the rest (tally-vs-overlay and sum-drift)",
    "clean": {
     "pairs": 22,
     "correlation_r": 0.9937,
     "our_mean": 71.6,
-    "their_mean": 72.6,
+    "archive_mean": 72.6,
     "mean_signed_delta": -1.1,
     "unit": "pct",
     "mean_abs_delta": 2.2
@@ -315,15 +341,20 @@
     "pairs": 39,
     "correlation_r": 0.6953,
     "our_mean": 66.9,
-    "their_mean": 60.9,
+    "archive_mean": 60.9,
     "mean_signed_delta": 5.9,
     "unit": "pct",
     "mean_abs_delta": 15.7
    }
   },
-  "headline_identification": {
-   "published": 68,
-   "their_tab_candidates": {
+  "final_pdf": {
+   "cells": 61,
+   "sum": 4132,
+   "mean": 67.737705
+  },
+  "headline_reconciliation": {
+   "final_pdf_headline": 68,
+   "archive_tab_candidates": {
     "n_cells": 61,
     "mean_cells": 0.6515,
     "median_cells": 0.6333,
@@ -333,17 +364,24 @@
     "mean_delta_vs_resident": -0.3485,
     "median_delta_vs_resident": -0.3667
    },
-   "verdict": "no standard aggregation of the recovered tab yields 68; the tab mean is 65.1"
+   "reading": "The final-PDF 61-cell transcription averages 67.7377% and rounds to 68%. The older archive tab averages 65.15%; that gap is version divergence, not evidence that the final headline was aggregated incorrectly."
   }
  },
  "fig4_additional_hours": {
+  "scope": "Our engine compared with the 2024 archive tab; all 49 final-PDF cells are separately transcribed",
   "pairs": 61,
   "correlation_r": 0.8865,
   "our_mean": 20.2,
-  "their_mean": 17.2,
+  "archive_mean": 17.2,
   "mean_signed_delta": 3,
-  "unit": "semester hours (ours: unmatched AS units; theirs: pathway hours - 120)",
-  "identity": "their (hours-120) equals our unmatched-AS-units whenever the resident plan is 120 and matched courses swap unit-for-unit",
+  "unit": "semester hours (ours: unmatched AS units; archive: pathway hours - 120)",
+  "final_pdf": {
+   "cells": 49,
+   "sum": 633,
+   "mean": 12.918367,
+   "gate": "Our transcription reproduces the figure's own printed Average row on 10 of 11 columns exactly; MCLA computes 26.5 and prints 26 (the figure rounds half down)."
+  },
+  "identity": "Archive (hours-120) equals our unmatched-AS-units whenever the resident plan is 120 and matched courses swap unit-for-unit",
   "explained": {
    "exact": 2,
    "resident_not_120": 3,
@@ -353,27 +391,41 @@
    "r": -0.6546,
    "reading": "strongly negative = the Fig 3 and Fig 4 disagreements are one phenomenon (which source artifact each side follows), not two independent errors"
   },
-  "headline_identification": {
-   "published": 13,
-   "matched_by": "median delta vs same-university resident = 13.0 exactly (also median cells - 120)"
+  "headline_reconciliation": {
+   "final_pdf_headline": 13,
+   "reading": "The final-PDF transcription has 49 cells totaling 633; mean 12.9184 rounds to +13. The archive tab's median also equals 13, but that coincidence does not make the archive cells final-PDF inputs."
   }
  },
  "fig5_additional_cost": {
+  "scope": "Our engine compared with the 2024 archive Cost tab; final-PDF Figure 5 is separately transcribed",
   "pairs": 61,
   "correlation_r": 0.8757,
   "our_mean": 11491.4,
-  "their_mean": 9624.9,
+  "archive_mean": 9624.9,
   "mean_signed_delta": 1866.5,
-  "unit": "USD (both sides price at the per-credit rate implied by their own Cost tab)",
+  "unit": "USD (our engine and the archived tab each use the per-credit rate implied by the archive Cost tab)",
+  "final_pdf": {
+   "cells": 49,
+   "sum": 349342,
+   "mean": 7129.428571,
+   "gate": "Figure 5 = Figure 4 x a per-campus per-credit rate, consistent to the cent on all 35 priced cells. Overall mean $7,129, which is the figure the paper states in its own text."
+  },
   "cost_identity_worst_usd": 0,
-  "headline_identification": {
-   "published": 7129,
-   "nearest_candidate": "median of tab cells / median delta vs resident = 7212 (off by $83; consistent with known tab-revision drift)"
+  "headline_reconciliation": {
+   "final_pdf_headline": 7129,
+   "reading": "The final-PDF 49-cell transcription averages $7129.43, which rounds to $7,129. The archive median $7212 is a different statistic from an older artifact and must not be presented as the paper's aggregation."
   }
  },
  "fig6_complexity": {
-  "our_engine": "not modeled — we compute no curricular-complexity metric",
-  "their_tab_stats": {
+  "scope": "Final-PDF transcription, archived score tab, and archived workbook recomputation are kept as separate artifacts",
+  "our_engine": "Modeled. The Curricular Analytics equations are implemented and the archived workbook graphs are recomputed in server/scripts/ma/complexityCheck.js; see server/data/ma/complexity-validation.json.",
+  "final_pdf": {
+   "cells": 49,
+   "sum": 715,
+   "mean": 14.591837,
+   "gate": "All 49 printed cells sum to 715 (mean 14.5918367, the paper's rounded +15 headline). Every recomputed column mean rounds half away from zero to the printed Average row."
+  },
+  "archive_tab_stats": {
    "n_cells": 49,
    "mean_cells": 166.5714,
    "median_cells": 177,
@@ -383,9 +435,9 @@
    "mean_delta_vs_resident": 15.8571,
    "median_delta_vs_resident": 23
   },
-  "headline_identification": {
-   "published": 15,
-   "matched_by": "mean delta vs same-university resident = 15.9 (rounds to +15; 49 of 61 pairs carry a value)"
+  "headline_reconciliation": {
+   "final_pdf_headline": 15,
+   "reading": "The final-PDF 49-cell mean is 14.5918 and rounds to +15. The older archive-tab mean is 15.8571 and rounds to +16, not +15. The headline is supported by the final transcription, not by rounding the archive mean."
   }
  }
 }

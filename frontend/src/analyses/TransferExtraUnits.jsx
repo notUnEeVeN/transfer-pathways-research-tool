@@ -3,32 +3,98 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import {
-  EvidenceCohortControl, EvidenceSummary, TransferMethodNote, buildRateMatrix,
-  defaultDegreeMode, degreeModesForMajor, methodDetail, methodWarningCount, paperRedCellColor,
+  EvidenceCohortControl, EvidenceSummary, TransferEvidenceCaveats, buildRateMatrix,
+  defaultDegreeMode, degreeModesForMajor, methodDetail, paperRedCellColor,
   shortenSchool, unitSystemName,
 } from './TransferCreditRate'
+import ColorDomainLegend from './ColorDomainLegend'
 
 /**
- * Modeled replacement coursework: associate-degree units that the curated
- * full graduation model cannot apply. The heatmap converts native
- * semester/quarter values to semester-equivalent units so every college shares
- * one comparable scale. This is modeled coursework, not an observed outcome.
+ * The MA paper's Figure 4 construct: total modeled pathway hours above the
+ * 120-semester-hour bachelor's benchmark. On a 120-hour resident curriculum
+ * this equals unused associate-degree units; on the recovered MA curricula it
+ * can differ by up to three hours, so the server returns both measures by name.
  */
 const unitFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
 const plus = (value) => (Number.isFinite(value) ? `+${unitFmt.format(value)}` : '')
+
+export const EXTRA_UNIT_SOURCES = [
+  { value: 'pdf', label: 'Final paper' },
+  { value: 'archive-detail', label: 'Our recalculation' },
+]
+
+const normalizeMaExtraUnitSource = (source) => (
+  source === 'pdf' ? 'pdf' : 'archive-detail'
+)
+
+export function extraUnitValue(row, source = 'ours') {
+  if (source === 'pdf') return row?.published_pdf_extra_hours
+  if (source === 'archive-detail') {
+    // This is a Figure 4 audit source, so keep the exact 49-pair population
+    // printed in Figure 4. The deposited workbook also contains 12 pathways
+    // omitted from the final matrix; including them would make the pane mean
+    // answer a different question even though the matched-cell join was sound.
+    return Number.isFinite(row?.published_pdf_extra_hours)
+      ? row?.archived_pathway_sheet_extra_hours
+      : null
+  }
+  return row?.modeled_hours_above_120
+}
+
+// The comparison adapter consumes the figure's own reading rather than
+// re-deriving a look-alike formula in the registry.
+export function extraUnitEntries(data, source = 'ours') {
+  return (data?.rows || []).flatMap((row) => {
+    const value = extraUnitValue(row, source)
+    return Number.isFinite(value) ? [{
+      rowKey: row.college_name,
+      rowLabel: row.college_name,
+      colKey: row.school,
+      colLabel: row.school,
+      value,
+    }] : []
+  })
+}
 
 // Extra units are open-ended above zero — anchor the ramp at 0 so "+0" is
 // always the palest cell, and let the observed maximum set the dark end.
 const extraScale = (values) => ({ min: 0, max: Math.max(1, ...values.filter(Number.isFinite)) })
 
-function cellTitle(row, col, cell) {
+function cellTitle(row, col, cell, source, value) {
   if (!cell) return `${row.name}\n${col.school}\nNo agreement to verify against`
-  if (!Number.isFinite(cell.extra_units_semester)) {
+  if (!Number.isFinite(value)) {
     return [
       row.name,
       col.school,
-      methodDetail(cell) || 'Not enough curated information to model this pair',
+      source === 'pdf'
+        ? 'This pair is not reported in the final paper Figure 4'
+        : methodDetail(cell) || 'Not enough curated information to model this pair',
     ].join('\n')
+  }
+  if (source === 'pdf') {
+    return [
+      row.name,
+      col.school,
+      `Final paper Figure 4: ${plus(value)} semester hours above 120`,
+      Number.isFinite(cell.archived_pathway_sheet_extra_hours)
+        ? `Our recalculation: ${plus(cell.archived_pathway_sheet_extra_hours)} hours above 120`
+        : null,
+      'Transcribed from the final PDF; blank cells are pairs the figure did not report.',
+    ].filter(Boolean).join('\n')
+  }
+  if (source === 'archive-detail') {
+    return [
+      row.name,
+      col.school,
+      `Our recalculation: ${plus(value)} semester hours above 120`,
+      Number.isFinite(cell.archived_pathway_sheet_total_hours)
+        ? `${unitFmt.format(cell.archived_pathway_sheet_total_hours)} recalculated total semester hours; max(0, total − 120)`
+        : null,
+      Number.isFinite(cell.published_pdf_extra_hours)
+        ? `Final paper Figure 4: ${plus(cell.published_pdf_extra_hours)} hours above 120`
+        : null,
+      'Calculated from the authors’ released pathway data with the paper’s formula.',
+    ].filter(Boolean).join('\n')
   }
   const nativeUnits = unitSystemName(cell.as_unit_system)
   const nativeExtra = Number.isFinite(cell.extra_units) ? unitFmt.format(cell.extra_units) : '—'
@@ -37,13 +103,19 @@ function cellTitle(row, col, cell) {
   return [
     row.name,
     col.school,
-    `Modeled replacement coursework: ${plus(cell.extra_units_semester)} semester-equivalent units`,
+    `Modeled pathway: ${plus(value)} semester hours above 120`,
+    Number.isFinite(cell.modeled_pathway_units_semester)
+      ? `${unitFmt.format(cell.modeled_pathway_units_semester)} total modeled semester hours`
+      : null,
     `${nativeExtra} ${nativeUnits} do not apply after ${applied} of ${total} ${nativeUnits} apply`,
+    Number.isFinite(cell.published_pdf_extra_hours)
+      ? `Final paper Figure 4: ${plus(cell.published_pdf_extra_hours)} hours above 120`
+      : null,
     methodDetail(cell),
   ].filter(Boolean).join('\n')
 }
 
-function ExtraTable({ model }) {
+function ExtraTable({ model, source }) {
   return (
     <div className='surface-card overflow-auto max-h-[72vh]'>
       <table className='border-separate border-spacing-0 min-w-full'>
@@ -59,7 +131,7 @@ function ExtraTable({ model }) {
               </th>
             ))}
             <th className='sticky top-0 right-0 z-30 bg-surface border-b border-l border-border px-3 py-2 text-right text-label min-w-32'>
-              Average (semester equivalent)
+              Average hours above 120
             </th>
           </tr>
         </thead>
@@ -71,13 +143,14 @@ function ExtraTable({ model }) {
               </th>
               {model.columns.map((col) => {
                 const cell = model.records.get(`${row.key}|${col.key}`)
+                const value = model.cellValue(row.key, col.key)
                 return (
                   <td key={col.key}
-                    title={cellTitle(row, col, cell)}
-                    aria-label={cellTitle(row, col, cell)}
+                    title={cellTitle(row, col, cell, source, value)}
+                    aria-label={cellTitle(row, col, cell, source, value)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
-                    style={paperRedCellColor(cell?.extra_units_semester ?? null, model.colorScale)}>
-                    {plus(cell?.extra_units_semester ?? null)}
+                    style={paperRedCellColor(value, model.colorScale)}>
+                    {plus(value)}
                   </td>
                 )
               })}
@@ -112,7 +185,8 @@ function ExtraTable({ model }) {
 export default function TransferExtraUnits({
   majorSlug = 'cs', majorLabel = '', degreeAnalysisSlots = null,
   degreeSlotLabels = null, major = null,
-  defaultDegreeType = null, defaultVerifiedOnly = false, onViewChange,
+  defaultDegreeType = null, defaultVerifiedOnly = true,
+  defaultSource = 'pdf', onViewChange, comparisonColorScale = null,
 }) {
   const degreeModes = useMemo(() => degreeModesForMajor({
     majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
@@ -127,21 +201,32 @@ export default function TransferExtraUnits({
   // server's own join condition (`capabilities.paperBaselines && state`).
   const paperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
   const [verifiedOnly, setVerifiedOnly] = useState(defaultVerifiedOnly)
+  const [source, setSource] = useState(defaultSource)
+  const effectiveSource = paperCorpus ? normalizeMaExtraUnitSource(source) : 'ours'
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
       setDegreeType(defaultDegreeMode(degreeModes))
     }
   }, [degreeModes, degreeType])
   useEffect(() => {
-    onViewChange?.({ defaultDegreeType: degreeType, defaultVerifiedOnly: verifiedOnly })
-  }, [degreeType, verifiedOnly, onViewChange])
-  const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly })
+    onViewChange?.({
+      defaultDegreeType: degreeType,
+      defaultVerifiedOnly: verifiedOnly,
+      defaultSource: paperCorpus ? effectiveSource : source,
+    })
+  }, [degreeType, verifiedOnly, source, paperCorpus, effectiveSource, onViewChange])
+  const queryVerifiedOnly = paperCorpus ? false : verifiedOnly
+  const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly: queryVerifiedOnly })
   const rows = query.data?.rows || []
-  const model = useMemo(
-    () => buildRateMatrix(rows, (r) => r.extra_units_semester, extraScale),
-    [rows]
+  const localModel = useMemo(
+    () => buildRateMatrix(rows, (row) => extraUnitValue(row, effectiveSource), extraScale),
+    [rows, effectiveSource]
   )
-  const warningCount = methodWarningCount(rows)
+  const model = useMemo(() => (
+    Number.isFinite(comparisonColorScale?.min) && Number.isFinite(comparisonColorScale?.max)
+      ? { ...localModel, colorScale: comparisonColorScale }
+      : localModel
+  ), [localModel, comparisonColorScale])
 
   if (query.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -152,7 +237,7 @@ export default function TransferExtraUnits({
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-      <div className='flex flex-col'>
+      {!paperCorpus && <div className='flex flex-col'>
         <span className='field-label'>Associate degree</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
           {degreeModes.map((mode) => (
@@ -164,7 +249,23 @@ export default function TransferExtraUnits({
             </button>
           ))}
         </div>
-      </div>
+      </div>}
+      {paperCorpus && (
+        <div className='flex flex-col' data-control-group='source'>
+          <span className='field-label'>Source</span>
+          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+            {EXTRA_UNIT_SOURCES.map((item) => (
+              <button key={item.value} type='button' aria-pressed={effectiveSource === item.value}
+                onClick={() => setSource(item.value)}
+                className={`px-3 text-button border-r border-border last:border-r-0 ${
+                  effectiveSource === item.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                }`}>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       {!paperCorpus && <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />}
       <Button variant='secondary' leadingIcon={ArrowPathIcon}
         loading={query.isFetching && !query.isLoading} onClick={() => query.refetch()}>
@@ -195,25 +296,23 @@ export default function TransferExtraUnits({
         <div className='surface-card px-4 py-3'>
           <p className='text-label'>
             <EvidenceSummary verifiedOnly={verifiedOnly}
-              sourceLabel={paperCorpus ? 'Paper-source associate degrees (recovered workbooks)' : null}
+              sourceLabel={paperCorpus
+                ? (effectiveSource === 'pdf'
+                  ? 'Final PDF Figure 4 (reported pairs only)'
+                  : effectiveSource === 'archive-detail'
+                    ? 'Our recalculation from the authors’ source data (same 49 reported pairs)'
+                    : 'Our reconstruction from the recovered pathway workbooks')
+                : null}
+              cellKind={paperCorpus
+                ? (effectiveSource === 'pdf' ? 'reported' : 'recomputed')
+                : 'modeled'}
               collegeCount={model.rows.length} cellCount={model.valueCount} />
           </p>
-          {verifiedOnly && (
-            <p className='mt-1 text-caption text-ink-muted'>
-              The associate-degree sources are human-verified; bachelor’s graduation templates are treated as valid for this comparison.
-            </p>
-          )}
+          {!paperCorpus && <TransferEvidenceCaveats rows={rows} majorSlug={majorSlug} />}
         </div>
-        <ExtraTable model={model} />
-        <TransferMethodNote warningCount={warningCount}>
-          Each cell shows associate-degree units that do not apply through a named course, general education or breadth, or documented elective requirement in the curated graduation model. Quarter-unit results are converted to semester-equivalent units for comparison; these are modeled replacement units, not observed student outcomes.
-          {verifiedOnly
-            ? ' This high-fidelity state limits the associate-degree side to programs marked human-verified. Other method and modeling warnings remain visible.'
-            : rows.some((row) => row.source_verified !== true
-              || row.source_analysis_ready === false
-              || /needs[_\s-]+human[_\s-]+verification/i.test(row.degree_research_status || ''))
-              && ' This all-record state is exploratory because it can include associate-degree or bachelor’s sources still awaiting review.'}
-        </TransferMethodNote>
+        <ColorDomainLegend scale={model.colorScale} formatValue={plus}
+          suffix='semester hours above 120' />
+        <ExtraTable model={model} source={effectiveSource} />
       </div>
     </Stack>
   )
@@ -221,4 +320,4 @@ export default function TransferExtraUnits({
 
 // The props a pinned view may seed. Every `viewKnobs` entry on the registry
 // must name one of these; the contract test fails the build otherwise.
-TransferExtraUnits.viewProps = ['defaultDegreeType', 'defaultVerifiedOnly']
+TransferExtraUnits.viewProps = ['defaultDegreeType', 'defaultVerifiedOnly', 'defaultSource']

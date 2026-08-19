@@ -49,6 +49,9 @@ const MAX_KNOB_BYTES = 2 * 1024;
 const MAX_NOTE_CHARS = 20000;
 const MAX_TEXT_CHARS = 200;
 const MAX_FINGERPRINT_CHARS = 512;
+// A pinned grouped distribution has one entry per shared category (four course
+// types today). The cap is a storage backstop, not a modelling limit.
+const MAX_DISTRIBUTION_GROUPS = 64;
 const DEFAULT_LIMIT = 100;
 const MAX_LIMIT = 200;
 
@@ -190,6 +193,68 @@ const cleanBreakdown = (value) => {
 
 const VERDICT_FIELDS = ['matched', 'agreeing', 'dropped', 'mean_delta', 'max_abs_delta', 'max_cell'];
 
+// A number that may legitimately be absent — an empty population has no mean,
+// and storing 0 for it would claim a reading nobody took.
+const cleanNullableNumber = (name, value) => {
+  if (value == null) return null;
+  return Number.isFinite(value) ? value : fail(`${name} must be a number or null`);
+};
+
+const cleanDistributionSide = (name, raw) => {
+  if (raw == null) return null;
+  if (typeof raw !== 'object' || Array.isArray(raw)) fail(`${name} must be an object or null`);
+  return {
+    n: cleanNumber(`${name}.n`, raw.n),
+    mean: cleanNullableNumber(`${name}.mean`, raw.mean),
+    median: cleanNullableNumber(`${name}.median`, raw.median),
+  };
+};
+
+const cleanDistributionPair = (name, raw) => ({
+  baseline: cleanDistributionSide(`${name}.baseline`, raw.baseline),
+  subject: cleanDistributionSide(`${name}.subject`, raw.subject),
+  mean_delta: cleanNullableNumber(`${name}.mean_delta`, raw.mean_delta),
+  median_delta: cleanNullableNumber(`${name}.median_delta`, raw.median_delta),
+});
+
+/**
+ * The pinnable reading for a pair whose corpora share no institutions.
+ *
+ * Cross-state comparisons cannot produce a cell join, so before this they
+ * pinned nothing and any later movement went unrecorded. What they can pin is
+ * each side's own population summary and the gap between them. Grouped
+ * distributions keep their categories separate, because pooling unequal
+ * populations lets a category-mix change masquerade as a real shift.
+ */
+function cleanDistribution(raw) {
+  if (raw == null) return null;
+  if (typeof raw !== 'object' || Array.isArray(raw)) fail('verdict_at_pin.distribution must be an object or null');
+  if (raw.mode === 'grouped') {
+    if (!Array.isArray(raw.groups)) fail('verdict_at_pin.distribution.groups must be an array');
+    if (raw.groups.length > MAX_DISTRIBUTION_GROUPS) fail(`verdict_at_pin.distribution.groups must hold ${MAX_DISTRIBUTION_GROUPS} groups or fewer`);
+    const out = {
+      mode: 'grouped',
+      group_by: cleanText('verdict_at_pin.distribution.group_by', raw.group_by),
+      groups: raw.groups.map((group, index) => {
+        const name = `verdict_at_pin.distribution.groups[${index}]`;
+        if (typeof group !== 'object' || group == null) fail(`${name} must be an object`);
+        return {
+          key: cleanText(`${name}.key`, group.key),
+          label: cleanText(`${name}.label`, group.label),
+          ...cleanDistributionPair(name, group),
+        };
+      }),
+    };
+    // The pooled overall number is optional and stays optional here, so a
+    // figure that declined to pool cannot acquire one by round-tripping.
+    if (raw.baseline != null || raw.subject != null) Object.assign(out, cleanDistributionPair('verdict_at_pin.distribution', raw));
+    return out;
+  }
+  return { mode: 'pair', ...cleanDistributionPair('verdict_at_pin.distribution', raw) };
+}
+
+const sameDistribution = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+
 function cleanVerdict(raw, existing = null) {
   if (raw == null) return null;
   if (typeof raw !== 'object' || Array.isArray(raw)) fail('verdict_at_pin must be an object or null');
@@ -197,6 +262,14 @@ function cleanVerdict(raw, existing = null) {
   // but only when the reading actually changed. Re-stamping on an unrelated
   // metadata save (a rename) would keep resetting the clock on the drift
   // banner, which exists precisely to say how old the pinned numbers are.
+  if (raw.distribution != null) {
+    const distribution = cleanDistribution(raw.distribution);
+    const same = existing && sameDistribution(existing.distribution, distribution);
+    return {
+      computed_at: same && existing.computed_at ? existing.computed_at : new Date(),
+      distribution,
+    };
+  }
   const same = existing && VERDICT_FIELDS.every((field) => existing[field] === raw[field]);
   return {
     computed_at: same && existing.computed_at ? existing.computed_at : new Date(),

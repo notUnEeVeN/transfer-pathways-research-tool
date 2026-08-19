@@ -6,7 +6,9 @@
  * roughly ten seconds per major — so the endpoint serves from this cache and
  * only visibility scoping runs per request. Re-run after any change to degree
  * templates, associate degrees, agreements, or prerequisite data (the
- * endpoint's `?refresh=1` recomputes one major on demand).
+ * endpoint's `?refresh=1` recomputes one variant on demand). Canonical console
+ * edits retire affected caches automatically; run this once after the final
+ * curation session to prewarm every variant.
  *
  *   node scripts/buildPathwayComplexityCache.js
  */
@@ -27,10 +29,23 @@ async function main() {
   // requisite collections are not imported yet).
   const majors = listMajors().filter((m) => m.capabilities.prerequisites);
   for (const major of majors) {
-    const degreeType = (major.degreeAnalysisSlots || []).find((slot) => AS_DEGREE_SLOTS.includes(slot)) || 'ast';
-    const started = Date.now();
-    const { rows } = await pathwayComplexityCached(db, { majorSlug: major.slug, degreeType, refresh: true });
-    console.log(`${major.slug.padEnd(6)} (${degreeType})  ${String(rows.length).padStart(4)} pathways cached in ${((Date.now() - started) / 1000).toFixed(1)}s`);
+    const degreeTypes = (major.degreeAnalysisSlots || [])
+      .filter((slot) => AS_DEGREE_SLOTS.includes(slot));
+    for (const degreeType of degreeTypes.length ? degreeTypes : ['ast']) {
+      for (const verifiedOnly of [true, false]) {
+        const started = Date.now();
+        const { rows } = await pathwayComplexityCached(db, {
+          majorSlug: major.slug,
+          degreeType,
+          verifiedOnly,
+          refresh: true,
+        });
+        const scored = rows.filter((row) => Number.isFinite(row.delta_vs_resident)).length;
+        const excluded = rows.filter((row) => row.method_status === 'excluded').length;
+        const cohort = verifiedOnly ? 'verified' : 'all';
+        console.log(`${major.slug.padEnd(6)} (${degreeType}, ${cohort})  ${String(scored).padStart(4)} scored, ${String(excluded).padStart(3)} excluded in ${((Date.now() - started) / 1000).toFixed(1)}s`);
+      }
+    }
   }
   await client.close();
 }

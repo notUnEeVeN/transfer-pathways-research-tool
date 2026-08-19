@@ -5,8 +5,10 @@ import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import { AS_DEGREE_SLOTS, slotLabel } from '../asdegrees/asDegreeSlots'
 import { majorShortLabelFor } from '../shared/majors/majorLabel'
 import { createCoverageColorScale } from './CoverageHeatmap'
+import ColorDomainLegend from './ColorDomainLegend'
 import { TRANSFER_CREDIT_RATE_MEASURES } from './measures'
 import { paperRedCellColor } from './maHeatmapColors'
+import { degreeTemplateEvidenceLabel } from './templateEvidence'
 
 export { paperRedCellColor } from './maHeatmapColors'
 
@@ -94,40 +96,61 @@ function average(values) {
   return nums.reduce((sum, value) => sum + value, 0) / nums.length
 }
 
-// The MA scope is the final Massachusetts paper's Figure 3: applied
-// associate-degree units over the associate degree's OWN total, GE included —
-// the inverse denominator of this figure's default bachelor-side measure.
+// The MA scope is the final Massachusetts paper's Figure 3: associate-degree
+// credits replacing named or GE/breadth bachelor requirements over the
+// associate degree's OWN total. Unrestricted-elective-only padding is not in
+// the strict Figure 3 numerator.
 export const MA_AS_SIDE_SCOPE = 'ma-as-side'
 
-// The paper corpus carries THREE versions of its Figure 3 measure, for
-// examining exactly where they differ: the final PDF's printed matrix (a
-// newer revision of the hand tally), the repo workbook's tally (the older
-// revision the paper's repository holds), and our recomputation from the
-// pathway workbooks. On California — where nothing was published — the MA
-// state shows our recomputation only.
-export const MA_SOURCES = [
-  { value: 'pdf', label: 'Final paper' },
-  { value: 'repo', label: 'Repo workbook' },
-  { value: 'ours', label: 'Ours' },
+// The other direction on the same rows: not how much of the associate degree
+// gets used, but how much of the BACHELOR'S degree it completes. The paper
+// never published this measure — it is ours, computed from their deposited
+// pathway sheets — so it has no published/archived source to choose between.
+// Validated directly against the raw workbooks: summing the resident
+// requirement credits their transfer sheets remove gives 35.8% over the 61
+// studied pathways, against 36.1% through the import pipeline.
+export const MA_BACHELOR_SIDE_SCOPE = 'ma-bachelor-side'
+
+export const MA_LENSES = [
+  { value: MA_AS_SIDE_SCOPE, label: 'Associate credit used' },
+  { value: MA_BACHELOR_SIDE_SCOPE, label: 'Bachelor’s completed' },
 ]
 
+// Massachusetts exposes only the final paper and our direct recalculation.
+// Older saved links may name superseded draft sources; normalize them to the
+// direct recalculation instead of restoring draft UI.
+export const MA_SOURCES = [
+  { value: 'pdf', label: 'Final paper' },
+  { value: 'archive-gray-detail', label: 'Our recalculation' },
+]
+
+function normalizeMaSource(source) {
+  // Saved views from the previous generic reconstruction used `ours` (and a
+  // GE toggle that resolved to `ours-cs`). Reopen them on the direct gray-row
+  // audit source instead of silently retaining the superseded CA-style model.
+  if (!source || source === 'pdf') return 'pdf'
+  if (source === 'auto') return 'auto'
+  return 'archive-gray-detail'
+}
+
 export function maSourceValue(row, source) {
-  if (source === 'repo') return row?.published_as_transfer_pct
-  if (source === 'ours') return row?.as_unit_utilization_pct
-  // The paper mixed GE-inclusive and GE-skipping counts cell by cell, so our
-  // recomputation ships in both flavors: the CS-only numerator counts credit
-  // applied to the university's analyzed course list and nothing else.
-  if (source === 'ours-cs') return row?.as_cs_only_utilization_pct
+  if (normalizeMaSource(source) === 'archive-gray-detail') {
+    return row?.archive_gray_detail_as_transfer_pct
+  }
   return row?.published_pdf_as_transfer_pct
 }
 
 export function rateForScope(row, scope, maSource = 'auto') {
+  // Ours on both corpora, so it reads the same field California does — that
+  // sameness is the point of putting it beside the paper's own measure.
+  if (scope === MA_BACHELOR_SIDE_SCOPE) return row?.full_degree_completion_pct
   if (scope === MA_AS_SIDE_SCOPE) {
     if (maSource === 'auto') {
       // No explicit selection (California's comparison lens): published values
       // do not exist there, so this resolves to our recomputation.
       return row?.published_pdf_as_transfer_pct
         ?? row?.published_as_transfer_pct
+        ?? row?.paper_equivalent_as_unit_utilization_pct
         ?? row?.as_unit_utilization_pct
     }
     return maSourceValue(row, maSource)
@@ -150,6 +173,7 @@ function requiredForScope(row, scope) {
 }
 
 function scopeLabel(scope) {
+  if (scope === MA_BACHELOR_SIDE_SCOPE) return 'Bachelor’s requirements completed by the associate degree'
   if (scope === MA_AS_SIDE_SCOPE) return 'Associate-degree credit applied (MA-paper equivalent)'
   return scope === 'lower-division'
     ? 'Lower-division requirements fulfilled'
@@ -157,15 +181,16 @@ function scopeLabel(scope) {
 }
 
 function scopeDescription(scope, maSource = 'auto') {
+  if (scope === MA_BACHELOR_SIDE_SCOPE) {
+    return 'Share of the bachelor’s degree the associate degree completes: resident requirement credits the transfer pathway removes, over the resident degree total. Ours, not a measure the paper published — the same statistic California shows.'
+  }
   if (scope === MA_AS_SIDE_SCOPE) {
     const sources = {
-      pdf: 'Showing the FINAL PAPER’s Figure 3 as printed (the newer revision of their hand tally; its per-university averages mean 68%). Blank cells are pairs the paper did not study.',
-      repo: 'Showing the REPO WORKBOOK’s tally (the older revision in the paper’s repository; mean 65.2%). Where it disagrees with the final paper, the tally moved between revisions.',
-      ours: 'Showing OUR RECOMPUTATION, GE included — every associate-degree credit the paper’s own pathway workbook shows landing, over the degree’s own total. The paper’s carefully-counted cells equal this number exactly.',
-      'ours-cs': 'Showing OUR RECOMPUTATION restricted to the university’s analyzed CS/math course list — credit applied to anything else (the GE and elective rows) is excluded. The paper’s under-counted cells fall between this floor and the GE-included rate, which is the evidence its counts mixed the two approaches.',
-      auto: 'Applied associate-degree units over the associate degree’s own total, GE included — our recomputation of the Massachusetts paper’s Figure 3 measure.',
+      pdf: 'Showing the FINAL PAPER’s Figure 3 as printed. Blank cells are pairs the paper did not study.',
+      'archive-gray-detail': 'Showing OUR RECALCULATION from the authors’ released course-plan data: applicable credits divided by the cleaned associate-degree total. Unrestricted-elective-only credit is excluded and the numerator is not capped. The 61-cell mean is 64.68%; 42 cells reproduce the final paper at its printed precision.',
+      auto: 'Named articulation plus actual GE/breadth credit over the associate degree’s own total. Unrestricted-elective-only capacity is excluded, matching the Massachusetts Figure 3 rule.',
     }
-    return `${sources[maSource] || sources.auto} Every cell’s hover lists all three versions.`
+    return `${sources[normalizeMaSource(maSource)] || sources.auto} Every Massachusetts cell’s hover compares the final-paper value with our recalculation.`
   }
   return scope === 'lower-division'
     ? 'Transferable and breadth requirements; university-only work is excluded.'
@@ -194,12 +219,65 @@ export function EvidenceCohortControl({ verifiedOnly, onChange }) {
   )
 }
 
-export function EvidenceSummary({ verifiedOnly, collegeCount, cellCount, sourceLabel = null }) {
+export function EvidenceSummary({
+  verifiedOnly, collegeCount, cellCount, sourceLabel = null, cellKind = 'modeled',
+}) {
   return (
     <>
       <span>{sourceLabel || (verifiedOnly ? 'Verified associate-degree programs only' : 'All sourced associate-degree programs')}</span>
-      <span className='text-ink-subtle'> · {intFmt.format(collegeCount)} {collegeCount === 1 ? 'college' : 'colleges'} · {intFmt.format(cellCount)} modeled {cellCount === 1 ? 'cell' : 'cells'}</span>
+      <span className='text-ink-subtle'> · {intFmt.format(collegeCount)} {collegeCount === 1 ? 'college' : 'colleges'} · {intFmt.format(cellCount)} {cellKind} {cellCount === 1 ? 'cell' : 'cells'}</span>
     </>
+  )
+}
+
+/** Evidence debt and exclusions shared by Figures 3–5. */
+export function TransferEvidenceCaveats({ rows = [], majorSlug = null }) {
+  const templates = new Map()
+  for (const row of rows) {
+    const key = String(row.school_id ?? row.school ?? '')
+    if (key && !templates.has(key)) templates.set(key, row)
+  }
+  const templateRows = [...templates.values()]
+  const carriesTemplateEvidence = templateRows.some((row) => (
+    typeof row.degree_template_verified === 'boolean'
+  ))
+  const verifiedTemplates = templateRows.filter((row) => row.degree_template_verified === true)
+  const staleStatuses = templateRows.filter((row) => row.degree_template_status_conflict === true)
+  const catalogYears = [...new Set(templateRows
+    .map((row) => String(row.degree_catalog_year || '').trim().replace(/^2025-2026$/, '2025-26'))
+    .filter(Boolean))].sort()
+  const excluded = rows.filter((row) => row.method_status === 'excluded')
+  const excludedColleges = [...new Set(excluded.map((row) => row.college_name).filter(Boolean))].sort()
+  const modeled = rows.filter((row) => Number.isFinite(row.as_unit_utilization_pct))
+  const assumptionCells = majorSlug === 'econ'
+    ? modeled.filter((row) => Number(row.ge_assumed_units) > 0
+      || Number(row.elective_counted_units) > 0)
+    : []
+
+  if (!carriesTemplateEvidence && !excluded.length && !assumptionCells.length) return null
+  return (
+    <div className='mt-1 space-y-1 text-caption text-ink-muted'>
+      {carriesTemplateEvidence && (
+        <p>
+          Bachelor templates: {intFmt.format(verifiedTemplates.length)}/{intFmt.format(templateRows.length)} carry explicit verification records
+          {catalogYears.length ? ` · catalog years ${catalogYears.join(' and ')}` : ''}.
+          {staleStatuses.length > 0
+            ? ` ${intFmt.format(staleStatuses.length)} retain stale pre-verification research-status text; the explicit verification records are authoritative.`
+            : ''}
+        </p>
+      )}
+      {excluded.length > 0 && (
+        <p className='text-warning'>
+          {intFmt.format(excluded.length)} college×campus {excluded.length === 1 ? 'cell is' : 'cells are'} excluded from the modeled distribution because the stored degree choice cannot be resolved
+          {excludedColleges.length ? ` (${excludedColleges.join(', ')})` : ''}; excluded cells remain blank.
+        </p>
+      )}
+      {assumptionCells.length > 0 && (
+        <p className='text-warning'>
+          {intFmt.format(assumptionCells.length)} of {intFmt.format(modeled.length)} modeled Economics cells apply assumed GE and/or elective capacity. A 100% utilization cell therefore does not mean every course has a direct articulation.
+        </p>
+      )}
+    </div>
   )
 }
 
@@ -272,6 +350,18 @@ function applicationNote(cell) {
   return `Associate-degree units applied once: ${buckets.map(([label, value]) => `${label} ${units(value)}`).join(' · ')} ${unitSystemName(cell.as_unit_system)}`
 }
 
+function paperEquivalentApplicationNote(cell) {
+  const buckets = [
+    ['named requirements', cell.named_transferred_units],
+    ['actual GE and breadth', cell.ge_counted_units],
+  ].filter(([, value]) => Number.isFinite(value))
+  if (!buckets.length) return null
+  const excluded = Number.isFinite(cell.elective_counted_units)
+    ? ` · unrestricted-elective-only capacity excluded ${units(cell.elective_counted_units)}`
+    : ''
+  return `Strict Figure 3 numerator: ${buckets.map(([label, value]) => `${label} ${units(value)}`).join(' · ')}${excluded} ${unitSystemName(cell.as_unit_system)}`
+}
+
 function cellTitle(row, col, cell, scope, maSource = 'auto') {
   if (!cell) return `${row.name}\n${col.school}\nNo agreement to verify against`
   const rate = rateForScope(cell, scope, maSource)
@@ -283,18 +373,16 @@ function cellTitle(row, col, cell, scope, maSource = 'auto') {
     ].join('\n')
   }
   if (scope === MA_AS_SIDE_SCOPE) {
-    const hasPublished = Number.isFinite(cell.published_as_transfer_pct)
-      || Number.isFinite(cell.published_pdf_as_transfer_pct)
+    const hasPublished = Number.isFinite(cell.published_pdf_as_transfer_pct)
+      || Number.isFinite(cell.archive_gray_detail_as_transfer_pct)
     return [
       row.name,
       col.school,
       `${scopeLabel(scope)}: ${pct(rate)}`,
-      // All three versions ride every hover, so a difference is one glance
-      // away whichever source the matrix is showing.
       hasPublished
-        ? `Final paper ${pct(cell.published_pdf_as_transfer_pct)} · repo workbook ${pct(cell.published_as_transfer_pct)} · ours GE-included ${pct(cell.as_unit_utilization_pct)} (${units(cell.transferred_units)} of ${units(cell.as_total_units)} ${unitSystemName(cell.as_unit_system)}) · ours CS-only ${pct(cell.as_cs_only_utilization_pct)}`
-        : `${units(cell.transferred_units)} of ${units(cell.as_total_units)} ${unitSystemName(cell.as_unit_system)} of the associate degree apply`,
-      hasPublished ? null : applicationNote(cell),
+        ? `Final paper ${pct(cell.published_pdf_as_transfer_pct)} · our recalculation ${pct(cell.archive_gray_detail_as_transfer_pct)} (${units(cell.archive_gray_detail_numerator_units)} applicable of ${units(cell.archive_gray_detail_denominator_units)} associate-degree units; ${units(cell.archive_gray_detail_blue_units_excluded)} unrestricted-elective-only units excluded; no cap)`
+        : `${units(cell.paper_equivalent_transferred_units)} of ${units(cell.as_total_units)} ${unitSystemName(cell.as_unit_system)} of the associate degree replace named or GE/breadth requirements`,
+      hasPublished ? null : paperEquivalentApplicationNote(cell),
       methodDetail(cell),
     ].filter(Boolean).join('\n')
   }
@@ -308,16 +396,92 @@ function cellTitle(row, col, cell, scope, maSource = 'auto') {
   ].filter(Boolean).join('\n')
 }
 
-export function TransferMethodNote({ children, warningCount = 0 }) {
-  return (
-    <div role='note' className='surface-card px-4 py-3 text-caption text-ink-muted'>
-      <span className='font-semibold text-ink'>How this is modeled: </span>
-      {children}
-      {warningCount > 0 && (
-        <span className='text-ink-subtle'> {intFmt.format(warningCount)} {warningCount === 1 ? 'cell includes' : 'cells include'} a method warning; open the cell for details.</span>
-      )}
-    </div>
-  )
+/** Resolve the exact controls used by the mounted Figure 3. */
+export function transferCreditViewForPane(pane = {}, major = null) {
+  const modes = degreeModesForMajor({
+    majorSlug: pane.major,
+    majorLabel: major?.label || '',
+    degreeAnalysisSlots: major?.degreeAnalysisSlots,
+    degreeSlotLabels: major?.degreeSlotLabels,
+  })
+  const requestedDegree = pane.knobs?.degree
+  const degreeType = modes.some((mode) => mode.value === requestedDegree)
+    ? requestedDegree : defaultDegreeMode(modes)
+  const paperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
+  const maEquivalent = paperCorpus || pane.knobs?.['ma-equivalent'] !== false
+  // On a paper corpus the reader picks the direction: the paper's own AS-side
+  // measure, or the bachelor-side one California shows.
+  const maLens = paperCorpus && pane.knobs?.lens === MA_BACHELOR_SIDE_SCOPE
+    ? MA_BACHELOR_SIDE_SCOPE : MA_AS_SIDE_SCOPE
+  const scope = maEquivalent ? maLens : (pane.knobs?.scope || 'lower-division')
+  // The bachelor-side measure is ours on both corpora, so it carries no
+  // published-versus-archived choice — and reporting one would wrongly imply
+  // the paper printed a value to compare against.
+  const source = paperCorpus && scope === MA_AS_SIDE_SCOPE
+    ? normalizeMaSource(pane.knobs?.source || 'pdf') : 'auto'
+  const includeGe = pane.knobs?.ge !== false
+  const effectiveSource = source
+  return {
+    degreeType,
+    verifiedOnly: !paperCorpus && pane.knobs?.verified !== false,
+    paperCorpus,
+    maEquivalent,
+    scope,
+    source,
+    effectiveSource,
+    includeGe,
+  }
+}
+
+export function transferCreditComparisonCells(data, pane, major) {
+  const view = transferCreditViewForPane(pane, major)
+  const source = view.paperCorpus ? view.effectiveSource : 'auto'
+  const model = buildRateMatrix(data?.rows || [], (row) => rateForScope(row, view.scope, source))
+  return model.rows.flatMap((row) => model.columns.map((column) => ({
+    rowKey: row.key,
+    rowLabel: row.name,
+    colKey: column.key,
+    colLabel: column.school,
+    value: model.cellValue(row.key, column.key),
+  })))
+}
+
+export function transferCreditComparisonContract(pane, major) {
+  const view = transferCreditViewForPane(pane, major)
+  const asSide = view.scope === MA_AS_SIDE_SCOPE
+  const sourceLabels = {
+    pdf: 'final MA PDF transcription',
+    'archive-gray-detail': 'our direct recalculation from the authors’ course-plan data',
+    auto: 'curated named articulation + actual GE/breadth model',
+  }
+  return {
+    measure: asSide ? 'associate-degree-credit-utilization' : 'bachelor-requirement-completion',
+    unit: 'percentage points',
+    grain: 'community college × university campus',
+    keys: { rows: 'community college', columns: 'university campus' },
+    semantics: asSide ? {
+      numerator: view.source === 'archive-gray-detail'
+        ? 'applicable credit in the authors’ released course-plan data'
+        : 'associate-degree credit replacing named or GE/breadth bachelor requirements',
+      denominator: 'associate-degree total credit',
+      ge: 'counts only when it satisfies an actual bachelor GE/breadth requirement',
+      unrestricted_elective_capacity: false,
+      weighting: 'each studied college × campus pathway equally',
+    } : {
+      numerator: 'fulfilled bachelor requirement units',
+      denominator: view.scope === 'lower-division'
+        ? 'lower-division bachelor requirement units' : 'all bachelor requirement units',
+      ge: true,
+      weighting: 'each modeled college × campus pathway equally',
+    },
+    context: {
+      source: sourceLabels[view.source] || view.source,
+      cohort: `${major?.label || pane.major} · ${view.degreeType}${view.verifiedOnly ? ' · verified only' : ''}`,
+      bachelor_template_evidence: degreeTemplateEvidenceLabel(major),
+      scope: view.scope,
+      display_scale: 'adaptive per pane in gallery; fixed 0–100 and shared across panes in Comparison',
+    },
+  }
 }
 
 function RateTable({ model, scope, maSource = 'auto' }) {
@@ -391,8 +555,9 @@ export default function TransferCreditRate({
   majorSlug = 'cs', majorLabel = '', degreeAnalysisSlots = null,
   degreeSlotLabels = null, onMeasureChange, onViewChange, major = null,
   defaultDegreeType = null, defaultScope = 'lower-division',
-  defaultMaEquivalent = null, defaultMaSource = 'pdf', defaultMaGeOn = true,
-  defaultVerifiedOnly = false,
+  defaultMaEquivalent = true, defaultMaSource = 'pdf', defaultMaGeOn = true,
+  defaultMaLens = MA_AS_SIDE_SCOPE,
+  defaultVerifiedOnly = true, comparisonColorScale = null,
 }) {
   const degreeModes = useMemo(() => degreeModesForMajor({
     majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
@@ -414,16 +579,22 @@ export default function TransferCreditRate({
   // compare against, which is exactly the server's own join condition
   // (`capabilities.paperBaselines && state` in transferCreditRate.js).
   const paperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
-  const [maToggle, setMaEquivalent] = useState(defaultMaEquivalent ?? paperCorpus)
+  const [maToggle, setMaEquivalent] = useState(defaultMaEquivalent)
   // Locked on for a paper corpus: the published measure is the figure there,
   // and the toggle to leave it is not rendered.
   const maEquivalent = paperCorpus ? true : maToggle
   // Which version of the paper's measure a paper corpus displays: the final
-  // PDF as printed (default), the repo workbook's older tally, or our
-  // recomputation — with a GE toggle on ours (default ON, their stated
-  // method), because the paper's own counts mixed the two approaches.
-  const [maSource, setMaSource] = useState(defaultMaSource)
-  const [maGeOn, setMaGeOn] = useState(defaultMaGeOn)
+  // PDF as printed (default), or our direct recalculation. A mismatch is a
+  // potential error or unexplained input revision until final inputs exist.
+  const [maSource, setMaSource] = useState(() => normalizeMaSource(defaultMaSource))
+  // Which direction the paper corpus measures in. Opens on the paper's own
+  // measure — reproducing the published figure is this tab's native state.
+  const [maLens, setMaLens] = useState(() => (
+    defaultMaLens === MA_BACHELOR_SIDE_SCOPE ? MA_BACHELOR_SIDE_SCOPE : MA_AS_SIDE_SCOPE
+  ))
+  // Retained only so old saved-view payloads remain schema-compatible. The
+  // direct gray-row source has one fixed rule and no longer exposes a GE knob.
+  const [maGeOn] = useState(defaultMaGeOn)
   const [verifiedOnly, setVerifiedOnly] = useState(defaultVerifiedOnly)
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
@@ -433,17 +604,17 @@ export default function TransferCreditRate({
   // The MA state overlays the scope control: the same rows, the associate
   // degree's own denominator. The bachelor-side scope keeps its selection for
   // when the toggle releases.
-  const activeScope = maEquivalent ? MA_AS_SIDE_SCOPE : scope
+  const activeScope = maEquivalent ? (paperCorpus ? maLens : MA_AS_SIDE_SCOPE) : scope
   useEffect(() => {
     onMeasureChange?.(maEquivalent
-      ? TRANSFER_CREDIT_RATE_MEASURES[MA_AS_SIDE_SCOPE]
+      ? TRANSFER_CREDIT_RATE_MEASURES[activeScope] || TRANSFER_CREDIT_RATE_MEASURES[MA_AS_SIDE_SCOPE]
       : TRANSFER_CREDIT_RATE_MEASURES.default)
-  }, [maEquivalent, onMeasureChange])
+  }, [maEquivalent, activeScope, onMeasureChange])
   // What a pinned view saves is the reader's own selection: `maToggle`, not
   // `maEquivalent`, because the latter is forced on for a paper corpus and
   // reopening on a forced value would credit the reader with a choice the
-  // figure made. Same for `maSource`, which carries 'ours' whether or not the
-  // GE toggle is resolving it to 'ours-cs'.
+  // figure made. Legacy `ours` source values are normalized above to the new
+  // direct `archive-gray-detail` source.
   useEffect(() => {
     onViewChange?.({
       defaultDegreeType: degreeType,
@@ -452,16 +623,24 @@ export default function TransferCreditRate({
       defaultMaEquivalent: maToggle,
       defaultMaSource: maSource,
       defaultMaGeOn: maGeOn,
+      defaultMaLens: maLens,
     })
-  }, [degreeType, scope, verifiedOnly, maToggle, maSource, maGeOn, onViewChange])
-  const effectiveMaSource = maSource === 'ours' && !maGeOn ? 'ours-cs' : maSource
-  const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly })
+  }, [degreeType, scope, verifiedOnly, maToggle, maSource, maGeOn, maLens, onViewChange])
+  const effectiveMaSource = normalizeMaSource(maSource)
+  const query = useTransferCreditRate(degreeType, {
+    majorSlug,
+    verifiedOnly: paperCorpus ? false : verifiedOnly,
+  })
   const rows = query.data?.rows || []
-  const model = useMemo(
+  const localModel = useMemo(
     () => buildRateMatrix(rows, (row) => rateForScope(row, activeScope, paperCorpus ? effectiveMaSource : 'auto')),
     [rows, activeScope, paperCorpus, effectiveMaSource]
   )
-  const warningCount = methodWarningCount(rows)
+  const model = useMemo(() => (
+    Number.isFinite(comparisonColorScale?.min) && Number.isFinite(comparisonColorScale?.max)
+      ? { ...localModel, colorScale: comparisonColorScale }
+      : localModel
+  ), [localModel, comparisonColorScale])
 
   if (query.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -472,7 +651,7 @@ export default function TransferCreditRate({
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-      <div className='flex flex-col'>
+      {!paperCorpus && <div className='flex flex-col'>
         <span className='field-label'>Associate degree</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
           {degreeModes.map((mode) => (
@@ -484,7 +663,7 @@ export default function TransferCreditRate({
             </button>
           ))}
         </div>
-      </div>
+      </div>}
       {/* The bachelor-side scopes are California modeling: the paper corpus
           publishes only the AS-side figure, and its degree docs' lower/upper
           delineation (solved from the matrix boundary) is too coarse to hang
@@ -522,14 +701,14 @@ export default function TransferCreditRate({
         </div>
       )}
       {paperCorpus && (
-        <div className='flex flex-col' data-control-group='ma-source'>
-          <span className='field-label'>Source</span>
+        <div className='flex flex-col' data-control-group='ma-lens'>
+          <span className='field-label'>Measure</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
-            {MA_SOURCES.map((item) => (
-              <button key={item.value} type='button' aria-pressed={maSource === item.value}
-                onClick={() => setMaSource(item.value)}
+            {MA_LENSES.map((item) => (
+              <button key={item.value} type='button' aria-pressed={maLens === item.value}
+                onClick={() => setMaLens(item.value)}
                 className={`px-3 text-button border-r border-border last:border-r-0 ${
-                  maSource === item.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                  maLens === item.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
                 }`}>
                 {item.label}
               </button>
@@ -537,16 +716,24 @@ export default function TransferCreditRate({
           </div>
         </div>
       )}
-      {paperCorpus && maSource === 'ours' && (
-        <div className='flex flex-col'>
-          <span className='field-label'>Population</span>
-          <button type='button' aria-pressed={maGeOn}
-            onClick={() => setMaGeOn((v) => !v)}
-            className={`h-9 px-3 rounded-lg border text-button transition-colors ${maGeOn
-              ? 'border-primary bg-primary-soft text-primary'
-              : 'border-border-strong bg-surface text-ink-muted hover:bg-surface-hover'}`}>
-            Include GE
-          </button>
+      {paperCorpus && (
+        <div className='flex flex-col' data-control-group='ma-source'>
+          <span className='field-label'>Source</span>
+          <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
+            {MA_SOURCES.map((item) => (
+              <button key={item.value} type='button' aria-pressed={maSource === item.value}
+                onClick={() => setMaSource(item.value)}
+                disabled={maLens === MA_BACHELOR_SIDE_SCOPE}
+                title={maLens === MA_BACHELOR_SIDE_SCOPE
+                  ? 'The paper never published this measure, so there is no published version to compare against.'
+                  : undefined}
+                className={`px-3 text-button border-r border-border last:border-r-0 disabled:opacity-40 disabled:cursor-not-allowed ${
+                  maSource === item.value ? 'bg-primary-soft text-primary' : 'text-ink-muted hover:bg-surface-hover'
+                }`}>
+                {item.label}
+              </button>
+            ))}
+          </div>
         </div>
       )}
       {!paperCorpus && <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />}
@@ -576,6 +763,22 @@ export default function TransferCreditRate({
     <Stack gap='section'>
       {controls}
       <div data-export-root className='flex flex-col gap-3'>
+        <div className='surface-card px-4 py-3'>
+          <p className='text-label'>
+            <EvidenceSummary verifiedOnly={verifiedOnly}
+              sourceLabel={paperCorpus
+                ? (effectiveMaSource === 'pdf'
+                  ? 'Final PDF Figure 3 (reported pairs only)'
+                  : 'Our recalculation from the authors’ course-plan data')
+                : null}
+              cellKind={paperCorpus
+                ? (effectiveMaSource === 'pdf' ? 'reported' : 'recomputed')
+                : 'modeled'}
+              collegeCount={model.rows.length} cellCount={model.valueCount} />
+          </p>
+          {!paperCorpus && <TransferEvidenceCaveats rows={rows} majorSlug={majorSlug} />}
+        </div>
+        <ColorDomainLegend scale={model.colorScale} formatValue={pct} />
         <RateTable model={model} scope={activeScope} maSource={paperCorpus ? effectiveMaSource : 'auto'} />
       </div>
     </Stack>
@@ -586,5 +789,5 @@ export default function TransferCreditRate({
 // must name one of these; the contract test fails the build otherwise.
 TransferCreditRate.viewProps = [
   'defaultDegreeType', 'defaultScope', 'defaultVerifiedOnly',
-  'defaultMaEquivalent', 'defaultMaSource', 'defaultMaGeOn',
+  'defaultMaEquivalent', 'defaultMaSource', 'defaultMaGeOn', 'defaultMaLens',
 ]

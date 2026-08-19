@@ -89,6 +89,12 @@ describe('majors config', () => {
     expect(getMajor('econ').capabilities.asDegrees).toBe(true);
   });
 
+  it('gives every California Figure 2 recreation the GE-excluded source population', () => {
+    for (const slug of ['cs', 'bio', 'econ']) {
+      expect(getMajor(slug).courseTypes.excludeGeGroups).toBe(true);
+    }
+  });
+
   it('publishes explicit prerequisite roots for each major', () => {
     expect(getMajor('cs').prerequisiteConcepts).toContain('cs_3_data_structures');
     expect(getMajor('bio').prerequisiteConcepts).toEqual(expect.arrayContaining([

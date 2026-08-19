@@ -27,28 +27,18 @@ export { filterBuiltInAnalyses } from './analysisVisibility'
 const shortAuthorUid = (uid) => (uid ? `UID ${String(uid).slice(0, 8)}` : 'unknown author')
 
 function AvailabilityBadge({ availability }) {
-  if (!availability) return null
-  const variant = availability.available && !availability.fixed ? 'success' : 'neutral'
-  return <Badge variant={variant}>{availability.label}</Badge>
-}
-
-// One clear, large statement of which major the figure is showing. Kept out of
-// exports (a downloaded figure carries its own in-figure label); here it is the
-// single header that replaces every figure's scattered scope/provenance lines.
-function AnalysisScopeNotice({ availability, selectedMajor }) {
-  if (!availability?.available) return null
-  const label = selectedMajor?.label || availability.effectiveMajorSlug
-  return (
-    <div className='flex items-center gap-2.5' data-export-exclude>
-      <span className='inline-block w-2.5 h-2.5 rounded-full bg-primary shrink-0' />
-      <span className='text-title font-[680] text-ink leading-none'>{label}</span>
-      {availability.fixed && <Badge variant='neutral'>reference dataset</Badge>}
-    </div>
-  )
+  // Available visuals already identify their major in the single metadata
+  // line. Keep a badge only for an unavailable state that needs explanation.
+  if (!availability || availability.available) return null
+  return <Badge variant='neutral'>{availability.label}</Badge>
 }
 
 function PublicationBadge({ published }) {
-  return <Badge variant={published ? 'success' : 'neutral'}>{published ? 'Published' : 'Admin only'}</Badge>
+  return (
+    <Badge variant={published ? 'success' : 'neutral'}>
+      {published ? 'Available to all' : 'Admin only'}
+    </Badge>
+  )
 }
 
 function useDeferredPreview() {
@@ -167,13 +157,14 @@ export function itemDetails(item, { isAdmin, releasedSet, selectedMajor = null }
 
   const { analysis } = item
   const copy = analysisCopy(analysis, selectedMajor)
+  const majorLabel = selectedMajor?.label
+    || (analysis.majorScope?.mode === 'fixed' ? analysis.majorScope.label : null)
   return {
     title: copy.title,
     description: copy.description,
-    source: `${analysis.author_label} · ${fmtDate(analysis.published_at)}`,
-    badge: isAdmin
-      ? <PublicationBadge published={releasedSet.has(analysis.id)} />
-      : <Badge variant='accent'>Interactive</Badge>,
+    source: [analysis.author_label, fmtDate(analysis.published_at), majorLabel]
+      .filter(Boolean).join(' · '),
+    badge: <PublicationBadge published={!isAdmin || releasedSet.has(analysis.id)} />,
   }
 }
 
@@ -550,7 +541,8 @@ export function BuiltInAnalysisCard({
   const Component = analysis?.Component || null
   const majorLabel = selectedMajor?.label || selectedMajor?.slug || 'the selected major'
   const fixedMajorLabel = analysis?.majorScope?.label || analysis?.majorScope?.slug || 'its configured major'
-  const scopeBadge = <AvailabilityBadge availability={availability} />
+  const displayMajorLabel = selectedMajor?.label
+    || (availability.fixed ? fixedMajorLabel : availability.effectiveMajorSlug)
   // A figure with internal states (the coverage heatmap's MA-paper toggle)
   // reports its active measure so the panel always defines what is on screen;
   // figures without states never call this and keep their static entry.
@@ -558,17 +550,12 @@ export function BuiltInAnalysisCard({
 
   return (
     <AnalysisCard title={analysisCopy(analysis, selectedMajor).title}
-      source={`${analysis.author_label} · ${fmtDate(analysis.published_at)}`}
+      source={[analysis.author_label, fmtDate(analysis.published_at), displayMajorLabel]
+        .filter(Boolean).join(' · ')}
       exportName={`${analysis.id}-${availability.effectiveMajorSlug || selectedMajor?.slug || 'unavailable'}`}
       exportable={availability.available && !!Component}
-      badge={isAdmin
-        ? (
-          <span className='flex items-center gap-2'>
-            <PublicationBadge published={releasedSet.has(analysis.id)} />
-            {scopeBadge}
-          </span>
-        )
-        : scopeBadge}>
+      scopeInHeader
+      badge={<PublicationBadge published={!isAdmin || releasedSet.has(analysis.id)} />}>
       {!availability.available ? (
         <Alert type='info'>
           <span className='font-[650] text-ink'>
@@ -587,7 +574,6 @@ export function BuiltInAnalysisCard({
         <Alert type='error'>This visual renderer is not available in the current application.</Alert>
       ) : (
         <>
-          <AnalysisScopeNotice availability={availability} selectedMajor={selectedMajor} />
           <Component key={`${analysis.id}:${availability.effectiveMajorSlug}`}
             majorSlug={availability.effectiveMajorSlug}
             majorLabel={selectedMajor?.label || ''}
@@ -860,6 +846,7 @@ export default function VisualsPage({ onNavigate = () => {} }) {
 
       <FullScreenPanel open={!!selectedItem} onClose={() => setSelectedKey(null)}
         title={selectedDetails?.title} subtitle={selectedDetails?.source}
+        contentOwnsHeader
         ariaLabel={selectedDetails ? `${selectedDetails.title} visual detail` : 'Visual detail'}>
         {selectedItem && renderDetail(selectedItem)}
       </FullScreenPanel>

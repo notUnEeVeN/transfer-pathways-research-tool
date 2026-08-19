@@ -1,0 +1,243 @@
+[
+  {
+    "id": "cmp-ceaef893",
+    "title": "STATES · Fig 1 — Required courses with an equivalent (CA vs MA)",
+    "kind": "mixed",
+    "baseline_pane": "p1",
+    "breakdown_id": null,
+    "panes": [
+      {
+        "id": "p1",
+        "figure": "coverage-heatmap",
+        "major": "ma-cs",
+        "knobs": {
+          "ma-source": "pdf"
+        },
+        "label": "Massachusetts · Final paper",
+        "fingerprint": "coverage-heatmap@ma-cs"
+      },
+      {
+        "id": "p2",
+        "figure": "coverage-heatmap",
+        "major": "cs",
+        "knobs": {
+          "ma-equivalent": true,
+          "rows": "college",
+          "basis": "degree",
+          "ma-include-ge": false
+        },
+        "label": "California · named-course paper lens",
+        "fingerprint": "coverage-heatmap@cs"
+      }
+    ]
+  },
+  {
+    "id": "cmp-b3647c13",
+    "title": "STATES · Fig 2 — Where the transferable courses are (CA vs MA)",
+    "kind": "mixed",
+    "baseline_pane": "p1",
+    "breakdown_id": null,
+    "panes": [
+      {
+        "id": "p1",
+        "figure": "course-type-coverage",
+        "major": "ma-cs",
+        "knobs": {
+          "ma-source": "pdf"
+        },
+        "label": "Massachusetts · Final paper",
+        "fingerprint": "course-type-coverage@ma-cs"
+      },
+      {
+        "id": "p2",
+        "figure": "course-type-coverage",
+        "major": "cs",
+        "knobs": {
+          "scope": "whole-degree"
+        },
+        "label": "California · whole-degree paper categories",
+        "fingerprint": "course-type-coverage@cs"
+      }
+    ]
+  },
+  {
+    "id": "cmp-c7c7c752",
+    "title": "STATES · Fig 3 — Associate-degree credit that applies (CA vs MA)",
+    "kind": "mixed",
+    "baseline_pane": "p1",
+    "breakdown_id": null,
+    "panes": [
+      {
+        "id": "p1",
+        "figure": "transfer-credit-rate",
+        "major": "ma-cs",
+        "knobs": {
+          "source": "pdf"
+        },
+        "label": "Massachusetts · Final paper",
+        "fingerprint": "transfer-credit-rate@ma-cs"
+      },
+      {
+        "id": "p2",
+        "figure": "transfer-credit-rate",
+        "major": "cs",
+        "knobs": {
+          "ma-equivalent": true,
+          "degree": "local_as",
+          "verified": true
+        },
+        "label": "California · verified local A.S.",
+        "fingerprint": "transfer-credit-rate@cs?degree=local_as"
+      }
+    ]
+  },
+  {
+    "id": "cmp-d0efc32b",
+    "title": "STATES · Fig 4 — Pathway hours above 120 (CA vs MA)",
+    "kind": "mixed",
+    "baseline_pane": "p1",
+    "breakdown_id": null,
+    "panes": [
+      {
+        "id": "p1",
+        "figure": "transfer-extra-units",
+        "major": "ma-cs",
+        "knobs": {
+          "source": "pdf"
+        },
+        "label": "Massachusetts · Final paper",
+        "fingerprint": "transfer-extra-units@ma-cs"
+      },
+      {
+        "id": "p2",
+        "figure": "transfer-extra-units",
+        "major": "cs",
+        "knobs": {
+          "degree": "local_as",
+          "verified": true
+        },
+        "label": "California · verified local A.S.",
+        "fingerprint": "transfer-extra-units@cs?degree=local_as"
+      }
+    ]
+  },
+  {
+    "id": "cmp-b49e4d68",
+    "title": "STATES · Fig 5 — Cost of pathway hours above 120 (different price bases)",
+    "kind": "mixed",
+    "baseline_pane": "p1",
+    "breakdown_id": null,
+    "panes": [
+      {
+        "id": "p1",
+        "figure": "transfer-extra-cost",
+        "major": "ma-cs",
+        "knobs": {
+          "source": "pdf"
+        },
+        "label": "Massachusetts · Final paper · tuition only",
+        "fingerprint": "transfer-extra-cost@ma-cs"
+      },
+      {
+        "id": "p2",
+        "figure": "transfer-extra-cost",
+        "major": "cs",
+        "knobs": {
+          "degree": "local_as",
+          "verified": true,
+          "load": "minimum"
+        },
+        "label": "California · verified local A.S. · tuition and fees · 12-unit basis",
+        "fingerprint": "transfer-extra-cost@cs?degree=local_as"
+      }
+    ]
+  },
+  {
+    "id": "cmp-a199bc66",
+    "title": "STATES · Fig 6 — Curricular complexity vs resident curriculum (exploratory)",
+    "kind": "mixed",
+    "baseline_pane": "p1",
+    "breakdown_id": null,
+    "panes": [
+      {
+        "id": "p1",
+        "figure": "pathway-complexity",
+        "major": "ma-cs",
+        "knobs": {
+          "source": "published"
+        },
+        "label": "Massachusetts · Final paper",
+        "fingerprint": "pathway-complexity@ma-cs"
+      },
+      {
+        "id": "p2",
+        "figure": "pathway-complexity",
+        "major": "cs",
+        "knobs": {
+          "degree": "ast",
+          "verified": true
+        },
+        "label": "California · verified A.S.-T · model v3",
+        "fingerprint": "pathway-complexity@cs"
+      }
+    ]
+  },
+  {
+    "id": "cmp-ma-f3-direct",
+    "title": "MA AUDIT · Fig 3 — Final paper vs our recalculation",
+    "kind": "versions",
+    "baseline_pane": "p1",
+    "breakdown_id": "ma-transfer-credit-figure-3",
+    "panes": [
+      {
+        "id": "p1",
+        "figure": "transfer-credit-rate",
+        "major": "ma-cs",
+        "knobs": {
+          "source": "pdf"
+        },
+        "label": "Final paper",
+        "fingerprint": "transfer-credit-rate@ma-cs"
+      },
+      {
+        "id": "p2",
+        "figure": "transfer-credit-rate",
+        "major": "ma-cs",
+        "knobs": {
+          "source": "archive-gray-detail"
+        },
+        "label": "Our recalculation",
+        "fingerprint": "transfer-credit-rate@ma-cs?source=archive-gray-detail"
+      }
+    ]
+  },
+  {
+    "id": "cmp-7e604445",
+    "title": "MA AUDIT · Fig 4 — Final paper vs our recalculation",
+    "kind": "versions",
+    "baseline_pane": "p1",
+    "breakdown_id": "ma-extra-units-figure-4",
+    "panes": [
+      {
+        "id": "p1",
+        "figure": "transfer-extra-units",
+        "major": "ma-cs",
+        "knobs": {
+          "source": "pdf"
+        },
+        "label": "Final paper",
+        "fingerprint": "transfer-extra-units@ma-cs"
+      },
+      {
+        "id": "p2",
+        "figure": "transfer-extra-units",
+        "major": "ma-cs",
+        "knobs": {
+          "source": "archive-detail"
+        },
+        "label": "Our recalculation",
+        "fingerprint": "transfer-extra-units@ma-cs?source=archive-detail"
+      }
+    ]
+  }
+]

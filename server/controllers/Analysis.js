@@ -207,9 +207,10 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
 // bypasses the short analysis cache;
 // an explicit frontend refresh must never receive a pre-edit result.
 exports.pathwayComplexity = asyncHandler(async (req, res) => {
-  // The MA paper's Figure 6 measure over our pathways. Metric validated against
-  // the paper's own published scores (58/60 exact); see
-  // services/analysis/pathwayComplexity.js for assembly rules and limits.
+  // The MA paper's Figure 6 measure over our pathways. The scorer reproduces
+  // 59/60 archived workbook scores; paper, archive and recomputation remain
+  // separately labelled because agreement on the equation does not make their
+  // graph provenance interchangeable.
   const slug = String(req.query.majorSlug || '').trim() || defaultMajor().slug;
   const major = getMajor(slug);
   if (!major) return res.status(400).json({ error: `unknown major: ${slug}` });
@@ -235,15 +236,33 @@ exports.pathwayComplexity = asyncHandler(async (req, res) => {
   if (requestedType && !AS_DEGREE_SLOTS.includes(requestedType)) {
     return res.status(400).json({ error: `degree_type must be one of ${AS_DEGREE_SLOTS.join(', ')}` });
   }
-  const degreeType = requestedType
-    || (major.degreeAnalysisSlots || []).find((slot) => AS_DEGREE_SLOTS.includes(slot))
-    || 'ast';
+  // Figure 6 is presented on the statewide A.S.-T cohort unless the caller
+  // pins another slot. Several majors list local_as first for older analyses;
+  // inheriting that array order here was what made Foothill's broad local
+  // catalogue pool silently replace its ten-course A.S.-T pathway.
+  const configuredDefault = (major.degreeAnalysisSlots || []).includes('ast')
+    ? 'ast'
+    : (major.degreeAnalysisSlots || []).find((slot) => AS_DEGREE_SLOTS.includes(slot));
+  const degreeType = requestedType || configuredDefault || 'ast';
+  const verifiedOnlyParam = String(req.query.verified_only ?? '').trim().toLowerCase();
+  if (verifiedOnlyParam && !['true', 'false', '1', '0'].includes(verifiedOnlyParam)) {
+    return res.status(400).json({ error: 'verified_only must be true or false' });
+  }
+  // Presentation-safe default: scraped associate-degree records enter Figure 6
+  // only after their explicit human-verification flag is set. The all-resolved
+  // sensitivity remains available through verified_only=false.
+  const verifiedOnly = verifiedOnlyParam
+    ? verifiedOnlyParam === 'true' || verifiedOnlyParam === '1'
+    : true;
   const pairs = await majorScope(req);
   // Served from the analysis cache — the ~10s full-corpus assembly runs once
   // (or on ?refresh=1) and visibility scoping is applied to the cached rows,
   // mirroring the service's own degree-level check.
   const { rows, computed_at, cached } = await pathwayComplexityCached(req.app.locals.db, {
-    majorSlug: slug, degreeType, refresh: String(req.query.refresh || '') === '1',
+    majorSlug: slug,
+    degreeType,
+    verifiedOnly,
+    refresh: String(req.query.refresh || '') === '1',
   });
   const visible = pairs === null ? rows : rows.filter((row) => {
     const programs = major.programs?.[row.school_id] || [];
@@ -251,7 +270,67 @@ exports.pathwayComplexity = asyncHandler(async (req, res) => {
       (pair) => pair.school_id === Number(row.school_id) && pair.major === program,
     ));
   });
-  res.json({ rows: visible, degree_type: degreeType, computed_at, cached });
+  const excluded = visible.filter((row) => row.method_status === 'excluded');
+  const excludedDegrees = new Map(excluded.map((row) => [String(row.record_id), {
+    record_id: row.record_id,
+    community_college_id: row.community_college_id,
+    college_name: row.college_name,
+    reason: row.exclusion_reason,
+    warning: row.method_warning,
+  }]));
+  const sourceScope = {
+    state: { $exists: false },
+    kind: 'as_degree',
+    status: 'found',
+    major_slug: slug,
+    degree_type: degreeType,
+  };
+  const sourceDegrees = await req.app.locals.db.collection('curated_requirements')
+    .find(sourceScope)
+    .project({ _id: 1, community_college_id: 1, 'verification.verified': 1 })
+    .sort({ _id: 1 })
+    .toArray();
+  const sourceDegreeCount = sourceDegrees.length;
+  const verifiedSourceDegreeCount = sourceDegrees
+    .filter((degree) => degree.verification?.verified === true).length;
+  const omittedSourceDegrees = verifiedOnly
+    ? sourceDegrees.filter((degree) => degree.verification?.verified !== true) : [];
+  const omittedCollegeIds = [...new Set(omittedSourceDegrees
+    .map((degree) => Number(degree.community_college_id)).filter(Number.isFinite))];
+  const omittedCollegeRows = omittedCollegeIds.length
+    ? await req.app.locals.db.collection('assist_institutions').find({
+      state: { $exists: false },
+      kind: 'community_college',
+      source_id: { $in: omittedCollegeIds },
+    }).project({ source_id: 1, name: 1 }).toArray()
+    : [];
+  const omittedCollegeNames = new Map(omittedCollegeRows
+    .map((row) => [Number(row.source_id), row.name]));
+  res.json({
+    rows: visible,
+    degree_type: degreeType,
+    verified_only: verifiedOnly,
+    computed_at,
+    cached,
+    model_version: 'v3',
+    source_cohort: {
+      degree_documents_total: sourceDegreeCount,
+      degree_documents_verified: verifiedSourceDegreeCount,
+      degree_documents_included: verifiedOnly ? verifiedSourceDegreeCount : sourceDegreeCount,
+      unverified_degree_documents_omitted: verifiedOnly
+        ? sourceDegreeCount - verifiedSourceDegreeCount : 0,
+      omitted_unverified_degree_documents: omittedSourceDegrees.map((degree) => ({
+        record_id: degree._id,
+        community_college_id: degree.community_college_id,
+        college_name: omittedCollegeNames.get(Number(degree.community_college_id)) || null,
+      })),
+    },
+    exclusions: {
+      degree_count: excludedDegrees.size,
+      pathway_count: excluded.length,
+      degrees: [...excludedDegrees.values()],
+    },
+  });
 });
 
 exports.transferCreditRate = asyncHandler(async (req, res) => {
@@ -287,11 +366,10 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
     majorSlug: major.slug,
     majorPrograms: major.programs,
     verifiedOnly,
-    // The high-fidelity state is presently defined by human verification of
-    // the associate-degree source. Per the research design, the receiving
-    // Biology/Economics graduation templates remain usable assumptions until
-    // their separate verification pass is complete.
-    assumeDegreeTemplatesValid: verifiedOnly,
+    // `verified_only` scopes the associate-degree side only. Bachelor
+    // templates carry and report their own verification records; one source's
+    // status must never silently authorize the other side of the model.
+    assumeDegreeTemplatesValid: false,
   });
   if (req.query.format === 'csv') {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
@@ -303,7 +381,8 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
       degree_type: degreeType,
       majorSlug: major.slug,
       verified_only: verifiedOnly,
-      degree_templates_assumed_valid: verifiedOnly,
+      degree_templates_assumed_valid: false,
+      degree_template_evidence: 'per-template explicit verification record',
       method: 'bachelors_completion_v4',
     },
     n: rows.length,

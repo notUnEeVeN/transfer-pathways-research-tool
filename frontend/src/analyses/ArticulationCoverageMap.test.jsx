@@ -101,6 +101,24 @@ describe('articulation coverage map', () => {
     ))).toBe(true)
   })
 
+  it('counts only the same nine canonical campuses as the heatmap and histogram', () => {
+    const first = currentRows()[0]
+    const model = buildCoverageMapModel([
+      ...currentRows(),
+      { ...first },
+      {
+        school_id: 999,
+        school: 'Unrelated university',
+        row_group_label: DISTRICTS[0].name,
+        fully_articulated: true,
+      },
+    ])
+
+    expect(model.districts[0].currentCount).toBe(5)
+    expect(model.districts.every((district) => district.currentCount <= 9)).toBe(true)
+    expect(model.ignoredRows).toBe(1)
+  })
+
   it('zooms smoothly on scroll, keeping the point under the cursor fixed', () => {
     const { container } = render(<ArticulationCoverageMap />)
     const svg = container.querySelector('[data-export-root] svg')

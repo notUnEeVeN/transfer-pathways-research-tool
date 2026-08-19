@@ -27,8 +27,28 @@ const FIELD_LABELS = {
 
 const show = (value) => (value === null || value === undefined ? '—' : String(value))
 
-export default function VerdictDrift({ pinned, current, onRepin, repinning = false }) {
+export default function VerdictDrift({ pinned, current, onRepin, repinning = false, pinnable = false }) {
   const changes = verdictDrift(pinned, current)
+
+  // Nothing pinned yet. A saved comparison with no pinned reading cannot drift
+  // and cannot be checked later, so offer the pin rather than staying silent —
+  // that silence is exactly how the eight saved exhibits ended up unpinned.
+  if (!pinned) {
+    if (!pinnable || !onRepin) return null
+    return (
+      <div className='surface-card border-l-[3px] border-l-border-strong px-[22px] py-4' data-export-exclude>
+        <div className='flex items-start gap-3'>
+          <p className='min-w-0 flex-1 text-caption text-ink-muted'>
+            No numbers are pinned, so later movement in either pane will go unrecorded.
+          </p>
+          <Button variant='secondary' size='sm' onClick={onRepin} disabled={repinning}>
+            {repinning ? 'Pinning…' : 'Pin these numbers'}
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   if (!changes) return null
 
   return (

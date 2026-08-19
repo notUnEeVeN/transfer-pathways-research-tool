@@ -7,6 +7,7 @@ import {
   PAPER_RED_LOW_TO_HIGH_GRADIENT,
   paperRedCellColor,
 } from './maHeatmapColors'
+import { degreeTemplateEvidenceLabel } from './templateEvidence'
 
 const ROW_MODES = [
   { value: 'college', label: 'College', noun: 'colleges', header: 'Community college' },
@@ -30,9 +31,14 @@ const REQ_MODES = [
 // excluded, binary per course. Its GE sub-toggle is our extension for
 // GE-heavy majors, whose GE-excluded reading is dominated by the upper
 // division.
-const MA_MODE = 'ma-courses'
-const MA_GE_MODE = 'ma-courses-ge'
+export const MA_MODE = 'ma-courses'
+export const MA_GE_MODE = 'ma-courses-ge'
 const MA_MODES = new Set([MA_MODE, MA_GE_MODE])
+const MA_FIG1_SOURCES = [
+  { value: 'pdf', label: 'Final paper' },
+  { value: 'archive', label: 'Our recalculation' },
+]
+const normalizeMaFigure1Source = (source) => (source === 'archive' ? 'archive' : 'pdf')
 const requirementsParam = (mode) => (MA_MODES.has(mode) ? 'degree' : mode)
 
 /**
@@ -118,7 +124,10 @@ function numberOrNull(value) {
   return Number.isFinite(parsed) ? parsed : null
 }
 
-function rowCoverageValue(row, reqMode) {
+export function rowCoverageValue(row, reqMode, maSource = 'archive') {
+  if (reqMode === MA_MODE && maSource === 'pdf') {
+    return numberOrNull(row.published_pdf_pct_named_requirement_courses)
+  }
   if (reqMode === MA_MODE) return numberOrNull(row.pct_named_requirement_courses)
   if (reqMode === MA_GE_MODE) return numberOrNull(row.pct_named_requirement_courses_with_ge)
   return reqMode === 'degree'
@@ -126,8 +135,11 @@ function rowCoverageValue(row, reqMode) {
     : numberOrNull(row.pct_articulated)
 }
 
-function cellCoverageValue(cell, reqMode) {
+export function cellCoverageValue(cell, reqMode, maSource = 'archive') {
   if (!cell) return null
+  if (reqMode === MA_MODE && maSource === 'pdf') {
+    return cell.n > 0 ? cell.sum / cell.n : null
+  }
   if (reqMode === MA_MODE) {
     return cell.maSlotsTotal > 0 ? (cell.maSlotsArticulated / cell.maSlotsTotal) * 100 : null
   }
@@ -140,7 +152,7 @@ function cellCoverageValue(cell, reqMode) {
   return cell.n ? cell.sum / cell.n : null
 }
 
-function buildHeatmap(rows, reqMode) {
+export function buildHeatmap(rows, reqMode, { maSource = 'archive' } = {}) {
   const rowMap = new Map()
   const colMap = new Map()
   const cellMap = new Map()
@@ -148,7 +160,7 @@ function buildHeatmap(rows, reqMode) {
   for (const r of rows) {
     const rowKey = String(r.row_group_key || r.community_college_id)
     const colKey = `${r.school_id}|${r.major}`
-    const value = rowCoverageValue(r, reqMode)
+    const value = rowCoverageValue(r, reqMode, maSource)
 
     if (!rowMap.has(rowKey)) {
       rowMap.set(rowKey, {
@@ -164,6 +176,7 @@ function buildHeatmap(rows, reqMode) {
         school: r.school || `School ${r.school_id}`,
         schoolId: r.school_id,
         major: r.major || 'Unknown major',
+        pdfColumnAverage: numberOrNull(r.published_pdf_named_requirement_column_average),
       })
     }
 
@@ -210,18 +223,20 @@ function buildHeatmap(rows, reqMode) {
   const tableRows = [...rowMap.values()].sort(sortByName).map((row) => {
     const rowValues = columns.map((col) => {
       const cell = cellMap.get(`${row.key}|${col.key}`)
-      return cellCoverageValue(cell, reqMode)
+      return cellCoverageValue(cell, reqMode, maSource)
     })
     return { ...row, values: rowValues, mean: average(rowValues) }
   })
   const columnMeans = columns.map((col) =>
-    average(tableRows.map((row) => {
+    maSource === 'pdf' && Number.isFinite(col.pdfColumnAverage)
+      ? col.pdfColumnAverage
+      : average(tableRows.map((row) => {
       const cell = cellMap.get(`${row.key}|${col.key}`)
-      return cellCoverageValue(cell, reqMode)
+      return cellCoverageValue(cell, reqMode, maSource)
     }))
   )
   const values = [...cellMap.values()]
-    .map((cell) => cellCoverageValue(cell, reqMode))
+    .map((cell) => cellCoverageValue(cell, reqMode, maSource))
     .filter(Number.isFinite)
   const fullCount = values.filter((value) => value >= 100).length
 
@@ -234,10 +249,93 @@ function buildHeatmap(rows, reqMode) {
     fullCount,
     valueCount: values.length,
     overallMean: average(values),
+    paperProseMean: maSource === 'pdf'
+      ? rows.map((row) => numberOrNull(row.published_pdf_named_requirement_prose_mean))
+        .find(Number.isFinite) ?? null
+      : null,
   }
 }
 
-function cellTitle(row, col, cell, value, reqMode) {
+/** Resolve a saved comparison pane exactly as the mounted figure resolves it. */
+export function coverageViewForPane(pane = {}, major = null) {
+  const knobs = pane.knobs || {}
+  const isPaperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
+  // The final PDF publishes the 15-college matrix only. District/county
+  // aggregation remains a live California lens, not an invented MA figure.
+  const rowMode = isPaperCorpus ? 'college' : (knobs.rows || 'college')
+  const maSource = isPaperCorpus
+    ? normalizeMaFigure1Source(knobs['ma-source'])
+    : 'archive'
+  const unitLensAvailable = major?.capabilities?.unitCoverage !== false
+  const maEquivalent = unitLensAvailable ? knobs['ma-equivalent'] !== false : true
+  const includeGe = Boolean(knobs['ma-include-ge'])
+  let reqMode = knobs.basis || 'degree'
+  const supportsPaper = major?.capabilities?.transferMinimums
+    ?? String(pane.major || '').trim().toLowerCase() === 'cs'
+  if (!supportsPaper && reqMode === 'paper') reqMode = 'degree'
+  if (maEquivalent) reqMode = includeGe ? MA_GE_MODE : MA_MODE
+  return { rowMode, reqMode, maSource, ...coverageQueryArgs({ majorSlug: pane.major, rowMode, reqMode }) }
+}
+
+/** Cells consumed by Compare, taken from the same model the table renders. */
+export function coverageComparisonCells(data, pane, major) {
+  const { reqMode, maSource } = coverageViewForPane(pane, major)
+  const model = buildHeatmap(data?.rows || [], reqMode, { maSource })
+  return model.rows.flatMap((row) => model.columns.map((column, index) => ({
+    rowKey: row.key,
+    rowLabel: row.name,
+    colKey: column.key,
+    colLabel: `${column.school} — ${column.major}`,
+    value: row.values[index],
+  })))
+}
+
+export function coverageComparisonContract(pane, major) {
+  const view = coverageViewForPane(pane, major)
+  const maCourseLens = MA_MODES.has(view.reqMode)
+  const includeGe = view.reqMode === MA_GE_MODE
+  const sources = {
+    degree: 'curated bachelor requirements + published equivalencies',
+    assist: 'ASSIST transfer-minimum agreements',
+    paper: 'hand-curated transfer minimums',
+    [MA_MODE]: 'curated whole-degree course requirements + published equivalencies',
+    [MA_GE_MODE]: 'curated whole-degree course requirements + GE certification + published equivalencies',
+  }
+  return {
+    measure: maCourseLens
+      ? 'required-course-articulation'
+      : view.reqMode === 'degree' ? 'graduation-unit-coverage' : 'transfer-minimum-coverage',
+    unit: 'percentage points',
+    grain: `${view.rowMode} × university program`,
+    keys: { rows: view.rowMode, columns: 'university program' },
+    semantics: maCourseLens ? {
+      denominator: 'named required courses, series expanded',
+      scope: 'whole degree',
+      ge: includeGe,
+      weighting: 'each institution × program cell equally',
+    } : view.reqMode === 'degree' ? {
+      denominator: 'modeled graduation units',
+      scope: 'whole degree',
+      ge: true,
+      weighting: 'each institution × program cell equally',
+    } : {
+      denominator: 'transfer-minimum requirement choices',
+      scope: 'transfer admission minimums',
+      ge: false,
+      weighting: 'each institution × program cell equally',
+    },
+    context: {
+      source: view.maSource === 'pdf'
+        ? 'final PDF Figure 1 printed cells'
+        : sources[view.reqMode],
+      cohort: major?.label || pane.major,
+      bachelor_template_evidence: degreeTemplateEvidenceLabel(major),
+      display_scale: 'adaptive per pane in gallery; fixed 0–100 and shared across panes in Comparison',
+    },
+  }
+}
+
+function cellTitle(row, col, cell, value, reqMode, maSource = 'archive') {
   const bits = [
     row.name,
     col.school,
@@ -249,7 +347,9 @@ function cellTitle(row, col, cell, value, reqMode) {
         : `Coverage: ${pct(value)}`,
   ]
   if (cell) {
-    if (reqMode === MA_MODE) {
+    if (reqMode === MA_MODE && maSource === 'pdf') {
+      bits.push('Final-paper whole-percentage cell. The released data do not include the final hidden numerator and denominator; compare it with Our recalculation.')
+    } else if (reqMode === MA_MODE) {
       bits.push(`${intFmt.format(cell.maSlotsArticulated)} of ${intFmt.format(cell.maSlotsTotal)} required courses articulate (every level, series expanded, GE excluded — the paper's binary counting)`)
     } else if (reqMode === MA_GE_MODE) {
       bits.push(`${intFmt.format(cell.maGeArticulated)} of ${intFmt.format(cell.maGeTotal)} required courses articulate (every level, GE included — lower-division GE cleared by certification)`)
@@ -266,7 +366,7 @@ function cellTitle(row, col, cell, value, reqMode) {
   return bits.join('\n')
 }
 
-function HeatmapTable({ model, rowMode, reqMode }) {
+function HeatmapTable({ model, rowMode, reqMode, maSource = 'archive' }) {
   return (
     <div className='surface-card overflow-auto max-h-[72vh]'>
       <table className='border-separate border-spacing-0 min-w-full'>
@@ -304,12 +404,12 @@ function HeatmapTable({ model, rowMode, reqMode }) {
               </th>
               {model.columns.map((col, i) => {
                 const cell = model.cellMap.get(`${row.key}|${col.key}`)
-                const value = cellCoverageValue(cell, reqMode)
+                const value = cellCoverageValue(cell, reqMode, maSource)
                 return (
                   <td
                     key={col.key}
-                    title={cellTitle(row, col, cell, value, reqMode)}
-                    aria-label={cellTitle(row, col, cell, value, reqMode)}
+                    title={cellTitle(row, col, cell, value, reqMode, maSource)}
+                    aria-label={cellTitle(row, col, cell, value, reqMode, maSource)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
                     style={makeCellColor(value, model.colorScale)}
                   >
@@ -348,6 +448,7 @@ function HeatmapTable({ model, rowMode, reqMode }) {
 }
 
 function Legend({ reqMode, scale }) {
+  const domainLabel = `${scale.comparisonShared ? 'Shared comparison color domain' : 'Color domain'}: ${pct(scale.min)}–${pct(scale.max)}`
   return (
     <div className='flex flex-wrap items-center gap-3 text-caption text-ink-subtle'>
       <span className='text-label'>
@@ -355,6 +456,7 @@ function Legend({ reqMode, scale }) {
           ? 'MA-equivalent requirement articulation'
           : reqMode === 'degree' ? 'Potential graduation-unit coverage' : 'Coverage'}
       </span>
+      <span data-color-domain={scale.comparisonShared ? 'shared' : 'local'}>{domainLabel}</span>
       <div className='w-64 max-w-full' aria-label={`Coverage color scale from ${pct(scale.min)} to ${pct(scale.max)}`}>
         <div
           className='h-2 rounded-pill border border-border'
@@ -378,15 +480,19 @@ function Legend({ reqMode, scale }) {
 export default function CoverageHeatmap({
   presentation = false,
   majorSlug = 'cs',
+  major: majorProp = null,
   majorCapabilities,
   onMeasureChange,
   onViewChange,
+  comparisonColorScale = null,
   defaultRowMode = 'college',
   defaultReqMode = 'degree',
-  // The Massachusetts tab opens on the paper's own measure; California
-  // callers leave this false.
-  defaultMaEquivalent = false,
+  // Both the source-paper view and the California gallery open on the
+  // paper-equivalent named-course lens; the graduation-unit lens remains an
+  // explicit alternate view.
+  defaultMaEquivalent = true,
   defaultMaIncludeGe = false,
+  defaultMaSource = 'pdf',
 }) {
   const [rowModeValue, setRowModeValue] = useState(defaultRowMode)
   const [reqMode, setReqMode] = useState(defaultReqMode)
@@ -395,10 +501,17 @@ export default function CoverageHeatmap({
   // computes garbage). There the paper's course lens is the only basis, so
   // the MA-equivalent state is forced on and its toggle disappears.
   const unitLensAvailable = majorCapabilities?.unitCoverage !== false
+  const isPaperCorpus = Boolean(
+    (majorProp?.state && majorProp?.capabilities?.paperBaselines)
+      || (majorSlug === 'ma-cs' && majorCapabilities?.paperBaselines)
+  )
   const [maToggle, setMaEquivalent] = useState(defaultMaEquivalent)
   const maEquivalent = unitLensAvailable ? maToggle : true
   const [maIncludeGe, setMaIncludeGe] = useState(defaultMaIncludeGe)
-  const rowMode = ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0]
+  const [maSource, setMaSource] = useState(() => normalizeMaFigure1Source(defaultMaSource))
+  const rowMode = isPaperCorpus
+    ? ROW_MODES[0]
+    : (ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0])
   // Hand-curated website minimums only exist for CS. Prefer the registry's
   // explicit capability when the caller has it, while failing closed for an
   // unrecognized/non-CS slug during incremental major-picker plumbing.
@@ -422,6 +535,7 @@ export default function CoverageHeatmap({
   const activeReqMode = !presentation && maEquivalent
     ? (maIncludeGe ? MA_GE_MODE : MA_MODE)
     : basisMode
+  const activeMaSource = isPaperCorpus && activeReqMode === MA_MODE ? maSource : 'archive'
 
   // The figure's statistic changes with its controls, so the "How this is
   // measured" panel beside it must follow. The definitions live in
@@ -441,16 +555,26 @@ export default function CoverageHeatmap({
       defaultReqMode: reqMode,
       defaultMaEquivalent: maToggle,
       defaultMaIncludeGe: maIncludeGe,
+      defaultMaSource: maSource,
     })
-  }, [rowMode.value, reqMode, maToggle, maIncludeGe, onViewChange])
+  }, [rowMode.value, reqMode, maToggle, maIncludeGe, maSource, onViewChange])
 
   const coverage = useCoverage(
     coverageQueryArgs({ majorSlug, rowMode: rowMode.value, reqMode: activeReqMode }),
     { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
   )
   const rows = coverage.data?.rows || []
-  const model = useMemo(() => buildHeatmap(rows, activeReqMode), [rows, activeReqMode])
+  const localModel = useMemo(
+    () => buildHeatmap(rows, activeReqMode, { maSource: activeMaSource }),
+    [rows, activeReqMode, activeMaSource]
+  )
+  const model = useMemo(() => (
+    Number.isFinite(comparisonColorScale?.min) && Number.isFinite(comparisonColorScale?.max)
+      ? { ...localModel, colorScale: comparisonColorScale }
+      : localModel
+  ), [localModel, comparisonColorScale])
   const datasetVersion = coverage.data?.dataset_version || 'unversioned'
+  const templateEvidence = degreeTemplateEvidenceLabel(majorProp)
 
   if (coverage.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
@@ -464,7 +588,7 @@ export default function CoverageHeatmap({
     return (
       <Stack gap='section'>
         <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-          <div className='flex flex-col'>
+          {!isPaperCorpus && <div className='flex flex-col'>
             <span className='field-label'>Rows</span>
             <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
               {ROW_MODES.map((mode) => (
@@ -480,7 +604,7 @@ export default function CoverageHeatmap({
                 </button>
               ))}
             </div>
-          </div>
+          </div>}
           {!presentation && unitLensAvailable && (
             <div className='flex flex-col min-w-64'>
               <span className='field-label'>Requirement basis</span>
@@ -516,6 +640,12 @@ export default function CoverageHeatmap({
               </div>
             </div>
           )}
+          {isPaperCorpus && (
+            <div className='flex flex-col min-w-64'>
+              <span className='field-label'>Massachusetts source</span>
+              <Select value={maSource} onChange={setMaSource} options={MA_FIG1_SOURCES} />
+            </div>
+          )}
           <Button variant='secondary' leadingIcon={ArrowPathIcon} onClick={() => coverage.refetch()}>
             Refresh
           </Button>
@@ -528,7 +658,7 @@ export default function CoverageHeatmap({
   return (
     <Stack gap='section'>
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-        <div className='flex flex-col'>
+        {!isPaperCorpus && <div className='flex flex-col'>
           <span className='field-label'>Rows</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
             {ROW_MODES.map((mode) => (
@@ -544,11 +674,17 @@ export default function CoverageHeatmap({
               </button>
             ))}
           </div>
-        </div>
+        </div>}
         {!presentation && unitLensAvailable && (
           <div className='flex flex-col min-w-64'>
             <span className='field-label'>Requirement basis</span>
             <Select value={basisMode} onChange={setReqMode} options={reqModes} disabled={maEquivalent} />
+          </div>
+        )}
+        {isPaperCorpus && (
+          <div className='flex flex-col min-w-64'>
+            <span className='field-label'>Massachusetts source</span>
+            <Select value={maSource} onChange={setMaSource} options={MA_FIG1_SOURCES} />
           </div>
         )}
         {!presentation && unitLensAvailable && (
@@ -597,7 +733,27 @@ export default function CoverageHeatmap({
       {/* The definition of the active statistic lives in the measure panel
           beside the figure (measures.js), not in figure footnotes. */}
       <div data-export-root className='flex flex-col gap-6'>
-        <HeatmapTable model={model} rowMode={rowMode} reqMode={activeReqMode} />
+        {(activeReqMode === 'degree' || MA_MODES.has(activeReqMode)) && templateEvidence && (
+          <div className='surface-card px-4 py-3 text-caption text-ink-muted'>
+            Bachelor-template evidence: {templateEvidence}.
+          </div>
+        )}
+        {isPaperCorpus && activeMaSource === 'pdf' && (
+          <div className='surface-card px-4 py-3 text-caption text-ink-muted'>
+            Final paper: Figure 1 as printed. The paper reports {pct(model.paperProseMean)};
+            the 165 printed whole-number cells average {pct(model.overallMean)}.
+            Cape Cod → UMass Dartmouth is 45% here versus 35% in our 11/31
+            recalculation. The released data do not contain the final hidden ratio,
+            so this remains a potential paper error or an unexplained final-data revision.
+          </div>
+        )}
+        {isPaperCorpus && activeMaSource === 'archive' && (
+          <div className='surface-card px-4 py-3 text-caption text-ink-muted'>
+            Our recalculation: the authors’ released course-level data, evaluated
+            with the paper’s required-course counting rule.
+          </div>
+        )}
+        <HeatmapTable model={model} rowMode={rowMode} reqMode={activeReqMode} maSource={activeMaSource} />
         <Legend reqMode={activeReqMode} scale={model.colorScale} />
       </div>
     </Stack>
@@ -611,4 +767,5 @@ CoverageHeatmap.viewProps = [
   'defaultReqMode',
   'defaultMaEquivalent',
   'defaultMaIncludeGe',
+  'defaultMaSource',
 ]

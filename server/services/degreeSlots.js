@@ -123,17 +123,18 @@ function normalizeRequirementName(value) {
  * (two Berkeley "coursework outside the major" blocks are the only such
  * sections in the corpus); the receiver count.
  *
- * Excluded as GE: the breadth tier, ge_area receivers, GE-area fallbacks on
- * course receivers (Berkeley's R&C), assumed-satisfiable overlays (AH&I,
- * elective capacity), and GE-titled blocks. A bare "GE" only marks a block as
- * general education when it NAMES the block ("GE: Crossroads…"), never when a
- * major group notes double-counting ("also satisfies GE…"); the loose
- * word-match applies only on the university-only tier, where annotations do
- * not occur but "Upper-division campus GE experiences" does. Excluded as
- * padding: free-elective blocks that exist only to reach the unit total —
- * room, not requirements.
+ * Excluded as GE: explicit GE titles, ge_area receivers, GE-area fallbacks on
+ * course receivers (Berkeley's R&C), and assumed-satisfiable GE overlays
+ * (AH&I). Tier alone is never enough. An explicit School/College requirement
+ * title remains in the paper population even when the unit model stores its
+ * open course choice as a ge_area/assumed block; UCI Economics's two remaining
+ * School social-science courses are the live example. Excluded as padding:
+ * free-elective blocks that exist only to reach the unit total — room, not
+ * requirements.
  */
 const NAMED_GE_TITLE = /^\s*GE\b|general education|american cultures|american history/i;
+const NAMED_COLLEGE_REQUIREMENT_TITLE = /\b(?:school|college)\b/i;
+const NAMED_REQUIREMENT_WORD = /\b(?:requirements?|additional)\b/i;
 const NAMED_PADDING_TITLE = /unrestricted electives?|free electives?|elective capacity|elective units|elective credits|transfer cap reached|to reach the \d+/i;
 // The loose word-match on the university-only tier reads only the title HEAD
 // — the part before an em dash or parenthesis. Annotations routinely mention
@@ -145,33 +146,99 @@ const NAMED_PADDING_TITLE = /unrestricted electives?|free electives?|elective ca
 // experiences") and still matches.
 const titleHead = (title) => String(title || '').split(/\s+[—–]\s+|\(/)[0];
 const namedGeTitled = (g, s) => NAMED_GE_TITLE.test(String(g.title || ''))
-  || (resolveSectionTier(g, s) === 'nontransferable' && /\bGE\b/.test(titleHead(g.title)));
+  || /\bGE\b/.test(titleHead(g.title));
 const namedPadding = (g) => NAMED_PADDING_TITLE.test(String(g.title || ''));
-const namedGeFlavored = (g, s) => namedGeTitled(g, s)
-  || resolveSectionTier(g, s) === 'breadth'
-  || s.assume_satisfiable
-  || (Array.isArray(s.ge_areas) && s.ge_areas.length > 0)
-  || (s.receivers || []).some((r) => r.receiving?.kind === 'ge_area'
-    || r.assume_satisfiable
-    || (Array.isArray(r.ge_areas) && r.ge_areas.length));
-// A requirement the SOURCE itself says no community college can satisfy —
-// senior residency work, capstones taken in the major department — is not an
-// articulation failure; it is not an articulation question at all. Counting it
-// in the denominator asks "can a community college teach the senior year",
-// which caps the figure far below 100% for structural reasons and makes two
-// corpora incomparable whenever they enumerate upper-division work to
-// different depths. Virginia flags 238 of its 613 sections this way; the
-// Massachusetts corpus flags none, so its figure is unchanged.
-const notCollegeArticulable = (s) => s.cc_articulable === false;
-const inNamedRequirementPopulation = (g, s) => !namedPadding(g)
-  && !namedGeFlavored(g, s)
-  && !notCollegeArticulable(s);
-
-function namedRequirementCourses(requirementGroups, { articulated = null, articulatedRequirements = null } = {}) {
+const namedCollegeRequirement = (g) => {
+  const title = String(g.title || '');
+  return NAMED_COLLEGE_REQUIREMENT_TITLE.test(title)
+    && NAMED_REQUIREMENT_WORD.test(title);
+};
+const namedGeFlavored = (g, s) => {
+  // Explicit semantics outrank storage shape. A title that actually says GE
+  // stays GE; otherwise a named School/College requirement stays in the
+  // paper's stated degree-and-college population even if its open course pool
+  // is represented with the generic ge_area carrier.
+  if (namedGeTitled(g, s)) return true;
+  if (namedCollegeRequirement(g)) return false;
+  return s.assume_satisfiable
+    || (Array.isArray(s.ge_areas) && s.ge_areas.length > 0)
+    || (s.receivers || []).some((r) => r.receiving?.kind === 'ge_area'
+      || r.assume_satisfiable
+      || (Array.isArray(r.ge_areas) && r.ge_areas.length));
+};
+// The source paper's population is all named degree/college requirements with
+// GE excluded. University-only and upper-division named courses therefore stay
+// in the denominator: their zero articulation is part of the result, not a
+// reason to silently remove them. `cc_articulable` still drives the unit-budget
+// model, but it cannot redefine the paper-equivalent course-count population.
+function namedRequirementCourses(requirementGroups, {
+  articulated = null, articulatedRequirements = null, categoryOf = null,
+} = {}) {
   const evaluated = articulated != null;
   const expansion = (r) => (r.receiving?.kind === 'series'
     ? (r.receiving.parent_ids || []).length || 1
     : 1);
+  const firstCategory = (value) => (
+    (Array.isArray(value) ? value : [value]).find(Boolean) || null
+  );
+  const sectionCategory = (g, s) => firstCategory(
+    categoryOf?.({ section: s, group: g })
+  );
+  // Figure 2 is a partition of Figure 1's required COURSE observations. A
+  // series therefore contributes one typed observation for each university
+  // course in the series, rather than one receiver slot. Re-run the bound
+  // course-code classifier on each parent id so a cross-discipline series is
+  // allocated course by course; fall back to the receiver/section category
+  // only when the catalog row is unavailable.
+  const receiverCategories = (r, g, s) => {
+    const receiving = r?.receiving || {};
+    const fallback = firstCategory(categoryOf?.({ receiver: r, section: s, group: g }))
+      || sectionCategory(g, s);
+    if (receiving.kind !== 'series' || !(receiving.parent_ids || []).length) {
+      return [fallback];
+    }
+    return receiving.parent_ids.map((parentId) => {
+      const oneCourse = {
+        ...r,
+        receiving: { ...receiving, kind: 'course', parent_id: parentId, parent_ids: undefined },
+      };
+      return firstCategory(categoryOf?.({ receiver: oneCourse, section: s, group: g }))
+        || fallback;
+    });
+  };
+  const observationsForReceiver = (r, g, s, covered = false) => (
+    receiverCategories(r, g, s).map((category) => ({
+      category,
+      covered: Boolean(covered),
+      lowerDivision: resolveSectionTier(g, s) !== 'nontransferable',
+    }))
+  );
+  const genericObservations = (g, s, total, covered) => Array.from(
+    { length: Math.max(0, Number(total) || 0) },
+    () => ({
+      category: sectionCategory(g, s),
+      covered: Boolean(covered),
+      lowerDivision: resolveSectionTier(g, s) !== 'nontransferable',
+    }),
+  );
+  // A choose-N section can be satisfied by an articulated alternative other
+  // than the cheapest alternative that sets its course-count denominator.
+  // Allocate those covered observations to matching denominator categories
+  // first, then to any remaining denominator observation. This preserves the
+  // source figure's optimistic choose-N coverage while guaranteeing every
+  // category's numerator stays within its own denominator.
+  const applyCoveredCategories = (denominator, covered) => {
+    const out = denominator.map((observation) => ({ ...observation, covered: false }));
+    for (const observation of covered.slice(0, out.length)) {
+      let index = out.findIndex((candidate) => (
+        !candidate.covered && candidate.category === observation.category
+      ));
+      if (index < 0) index = out.findIndex((candidate) => !candidate.covered);
+      if (index < 0) break;
+      out[index].covered = true;
+    }
+    return out;
+  };
   const blockSatisfied = (declared) => {
     const names = (Array.isArray(declared) ? declared : [declared])
       .map(normalizeRequirementName)
@@ -184,7 +251,8 @@ function namedRequirementCourses(requirementGroups, { articulated = null, articu
     const ask = s.section_advisement;
     const groupBlock = evaluated && blockSatisfied(g.assist_requirement);
     const recvCovered = (r) => groupBlock
-      || (evaluated && (receiverArticulated(r.receiving, articulated)
+      || (evaluated && (s.assume_satisfiable || r.assume_satisfiable
+        || receiverArticulated(r.receiving, articulated)
         || (r.assist_requirement && blockSatisfied(r.assist_requirement))));
 
     if (ask != null && Number(ask) < recvs.length) {
@@ -193,17 +261,28 @@ function namedRequirementCourses(requirementGroups, { articulated = null, articu
       // exceed the priced ask.
       const n = Math.max(0, Number(ask));
       const cheapestFirst = [...recvs].sort((a, b) => expansion(a) - expansion(b));
-      const total = cheapestFirst.slice(0, n).reduce((sum, r) => sum + expansion(r), 0);
-      const covered = cheapestFirst.filter(recvCovered).slice(0, n)
-        .reduce((sum, r) => sum + expansion(r), 0);
-      return { total, covered: Math.min(total, covered) };
+      const denominator = cheapestFirst.slice(0, n)
+        .flatMap((r) => observationsForReceiver(r, g, s));
+      const coveredCandidates = cheapestFirst.filter(recvCovered).slice(0, n)
+        .flatMap((r) => observationsForReceiver(r, g, s, true));
+      const observations = applyCoveredCategories(denominator, coveredCandidates);
+      return {
+        total: observations.length,
+        covered: observations.filter((observation) => observation.covered).length,
+        observations,
+      };
     }
     const enumerated = recvs.length > 0
       && recvs.every((r) => ['course', 'series'].includes(r.receiving?.kind));
     if (enumerated) {
-      const total = recvs.reduce((sum, r) => sum + expansion(r), 0);
-      const covered = recvs.reduce((sum, r) => sum + (recvCovered(r) ? expansion(r) : 0), 0);
-      return { total, covered: Math.min(total, covered) };
+      const observations = recvs.flatMap((r) => (
+        observationsForReceiver(r, g, s, recvCovered(r))
+      ));
+      return {
+        total: observations.length,
+        covered: observations.filter((observation) => observation.covered).length,
+        observations,
+      };
     }
     // Unenumerated blocks (requirement/category receivers): a stated count,
     // else the documented four-unit assumption over an authored unit total,
@@ -214,7 +293,7 @@ function namedRequirementCourses(requirementGroups, { articulated = null, articu
         ? Math.max(1, Math.round(Number(s.unit_advisement) / ASSUMED_UNITS_PER_COURSE))
         : (recvs.length || 1);
     const covered = groupBlock || recvs.some(recvCovered) ? total : 0;
-    return { total, covered };
+    return { total, covered, observations: genericObservations(g, s, total, covered > 0) };
   };
 
   // A general-education section under the GE-on variant: counted at the same
@@ -234,12 +313,36 @@ function namedRequirementCourses(requirementGroups, { articulated = null, articu
     return { total, covered };
   };
 
-  const out = { total: 0, covered: 0, with_ge: { total: 0, covered: 0 } };
+  const out = {
+    total: 0,
+    covered: 0,
+    with_ge: { total: 0, covered: 0 },
+    by_category: categoryOf ? {} : null,
+  };
+  const addObservations = (observations = []) => {
+    if (!out.by_category) return;
+    for (const observation of observations) {
+      if (!observation.category) continue;
+      if (!out.by_category[observation.category]) {
+        out.by_category[observation.category] = {
+          total: 0, covered: 0, lower_division_total: 0, lower_division_covered: 0,
+        };
+      }
+      const bucket = out.by_category[observation.category];
+      bucket.total += 1;
+      if (observation.covered) bucket.covered += 1;
+      if (observation.lowerDivision) {
+        bucket.lower_division_total += 1;
+        if (observation.covered) bucket.lower_division_covered += 1;
+      }
+    }
+  };
   const addBase = (c) => {
     out.total += c.total;
     out.covered += c.covered;
     out.with_ge.total += c.total;
     out.with_ge.covered += c.covered;
+    addObservations(c.observations);
   };
   const addGe = (c) => {
     out.with_ge.total += c.total;
@@ -248,9 +351,10 @@ function namedRequirementCourses(requirementGroups, { articulated = null, articu
 
   for (const g of requirementGroups || []) {
     if (namedPadding(g)) continue;
-    // Sections the source marks as work no community college can satisfy leave
-    // the population entirely — see `notCollegeArticulable`.
-    const sections = (g.sections || []).filter((s) => !notCollegeArticulable(s));
+    // Figure 1 includes every named non-GE degree/college requirement. A
+    // `cc_articulable: false` flag explains why a section is uncovered; it does
+    // not remove that course from the source paper's denominator.
+    const sections = g.sections || [];
     if (!sections.length) continue;
     const isOr = String(g.group_conjunction || '').toLowerCase() === 'or' && sections.length > 1;
     if (!isOr) {
@@ -332,11 +436,10 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
   let sectionBumps = null;
   // With `excludeGeFromCategories`, GE-titled and padding groups stay out of
   // the course-type rollup, matching the named-requirement population. The
-  // Massachusetts corpus opts in (config `courseTypes.excludeGeGroups`): its
-  // Figure 2 compares major coursework against the paper's matrix, which
-  // carries no GE columns. California does NOT opt in — its verified course-
-  // type figure counts GE blocks in Non-STEM, and that published semantic
-  // stays untouched. The same predicates the named lens uses decide.
+  // Massachusetts and the California Figure-2 ports opt in (config
+  // `courseTypes.excludeGeGroups`): the source figure compares degree and
+  // college coursework with general education excluded. The same predicates
+  // the named-requirement lens uses decide which blocks stay out.
   let bumpExcluded = false;
   const bump = (category, total, covered) => {
     if (!byCategory || bumpExcluded) return;
@@ -588,10 +691,22 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     return { label: g.title, tier, total: gTotal, covered: evaluated ? gCovered : null, lines };
   });
 
+  const named = namedRequirementCourses(requirementGroups, {
+    articulated, articulatedRequirements, categoryOf,
+  });
   return {
     total,
     covered: evaluated ? covered : null,
-    ...(byCategory ? { by_category: byCategory, by_category_multi: byCategoryMulti } : {}),
+    ...(byCategory ? {
+      // When a corpus asks to exclude GE for the source-paper comparison,
+      // Figure 2 must partition the exact required-course population behind
+      // Figure 1. The legacy slot rollup remains the source-neutral behavior
+      // for callers that do not request that comparison lens, while the
+      // multi-category diagnostic stays separate because it intentionally
+      // allows one series to touch more than one category.
+      by_category: excludeGeFromCategories ? named.by_category : byCategory,
+      by_category_multi: byCategoryMulti,
+    } : {}),
     by_tier: evaluated ? byTier : Object.fromEntries(TIERS.map((t) => [t, { total: byTier[t].total, covered: null }])),
     units: {
       total: +unitsTotal.toFixed(1),
@@ -603,16 +718,13 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     // The Massachusetts paper's population, counted the paper's way: binary
     // per required COURSE, at every level — GE excluded (their published
     // measure) and GE included (our extension for GE-heavy majors).
-    named_requirements: (() => {
-      const c = namedRequirementCourses(requirementGroups, { articulated, articulatedRequirements });
-      return {
-        courses: { total: c.total, covered: evaluated ? c.covered : null },
-        courses_with_ge: {
-          total: c.with_ge.total,
-          covered: evaluated ? c.with_ge.covered : null,
-        },
-      };
-    })(),
+    named_requirements: {
+      courses: { total: named.total, covered: evaluated ? named.covered : null },
+      courses_with_ge: {
+        total: named.with_ge.total,
+        covered: evaluated ? named.with_ge.covered : null,
+      },
+    },
     groups,
   };
 }
@@ -828,5 +940,4 @@ module.exports = {
   // rules the figures use — the display can then never contradict the math.
   namedPadding,
   namedGeFlavored,
-  notCollegeArticulable,
 };

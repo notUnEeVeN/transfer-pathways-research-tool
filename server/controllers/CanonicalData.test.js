@@ -492,6 +492,29 @@ describe('as_degree kind', () => {
     expect(stored.verification.verified_by_label).toBeNull();
   });
 
+  it('retires the affected Figure 6 caches when an associate-degree record changes', async () => {
+    await seedForDegree();
+    await db.collection('analysis_cache').insertMany([
+      { _id: 'pathway-complexity:v3:cs:local_as:verified', kind: 'pathway-complexity', major_slug: 'cs', degree_type: 'local_as' },
+      { _id: 'pathway-complexity:v3:cs:local_as:all', kind: 'pathway-complexity', major_slug: 'cs', degree_type: 'local_as' },
+      { _id: 'pathway-complexity:v3:cs:ast:verified', kind: 'pathway-complexity', major_slug: 'cs', degree_type: 'ast' },
+      { _id: 'pathway-complexity:v3:bio:local_as:verified', kind: 'pathway-complexity', major_slug: 'bio', degree_type: 'local_as' },
+      { _id: 'another-analysis', kind: 'coverage' },
+    ]);
+
+    await run(putRequirement, request({
+      params: { kind: 'as_degree' },
+      body: { ...degreeDoc(), verification: { verified: true } },
+    }));
+
+    expect((await db.collection('analysis_cache').find({}).sort({ _id: 1 }).toArray())
+      .map((row) => row._id)).toEqual([
+      'another-analysis',
+      'pathway-complexity:v3:bio:local_as:verified',
+      'pathway-complexity:v3:cs:ast:verified',
+    ]);
+  });
+
   it('logs a hand-edit revision with the field diff, but nothing for a no-op save', async () => {
     await seedForDegree();
     // First save creates the record (imports normally do this; here it seeds).

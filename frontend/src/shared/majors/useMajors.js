@@ -32,6 +32,7 @@ export const CS_FALLBACK = [{
   // already the MA figure's four columns, and there is no extended variant.
   courseTypes: {
     module: 'cs',
+    excludeGeGroups: true,
     axes: {
       faithful: [
         { key: 'computing', label: 'Computing', categories: ['computing'] },
@@ -40,6 +41,12 @@ export const CS_FALLBACK = [{
         { key: 'non_stem', label: 'Non-STEM', categories: ['non_stem'] },
       ],
     },
+  },
+  degreeTemplateEvidence: {
+    total: 9,
+    explicitlyVerified: 9,
+    catalogYears: 'not recorded on the legacy CS templates',
+    staleResearchStatus: 0,
   },
   capabilities: {
     assistAgreements: true,
@@ -62,7 +69,11 @@ export function useMajors({ state } = {}) {
     // the audited CS version) until the browser cache expires.
     // v6 adds the unitCoverage capability: a stale payload without it would
     // re-open the California unit lenses on the Massachusetts heatmap.
-    queryKey: ['majors', 'v6', state ?? 'ca', user?.uid],
+    // v7 carries the course-type GE-denominator flag into comparison
+    // contracts; an older cached major would falsely describe the same server
+    // results as GE-inclusive and either refuse or mislabel Figure 2.
+    // v8 carries the audited bachelor-template verification/catalog receipt.
+    queryKey: ['majors', 'v8', state ?? 'ca', user?.uid],
     queryFn: () => apiClient
       .get('/majors', { params: state ? { state } : {} })
       .then((r) => r.data),

@@ -1,98 +1,125 @@
 # Massachusetts Figure 2 — course-type coverage, on California data
 
 > Current data · 9 UC computer science degree templates × 115 community
-> colleges · July 22, 2026
+> colleges · final-PDF baseline transcribed August 18, 2026
 
 ## The short version
 
-The MA paper's Figure 2 asks: of the courses a computer science bachelor's
-degree requires, **what share can be taken at a community college — and does
-the answer depend on what kind of course it is?** Their answer was that it
-does, sharply: 22% of required *computing* courses had an equivalent, against
-60% math, 93% science and 76% non-STEM. Transfer credit comes from everything
-except computing.
+The MA paper's Figure 2 asks: of the degree and college courses a computer
+science bachelor's requires, **what share has a community-college equivalent,
+and does the answer depend on course type?** General education is excluded.
+The paper reports 22% computing, 60% math, 93% science and 76% non-STEM.
 
-California says the same thing, more starkly. The figure has a **Requirements
-counted** toggle, because the answer depends on whether coursework a community
-college cannot legally teach counts against it:
+The website now opens the Massachusetts pane on a frozen transcription of the
+final PDF itself: 11 computing dots, 11 math dots, 11 science dots and only 5
+non-STEM dots. The corrected raster transcription implies 21.6%, 60.3%, 92.8%
+and 76.2%;
+the black-diamond/prose results are 22%, 60%, 93% and 76%. The plot does not
+label dots by university, so the site preserves them as anonymous observations
+and never invents campus identities.
 
-| Course type | Whole degree | Lower-division only (default) | MA paper |
+One Computing point (22) and one Science point (93) are fully/effectively
+hidden by their black mean diamonds and are inferred from the archived
+observation plus the published mean; the Math point near 63 is partly
+occluded. The final Computing and Math dot sets differ from the archived
+whole-degree arrays. The source selector therefore describes the default as a
+nearest-whole-point final-raster transcription with those explicit limits, not
+as final course-level data that the authors deposited.
+
+California uses the same whole-degree, GE-excluded denominator by default:
+
+| Course type | CA whole degree (default) | CA lower division | MA final PDF |
 | --- | ---: | ---: | ---: |
-| Computing | 11.4% | **47.4%** | 22% |
-| Math | 79.9% | **83.9%** | 60% |
-| Science | 87.4% | **91.1%** | 93% |
-| Non-STEM | 78.2% | **100%** | 76% |
+| Own discipline / Computing | 11.5% (n=9) | 45.7% (n=9) | 22% (n=11) |
+| Math | 78.7% (n=9) | 83.0% (n=9) | 60% (n=11) |
+| Supporting science | 63.3% (n=7) | 77.9% (n=6) | 93% (n=11) |
+| Non-STEM | 0% (n=4) | no observations | 76% (n=5) |
 
-The figure opens on the lower-division view, where the question is articulation
-quality. Switch to the whole degree for the MA paper's question: how much of the
-bachelor's can be finished before transferring. Counting
-upper-division work suppresses the computing column for a reason that has
-nothing to do with articulation — a computer science degree's upper division is
-computer science, so the same pattern would appear in any state, and a
-mathematics degree would show it in math. Restricted to lower-division
-coursework, where all four types can be taught at a community college,
-computing still articulates at roughly half the rate of math. That gap is the
-finding; the whole-degree view provides the broader graduation context.
+The strongest comparable result is the discipline contrast: California's
+whole-degree computing share is about half Massachusetts's, while math is
+higher and supporting science is lower. The science mean has only seven
+campuses and includes genuine 0% observations at Santa Barbara and Santa Cruz,
+so it should not be summarized as universally high. The lower-division
+sensitivity shows that some of the computing gap is structural upper-division
+work, but not all of it. The Non-STEM result needs its visible sample size:
+after GE is correctly
+excluded, only four UC CS templates have a non-GE Non-STEM course requirement,
+and those requirements are university-only in the current model. It must not
+be pooled with the other three categories into one state-wide mean.
 
-**This is a recreation, not a port.** The MA authors' code and data are not
-available to us, so there is no paper-baseline view to switch to and no
-difference view — one state only. The two columns above are not like-for-like
-(see *Where this differs from theirs*), so read the shape, not the gap.
+The archived Massachusetts requirement reconstruction remains an explicit
+source option for reproducibility. It is older than the final PDF and is not
+labeled a correction when its values differ.
+
+## All three California majors
+
+Whole-degree, GE-excluded campus-equal means for tomorrow's comparison:
+
+| Major | Own discipline | Quantitative | Supporting discipline | Non-STEM |
+| --- | ---: | ---: | ---: | ---: |
+| Computer Science | Computing 11.5% (n=9) | Math 78.7% (n=9) | Science 63.3% (n=7) | 0% (n=4) |
+| Biology | Biology 42.7% (n=9) | Math 75.3% (n=9) | Chemistry & Physics 88.4% (n=9) | 0% (n=9) |
+| Economics | Economics 15.1% (n=9) | Math 64.5% (n=9) | Other Social Science 100% (n=2) | 0% (n=5) |
+
+These are comparable semantic roles, not one shared literal taxonomy. The
+supporting-discipline contrast is especially sample-sensitive: Economics has
+only two campus observations in that role, while CS has seven and Biology nine.
+The second Economics observation is intentional: UCI's two additional Social
+Sciences courses are listed under the [School Requirements](https://catalogue.uci.edu/schoolofsocialsciences/#schoolrequirementstext),
+separately from General Education, so the paper's degree-and-college-course
+population includes them even though the unit model uses a generic GE-area
+carrier for the open course choice.
 
 ## What one point is
 
-One point per UC campus per course type: the share of that campus's degree
-requirements of that type that have a community college equivalent, averaged
-over all 115 community colleges. The default lower-division scope keeps only
-the transferable and breadth tiers, dropping upper-division and residency work
-that is never satisfiable at a community college. The whole-degree scope counts
-every requirement in the template. The black diamond is the mean of the points
-in the column — an average of campuses, not of the 1,035 campus–college pairs,
-matching the MA figure's per-four-year points.
+One point per university campus per course type: the share of that campus's
+non-GE degree and college requirements of that type that have a community-
+college equivalent, averaged over community colleges. The whole-degree scope
+is the paper comparison. The lower-division sensitivity drops upper-division
+and residency work. The black diamond is the mean of campus points, not of all
+campus–college pairs.
 
 A campus that requires nothing of a type contributes no point — the mechanism
-that leaves the MA figure's Non-STEM column shorter than its neighbours. In the
-current California data every campus requires all four types, so all four
-columns carry nine points.
+that leaves the final paper's Non-STEM column at n=5 and California's at n=4.
+Comparison receipts therefore report each semantic course-type role separately;
+pooling the unequal category populations would silently change their weights.
 
-## Per-campus values
+## California per-campus values
 
-| Campus | Comp slots | Math | Sci | Non-STEM | Comp % | Math % | Sci % | Non-STEM % |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| UC Berkeley | 5/10 | 5/5 | 3/3 | 5/12 | 9.2 | 78.6 | 94.8 | 41.7 |
-| UC Davis | 2/16 | 5/5 | 1/1 | 5/9 | 6.3 | 94.1 | 100.0 | 55.6 |
-| UC Irvine | 9/26 | 5/5 | 3/3 | 11/11 | 13.9 | 57.7 | 100.0 | 99.8 |
-| UC Merced | 4/14 | 6/6 | 7/7 | 5/7 | 19.6 | 77.8 | 78.8 | 71.4 |
-| UC Riverside | 4/20 | 7/9 | 5/6 | 7/10 | 14.5 | 73.0 | 81.6 | 70.0 |
-| UC San Diego | 6/24 | 5/6 | 1/1 | 12/14 | 7.1 | 76.4 | 100.0 | 85.7 |
-| UC Santa Barbara | 4/20 | 7/7 | 5/6 | 12/12 | 12.9 | 83.2 | 83.3 | 100.0 |
-| UC Santa Cruz | 4/15 | 6/6 | 2/2 | 12/13 | 11.7 | 85.4 | 50.0 | 92.3 |
-| UCLA | 5/26 | 7/7 | 5/5 | 7/8 | 7.7 | 92.7 | 98.4 | 87.5 |
+Whole-degree, GE-excluded percentages in the current computed corpus:
 
-Slots read *lower-division / whole degree*; percentages are the plotted points
-in the whole-degree scope. The default lower-division
-scope reads 18.4 (Berkeley), 50.4 (Davis), 40.2 (Irvine), 68.5 (Merced), 72.6
-(Riverside), 28.4 (San Diego), 64.3 (Santa Barbara), 43.9 (Santa Cruz) and 40.0
-(UCLA) for computing, with Non-STEM at 100% everywhere.
+| Campus | Computing | Math | Science | Non-STEM |
+| --- | ---: | ---: | ---: | ---: |
+| UC Berkeley | 9.2 | 78.6 | 97.7 | 0.0 |
+| UC Davis | 9.4 | 93.9 | 100.0 | 0.0 |
+| UC Irvine | 13.9 | 57.7 | — | — |
+| UC Merced | 19.6 | 77.8 | 75.2 | — |
+| UC Riverside | 14.5 | 69.7 | 72.4 | — |
+| UC San Diego | 7.1 | 76.4 | — | — |
+| UC Santa Barbara | 12.9 | 83.2 | 0.0 | — |
+| UC Santa Cruz | 9.2 | 78.7 | 0.0 | 0.0 |
+| UCLA | 8.1 | 92.7 | 98.0 | 0.0 |
 
-Two things stand out in the lower-division view. Berkeley requires ten
-computing slots but only five are lower-division, and just 18.4% of those
-articulate — the worst in the system. Riverside and Merced, whose lower-division
-computing requirement is four slots, clear 68%.
+An em dash means the campus has no requirement in that category and therefore
+contributes no point; it is not a zero. In the lower-division sensitivity,
+computing ranges from 18.4% at Berkeley to 72.6% at Riverside. There are no
+lower-division, non-GE Non-STEM observations in these nine templates.
 
 ## Where the data comes from
 
-The denominator is the curated `kind: degree` requirement template for each
-campus — the same nine templates behind the MA Figure 1 port
-(`coverage-heatmap`), including general education and including the
-upper-division work that no community college can offer. Equivalency is the
-same evaluation that figure uses: ASSIST articulation for major preparation,
-the college's own IGETC-tagged catalog for GE areas, and American History &
-Institutions assumed satisfiable everywhere.
+The California denominator is the curated `kind: degree` requirement template
+for each campus — the same nine templates behind the MA Figure 1 port
+(`coverage-heatmap`) — with GE and free-elective padding groups excluded from
+the course-type tally. Whole-degree mode retains upper-division non-GE work,
+which no community college can offer. Equivalency comes from the same ASSIST
+evaluation used by Figure 1.
 
 The server returns the per-type split alongside the existing totals as
-`degree_requirements_by_course_type`, so the four types always re-sum to the
-slot totals the heatmap shows. Nothing is recomputed in the figure.
+`degree_requirements_by_course_type`. Series are expanded course by course;
+choose-N blocks contribute the number of courses actually requested. The typed
+totals re-sum exactly to the Figure 1 named, GE-excluded population; they
+intentionally do not re-sum to the broader graduation-plan requirement count.
+Nothing is recomputed in the figure.
 
 ## How a requirement gets its type
 
@@ -132,49 +159,44 @@ categorized always as math, despite some variation". Applied to the UC side
    | 8 | a science code, physics, chemistry, biology, life science, scientific, engineering, lab | Science |
 
 Rule 2 sits above rule 3 deliberately. UC Irvine stores its whole
-upper-division major as one 17-slot block whose title mentions that one of the
+upper-division major as one 17-course block whose title mentions that one of the
 courses (I&C SCI 139W) also satisfies upper-division writing; without that
 ordering the entire CS major would land in Non-STEM. The reverse case is
 preserved: UC Santa Cruz's "Disciplinary Communication (DC) — CSE 115A, CSE
 185E" is a communication requirement satisfied by a CS course, and stays
 Non-STEM.
 
-These free-text rules are the only judgment in the figure. Every campus's full
-slot-by-slot assignment can be printed with the reproduce command below.
+These free-text rules are the only judgment in the reconstructed figure. The
+archived observation-by-observation assignment remains available as a diagnostic, but it is
+not the source for the default final-paper view.
 
 ## Where this differs from theirs
 
-- **General education is in our denominator; it was not in theirs.** The MA
-  paper "included degree and college requirements but excluded general
-  education". Ours is the whole modeled degree, so our Non-STEM column measures
-  something broader — writing, breadth and unrestricted electives, essentially
-  all of which articulate, which is why that column goes to a flat 100% line
-  under the lower-division scope. Non-STEM here is a course type, not a GE
-  bucket.
+- **The default denominator now matches.** Both states use degree and college
+  course requirements, retain upper-division work, and exclude general
+  education. The lower-division control is a labeled sensitivity, not the
+  source-paper result.
 - **Their 22% computing is the whole-degree measure**, so it compares to our
-  11.4%, not to the 47.4% lower-division figure.
+  11.5%, not to the 45.7% lower-division sensitivity.
 - **Their unit of aggregation was 11 four-years × 15 community colleges; ours
   is 9 campuses × 115 colleges.** More colleges per point makes our points
   smoother, so the vertical spread within a column is narrower than theirs by
   construction.
 - **Their equivalency came from three hand-assembled sources** (the A2B
   database, four-year websites, and the MassTransfer equivalency database);
-  ours is ASSIST plus the college's own GE tagging.
+  ours is the curated UC requirement templates evaluated against ASSIST.
 - **UC computer science majors are large and heavily upper-division**, which is
   what the whole-degree scope mostly measures. UC Irvine is the clearest case:
-  26 computing slots, 17 of them one upper-division block that nothing at a
+  26 computing-course observations, 17 of them one upper-division block that nothing at a
   community college can satisfy.
+- **The final paper's university dots are anonymous.** The website can compare
+  category distributions, but cannot honestly pair an MA dot with a named UC
+  campus or with an archived MA campus row.
 
 ## Reproduce locally
 
-From `analysis/`:
-
-```bash
-.venv/bin/python -m visuals.ma_course_type_spread --output-dir results/previews
-```
-
-To print the slot-by-slot type assignment behind the figure, from `server/`:
-
-```bash
-node scripts/printCourseTypes.js
-```
+The live figure reads
+`/api/analysis/coverage?majorSlug=cs&requirements=degree&groupBy=college&pin=settings`.
+The server applies the same `courseTypes.excludeGeGroups` configuration as
+Figure 1's named-course denominator and returns the four typed buckets in
+`degree_requirements_by_course_type` on every row.

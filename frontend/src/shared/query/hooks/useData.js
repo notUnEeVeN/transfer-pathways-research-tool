@@ -34,8 +34,8 @@ export function useDataSummary() {
   })
 }
 
-// The Massachusetts paper's published per-pair values, imported as diff
-// targets for the reproduction (see server/data/ma/PROVENANCE.md).
+// Massachusetts final-PDF transcriptions and older repository baselines,
+// kept as distinct diff targets (see server/data/ma/PROVENANCE.md).
 export function useMaBaselines() {
   const { user } = useAuth()
   return useQuery({
@@ -212,10 +212,21 @@ export function useCoverage(params = {}, options = {}) {
 // to IndexedDB. degree_type: 'ast' | 'local_as' | 'local_other'.
 export function usePathwayComplexity(options = {}) {
   const { user } = useAuth()
-  const { enabled = true, majorSlug = 'cs', ...queryOptions } = options
+  const {
+    enabled = true, majorSlug = 'cs', degreeType = 'ast', verifiedOnly = true, ...queryOptions
+  } = options
   const scopedMajor = String(majorSlug || '').trim() || 'cs'
+  const scopedDegree = ['ast', 'local_as', 'local_other'].includes(degreeType) ? degreeType : 'ast'
+  const scopedVerification = verifiedOnly !== false
   return useQuery({
-    queryKey: [`${ANALYSIS_KEY_PREFIX}pathway-complexity`, 'v1', scopedMajor, user?.uid],
+    queryKey: [
+      `${ANALYSIS_KEY_PREFIX}pathway-complexity`,
+      'v3',
+      scopedMajor,
+      scopedDegree,
+      scopedVerification ? 'verified' : 'all',
+      user?.uid,
+    ],
     // Alone among the analyses this one is backed by a PERMANENT server-side
     // cache (analysis_cache in Mongo), so a plain refetch returns the same
     // stored document forever and an explicit Refresh would be a lie. A refetch
@@ -226,7 +237,12 @@ export function usePathwayComplexity(options = {}) {
       const forced = consumeForceRefresh(queryKey)
       try {
         const r = await apiClient.get('/analysis/pathway-complexity', {
-          params: { majorSlug: scopedMajor, ...(forced ? { refresh: 1 } : {}) },
+          params: {
+            majorSlug: scopedMajor,
+            degree_type: scopedDegree,
+            verified_only: scopedVerification,
+            ...(forced ? { refresh: 1 } : {}),
+          },
         })
         return r.data
       } catch (error) {
@@ -250,7 +266,7 @@ export function useTransferCreditRate(degreeType = 'local_as', options = {}) {
   return useQuery({
     // Keep the all-record and verified-only matrices in separate cache slots;
     // their rows, averages, and warning assumptions are deliberately distinct.
-    queryKey: ['analysis-transfer-credit-rate', 'v6', user?.uid, scopedMajor, type, sourceCohort],
+    queryKey: ['analysis-transfer-credit-rate', 'v7', user?.uid, scopedMajor, type, sourceCohort],
     queryFn: () =>
       apiClient
         .get('/analysis/transfer-credit-rate', {

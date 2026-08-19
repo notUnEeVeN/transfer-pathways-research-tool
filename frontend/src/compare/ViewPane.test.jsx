@@ -14,6 +14,8 @@ vi.mock('../visuals/VisualsPage', async () => {
       React_.useEffect(() => { report?.({ defaultRowMode: rows }) }, [rows, report])
       return React_.createElement('div', null,
         React_.createElement('span', { 'data-testid': 'showing' }, rows),
+        React_.createElement('span', { 'data-testid': 'color-scale' },
+          JSON.stringify(componentProps.comparisonColorScale || null)),
         React_.createElement('button', { onClick: () => setRows('county') }, 'pick county'))
     },
     itemDetails: (item) => ({ title: item.analysis.title }),
@@ -73,6 +75,25 @@ describe('ViewPane control seeding', () => {
       <ViewPane pane={paneWith('county')} major={MAJOR} analysis={ANALYSIS}
         onChange={() => {}} onViewChange={onViewChange} />
     )
+    expect(screen.getByTestId('showing')).toHaveTextContent('county')
+  })
+
+  it('forwards an ephemeral shared color scale without adding it to the mount identity', () => {
+    const firstScale = { min: 0, mid: 10, max: 20, comparisonShared: true }
+    const secondScale = { min: 0, mid: 25, max: 50, comparisonShared: true }
+    const { rerender } = render(
+      <ViewPane pane={paneWith('college')} major={MAJOR} analysis={ANALYSIS}
+        onChange={() => {}} comparisonColorScale={firstScale} />
+    )
+
+    expect(screen.getByTestId('color-scale')).toHaveTextContent(JSON.stringify(firstScale))
+    fireEvent.click(screen.getByText('pick county'))
+    rerender(
+      <ViewPane pane={paneWith('college')} major={MAJOR} analysis={ANALYSIS}
+        onChange={() => {}} comparisonColorScale={secondScale} />
+    )
+
+    expect(screen.getByTestId('color-scale')).toHaveTextContent(JSON.stringify(secondScale))
     expect(screen.getByTestId('showing')).toHaveTextContent('county')
   })
 })

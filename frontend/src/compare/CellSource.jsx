@@ -10,10 +10,10 @@ import { useEffect } from 'react'
  * changing a pane's figure remounts rather than reorders the hooks. This is
  * the same report-upward idiom `onMeasureChange` already uses.
  */
-export default function CellSource({ pane, analysis, onCells }) {
+export default function CellSource({ pane, analysis, major, onCells }) {
   const comparable = analysis?.comparable || null
   const query = comparable
-    ? comparable.useData(pane)
+    ? comparable.useData(pane, major)
     : { data: null, isLoading: false, isError: false }
 
   // Knobs are read by `comparable.cells`, so a pinned control changing has to
@@ -25,8 +25,8 @@ export default function CellSource({ pane, analysis, onCells }) {
     if (!comparable) return onCells(pane.id, { status: 'no_adapter', cells: [] })
     if (query.isLoading) return onCells(pane.id, { status: 'loading', cells: [] })
     if (query.isError) return onCells(pane.id, { status: 'error', cells: [] })
-    return onCells(pane.id, { status: 'ready', cells: comparable.cells(query.data, pane) || [] })
-  }, [comparable, query.data, query.isLoading, query.isError, pane.id, knobKey, onCells])
+    return onCells(pane.id, { status: 'ready', cells: comparable.cells(query.data, pane, major) || [] })
+  }, [comparable, query.data, query.isLoading, query.isError, pane.id, major, knobKey, onCells])
 
   return null
 }
