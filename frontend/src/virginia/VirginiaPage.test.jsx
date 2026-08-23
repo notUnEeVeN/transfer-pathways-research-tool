@@ -54,7 +54,7 @@ vi.mock('./useVirginia', () => ({
   useVaPrerequisiteGraph: () => state.prerequisites,
 }))
 
-import VirginiaPage from './VirginiaPage'
+import VirginiaPage, { VA_VISUALS_READY } from './VirginiaPage'
 
 const ok = (data) => ({ data, isLoading: false, error: null })
 
@@ -290,14 +290,21 @@ describe('VirginiaPage', () => {
     expect(screen.queryByText('Districts')).toBeNull()
   })
 
-  // The Virginia figures compute, but the corpus is unverified and its
-  // agreements are derived rather than published, so the tab is withheld
-  // (VA_VISUALS_READY in VirginiaPage.jsx). This test is the guard against
-  // re-exposing it by accident: it must fail the moment the tab returns.
-  it('does not expose the visuals tab while the corpus is unverified', () => {
+  // The Virginia corpus is unverified and its agreements are derived rather
+  // than published, so exposing the figures is a deliberate choice held in
+  // VA_VISUALS_READY. This is the guard against that changing by ACCIDENT: the
+  // tab, the figures, and the major fetch must all agree with the flag, so
+  // neither flipping the switch nor editing the tab list can drift alone.
+  it('exposes the visuals tab exactly when VA_VISUALS_READY says to', () => {
     render(<VirginiaPage />)
-    expect(screen.queryByRole('tab', { name: 'Visuals' })).toBeNull()
-    // No figure reaches the page, and nothing even asks for the VA major.
+    const tab = screen.queryByRole('tab', { name: 'Visuals' })
+    if (VA_VISUALS_READY) {
+      expect(tab).not.toBeNull()
+      return
+    }
+    expect(tab).toBeNull()
+    // Withheld means withheld: no figure reaches the page, and nothing even
+    // asks for the VA major.
     expect(screen.queryByTestId('thumb-coverage-heatmap')).toBeNull()
     expect(screen.queryByTestId('thumb-transfer-credit-rate')).toBeNull()
     expect(mockMajors).not.toHaveBeenCalledWith({ state: 'va' })

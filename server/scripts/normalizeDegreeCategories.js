@@ -81,12 +81,20 @@ async function figureFingerprint(db, majorSlug) {
 
 async function main() {
   const apply = process.argv.includes('--apply');
+  // The classifier is state-neutral — it reads the same degreeSlots predicates
+  // every figure reads — so the only state-specific part was this query. A
+  // ported corpus needs the same stamps for the same reason California did:
+  // the complexity figure keys its GE vertices on `category`, and an unstamped
+  // corpus silently reads as having none.
+  const stateArg = (process.argv.find((a) => a.startsWith('--state=')) || '').split('=')[1] || null;
+  const stateClause = stateArg ? { state: stateArg } : { state: { $exists: false } };
   const client = new MongoClient(process.env.MONGO_URI);
   await client.connect();
   const db = client.db(process.env.DB_NAME);
 
   const degrees = await db.collection('curated_requirements')
-    .find({ state: { $exists: false }, kind: 'degree' }).sort({ _id: 1 }).toArray();
+    .find({ ...stateClause, kind: 'degree' }).sort({ _id: 1 }).toArray();
+  console.log(`${stateArg || 'ca'}: ${degrees.length} bachelor templates`);
 
   const majors = [...new Set(degrees.map((d) => d.major_slug))];
   console.log('Baseline figures…');

@@ -751,7 +751,13 @@ export const ANALYSES = [
     stateTitles: { ma: 'Requirement articulation', va: 'Requirement articulation' },
     stateDescriptions: {
       ma: 'Shows the share of each university’s required courses — every level, GE excluded — with an articulating community-college course: the paper’s Figure 1 measure, published mean 38.2%.',
-      va: 'Shows the share of each four-year’s required courses — GE excluded — with an equivalent published by a community college. Requirements Virginia itself marks as work no community college can satisfy (senior residency, capstones) are outside the population, so the measure is comparable with California and Massachusetts.',
+      // The population is every level, GE excluded — the same denominator
+      // California and Massachusetts use, which is what makes the three
+      // comparable. An earlier version of this copy claimed the opposite:
+      // that requirements no community college can satisfy sit outside the
+      // population. They do not, in any of the three states — 35% of
+      // Virginia's denominator is exactly those requirements.
+      va: 'Shows the share of each four-year’s required courses — every level, GE excluded — with an equivalent published by a community college. Requirements no community college can satisfy (senior residency, capstones, upper-division work) remain in the denominator, as they do for California and Massachusetts, so the three measures stay comparable.',
     },
     provenance: 'ma',
     figureNo: 1,

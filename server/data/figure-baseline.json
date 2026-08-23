@@ -1,0 +1,99 @@
+{
+ "cs|figure1": {
+  "rows": 1035,
+  "pct_named_requirement_courses": 31.915,
+  "pct_named_requirement_courses_with_ge": 46.041
+ },
+ "cs|local_as": {
+  "rows": 405,
+  "computed": 378,
+  "excluded": 27,
+  "paper_equivalent_as_unit_utilization_pct": 57.266,
+  "full_degree_completion_pct": 32.438,
+  "lower_division_completion_pct": 54.335,
+  "modeled_hours_above_120": 21.077
+ },
+ "cs|ast": {
+  "rows": 621,
+  "computed": 621,
+  "excluded": 0,
+  "paper_equivalent_as_unit_utilization_pct": 65.414,
+  "full_degree_completion_pct": 36.543,
+  "lower_division_completion_pct": 61.236,
+  "modeled_hours_above_120": 16.164
+ },
+ "bio|figure1": {
+  "rows": 1035,
+  "pct_named_requirement_courses": 51.179,
+  "pct_named_requirement_courses_with_ge": 60.682
+ },
+ "bio|local_as": {
+  "rows": 513,
+  "computed": 495,
+  "excluded": 18,
+  "paper_equivalent_as_unit_utilization_pct": 62.419,
+  "full_degree_completion_pct": 36.653,
+  "lower_division_completion_pct": 57.561,
+  "modeled_hours_above_120": 16.086
+ },
+ "bio|ast": {
+  "rows": 882,
+  "computed": 873,
+  "excluded": 9,
+  "paper_equivalent_as_unit_utilization_pct": 73.579,
+  "full_degree_completion_pct": 41.494,
+  "lower_division_completion_pct": 65.249,
+  "modeled_hours_above_120": 10.225
+ },
+ "econ|figure1": {
+  "rows": 1035,
+  "pct_named_requirement_courses": 23.729,
+  "pct_named_requirement_courses_with_ge": 48.084
+ },
+ "econ|ast": {
+  "rows": 873,
+  "computed": 855,
+  "excluded": 18,
+  "paper_equivalent_as_unit_utilization_pct": 60.688,
+  "full_degree_completion_pct": 49.987,
+  "lower_division_completion_pct": 78.847,
+  "modeled_hours_above_120": 0.015
+ },
+ "econ|local_other": {
+  "rows": 207,
+  "computed": 207,
+  "excluded": 0,
+  "paper_equivalent_as_unit_utilization_pct": 49.057,
+  "full_degree_completion_pct": 48.309,
+  "lower_division_completion_pct": 75.997,
+  "modeled_hours_above_120": 2.026
+ },
+ "ma-cs|figure1": {
+  "rows": 165,
+  "pct_named_requirement_courses": 38.205,
+  "pct_named_requirement_courses_with_ge": 63.69
+ },
+ "ma-cs|local_as": {
+  "rows": 165,
+  "computed": 61,
+  "excluded": 0,
+  "paper_equivalent_as_unit_utilization_pct": 68.569,
+  "full_degree_completion_pct": 36.144,
+  "lower_division_completion_pct": 40.943,
+  "modeled_hours_above_120": 21.131
+ },
+ "va-cs|figure1": {
+  "rows": 384,
+  "pct_named_requirement_courses": 19.81,
+  "pct_named_requirement_courses_with_ge": 38.036
+ },
+ "va-cs|local_as": {
+  "rows": 304,
+  "computed": 288,
+  "excluded": 16,
+  "paper_equivalent_as_unit_utilization_pct": 21.172,
+  "full_degree_completion_pct": 10.576,
+  "lower_division_completion_pct": 13.855,
+  "modeled_hours_above_120": 47.615
+ }
+}

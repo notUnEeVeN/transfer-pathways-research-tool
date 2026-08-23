@@ -356,13 +356,50 @@ function chooseCoursePlan(
   };
 }
 
+// A choose-by-units pool means the same thing whether its alternatives are
+// stored as one receiver carrying many options or as one receiver per
+// alternative, but `chooseUnitPlan` spends one option per receiver, so the
+// first encoding can only ever contribute a single course and a pool asking
+// for more units than its largest alternative can never close. California
+// documents already store each alternative as its own receiver; the Virginia
+// catalog importer stores them as options on a single receiver
+// (scripts/importVirginiaCatalogDegrees.js, the community-college branch),
+// which silently excluded 96 Virginia cells. Normalize here rather than in one
+// importer so the planner reads both encodings identically.
+//
+// Only unit pools are split. A choose-N section spends one option per receiver
+// by design — splitting it would let one stated slot draw several courses.
+function splitUnitPoolReceivers(section) {
+  if (section.unit_advisement == null) return section;
+  const receivers = section.receivers || [];
+  if (!receivers.some((receiver) => (receiver.options || []).length > 1
+    && (receiver.options_conjunction || 'or').toLowerCase() !== 'and')) {
+    return section;
+  }
+  const split = [];
+  for (const receiver of receivers) {
+    const options = receiver.options || [];
+    // An 'and' conjunction means every option is required together, so the
+    // receiver is one indivisible ask and must not be split.
+    if (options.length > 1 && (receiver.options_conjunction || 'or').toLowerCase() !== 'and') {
+      for (const option of options) split.push({ ...receiver, options: [option] });
+    } else {
+      split.push(receiver);
+    }
+  }
+  return { ...section, receivers: split };
+}
+
 function associateNamedSections(doc) {
   const sections = [];
   for (const group of doc.requirement_groups || []) {
     if (group.units_fill || group.ge_area) continue;
     for (const section of group.sections || []) {
       if (!(section.receivers || []).length) continue;
-      sections.push({ ...section, groupLabel: group.label_seen || group.title || 'Named requirements' });
+      sections.push({
+        ...splitUnitPoolReceivers(section),
+        groupLabel: group.label_seen || group.title || 'Named requirements',
+      });
     }
   }
   return sections;
@@ -1043,10 +1080,32 @@ async function transferCreditRateData(db, _auditDb, {
         rows.push(nullMetrics(base, 'excluded', warnings.join(' '), round1(plan.total)));
         continue;
       }
-      if (plan.total > asTotal + EPSILON) {
-        warnings.push(`The selected named plan is ${round1(plan.total)} ${collegeSystem} units, above the ${round1(asTotal)}-unit degree total.`);
+      // `total_units` is the degree's stated MINIMUM, not a cap, and courses
+      // are indivisible. A plan assembled from 3-, 4- and 5-unit courses often
+      // cannot land exactly on a 60-unit floor, so a small overshoot is
+      // ordinary — a real student finishes with 61 units in a 60-unit degree.
+      // What this guard is for is a plan that is wildly wrong: summing
+      // mutually exclusive tracks once modelled Berkeley MCB at 392 units
+      // against a stated 120.
+      //
+      // The honest threshold is therefore the largest single course the plan
+      // selected. Below that, the overshoot is arithmetic the student cannot
+      // avoid; at or above it, a whole course too many was chosen and the plan
+      // really is describing someone else's degree.
+      //
+      // Measured: this fires on 0 California and 0 Massachusetts cells at any
+      // tolerance — every current exclusion by this rule is Virginia, where
+      // the named sections cover the whole degree because Virginia enumerates
+      // its general education as named courses.
+      const largestSelectedCourse = Math.max(0, ...plan.ids.map((id) => unitsById.get(id) || 0));
+      const overshoot = plan.total - asTotal;
+      if (overshoot > largestSelectedCourse - EPSILON && overshoot > EPSILON) {
+        warnings.push(`The selected named plan is ${round1(plan.total)} ${collegeSystem} units, above the ${round1(asTotal)}-unit degree total by more than its largest single course (${round1(largestSelectedCourse)}).`);
         rows.push(nullMetrics(base, 'excluded', warnings.join(' '), round1(plan.total)));
         continue;
+      }
+      if (overshoot > EPSILON) {
+        warnings.push(`The selected named plan is ${round1(plan.total)} ${collegeSystem} units against a ${round1(asTotal)}-unit stated minimum; course sizes do not divide evenly into the floor.`);
       }
       if (groupAmbiguity) {
         rows.push(nullMetrics(base, 'excluded', warnings.join(' '), round1(plan.total)));

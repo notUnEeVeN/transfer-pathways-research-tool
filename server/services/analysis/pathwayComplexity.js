@@ -42,6 +42,7 @@
  * graphs do not necessarily have the same missing-edge pattern.
  */
 const { getMajor } = require('../../config/majors');
+const { stateClause } = require('../../config/stateScope');
 const { resolveSectionTier } = require('../degreeSlots');
 const { projectPrereqEdges, projectPrereqGroups } = require('../prereqGraph');
 const { curricularComplexity } = require('./curricularComplexity');
@@ -367,13 +368,18 @@ async function pathwayComplexityData(
 ) {
   const major = getMajor(majorSlug);
   if (!major) throw new Error(`unknown major: ${majorSlug}`);
+  // Every enumerating query below was pinned to the unstamped California
+  // corpus, so a ported major passed the capability gate and then matched no
+  // documents at all — the figure returned HTTP 200 with zero rows rather than
+  // failing. Scope to the major's own state through the shared clause.
+  const scope = stateClause(major.state);
 
   const [degrees, asDocs, ccPrereqs, ccPrerequisiteGroups, ccCourses] = await Promise.all([
     db.collection('curated_requirements')
-      .find({ state: { $exists: false }, kind: 'degree', major_slug: majorSlug }).sort({ _id: 1 }).toArray(),
+      .find({ ...scope, kind: 'degree', major_slug: majorSlug }).sort({ _id: 1 }).toArray(),
     db.collection('curated_requirements')
       .find({
-        state: { $exists: false },
+        ...scope,
         kind: 'as_degree',
         status: 'found',
         major_slug: majorSlug,
@@ -383,11 +389,11 @@ async function pathwayComplexityData(
     projectPrereqEdges(db),
     projectPrereqGroups(db),
     db.collection('assist_courses')
-      .find({ state: { $exists: false }, side: 'sending' }, { projection: { course_id: 1, units: 1, min_units: 1 } }).toArray(),
+      .find({ ...scope, side: 'sending' }, { projection: { course_id: 1, units: 1, min_units: 1 } }).toArray(),
   ]);
   const ccUnits = new Map(ccCourses.map((c) => [c.course_id, Number(c.min_units ?? c.units) || null]));
   const collegeRows = await db.collection('assist_institutions')
-    .find({ state: { $exists: false }, kind: 'community_college' }).project({ source_id: 1, name: 1 }).toArray();
+    .find({ ...scope, kind: 'community_college' }).project({ source_id: 1, name: 1 }).toArray();
   const collegeName = new Map(collegeRows.map((r) => [Number(r.source_id), r.name]));
 
   const rows = [];
@@ -411,7 +417,7 @@ async function pathwayComplexityData(
         .find({ institution_id: `uc:${degree.school_id}`, parent_id: { $exists: true, $ne: null } })
         .project({ parent_id: 1, prefix: 1, number: 1 }).toArray(),
       db.collection('assist_agreements')
-        .find({ state: { $exists: false }, uc_school_id: degree.school_id, major: { $in: programs } }).toArray(),
+        .find({ ...scope, uc_school_id: degree.school_id, major: { $in: programs } }).toArray(),
     ]);
     const ucCatalog = new Map();
     const ucPrereqsById = new Map();

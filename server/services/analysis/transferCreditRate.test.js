@@ -461,6 +461,127 @@ describe('transferCreditRateData v4', () => {
     expect(cell.extra_units).toBe(54);
   });
 
+  it('closes a unit pool whose alternatives are stored as options on one receiver', async () => {
+    // The Virginia catalog importer stores a pool's alternatives as options on
+    // a single receiver, while California stores one receiver per alternative.
+    // Both describe the same "select 6 units from the following" pool, so both
+    // must close it. Before the unit-pool split, this shape could only ever
+    // spend one option and the whole cell was excluded.
+    await seedTemplate({
+      schoolId: 22,
+      groups: [namedGroup([{
+        section_advisement: 2,
+        receivers: [ucCourse(2201), ucCourse(2202)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 220,
+      groups: [asNamedGroup([{
+        section_advisement: null,
+        unit_advisement: 6,
+        receivers: [asReceiver(22, 23, 24, 25)],
+      }], 'Select 6 units from the following')],
+    });
+    await seedCourses([[22, 3], [23, 3], [24, 3], [25, 3]]);
+    await seedAgreement({
+      schoolId: 22,
+      collegeId: 220,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 2201 }, [22]),
+        articulated({ kind: 'course', parent_id: 2202 }, [23]),
+      ],
+    });
+
+    const cell = await cellFor({ collegeId: 220, schoolId: 22 });
+    expect(cell.method_status).not.toBe('excluded');
+    expect(cell.named_units).toBe(6);
+    expect(cell.named_transferred_units).toBe(6);
+  });
+
+  it('allows an overshoot smaller than one course, and rejects one larger', async () => {
+    // `total_units` is a stated minimum and courses are indivisible, so a plan
+    // that lands a little above the floor is ordinary. A plan a whole course
+    // or more above it is describing a different degree.
+    await seedTemplate({
+      schoolId: 24,
+      groups: [namedGroup([{ section_advisement: 1, receivers: [ucCourse(2401)] }])],
+    });
+    await seedAsDegree({
+      collegeId: 240,
+      totalUnits: 10,
+      groups: [asNamedGroup([{
+        section_advisement: null, unit_advisement: 11, receivers: [asReceiver(41), asReceiver(42)],
+      }], 'Select 11 units')],
+    });
+    await seedCourses([[41, 6], [42, 6]]);
+    await seedAgreement({
+      schoolId: 24,
+      collegeId: 240,
+      receivers: [articulated({ kind: 'course', parent_id: 2401 }, [41])],
+    });
+
+    // 12 units selected against a 10-unit degree: 2 over, and the largest
+    // course is 6, so the overshoot is unavoidable granularity.
+    const ok = await cellFor({ collegeId: 240, schoolId: 24 });
+    expect(ok.method_status).not.toBe('excluded');
+    expect(ok.named_units).toBe(12);
+    expect(ok.method_warning).toMatch(/do not divide evenly/);
+
+    // Same shape, but the courses are small enough that 2 units over is a
+    // whole extra course.
+    await seedTemplate({
+      schoolId: 25,
+      groups: [namedGroup([{ section_advisement: 1, receivers: [ucCourse(2501)] }])],
+    });
+    await seedAsDegree({
+      collegeId: 250,
+      totalUnits: 10,
+      groups: [asNamedGroup([{
+        section_advisement: null, unit_advisement: 11, receivers: [
+          asReceiver(51), asReceiver(52), asReceiver(53), asReceiver(54), asReceiver(55), asReceiver(56),
+        ],
+      }], 'Select 11 units')],
+    });
+    await seedCourses([[51, 2], [52, 2], [53, 2], [54, 2], [55, 2], [56, 2]]);
+    await seedAgreement({
+      schoolId: 25,
+      collegeId: 250,
+      receivers: [articulated({ kind: 'course', parent_id: 2501 }, [51])],
+    });
+
+    const rejected = await cellFor({ collegeId: 250, schoolId: 25 });
+    expect(rejected.method_status).toBe('excluded');
+    expect(rejected.method_warning).toMatch(/larger than its largest single course|more than its largest single course/);
+  });
+
+  it('does not split a choose-N section, whose receivers each spend one option', async () => {
+    // Splitting here would let a single stated slot draw several courses.
+    await seedTemplate({
+      schoolId: 23,
+      groups: [namedGroup([{
+        section_advisement: 1,
+        receivers: [ucCourse(2301)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 230,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        unit_advisement: null,
+        receivers: [asReceiver(32, 33, 34)],
+      }], 'Select one of the following')],
+    });
+    await seedCourses([[32, 3], [33, 3], [34, 3]]);
+    await seedAgreement({
+      schoolId: 23,
+      collegeId: 230,
+      receivers: [articulated({ kind: 'course', parent_id: 2301 }, [32])],
+    });
+
+    const cell = await cellFor({ collegeId: 230, schoolId: 23 });
+    expect(cell.named_units).toBe(3);
+  });
+
   it('uses only the agreement whose normalized major matches the UC degree template', async () => {
     await seedTemplate({
       schoolId: 3,

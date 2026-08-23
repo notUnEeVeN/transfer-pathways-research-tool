@@ -63,7 +63,17 @@ import VirginiaPrerequisitesTab, { VirginiaPrerequisiteView } from './VirginiaPr
 // have had. Until it has, the tab is withheld rather than shown with caveats,
 // because a figure on screen gets quoted. `VisualsTab` below is left intact:
 // restoring the tab is this one flag.
-const VA_VISUALS_READY = false
+//
+// 2026-08-21: turned ON for internal review after the schema-standardization
+// pass (Virginia now reads through the same functions California does, and its
+// Figure 3/4 cells went from 124 to 288 of 304). The reason above has NOT gone
+// away — the agreements are still derived and still unverified — so this is a
+// switch for looking at our own work, not a decision that the numbers are
+// publishable. Set it back to false before anything Virginia is shared.
+// Exported so the guard test asserts the tab and this switch agree, rather
+// than hard-coding one direction: flipping the flag alone can never silently
+// change what the page exposes.
+export const VA_VISUALS_READY = true
 
 const TABS = [
   { value: 'overview', label: 'Overview' },

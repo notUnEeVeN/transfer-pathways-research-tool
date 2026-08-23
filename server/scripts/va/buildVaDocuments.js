@@ -22,6 +22,21 @@
  *
  *   node scripts/va/buildVaDocuments.js            # report only
  *   node scripts/va/buildVaDocuments.js --apply    # write the projection
+ *
+ * IMPORTANT — this script REPLACES every `state: 'va'` document, so it undoes
+ * the schema normalization that puts Virginia on California's vocabulary.
+ * Rebuilding is a three-step pipeline, not one command:
+ *
+ *   node scripts/va/buildVaDocuments.js --apply
+ *   node scripts/normalizeVirginiaSchema.js --apply
+ *   node scripts/normalizeDegreeCategories.js --state=va --apply
+ *
+ * Skipping steps 2-3 silently drops Virginia's computed Figure 3/4/5 cells
+ * from 252 back to 124 and returns Figure 6 to zero rows, because the
+ * projection this script emits carries `receiving` objects, no
+ * `articulation_status`, `va:CODE` course keys, and no section categories.
+ * The durable fix is to emit the normalized shape here directly and retire
+ * scripts/normalizeVirginiaSchema.js.
  */
 const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
@@ -333,6 +348,11 @@ async function main() {
   await write('assist_courses', projection.courses, { state: 'va' });
   await write('assist_agreements', projection.agreements, { state: 'va' });
   await write('curated_requirements', [...projection.degrees, ...projection.asDegrees], { state: 'va' });
+  // This projection is in Virginia's own vocabulary. Two more steps put it on
+  // California's, and the figures read the California one.
+  console.log('\nthis rebuild reset Virginia to its own schema — run BOTH of these now:');
+  console.log('  node scripts/normalizeVirginiaSchema.js --apply');
+  console.log('  node scripts/normalizeDegreeCategories.js --state=va --apply');
   await client.close();
 }
 
