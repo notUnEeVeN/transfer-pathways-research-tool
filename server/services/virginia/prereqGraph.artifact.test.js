@@ -58,20 +58,20 @@ async function seedGeneratedCorpus() {
 describe('generated Virginia prerequisite corpus integration', () => {
   beforeEach(seedGeneratedCorpus);
 
-  it('serves the complete 335-course direct ledger and its published closure', async () => {
+  it('serves the complete 260-course canonical direct ledger and its published closure', async () => {
     const data = await virginiaPrerequisiteGraphData(db);
     const direct = data.courses.filter((row) => row.in_scope);
 
     expect(data.stats).toMatchObject({
       corpus_available: true,
-      in_scope: 335,
-      examined: 335,
-      mapped: 81,
-      richard_bland_only: 69,
+      in_scope: 260,
+      examined: 260,
+      mapped: 55,
+      richard_bland_only: 76,
     });
-    expect(direct).toHaveLength(335);
-    expect(new Set(direct.map((row) => row.key)).size).toBe(335);
-    expect(data.courses).toHaveLength(359);
+    expect(direct).toHaveLength(260);
+    expect(new Set(direct.map((row) => row.key)).size).toBe(260);
+    expect(data.courses).toHaveLength(265);
     expect(data.missing).toEqual([]);
     expect(data.courses.every((row) => /^va:[A-Z]/.test(row.key))).toBe(true);
     expect(data.scope.course_scope_source).toBe('va_prerequisite_scope_artifacts');
@@ -80,14 +80,29 @@ describe('generated Virginia prerequisite corpus integration', () => {
     expect(mth263.paths.map((path) => path.all_of.map((condition) => condition.course_key)))
       .toEqual([['va:MTH167'], ['va:MTH161', 'va:MTH162']]);
 
-    for (const code of ['BIO141', 'EGR121']) {
-      expect(data.rules).toContainEqual(expect.objectContaining({
-        dependent_course_key: `va:${code}`,
-        provisional: true,
-        satisfiable_in_projection: null,
-      }));
-      expect(data.edges.some((edge) => edge.to === `va:${code}`)).toBe(false);
-    }
+    expect(data.rules).toContainEqual(expect.objectContaining({
+      dependent_course_key: 'va:BIO141',
+      kind: 'corequisite',
+      source_label: 'Corequisite or Prerequisite',
+      timing: 'corequisite_or_prerequisite',
+      provisional: false,
+      satisfiable_in_projection: null,
+    }));
+    expect(data.rules).toContainEqual(expect.objectContaining({
+      dependent_course_key: 'va:EGR121',
+      kind: 'prerequisite',
+      semicolon_topology: 'conjunctive_groups_then_whole_clause_alternatives',
+      provisional: false,
+      satisfiable_in_projection: null,
+    }));
+    expect(data.edges.filter((edge) => edge.to === 'va:EGR121').map((edge) => edge.from).sort())
+      .toEqual(['va:MTH162', 'va:MTH167']);
+    expect(data.rules.find((row) => row.dependent_course_key === 'va:CSC201')?.paths
+      .map((path) => path.all_of.map((condition) => condition.course_key)))
+      .toEqual([['va:CSC200'], ['va:EGR126']]);
+    expect(data.rules.find((row) => row.dependent_course_key === 'va:CSC202')?.paths
+      .map((path) => path.all_of.map((condition) => condition.course_key)))
+      .toEqual([['va:CSC201']]);
   });
 
   it('projects Richard Bland as local mapping evidence without VCCS policy', async () => {
@@ -100,8 +115,8 @@ describe('generated Virginia prerequisite corpus integration', () => {
       disclaimer: expect.stringMatching(/no published institution-local prerequisite policy/i),
     });
     expect(data.scope).toMatchObject({ authority: 'not_vccs', coverage: 'not_vccs' });
-    expect(direct).toHaveLength(75);
-    expect(data.stats.institution_local).toBe(75);
+    expect(direct).toHaveLength(76);
+    expect(data.stats.institution_local).toBe(76);
     expect(data.rules).toEqual([]);
     expect(data.edges).toEqual([]);
     expect(direct.find((row) => row.key === 'va:SOC201')).toMatchObject({
@@ -113,7 +128,7 @@ describe('generated Virginia prerequisite corpus integration', () => {
       title: 'Social History of Christianity',
       concept: null,
       scope_kind: 'institution_local',
-      source: 'institution_local_override',
+      source: 'va_course_requisites',
     });
   });
 });

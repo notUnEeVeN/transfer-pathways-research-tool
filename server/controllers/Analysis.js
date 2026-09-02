@@ -7,7 +7,7 @@
  * Query params shared by all endpoints:
  *   scope=all|uc|csu           (default all)
  *   majorSlug=<configured slug> (exact campus/program pairs; preferred)
- *   majorContains=<substring>  (legacy explicit free-text search only)
+ *   majorContains=<substring>  (legacy California-only free-text search)
  *   groupBy=college|district|county  (coverage only; default college)
  *   requirements=degree|assist|paper (coverage only; default assist)
  * choice-cost additionally takes schoolIds=1,2,3 — an ORDERED list.
@@ -22,7 +22,15 @@ const {
   majorScopeFromQuery, getMajor, listMajors, defaultMajor, programPairs,
 } = require('../config/majors');
 const { AS_DEGREE_SLOTS } = require('../config/asDegreeSlots');
+const { stateClause } = require('../config/stateScope');
 const { pathwayComplexityCached } = require('../services/analysis/pathwayComplexity');
+const {
+  unavailableVirginiaFigure6PrerequisiteReport,
+} = require('../services/virginia/pathwayComplexityPrerequisites');
+const {
+  VA_ANALYSIS_PUBLICATION_CONTRACT,
+  virginiaAnalysisPublicationStatus,
+} = require('../services/virginia/analysisPublicationGate');
 
 // Committed Figure-6 reproductions for paper corpora (prerequisite edges come
 // from the papers' own recovered workbooks, not from a live prerequisite
@@ -64,7 +72,50 @@ async function cached(key, compute) {
   return rows;
 }
 
-// ?majorSlug=<slug> (preferred) or the legacy ?majorContains=<substring>.
+/**
+ * Major-scoped publication is independent of the globally released renderer
+ * id. Most majors need no extra receipt. A major that declares a publication
+ * gate cannot reach any shared analysis reader until the exact runtime receipt
+ * validates against the current database state.
+ *
+ * Returns true after writing the fail-closed response, false when the caller
+ * may continue.
+ */
+async function requireAnalysisPublication(req, res, majorOrSlug) {
+  const major = typeof majorOrSlug === 'string' ? getMajor(majorOrSlug) : majorOrSlug;
+  const gate = major?.publicationGate;
+  if (!gate) return false;
+  if (gate.contract !== VA_ANALYSIS_PUBLICATION_CONTRACT) {
+    res.status(503).json({
+      error: 'publication_receipt_required',
+      capability: 'analysisPublicationReceipt',
+      major: major?.slug || null,
+      publication_blocker: {
+        ready: false,
+        blocker: 'analysis_publication_gate_configuration_error',
+        contract: gate.contract || null,
+        issues: [{ code: 'unsupported_publication_gate_contract' }],
+      },
+    });
+    return true;
+  }
+  const status = await virginiaAnalysisPublicationStatus(req.app.locals.db);
+  req.analysisPublicationStatus = status;
+  if (status.ready === true && status.major_slug === major.slug
+      && status.contract === gate.contract) return false;
+  res.status(503).json({
+    error: 'publication_receipt_required',
+    capability: 'analysisPublicationReceipt',
+    major: major.slug,
+    detail: 'Virginia analysis is unavailable until one exact, current publication receipt passes every figure gate.',
+    publication_blocker: status,
+  });
+  return true;
+}
+
+// ?majorSlug=<slug> (preferred) or the legacy California-only
+// ?majorContains=<substring>. State corpora require a configured slug so a
+// free-text search cannot bypass a major-scoped publication gate.
 // The param is majorSlug, not major, because `major` already means the exact
 // ASSIST program name elsewhere in this API (requirement-comparison, the
 // visible-pairs shape). A known slug returns its exact campus/program mapping;
@@ -143,6 +194,7 @@ function makeEndpoint(name, computeFn, { needsSchoolIds = false, responseParams 
     const auditDb = req.app.locals.auditDb || db;
     const scope = resolveMajorScope(req.query);
     if (scope.error) return res.status(400).json({ error: scope.error, known: scope.known });
+    if (scope.slug && await requireAnalysisPublication(req, res, scope.slug)) return undefined;
     const params = await parseParams(req, scope);
     if (needsSchoolIds && !params.schoolIds.length) {
       return res.status(400).json({ error: 'schoolIds=<ordered,comma,list> required' });
@@ -192,6 +244,7 @@ exports.requirementComparison = asyncHandler(async (req, res) => {
   if (!configuredMajor) {
     return res.status(400).json({ error: 'major is not configured for this campus' });
   }
+  if (await requireAnalysisPublication(req, res, configuredMajor)) return undefined;
   const db = req.app.locals.db;
   const auditDb = req.app.locals.auditDb || db;
   const key = `requirement-comparison|${configuredMajor.slug}|${schoolId}|${communityCollegeId}|${major}`;
@@ -214,6 +267,16 @@ exports.pathwayComplexity = asyncHandler(async (req, res) => {
   const slug = String(req.query.majorSlug || '').trim() || defaultMajor().slug;
   const major = getMajor(slug);
   if (!major) return res.status(400).json({ error: `unknown major: ${slug}` });
+  if (await requireAnalysisPublication(req, res, major)) return undefined;
+  if (major.capabilities.pathwayComplexityPrerequisites === false) {
+    return res.status(400).json({
+      error: 'capability_required',
+      capability: 'pathwayComplexityPrerequisites',
+      major: major.slug,
+      detail: 'Figure 6 requires exact community-college and university-local prerequisite formulas.',
+      publication_blocker: unavailableVirginiaFigure6PrerequisiteReport(),
+    });
+  }
   // A paper corpus without prerequisite data serves its committed Figure-6
   // reproduction instead of a live assembly: our scorer run over the paper's
   // own recovered pathway workbooks, which carry the prerequisite/corequisite
@@ -258,11 +321,18 @@ exports.pathwayComplexity = asyncHandler(async (req, res) => {
   // Served from the analysis cache — the ~10s full-corpus assembly runs once
   // (or on ?refresh=1) and visibility scoping is applied to the cached rows,
   // mirroring the service's own degree-level check.
-  const { rows, computed_at, cached } = await pathwayComplexityCached(req.app.locals.db, {
+  const {
+    rows, computed_at, cached, model_version,
+  } = await pathwayComplexityCached(req.app.locals.db, {
     majorSlug: slug,
     degreeType,
     verifiedOnly,
     refresh: String(req.query.refresh || '') === '1',
+    // A Virginia cache key must include the exact selected-equivalency audit
+    // used by the current publication receipt. The publication guard above
+    // guarantees this value exists before a VA computation can start.
+    publicationConditionDigest:
+      req.analysisPublicationStatus?.transfer_equivalency_condition_report_sha256 || null,
   });
   const visible = pairs === null ? rows : rows.filter((row) => {
     const programs = major.programs?.[row.school_id] || [];
@@ -279,7 +349,7 @@ exports.pathwayComplexity = asyncHandler(async (req, res) => {
     warning: row.method_warning,
   }]));
   const sourceScope = {
-    state: { $exists: false },
+    ...stateClause(major.state),
     kind: 'as_degree',
     status: 'found',
     major_slug: slug,
@@ -299,7 +369,7 @@ exports.pathwayComplexity = asyncHandler(async (req, res) => {
     .map((degree) => Number(degree.community_college_id)).filter(Number.isFinite))];
   const omittedCollegeRows = omittedCollegeIds.length
     ? await req.app.locals.db.collection('assist_institutions').find({
-      state: { $exists: false },
+      ...stateClause(major.state),
       kind: 'community_college',
       source_id: { $in: omittedCollegeIds },
     }).project({ source_id: 1, name: 1 }).toArray()
@@ -312,7 +382,7 @@ exports.pathwayComplexity = asyncHandler(async (req, res) => {
     verified_only: verifiedOnly,
     computed_at,
     cached,
-    model_version: 'v3',
+    model_version,
     source_cohort: {
       degree_documents_total: sourceDegreeCount,
       degree_documents_verified: verifiedSourceDegreeCount,
@@ -339,6 +409,7 @@ exports.transferCreditRate = asyncHandler(async (req, res) => {
   const slug = String(req.query.majorSlug || '').trim() || defaultMajor().slug;
   const major = getMajor(slug);
   if (!major) return res.status(400).json({ error: `unknown major: ${slug}` });
+  if (await requireAnalysisPublication(req, res, major)) return undefined;
   if (!major.capabilities.asDegrees) {
     return res.status(400).json({
       error: 'capability_required',
@@ -450,6 +521,7 @@ exports.multiCampusPathways = asyncHandler(async (req, res) => {
   // config/majors.js is the definition, so it is what we validate against.
   const scopeMajor = getMajor(String(req.query.majorSlug || '').trim() || defaultMajor().slug);
   if (!scopeMajor) return res.status(400).json({ error: `unknown major: ${req.query.majorSlug}` });
+  if (await requireAnalysisPublication(req, res, scopeMajor)) return undefined;
   const available = new Set(Object.keys(scopeMajor.programs).map(Number));
   const unavailable = parsed.schoolIds.filter((schoolId) => !available.has(schoolId));
   if (unavailable.length) {

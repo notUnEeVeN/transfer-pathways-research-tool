@@ -13,6 +13,7 @@ const {
   canonicalCourseCode,
   courseIdFor,
   courseKeyFor,
+  courseIdentityForNamespace,
 } = require('./courseIdentity');
 
 const text = (value) => typeof value === 'string' && value.trim().length > 0;
@@ -38,7 +39,7 @@ function canonicalReceiverBase(receiver) {
   };
 }
 
-function compileCommunityCollegeReceiver(receiver, path, collect) {
+function compileCommunityCollegeReceiver(receiver, path, collect, identityFor) {
   if (receiver.kind !== 'cc_course') {
     throw new Error(`${path}: community-college receiver kind must be cc_course`);
   }
@@ -52,9 +53,10 @@ function compileCommunityCollegeReceiver(receiver, path, collect) {
     }
     const codes = raw.map((value, ci) => concreteCode(value, `${path}.options[${index}][${ci}]`));
     codes.forEach(collect);
+    const identities = codes.map(identityFor);
     return {
-      course_ids: codes.map(courseIdFor),
-      course_keys: codes.map(courseKeyFor),
+      course_ids: identities.map((identity) => identity.course_id),
+      course_keys: identities.map((identity) => identity.course_key),
       course_conjunction: 'and',
     };
   });
@@ -64,7 +66,10 @@ function compileCommunityCollegeReceiver(receiver, path, collect) {
     articulation_status: 'articulated',
     options,
     options_conjunction: 'or',
-    code_seen: options.map((option) => option.course_keys.map((key) => key.slice(3)).join(' + ')).join(' / '),
+    code_seen: receiver.options.map((route) => {
+      const raw = Array.isArray(route) ? route : route?.courses;
+      return raw.map(canonicalCourseCode).join(' + ');
+    }).join(' / '),
     human_review: receiver.human_review ?? null,
   };
 }
@@ -129,7 +134,9 @@ function compileUniversityReceiver(receiver, path, collect) {
   throw new Error(`${path}: unsupported university receiver kind ${receiver.kind || '<missing>'}`);
 }
 
-function compileSection(section, { cc, group, path, collect }) {
+function compileSection(section, {
+  cc, group, path, collect, identityFor,
+}) {
   if (!Number.isInteger(section.select) || section.select <= 0) {
     throw new Error(`${path}.select: positive integer required`);
   }
@@ -143,6 +150,7 @@ function compileSection(section, { cc, group, path, collect }) {
     receiver,
     `${path}.receivers[${index}]`,
     collect,
+    identityFor,
   ));
   if (!receivers.length) throw new Error(`${path}.receivers: non-empty array required`);
   return {
@@ -163,7 +171,7 @@ function compileSection(section, { cc, group, path, collect }) {
   };
 }
 
-function compileGroup(group, index, { cc, collect }) {
+function compileGroup(group, index, { cc, collect, identityFor }) {
   const path = `requirement_groups[${index}]`;
   if (!text(group.title)) throw new Error(`${path}.title: required`);
   if (!Array.isArray(group.source_refs) || group.source_refs.length === 0) {
@@ -206,7 +214,7 @@ function compileGroup(group, index, { cc, collect }) {
     throw new Error(`${path}.sections: non-empty array required`);
   }
   const sections = group.sections.map((section, si) => compileSection(section, {
-    cc, group, path: `${path}.sections[${si}]`, collect,
+    cc, group, path: `${path}.sections[${si}]`, collect, identityFor,
   }));
   return {
     title: group.title,
@@ -255,8 +263,14 @@ function collectOptionSetCodes(value, collect) {
 }
 
 /** Compile readable, cited composition JSON without mutating it. */
-function compileDegreeComposition(composition, { institutionLevel } = {}) {
+function compileDegreeComposition(composition, {
+  institutionLevel,
+  courseNamespace = composition?.course_namespace ?? null,
+} = {}) {
   const cc = ['community_college', 'community-college', 'cc'].includes(institutionLevel);
+  const identityFor = (code) => (cc
+    ? courseIdentityForNamespace(code, courseNamespace)
+    : { course_id: courseIdFor(code), course_key: courseKeyFor(code) });
   const codes = new Set();
   const titles = { ...(composition.course_titles || {}) };
   const collect = (raw, title) => {
@@ -268,7 +282,7 @@ function compileDegreeComposition(composition, { institutionLevel } = {}) {
     throw new Error('requirement_groups: non-empty array required');
   }
   const requirementGroups = composition.requirement_groups.map((group, index) => compileGroup(
-    group, index, { cc, collect },
+    group, index, { cc, collect, identityFor },
   ));
   Object.keys(titles).forEach((code) => {
     if (courseIdFor(code) != null) collect(code);

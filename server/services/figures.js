@@ -10,12 +10,14 @@
  * Storage (audit handle):
  *   published_figures static root:
  *     { _id: slug, title, caption, source_url, author_uid, author_label,
+ *       major_slug, state, analysis_publication?,
  *       publication_type: 'static', formats: { svg, png, pdf },
  *       controls?, variants?, default_variant?,
  *       created_at, updated_at }
  *
  *   published_figures interactive root:
  *     { _id: slug, title, caption, source_url, author_uid, author_label,
+ *       major_slug, state, analysis_publication?,
  *       publication_type: 'interactive',
  *       visual: { id, options }, created_at, updated_at }
  *
@@ -29,6 +31,7 @@
  */
 const { getDisplayName } = require('./displayNames');
 const { getMember } = require('./teamMembers');
+const { getMajor } = require('../config/majors');
 
 const COLLECTION = 'published_figures';
 
@@ -129,11 +132,17 @@ function validateFigurePayload(body = {}) {
     return { error: 'slug must be 1-64 chars of a-z 0-9 - _ (e.g. "coverage-heatmap")' };
   }
   if (typeof title !== 'string' || !title.trim()) return { error: 'title required' };
+  const major = getMajor(String(body.major_slug || '').trim());
+  if (!major) {
+    return { error: 'major_slug must name a configured major (figure data scope is required)' };
+  }
   const metadata = {
     slug,
     title: title.trim(),
     caption: typeof caption === 'string' && caption.trim() ? caption.trim() : null,
     source_url: typeof source_url === 'string' && source_url.trim() ? source_url.trim() : null,
+    major_slug: major.slug,
+    state: major.state || 'ca',
   };
 
   // A named visual is rendered by a component already shipped with the app.
@@ -163,11 +172,15 @@ function validateFigurePayload(body = {}) {
     if (optionsBytes > MAX_VISUAL_OPTIONS_BYTES) {
       return { error: 'interactive options exceed 32KB' };
     }
+    const optionMajor = String(options.majorSlug || '').trim();
+    if (optionMajor && optionMajor !== major.slug) {
+      return { error: 'interactive options.majorSlug must match major_slug' };
+    }
     return {
       value: {
         ...metadata,
         publication_type: INTERACTIVE_PUBLICATION,
-        visual: { id, options: { ...options } },
+        visual: { id, options: { ...options, majorSlug: major.slug } },
       },
     };
   }
@@ -340,6 +353,13 @@ async function getFigureFormat(auditDb, slug, format, variantKey = null) {
   };
 }
 
+async function getFigurePublicationScope(auditDb, slug) {
+  return auditDb.collection(COLLECTION).findOne(
+    { _id: slug, record_type: { $ne: VARIANT_RECORD } },
+    { projection: { major_slug: 1, state: 1, analysis_publication: 1 } }
+  );
+}
+
 async function removeFigure(auditDb, slug) {
   const root = await auditDb.collection(COLLECTION).deleteOne({ _id: slug });
   if (!root.deletedCount) return false;
@@ -398,7 +418,7 @@ async function ensureFigureIndexes(auditDb) {
 module.exports = {
   validateFigurePayload, validateFigureMeta, resolveAuthorLabel,
   upsertFigure, listFigures, getFigureFormat, removeFigure,
-  getFigureAuthor, updateFigureMeta, ensureFigureIndexes,
+  getFigureAuthor, getFigurePublicationScope, updateFigureMeta, ensureFigureIndexes,
   COLLECTION, VARIANT_RECORD, STATIC_PUBLICATION, INTERACTIVE_PUBLICATION,
   INTERACTIVE_RENDERERS,
 };

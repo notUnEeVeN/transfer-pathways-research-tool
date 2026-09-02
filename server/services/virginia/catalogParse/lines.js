@@ -85,6 +85,7 @@ const NARRATIVE = new RegExp([
 ].join(''), 'i');
 
 const clean = (s) => String(s ?? '').replace(/ /g, ' ').replace(/[ \t]+/g, ' ').trim();
+const MAX_PLAUSIBLE_ROW_CREDITS = 8;
 
 /**
  * Repair codes split across a line break.
@@ -134,7 +135,16 @@ function parseRow(rawLine) {
   if (!rowCredits) {
     const trailing = /\s(\d+(?:[-–]\d+)?)$/.exec(text);
     if (trailing) {
-      rowCredits = parseCredits(trailing[1]);
+      const candidate = parseCredits(trailing[1]);
+      // A bare final number can be a flattened credit column, but it can also
+      // be part of a course code ("SDV 101"), a year in the title ("to
+      // 1877"), or an Acalog footnote ("or Mathematics 2"). Only accept the
+      // narrow single-course-row shape here. Labelled and parenthetical credit
+      // forms are handled independently and remain available on alternatives.
+      const plausibleBareCredit = candidate
+        && candidate.max <= MAX_PLAUSIBLE_ROW_CREDITS
+        && !/\bor\b/i.test(text.slice(0, trailing.index));
+      rowCredits = plausibleBareCredit ? candidate : null;
       if (rowCredits) text = text.slice(0, trailing.index).trim();
     }
   }

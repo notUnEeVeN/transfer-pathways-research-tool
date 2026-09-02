@@ -9,7 +9,7 @@
 const pmtPy = (apiBaseUrl) => `"""Transfer Pathways research client.
 
     get(path, **params)                    -> pandas DataFrame or JSON
-    publish(fig, slug=..., title=...)      -> publish one finished figure
+    publish(fig, slug=..., title=..., major_slug=...) -> publish one finished figure
     publish(variants=[...], ...)           -> publish named static states
     publish(visual="...", ...)             -> publish a supported interactive visual
 
@@ -73,6 +73,7 @@ def _render_formats(fig):
 
 
 def publish(fig=None, slug=None, title=None, caption=None, source_url=None,
+            major_slug=None,
             variants=None, controls=None, default_variant=None,
             visual=None, options=None):
     """Publish a local figure, named static states, or a supported visual.
@@ -91,6 +92,7 @@ def publish(fig=None, slug=None, title=None, caption=None, source_url=None,
 
     Example interactive publication:
         publish(visual="paper-credit-loss", slug="paper-credit-loss-copy",
+                major_slug="cs",
                 title="Paper-style credit loss (published copy)")
     """
     if not TOKEN or TOKEN == "pmtr_...":
@@ -98,14 +100,15 @@ def publish(fig=None, slug=None, title=None, caption=None, source_url=None,
             "Set PMT_TOKEN or paste a token into TOKEN. Create one in the "
             "website under API -> Tokens."
         )
-    if not slug or not title:
-        raise TypeError("publish(fig, ...) requires slug= and title=")
+    if not slug or not title or not major_slug:
+        raise TypeError("publish(fig, ...) requires slug=, title=, and major_slug=")
 
     payload = {
         "slug": slug,
         "title": title,
         "caption": caption,
         "source_url": source_url,
+        "major_slug": major_slug,
     }
     if visual is not None:
         if fig is not None or variants is not None:

@@ -21,6 +21,8 @@ describe('pmt.py template', () => {
     expect(src.match(/^def /gm)).toHaveLength(3);
     expect(src).toContain('def get(path, **params):');
     expect(src).toContain('def publish(fig=None, slug=None, title=None, caption=None, source_url=None,');
+    expect(src).toContain('major_slug=None');
+    expect(src).toContain('"major_slug": major_slug');
     expect(src).toContain('visual=None, options=None');
     expect(src).toContain('fetch = get');
     expect(src).not.toContain('PMT_CAPTURE');

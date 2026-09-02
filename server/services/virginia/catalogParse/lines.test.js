@@ -114,6 +114,34 @@ describe('a printed requirement row', () => {
     expect(row.codes).toEqual([]);
     expect(row.category).toBe('Any World Language');
   });
+
+  it('does not turn a course number, title year, or footnote into course credits', () => {
+    expect(parseRow('SDV 100: College Success Skills or SDV 101')).toMatchObject({
+      codes: [{ code: 'SDV100' }, { code: 'SDV101' }],
+      credits: null,
+    });
+    expect(parseRow('HIS 121: United States History to 1877')).toMatchObject({
+      codes: [{ code: 'HIS121', title: 'United States History to 1877' }],
+      credits: null,
+    });
+    expect(parseRow('or MTH 161 or Mathematics 2')).toMatchObject({
+      codes: [{ code: 'MTH161' }],
+      credits: null,
+    });
+    expect(parseRow('or MTH 245 or approved Mathematics (3 - 4 Credits) 2'))
+      .toMatchObject({
+        codes: [{ code: 'MTH245' }],
+        credits: { min: 3, max: 4 },
+      });
+  });
+
+  it('keeps a plausible bare credit column on an unambiguous course row', () => {
+    expect(parseRow('CSCI - 222 Programming for Computer Science Majors II 4'))
+      .toMatchObject({
+        codes: [{ code: 'CSCI222', title: 'Programming for Computer Science Majors II' }],
+        credits: { min: 4, max: 4 },
+      });
+  });
 });
 
 const GERMANNA = `

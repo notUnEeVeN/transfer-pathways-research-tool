@@ -28,6 +28,10 @@
  * Every document carries `catalog_url` (the human-readable program page) and a
  * `reconciliation` block. These maps are corroboration, not hand verification:
  * the institution catalog remains the source of record for the degree.
+ *
+ * Usage:
+ *   node scripts/importVirginiaDegrees.js                    # dry run
+ *   node scripts/importVirginiaDegrees.js --apply --uri <uri> --db <name>
  */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -35,19 +39,49 @@ const { MongoClient } = require('mongodb');
 const { parseDegreeMap, creditReconciliation } = require('../services/virginia/degreeMap');
 const { courseIdFor, courseKeyFor } = require('../services/virginia/courseIdentity');
 
-const argv = process.argv.slice(2);
-const has = (f) => argv.includes(f);
-const val = (f, d = null) => {
-  const i = argv.indexOf(f);
-  return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d;
-};
-const opts = {
-  uri: val('--uri'),
-  dbName: val('--db'),
-  cache: val('--cache', path.join(__dirname, '..', '.va-degrees')),
-  major: val('--major', 'cs'),
-  dryRun: has('--dry-run'),
-};
+const DEFAULT_CACHE = path.join(__dirname, '..', '.va-degrees');
+const CLI_VALUE_OPTIONS = new Set(['--uri', '--db', '--cache', '--major']);
+const CLI_BOOLEAN_OPTIONS = new Set(['--apply', '--dry-run']);
+
+/** Bare/default execution is report-only; only `--apply` authorizes Mongo. */
+function optionsFrom(argv = [], env = {}) {
+  const values = new Map();
+  const booleans = new Set();
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index];
+    if (CLI_VALUE_OPTIONS.has(argument)) {
+      if (values.has(argument)) throw new Error(`${argument} may be supplied only once`);
+      const value = argv[index + 1];
+      if (!value || value.startsWith('--')) throw new Error(`${argument} requires a value`);
+      values.set(argument, value);
+      index += 1;
+      continue;
+    }
+    if (CLI_BOOLEAN_OPTIONS.has(argument)) {
+      if (booleans.has(argument)) throw new Error(`${argument} may be supplied only once`);
+      booleans.add(argument);
+      continue;
+    }
+    throw new Error(`unknown option: ${argument}`);
+  }
+
+  const apply = booleans.has('--apply');
+  if (apply && booleans.has('--dry-run')) {
+    throw new Error('--apply and --dry-run are mutually exclusive');
+  }
+  return {
+    uri: values.get('--uri') || env.MONGO_URI || null,
+    dbName: values.get('--db') || env.DB_NAME || null,
+    cache: values.get('--cache') || DEFAULT_CACHE,
+    major: values.get('--major') || 'cs',
+    apply,
+    dryRun: !apply,
+  };
+}
+
+const opts = require.main === module
+  ? optionsFrom(process.argv.slice(2), process.env)
+  : optionsFrom([], {});
 const log = (...a) => console.log('[va:degrees]', ...a);
 
 const BASE = 'https://www.transfervirginia.org';
@@ -193,10 +227,14 @@ async function main() {
   log(`distinct courses referenced: ${idMap.length}`);
   if (skipped.length) log(`skipped: ${skipped.length} (${skipped.map((s) => s.why).join(', ')})`);
 
-  if (opts.dryRun) { log('dry run — nothing written'); console.log(JSON.stringify(docs[0], null, 1).slice(0, 900)); return; }
+  if (!opts.apply) {
+    log('dry run — nothing written; pass --apply to replace the Transfer Virginia research rows');
+    console.log(JSON.stringify(docs[0], null, 1).slice(0, 900));
+    return;
+  }
 
-  const uri = opts.uri || process.env.MONGO_URI || 'mongodb://localhost:27017';
-  const dbName = opts.dbName || process.env.DB_NAME || 'pmt_research';
+  const uri = opts.uri || 'mongodb://localhost:27017';
+  const dbName = opts.dbName || 'pmt_research';
   log(`writing to ${uri.replace(/\/\/[^@]*@/, '//<redacted>@')} · db ${dbName}`);
   const client = new MongoClient(uri);
   await client.connect();
@@ -221,6 +259,7 @@ if (require.main === module) main().catch((e) => {
 module.exports = {
   eligibleAssociateProgram,
   main,
+  optionsFrom,
   toRequirementGroups,
   writeTransferVirginiaDocuments,
 };

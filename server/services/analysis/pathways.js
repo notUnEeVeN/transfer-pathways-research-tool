@@ -24,6 +24,11 @@ const { assistCourseCategoryCoverage } = require('../assistCourseBarriers');
 const { computeTransferBudget } = require('../degreeTransferBudget');
 const { projectPrereqEdges } = require('../prereqGraph');
 const { majorDocumentClause } = require('../../config/majorDocumentScope');
+const { readinessForProjectedFigures } = require('../virginia/publicationReadiness');
+const { canonicalContractIssues } = require('./canonicalSourceContract');
+const {
+  canonicalRequirementRoleIssues,
+} = require('./canonicalRequirementRole');
 const MA_PDF_FIGURES = require('../../data/ma/pdf-figures.json');
 
 const MA_FIG1_PDF = MA_PDF_FIGURES.fig1_course_articulation || {};
@@ -221,11 +226,19 @@ function receiverParentIds(receiver) {
 
 // ── reference-table joins ──
 
-async function loadRefs(db, state = null) {
+async function loadRefs(db, state = null, majorSlug = null) {
   const institutions = await db.collection('assist_institutions')
     .find(stateClause(state)).toArray();
   const universities = institutions.filter((row) => row.kind === 'university');
-  const colleges = institutions.filter((row) => row.kind === 'community_college');
+  // A major may declare its sending cohort — the colleges that can put a
+  // student on the pathway at all. Where one is declared, a college outside it
+  // is not a zero-coverage cell but a pathway that does not exist, and drawing
+  // it as zero understates every pooled figure. Majors that declare none keep
+  // the whole state, so California and Massachusetts are unaffected.
+  const sending = getMajor(majorSlug)?.sendingCollegeIds;
+  const cohort = Array.isArray(sending) ? new Set(sending.map(Number)) : null;
+  const colleges = institutions.filter((row) => row.kind === 'community_college'
+    && (!cohort || cohort.has(Number(row.source_id))));
   return {
     communityColleges: colleges,
     calendarByUniversity: new Map(universities.map((r) => [Number(r.source_id), r.academic_calendar])),
@@ -425,9 +438,14 @@ function majorFilter({
   const clauses = [];
   const exactPrograms = resolveProgramScope(majorSlug, majorPrograms);
   if (exactPrograms) clauses.push(programPairClause(exactPrograms, { schoolField: idField }));
-  // Free-text matching exists only for an explicit legacy caller. A resolved
-  // major slug always supplies majorPrograms and therefore never reaches this.
-  else if (majorContains) clauses.push({ major: { $regex: escapeRegex(majorContains), $options: 'i' } });
+  // Free-text matching exists only for an explicit legacy California caller.
+  // State-scoped corpora were introduced after this compatibility route and
+  // must be addressed by their configured slug so their publication gates
+  // cannot be bypassed with a same-name substring.
+  else if (majorContains) clauses.push({
+    major: { $regex: escapeRegex(majorContains), $options: 'i' },
+    state: { $exists: false },
+  });
   if (visiblePairs != null) clauses.push(pairClause(visiblePairs, idField));
   if (!clauses.length) return {};
   return clauses.length === 1 ? clauses[0] : { $and: clauses };
@@ -755,6 +773,43 @@ function mergeGeAreas(communityCollegeIds, geAreasByCollege) {
   return merged;
 }
 
+const VA_COVERAGE_METRICS = Object.freeze([
+  'degree_units_modeled_total', 'degree_units_with_equivalent',
+  'degree_units_named_total', 'degree_units_named_covered',
+  'degree_units_ge_total', 'degree_units_ge_with_equivalent',
+  'degree_units_satisfied', 'degree_transfer_cap', 'degree_units_binding',
+  'pct_degree_units', 'named_requirement_courses_total',
+  'named_requirement_courses_articulated', 'pct_named_requirement_courses',
+  'named_requirement_courses_with_ge_total',
+  'named_requirement_courses_with_ge_articulated',
+  'pct_named_requirement_courses_with_ge', 'degree_requirements_total',
+  'degree_requirements_with_equivalent', 'degree_requirements_by_tier',
+  'degree_requirements_by_course_type', 'degree_requirements_by_course_category',
+  'pct_degree_requirements', 'degree_requirement_slots_total',
+  'degree_requirement_slots_with_equivalent', 'pct_degree_requirement_slots',
+  'receivers_required', 'receivers_articulated', 'pct_articulated',
+  'fully_articulated', 'degree_groups_not_modelable',
+]);
+
+function excludeVirginiaCoverageRow(row, readiness) {
+  const excluded = {
+    ...row,
+    method_status: 'excluded',
+    exclusion_reason: 'virginia_source_not_publication_ready',
+    method_warning: readiness.warning,
+    degree_template_publication_ready: false,
+    degree_template_figure_ready: false,
+    degree_template_requested_figures: readiness.figures,
+    degree_template_complete_degree_ready: readiness.complete_degree_ready,
+    degree_template_figure_constraint_blockers: readiness.figure_constraint_blockers,
+    degree_template_publication_blockers: readiness.blockers,
+    degree_template_source_requirement_id: readiness.source_id,
+    degree_template_source_bundle_hash: readiness.source_bundle_hash,
+  };
+  for (const field of VA_COVERAGE_METRICS) excluded[field] = null;
+  return excluded;
+}
+
 /**
  * Full-degree coverage, matching Figure 1 of the Massachusetts paper: each
  * cell's primary percentage is the share of the modeled graduation units for
@@ -767,6 +822,9 @@ async function degreeRequirementCoverageData(db, {
   majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
   groupBy = 'college', pin = null,
 } = {}, refs) {
+  const configuredMajor = getMajor(majorSlug);
+  const canonicalSourceRequired = configuredMajor?.capabilities
+    ?.canonicalSourceRequirements === true;
   const mode = ['college', 'district', 'county'].includes(groupBy) ? groupBy : 'college';
   const degreeFilter = { kind: 'degree' };
   const exactPrograms = resolveProgramScope(majorSlug, majorPrograms)
@@ -785,6 +843,7 @@ async function degreeRequirementCoverageData(db, {
   }
   if (!exactPrograms && !pin && majorContains) {
     degreeFilter.program = { $regex: escapeRegex(majorContains), $options: 'i' };
+    degreeFilter.state = { $exists: false };
   }
 
   const candidateDegrees = await db.collection('curated_requirements')
@@ -928,6 +987,36 @@ async function degreeRequirementCoverageData(db, {
   const rows = [];
   for (const degree of degrees) {
     const schoolId = Number(degree.school_id);
+    const requirementRoleIssues = canonicalSourceRequired
+      ? canonicalRequirementRoleIssues(degree) : [];
+    let sourceReadiness = canonicalSourceRequired
+      ? readinessForProjectedFigures(degree, {
+        label: 'The Virginia bachelor-degree source',
+        figures: ['1'],
+      })
+      : null;
+    if (sourceReadiness) {
+      const contractBlockers = canonicalContractIssues(degree);
+      if (contractBlockers.length || requirementRoleIssues.length) {
+        const roleBlockers = requirementRoleIssues.map((issue) => (
+          `canonical_requirement_role:${issue.path}:${issue.issues.join('|')}`
+        ));
+        sourceReadiness = {
+          ...sourceReadiness,
+          ready: false,
+          blockers: [...sourceReadiness.blockers, ...contractBlockers, ...roleBlockers],
+          warning: [
+            sourceReadiness.warning,
+            contractBlockers.length
+              ? `The source lacks the canonical analysis contract (${contractBlockers.join(', ')}).`
+              : null,
+            requirementRoleIssues.length
+              ? `The source has ${requirementRoleIssues.length} allocation-sensitive requirement role${requirementRoleIssues.length === 1 ? '' : 's'} that cannot be classified from authored fields.`
+              : null,
+          ].filter(Boolean).join(' '),
+        };
+      }
+    }
     const categoryOf = categoryOfFor(majorSlug, schoolId, universityCoursesById);
     // A requirement group that covers ZERO at every single college is almost
     // never a finding — it is the signature of a representation the model
@@ -955,7 +1044,8 @@ async function degreeRequirementCoverageData(db, {
       const ccGeAreas = mergeGeAreas(collegeIds, geAreasByCollege);
       const evaluated = buildDegreeGroups(degree.requirement_groups,
         { articulated, articulatedRequirements, ccGeAreas, universityCoursesById, categoryOf,
-          excludeGeFromCategories: Boolean(getMajor(majorSlug)?.courseTypes?.excludeGeGroups) });
+          excludeGeFromCategories: Boolean(getMajor(majorSlug)?.courseTypes?.excludeGeGroups),
+          sourceDocument: degree });
       const pctSlots = evaluated.total
         ? +((evaluated.covered / evaluated.total) * 100).toFixed(1)
         : null;
@@ -983,7 +1073,7 @@ async function degreeRequirementCoverageData(db, {
         : null;
       // Keyed by position, not title: a template group may carry no title, and
       // several untitled groups must not collapse into one bucket.
-      (evaluated.groups || []).forEach((group, index) => {
+      (sourceReadiness?.ready === false ? [] : (evaluated.groups || [])).forEach((group, index) => {
         // Upper-division and residency work is 0% everywhere by construction —
         // a community college cannot teach it. Only coursework that COULD have
         // been covered says anything about whether the model can see it.
@@ -1000,7 +1090,7 @@ async function degreeRequirementCoverageData(db, {
       const regions = [...rowGroup.regions].sort();
       const counties = [...rowGroup.counties].sort();
 
-      degreeRows.push({
+      const coverageRow = {
         system: 'uc',
         school_id: schoolId,
         school: degree.school,
@@ -1023,6 +1113,7 @@ async function degreeRequirementCoverageData(db, {
         degree_template_catalog_year: degree.catalog_year ?? null,
         degree_template_source: degree.source ?? null,
         degree_template_source_url: degree.source_url ?? null,
+        degree_template_requirement_role_issues: requirementRoleIssues,
         degree_template_verified: degree.verification?.verified === true,
         degree_template_verified_at: degree.verification?.verified_at ?? null,
         degree_template_verified_by_label:
@@ -1040,6 +1131,25 @@ async function degreeRequirementCoverageData(db, {
         degree_units_stated_minimum: degree.total_units ?? null,
         degree_units_modeled_total: unitTotal,
         degree_units_with_equivalent: unitCovered,
+        // The requirement rollup, in units — the SAME population Figure 1's
+        // course lens counts, weighted by credit instead of counted binary.
+        //
+        // This is deliberately not `degree_units_with_equivalent` above, which
+        // is the unit BUDGET: credit the student carries, capped at what the
+        // campus will accept. Carried credit and discharged requirements are
+        // different questions — a college can carry its full 70 units while
+        // articulating a third of the named courses, because carried credit
+        // includes elective landings that meet nothing named. Differencing the
+        // budget against a course count compares those two questions and the
+        // gap is the comparison, not a finding.
+        degree_units_named_total: evaluated.units?.total ?? null,
+        degree_units_named_covered: evaluated.units?.covered ?? null,
+        // The general-education share of that rollup, so a unit lens can take
+        // it off both sides. "General education" here is the evaluator's own
+        // role classification — the same one the course lens excludes, not a
+        // title match.
+        degree_units_ge_total: evaluated.units?.ge_total ?? null,
+        degree_units_ge_with_equivalent: evaluated.units?.ge_covered ?? null,
         // Requirements this college discharges, before the cap. Distinct from
         // units carried: satisfying every requirement does not mean bringing
         // the units that work was worth.
@@ -1132,7 +1242,24 @@ async function degreeRequirementCoverageData(db, {
         pct_articulated: pctUnits,
         fully_articulated: evaluated.units.total > 0
           && evaluated.units.covered >= evaluated.units.total,
-      });
+      };
+      degreeRows.push(sourceReadiness?.ready === false
+        ? excludeVirginiaCoverageRow(coverageRow, sourceReadiness)
+        : (sourceReadiness ? {
+          ...coverageRow,
+          method_status: 'ok',
+          exclusion_reason: null,
+          method_warning: null,
+          degree_template_publication_ready: true,
+          degree_template_figure_ready: true,
+          degree_template_requested_figures: sourceReadiness.figures,
+          degree_template_complete_degree_ready: sourceReadiness.complete_degree_ready,
+          degree_template_figure_constraint_blockers:
+            sourceReadiness.figure_constraint_blockers,
+          degree_template_publication_blockers: [],
+          degree_template_source_requirement_id: sourceReadiness.source_id,
+          degree_template_source_bundle_hash: sourceReadiness.source_bundle_hash,
+        } : coverageRow));
     }
     // Groups that never cleared a single slot anywhere. Attached to every row
     // of this degree so a consumer can mark them rather than draw a zero it
@@ -1144,7 +1271,9 @@ async function degreeRequirementCoverageData(db, {
         label: seen.label,
         slots: seen.total / rowGroups.length,
       }));
-    for (const row of degreeRows) row.degree_groups_not_modelable = notModelable;
+    for (const row of degreeRows) {
+      if (row.method_status !== 'excluded') row.degree_groups_not_modelable = notModelable;
+    }
     rows.push(...degreeRows);
   }
   return rows;
@@ -1155,7 +1284,7 @@ async function coverageData(db, auditDb, {
   groupBy = 'college', requirements = 'assist', pin = null,
   requireCompleteDistrictMatrix = false,
 } = {}) {
-  const refs = await loadRefs(db, majorSlug ? getMajor(majorSlug)?.state : null);
+  const refs = await loadRefs(db, majorSlug ? getMajor(majorSlug)?.state : null, majorSlug);
   if (requirements === 'degree') {
     return degreeRequirementCoverageData(db, {
       majorSlug, majorPrograms, majorContains, visiblePairs, groupBy, pin,
@@ -1529,7 +1658,7 @@ async function creditLossData(db, auditDb, {
   majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
 } = {}) {
   const curation = await loadCuration(auditDb, majorSlug);
-  const refs = await loadRefs(db, majorSlug ? getMajor(majorSlug)?.state : null);
+  const refs = await loadRefs(db, majorSlug ? getMajor(majorSlug)?.state : null, majorSlug);
   const units = await loadCcCourseUnits(db);
   const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);
@@ -1776,7 +1905,7 @@ async function timeToDegreeData(db, auditDb, {
   majorSlug = null, majorPrograms = null, majorContains = '', visiblePairs = null,
 } = {}) {
   const curation = await loadCuration(auditDb, majorSlug);
-  const refs = await loadRefs(db, majorSlug ? getMajor(majorSlug)?.state : null);
+  const refs = await loadRefs(db, majorSlug ? getMajor(majorSlug)?.state : null, majorSlug);
   const units = await loadCcCourseUnits(db);
   const coursesById = await loadCoursesById(db);
   const isExcluded = makeIsExcluded(curation);

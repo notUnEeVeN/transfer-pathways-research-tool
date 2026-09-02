@@ -1,13 +1,59 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { createRequire } from 'node:module';
+import { createHash } from 'node:crypto';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../../test/mongoHarness');
-const { transferCreditRateData } = cjs('./transferCreditRate');
+const {
+  planAssociateDegree,
+  sourceSpecificUnitsById,
+  transferCreditRateData,
+  unresolvedSourceConflictCount,
+  supportsAssociateConstraintKind,
+} = cjs('./transferCreditRate');
 const maFigure3GrayDetail = cjs('../../data/ma/figure3-gray-detail.json');
+const { canonicalSourceContract } = cjs('./canonicalSourceContract');
+const {
+  selectedEquivalenciesSha256,
+  sourceEquivalenciesSha256,
+} = cjs('./virginiaTransferEquivalencyConditions');
+const { courseIdFor } = cjs('../virginia/courseIdentity');
 
 let mongo;
 let db;
+
+const vaFixtureIdentitiesByLegacyId = new Map();
+const vaFixtureIdentitiesByCourseId = new Map();
+
+function vaFixtureCourseIdentity(legacyId) {
+  const numericId = Number(legacyId);
+  if (!Number.isInteger(numericId)) {
+    throw new Error(`Virginia fixture course id must be an integer: ${legacyId}`);
+  }
+  if (!vaFixtureIdentitiesByLegacyId.has(numericId)) {
+    const code = `VAF${String(1000 + vaFixtureIdentitiesByLegacyId.size)}`;
+    const identity = { code, courseId: courseIdFor(code) };
+    const collision = vaFixtureIdentitiesByCourseId.get(identity.courseId);
+    if (collision && collision.code !== code) {
+      throw new Error(`Virginia fixture course identity collision: ${code}`);
+    }
+    vaFixtureIdentitiesByLegacyId.set(numericId, identity);
+    vaFixtureIdentitiesByCourseId.set(identity.courseId, identity);
+  }
+  return vaFixtureIdentitiesByLegacyId.get(numericId);
+}
+
+function mappedVaFixtureCourseId(value) {
+  const numericId = Number(value);
+  return vaFixtureIdentitiesByLegacyId.get(numericId)?.courseId || numericId;
+}
+
+function vaFixtureIdentityForCourseId(value) {
+  const numericId = Number(value);
+  return vaFixtureIdentitiesByLegacyId.get(numericId)
+    || vaFixtureIdentitiesByCourseId.get(numericId)
+    || null;
+}
 
 const asReceiver = (...courseIds) => ({
   receiving: { kind: 'requirement', parent_id: null },
@@ -38,6 +84,7 @@ const geReceiver = (code, { assume = false, areas = [] } = {}) => ({
 
 const namedGroup = (sections, title = 'Required courses') => ({
   title,
+  requirement_layer: 'major',
   tier: 'transferable',
   sections,
 });
@@ -47,6 +94,75 @@ const asNamedGroup = (sections, label = 'Required courses') => ({
   ge_area: null,
   units_fill: false,
   sections,
+});
+
+const sourceShapedGroups = (groups) => groups.map((group, groupIndex) => ({
+  ...group,
+  group_id: group.group_id || `source_group_${groupIndex + 1}`,
+  group_conjunction: group.group_conjunction || 'And',
+  source_refs: group.source_refs || ['program'],
+  unresolved_courses_seen: group.unresolved_courses_seen || [],
+  sections: (group.sections || []).map((section) => ({
+    ...section,
+    source_refs: section.source_refs || ['program'],
+    receivers: (section.receivers || []).map((receiver) => ({
+      ...receiver,
+      source_refs: receiver.source_refs || ['program'],
+      options: (receiver.options || []).map((option) => ({
+        ...option,
+        source_refs: option.source_refs || ['program'],
+      })),
+    })),
+  })),
+}));
+
+const canonicalFixtureUnits = (groups) => groups.reduce((total, group) => {
+  if (Number.isFinite(Number(group.group_unit_advisement))) {
+    return total + Number(group.group_unit_advisement);
+  }
+  const sectionUnits = (group.sections || []).map((section) => Number(section.unit_advisement));
+  if (sectionUnits.some((units) => !Number.isFinite(units))) {
+    throw new Error('Virginia degree fixture sections require exact source-authored units');
+  }
+  if (String(group.group_conjunction || '').toLowerCase() === 'or'
+      && sectionUnits.length > 1) {
+    const selected = Number.isInteger(group.canonical_section_index)
+      ? sectionUnits[group.canonical_section_index] : sectionUnits[0];
+    if (!sectionUnits.every((units) => units === selected)
+        && !Number.isInteger(group.canonical_section_index)) {
+      throw new Error('Virginia OR fixture requires equal units or a canonical section');
+    }
+    return total + selected;
+  }
+  return total + sectionUnits.reduce((sum, units) => sum + units, 0);
+}, 0);
+
+describe('Virginia source-specific sending-course units', () => {
+  it('uses the exact degree witness and fails closed on duplicate overrides', () => {
+    const sourceId = 'va:as:brightpoint-community-college:cs';
+    const defaults = new Map([[195, 1], [221, 3]]);
+    const rows = new Map([
+      [195, {
+        course_id: 195,
+        units_by_source_requirement: [{
+          source_requirement_id: sourceId,
+          units: 3, min_units: 3, max_units: 3,
+        }],
+      }],
+      [221, { course_id: 221 }],
+    ]);
+    const degree = { _id: 'as_degree:9302:va-cs:local_as', va_requirement_id: sourceId };
+
+    expect(sourceSpecificUnitsById(defaults, rows, degree)).toEqual(
+      new Map([[195, 3], [221, 3]]),
+    );
+
+    rows.get(195).units_by_source_requirement.push({
+      source_requirement_id: sourceId,
+      units: 1, min_units: 1, max_units: 1,
+    });
+    expect(sourceSpecificUnitsById(defaults, rows, degree).get(195)).toBe(0);
+  });
 });
 
 const asGeGroup = (units, pattern = 'calgetc') => ({
@@ -63,13 +179,22 @@ async function seedTemplate({
   majorSlug = null,
   researchStatus = null,
   totalUnits = 120,
+  totalUnitsMax = null,
   unitSystem = null,
+  state = null,
+  analysisReady,
+  sourceConflicts = null,
+  analysisConstraints = null,
   annualTuition = null,
   tuitionSource = null,
   tuitionBasis = null,
   verified = null,
+  sourceRequirementId = null,
+  unitAudit = null,
   groups,
 }) {
+  const requirementGroups = state === 'va' ? sourceShapedGroups(groups) : groups;
+  const requirementId = sourceRequirementId || `va:degree:fixture-${schoolId}:cs`;
   await db.collection('curated_requirements').insertOne({
     _id: `degree:${schoolId}`,
     kind: 'degree',
@@ -80,14 +205,41 @@ async function seedTemplate({
     ...(researchStatus ? { research_status: researchStatus } : {}),
     ...(typeof verified === 'boolean' ? { verification: { verified } } : {}),
     ...(unitSystem ? { unit_system: unitSystem } : {}),
+    ...(state ? { state } : {}),
+    ...(state === 'va' ? {
+      analysis_contract: canonicalSourceContract(),
+      source: 'institution_catalog',
+      source_method: 'official_catalog_composition',
+      sources: [{ id: 'program', url: `https://catalog.example.edu/${schoolId}/program` }],
+      provenance: { source_bundle_hash: `fixture-degree-${schoolId}` },
+      acceptance: {
+        accepted: true,
+        ready_for_analysis: true,
+        catalog: { checks: [] },
+        analysis_ready: { checks: [] },
+      },
+      va_requirement_id: requirementId,
+      va_requirement_status: 'extracted',
+      unit_audit: unitAudit || {
+        graduation_minimum: totalUnits,
+        modeled_units: totalUnits,
+        upper_division: { status: 'none_stated' },
+        residency: { status: 'none_stated' },
+      },
+    } : {}),
+    ...(typeof analysisReady === 'boolean' ? { analysis_ready: analysisReady } : {}),
+    ...(sourceConflicts ? { source_conflicts: sourceConflicts } : {}),
+    ...(analysisConstraints ? { analysis_constraints: analysisConstraints } : {}),
     total_units: totalUnits,
-    requirement_groups: groups,
+    ...(totalUnitsMax != null ? { total_units_max: totalUnitsMax } : {}),
+    requirement_groups: requirementGroups,
   });
   await db.collection('assist_institutions').insertOne({
     _id: `uc:${schoolId}`,
     kind: 'university',
     source_id: schoolId,
     name: school,
+    ...(state ? { state } : {}),
     ...(annualTuition != null ? { tuition_annual_resident_usd: annualTuition } : {}),
     ...(tuitionSource ? { tuition_source: tuitionSource } : {}),
     ...(tuitionBasis ? { tuition_basis: tuitionBasis } : {}),
@@ -99,11 +251,17 @@ async function seedAsDegree({
   degreeType = 'local_as',
   majorSlug = 'cs',
   totalUnits = 60,
+  totalUnitsMax = null,
   unitSystem = 'semester',
+  state = null,
   verified,
   analysisReady,
+  sourceConflicts = null,
+  analysisConstraints = null,
   groups,
 }) {
+  const requirementGroups = state === 'va' ? sourceShapedGroups(groups) : groups;
+  const requirementId = `va:as:fixture-${collegeId}:cs`;
   await db.collection('curated_requirements').insertOne({
     _id: `as_degree:${collegeId}:${degreeType}`,
     kind: 'as_degree',
@@ -114,10 +272,29 @@ async function seedAsDegree({
     college_id: `cc:${collegeId}`,
     college_name: `College ${collegeId}`,
     total_units: totalUnits,
+    ...(totalUnitsMax != null ? { total_units_max: totalUnitsMax } : {}),
     unit_system: unitSystem,
+    ...(state ? { state } : {}),
+    ...(state === 'va' ? {
+      analysis_contract: canonicalSourceContract(),
+      source: 'institution_catalog',
+      source_method: 'official_catalog_composition',
+      sources: [{ id: 'program', url: `https://catalog.example.edu/${collegeId}/program` }],
+      provenance: { source_bundle_hash: `fixture-associate-${collegeId}` },
+      acceptance: {
+        accepted: true,
+        ready_for_analysis: true,
+        catalog: { checks: [] },
+        analysis_ready: { checks: [] },
+      },
+      va_requirement_id: requirementId,
+      va_requirement_status: 'extracted',
+    } : {}),
     ...(typeof verified === 'boolean' ? { verification: { verified } } : {}),
     ...(typeof analysisReady === 'boolean' ? { analysis_ready: analysisReady } : {}),
-    requirement_groups: groups,
+    ...(sourceConflicts ? { source_conflicts: sourceConflicts } : {}),
+    ...(analysisConstraints ? { analysis_constraints: analysisConstraints } : {}),
+    requirement_groups: requirementGroups,
   });
   await db.collection('assist_institutions').updateOne(
     { _id: `cc:${collegeId}` },
@@ -125,6 +302,7 @@ async function seedAsDegree({
       kind: 'community_college',
       source_id: collegeId,
       name: `College ${collegeId}`,
+      ...(state ? { state } : {}),
     } },
     { upsert: true },
   );
@@ -132,26 +310,130 @@ async function seedAsDegree({
 
 async function seedCourses(rows) {
   if (!rows.length) return;
-  await db.collection('assist_courses').insertMany(rows.map(([courseId, units, ucTransferable = true]) => ({
-    _id: `sending:${courseId}`,
+  await db.collection('assist_courses').insertMany(rows.map(([courseId, units, ucTransferable = true]) => {
+    const mappedCourseId = mappedVaFixtureCourseId(courseId);
+    return {
+    _id: `sending:${mappedCourseId}`,
     side: 'sending',
-    course_id: courseId,
+    course_id: mappedCourseId,
     units,
     uc_transferable: ucTransferable,
-  })));
+    };
+  }));
 }
 
-async function seedAgreement({ schoolId, collegeId, major = 'Computer Science B.S.', receivers = [] }) {
+async function seedAgreement({ schoolId, collegeId, major = 'Computer Science, B.S.', receivers = [] }) {
+  const bachelor = await db.collection('curated_requirements').findOne({
+    kind: 'degree', school_id: schoolId,
+  });
+  const isVirginia = bachelor?.state === 'va';
+  if (!isVirginia) {
+    await db.collection('assist_agreements').insertOne({
+      uc_school_id: schoolId,
+      community_college_id: collegeId,
+      major,
+      requirement_groups: [{ sections: [{ receivers }] }],
+    });
+    return;
+  }
+
+  const mappedReceivers = structuredClone(receivers);
+  const sourceEquivalencies = [];
+  const selectedEquivalencies = [];
+  for (const [receiverIndex, receiver] of mappedReceivers.entries()) {
+    const optionLengths = (receiver.options || []).map((option) => option.course_ids.length);
+    const demandCount = optionLengths[0] || 0;
+    if (!optionLengths.every((count) => count === demandCount)) {
+      throw new Error('Virginia agreement fixture options must have equal demand counts');
+    }
+    const receivingCodes = Array.from(
+      { length: demandCount },
+      (_, demandIndex) => `UVX${String(1000 + (receiverIndex * 10) + demandIndex)}`,
+    );
+    receiver.code_seen = receivingCodes.join(' + ');
+
+    for (const [optionIndex, option] of (receiver.options || []).entries()) {
+      option.course_ids = option.course_ids.map((courseId) => {
+        const identity = vaFixtureIdentityForCourseId(courseId);
+        if (!identity) {
+          throw new Error(`missing Virginia fixture identity for selected course ${courseId}`);
+        }
+        return identity.courseId;
+      });
+      for (const [demandIndex, sendingCourseId] of option.course_ids.entries()) {
+        const identity = vaFixtureIdentityForCourseId(sendingCourseId);
+        const receivingIdentifier = receivingCodes[demandIndex];
+        const receivingName = `${receivingIdentifier} fixture course`;
+        const receivingParentId = courseIdFor(receivingIdentifier);
+        const sourceToken = createHash('sha256').update(JSON.stringify([
+          schoolId, collegeId, identity.code, receivingIdentifier,
+        ])).digest('hex').toUpperCase();
+        const sendingSourceUrl = `https://www.transfervirginia.org/course/${sourceToken}`;
+        sourceEquivalencies.push({
+          sending_course_id: identity.courseId,
+          sending_course_key: `va:${identity.code}`,
+          sending_code: identity.code,
+          receiving_identifier: receivingIdentifier,
+          receiving_name: receivingName,
+          receiving_notes: null,
+          receiving_parent_id: receivingParentId,
+          sending_source_url: sendingSourceUrl,
+        });
+        selectedEquivalencies.push({
+          requirement_group_index: 0,
+          section_index: 0,
+          receiver_index: receiverIndex,
+          option_index: optionIndex,
+          demand_index: demandIndex,
+          sending_course_id: identity.courseId,
+          sending_course_key: `va:${identity.code}`,
+          sending_code: identity.code,
+          source_receiving_identifier: receivingIdentifier,
+          source_receiving_name: receivingName,
+          source_receiving_notes_supplied: true,
+          source_receiving_notes: null,
+          source_receiving_parent_id_supplied: false,
+          source_receiving_parent_id: null,
+          sending_source_url: sendingSourceUrl,
+        });
+      }
+    }
+  }
+  sourceEquivalencies.sort((left, right) => (
+    left.sending_course_id - right.sending_course_id
+      || left.receiving_parent_id - right.receiving_parent_id
+      || left.sending_course_key.localeCompare(right.sending_course_key)
+      || left.sending_code.localeCompare(right.sending_code)
+      || left.receiving_identifier.localeCompare(right.receiving_identifier)
+      || left.receiving_name.localeCompare(right.receiving_name)
+      || left.sending_source_url.localeCompare(right.sending_source_url)
+  ));
+
   await db.collection('assist_agreements').insertOne({
+    _id: `va:agreement:${schoolId}:${collegeId}`,
     uc_school_id: schoolId,
     community_college_id: collegeId,
     major,
-    requirement_groups: [{ sections: [{ receivers }] }],
+    state: 'va',
+    pairing: 'course-equivalency-join',
+    derived_from: {
+      degree_id: bachelor.va_requirement_id,
+      supply_edges: Math.max(sourceEquivalencies.length, selectedEquivalencies.length),
+    },
+    source_equivalencies_contract: 'va-concrete-supply-edge-v2',
+    source_equivalencies_count: sourceEquivalencies.length,
+    source_equivalencies_sha256: sourceEquivalenciesSha256(sourceEquivalencies),
+    source_equivalencies: sourceEquivalencies,
+    selected_equivalencies_contract: 'va-selected-supply-edge-v1',
+    selected_equivalencies_count: selectedEquivalencies.length,
+    selected_equivalencies_sha256: selectedEquivalenciesSha256(selectedEquivalencies),
+    selected_equivalencies: selectedEquivalencies,
+    requirement_groups: [{ sections: [{ receivers: mappedReceivers }] }],
   });
 }
 
-async function cellFor({ collegeId, schoolId, degreeType = 'local_as' }) {
-  const rows = await transferCreditRateData(db, null, { degreeType });
+async function cellFor({ collegeId, schoolId, degreeType = 'local_as', majorSlug = null }) {
+  const rows = await transferCreditRateData(db, null, { degreeType, majorSlug });
   return rows.find((row) => row.community_college_id === collegeId && row.school_id === schoolId);
 }
 
@@ -161,11 +443,1042 @@ beforeAll(async () => {
 }, 60_000);
 
 beforeEach(async () => {
+  vaFixtureIdentitiesByLegacyId.clear();
+  vaFixtureIdentitiesByCourseId.clear();
   await db.dropDatabase();
 });
 
 afterAll(async () => {
   await mongo.stop();
+});
+
+const vaRouteReceiver = (...routes) => ({
+  receiving: null,
+  articulation_status: 'articulated',
+  options_conjunction: 'or',
+  options: routes.map((courseIds) => ({
+    course_ids: courseIds.map((courseId) => vaFixtureCourseIdentity(courseId).courseId),
+    course_conjunction: 'and',
+  })),
+});
+
+async function seedReadyVaTemplate({
+  schoolId = 9206,
+  groups,
+  analysisReady = true,
+  sourceConflicts = null,
+  sourceRequirementId = null,
+  unitAudit = null,
+}) {
+  const totalUnits = canonicalFixtureUnits(groups);
+  await seedTemplate({
+    schoolId,
+    school: 'Christopher Newport University',
+    program: 'Computer Science, B.S.',
+    majorSlug: 'va-cs',
+    state: 'va',
+    verified: true,
+    analysisReady,
+    sourceConflicts,
+    sourceRequirementId,
+    unitAudit,
+    totalUnits,
+    totalUnitsMax: totalUnits,
+    groups,
+  });
+}
+
+async function vaCell(collegeId, schoolId = 9206) {
+  return cellFor({ collegeId, schoolId, majorSlug: 'va-cs' });
+}
+
+describe('Virginia publication and exact-constraint gates', () => {
+  it('enforces JMU’s exact four-year-institution minimum as a VA-only two-year cap', async () => {
+    await seedReadyVaTemplate({
+      schoolId: 9213,
+      sourceRequirementId: 'va:degree:james-madison-university:cs',
+      unitAudit: {
+        graduation_minimum: 120,
+        modeled_units: 120,
+        upper_division: { status: 'none_stated' },
+        residency: { status: 'required', minimum_units: 30 },
+        four_year_institution_units_minimum: 60,
+      },
+      groups: [namedGroup([{
+        section_advisement: 1,
+        unit_advisement: 120,
+        receivers: [ucCourse(9213001)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 9301,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        unit_advisement: 70,
+        unit_advisement_max: 70,
+        receivers: [vaRouteReceiver([9301001])],
+      }])],
+      totalUnits: 70,
+      totalUnitsMax: 70,
+    });
+    await seedCourses([[9301001, 70]]);
+    await seedAgreement({
+      schoolId: 9213,
+      collegeId: 9301,
+      receivers: [articulated({ kind: 'course', parent_id: 9213001 }, [9301001])],
+    });
+
+    const cell = await vaCell(9301, 9213);
+    expect(cell).toMatchObject({
+      degree_residency_transfer_policy_supported: true,
+      degree_overall_transfer_cap_units: 90,
+      degree_two_year_transfer_cap_units: 60,
+      degree_effective_two_year_transfer_cap_units: 60,
+      transferred_units: 60,
+      paper_equivalent_transferred_units: 60,
+      extra_units: 10,
+      method_status: 'estimated',
+    });
+    expect(cell.method_warning).toMatch(/exact Virginia two-year transfer ceiling.*60 semester/i);
+  });
+
+  it('uses figure-scoped bachelor readiness while every source and relevant rule stays fail-closed', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([{ section_advisement: 1, unit_advisement: 3, receivers: [ucCourse(9206001)] }])],
+    });
+    await seedAsDegree({
+      collegeId: 9301,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      // Missing is intentionally different from false: neither authorizes a
+      // paper cell under a fail-closed publication gate.
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        unit_advisement: 3,
+        unit_advisement_max: 3,
+        receivers: [vaRouteReceiver([9301001])],
+      }])],
+      totalUnits: 3,
+      totalUnitsMax: 3,
+    });
+    await seedCourses([[9301001, 3]]);
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9301,
+      receivers: [articulated({ kind: 'course', parent_id: 9206001 }, [9301001])],
+    });
+
+    let cell = await vaCell(9301);
+    expect(cell).toMatchObject({ method_status: 'excluded', source_analysis_ready: null });
+    expect(cell.method_warning).toMatch(/explicit_analysis_ready_projection_required/i);
+
+    await db.collection('curated_requirements').updateOne(
+      { _id: 'as_degree:9301:local_as' },
+      { $set: { analysis_ready: true } },
+    );
+    cell = await vaCell(9301);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      source_analysis_ready: true,
+      degree_source_analysis_ready: true,
+      source_figures_ready: true,
+      degree_source_figures_ready: true,
+      source_requested_figures: ['3', '4'],
+      degree_source_requested_figures: ['3', '4'],
+      degree_source_complete_degree_ready: true,
+    });
+
+    await db.collection('curated_requirements').updateOne(
+      { _id: 'degree:9206' },
+      { $set: {
+        analysis_ready: false,
+        'acceptance.ready_for_analysis': false,
+        'acceptance.analysis_ready.checks': [{
+          name: 'constraint_support', severity: 'fail',
+        }],
+        analysis_constraints: [{
+          kind: 'general_education_assessment',
+          status: 'evaluator_not_implemented',
+        }],
+      } },
+    );
+    cell = await vaCell(9301);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      degree_source_analysis_ready: false,
+      degree_source_figures_ready: true,
+      degree_source_complete_degree_ready: false,
+      degree_source_figure_constraint_blockers: [],
+      degree_source_conflict_count: 0,
+    });
+
+    await db.collection('curated_requirements').updateOne(
+      { _id: 'degree:9206' },
+      { $set: {
+        analysis_constraints: [{
+          kind: 'advisor_approval',
+          status: 'evaluator_not_implemented',
+        }],
+      } },
+    );
+    cell = await vaCell(9301);
+    expect(cell).toMatchObject({
+      method_status: 'excluded',
+      degree_source_figures_ready: false,
+      degree_source_complete_degree_ready: false,
+      degree_source_conflict_count: 0,
+      degree_source_figure_constraint_blockers: [expect.objectContaining({
+        kind: 'advisor_approval', affected_figures: ['1', '3', '4', '6'],
+      })],
+    });
+    expect(cell.method_warning).toMatch(/four_year_constraint_evaluator_required/i);
+
+    await db.collection('curated_requirements').updateOne(
+      { _id: 'as_degree:9301:local_as' },
+      { $set: { source_conflicts: [{ status: 'open', issue: 'catalog credit mismatch' }] } },
+    );
+    await db.collection('curated_requirements').updateOne(
+      { _id: 'degree:9206' },
+      {
+        $unset: { analysis_constraints: '' },
+        $set: {
+          analysis_ready: true,
+          'acceptance.ready_for_analysis': true,
+          'acceptance.analysis_ready.checks': [],
+        },
+      },
+    );
+    cell = await vaCell(9301);
+    expect(cell).toMatchObject({ method_status: 'excluded', source_conflict_count: 1 });
+    expect(cell.method_warning).toMatch(/unresolved source or modeling conflict/i);
+
+    await db.collection('curated_requirements').updateOne(
+      { _id: 'as_degree:9301:local_as' },
+      { $unset: { source_conflicts: '' } },
+    );
+    await db.collection('curated_requirements').updateOne(
+      { _id: 'degree:9206' },
+      { $set: {
+        'acceptance.ready_for_analysis': false,
+        'acceptance.analysis_ready.checks': [{
+          name: 'course_resolution', severity: 'fail',
+        }],
+      } },
+    );
+    cell = await vaCell(9301);
+    expect(cell).toMatchObject({
+      method_status: 'excluded',
+      degree_source_figures_ready: false,
+      degree_source_complete_degree_ready: false,
+    });
+    expect(cell.method_warning).toMatch(/analysis_acceptance_failed/i);
+  });
+
+  it('keeps complete Western science routes intact as AND inside OR', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([{
+        section_advisement: 2,
+        unit_advisement: 8,
+        receivers: [ucCourse(9206101), ucCourse(9206102)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 9302,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 8,
+      totalUnitsMax: 8,
+      groups: [{
+        title: 'Laboratory science paths',
+        group_conjunction: 'And',
+        sections: [{
+          section_advisement: 1,
+          unit_advisement: 8,
+          unit_advisement_max: 8,
+          receivers: [vaRouteReceiver([9302001, 9302002], [9302003, 9302004])],
+        }],
+      }],
+    });
+    await seedCourses([
+      [9302001, 4], [9302002, 4], [9302003, 4], [9302004, 4],
+    ]);
+    // Deliberately tempt the old section-collapse bug with one course from
+    // each route.  No source-valid plan contains this mixed pair.
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9302,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 9206101 }, [9302001]),
+        articulated({ kind: 'course', parent_id: 9206102 }, [9302004]),
+      ],
+    });
+
+    const cell = await vaCell(9302);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      named_units: 8,
+      named_transferred_units: 4,
+    });
+    expect(cell.method_warning || '').not.toMatch(/sequence|label|estimate/i);
+  });
+
+  it('enforces course count and unit minimum jointly', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([{
+        section_advisement: 3,
+        unit_advisement: 10,
+        receivers: [ucCourse(9206201), ucCourse(9206202), ucCourse(9206203)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 9303,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 10,
+      totalUnitsMax: 10,
+      analysisConstraints: [{
+        kind: 'variable_choice_count_with_minimum_units',
+        status: 'evaluator_not_implemented',
+      }],
+      groups: [asNamedGroup([{
+        section_advisement: 3,
+        unit_advisement: 10,
+        unit_advisement_max: 10,
+        receivers: [vaRouteReceiver([9303001], [9303002], [9303003], [9303004])],
+      }], 'Approved choices')],
+    });
+    await seedCourses([[9303001, 10], [9303002, 4], [9303003, 3], [9303004, 3]]);
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9303,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 9206201 }, [9303002]),
+        articulated({ kind: 'course', parent_id: 9206202 }, [9303003]),
+        articulated({ kind: 'course', parent_id: 9206203 }, [9303004]),
+      ],
+    });
+
+    const cell = await vaCell(9303);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      named_units: 10,
+      named_transferred_units: 10,
+      source_conflict_count: 0,
+    });
+  });
+
+  it('backtracks across slots to enforce global no-double-count rules', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([{
+        section_advisement: 2,
+        unit_advisement: 6,
+        receivers: [ucCourse(9206301), ucCourse(9206302)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 9304,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 6,
+      totalUnitsMax: 6,
+      analysisConstraints: [{
+        kind: 'no_double_count_across_requirement_slots',
+        status: 'evaluator_not_implemented',
+      }],
+      groups: [
+        asNamedGroup([{
+          section_advisement: 1, unit_advisement: 3, unit_advisement_max: 3,
+          receivers: [vaRouteReceiver([9304001], [9304002])],
+        }], 'Flexible first slot'),
+        asNamedGroup([{
+          section_advisement: 1, unit_advisement: 3, unit_advisement_max: 3,
+          receivers: [vaRouteReceiver([9304001])],
+        }], 'Fixed second slot'),
+      ],
+    });
+    await seedCourses([[9304001, 3], [9304002, 3]]);
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9304,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 9206301 }, [9304001]),
+        articulated({ kind: 'course', parent_id: 9206302 }, [9304002]),
+      ],
+    });
+
+    const cell = await vaCell(9304);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      named_units: 6,
+      named_transferred_units: 6,
+    });
+  });
+
+  it('uses actual option credits and only an explicit fill block for the residual', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([{
+        section_advisement: 2,
+        unit_advisement: 7,
+        receivers: [ucCourse(9206401), ucCourse(9206402)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 9305,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 7,
+      totalUnitsMax: 7,
+      analysisConstraints: [{
+        kind: 'dynamic_elective_credits_to_degree_minimum',
+        status: 'evaluator_not_implemented',
+      }],
+      groups: [
+        asNamedGroup([{
+          section_advisement: 1, unit_advisement: 3, unit_advisement_max: 3,
+          receivers: [vaRouteReceiver([9305001])],
+        }], 'Fixed course'),
+        {
+          title: 'Variable printed slot',
+          group_conjunction: 'And',
+          analysis_constraints: [{
+            kind: 'option_specific_credit_value',
+            status: 'evaluator_not_implemented',
+          }],
+          sections: [{
+            section_advisement: 1,
+            unit_advisement: 4,
+            unit_advisement_max: 4,
+            receivers: [vaRouteReceiver([9305002], [9305003])],
+          }],
+        },
+        { title: 'Applicable credit to the minimum', units_fill: true, sections: [] },
+      ],
+    });
+    await seedCourses([[9305001, 3], [9305002, 3], [9305003, 4]]);
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9305,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 9206401 }, [9305001]),
+        articulated({ kind: 'course', parent_id: 9206402 }, [9305002]),
+      ],
+    });
+
+    const cell = await vaCell(9305);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      as_total_units: 7,
+      named_units: 6,
+      named_transferred_units: 6,
+    });
+  });
+
+  it('treats ge_area as classification metadata when a named menu is present', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([{
+        section_advisement: 1,
+        unit_advisement: 3,
+        receivers: [ucCourse(9206501)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 9306,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 3,
+      totalUnitsMax: 3,
+      groups: [{
+        title: 'Named UCGS menu',
+        ge_area: 'ucgs_humanities',
+        group_conjunction: 'And',
+        sections: [{
+          section_advisement: 1,
+          unit_advisement: 3,
+          unit_advisement_max: 3,
+          receivers: [vaRouteReceiver([9306001], [9306002])],
+        }],
+      }],
+    });
+    await seedCourses([[9306001, 3], [9306002, 3]]);
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9306,
+      receivers: [articulated({ kind: 'course', parent_id: 9206501 }, [9306001])],
+    });
+
+    const cell = await vaCell(9306);
+    expect(cell).toMatchObject({ method_status: 'ok', named_units: 3, ge_units: 0 });
+  });
+
+  it('keeps CNU-style named courses in a mixed named/open-category menu', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([{
+        // CNU's real upper-level elective menu selects three named courses or
+        // an open "CPSC 500-level" category. Only named articulations are
+        // measurable; the open category must not turn the entire menu into GE.
+        section_advisement: 3,
+        unit_advisement: 9,
+        receivers: [
+          ucCourse(9206701),
+          ucCourse(9206702),
+          ucCourse(9206703),
+          geReceiver('CNU-CPSC-500'),
+        ],
+      }], 'CNU upper-level electives')],
+    });
+    await seedAsDegree({
+      collegeId: 9308,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 9,
+      totalUnitsMax: 9,
+      groups: [asNamedGroup([{
+        section_advisement: 3,
+        unit_advisement: 9,
+        unit_advisement_max: 9,
+        receivers: [
+          vaRouteReceiver([9308001]),
+          vaRouteReceiver([9308002]),
+          vaRouteReceiver([9308003]),
+        ],
+      }])],
+    });
+    await seedCourses([[9308001, 3], [9308002, 3], [9308003, 3]]);
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9308,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 9206701 }, [9308001]),
+        articulated({ kind: 'course', parent_id: 9206702 }, [9308002]),
+      ],
+    });
+
+    const cell = await vaCell(9308);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      named_units: 9,
+      named_transferred_units: 6,
+      ge_demand_units: 0,
+      ge_counted_units: 0,
+      transferred_units: 6,
+      extra_units: 3,
+    });
+  });
+
+  it('credits an NSU-style named option instead of relabeling its mixed menu as GE', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([{
+        section_advisement: 1,
+        unit_advisement: 3,
+        receivers: [
+          ucCourse(9207101),
+          ucCourse(9207102),
+          geReceiver('NSU-MATH-300'),
+        ],
+      }], 'NSU technical elective')],
+    });
+    await seedAsDegree({
+      collegeId: 9309,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 3,
+      totalUnitsMax: 3,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        unit_advisement: 3,
+        unit_advisement_max: 3,
+        receivers: [vaRouteReceiver([9309001])],
+      }])],
+    });
+    await seedCourses([[9309001, 3]]);
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9309,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 9207101 }, [9309001]),
+      ],
+    });
+
+    const cell = await vaCell(9309);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      named_transferred_units: 3,
+      ge_demand_units: 0,
+      ge_counted_units: 0,
+      transferred_units: 3,
+    });
+  });
+
+  it.each([
+    ['JMU', 'JMU-CS-ELECTIVE-300'],
+    ['William & Mary', 'WM-CSCI-GENERAL-UPPER-12'],
+  ])('keeps an all-open %s major requirement as uncredited named demand', async (_school, code) => {
+    await seedReadyVaTemplate({
+      groups: [{
+        ...namedGroup([{
+          section_advisement: 1,
+          unit_advisement: 3,
+          receivers: [geReceiver(code)],
+        }], 'Open upper-level major requirement'),
+        course_level: 'upper_division',
+        cc_articulable: false,
+      }],
+    });
+    await seedAsDegree({
+      collegeId: 9312,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 3,
+      totalUnitsMax: 3,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        unit_advisement: 3,
+        unit_advisement_max: 3,
+        receivers: [vaRouteReceiver([9312001])],
+      }])],
+    });
+    await seedCourses([[9312001, 3]]);
+    await seedAgreement({ schoolId: 9206, collegeId: 9312, receivers: [] });
+
+    const cell = await vaCell(9312);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      named_transferred_units: 0,
+      ge_demand_units: 0,
+      elective_demand_units: 0,
+      transferred_units: 0,
+      extra_units: 3,
+    });
+  });
+
+  it('credits only explicitly classified Virginia elective capacity', async () => {
+    await seedReadyVaTemplate({
+      groups: [{
+        requirement_layer: 'university_graduation',
+        course_level: 'elective_capacity',
+        tier: 'breadth',
+        cc_articulable: true,
+        sections: [{
+          section_advisement: 1,
+          unit_advisement: 3,
+          receivers: [geReceiver('EXPLICIT-ELECTIVE-CAPACITY')],
+        }],
+      }],
+    });
+    await seedAsDegree({
+      collegeId: 9313,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 3,
+      totalUnitsMax: 3,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        unit_advisement: 3,
+        unit_advisement_max: 3,
+        receivers: [vaRouteReceiver([9313001])],
+      }])],
+    });
+    await seedCourses([[9313001, 3]]);
+    await seedAgreement({ schoolId: 9206, collegeId: 9313, receivers: [] });
+
+    const cell = await vaCell(9313);
+    expect(cell).toMatchObject({
+      method_status: 'estimated',
+      named_transferred_units: 0,
+      ge_demand_units: 0,
+      elective_demand_units: 3,
+      elective_counted_units: 3,
+      transferred_units: 3,
+      paper_equivalent_transferred_units: 0,
+    });
+  });
+
+  it('fails closed when an open Virginia carrier has no exact authored role', async () => {
+    await seedReadyVaTemplate({
+      groups: [{
+        requirement_layer: 'university_graduation',
+        course_level: 'any',
+        tier: 'breadth',
+        cc_articulable: true,
+        sections: [{
+          section_advisement: 1,
+          unit_advisement: 3,
+          receivers: [geReceiver('AMBIGUOUS-OPEN-CREDIT')],
+        }],
+      }],
+    });
+    await seedAsDegree({
+      collegeId: 9314,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 3,
+      totalUnitsMax: 3,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        unit_advisement: 3,
+        unit_advisement_max: 3,
+        receivers: [vaRouteReceiver([9314001])],
+      }])],
+    });
+    await seedCourses([[9314001, 3]]);
+    await seedAgreement({ schoolId: 9206, collegeId: 9314, receivers: [] });
+
+    const cell = await vaCell(9314);
+    expect(cell).toMatchObject({
+      method_status: 'excluded',
+      transferred_units: null,
+      degree_source_requirement_role_issues: [expect.objectContaining({
+        path: 'requirement_groups[0].sections[0]',
+        issues: ['unrefined_university_graduation_role'],
+      })],
+    });
+    expect(cell.method_warning).toMatch(/ambiguous canonical requirement role/i);
+  });
+
+  it('still classifies a Virginia section as GE when all receivers are GE areas', async () => {
+    await seedReadyVaTemplate({
+      groups: [{
+        ...namedGroup([{
+        section_advisement: 1,
+        unit_advisement: 3,
+        receivers: [geReceiver('VA-GE-A'), geReceiver('VA-GE-B')],
+        }], 'All-GE choice'),
+        requirement_layer: 'general_education',
+      }],
+    });
+    await seedAsDegree({
+      collegeId: 9311,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 3,
+      totalUnitsMax: 3,
+      groups: [asGeGroup(3)],
+    });
+    await seedAgreement({ schoolId: 9206, collegeId: 9311, receivers: [] });
+
+    const cell = await vaCell(9311);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      named_transferred_units: 0,
+      ge_demand_units: 3,
+      ge_counted_units: 3,
+      transferred_units: 3,
+    });
+  });
+
+  it('does not let a zero-credit mixed designation consume a later credited course slot', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([
+        {
+          // Bridgewater Writing Intensive and Shenandoah ENG-equivalent
+          // sections use this zero-credit mixed shape to express overlap.
+          section_advisement: 1,
+          unit_advisement: 0,
+          credit_role: 'zero_unit_requirement',
+          receivers: [ucCourse(9208101), geReceiver('APPROVED-EQUIVALENT')],
+        },
+        {
+          section_advisement: 1,
+          unit_advisement: 3,
+          receivers: [ucCourse(9208101)],
+        },
+      ], 'Designation plus credited requirement')],
+    });
+    await seedAsDegree({
+      collegeId: 9310,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 3,
+      totalUnitsMax: 3,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        unit_advisement: 3,
+        unit_advisement_max: 3,
+        receivers: [vaRouteReceiver([9310001])],
+      }])],
+    });
+    await seedCourses([[9310001, 3]]);
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9310,
+      receivers: [
+        articulated({ kind: 'course', parent_id: 9208101 }, [9310001]),
+      ],
+    });
+
+    const cell = await vaCell(9310);
+    expect(cell).toMatchObject({
+      method_status: 'ok',
+      named_transferred_units: 3,
+      ge_demand_units: 0,
+      transferred_units: 3,
+    });
+  });
+
+  it('rejects unexplained overshoot and accepts only a source-authored ceiling', async () => {
+    await seedReadyVaTemplate({
+      groups: [namedGroup([{
+        section_advisement: 1,
+        unit_advisement: 6,
+        receivers: [ucCourse(9206601)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 9307,
+      majorSlug: 'va-cs',
+      state: 'va',
+      verified: true,
+      analysisReady: true,
+      totalUnits: 10,
+      totalUnitsMax: 10,
+      groups: [asNamedGroup([{
+        section_advisement: 2,
+        unit_advisement: 11,
+        receivers: [vaRouteReceiver([9307001]), vaRouteReceiver([9307002])],
+      }], 'Two required courses')],
+    });
+    await seedCourses([[9307001, 6], [9307002, 6]]);
+    await seedAgreement({
+      schoolId: 9206,
+      collegeId: 9307,
+      receivers: [articulated({ kind: 'course', parent_id: 9206601 }, [9307001])],
+    });
+
+    let cell = await vaCell(9307);
+    expect(cell.method_status).toBe('excluded');
+    expect(cell.method_warning).toMatch(/degree-total constraint/i);
+
+    await db.collection('curated_requirements').updateOne(
+      { _id: 'as_degree:9307:local_as' },
+      { $set: { total_units_max: 12 } },
+    );
+    cell = await vaCell(9307);
+    expect(cell).toMatchObject({ method_status: 'ok', named_units: 12 });
+  });
+
+  it('publishes only constraint kinds the exact associate planner implements', () => {
+    expect(supportsAssociateConstraintKind('no_double_count_across_requirement_slots')).toBe(true);
+    expect(supportsAssociateConstraintKind('variable_choice_count_with_minimum_units')).toBe(true);
+    expect(supportsAssociateConstraintKind('option_specific_credit_value')).toBe(true);
+    expect(supportsAssociateConstraintKind('advisor_approved_substitution')).toBe(false);
+    expect(supportsAssociateConstraintKind('footnote_8_source_language_ambiguity')).toBe(false);
+    expect(supportsAssociateConstraintKind('distinct_ge_areas')).toBe(true);
+  });
+
+  it('backtracks across sections to enforce source-defined distinct GE categories', () => {
+    const constraint = {
+      kind: 'distinct_ge_areas',
+      status: 'supported',
+      minimum_distinct_categories: 2,
+      category_subjects: {
+        art: ['ART'],
+        humanities: ['HUM'],
+      },
+    };
+    const section = (options) => ({
+      groupIndex: 0,
+      groupConjunction: 'And',
+      groupLabel: 'Two different GE categories',
+      section_advisement: 1,
+      unit_advisement: 3,
+      unit_advisement_max: 3,
+      constraintKinds: ['distinct_ge_areas'],
+      analysisConstraints: [constraint],
+      receivers: [{
+        options_conjunction: 'or',
+        options: options.map(([id, key]) => ({
+          course_ids: [id], course_keys: [key], course_conjunction: 'and',
+        })),
+      }],
+    });
+    const plan = planAssociateDegree(
+      [
+        section([[9401, 'va:ART100'], [9403, 'va:HUM201']]),
+        section([[9402, 'va:ART101'], [9404, 'va:HUM202']]),
+      ],
+      new Set([9401, 9402]),
+      new Set([9401, 9402, 9403, 9404]),
+      new Map([[9401, 3], [9402, 3], [9403, 3], [9404, 3]]),
+      { strictConstraints: true, totalUnits: 6, totalUnitsMax: 6 },
+    );
+
+    expect(plan).toMatchObject({ complete: true, total: 6, transferred: 3 });
+    expect(plan.ids.filter((id) => [9401, 9402].includes(id))).toHaveLength(1);
+    expect(plan.ids.filter((id) => [9403, 9404].includes(id))).toHaveLength(1);
+  });
+
+  it('filters a named choice by an explicit source subject exclusion', () => {
+    const plan = planAssociateDegree(
+      [{
+        groupIndex: 0,
+        groupConjunction: 'And',
+        groupLabel: 'Social science outside History',
+        section_advisement: 1,
+        unit_advisement: 3,
+        unit_advisement_max: 3,
+        constraintKinds: ['excluded_ge_subject'],
+        analysisConstraints: [{
+          kind: 'excluded_ge_subject',
+          status: 'supported',
+          excluded_subjects: ['HIS'],
+        }],
+        receivers: [{
+          options_conjunction: 'or',
+          options: [
+            { course_ids: [9501], course_keys: ['va:HIS121'], course_conjunction: 'and' },
+            { course_ids: [9502], course_keys: ['va:ECO201'], course_conjunction: 'and' },
+          ],
+        }],
+      }],
+      new Set([9501]),
+      new Set([9501, 9502]),
+      new Map([[9501, 3], [9502, 3]]),
+      { strictConstraints: true, totalUnits: 3, totalUnitsMax: 3 },
+    );
+
+    expect(plan).toMatchObject({ complete: true, ids: [9502], transferred: 0 });
+  });
+
+  it('fails closed when a category kind lacks its machine-readable dictionary', () => {
+    const plan = planAssociateDegree(
+      [{
+        groupIndex: 0,
+        groupConjunction: 'And',
+        groupLabel: 'Malformed category rule',
+        section_advisement: 1,
+        unit_advisement: 3,
+        unit_advisement_max: 3,
+        constraintKinds: ['distinct_ge_areas'],
+        analysisConstraints: [{
+          kind: 'distinct_ge_areas', status: 'supported', minimum_distinct_categories: 2,
+        }],
+        receivers: [{
+          options: [{ course_ids: [9601], course_keys: ['va:ART100'], course_conjunction: 'and' }],
+        }],
+      }],
+      new Set([9601]),
+      new Set([9601]),
+      new Map([[9601, 3]]),
+      { strictConstraints: true, totalUnits: 3, totalUnitsMax: 3 },
+    );
+
+    expect(plan.complete).toBe(false);
+    expect(plan.warnings.join(' ')).toMatch(/distinct source-defined categories/i);
+  });
+
+  it('does not let a stale analysis-ready stamp bypass malformed category context', () => {
+    expect(unresolvedSourceConflictCount({
+      kind: 'as_degree',
+      analysis_ready: true,
+      requirement_groups: [{
+        analysis_constraints: [{
+          kind: 'distinct_ge_areas',
+          status: 'supported',
+          minimum_distinct_categories: 2,
+          category_subjects: { art: ['ART'], humanities: ['HUM'] },
+        }],
+        sections: [{
+          section_advisement: 2,
+          receivers: [{ options: [{ course_keys: ['va:ART100'] }] }],
+        }],
+      }],
+    })).toBeGreaterThan(0);
+  });
+});
+
+describe('non-Virginia serialized payload contract', () => {
+  const payloadHash = (rows) => createHash('sha256').update(JSON.stringify(rows)).digest('hex');
+
+  it('keeps the complete CA and MA fixture rows byte-identical', async () => {
+    await seedTemplate({
+      schoolId: 1,
+      groups: [namedGroup([{
+        section_advisement: 1,
+        unit_advisement: 4,
+        receivers: [ucCourse(101)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 10,
+      totalUnits: 4,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        receivers: [asReceiver(1001)],
+      }])],
+    });
+    await seedCourses([[1001, 4]]);
+    await seedAgreement({
+      schoolId: 1,
+      collegeId: 10,
+      receivers: [articulated({ kind: 'course', parent_id: 101 }, [1001])],
+    });
+    const caRows = await transferCreditRateData(db, null, { degreeType: 'local_as' });
+
+    await db.dropDatabase();
+    await seedTemplate({
+      schoolId: 9001,
+      school: 'Fixture Massachusetts University',
+      program: 'Computer Science, B.S.',
+      majorSlug: 'ma-cs',
+      state: 'ma',
+      groups: [namedGroup([{
+        section_advisement: 1,
+        unit_advisement: 4,
+        receivers: [ucCourse(9001001)],
+      }])],
+    });
+    await seedAsDegree({
+      collegeId: 9101,
+      majorSlug: 'ma-cs',
+      state: 'ma',
+      totalUnits: 4,
+      groups: [asNamedGroup([{
+        section_advisement: 1,
+        receivers: [asReceiver(9101001)],
+      }])],
+    });
+    await seedCourses([[9101001, 4]]);
+    await seedAgreement({
+      schoolId: 9001,
+      collegeId: 9101,
+      receivers: [articulated({ kind: 'course', parent_id: 9001001 }, [9101001])],
+    });
+    const maRows = await transferCreditRateData(db, null, {
+      degreeType: 'local_as', majorSlug: 'ma-cs',
+    });
+
+    expect(payloadHash(caRows)).toBe('1c1afe10cc846dcabae2779589991c08cddcc0df5595bb8953b09b2d1d62210e');
+    expect(payloadHash(maRows)).toBe('496064396f89211935c6724bff8e20544a841b94fa158f022f8e5de12b44b4ce');
+  });
 });
 
 describe('transferCreditRateData v4', () => {

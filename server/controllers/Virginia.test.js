@@ -84,8 +84,8 @@ function acceptedDegreeForPut() {
         source_refs: ['graduation'],
       },
       residency: {
-        status: 'required', minimum_units: 30,
-        rule: 'At least 30 credits must be earned in residence.',
+        status: 'none_stated',
+        reason: 'No numeric residency rule is stated for this validation fixture.',
         source_refs: ['graduation'],
       },
     },
@@ -891,6 +891,7 @@ describe('Virginia degree verification gate', () => {
     expect(stored.acceptance).toMatchObject({ accepted: true, ready_for_analysis: true });
     expect(stored.acceptance).not.toHaveProperty('forged');
     expect(stored.collection_status).toBe('analysis_ready');
+    expect(stored.research_status).toBe('human_verified_analysis_ready');
     expect(stored.verification).toMatchObject({
       verified: true,
       verified_by: 'researcher-1',
@@ -927,6 +928,7 @@ describe('Virginia degree verification gate', () => {
       previous: expect.objectContaining({ verified: true, verified_by: 'researcher-1' }),
     });
     expect(stored.verification.verified_at).toBeNull();
+    expect(stored.research_status).toBe('human_verification_reopened_after_edit');
   });
 
   it('preserves the signed verdict when only the verifier notes change', async () => {

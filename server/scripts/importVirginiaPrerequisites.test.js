@@ -19,13 +19,14 @@ describe('Virginia prerequisite import validation', () => {
       courseArtifact: path.join(REPO, 'scripts/data/va_course_concepts.json'),
       requisiteArtifact: path.join(REPO, 'scripts/data/va_course_requisites.json'),
     });
-    expect(result.concepts.meta.totals.direct_rows).toBe(335);
-    expect(result.scopeCodes.has('CSC201')).toBe(true);
-    expect(result.scopeCodes.has('CSC202')).toBe(true);
+    expect(result.concepts.meta.totals.direct_rows).toBe(260);
+    expect(result.scopeCodes.has('CSC201')).toBe(false);
+    expect(result.scopeCodes.has('CSC202')).toBe(false);
+    expect(result.scopeCodes.has('ENG249')).toBe(true);
     expect(result.concepts.meta.legacy_scope_review).toMatchObject({
-      population: 61,
-      mapped: 22,
-      examined_null: 39,
+      population: 57,
+      mapped: 5,
+      examined_null: 52,
     });
     expect(result.requisites.meta.local_override_audit).toMatchObject({
       requisite_bearing_courses: expect.any(Number),
@@ -41,14 +42,16 @@ describe('Virginia prerequisite import validation', () => {
     expect(art).toMatchObject({ title: 'Art Appreciation', status: 'missing', groups: [] });
     expect(art.flags).toEqual(expect.arrayContaining(['non_vccs', 'vccs_master_not_applicable']));
     const rel = result.concepts.rows.find((row) => row.code === 'REL210');
-    expect(rel.flags).toContain('mixed_scope_identity_collision');
-    expect(rel.institution_overrides).toEqual([expect.objectContaining({
-      institution: 'Richard Bland College', title: 'Social History of Christianity', concept: null,
-    })]);
+    expect(rel).toMatchObject({
+      title_seen: 'Social History of Christianity', concept: null,
+      scope_colleges: ['Richard Bland College'], source: 'richard_bland_requirement_catalog',
+    });
+    expect(rel.flags).not.toContain('mixed_scope_identity_collision');
     const sociology = result.concepts.rows.find((row) => row.code === 'SOC201');
-    expect(sociology.institution_overrides).toEqual([expect.objectContaining({
-      institution: 'Richard Bland College', title: 'General Sociology', concept: 'intro_sociology',
-    })]);
+    expect(sociology).toMatchObject({
+      title_seen: 'General Sociology', concept: 'intro_sociology',
+      scope_colleges: ['Richard Bland College'], source: 'richard_bland_requirement_catalog',
+    });
     expect(result.concepts.rows.find((row) => row.code === 'COMM201')).toMatchObject({
       title_seen: 'Interpersonal Communication', concept: null,
     });
@@ -60,9 +63,9 @@ describe('Virginia prerequisite import validation', () => {
     const requisites = JSON.parse(fs.readFileSync(path.join(REPO, 'scripts/data/va_course_requisites.json')));
 
     const missingDirect = structuredClone(concepts);
-    missingDirect.rows.find((row) => row.code === 'CSC201').scope_role = 'prerequisite_only';
+    missingDirect.rows.find((row) => row.code === 'ENG249').scope_role = 'prerequisite_only';
     expect(() => validateScopeCoverage(scope, missingDirect, requisites))
-      .toThrow(/concept artifact direct scope mismatch.*CSC201/);
+      .toThrow(/concept artifact direct scope mismatch.*ENG249/);
 
     const drifted = structuredClone(requisites);
     drifted.rows.find((row) => row.code === 'CSC202').scope_source = 'wrong_source';

@@ -170,11 +170,15 @@ describe('Virginia Highlands, Peninsula, and Western official-source CS A.S. com
         minimum_curriculum_gpa: 2,
       },
     });
-    expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: true });
+    expect(acceptance.analysis_ready.failed).toEqual([]);
+    expect(check(acceptance, 'analysis_ready', 'constraint_support').severity).toBe('pass');
 
     const math = doc.requirement_groups.find((group) => group.title === 'Mathematics progression');
     expect(math.distinct_course_ids_across_sections).toBe(true);
+    expect(math.analysis_constraints.map((constraint) => constraint.kind)).toEqual([
+      'no_double_count_across_requirement_slots',
+    ]);
     expect(math.sections.map(optionCodes)).toEqual([
       [['MTH161'], ['MTH263']],
       [['MTH162'], ['MTH264']],
@@ -220,14 +224,19 @@ describe('Virginia Highlands, Peninsula, and Western official-source CS A.S. com
         minimum_curriculum_gpa: 2,
       },
     });
-    expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: true });
+    expect(acceptance.analysis_ready.failed).toEqual([]);
 
     const blockII = doc.requirement_groups.find(
       (group) => group.title === 'UCGS Block II — Arts, Humanities, and Literature',
     );
     expect(blockII).toMatchObject({
       distinct_course_ids_across_sections: true,
+      analysis_constraints: [{
+        kind: 'distinct_categories_across_sections',
+        status: 'supported',
+        minimum_distinct_categories: 2,
+      }],
       sections: [{ unit_advisement: 3 }, { unit_advisement: 3 }],
     });
     expect(optionCodes(blockII.sections[0])).toHaveLength(31);
@@ -306,10 +315,10 @@ describe('Virginia Highlands, Peninsula, and Western official-source CS A.S. com
       institutions_composed: 3,
       current_standalone_cs_as: 3,
       catalog_acceptance_passed: 3,
-      analysis_ready: 1,
+      analysis_ready: 3,
       analysis_blockers: {
-        'virginia-highlands-community-college': ['constraint_support'],
-        'virginia-peninsula-community-college': ['constraint_support'],
+        'virginia-highlands-community-college': [],
+        'virginia-peninsula-community-college': [],
         'virginia-western-community-college': [],
       },
     });

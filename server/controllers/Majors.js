@@ -7,6 +7,10 @@
  */
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { serializeMajors, defaultMajor, listMajors } = require('../config/majors');
+const {
+  VA_ANALYSIS_PUBLICATION_CONTRACT,
+  virginiaAnalysisPublicationStatus,
+} = require('../services/virginia/analysisPublicationGate');
 
 // Every state that has a configured major, derived rather than listed, so a
 // new state corpus serves its registry the moment it lands in config.
@@ -28,7 +32,22 @@ exports.listMajorsEndpoint = asyncHandler(async (req, res) => {
   if (state && !known.has(state)) {
     return res.status(400).json({ error: `state must be one of: ${[...known].sort().join(', ')}` });
   }
-  const majors = serializeMajors(state && state !== 'ca' ? { state } : {});
+  const configured = serializeMajors(state && state !== 'ca' ? { state } : {});
+  const majors = await Promise.all(configured.map(async (major) => {
+    const gate = major?.publicationGate;
+    if (!gate) return major;
+    const analysisPublication = gate.contract === VA_ANALYSIS_PUBLICATION_CONTRACT
+      ? await virginiaAnalysisPublicationStatus(req?.app?.locals?.db)
+      : {
+        ready: false,
+        blocker: 'analysis_publication_gate_configuration_error',
+        contract: gate.contract || null,
+        major_slug: major.slug,
+        generation_id: null,
+        issues: [{ code: 'unsupported_publication_gate_contract' }],
+      };
+    return { ...major, analysisPublication };
+  }));
   const fallback = majors[0]?.slug || defaultMajor().slug;
   res.json({ majors, default: state && state !== 'ca' ? fallback : defaultMajor().slug });
 });

@@ -459,9 +459,8 @@ const MAJORS = [
     // them. `scripts/va/buildVaAgreements.js` performs the join; re-run it
     // whenever va_courses or va_requirements change.
     //
-    // Reserved ids: universities 9201–9233 (assigned across all 33 four-years
-    // in name order, so the sixteen carrying a CS degree are sparse),
-    // community colleges 9301–9324.
+    // Stable ids come from services/virginia/institutionIds.js. They are an
+    // explicit registry and never change when a display name or cohort changes.
     slug: 'va-cs',
     label: 'Computer Science (VA)',
     state: 'va',
@@ -487,6 +486,29 @@ const MAJORS = [
       // degree requirements but no course equivalencies at all, so they carry
       // no agreements and are absent here rather than reading as zero.
     },
+    // The sending cohort: the colleges that publish a computer-science
+    // associate degree, and so can put a student on this pathway at all. The
+    // other eight VCCS colleges have no CS associate, so a cell for them is not
+    // a zero — it is a pathway that does not exist. Leaving them in rendered
+    // eight rows of 0% and pulled the pooled mean from 46.3% to 30.7%.
+    sendingCollegeIds: [
+      9301, // Blue Ridge Community College
+      9302, // Brightpoint Community College
+      9303, // Central Virginia Community College
+      9306, // Germanna Community College
+      9307, // J Sargeant Reynolds Community College
+      9308, // Laurel Ridge Community College
+      9311, // New River Community College
+      9312, // Northern Virginia Community College
+      9314, // Paul D. Camp Community College
+      9315, // Piedmont Virginia Community College
+      9319, // Southwest Virginia Community College
+      9320, // Tidewater Community College
+      9321, // Virginia Highlands Community College
+      9322, // Virginia Peninsula Community College
+      9323, // Virginia Western Community College
+      9324, // Wytheville Community College
+    ],
     // Virginia's community-college cohort is the VCCS transfer-oriented
     // associate degree, stored in the local_as slot by the collection pipeline.
     degreeAnalysisSlots: ['local_as'],
@@ -517,12 +539,29 @@ const MAJORS = [
     },
     conceptDisciplines: [],
     prerequisiteConcepts: [],
+    // NO PUBLICATION GATE while Virginia's figures are in development.
+    //
+    // The gate withholds every VA figure until the projection issues an exact
+    // runtime receipt. That is the right behaviour for released figures and the
+    // wrong behaviour for ones still being built: nothing here is approved for
+    // release yet, so there is nothing for a receipt to protect, and the gate
+    // only prevented the figures from being looked at during development.
+    //
+    // Restore it by putting back:
+    //   publicationGate: { contract: 'va-analysis-publication-receipt-v1' },
+    // which is the single switch that re-arms the check in
+    // frontend/src/visuals/analysisAvailability.js. Do that when a Virginia
+    // figure is ready to be published rather than merely readable.
     capabilities: {
       assistAgreements: true,
       articulationVerdicts: false,
       caCreditLossArtifact: false,
       agreementPathways: false,
       asDegrees: true,
+      // Both degree sides must carry one explicit canonical analysis contract.
+      // Shared consumers select exact semantics from this capability and the
+      // document contract, rather than from the state name.
+      canonicalSourceRequirements: true,
       // No external paper publishes per-cell values for this corpus, so there
       // is nothing to compare against and no source selector. This flag is
       // what separates a paper import (Massachusetts) from data we gathered
@@ -537,6 +576,11 @@ const MAJORS = [
       courseCategories: false,
       courseTypeFigures: true,
       prerequisites: true,
+      // The VA graph tab reads exact VCCS course formulas, but Figure 6 also
+      // needs a university-local prerequisite corpus and a formula-aware
+      // pathway assembler. Do not equate graph availability with a valid
+      // curricular-complexity measure.
+      pathwayComplexityPrerequisites: false,
       snapshots: [],
     },
   },

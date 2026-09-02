@@ -3,6 +3,7 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { validateDegreeAcceptance } from '../services/virginia/degreeAcceptance';
 import { compileDegreeComposition } from '../services/virginia/degreeComposition';
+import { parseCourseKey } from '../services/virginia/courseIdentity';
 import { acceptanceResolver, toDocument } from './importVirginiaCatalogDegrees';
 
 const ROOT = path.join(__dirname, '..', '.va-catalogs');
@@ -34,7 +35,7 @@ const check = (acceptance, bucket, name) => acceptance[bucket].checks
   .find((row) => row.name === name);
 
 const optionCodes = (section) => section.receivers.flatMap((receiver) => receiver.options.map(
-  (option) => option.course_keys.map((key) => key.slice(3)),
+  (option) => option.course_keys.map((key) => parseCourseKey(key)?.code),
 ));
 
 const rawMenu = (composition, title) => composition.requirement_groups
@@ -187,7 +188,7 @@ describe('Camp and Richard Bland official-source degree compositions', () => {
     const occurrences = doc.requirement_groups.flatMap((group) => group.sections)
       .flatMap((section) => section.receivers)
       .flatMap((receiver) => receiver.options)
-      .filter((option) => option.course_keys.includes('va:MATH261'));
+      .filter((option) => option.course_keys.some((key) => parseCourseKey(key)?.code === 'MATH261'));
     expect(occurrences).toHaveLength(1);
     expect(evidence.degree.requirement_logic.electives.recommendations_not_requirements).toHaveLength(3);
     expect(composition.modeling_notes.join(' ')).toMatch(/recommendations.*not additional AND requirements/i);

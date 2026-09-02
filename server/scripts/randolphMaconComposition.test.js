@@ -31,7 +31,9 @@ describe('Randolph-Macon official full-degree composition', () => {
     const { acceptance, doc } = composedDegree();
     expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
     expect(acceptance.catalog.failed).toEqual([]);
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance.analysis_ready.failed).toEqual([
+      'analysis_quality_flags', 'constraint_support',
+    ]);
     expect(doc).toMatchObject({
       program: 'Computer Science, B.S.',
       degree_variant: 'BS',

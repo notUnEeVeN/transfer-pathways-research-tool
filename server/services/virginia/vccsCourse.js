@@ -12,6 +12,8 @@ const cheerio = require('cheerio');
 
 const BASE = 'https://courses.vccs.edu';
 const USER_AGENT = 'pmt-research-import/0.1 (+transfer pathways research; contact via repo owner)';
+const VCCS_MASTER_RECORD_CONTRACT = 'vccs-master-dt-dd-endtext-v1';
+const REQUISITE_LABEL_RE = /\b(Corequisite\s+or\s+Prerequisite|Prerequisite\s+or\s+Corequisite|Prerequisites?|Corequisites?)\s*:/gi;
 
 const clean = (value) => String(value ?? '')
   .replace(/\u00a0/g, ' ')
@@ -192,13 +194,84 @@ function logicalPathTexts(raw) {
   let normalized = expandCarriedPrefixCodes(expandSlashCodes(raw.replace(/&/g, ' and ')));
   // An Oxford-comma list ending in OR is a list of alternatives.  Comma lists
   // ending in AND remain one compound path.
-  if (/,[^;]*\bor\b/i.test(normalized) && !/\band\b/i.test(normalized)) {
+  const commaProbe = protectInternalOr(normalized);
+  if (/,[^;]*\bor\b/i.test(commaProbe) && !/\band\b/i.test(commaProbe)) {
     normalized = normalized.replace(/,/g, ' or ');
   }
   const parentheticalVariants = expandParentheticalAlternatives(normalized);
   return parentheticalVariants.flatMap((variant) => (
     distributeSharedConjunction(splitAlternatives(variant))
   )).map(clean).filter(Boolean);
+}
+
+function topLevelSemicolonSegments(raw) {
+  const source = protectInternalOr(raw);
+  const segments = [];
+  let depth = 0;
+  let start = 0;
+  for (let index = 0; index < source.length; index += 1) {
+    const char = source[index];
+    if (char === '(') depth += 1;
+    else if (char === ')') depth = Math.max(0, depth - 1);
+    else if (char === ';' && depth === 0) {
+      segments.push(restoreInternalOr(source.slice(start, index)));
+      start = index + 1;
+    }
+  }
+  segments.push(restoreInternalOr(source.slice(start)));
+  return segments.map(clean).filter(Boolean);
+}
+
+/**
+ * Compile the exact semicolon subset used by current VCCS master records.
+ * Bare/`and` segments are simultaneous requirements.  Once a segment begins
+ * with `or`, it is a whole-clause alternative; every later segment must also
+ * begin with `or`, otherwise the topology is ambiguous and remains blocked.
+ */
+function semicolonPathTexts(raw) {
+  const segments = topLevelSemicolonSegments(raw);
+  if (segments.length < 2) {
+    return { paths: logicalPathTexts(raw), topology: null, safe: true };
+  }
+  const required = [];
+  const wholeClauseAlternatives = [];
+  let inWholeClauseAlternatives = false;
+  for (const segment of segments) {
+    const beginsOr = /^or\b/i.test(segment);
+    if (beginsOr) {
+      inWholeClauseAlternatives = true;
+      wholeClauseAlternatives.push(clean(segment.replace(/^or\b/i, '')));
+      continue;
+    }
+    if (inWholeClauseAlternatives) {
+      return { paths: [], topology: 'ambiguous_semicolon_order', safe: false };
+    }
+    required.push(clean(segment.replace(/^and\b/i, '')));
+  }
+  if (!required.length || wholeClauseAlternatives.some((segment) => !segment)) {
+    return { paths: [], topology: 'ambiguous_semicolon_order', safe: false };
+  }
+
+  let requiredPaths = [''];
+  for (const segment of required) {
+    const alternatives = logicalPathTexts(segment);
+    if (!alternatives.length) {
+      return { paths: [], topology: 'ambiguous_semicolon_order', safe: false };
+    }
+    requiredPaths = requiredPaths.flatMap((prefix) => alternatives.map((alternative) => (
+      clean(prefix ? `${prefix} and ${alternative}` : alternative)
+    )));
+  }
+  const alternativePaths = wholeClauseAlternatives.flatMap(logicalPathTexts);
+  return {
+    paths: [...requiredPaths, ...alternativePaths],
+    topology: wholeClauseAlternatives.length
+      ? (required.length === 1
+        ? 'whole_clause_alternatives'
+        : 'conjunctive_groups_then_whole_clause_alternatives')
+      : 'conjunctive_groups',
+    safe: true,
+  };
 }
 
 function pathFromText(part, { inheritedGrade = null } = {}) {
@@ -214,16 +287,22 @@ function pathFromText(part, { inheritedGrade = null } = {}) {
   const equivalentAllowed = /\bor\s+(?:an\s+)?equivalent\b/i.test(expanded)
     || /\bequivalent\s+(?:course|credit)\b/i.test(expanded);
   const allOf = refs.map((ref, index) => {
+    const previous = refs[index - 1];
+    const lead = expanded.slice(
+      previous ? previous.index + previous.raw.length : 0,
+      ref.index,
+    );
     const next = refs[index + 1];
     const tail = expanded.slice(ref.index, next ? next.index : expanded.length);
-    if (/\beligib(?:le|ility)\b/i.test(tail)) {
+    const readinessPrefix = /\breadiness\s+to\s+enroll\s+in\s*$/i.test(lead);
+    if (/\beligib(?:le|ility)\b/i.test(tail) || readinessPrefix) {
       return {
         type: 'non_course',
         condition: 'course_eligibility',
         course_key: `va:${ref.code}`,
         course_ref: `va:crs:${ref.code}`,
         code: ref.code,
-        raw: clean(tail),
+        raw: readinessPrefix ? clean(`${lead}${ref.raw}`) : clean(tail),
       };
     }
     const grade = (GRADE_RE.exec(tail) || [])[1] || localGrade || null;
@@ -242,6 +321,7 @@ function pathFromText(part, { inheritedGrade = null } = {}) {
   let residue = expanded;
   residue = residue.replace(COURSE_RE, ' ')
     .replace(new RegExp(GRADE_RE.source, 'gi'), ' ')
+    .replace(/\breadiness\s+to\s+enroll\s+in\b/gi, ' ')
     .replace(/\b(?:completion of|successful completion of|satisfactory completion of|prerequisites?|corequisites?)\b/gi, ' ')
     .replace(/\b(?:and|with|a|an|the|course|courses|or equivalent|equivalent|eligible|eligibility)\b/gi, ' ')
     .replace(/[(),.:]/g, ' ');
@@ -272,11 +352,12 @@ function pathFromText(part, { inheritedGrade = null } = {}) {
  * `paths` are OR; the conditions in each `all_of` are AND.  This represents
  * `(CSC 201 AND CSC 202) OR EGR 125 OR permission` without information loss.
  */
-function parseRequisiteClause(kind, raw) {
+function parseRequisiteClause(kind, raw, { sourceLabel = null } = {}) {
   const text = clean(raw).replace(/[.;\s]+$/g, '');
   const grades = [...text.matchAll(new RegExp(GRADE_RE.source, 'gi'))].map((m) => m[1].toUpperCase());
   const inheritedGrade = grades.length === 1 ? grades[0] : null;
-  const parts = logicalPathTexts(text);
+  const semicolon = semicolonPathTexts(text);
+  const parts = semicolon.paths;
   const paths = parts.map((part) => pathFromText(part, { inheritedGrade })).filter((p) => p.all_of.length);
   if ((text.match(/\bor\s+(?:an\s+)?equivalent\b/gi) || []).length === 1) {
     for (const path of paths) {
@@ -287,7 +368,7 @@ function parseRequisiteClause(kind, raw) {
   }
   const flags = [];
   if (/\band\s*\/\s*or\b/i.test(text)) flags.push('and_or_language');
-  if (/;/.test(text)) flags.push('unsupported_semicolon_grammar');
+  if (/;/.test(text) && !semicolon.safe) flags.push('unsupported_semicolon_grammar');
   if (paths.some((path) => /[()]/.test(path.raw) && /\bor\b/i.test(path.raw))) {
     flags.push('unsupported_boolean_grammar');
   }
@@ -305,6 +386,11 @@ function parseRequisiteClause(kind, raw) {
     raw: text,
     formula: 'paths_or__conditions_and',
     paths,
+    ...(semicolon.topology ? { semicolon_topology: semicolon.topology } : {}),
+    ...(sourceLabel ? { source_label: sourceLabel } : {}),
+    ...(sourceLabel && /corequisite\s+or\s+prerequisite|prerequisite\s+or\s+corequisite/i.test(sourceLabel)
+      ? { timing: 'corequisite_or_prerequisite' }
+      : {}),
     ...(singletonCourses.every(Boolean) ? { any_of: singletonCourses } : {}),
     flags,
   };
@@ -312,12 +398,20 @@ function parseRequisiteClause(kind, raw) {
 
 function extractRequisiteClauses(text) {
   const source = clean(text);
-  const labels = [...source.matchAll(/\b(Prerequisites?|Corequisites?)\s*:\s*/gi)];
+  const labels = [...source.matchAll(new RegExp(
+    REQUISITE_LABEL_RE.source.replace(/:\s*$/, ':\\s*'),
+    'gi',
+  ))];
   return labels.map((match, index) => {
     const start = match.index + match[0].length;
     const end = labels[index + 1]?.index ?? source.length;
     return {
-      kind: /^pre/i.test(match[1]) ? 'prerequisite' : 'corequisite',
+      // "Corequisite or Prerequisite" permits prior OR concurrent completion,
+      // which is exactly corequisite timing; retain the literal source label
+      // and an explicit timing marker instead of strengthening it to prior-only.
+      kind: /^pre/i.test(match[1]) && !/\bor\b/i.test(match[1])
+        ? 'prerequisite' : 'corequisite',
+      sourceLabel: clean(match[1]),
       raw: clean(source.slice(start, end)),
     };
   }).filter((clause) => clause.raw);
@@ -342,11 +436,19 @@ function parseVccsCoursePage(html, { requestedCode = null, url = null } = {}) {
     if (!code) return;
     const $dd = $dt.next('dd');
     if (!$dd.length) return;
+    const endtextNodes = $dd.find('.endtext');
     const description = clean($dd.find('.coursedesc').first().text()) || null;
-    const rawCourseEndtext = clean($dd.find('.endtext').first().text()) || null;
+    const rawCourseEndtext = clean(endtextNodes.first().text()) || null;
     const creditText = clean($dd.find('.credits').first().text());
     const creditMatch = /(\d+(?:\.\d+)?)\s+credits?/i.exec(creditText);
     const effectiveMatch = /<!--\s*(\d{4}-\d{2}-\d{2})\s*-->/.exec($dd.html() || '');
+    const rawRecordText = clean([
+      clean($dt.text()), description, rawCourseEndtext, creditText,
+    ].filter(Boolean).join(' '));
+    const rawRecordHtml = `${$dt.toString()}${$dd.toString()}`;
+    const fullRecordLabelCount = (
+      clean($dd.text()).match(new RegExp(REQUISITE_LABEL_RE.source, 'gi')) || []
+    ).length;
     entries.push({
       code,
       title,
@@ -354,6 +456,13 @@ function parseVccsCoursePage(html, { requestedCode = null, url = null } = {}) {
       raw_course_endtext: rawCourseEndtext,
       credits: creditMatch ? Number(creditMatch[1]) : null,
       effective: effectiveMatch?.[1] || null,
+      _record_evidence: {
+        raw_text: rawRecordText,
+        raw_text_sha256: createHash('sha256').update(rawRecordText).digest('hex'),
+        record_html_sha256: createHash('sha256').update(rawRecordHtml).digest('hex'),
+        endtext_node_count: endtextNodes.length,
+        full_record_requisite_label_count: fullRecordLabelCount,
+      },
     });
   });
 
@@ -371,18 +480,29 @@ function parseVccsCoursePage(html, { requestedCode = null, url = null } = {}) {
 
   const clauses = extractRequisiteClauses(entry.raw_course_endtext);
   const groups = clauses
-    .map((clause) => parseRequisiteClause(clause.kind, clause.raw));
-  const flags = [...new Set(groups.flatMap((group) => group.flags))];
+    .map((clause) => parseRequisiteClause(clause.kind, clause.raw, {
+      sourceLabel: clause.sourceLabel,
+    }));
+  const boundaryFlags = [];
+  if (entry._record_evidence.endtext_node_count !== 1) {
+    boundaryFlags.push('incomplete_master_record_boundary');
+  }
+  if (entry._record_evidence.full_record_requisite_label_count !== clauses.length) {
+    boundaryFlags.push('requisite_label_outside_endtext_boundary');
+  }
+  const flags = [...new Set([...groups.flatMap((group) => group.flags), ...boundaryFlags])];
   const unsafeFlags = new Set([
     'unparsed_clause',
     'unparsed_residue',
     'and_or_language',
     'unsupported_boolean_grammar',
     'unsupported_semicolon_grammar',
+    'incomplete_master_record_boundary',
+    'requisite_label_outside_endtext_boundary',
   ]);
-  const status = groups.length
-    ? (groups.some((group) => group.flags.some((flag) => unsafeFlags.has(flag))) ? 'unparsed' : 'parsed')
-    : 'none';
+  const status = flags.some((flag) => unsafeFlags.has(flag))
+    ? 'unparsed'
+    : groups.length ? 'parsed' : 'none';
 
   const supply = [];
   $('#offeredByDiv a[href*="/colleges/"][href*="/courses/"]').each((_, anchor) => {
@@ -399,14 +519,48 @@ function parseVccsCoursePage(html, { requestedCode = null, url = null } = {}) {
     });
   });
 
+  const sourceContentSha256 = entry._record_evidence.raw_text_sha256;
+  const sourceEvidence = {
+    kind: 'official_course_entry',
+    raw_text: entry._record_evidence.raw_text,
+    content_sha256: sourceContentSha256,
+    source_page_content_sha256: createHash('sha256').update(String(html || '')).digest('hex'),
+    source_page_content_bytes: Buffer.byteLength(String(html || ''), 'utf8'),
+    record_html_sha256: entry._record_evidence.record_html_sha256,
+    record_boundary: 'dl > dt + dd',
+    requisite_text_boundary: '.endtext',
+    parser_contract: VCCS_MASTER_RECORD_CONTRACT,
+  };
+  const {
+    _record_evidence: ignoredRecordEvidence,
+    ...publicEntry
+  } = entry;
   return {
-    ...entry,
+    ...publicEntry,
     raw_requisites: clauses.length
-      ? clauses.map((clause) => `${clause.kind === 'prerequisite' ? 'Prerequisite' : 'Corequisite'}: ${clause.raw}`).join(' ')
+      ? clauses.map((clause) => `${clause.sourceLabel}: ${clause.raw}`).join(' ')
       : null,
     found: true,
     status,
     source_url: url,
+    source: 'vccs_master_course_file',
+    source_evidence: sourceEvidence,
+    source_content_sha256: sourceContentSha256,
+    ...(status === 'none' ? {
+      explicit_none_evidence: {
+        kind: 'structured_vccs_master_record_boundary',
+        course_entry_status: 'published_exact_vccs_master_course_record',
+        finding: 'no_prerequisite_or_corequisite_published_in_complete_master_record',
+        literal_none_statement: false,
+        source_content_sha256: sourceContentSha256,
+        source_page_content_sha256: sourceEvidence.source_page_content_sha256,
+        record_html_sha256: sourceEvidence.record_html_sha256,
+        parser_contract: VCCS_MASTER_RECORD_CONTRACT,
+        record_boundary: sourceEvidence.record_boundary,
+        requisite_text_boundary: sourceEvidence.requisite_text_boundary,
+        requisite_clause_count: 0,
+      },
+    } : {}),
     groups,
     supply: supply.sort((a, b) => a.slug.localeCompare(b.slug)),
     flags,
@@ -503,6 +657,7 @@ class VccsCourseClient {
 
 module.exports = {
   BASE,
+  VCCS_MASTER_RECORD_CONTRACT,
   VccsCourseClient,
   clean,
   normalizeCode,

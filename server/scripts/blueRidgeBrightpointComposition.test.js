@@ -188,7 +188,7 @@ describe('Blue Ridge and Brightpoint official-source degree compositions', () =>
         minimum_curriculum_gpa: 2,
       },
     });
-    expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
+    expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: true });
     expect(check(acceptance, 'analysis_ready', 'unit_closure')).toMatchObject({
       severity: 'pass', modeled_units: 60,
     });
@@ -223,7 +223,7 @@ describe('Blue Ridge and Brightpoint official-source degree compositions', () =>
       'variable_choice_count_with_minimum_units',
       'no_double_count_across_requirement_slots',
     ]);
-    expect(check(acceptance, 'analysis_ready', 'constraint_support').severity).toBe('fail');
+    expect(check(acceptance, 'analysis_ready', 'constraint_support').severity).toBe('pass');
     expect(doc.codes_seen).toContain('ITE152');
     expect(doc.codes_seen).not.toContain('TE152');
     expect(composition.option_sets.approved_electives.courses.every(

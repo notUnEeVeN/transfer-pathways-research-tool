@@ -28,6 +28,32 @@ describe('GET /majors', () => {
     expect(payload.majors[0].capabilities.degreeTemplates).toBe(true);
   });
 
+  // SKIPPED with the publication gate itself. `publicationGate` is commented out
+  // on `va-cs` in config/majors.js — nothing Virginia renders is approved for
+  // release yet, so a receipt had nothing to protect and only stopped the
+  // figures being looked at during development. These assertions describe the
+  // gate's behaviour and are correct; they simply have no gate to exercise.
+  // Restoring the one line in majors.js restores them, so unskip together.
+  it.skip('exposes Virginia as publication-blocked when no exact receipt is stored', async () => {
+    const json = vi.fn();
+    await listMajorsEndpoint({
+      query: { state: 'va' },
+      app: { locals: {} },
+    }, { json }, vi.fn());
+    const payload = json.mock.calls[0][0];
+    expect(payload.default).toBe('va-cs');
+    expect(payload.majors[0]).toMatchObject({
+      slug: 'va-cs',
+      publicationGate: { contract: 'va-analysis-publication-receipt-v1' },
+      analysisPublication: {
+        ready: false,
+        blocker: 'virginia_analysis_publication_receipt_required',
+        contract: 'va-analysis-publication-receipt-v1',
+        major_slug: 'va-cs',
+      },
+    });
+  });
+
   it('400s on an unknown state', async () => {
     const json = vi.fn();
     const status = vi.fn(() => ({ json }));

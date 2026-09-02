@@ -197,4 +197,4 @@ python paper_district_heatmap.py --figure out.png    # paper-style PNG
 `course_reqs.json`) · `assist_agreements` (ASSIST 2025–26) ·
 `assist_institutions`. Local computation and render:
 `analysis/paper_district_heatmap.py`; publish the checked matplotlib Figure
-with `pmt.publish(fig, ...)`.*
+with `pmt.publish(fig, major_slug="cs", ...)`.*

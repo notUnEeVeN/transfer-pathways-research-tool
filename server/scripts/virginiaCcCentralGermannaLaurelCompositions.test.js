@@ -45,11 +45,12 @@ const optionSetCodes = (composition) => {
 };
 
 describe('Central Virginia, Germanna, and Laurel Ridge Computer Science A.S. compositions', () => {
-  it.each(SLUGS)('%s is catalog-accepted and blocked only on unsupported exact constraints', (slug) => {
+  it.each(SLUGS)('%s preserves an honest catalog and evaluator verdict', (slug) => {
     const { acceptance, composition, doc, extract } = degree(slug);
-    expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
+    const ready = slug !== 'laurel-ridge-community-college';
+    expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: ready });
     expect(acceptance.catalog.failed).toEqual([]);
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance.analysis_ready.failed).toEqual(ready ? [] : ['constraint_support']);
     expect(check(acceptance, 'analysis_ready', 'unit_closure')).toMatchObject({
       severity: 'pass', modeled_units: 60,
     });
@@ -94,6 +95,13 @@ describe('Central Virginia, Germanna, and Laurel Ridge Computer Science A.S. com
       humanities: ['HUM256', 'PHI100', 'PHI111', 'PHI220', 'REL230'],
       literature: ['ENG225', 'ENG245', 'ENG246', 'ENG250', 'ENG255', 'ENG258'],
     });
+    expect(doc.requirement_groups.find((group) => (
+      group.title === 'UCGS Block II — Humanities, Art, and Literature'
+    ))).toMatchObject({
+      analysis_constraints: [{
+        kind: 'distinct_ge_areas', status: 'supported', minimum_distinct_categories: 2,
+      }],
+    });
     const science = doc.requirement_groups.find((group) => (
       group.title === 'Two distinct introductory laboratory-science selections'
     ));
@@ -130,6 +138,31 @@ describe('Central Virginia, Germanna, and Laurel Ridge Computer Science A.S. com
       },
     });
     expect(composition.option_sets.world_language.courses).toHaveLength(40);
+    expect(composition.course_unit_evidence_artifact).toMatchObject({
+      path: 'research/germanna-language-course-units.json',
+      sha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+      source_refs: ['elective'],
+    });
+    const languageUnitEvidence = (doc.course_unit_evidence || []).filter((row) => (
+      row.evidence === 'captured_official_course_detail'
+    ));
+    expect(languageUnitEvidence).toHaveLength(14);
+    expect(languageUnitEvidence).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'ARA201', units: 3 }),
+      expect.objectContaining({ code: 'CHI202', units: 4 }),
+      expect.objectContaining({ code: 'GER202', units: 3 }),
+      expect.objectContaining({ code: 'ITA101', units: 4 }),
+      expect.objectContaining({ code: 'ITA201', units: 3 }),
+      expect.objectContaining({ code: 'JPN201', units: 4 }),
+      expect.objectContaining({ code: 'LAT101', units: 4 }),
+      expect.objectContaining({ code: 'LAT201', units: 3 }),
+    ]));
+    expect(languageUnitEvidence.every((row) => (
+      row.source_refs.includes('elective')
+      && row.source_paths[0].startsWith('research/germanna-language-course-units.json#')
+      && row.unit_sources[0].official_url.startsWith('https://catalog.germanna.edu/')
+      && /^[a-f0-9]{64}$/.test(row.unit_sources[0].source_sha256)
+    ))).toBe(true);
     expect(composition.option_sets.transfer_electives.courses).toEqual(expect.arrayContaining([
       'MTH161', 'MTH162', 'MTH167', 'CSC205', 'EGR121', 'EGR122', 'EGR270',
       'CST100', 'CST110', 'MTH265', 'MTH266', 'ASL101', 'SPA202',

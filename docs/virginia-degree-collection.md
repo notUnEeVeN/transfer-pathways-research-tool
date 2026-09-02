@@ -25,7 +25,7 @@ because that is still each institution's current official catalog. The
 secondary cohort is one click/filter away; its source work is retained but does
 not enter the primary verification denominator or UC comparison.
 
-### Current primary-cohort result (2026-08-10)
+### Current primary-cohort result (2026-08-25)
 
 - **15/15 SCHEV public four-year institutions:** full major, GE/college, and
   university-graduation layers are composed and catalog-accepted.
@@ -43,9 +43,259 @@ not enter the primary verification denominator or UC comparison.
   `computer_science_specific_prescribed_branch: false`; no CSC sequence is
   invented.
 
-The 34 positive primary records all pass source-layer/source-reference checks,
-canonical unit closure, and course-identity resolution. They remain unsigned
-until an allowlisted researcher performs the separate human-verification step.
+All 37 selected release documents (19 associate and 18 bachelor records,
+including the three secondary bachelor records) pass the catalog/source-
+structure gate. Five additional extracted Transfer Virginia associate maps are
+retained as explicit alternates, so the source-accounting denominator is
+**42/42**, not 37/37. Each alternate receipt binds both sources' protected-core
+and requirement-semantic hashes, verification state, and exact disposition;
+the projection still emits only one associate program per college. Three
+dispositions are safe. Reynolds and Camp remain blocked because a Roy-verified
+Transfer Virginia core differs from the selected, not-yet-verified official
+catalog replacement.
+
+That does **not** make the figures publishable. Under the stricter analysis
+contract, only 8/37 selected records currently pass every executable rule. The
+remaining documents expose source conflicts, open adviser/destination choices,
+prerequisite or sequence rules, and unimplemented degree-policy constraints
+instead of treating those rules as satisfied. Every changed source bundle also
+remains unsigned until an allowlisted researcher performs the separate human-
+verification step.
+
+Virginia figures therefore remain fail-closed in the UI, comparison views, and
+analysis API until an exact active publication receipt matches the current
+projection and the release audit passes all figures. A catalog-accepted
+document is suitable for source review; it is not automatically a paper
+observation.
+
+### Current Figure 3/4 condition audit (2026-08-25)
+
+Keep the authoritative Mongo projection and the checked-in candidate plan
+separate. The authoritative projection currently reports **285/304 cells
+ready, 19 blocked, and 0 invalid**. Eighteen blocked cells are Virginia Tech
+condition cases; the nineteenth is Southwest Virginia Community College to
+Radford. Its figure-specific source gate reports **21/35 documents ready**:
+10 of 19 associate documents and 11 of 16 active bachelor documents. Their
+cross-product contains 110 cells, one of which is the blocked Southwest-to-
+Radford cell, so **109/304 authoritative cells currently clear both gates**.
+
+The read-only accepted-source comparison reports a stronger candidate:
+**288/304 condition-ready cells, 16 blocked, and 0 invalid**, for exactly three
+gains and zero regressions relative to the authoritative projection. That is a
+condition-only comparison. It does not confer source readiness or carry a
+signature onto a changed protected tree. In particular, the candidate Virginia
+Tech tree cannot become a twelfth ready bachelor document until its five added
+course alternatives are independently reconciled and signed. The dry-run still
+reports 10 unresolved protected-core conflicts, two changed source bundles, and
+five unsigned records; candidate trees are therefore neither substituted nor
+written. No candidate joint source-and-condition count is publication-eligible
+before that review; the older **110/304** claim is not reproducible under the
+current signature gate and must not be cited. Virginia remains hidden, and
+neither 285 nor 288 computationally fillable cells may be described as
+paper-ready observations.
+
+The Virginia Tech audit retains exact current schedule bytes for 40 `CSC222`
+sections across 15 blocked sender endpoints. Central Virginia's exact current
+endpoint is available but lists zero current sections; the other endpoints
+supply the 40 retained sections. None identifies an exact current Java section
+binding, and contextual or historical Java references are not promoted to a
+current college-wide fact. Closing a cell requires a current official syllabus,
+section note, universal college policy, or retained written confirmation for
+that sender.
+
+Radford is now **18/19 condition-ready**. Richard Bland's owner-local
+`PHYS201`/`PHYS202` pair is bound to exact current Transfer Virginia
+`PHYS221`/`PHYS222` receipts and current Radford laboratory-course evidence;
+those Richard Bland identities are never promoted to statewide VCCS identity.
+Southwest remains blocked because its exact selected 60-credit plan contains
+only `PHY241`, not a second selected eligible science or open science capacity.
+An equivalency for an unselected course cannot add that course to the degree.
+
+The separate Figure 3/4 source-blocker audit must reproduce the authoritative
+14-document blocked cohort: nine associate and five bachelor records, including
+Virginia Tech until its five protected course alternatives are reconciled and
+signed. The refreshed live recount passes at 21/35 ready with source/projection
+parity. Across the 14 documents it records two automatable findings, 12
+new-source findings, and 16 human/institutional findings. Its five bachelor
+records expose 13 ordered remaining actions: two automatable, three requiring
+new official source, and eight human/institutional. One document can contribute
+to more than one class. Any older 13-document/22-ready artifact is stale. These
+are explicit missing or conflicting facts, not parser failures that can safely
+be guessed away.
+
+## Publication release gate
+
+The complete non-publishing release check is one command from `server/`:
+
+```bash
+npm run va:release:check
+```
+
+It continues through every phase so one run reports all blockers: deterministic
+prerequisite-artifact drift, source-catalog and shared-schema dry runs, the
+Figure 6 corpus contract, paper-figure readiness, current human signatures,
+the committed figure fingerprint, both test suites, and the production frontend
+build. It never supplies a data/artifact `--write` or database `--apply`; any
+failed phase leaves Virginia disabled. The normal frontend build may refresh
+its ignored local build output, but no research collection or source artifact
+is changed.
+
+Run the release sequence from `server/` against an explicit staging database:
+
+```bash
+# Rebuild/evaluate 37 selected documents and account for five alternates without writing.
+npm run va:catalog:plan
+
+# Build the shared-schema projection in memory; dry-run is the default.
+npm run va:projection:plan
+
+# Recheck cohort, sources, requirement conservation, identities, and figures.
+npm run va:publication:audit
+
+# Only after every gate passes and researchers sign the changed source bundles:
+node scripts/importVirginiaCatalogDegrees.js \
+  --accepted-compositions-only --apply --uri <staging-uri> --db pmt_research_staging
+MONGO_URI=<staging-uri> DB_NAME=pmt_research_staging \
+  node scripts/va/buildVaDocuments.js --apply
+
+# To exercise an intentionally incomplete candidate in staging, keep it hidden
+# and supply both explicit flags. This is not a publication command.
+MONGO_URI=<staging-uri> DB_NAME=pmt_research_staging \
+  node scripts/va/buildVaDocuments.js --apply --allow-incomplete --staging
+```
+
+The projection publishes its four Virginia target collections in one
+transaction and records an exact rollback generation. An incomplete projection
+can be written only with both `--allow-incomplete --staging`, and only when the
+database name is exactly `pmt_research_staging`, `pmt_research_preview`,
+`pmt_research_sandbox`, or `pmt_research_test`. Similar-looking names, including
+names containing `prod` or merely ending in `_dev`, are rejected. The incomplete
+snapshot carries no analysis receipt and cannot enable Virginia visuals.
+Production has no incomplete-release override. A staging database must first be
+provisioned with the source collections needed by the dry-run builders; an empty
+database is not a meaningful publication test. The shared database must never be
+used for an exploratory run.
+
+The legacy `va_schema_backup` collection is not a sufficient release rollback:
+it predates the canonical four-collection projection and only captured the old
+degree shapes. Its writer is retired and fails before connecting. Current
+source replacements instead retain the complete prior source document in
+`va_revisions.before_document`; every projection publish snapshots all four
+Virginia target collections, exact counts, order, and content hashes under one
+generation. Restore validates that complete manifest before its first write,
+saves the state being replaced as a second rollback generation, and performs
+the replacement transactionally. Restore deliberately does not require the
+current source collections to reproduce the old bytes: source drift is a core
+rollback use case. Projection and prerequisite publish/restore operations append
+to one transaction-owned, monotonically sequenced transition ledger. The active
+state is chosen by that sequence—not by wall-clock timestamps or random UUIDs—
+and any missing, malformed, duplicate, gapped, wrong-state, or extra authority
+row fails closed. Every restore writes the newest projection state-transition as
+a publication tombstone with no analysis receipt, so Virginia stays hidden until
+a later full publication passes and creates a fresh receipt. Legacy snapshots
+remain rollback material but cannot authorize visuals. Historical receipts remain
+immutable evidence; they cannot reactivate a restored state.
+
+As of the snapshot date, the read-only live inventory reports **0/0 projection
+snapshots, 0/0 prerequisite snapshots, and no publication-transition ledger**.
+All seven legacy backup generations validate, but each is degree-only; no live
+full-target rollback generation exists yet. Reproduce that fact without
+writing with `npm run va:rollback:live:audit`. The rollback implementation and
+its synthetic transaction tests are ready, but that must not be described as
+an already available production rollback.
+
+The human-verification gate is also intentionally separate from schema and
+evaluator work. Reproduce its current read-only queue with:
+
+```bash
+npm run va:verification:review
+```
+
+The current candidate plan contains 37 documents. Four prior signatures carry
+over byte-for-byte. Fourteen course-unit overlays and two requirement-capacity
+projections have exact evidence-only receipts, leaving a 17-record review
+queue: 10 unresolved protected-core conflicts, two changed official source
+bundles, and five records without a current signature. The raw candidate has
+12 protected-core conflicts; the two capacity-only changes are admitted only
+through their narrow evidence overlays, never by substituting the raw tree. A
+protected-core conflict is not auto-approved as “standardization”: the command
+emits the exact semantic diff and requires a researcher to reconcile it against
+the official source. Neither an exact evaluator proof nor a passing projection
+can replace that signature.
+
+The current degree-page cache is complete enough to reproduce all 37
+catalog-accepted source documents, so a generic full rescrape is not the next
+step. Remaining degree work is targeted: resolve the named source conflicts or
+open policies, add exact evaluators, and obtain human signatures. The course
+identity audit also supplements gaps in Transfer Virginia with hashed official
+course-detail evidence in
+`server/.va-catalogs/research/vccs-missing-course-units.json`; it never copies a
+requirement-slot total onto each alternative course.
+
+Figure 6 is a separate collection project. It requires exact, owner-specific
+prerequisite corpora for VCCS and each receiving university, using OR-of-AND
+formulas. The older Virginia prerequisite research artifacts are useful source
+work, but they do not by themselves satisfy that publication contract. Figure
+6 remains blocked until those corpora are complete, imported as one matching
+generation, and independently verified.
+
+The current prerequisite triage is reproducible from `server/`:
+
+```bash
+npm run va:prerequisites:vccs-gaps:check
+npm run va:prerequisites:university-scope:check
+npm run va:prerequisites:university-acquisition:check
+npm run va:prerequisites:university-candidates:check
+npm run va:prerequisites:university-review:check
+```
+
+For VCCS, the canonical 19-plan scope contains 184 required sending courses,
+not the legacy mixed 266-course set. All 184 have an exact formula or a
+validated complete-record `none`; the strict corpus contains five
+additional closure rows, for 189 total. `BIO141` and `EGR121` now parse exactly,
+and exact owner entries close `ENG249`, `ENG268`, and `CSC200`–`CSC202`.
+`EGR126` is `none` only because its exact current statewide master record has a
+complete hashed record boundary with zero recognized requisite clauses; the
+silent historical owner entry is not used as none evidence. `PHI102` has no
+current master record, but its exact 2020–2021 Southwest CourseLeaf record is a
+single hash-bound course boundary with zero requisite clauses. A same-catalog
+`ENG268` control proves that the platform emits a requisite marker when one is
+present. The finding is recorded as “no requisite stated in the complete
+record,” never as a literal official “none” statement. Exact official HTTP
+responses are retained for all three Southwest records; whole-response,
+single-course-fragment, and extracted-text hashes are replayed before these
+rows can enter the generated corpus.
+
+For receiving universities, the exact degree-derived scope contains 843 named
+courses across 16 active institutions plus seven separately proved Longwood
+resident-path courses, for 850 required direct-review rows. The acquisition
+artifact plans **980 capture keys over 285 routes** and retains **935 unique
+exact entries**. Together with retained exact official-cache evidence, the
+candidate builder yields **1,169 safely bounded review candidates: 849 direct
+and 320 closure**. Virginia Tech `BIT4614` is the one missing direct row.
+
+Strict direct review reports 652 parsed formulas, 171 structural-`none`
+findings, 26 unparsed rows, and one missing row. Closure review reports 190
+parsed formulas, 109 structural-`none` findings, and 21 unparsed rows. The
+resulting **1,122 promoted contract-shaped rows** are review evidence, not a
+publication corpus. Of 709 recursively referenced prerequisite keys, 633
+resolve to promoted rows and **76 remain unresolved**: 11 unparsed direct, 20
+unparsed closure, one missing direct, and 44 outside the current bounded scope.
+The outside-scope references require version-aligned archived evidence or an
+institution-specific identity mapping; they are not safe zero-edge inferences.
+
+The current totals include exact VCU evidence for `EGMN102`, `EGMN190`, and
+`EGMN203`: the latter two are safe structural-`none` rows, while `EGMN102`
+stays blocked because its prerequisite and concurrent-prerequisite formulas
+each include an unresolved instructor-permission alternative. They also include
+14 exact Radford/UVA Wise entries: five safely projected course formulas and
+nine fail-closed rows whose exclusion, pre-or-corequisite, placement,
+high-school, or otherwise unsupported semantics cannot be discarded. No
+partial course edges are published from those blocked rows.
+
+The generated university review artifact reports **zero publication rows**.
+Recursive closure is incomplete, no complete university corpus exists, and no
+human approval receipt has been issued; Figure 6 therefore remains disabled.
 
 An institution may have no Computer Science A.S./B.S., may publish a related
 award under another title, or may expose more than one materially different
@@ -381,11 +631,12 @@ node scripts/importVirginiaCatalogDegrees.js \
 The current expected preflight is:
 
 - 57 registry candidates evaluated;
-- 37 publishable documents: 19 A.S. and 18 bachelor's records;
-- 37/37 catalog-accepted, including all 34 primary records plus Bridgewater,
+- 37 source-layer importable documents: 19 A.S. and 18 bachelor's records;
+- 37/37 selected official-catalog documents accepted, including all 34 primary records plus Bridgewater,
   Randolph-Macon, and Shenandoah from the secondary cohort;
-- one analysis-ready record (Virginia Western); every other accepted record is
-  blocked only by explicitly retained `constraint_support` rules; and
+- eight analysis-ready records (all associate degrees); the other 29 accepted
+  records retain explicit source conflicts, open choices, or unsupported
+  evaluator/policy rules; and
 - a database-specific list of ineligible legacy/incomplete records that would
   be superseded, with no write during the preflight. Review that list against
   production; its count depends on the target database's existing state.

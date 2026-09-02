@@ -3,7 +3,10 @@ import { createRequire } from 'node:module';
 
 const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../test/mongoHarness');
-const { publish, list, download, update, remove, pmtPy } = cjs('./Figures');
+const {
+  publish, list, download, update, remove, pmtPy,
+  figurePublicationCurrent, publicationBinding,
+} = cjs('./Figures');
 
 let mongo;
 let db;
@@ -60,6 +63,7 @@ const run = (handler, req) => new Promise((resolve, reject) => {
 const validBody = (over = {}) => ({
   slug: 'coverage-heatmap',
   title: 'Coverage heatmap',
+  major_slug: 'cs',
   caption: 'College × campus articulation',
   formats: { svg: SVG, png: PNG, pdf: PDF },
   ...over,
@@ -91,6 +95,7 @@ const validInteractiveBody = () => ({
   slug: 'paper-credit-loss-copy',
   title: 'Paper-style credit loss (published copy)',
   caption: 'Exact renderer pilot',
+  major_slug: 'cs',
   visual: 'paper-credit-loss',
 });
 
@@ -100,6 +105,7 @@ describe('POST /publish', () => {
     expect(res.body).toEqual({ ok: true, slug: 'coverage-heatmap' });
     const doc = await db.collection('published_figures').findOne({ _id: 'coverage-heatmap' });
     expect(doc.title).toBe('Coverage heatmap');
+    expect(doc).toMatchObject({ major_slug: 'cs', state: 'ca' });
     expect(doc.author_uid).toBe('u1');
     expect(doc.author_label).toBe('ada@b.edu');
     expect(Buffer.from(doc.formats.svg.buffer).toString()).toContain('<svg');
@@ -136,7 +142,7 @@ describe('POST /publish', () => {
     const doc = await db.collection('published_figures').findOne({ _id: 'paper-credit-loss-copy' });
     expect(doc).toMatchObject({
       publication_type: 'interactive',
-      visual: { id: 'paper-credit-loss', options: {} },
+      visual: { id: 'paper-credit-loss', options: { majorSlug: 'cs' } },
       author_uid: 'u1',
     });
     expect(JSON.stringify(doc)).not.toContain('import ');
@@ -163,6 +169,36 @@ describe('POST /publish', () => {
     expect((await run(publish, fakeReq({ uid: 'u1' }, { body: validBody({ slug: 'Bad Slug!' }) }))).statusCode).toBe(400);
     expect((await run(publish, fakeReq({ uid: 'u1' }, { body: validBody({ title: '' }) }))).statusCode).toBe(400);
     expect((await run(publish, fakeReq({ uid: 'u1' }, { body: validBody({ formats: { png: PNG } }) }))).statusCode).toBe(400);
+  });
+
+  it('requires a configured major data scope', async () => {
+    const missing = await run(publish, fakeReq({ uid: 'u1' }, {
+      body: validBody({ major_slug: undefined }),
+    }));
+    const unknown = await run(publish, fakeReq({ uid: 'u1' }, {
+      body: validBody({ major_slug: 'not-a-major' }),
+    }));
+    expect(missing.statusCode).toBe(400);
+    expect(missing.body.error).toContain('major_slug');
+    expect(unknown.statusCode).toBe(400);
+    expect(await db.collection('published_figures').countDocuments()).toBe(0);
+  });
+
+  it('rejects an interactive major that contradicts its declared data scope', async () => {
+    const res = await run(publish, fakeReq({ uid: 'u1' }, {
+      body: { ...validInteractiveBody(), options: { majorSlug: 'bio' } },
+    }));
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toContain('must match major_slug');
+  });
+
+  it('fails closed instead of storing a Virginia figure without a passing receipt', async () => {
+    const res = await run(publish, fakeReq({ uid: 'u1' }, {
+      body: validBody({ major_slug: 'va-cs' }),
+    }));
+    expect(res.statusCode).toBe(503);
+    expect(res.body.blocker).toBe('virginia_analysis_publication_receipt_required');
+    expect(await db.collection('published_figures').countDocuments()).toBe(0);
   });
 
   it('rejects an unknown interactive renderer', async () => {
@@ -193,6 +229,16 @@ describe('GET /gallery (list)', () => {
     expect(JSON.stringify(rows)).not.toContain(PNG);
     expect(JSON.stringify(rows)).not.toContain(SVG);
   });
+
+  it('hides a stored Virginia artifact when its bound receipt is missing or stale', async () => {
+    await db.collection('published_figures').insertOne({
+      _id: 'stale-va', record_type: 'figure', publication_type: 'static',
+      title: 'Stale Virginia result', major_slug: 'va-cs', state: 'va',
+      analysis_publication: { contract: 'old' }, formats: {}, updated_at: new Date(),
+    });
+    const res = await run(list, fakeReq({ uid: 'u1' }));
+    expect(res.body.figures).toEqual([]);
+  });
 });
 
 describe('GET /gallery/:slug/:format (download)', () => {
@@ -220,6 +266,39 @@ describe('GET /gallery/:slug/:format (download)', () => {
     }));
     expect(res.headers['Content-Disposition']).toContain('coverage-heatmap-paper.pdf');
     expect(res.body.toString()).toBe('paper-pdf');
+  });
+
+  it('does not serve bytes for a stored Virginia artifact after publication revocation', async () => {
+    await db.collection('published_figures').insertOne({
+      _id: 'stale-va', record_type: 'figure', publication_type: 'static',
+      title: 'Stale Virginia result', major_slug: 'va-cs', state: 'va',
+      analysis_publication: { contract: 'old' },
+      formats: { svg: Buffer.from('<svg/>') }, updated_at: new Date(),
+    });
+    const res = await run(download, fakeReq({ uid: 'u1' }, {
+      params: { slug: 'stale-va', format: 'svg' },
+    }));
+    expect(res.statusCode).toBe(404);
+  });
+});
+
+describe('Virginia frozen-publication binding', () => {
+  it('accepts only an exact current gate binding', () => {
+    const status = {
+      ready: true,
+      contract: 'contract-v1',
+      major_slug: 'va-cs',
+      generation_id: 'generation-2',
+      projection_manifest_sha256: 'a'.repeat(64),
+      publication_evaluator_fingerprint_sha256: 'b'.repeat(64),
+      transfer_equivalency_condition_report_sha256: 'c'.repeat(64),
+      pathway_complexity_prerequisite_report_sha256: 'd'.repeat(64),
+    };
+    const figure = { major_slug: 'va-cs', analysis_publication: publicationBinding(status) };
+    expect(figurePublicationCurrent(figure, status)).toBe(true);
+    expect(figurePublicationCurrent(figure, { ...status, generation_id: 'generation-3' })).toBe(false);
+    expect(figurePublicationCurrent(figure, { ...status, ready: false })).toBe(false);
+    expect(figurePublicationCurrent({ major_slug: 'cs' }, { ready: false })).toBe(true);
   });
 });
 

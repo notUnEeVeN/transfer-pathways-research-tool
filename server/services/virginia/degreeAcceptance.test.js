@@ -11,6 +11,7 @@ const source = (id, kind, url) => ({
 const section = (units, receivers, refs, select = 1, rest = {}) => ({
   section_advisement: select,
   unit_advisement: units,
+  unit_advisement_max: units,
   source_refs: refs,
   receivers,
   ...rest,
@@ -58,7 +59,7 @@ function fourYearDoc() {
         source_refs: ['graduation'],
       },
       residency: {
-        status: 'required', rule: 'At least 30 credits must be earned in residence.',
+        status: 'none_stated', reason: 'No numeric residency rule is stated for this fixture.',
         source_refs: ['graduation'],
       },
     },
@@ -210,6 +211,184 @@ describe('four-year Virginia degree acceptance', () => {
 
     expect(result.catalog.verdict).toBe('pass');
     expect(check(result, 'catalog', 'four_year_layers').severity).toBe('pass');
+  });
+
+  it('accepts a fixed-credit floor only when every choose-N route proves it', () => {
+    const doc = fourYearDoc();
+    doc.requirement_groups[0].analysis_constraints = [{
+      kind: 'minimum_credit_selection',
+      status: 'evaluator_not_implemented',
+      description: 'Complete at least three credits from this one-course menu.',
+    }];
+    let result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'four_year',
+      resolveCourse: ({ id }) => id === 101,
+    });
+    expect(check(result, 'analysis_ready', 'constraint_support')).toMatchObject({ severity: 'pass' });
+
+    doc.requirement_groups[0].sections[0].receivers[0].receiving.units = 2;
+    result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'four_year',
+      resolveCourse: ({ id }) => id === 101,
+    });
+    const support = check(result, 'analysis_ready', 'constraint_support');
+    expect(support).toMatchObject({ severity: 'fail' });
+    expect(support.issues[0].evaluator_reason).toMatch(/only 2 credits/);
+  });
+
+  it('does not confuse a valid residency declaration with a Figure 3/4 evaluator', () => {
+    const doc = fourYearDoc();
+    doc.unit_audit.residency = {
+      status: 'required',
+      minimum_units: 30,
+      rule: 'At least 30 credits must be earned in residence.',
+      source_refs: ['graduation'],
+    };
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'four_year',
+      resolveCourse: ({ id }) => id === 101,
+    });
+    expect(check(result, 'analysis_ready', 'unit_closure')).toMatchObject({ severity: 'pass' });
+    expect(check(result, 'analysis_ready', 'constraint_support')).toMatchObject({
+      severity: 'fail',
+      issues: [expect.objectContaining({
+        path: 'doc.unit_audit.residency',
+        kind: 'residency',
+        affected_figures: ['3', '4'],
+      })],
+    });
+  });
+
+  it('passes the complete source document into document-bound bachelor evaluators', () => {
+    const doc = fourYearDoc();
+    doc._id = 'va:degree:james-madison-university:cs';
+    doc.school_id = 'va:uni:james-madison-university';
+    doc.institution_id = 'va:uni:james-madison-university';
+    doc.unit_audit.residency = {
+      status: 'required',
+      minimum_units: 30,
+      rule: 'At least 30 credits at JMU and 60 credits at four-year institutions.',
+      source_refs: ['graduation'],
+    };
+    doc.unit_audit.four_year_institution_units_minimum = 60;
+    doc.requirement_groups[3].analysis_constraints = [{
+      kind: 'overlapping_residency_rules',
+      status: 'evaluator_not_implemented',
+      description: 'The exact structured JMU residency limits overlap.',
+    }];
+
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'four_year',
+      resolveCourse: ({ id }) => id === 101,
+    });
+
+    expect(check(result, 'analysis_ready', 'constraint_support')).toMatchObject({
+      severity: 'pass',
+    });
+  });
+
+  it('does not let an unselected preserved variant block the selected degree', () => {
+    const doc = fourYearDoc();
+    doc.requirement_variants = [{
+      key: 'unselected_concentration',
+      selected: false,
+      requirement_groups: [{
+        analysis_constraints: [{
+          kind: 'approved_special_topics',
+          status: 'evaluator_not_implemented',
+        }],
+      }],
+    }];
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'four_year',
+      resolveCourse: ({ id }) => id === 101,
+    });
+    expect(check(result, 'analysis_ready', 'constraint_support')).toMatchObject({ severity: 'pass' });
+  });
+
+  it('does not ignore a selected variant that carries its own requirement tree', () => {
+    const doc = fourYearDoc();
+    doc.requirement_variants = [{
+      key: 'selected_concentration',
+      selected: true,
+      analysis_constraints: [{
+        kind: 'selected_track_residency',
+        status: 'evaluator_not_implemented',
+      }],
+      requirement_groups: [{
+        analysis_constraints: [{
+          kind: 'approved_special_topics',
+          status: 'evaluator_not_implemented',
+        }],
+      }],
+    }];
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'four_year',
+      resolveCourse: ({ id }) => id === 101,
+    });
+    expect(check(result, 'analysis_ready', 'constraint_support')).toMatchObject({
+      severity: 'fail',
+      issues: expect.arrayContaining([
+        expect.objectContaining({
+          path: 'doc.requirement_variants[0].analysis_constraints[0]',
+          kind: 'selected_track_residency',
+        }),
+        expect.objectContaining({
+          path: 'doc.requirement_variants[0].requirement_groups[0].analysis_constraints[0]',
+          kind: 'approved_special_topics',
+        }),
+      ]),
+    });
+  });
+
+  it('honors explicit catalog and analysis quality blockers without treating review as a block', () => {
+    const resolveCourse = ({ id }) => id === 101;
+    const catalogBlocked = fourYearDoc();
+    catalogBlocked.data_quality_flags = [{
+      code: 'source_arithmetic_conflict',
+      severity: 'block_catalog_acceptance',
+      message: 'The official subtotals conflict.',
+    }];
+    let result = validateDegreeAcceptance(catalogBlocked, {
+      institutionLevel: 'four_year', resolveCourse,
+    });
+    expect(check(result, 'catalog', 'source_quality')).toMatchObject({ severity: 'fail' });
+    expect(check(result, 'analysis_ready', 'analysis_quality_flags'))
+      .toMatchObject({ severity: 'fail' });
+    expect(result.accepted).toBe(false);
+
+    const analysisBlocked = fourYearDoc();
+    analysisBlocked.data_quality_flags = [{
+      code: 'attribute_evaluator_required',
+      severity: 'block_analysis',
+      message: 'A source-authored attribute rule has no evaluator.',
+    }];
+    result = validateDegreeAcceptance(analysisBlocked, {
+      institutionLevel: 'four_year', resolveCourse,
+    });
+    expect(check(result, 'catalog', 'source_quality')).toMatchObject({ severity: 'pass' });
+    expect(check(result, 'analysis_ready', 'analysis_quality_flags'))
+      .toMatchObject({ severity: 'fail' });
+    expect(result.accepted).toBe(true);
+    expect(result.ready_for_analysis).toBe(false);
+
+    analysisBlocked.data_quality_flags[0].severity = 'block';
+    result = validateDegreeAcceptance(analysisBlocked, {
+      institutionLevel: 'four_year', resolveCourse,
+    });
+    expect(check(result, 'catalog', 'source_quality')).toMatchObject({ severity: 'pass' });
+    expect(check(result, 'analysis_ready', 'analysis_quality_flags'))
+      .toMatchObject({ severity: 'fail' });
+    expect(result.accepted).toBe(true);
+    expect(result.ready_for_analysis).toBe(false);
+
+    analysisBlocked.data_quality_flags[0].severity = 'review';
+    result = validateDegreeAcceptance(analysisBlocked, {
+      institutionLevel: 'four_year', resolveCourse,
+    });
+    expect(check(result, 'analysis_ready', 'analysis_quality_flags'))
+      .toMatchObject({ severity: 'pass' });
+    expect(result.ready_for_analysis).toBe(true);
   });
 
   it('rejects unofficial/duplicate sources and dangling source refs', () => {
@@ -373,6 +552,22 @@ describe('four-year Virginia degree acceptance', () => {
     expect(result.ready_for_analysis).toBe(false);
     expect(check(result, 'analysis_ready', 'constraint_support')).toMatchObject({ severity: 'fail' });
   });
+
+  it('does not treat associate-only evaluator support as four-year support', () => {
+    const doc = fourYearDoc();
+    doc.requirement_groups[0].analysis_constraints = [{
+      kind: 'no_double_count_across_requirement_slots',
+      status: 'supported',
+    }];
+
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'four_year', resolveCourse: ({ id }) => id === 101,
+    });
+
+    expect(result.accepted).toBe(true);
+    expect(result.ready_for_analysis).toBe(false);
+    expect(check(result, 'analysis_ready', 'constraint_support')).toMatchObject({ severity: 'fail' });
+  });
 });
 
 describe('Virginia associate-degree acceptance', () => {
@@ -392,6 +587,140 @@ describe('Virginia associate-degree acceptance', () => {
     expect(check(result, 'analysis_ready', 'unit_closure')).toMatchObject({
       severity: 'pass', modeled_units: 60,
     });
+  });
+
+  it('accepts only the associate constraint primitives the planner evaluates', () => {
+    const supported = associateDoc();
+    supported.requirement_groups[0].distinct_course_ids_across_sections = true;
+    supported.requirement_groups[0].analysis_constraints = [
+      { kind: 'complete_one_route', status: 'evaluator_not_implemented' },
+      { kind: 'no_double_count_across_requirement_slots', status: 'evaluator_not_implemented' },
+      { kind: 'variable_choice_count_with_minimum_units', status: 'evaluator_not_implemented' },
+    ];
+
+    const accepted = validateDegreeAcceptance(supported, {
+      institutionLevel: 'community_college', resolveCourse,
+    });
+    expect(accepted.ready_for_analysis).toBe(true);
+    expect(check(accepted, 'analysis_ready', 'constraint_support')).toMatchObject({ severity: 'pass' });
+
+    const adviserChoice = associateDoc();
+    adviserChoice.requirement_groups[0].analysis_constraints = [{
+      kind: 'advisor_approved_open_roster',
+      status: 'supported',
+    }];
+    const rejected = validateDegreeAcceptance(adviserChoice, {
+      institutionLevel: 'community_college', resolveCourse,
+    });
+    expect(rejected.ready_for_analysis).toBe(false);
+    expect(check(rejected, 'analysis_ready', 'constraint_support')).toMatchObject({ severity: 'fail' });
+
+    const unresolved = associateDoc();
+    unresolved.requirement_groups[0].analysis_constraints = [{
+      kind: 'no_double_count_across_requirement_slots',
+      status: 'unresolved_source_language',
+    }];
+    const unresolvedResult = validateDegreeAcceptance(unresolved, {
+      institutionLevel: 'community_college', resolveCourse,
+    });
+    expect(unresolvedResult.ready_for_analysis).toBe(false);
+    expect(check(unresolvedResult, 'analysis_ready', 'constraint_support'))
+      .toMatchObject({ severity: 'fail' });
+  });
+
+  it('requires a complete machine-readable category dictionary for named distinct-area choices', () => {
+    const doc = associateDoc();
+    doc.requirement_groups[0] = {
+      title: 'Two source-defined categories',
+      group_conjunction: 'And',
+      source_refs: ['catalog'],
+      distinct_course_ids_across_sections: true,
+      analysis_constraints: [{
+        kind: 'distinct_ge_areas',
+        status: 'supported',
+        minimum_distinct_categories: 2,
+        category_subjects: {
+          programming: ['CSC'],
+          mathematics: ['MTH'],
+        },
+      }],
+      sections: [
+        section(3, [asReceiver([
+          option([201, 'va:CSC221']), option([203, 'va:MTH263']),
+        ])], ['catalog']),
+        section(3, [asReceiver([
+          option([202, 'va:CSC222']), option([204, 'va:MTH264']),
+        ])], ['catalog']),
+      ],
+    };
+
+    const accepted = validateDegreeAcceptance(doc, {
+      institutionLevel: 'community_college', resolveCourse,
+    });
+    expect(check(accepted, 'analysis_ready', 'constraint_support'))
+      .toMatchObject({ severity: 'pass' });
+
+    doc.requirement_groups[0].group_conjunction = 'Or';
+    const mutuallyExclusive = validateDegreeAcceptance(doc, {
+      institutionLevel: 'community_college', resolveCourse,
+    });
+    expect(check(mutuallyExclusive, 'analysis_ready', 'constraint_support'))
+      .toMatchObject({ severity: 'fail' });
+
+    doc.requirement_groups[0].group_conjunction = 'And';
+    delete doc.requirement_groups[0].analysis_constraints[0].category_subjects;
+    const malformed = validateDegreeAcceptance(doc, {
+      institutionLevel: 'community_college', resolveCourse,
+    });
+    expect(check(malformed, 'analysis_ready', 'constraint_support'))
+      .toMatchObject({ severity: 'fail' });
+  });
+
+  it('accepts explicit category and subject filters on invariant aggregate GE units', () => {
+    const doc = associateDoc();
+    const ge = doc.requirement_groups[1];
+    ge.distinct_areas = 2;
+    ge.analysis_constraints = [
+      {
+        kind: 'distinct_ge_areas',
+        status: 'supported',
+        evaluation_scope: 'aggregate_ge_units',
+        minimum_distinct_categories: 2,
+        category_names: ['fine_arts', 'humanities', 'literature'],
+      },
+      {
+        kind: 'excluded_ge_subject',
+        status: 'supported',
+        evaluation_scope: 'aggregate_ge_units',
+        excluded_subjects: ['HIS'],
+      },
+    ];
+
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'community_college', resolveCourse,
+    });
+    expect(check(result, 'analysis_ready', 'constraint_support'))
+      .toMatchObject({ severity: 'pass' });
+  });
+
+  it('retains a named GE/category roster instead of forcing it into an aggregate block', () => {
+    const doc = associateDoc();
+    doc.requirement_groups[1].sections[0] = {
+      section_advisement: null,
+      unit_advisement: 6,
+      source_refs: ['catalog'],
+      receivers: [asReceiver([
+        option([201, 'va:CSC221']),
+        option([202, 'va:CSC222']),
+      ])],
+    };
+
+    const result = validateDegreeAcceptance(doc, {
+      institutionLevel: 'community_college', resolveCourse,
+    });
+
+    expect(check(result, 'catalog', 'requirement_structure')).toMatchObject({ severity: 'pass' });
+    expect(check(result, 'analysis_ready', 'choice_semantics')).toMatchObject({ severity: 'pass' });
   });
 
   it('requires an AS identity and matching Virginia college owner', () => {

@@ -260,7 +260,7 @@ describe('Averett 2025-2026 official-source blocked composition', () => {
       },
     });
     expect(acceptance).toMatchObject({ accepted: false, ready_for_analysis: false });
-    expect(acceptance.catalog.failed).toEqual(['unresolved_courses']);
+    expect(acceptance.catalog.failed).toEqual(['source_quality', 'unresolved_courses']);
     expect(check(acceptance, 'analysis_ready', 'unit_closure')).toMatchObject({
       severity: 'pass',
       modeled_units: 120,

@@ -144,7 +144,14 @@ const verificationMaterialChanges = (before, after) => diffDocs(before, after).f
   && change.path !== 'acceptance'
   && !change.path.startsWith('acceptance.')
   && change.path !== 'collection_status'
+  && change.path !== 'research_status'
 ));
+
+function signedResearchStatus(acceptance) {
+  if (acceptance?.ready_for_analysis === true) return 'human_verified_analysis_ready';
+  if (acceptance?.accepted === true) return 'human_verified_catalog_record_analysis_blocked';
+  return 'human_verified_source_record_acceptance_blocked';
+}
 
 const sameUpdateToken = (left, right) => {
   const leftTime = left == null ? null : Date.parse(left instanceof Date ? left.toISOString() : left);
@@ -1147,6 +1154,15 @@ exports.putDegree = asyncHandler(async (req, res) => {
       canonical.verification.stale_reason = null;
       delete canonical.verification.previous;
     }
+  }
+  if (canonical.verification?.verified === true) {
+    // Clear stale importer prose such as
+    // `source_changed_needs_human_reverification` when a person has now signed
+    // the current source bundle.  The acceptance result remains independent:
+    // a source-faithful record may be signed while still blocked from figures.
+    canonical.research_status = signedResearchStatus(canonical.acceptance);
+  } else if (changedAfterVerification) {
+    canonical.research_status = 'human_verification_reopened_after_edit';
   }
 
   const saveFilter = before

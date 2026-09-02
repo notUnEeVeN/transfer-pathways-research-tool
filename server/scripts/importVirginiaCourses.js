@@ -13,7 +13,8 @@
  * printed whether or not it was overridden.
  *
  * Usage:
- *   node scripts/importVirginiaCourses.js --uri mongodb://localhost:27017 --db pmt_research
+ *   node scripts/importVirginiaCourses.js                    # dry run
+ *   node scripts/importVirginiaCourses.js --apply --uri mongodb://localhost:27017 --db pmt_research
  *   node scripts/importVirginiaCourses.js --codes CSC221,CSC222 --dry-run
  *   node scripts/importVirginiaCourses.js --crosscheck 20      # validate the invariant
  */
@@ -25,28 +26,66 @@ const {
   parseCoursePage, parseCourseSearch, queryForm, crossCheck,
 } = require('../services/virginia/courseEquivalency');
 const {
-  canonicalCourseCode, courseIdFor, courseKeyFor, parentIdForLanding,
+  canonicalCourseCode,
+  parentIdForLanding,
+  sharedCourseIdentity,
 } = require('../services/virginia/courseIdentity');
 const { mergeInstitutionRows } = require('../services/virginia/institutionCohorts');
 
-const argv = process.argv.slice(2);
-const has = (f) => argv.includes(f);
-const val = (f, d = null) => {
-  const i = argv.indexOf(f);
-  return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d;
-};
+const DEFAULT_SCOPE = path.join(__dirname, '..', '.va-degrees', 'cs_course_scope.json');
+const CLI_VALUE_OPTIONS = new Set([
+  '--uri', '--db', '--codes', '--scope', '--crosscheck', '--limit', '--delay',
+]);
+const CLI_BOOLEAN_OPTIONS = new Set(['--apply', '--dry-run', '--refresh']);
 
-const opts = {
-  uri: val('--uri'),
-  dbName: val('--db'),
-  codes: val('--codes'),
-  scopeFile: val('--scope', path.join(__dirname, '..', '.va-degrees', 'cs_course_scope.json')),
-  crosscheck: Number(val('--crosscheck', 0)),
-  limit: Number(val('--limit', 0)),
-  delayMs: Number(val('--delay', 2500)),
-  dryRun: has('--dry-run'),
-  refresh: has('--refresh'),
-};
+/**
+ * Parse fail-closed: a bare invocation is a report-only run, and a misspelled
+ * flag can never fall through to the database writer. `--dry-run` remains as
+ * an explicit/backward-compatible spelling, but Mongo writes require
+ * `--apply`.
+ */
+function optionsFrom(argv = [], env = {}) {
+  const values = new Map();
+  const booleans = new Set();
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index];
+    if (CLI_VALUE_OPTIONS.has(argument)) {
+      if (values.has(argument)) throw new Error(`${argument} may be supplied only once`);
+      const value = argv[index + 1];
+      if (!value || value.startsWith('--')) throw new Error(`${argument} requires a value`);
+      values.set(argument, value);
+      index += 1;
+      continue;
+    }
+    if (CLI_BOOLEAN_OPTIONS.has(argument)) {
+      if (booleans.has(argument)) throw new Error(`${argument} may be supplied only once`);
+      booleans.add(argument);
+      continue;
+    }
+    throw new Error(`unknown option: ${argument}`);
+  }
+
+  const apply = booleans.has('--apply');
+  if (apply && booleans.has('--dry-run')) {
+    throw new Error('--apply and --dry-run are mutually exclusive');
+  }
+  return {
+    uri: values.get('--uri') || env.MONGO_URI || null,
+    dbName: values.get('--db') || env.DB_NAME || null,
+    codes: values.get('--codes') || null,
+    scopeFile: values.get('--scope') || DEFAULT_SCOPE,
+    crosscheck: Number(values.get('--crosscheck') || 0),
+    limit: Number(values.get('--limit') || 0),
+    delayMs: Number(values.get('--delay') || 2500),
+    apply,
+    dryRun: !apply,
+    refresh: booleans.has('--refresh'),
+  };
+}
+
+const opts = require.main === module
+  ? optionsFrom(process.argv.slice(2), process.env)
+  : optionsFrom([], {});
 
 const log = (...a) => console.log('[va:courses]', ...a);
 
@@ -56,6 +95,11 @@ function levelOf(name) {
   if (/^Richard Bland/i.test(name)) return 'community_college';
   return 'four_year';
 }
+
+const isRichardBland = (name) => /^Richard Bland College$/i.test(String(name || '').trim());
+const isVccsSharedInstitution = (name) => (
+  /community college/i.test(String(name || '')) && !isRichardBland(name)
+);
 
 function courseCodes() {
   if (opts.codes) return opts.codes.split(',').map((c) => queryForm(c)).filter(Boolean);
@@ -73,13 +117,23 @@ async function fetchCourse(client, code, { renderings = 1 } = {}) {
   if (!guids.length) return { code, ok: false, reason: 'no_results', parsed: [] };
 
   const parsed = [];
-  for (const guid of guids.slice(0, Math.max(1, renderings))) {
+  // Search ordering is not namespace-aware: MATH251 currently returns JMU's
+  // Database Queries before Richard Bland's Calculus I, and PHYS201 returns a
+  // CNU course before any two-year result. Keep walking exact results until we
+  // have actual VCCS source evidence instead of blessing the first same-code
+  // university page as a VCCS course.
+  let vccsRenderings = 0;
+  for (const guid of guids) {
     const html = await client.get(`/course/${guid}`);
     if (!html) continue;
     const p = parseCoursePage(html, { url: `https://www.transfervirginia.org/course/${guid}` });
     // The search is fuzzy enough to return neighbours; keep only exact matches
     // so a request for CSC221 can never be satisfied by CSC222's page.
-    if (p.code === code) parsed.push({ ...p, guid });
+    if (p.code === code) {
+      parsed.push({ ...p, guid });
+      if (isVccsSharedInstitution(p.institution)) vccsRenderings += 1;
+      if (vccsRenderings >= Math.max(1, renderings)) break;
+    }
   }
   if (!parsed.length) return { code, ok: false, reason: 'no_exact_match', guid_count: guids.length, parsed: [] };
   return { code, ok: true, guid_count: guids.length, parsed };
@@ -87,15 +141,36 @@ async function fetchCourse(client, code, { renderings = 1 } = {}) {
 
 /** One canonical course doc, with the sending-college supply set folded in. */
 function toDoc(code, parsed) {
-  const base = parsed[0];
+  const canonical = canonicalCourseCode(code);
+  const vccsRenderings = parsed.filter((row) => isVccsSharedInstitution(row.institution));
+  const base = vccsRenderings[0] || parsed[0];
   const offeredBy = new Set();
   const fourYear = new Map();
   const unknown = [];
+  const excludedIdentityEvidence = [];
   for (const p of parsed) {
-    if (p.institution) offeredBy.add(p.institution);
+    const sourceIsVccs = isVccsSharedInstitution(p.institution);
+    if (sourceIsVccs) offeredBy.add(p.institution);
+    else if (p.institution) excludedIdentityEvidence.push({
+      institution: p.institution,
+      role: 'source_rendering',
+      reason: isRichardBland(p.institution)
+        ? 'institution_local_namespace'
+        : 'four_year_same_code_is_not_vccs_identity',
+    });
     for (const e of p.equivalencies) {
-      if (e.level === 'two_year') offeredBy.add(e.institution);
-      else if (e.level === 'four_year') {
+      if (e.level === 'two_year') {
+        // An equivalency row is another institution's course, not proof that
+        // it offers the source code. It can corroborate statewide common
+        // numbering only when its identifier is exactly the same VCCS code.
+        const sameCode = canonicalCourseCode(e.identifier) === canonical;
+        if (sameCode && isVccsSharedInstitution(e.institution)) offeredBy.add(e.institution);
+        else if (sameCode && isRichardBland(e.institution)) excludedIdentityEvidence.push({
+          institution: e.institution,
+          role: 'same_code_equivalency',
+          reason: 'institution_local_namespace',
+        });
+      } else if (e.level === 'four_year' && sourceIsVccs) {
         // One VCCS course can land as multiple courses at the same university.
         // Keying only by institution silently dropped the second target (for
         // example ENV121 -> EVPP108 + EVPP109 at George Mason).
@@ -103,8 +178,7 @@ function toDoc(code, parsed) {
           || String(e.name || '').trim().toLowerCase();
         const key = [e.institution, target].join('\u0000');
         if (!fourYear.has(key)) fourYear.set(key, e);
-      }
-      else if (!e.level) unknown.push(e);
+      } else if (!e.level) unknown.push(e);
     }
   }
   // Array#sort is stable: group institutions for deterministic output while
@@ -113,12 +187,20 @@ function toDoc(code, parsed) {
   const four = [...fourYear.values()].sort((a, b) =>
     a.institution.localeCompare(b.institution));
   const receivingInstitutions = new Set(four.map((e) => e.institution));
+  const identity = sharedCourseIdentity(canonical);
   return {
     _id: `va:crs:${code}`,
-    course_id: courseIdFor(code),
-    course_key: courseKeyFor(code),
+    course_id: identity.course_id,
+    course_key: identity.course_key,
+    institution_id: identity.institution_id,
+    identity_scope: identity.identity_scope,
+    identity_contract: identity.identity_contract,
+    vccs_master_applicable: identity.vccs_master_applicable,
+    // Import publication filters on this field. A four-year or Richard Bland
+    // page with the same code remains reportable evidence, never a sending row.
+    sending_eligible: vccsRenderings.length > 0,
     source: 'transferva',
-    code,
+    code: canonical,
     title: base.title,
     credits: base.credits,
     credits_raw: base.credits_raw,
@@ -126,6 +208,10 @@ function toDoc(code, parsed) {
     description: base.description,
     source_url: base.source_url,
     renderings: parsed.map((p) => ({ institution: p.institution, guid: p.guid, url: p.source_url })),
+    vccs_renderings: vccsRenderings.map((p) => ({
+      institution: p.institution, guid: p.guid, url: p.source_url,
+    })),
+    excluded_identity_evidence: excludedIdentityEvidence,
     offered_by: [...offeredBy].sort(),
     articulates_to: four.map((e) => ({
       institution: e.institution,
@@ -149,8 +235,8 @@ function toDoc(code, parsed) {
 }
 
 async function write(docs, institutions) {
-  const uri = opts.uri || process.env.MONGO_URI || 'mongodb://localhost:27017';
-  const dbName = opts.dbName || process.env.DB_NAME || 'pmt_research';
+  const uri = opts.uri || 'mongodb://localhost:27017';
+  const dbName = opts.dbName || 'pmt_research';
   log(`writing to ${uri.replace(/\/\/[^@]*@/, '//<redacted>@')} · db ${dbName}`);
   const client = new MongoClient(uri);
   await client.connect();
@@ -197,7 +283,16 @@ async function main() {
       const cc = crossCheck(r.parsed);
       if (!cc.consistent) conflicts.push({ code, ...cc });
     }
-    docs.push(toDoc(code, r.parsed));
+    const doc = toDoc(code, r.parsed);
+    if (!doc.sending_eligible) {
+      failures.push({
+        code,
+        reason: 'no_vccs_source_identity',
+        observed_at: doc.renderings.map((row) => row.institution),
+      });
+      continue;
+    }
+    docs.push(doc);
     if ((i + 1) % 25 === 0) {
       log(`  ${i + 1}/${codes.length} · ${docs.length} ok · ${failures.length} failed · cache ${client.stats.hits}h/${client.stats.misses}m · blocked ${client.stats.blocked}`);
     }
@@ -242,12 +337,18 @@ async function main() {
   fs.writeFileSync(out, JSON.stringify({ docs: docs.length, failures, conflicts, stats: client.stats }, null, 1));
   log(`report: ${out}`);
 
-  if (opts.dryRun) { log('dry run — nothing written'); return; }
+  if (!opts.apply) { log('dry run — nothing written; pass --apply to replace the two Virginia source collections'); return; }
   await write(docs, institutions);
   log('done');
 }
 
-module.exports = { levelOf, toDoc };
+module.exports = {
+  levelOf,
+  isVccsSharedInstitution,
+  fetchCourse,
+  optionsFrom,
+  toDoc,
+};
 
 if (require.main === module) {
   main().catch((e) => { console.error('[va:courses] FATAL', e); process.exit(1); });

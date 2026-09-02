@@ -57,7 +57,7 @@ function checks(doc, budget) {
   // vocabulary through shared rules, so a disagreement means one of them has
   // drifted — the same document would show different numbers in different
   // charts, which is the one thing these documents exist to prevent.
-  const modeled = computeUnitBudget(doc.requirement_groups);
+  const modeled = computeUnitBudget(doc.requirement_groups, { sourceDocument: doc });
   if (modeled.modeled_units !== budget.requirements.stated) {
     fail('reader_drift', `computeUnitBudget models ${modeled.modeled_units}u where the transfer `
       + `budget states ${budget.requirements.stated}u — the readers disagree about this document`);
@@ -77,9 +77,9 @@ function checks(doc, budget) {
   // scripts/repairDegreeSectionTiers.js.
   for (const g of doc.requirement_groups || []) {
     for (const s of g.sections || []) {
-      if (s.tier != null && s.tier !== resolveSectionTier(g, s)) {
+      if (s.tier != null && s.tier !== resolveSectionTier(g, s, doc)) {
         fail('section_tier_contradiction', `"${String(g.title || '').slice(0, 40)}" carries a section `
-          + `tier '${s.tier}' under a group resolving '${resolveSectionTier(g, s)}'`);
+          + `tier '${s.tier}' under a group resolving '${resolveSectionTier(g, s, doc)}'`);
       }
     }
   }

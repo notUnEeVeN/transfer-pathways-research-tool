@@ -223,12 +223,25 @@ git history, so this is a genuine reproduction, not a recreation — see
   CS 74.5% (279/279 computable), biology 83.2% (468/477), and economics 100.0%
   after rounding (486/495).
 - **Caution:** This is an optimistic best-case student choosing the most
-  transferable options — modeled credit use, not observed transcripts. All
+  transferable options — modeled credit use, not observed transcripts. The
+  model conditions on a successful, grade-eligible pathway: a pure minimum-
+  grade threshold does not change a Figure 3/4 course identity or credit, but
+  any rule that decides whether, when, or at whose discretion transfer credit
+  applies remains a blocker until it is modeled exactly. All
   486 computable verified Economics cells use modeled GE and/or elective
   capacity and 478 reach exactly 100%; that does not mean every named course
   has a direct articulation. Nine Allan Hancock Biology cells and nine Hartnell
   Economics cells are blank because the stored degree choice cannot be solved
   with distinct resolved courses.
+
+  Virginia applies the same optimistic-path convention only when an exact
+  source witness exists. William & Mary's current catalog publishes three
+  foreign-language-proficiency routes that add zero college courses and zero
+  college credits; its Figure 3/4 path may select one of those routes, with the
+  assumption and source hashes retained in the audit receipt. This is not a
+  claim that every student arrives proficient. The same rule remains blocked
+  for Figure 6 because the student's actual course and prerequisite graph is
+  not uniquely determined.
 
 ### 9. Pathway hours above 120 — their Figure 4
 

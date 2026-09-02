@@ -1,8 +1,57 @@
 {
+ "ca|static-paper-artifacts": {
+  "frontend/src/analyses/paperCreditLossBaseline.js": "bade69bbbaac8a663d709d128afb56b6ea8208fc693fefd76bc909524461c325",
+  "frontend/src/analyses/paperDistrictBaseline.js": "af406d869d1930f8b14b881a6b32d358bfe420926ddab646362042f1e03b13c9",
+  "frontend/src/analyses/paperCourseBarriersBaseline.js": "b5d6babdca686bc4cd55c0f0d1575eb6718d93d368457ba26fbbaa7aee48a3c7",
+  "frontend/src/analyses/data/paper-credit-loss.ours.json": "4a130d4519a799c3caecc611b1dae032d81f76ee48ee37d81f559393f23a44e0",
+  "frontend/src/analyses/data/paper-credit-loss.assist.json": "4ad3fbe74a5a6b149d64432110ea0720297f799ff7cef6c39bd81475ace75e88",
+  "frontend/src/analyses/data/paper-credit-loss.bio.assist.json": "bdef1c57f1b2269a27eae1982a61e5c3eb6d828b5fa92aca2440c40d3d75e940",
+  "frontend/src/analyses/data/paper-credit-loss.econ.assist.json": "e49554a3f0bfa06c5bc66ae22773b4f9b06bdd3e12a775f24a0ffed8c5d78a53",
+  "analysis/data/paper_articulation_map.json": "7b8a506905dddeae0eaf8ff8eb6804765f0e1449fea5bf67c04780c1f9ba21d2"
+ },
  "cs|figure1": {
   "rows": 1035,
   "pct_named_requirement_courses": 31.915,
-  "pct_named_requirement_courses_with_ge": 46.041
+  "pct_named_requirement_courses_with_ge": 46.041,
+  "cell_values_sha256": "fcad844401c952d7334b9a9d8ae2fa4fa1c7abb8de1d94e07171c48bbe09a7e1"
+ },
+ "cs|figure2": {
+  "rows": 1035,
+  "cell_values_sha256": "61456173cc31ae37e54f998a3dbaa780d72e3415998c5937416188e515797071"
+ },
+ "cs|coverage|degree|district": {
+  "rows": 648,
+  "figure1_cell_values_sha256": "4ee2ea5712c68a9e74cb79534aa0215accd6ba5ac308295662d9be96fe11409f",
+  "figure2_cell_values_sha256": "f693920646df025312e7c7824e4ec6652776c396db8cdbe17c4e1d41afcc0f73"
+ },
+ "cs|coverage|degree|county": {
+  "rows": 495,
+  "figure1_cell_values_sha256": "0e8173d9f7ffebf1ea3d0c6071298380a20fa55984ddcc008ae95d47d7001a45",
+  "figure2_cell_values_sha256": "0cdec58fead46d3d4c574b79cacd426c69555416307ea7f608f11bedff01a7b2"
+ },
+ "cs|coverage|assist|college": {
+  "rows": 1035,
+  "cell_values_sha256": "9f5777adc0e2a882d44956a0e6008090ceb5ed12a028afcb3c2e656731ccb88b"
+ },
+ "cs|coverage|assist|district": {
+  "rows": 648,
+  "cell_values_sha256": "d1d28e0592a3011360a9b3e25f36c8003cafabe688b3eaa4099bc724299139e3"
+ },
+ "cs|coverage|assist|county": {
+  "rows": 495,
+  "cell_values_sha256": "f04d867426a41e0191a29f1b62fb2f7a547dd48db2616d381f994a6220106467"
+ },
+ "cs|coverage|paper|college": {
+  "rows": 1035,
+  "cell_values_sha256": "e022831dc2f9e7125e22ea9267932892c6494e3d6753e8ed660230035a2e5fc8"
+ },
+ "cs|coverage|paper|district": {
+  "rows": 648,
+  "cell_values_sha256": "4316dac37684f247b1765299ee108366429563fb0031467bbcf0628acb6fd936"
+ },
+ "cs|coverage|paper|county": {
+  "rows": 495,
+  "cell_values_sha256": "660f2b85c7118c4f4ff488f164dafbdff7570647f3ee59877b124de3d5994619"
  },
  "cs|local_as": {
   "rows": 405,
@@ -11,7 +60,16 @@
   "paper_equivalent_as_unit_utilization_pct": 57.266,
   "full_degree_completion_pct": 32.438,
   "lower_division_completion_pct": 54.335,
-  "modeled_hours_above_120": 21.077
+  "modeled_hours_above_120": 21.077,
+  "figure3_cell_values_sha256": "6654fbe071e0316b2c830c302cc38282624b2a03cb74025f621075320bc5cb8c",
+  "figure4_cell_values_sha256": "6e5dde359312b89c48b6cf383151832736040f4cff2baa4425a35f235c3136f9",
+  "figure5_cell_values_sha256": "54d6744e6c89f45c13b2511eebf17caef971f5b4b70b849eb6aaaccdd18cb17c"
+ },
+ "cs|local_as|figure6": {
+  "rows": 405,
+  "computed": 198,
+  "excluded": 207,
+  "cell_values_sha256": "9fe622d6b184dc07a8f88da2fe1f09f4e5316d347a4e74c89da5a3203079c53c"
  },
  "cs|ast": {
   "rows": 621,
@@ -20,12 +78,48 @@
   "paper_equivalent_as_unit_utilization_pct": 65.414,
   "full_degree_completion_pct": 36.543,
   "lower_division_completion_pct": 61.236,
-  "modeled_hours_above_120": 16.164
+  "modeled_hours_above_120": 16.164,
+  "figure3_cell_values_sha256": "f767129e1e9724e26bc268321fdc41af93b1227a6568bb9131eb9954969a2c72",
+  "figure4_cell_values_sha256": "d00579a8d4b4a7dbfc50cff626b31b689bba1dc198d0c7c2470617191ef29176",
+  "figure5_cell_values_sha256": "119a4f5adc0fc81319e06288704d642373b2f373c969b0255cc5c197696730d8"
+ },
+ "cs|ast|figure6": {
+  "rows": 621,
+  "computed": 558,
+  "excluded": 63,
+  "cell_values_sha256": "f66f88323e970dcfc27252922175e84ef4a72d718838e438ad53eb3083ffbfd7"
  },
  "bio|figure1": {
   "rows": 1035,
   "pct_named_requirement_courses": 51.179,
-  "pct_named_requirement_courses_with_ge": 60.682
+  "pct_named_requirement_courses_with_ge": 60.682,
+  "cell_values_sha256": "590076f417778274083d4b73297b74e42a20320b1662b76da0ff173ca8231f0e"
+ },
+ "bio|figure2": {
+  "rows": 1035,
+  "cell_values_sha256": "c3c4ead4ce93f6f2e5d7e509a2d6fff23ba54d8d2e10a1253fd52e1b0bda04db"
+ },
+ "bio|coverage|degree|district": {
+  "rows": 648,
+  "figure1_cell_values_sha256": "6adb85ad8f0856210e7deae33d2f31d5ecb2a3271a665fdc24f5b7a6431bd490",
+  "figure2_cell_values_sha256": "e612940b82e4d30f9903176307c650f143922c0bf22deda50af9dc17ed7504cc"
+ },
+ "bio|coverage|degree|county": {
+  "rows": 495,
+  "figure1_cell_values_sha256": "b5ea51731f54570bf3bebc2a0473128dcd37f692094a8c6156f1a1b3f2db312b",
+  "figure2_cell_values_sha256": "aeeb9790b1c606990a605d93480877e2822df2b251cc14ee6054bbd9ca917181"
+ },
+ "bio|coverage|assist|college": {
+  "rows": 1035,
+  "cell_values_sha256": "44e52f21a2af47bac3b35e6d3825587c41e24e9aa83ac6de4553afef291a75ea"
+ },
+ "bio|coverage|assist|district": {
+  "rows": 648,
+  "cell_values_sha256": "1415f3b8426ff207c41ac78e05600621971d80f83a6d862f04849b375b367049"
+ },
+ "bio|coverage|assist|county": {
+  "rows": 495,
+  "cell_values_sha256": "5894d97f61d4b19d5967ebf058903408314f5750fd9eab7e82fce97dde00163e"
  },
  "bio|local_as": {
   "rows": 513,
@@ -34,7 +128,16 @@
   "paper_equivalent_as_unit_utilization_pct": 62.419,
   "full_degree_completion_pct": 36.653,
   "lower_division_completion_pct": 57.561,
-  "modeled_hours_above_120": 16.086
+  "modeled_hours_above_120": 16.086,
+  "figure3_cell_values_sha256": "cc590d0949afcdbcf5f4d92714de9e8e5720fd4c99b9c68c12217de7fdb27d85",
+  "figure4_cell_values_sha256": "3d0f46265ba49cfac163ea3a04c3c1d74d68f39f4841b75dafb98c29ff368e7c",
+  "figure5_cell_values_sha256": "11fc017f7a5cb4a297e3387c6c5237e8d757a0855096187fda57e679615d12a2"
+ },
+ "bio|local_as|figure6": {
+  "rows": 513,
+  "computed": 162,
+  "excluded": 351,
+  "cell_values_sha256": "654da1e3fb3e42945a54dc00bb76039cc049230b39b90570f5598ea657d16de0"
  },
  "bio|ast": {
   "rows": 882,
@@ -43,12 +146,48 @@
   "paper_equivalent_as_unit_utilization_pct": 73.579,
   "full_degree_completion_pct": 41.494,
   "lower_division_completion_pct": 65.249,
-  "modeled_hours_above_120": 10.225
+  "modeled_hours_above_120": 10.225,
+  "figure3_cell_values_sha256": "bd220d32c29a9ff705fa678b8f4e7f62b8005e8445d99ec7704f4e83c4b8a5d7",
+  "figure4_cell_values_sha256": "816470e3c5be8b7ce80b40182e3dbd6fb0045b3300f63eea5a32f49d61562710",
+  "figure5_cell_values_sha256": "866f77a56ae3bd0479c15bd0e8fc5f4cd6b49b1f524b222117fbd49e20a7147e"
+ },
+ "bio|ast|figure6": {
+  "rows": 882,
+  "computed": 189,
+  "excluded": 693,
+  "cell_values_sha256": "c9e38e17826265da4b32f4cd4460e26db5afdeab8ccb5fc7d3036a2642becf26"
  },
  "econ|figure1": {
   "rows": 1035,
   "pct_named_requirement_courses": 23.729,
-  "pct_named_requirement_courses_with_ge": 48.084
+  "pct_named_requirement_courses_with_ge": 48.084,
+  "cell_values_sha256": "10f6273ca6b284130345db62b17f22b1dad9bfb90a92423d83809f078e169270"
+ },
+ "econ|figure2": {
+  "rows": 1035,
+  "cell_values_sha256": "87988b690b3141c4938ecad085a22bb0d6bb21fe1dafef7f07f711db6b320d71"
+ },
+ "econ|coverage|degree|district": {
+  "rows": 648,
+  "figure1_cell_values_sha256": "002fe0f35dee73ab3edc5a4757d8c7ed99cb0d4b6cf4fe0968acb22ce1ed4898",
+  "figure2_cell_values_sha256": "e0d54e79328596504b6e68088781e9d4796f043f17553bf4f59621bf617881b1"
+ },
+ "econ|coverage|degree|county": {
+  "rows": 495,
+  "figure1_cell_values_sha256": "b5fff004e4afa1d2680f350a89a0f5859730b4ae4b54949fd2ffd7be9451e022",
+  "figure2_cell_values_sha256": "d77a4a444206ce03ff7a465d4abf744671b44eda90399c964cea82e914fce92f"
+ },
+ "econ|coverage|assist|college": {
+  "rows": 1035,
+  "cell_values_sha256": "fe141a5ebfbe9385cd065797a4ecdf1b16b88defad952aadd1b7e045542fe51a"
+ },
+ "econ|coverage|assist|district": {
+  "rows": 648,
+  "cell_values_sha256": "2cec42e77679e80342c0bb0e46064276fa2575a7dcd4c723dd4788f89a4d6ce4"
+ },
+ "econ|coverage|assist|county": {
+  "rows": 495,
+  "cell_values_sha256": "6ac80825b5ada307e3d7a126c082ecc7fdc31e09f94d582594d31329e27d02b6"
  },
  "econ|ast": {
   "rows": 873,
@@ -57,7 +196,16 @@
   "paper_equivalent_as_unit_utilization_pct": 60.688,
   "full_degree_completion_pct": 49.987,
   "lower_division_completion_pct": 78.847,
-  "modeled_hours_above_120": 0.015
+  "modeled_hours_above_120": 0.015,
+  "figure3_cell_values_sha256": "cb526bb8398a0e423ed32d18cf621e340e4fa362bee069cbf2b517f558480bac",
+  "figure4_cell_values_sha256": "a4a92cc540b25bc4a01cba538d1e6baa6cf4ce1ea7cbef235be65dc7c9849fa3",
+  "figure5_cell_values_sha256": "620c7da75c25badf6968053805076f346813e3c2e6daff607a22d9e36477d9a1"
+ },
+ "econ|ast|figure6": {
+  "rows": 873,
+  "computed": 729,
+  "excluded": 144,
+  "cell_values_sha256": "7cfc83e9c51238358de5135e21c6fc1f1492ef1e508a4a36ee60e6daf3628dd2"
  },
  "econ|local_other": {
   "rows": 207,
@@ -66,12 +214,38 @@
   "paper_equivalent_as_unit_utilization_pct": 49.057,
   "full_degree_completion_pct": 48.309,
   "lower_division_completion_pct": 75.997,
-  "modeled_hours_above_120": 2.026
+  "modeled_hours_above_120": 2.026,
+  "figure3_cell_values_sha256": "84c56e4eb9b6d8091398272a260bbbb7141d48b9eaaf6e755d4b52554f677938",
+  "figure4_cell_values_sha256": "1bc240d08ca586bd733dc5376a91ba8390cc31de6b43ac260fabfe8ae2379122",
+  "figure5_cell_values_sha256": "ce20650ddcabcc89c3e8c9ffd0d3767bcab13aa023833a4a71a9937696ef77c9"
+ },
+ "econ|local_other|figure6": {
+  "rows": 207,
+  "computed": 135,
+  "excluded": 72,
+  "cell_values_sha256": "b916f32e8d30609481c8db59b01c72bc3e3104918517fb8148c43f478ecf7f5f"
  },
  "ma-cs|figure1": {
   "rows": 165,
   "pct_named_requirement_courses": 38.205,
-  "pct_named_requirement_courses_with_ge": 63.69
+  "pct_named_requirement_courses_with_ge": 63.69,
+  "cell_values_sha256": "46de4c4fb38044abb06251840c35bbd82f55e8fb27cd548f1272275cc6728f3e"
+ },
+ "ma-cs|figure2": {
+  "rows": 165,
+  "cell_values_sha256": "50e137cce914aa73fe77057ac28e0277577a6089190b1c6bb2fe6faba1ac502f",
+  "final_pdf_artifact_sha256": "e481aad505e6b96a43dde0e94c07e50e17edacb117b5520483c4b6ec2aa23d58",
+  "archive_direct_artifact_sha256": "78bccf352225ed632e0043aa9535bb23c2d7c7de79d8a8cf684b8992225d03ec"
+ },
+ "ma-cs|coverage|degree|district": {
+  "rows": 165,
+  "figure1_cell_values_sha256": "c094241e7f9361ef34fee8c7ad311a985c9627ff4562ced8f0f9e262f45ce7e1",
+  "figure2_cell_values_sha256": "a64b594170d64c428dae6b6d452724e8b9221238e47414fd06bdff155040ada6"
+ },
+ "ma-cs|coverage|degree|county": {
+  "rows": 165,
+  "figure1_cell_values_sha256": "f545010fcabc41780e0e2c6b85f8176176382a835a80eba44a62bc0bd6ec2a41",
+  "figure2_cell_values_sha256": "e4002569e4c3f459c920480a143cf08b78fc4d83a013abf35559f330b850c7af"
  },
  "ma-cs|local_as": {
   "rows": 165,
@@ -80,20 +254,28 @@
   "paper_equivalent_as_unit_utilization_pct": 68.569,
   "full_degree_completion_pct": 36.144,
   "lower_division_completion_pct": 40.943,
-  "modeled_hours_above_120": 21.131
+  "modeled_hours_above_120": 21.131,
+  "figure3_cell_values_sha256": "c793a3683fada17d9b516ec8a98594a6ac337841a759bd6ead29802f95884f4e",
+  "figure4_cell_values_sha256": "74b49805125dcb72c5a8ff818326f09695b71ec3c89f5b5f957a1c1ab9d566b4",
+  "figure5_cell_values_sha256": "fe2ee45549c4e198e9ead572a94673ac08900f17468e581ffdec5b8f849fff4d"
+ },
+ "ma-cs|figure6": {
+  "pathways": 72,
+  "final_pdf_cells": 49,
+  "artifact_sha256": "52413c5f1e3fbb98cb59c9cad5d80b0b99fc7f7f80166d477e61434625f1804f"
  },
  "va-cs|figure1": {
   "rows": 384,
-  "pct_named_requirement_courses": 19.81,
-  "pct_named_requirement_courses_with_ge": 38.036
+  "pct_named_requirement_courses": null,
+  "pct_named_requirement_courses_with_ge": null
  },
  "va-cs|local_as": {
   "rows": 304,
-  "computed": 288,
-  "excluded": 16,
-  "paper_equivalent_as_unit_utilization_pct": 21.172,
-  "full_degree_completion_pct": 10.576,
-  "lower_division_completion_pct": 13.855,
-  "modeled_hours_above_120": 47.615
+  "computed": 0,
+  "excluded": 304,
+  "paper_equivalent_as_unit_utilization_pct": null,
+  "full_degree_completion_pct": null,
+  "lower_division_completion_pct": null,
+  "modeled_hours_above_120": null
  }
 }

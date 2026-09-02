@@ -5,8 +5,19 @@ const cjs = createRequire(import.meta.url);
 const { startInMemoryMongo } = cjs('../../test/mongoHarness');
 const {
   AMBIGUOUS_UNIT_POOL, assemblePathway, asDegreeCourseIds,
+  buildExactVirginiaParentMap, compileValidatedVirginiaFormulaCorpora,
   pathwayComplexityData, resolveCcParents, resolveUcParents, scorePathway,
+  VA_EXACT_FORMULA_ADAPTER, VA_PREREQUISITE_MODEL_BLOCKER,
+  virginiaPathwaySourceGate,
 } = cjs('./pathwayComplexity');
+const { canonicalSourceContract } = cjs('./canonicalSourceContract');
+const {
+  CTZN410_SEQUENCE_EVIDENCE,
+} = cjs('./longwoodConstraintProofs');
+const {
+  canonicalJson: canonicalVirginiaPrerequisiteJson,
+  sha256: sha256VirginiaPrerequisiteValue,
+} = cjs('../virginia/pathwayComplexityPrerequisites');
 
 let mongo;
 let db;
@@ -303,6 +314,50 @@ describe('receiving-series articulation', () => {
   });
 });
 
+describe('state-scoped Figure 6 course identity', () => {
+  const namedLowerDivisionDegree = (overrides = {}) => ({
+    ...overrides,
+    requirement_groups: [{
+      tier: 'transferable',
+      sections: [{
+        category: 'lower-division',
+        receivers: [{ receiving: { kind: 'course', code: 'CSE 101' } }],
+      }],
+    }],
+  });
+  const assembly = (degree) => assemblePathway({
+    degree,
+    asIds: [],
+    agreementByParent: new Map(),
+    ucCatalog: new Map([['CSE 101', { id: 'uc:cse101', units: 5 }]]),
+    ucCodeByParent: new Map(),
+    ccUnits: new Map(),
+  });
+
+  it('retains the parent implementation\'s CA placeholder when no parent-id lookup exists', () => {
+    const pathway = assembly(namedLowerDivisionDegree());
+    expect([...pathway.vertices.values()]).toEqual([{
+      units: null,
+      kind: 'slot',
+      catalogId: null,
+      unresolvedCourseCode: null,
+    }]);
+  });
+
+  it('uses the display-code identity fallback only for a canonical Virginia source', () => {
+    const pathway = assembly(namedLowerDivisionDegree({
+      state: 'va',
+      analysis_contract: canonicalSourceContract(),
+    }));
+    expect([...pathway.vertices.entries()]).toEqual([['uc:cse101', {
+      units: 5,
+      kind: 'uc',
+      catalogId: 'uc:cse101',
+      unresolvedCourseCode: null,
+    }]]);
+  });
+});
+
 describe('associate-degree course selection', () => {
   const receiver = (id) => ({ options: [{ course_ids: [id] }] });
   const unitPool = {
@@ -356,6 +411,425 @@ describe('associate-degree course selection', () => {
     expect(asDegreeCourseIds(localAs, new Map())).toMatchObject({
       method_status: 'excluded',
       exclusion_reason: AMBIGUOUS_UNIT_POOL,
+    });
+  });
+
+  it('solves an explicit Virginia unit pool and retains a named GE menu', () => {
+    const virginia = {
+      state: 'va', analysis_contract: canonicalSourceContract(),
+      total_units: 10, total_units_max: 10,
+      requirement_groups: [
+        {
+          group_conjunction: 'And',
+          sections: [{ section_advisement: 1, receivers: [receiver(1)] }],
+        },
+        {
+          ge_area: 'source_named_humanities_menu',
+          group_conjunction: 'And',
+          sections: [{
+            section_advisement: 1,
+            unit_advisement: 3,
+            unit_advisement_max: 3,
+            receivers: [{
+              options_conjunction: 'or',
+              options: [{ course_ids: [2] }, { course_ids: [3] }],
+            }],
+          }],
+        },
+        { units_fill: true, sections: [] },
+      ],
+    };
+    expect(asDegreeCourseIds(virginia, new Map([[1, 3], [2, 3], [3, 3]])))
+      .toMatchObject({
+        ids: [1, 2],
+        selected_units: 6,
+        method_status: 'ok',
+      });
+  });
+
+  it('keeps exact AND-inside-OR Virginia routes indivisible', () => {
+    const virginia = {
+      state: 'va', analysis_contract: canonicalSourceContract(),
+      total_units: 6, total_units_max: 6,
+      requirement_groups: [{
+        label_seen: '(CHM 111 + CHM 112) OR (PHY 241 + PHY 242)',
+        group_conjunction: 'Or',
+        sections: [
+          { section_advisement: 1, receivers: [{ options: [{ course_ids: [10, 11] }] }] },
+          { section_advisement: 1, receivers: [{ options: [{ course_ids: [20, 21] }] }] },
+        ],
+      }],
+    };
+    const unitsById = new Map([[10, 3], [11, 3], [20, 3], [21, 3]]);
+    expect(asDegreeCourseIds(virginia, unitsById)).toMatchObject({
+      ids: [10, 11],
+      selected_units: 6,
+      method_status: 'ok',
+    });
+  });
+
+  it('does not invent one value for a receiver-less Virginia aggregate credit range', () => {
+    const virginia = {
+      state: 'va', analysis_contract: canonicalSourceContract(),
+      total_units: 60, total_units_max: 62,
+      requirement_groups: [{
+        ge_area: 'destination_aligned_transfer_core',
+        sections: [{ unit_advisement: 16, unit_advisement_max: 18, receivers: [] }],
+      }],
+    };
+    expect(asDegreeCourseIds(virginia, new Map())).toMatchObject({
+      method_status: 'excluded',
+      exclusion_reason: 'associate_aggregate_requirement_ambiguous',
+    });
+  });
+});
+
+const vccsNone = (courseKey) => ({
+  course_key: courseKey,
+  owner_namespace: 'va:vccs',
+  status: 'none',
+  source: 'vccs_master_course_file',
+  source_url: `https://courses.vccs.edu/courses/${courseKey.slice(3)}`,
+  raw_requisites: null,
+  groups: [],
+});
+
+const universityNone = (courseKey, owner = 'va:uni:9205') => ({
+  course_key: courseKey,
+  owner_namespace: owner,
+  status: 'none',
+  source: 'institution_catalog',
+  source_url: `https://catalog.example.edu/courses/${courseKey.split(':').at(-1)}`,
+  source_bundle_hash: 'official-catalog-sha256',
+  raw_requisites: null,
+  groups: [],
+});
+
+const exactGroup = (paths, id = 'formula:choice') => ({
+  id,
+  kind: 'prerequisite',
+  formula: 'paths_or__conditions_and',
+  paths: paths.map((allOf, index) => ({
+    id: `${id}:path:${index}`,
+    raw: allOf.map((condition) => condition.course_key || condition.raw).join(' and '),
+    all_of: allOf,
+  })),
+});
+
+function exactVirginiaCorpora(overrides = {}) {
+  const target = {
+    course_key: 'va:CSC200',
+    owner_namespace: 'va:vccs',
+    status: 'parsed',
+    source: 'vccs_master_course_file',
+    source_url: 'https://courses.vccs.edu/courses/CSC200',
+    raw_requisites: '(CSC 100 and MTH 100) or ITE 100',
+    groups: [exactGroup([
+      [{ type: 'course', course_key: 'va:CSC100', code: 'CSC100' }, { type: 'course', course_key: 'va:MTH100', code: 'MTH100' }],
+      [{ type: 'course', course_key: 'va:ITE100', code: 'ITE100' }],
+    ])],
+    ...overrides,
+  };
+  return compileValidatedVirginiaFormulaCorpora({
+    communityCollegeRows: [target, vccsNone('va:CSC100'), vccsNone('va:MTH100'), vccsNone('va:ITE100')],
+    universityRows: [universityNone('va:uni:9205:CS100')],
+    requiredCommunityCollegeKeys: ['va:CSC200'],
+    requiredUniversityKeys: ['va:uni:9205:CS100'],
+  });
+}
+
+describe('exact Virginia Figure 6 formula adapter', () => {
+  it('advertises exact formula support without changing the Virginia publication gate', () => {
+    expect(VA_EXACT_FORMULA_ADAPTER).toMatchObject({
+      integrated: true,
+      formula: 'paths_or__conditions_and',
+      semantics: 'groups_and__paths_or__conditions_and',
+      ambiguous_path_policy: 'fail_closed',
+    });
+  });
+
+  it('keeps AND members together while choosing exactly one represented OR path', () => {
+    const compiled = exactVirginiaCorpora();
+    expect(compiled).toMatchObject({ ready: true, issues: [] });
+    const graph = buildExactVirginiaParentMap({
+      compiledCorpora: compiled.corpora,
+      pathwayCourseKeys: ['va:CSC200', 'va:CSC100', 'va:MTH100', 'va:uni:9205:CS100'],
+    });
+    expect(graph.ready).toBe(true);
+    expect(graph.parents_by_course_key.get('va:CSC200')).toEqual(['va:CSC100', 'va:MTH100']);
+    expect(graph.selected_paths).toMatchObject([{
+      course_key: 'va:CSC200',
+      formula_id: 'formula:choice',
+      path_id: 'formula:choice:path:0',
+      parents: ['va:CSC100', 'va:MTH100'],
+    }]);
+
+    const alternative = buildExactVirginiaParentMap({
+      compiledCorpora: compiled.corpora,
+      pathwayCourseKeys: ['va:CSC200', 'va:ITE100', 'va:uni:9205:CS100'],
+    });
+    expect(alternative.ready).toBe(true);
+    expect(alternative.parents_by_course_key.get('va:CSC200')).toEqual(['va:ITE100']);
+  });
+
+  it('fails closed instead of unioning or arbitrarily picking two represented OR paths', () => {
+    const compiled = exactVirginiaCorpora();
+    const graph = buildExactVirginiaParentMap({
+      compiledCorpora: compiled.corpora,
+      pathwayCourseKeys: [
+        'va:CSC200', 'va:CSC100', 'va:MTH100', 'va:ITE100', 'va:uni:9205:CS100',
+      ],
+    });
+    expect(graph).toMatchObject({
+      ready: false,
+      blocker: VA_PREREQUISITE_MODEL_BLOCKER,
+      parents_by_course_key: null,
+    });
+    expect(graph.issues.map((issue) => issue.code))
+      .toContain('multiple_formula_paths_represented');
+  });
+
+  it('requires shared contract validation and rejects missing or unparsed rows', () => {
+    const compiled = exactVirginiaCorpora({ status: 'unparsed', groups: [] });
+    expect(compiled).toMatchObject({
+      ready: false,
+      blocker: VA_PREREQUISITE_MODEL_BLOCKER,
+      corpora: [],
+    });
+    expect(compiled.issues.map((issue) => issue.code))
+      .toContain('requisite_status_not_publishable');
+  });
+
+  it('does not silently turn a placement alternative into an empty edge', () => {
+    const compiled = exactVirginiaCorpora({
+      raw_requisites: 'CSC 100 or placement',
+      groups: [exactGroup([
+        [{ type: 'course', course_key: 'va:CSC100', code: 'CSC100' }],
+        [{ type: 'non_course', condition: 'placement', raw: 'by placement' }],
+      ])],
+    });
+    expect(compiled.ready).toBe(true);
+    const graph = buildExactVirginiaParentMap({
+      compiledCorpora: compiled.corpora,
+      pathwayCourseKeys: ['va:CSC200', 'va:CSC100', 'va:uni:9205:CS100'],
+    });
+    expect(graph.ready).toBe(false);
+    expect(graph.issues.map((issue) => issue.code))
+      .toContain('non_course_formula_path_unresolved');
+  });
+
+  it('accepts only the exact source-bound Longwood Perspective course bindings', () => {
+    const targetKey = CTZN410_SEQUENCE_EVIDENCE.course_key;
+    const owner = 'va:uni:9214';
+    const target = {
+      course_key: targetKey,
+      owner_namespace: owner,
+      status: 'parsed',
+      source: 'institution_catalog',
+      source_url: 'https://www.longwood.edu/site-assets/courses-from-banner/',
+      source_bundle_hash: 'official-longwood-bundle',
+      raw_requisites: 'Completion of three perspective level courses. The fourth perspectives level course must be taken prior to or concurrently with CTZN 410.',
+      groups: [exactGroup([
+        CTZN410_SEQUENCE_EVIDENCE.conditions,
+      ], `${targetKey}:prerequisite:0`)],
+    };
+    const compile = (row = target) => compileValidatedVirginiaFormulaCorpora({
+      communityCollegeRows: [vccsNone('va:CSC100')],
+      universityRows: [row],
+      requiredCommunityCollegeKeys: ['va:CSC100'],
+      requiredUniversityKeys: [targetKey],
+    });
+    const compiled = compile();
+    expect(compiled.ready).toBe(true);
+    const slots = [
+      'va:uni:9214:PSYC335',
+      'va:uni:9214:RELI301',
+      'va:uni:9214:MATH301',
+      'va:uni:9214:SPAN320',
+    ];
+    const bindings = {
+      [targetKey]: Object.fromEntries(
+        CTZN410_SEQUENCE_EVIDENCE.conditions.map((condition, index) => [
+          sha256VirginiaPrerequisiteValue(
+            canonicalVirginiaPrerequisiteJson(condition),
+          ),
+          index === 0 ? slots.slice(0, 3) : slots.slice(3),
+        ]),
+      ),
+    };
+    const graph = buildExactVirginiaParentMap({
+      compiledCorpora: compiled.corpora,
+      pathwayCourseKeys: [targetKey],
+      pathwayVertexKeys: [targetKey, ...slots],
+      nonCourseConditionBindings: bindings,
+    });
+    expect(graph.ready).toBe(true);
+    expect(graph.parents_by_course_key.get(targetKey)).toEqual(slots);
+
+    const unbound = buildExactVirginiaParentMap({
+      compiledCorpora: compiled.corpora,
+      pathwayCourseKeys: [targetKey],
+      pathwayVertexKeys: [targetKey, ...slots],
+    });
+    expect(unbound.ready).toBe(false);
+    expect(unbound.issues.map((issue) => issue.code))
+      .toContain('non_course_formula_path_unresolved');
+
+    const missingSlot = buildExactVirginiaParentMap({
+      compiledCorpora: compiled.corpora,
+      pathwayCourseKeys: [targetKey],
+      pathwayVertexKeys: [targetKey, ...slots.slice(0, 3)],
+      nonCourseConditionBindings: bindings,
+    });
+    expect(missingSlot.ready).toBe(false);
+    expect(JSON.stringify(missingSlot.issues))
+      .toContain('non_course_condition_binding_vertex_missing');
+
+    const wrongOwnerBindings = structuredClone(bindings);
+    const firstConditionHash = Object.keys(wrongOwnerBindings[targetKey])[0];
+    wrongOwnerBindings[targetKey][firstConditionHash][0] = 'va:uni:9999:PSYC335';
+    const wrongOwner = buildExactVirginiaParentMap({
+      compiledCorpora: compiled.corpora,
+      pathwayCourseKeys: [targetKey],
+      pathwayVertexKeys: [targetKey, ...slots, 'va:uni:9999:PSYC335'],
+      nonCourseConditionBindings: wrongOwnerBindings,
+    });
+    expect(wrongOwner.ready).toBe(false);
+    expect(JSON.stringify(wrongOwner.issues))
+      .toContain('non_course_condition_binding_shape_invalid');
+
+    const changedTarget = structuredClone(target);
+    changedTarget.groups[0].paths[0].all_of[1].concurrent_allowed = false;
+    const changed = compile(changedTarget);
+    const staleBinding = buildExactVirginiaParentMap({
+      compiledCorpora: changed.corpora,
+      pathwayCourseKeys: [targetKey],
+      pathwayVertexKeys: [targetKey, ...slots],
+      nonCourseConditionBindings: bindings,
+    });
+    expect(staleBinding.ready).toBe(false);
+    expect(staleBinding.issues.map((issue) => issue.code))
+      .toContain('non_course_formula_path_unresolved');
+  });
+
+  it('rewires one university prerequisite to the entire selected sending sequence', () => {
+    const universityTarget = {
+      course_key: 'va:uni:9205:CS200',
+      owner_namespace: 'va:uni:9205',
+      status: 'parsed',
+      source: 'institution_catalog',
+      source_url: 'https://catalog.example.edu/courses/CS200',
+      source_bundle_hash: 'official-catalog-sha256',
+      raw_requisites: 'CS 100',
+      groups: [exactGroup([[
+        { type: 'course', course_key: 'va:uni:9205:CS100', code: 'CS100' },
+      ]], 'va:uni:9205:CS200:prerequisite:0')],
+    };
+    const compiled = compileValidatedVirginiaFormulaCorpora({
+      communityCollegeRows: [vccsNone('va:CSC100'), vccsNone('va:MTH100')],
+      universityRows: [universityTarget, universityNone('va:uni:9205:CS100')],
+      requiredCommunityCollegeKeys: ['va:CSC100', 'va:MTH100'],
+      requiredUniversityKeys: ['va:uni:9205:CS200'],
+    });
+    expect(compiled.ready).toBe(true);
+    const graph = buildExactVirginiaParentMap({
+      compiledCorpora: compiled.corpora,
+      pathwayCourseKeys: ['va:CSC100', 'va:MTH100', 'va:uni:9205:CS200'],
+      substitutions: new Map([['va:uni:9205:CS100', ['va:CSC100', 'va:MTH100']]]),
+    });
+    expect(graph.ready).toBe(true);
+    expect(graph.parents_by_course_key.get('va:uni:9205:CS200'))
+      .toEqual(['va:CSC100', 'va:MTH100']);
+  });
+});
+
+const readyVirginiaSource = (kind, overrides = {}) => ({
+  _id: kind === 'degree' ? 'degree:9205:va-cs' : 'as_degree:9301:va-cs:local_as',
+  kind,
+  state: 'va',
+  analysis_contract: canonicalSourceContract(),
+  status: kind === 'degree' ? undefined : 'found',
+  va_requirement_status: 'extracted',
+  va_requirement_id: kind === 'degree' ? 'va:degree:bridgewater:cs' : 'va:as:blue-ridge:cs',
+  source_method: 'official_catalog_composition',
+  analysis_ready: true,
+  acceptance: {
+    accepted: true,
+    ready_for_analysis: true,
+    catalog: { checks: [] },
+    analysis_ready: { checks: [] },
+  },
+  verification: { verified: true, stale: false },
+  provenance: { source_bundle_hash: `${kind}-hash` },
+  ...(kind === 'degree' ? {
+    total_units: 3,
+    unit_audit: {
+      graduation_minimum: 3,
+      modeled_units: 3,
+      upper_division: { status: 'none_stated', reason: 'No aggregate rule.' },
+      residency: { status: 'none_stated', reason: 'No numeric rule.' },
+    },
+    requirement_groups: [{
+      title: 'Lower-division major', course_level: 'lower_division',
+      sections: [{ unit_advisement: 3, receivers: [{
+        receiving: { kind: 'course', parent_id: 1, units: 3 },
+      }] }],
+    }],
+  } : {}),
+  ...overrides,
+});
+
+describe('Virginia Figure 6 publication gate', () => {
+  it('blocks even accepted degree trees until both prerequisite namespaces are integrated', () => {
+    const gate = virginiaPathwaySourceGate(
+      readyVirginiaSource('as_degree'),
+      readyVirginiaSource('degree'),
+    );
+    expect(gate).toMatchObject({
+      ready: false,
+      reason: VA_PREREQUISITE_MODEL_BLOCKER,
+      associate: { ready: true },
+      bachelor: { ready: true },
+    });
+    expect(gate.warning).toMatch(/VCCS requisite formulas and university-local prerequisites/i);
+  });
+
+  it('returns an explicit null-metric row instead of scoring a disconnected Virginia graph', async () => {
+    const degree = readyVirginiaSource('degree', {
+      major_slug: 'va-cs', school_id: 9205, school: 'Bridgewater College',
+      program: 'Computer Science, B.S.', unit_system: 'semester',
+    });
+    const associate = readyVirginiaSource('as_degree', {
+      major_slug: 'va-cs', degree_type: 'local_as', community_college_id: 9301,
+      college_name: 'Blue Ridge Community College', total_units: 3, total_units_max: 3,
+      requirement_groups: [{
+        group_conjunction: 'And',
+        sections: [{ section_advisement: 1, receivers: [{ options: [{ course_ids: [5001] }] }] }],
+      }],
+    });
+    await db.collection('curated_requirements').insertMany([degree, associate]);
+    await db.collection('assist_agreements').insertOne({
+      state: 'va', uc_school_id: 9205, community_college_id: 9301,
+      major: 'Computer Science, B.S.', requirement_groups: [],
+    });
+    await db.collection('assist_courses').insertOne({
+      state: 'va', side: 'sending', course_id: 5001, units: 3,
+    });
+    await db.collection('assist_institutions').insertOne({
+      state: 'va', kind: 'community_college', source_id: 9301,
+      name: 'Blue Ridge Community College',
+    });
+
+    const rows = await pathwayComplexityData(db, null, {
+      majorSlug: 'va-cs', degreeType: 'local_as', verifiedOnly: true,
+    });
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      method_status: 'excluded',
+      exclusion_reason: VA_PREREQUISITE_MODEL_BLOCKER,
+      complexity: null,
+      resident_complexity: null,
+      delta_vs_resident: null,
     });
   });
 });

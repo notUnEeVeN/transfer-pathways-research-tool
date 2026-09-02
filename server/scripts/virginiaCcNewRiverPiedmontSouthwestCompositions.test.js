@@ -78,7 +78,12 @@ describe('New River, Piedmont, and Southwest current Computer Science A.S. compo
     }
   });
 
-  it('catalog-accepts all three exact full-degree trees and blocks analysis only on declared constraints', () => {
+  it('catalog-accepts all three trees and derives readiness from implemented constraints', () => {
+    const expectedReadiness = {
+      'new-river-community-college': false,
+      'piedmont-virginia-community-college': true,
+      'southwest-virginia-community-college': true,
+    };
     for (const slug of slugs) {
       const { acceptance, composition, doc } = build(slug);
       expect(composition.composition_status).toBe('composed_full_degree');
@@ -90,9 +95,14 @@ describe('New River, Piedmont, and Southwest current Computer Science A.S. compo
         source_method: 'official_catalog_composition',
         collection_status: 'composed_full_degree',
       });
-      expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
+      expect(acceptance).toMatchObject({
+        accepted: true,
+        ready_for_analysis: expectedReadiness[slug],
+      });
       expect(acceptance.catalog.failed).toEqual([]);
-      expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+      expect(acceptance.analysis_ready.failed).toEqual(
+        expectedReadiness[slug] ? [] : ['constraint_support'],
+      );
       expect(composition.source_bundle_required.every(
         (id) => doc.sources.some((source) => source.id === id),
       )).toBe(true);

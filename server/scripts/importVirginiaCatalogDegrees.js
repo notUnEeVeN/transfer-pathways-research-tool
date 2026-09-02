@@ -52,9 +52,18 @@ const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { MongoClient } = require('mongodb');
 const { diffDocs } = require('../services/docDiff');
-const { courseIdFor } = require('../services/virginia/courseIdentity');
+const {
+  courseIdFor,
+  courseIdentityForNamespace,
+  parseCourseKey,
+} = require('../services/virginia/courseIdentity');
 const { compileDegreeComposition } = require('../services/virginia/degreeComposition');
 const { validateDegreeAcceptance } = require('../services/virginia/degreeAcceptance');
+const { institutionCourseCatalog } = require('../services/virginia/institutionCourseCatalog');
+const {
+  majorCoreHash,
+  verifiedCoreConflict,
+} = require('../services/virginia/majorCoreIntegrity');
 
 const CAT = path.join(__dirname, '..', '.va-catalogs');
 const REQS = path.join(CAT, 'requirements');
@@ -69,6 +78,7 @@ Options:
   --only <slug,...>                 Limit the evaluated registry records
   --allow-failed                    Include failed machine extractions
   --accepted-compositions-only      Publish only catalog-accepted compositions
+  --source-plan                     Read-only cache evaluation; ignore persisted requirement/verification state
   --dry-run                         Evaluate without writing MongoDB (the default)
   --apply                           Apply the exact evaluated plan atomically
   --allow-unaccepted-write          With --apply, explicitly allow the legacy research rebuild
@@ -80,7 +90,8 @@ const log = (...a) => console.log('[va:import]', ...a);
 const CLI_VALUE_OPTIONS = new Set(['--uri', '--db', '--only']);
 const CLI_BOOLEAN_OPTIONS = new Set([
   '--dry-run', '--apply', '--allow-failed', '--accepted-compositions-only',
-  '--allow-unaccepted-write', '--allow-verified-reopen', '--allow-verified-supersede', '--help',
+  '--source-plan', '--allow-unaccepted-write', '--allow-verified-reopen',
+  '--allow-verified-supersede', '--help',
 ]);
 
 /**
@@ -112,6 +123,7 @@ function parseCliArgs(args = [], env = {}) {
   const apply = booleans.has('--apply');
   const explicitDryRun = booleans.has('--dry-run');
   const acceptedCompositionsOnly = booleans.has('--accepted-compositions-only');
+  const sourcePlan = booleans.has('--source-plan');
   const allowUnacceptedWrite = booleans.has('--allow-unaccepted-write');
   const allowVerifiedReopen = booleans.has('--allow-verified-reopen');
   const allowVerifiedSupersede = booleans.has('--allow-verified-supersede');
@@ -120,6 +132,10 @@ function parseCliArgs(args = [], env = {}) {
   const dbName = values.get('--db') || env.DB_NAME || null;
 
   if (!help && apply && explicitDryRun) throw new Error('--apply and --dry-run are mutually exclusive');
+  if (!help && sourcePlan && apply) throw new Error('--source-plan is read-only and cannot be combined with --apply');
+  if (!help && sourcePlan && !acceptedCompositionsOnly) {
+    throw new Error('--source-plan requires --accepted-compositions-only');
+  }
   if (!help && apply && !acceptedCompositionsOnly && !allowUnacceptedWrite) {
     throw new Error('--apply requires --accepted-compositions-only (or the explicit --allow-unaccepted-write research override)');
   }
@@ -144,6 +160,7 @@ function parseCliArgs(args = [], env = {}) {
     dryRun: !apply,
     allowFailed: booleans.has('--allow-failed'),
     acceptedCompositionsOnly,
+    sourcePlan,
     allowUnacceptedWrite,
     allowVerifiedReopen,
     allowVerifiedSupersede,
@@ -216,9 +233,15 @@ function sourceBundleHash(extract, composition = null) {
 }
 
 function acceptanceResolver(doc, creditsByCode) {
-  const codeById = new Map((doc.codes_seen || []).map((code) => [courseIdFor(code), code]));
+  const namespace = doc.course_namespace || null;
+  const identityFor = (code) => courseIdentityForNamespace(code, namespace);
+  const codeById = new Map((doc.codes_seen || []).map((code) => {
+    const identity = identityFor(code);
+    return [identity?.course_id, identity?.code];
+  }).filter(([id]) => id != null));
   return ({ side, id, key }) => {
-    const code = key && /^va:/.test(key) ? key.slice(3) : codeById.get(Number(id));
+    const parsedKey = key == null ? null : parseCourseKey(key);
+    const code = parsedKey?.code || codeById.get(Number(id));
     if (!code) return false;
     // `va_courses` began as the Transfer Virginia sending-course corpus and is
     // not a complete VCCS catalog. A course named and titled by this college's
@@ -230,9 +253,14 @@ function acceptanceResolver(doc, creditsByCode) {
     if (side === 'community_college'
         && !creditsByCode.has(code)
         && !(doc.course_titles && doc.course_titles[code])) return false;
-    return side === 'community_college'
-      ? { course_id: Number(id), course_key: key || `va:${code}` }
-      : { parent_id: Number(id) };
+    if (side !== 'community_college') return { parent_id: Number(id) };
+    const expected = identityFor(code);
+    // Namespace metadata is not enough: reject a legacy `va:CODE` reference
+    // in an institution-local document even when its readable code is valid.
+    // This is the check that prevents RBC MATH251 resolving to JMU's unrelated
+    // same-code course through the old numeric hash.
+    if (!expected || Number(id) !== expected.course_id || key !== expected.course_key) return false;
+    return expected;
   };
 }
 
@@ -544,6 +572,166 @@ function courseTitles(tree) {
 const allCodes = (tree) => [...new Set((tree.groups || [])
   .flatMap((g) => (g.sections || []).flatMap((s) => (s.rows || []).flatMap((r) => (r.codes || []).map((c) => c.code)))))];
 
+/**
+ * Exact per-course credit facts retained by the source extractor.
+ *
+ * Compiling a catalog may legitimately turn two printed course rows into one
+ * AND bundle. The bundle's seven-credit total cannot be divided safely, but
+ * the original rows (for example CSCI 222 = 4 and MATH 254 = 3) remain direct
+ * official evidence. Preserve only single-code, single-valued observations;
+ * conflicting or range-valued rows remain absent and therefore fail closed.
+ */
+function sourceCourseUnitEvidence(extract, composition, {
+  namespace = null,
+  availableSourceIds = new Set(),
+  requiredCodes = null,
+} = {}) {
+  const observations = new Map();
+  const add = (entry, explicit = false) => {
+    const code = String(entry?.code || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+    const min = Number(entry?.min_units ?? entry?.units);
+    const max = Number(entry?.max_units ?? entry?.units);
+    if (!code || (requiredCodes && !requiredCodes.has(code))
+        || !Number.isFinite(min) || !Number.isFinite(max)
+        || min <= 0 || max !== min) return;
+    const refs = Array.isArray(entry?.source_refs) ? entry.source_refs : [];
+    if (refs.some((ref) => !availableSourceIds.has(ref))) {
+      throw new Error(`course-unit evidence for ${code} cites an unknown source`);
+    }
+    if (!observations.has(code)) observations.set(code, []);
+    observations.get(code).push({
+      code,
+      units: min,
+      source_refs: refs,
+      source_path: entry?.source_path || null,
+      evidence: entry?.evidence || (explicit
+        ? 'reviewed_composition_course_row'
+        : 'extracted_single_course_credit_row'),
+      unit_source: entry?.official_url ? {
+        official_url: entry.official_url,
+        source_sha256: entry.source_sha256 || null,
+        source_excerpt: entry.source_excerpt || null,
+        source_excerpt_sha256: entry.source_excerpt_sha256 || null,
+        source_path: entry.source_path || null,
+      } : null,
+      explicit,
+    });
+  };
+
+  for (const [gi, group] of (extract?.groups || []).entries()) {
+    for (const [si, section] of (group?.sections || []).entries()) {
+      for (const [ri, row] of (section?.rows || []).entries()) {
+        if ((row?.codes || []).length !== 1) continue;
+        const credits = row?.credits;
+        if (!credits || Number(credits.min) !== Number(credits.max)) continue;
+        const code = String(row.codes[0]?.code || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+        const match = /^([A-Z]{2,5})(\d{3,4}[A-Z]?)$/.exec(code);
+        const sourceText = String(row?.text || '');
+        const printedCode = match && new RegExp(
+          `(?:^|[^A-Z0-9])${match[1]}\\s*[-–—]?\\s*${match[2]}(?![A-Z0-9])`, 'i',
+        ).test(sourceText);
+        // Parsed rows are evidence only when the captured row still proves
+        // the exact identity and has a plausible single-course value. This
+        // rejects known parser artifacts such as HIS 121 "...to 1877", SDV
+        // 100 "or SDV 101", ITE 152 truncated to TE152, and footnote 2.
+        if (!printedCode || Number(credits.max) > 8 || /\bor\b/i.test(sourceText)) continue;
+        add({
+          code,
+          units: credits.min,
+          source_refs: availableSourceIds.has('major') ? ['major'] : [],
+          source_path: `groups[${gi}].sections[${si}].rows[${ri}]`,
+        });
+      }
+    }
+  }
+  const reviewedEntries = [...(composition?.course_unit_evidence || [])];
+  const artifact = composition?.course_unit_evidence_artifact;
+  if (artifact) {
+    const relativePath = String(artifact.path || '');
+    const expectedHash = String(artifact.sha256 || '');
+    if (!/^research\/[A-Za-z0-9._/-]+\.json$/.test(relativePath)
+        || !/^[a-f0-9]{64}$/.test(expectedHash)) {
+      throw new Error('course_unit_evidence_artifact requires a safe research JSON path and sha256');
+    }
+    const absolutePath = path.resolve(CAT, relativePath);
+    if (!absolutePath.startsWith(`${path.resolve(CAT, 'research')}${path.sep}`)) {
+      throw new Error('course_unit_evidence_artifact escapes the research directory');
+    }
+    const bytes = fs.readFileSync(absolutePath);
+    const actualHash = createHash('sha256').update(bytes).digest('hex');
+    if (actualHash !== expectedHash) {
+      throw new Error(`course_unit_evidence_artifact hash mismatch for ${relativePath}`);
+    }
+    const parsed = JSON.parse(bytes.toString('utf8'));
+    if (!Array.isArray(parsed.entries)) {
+      throw new Error(`course_unit_evidence_artifact has no entries: ${relativePath}`);
+    }
+    const selectedCodes = artifact.codes == null
+      ? null
+      : new Set((Array.isArray(artifact.codes) ? artifact.codes : []).map((code) => (
+        String(code || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase()
+      )));
+    if (artifact.codes != null && (!Array.isArray(artifact.codes)
+        || selectedCodes.size !== artifact.codes.length
+        || [...selectedCodes].some((code) => !/^[A-Z]{2,5}\d{3,4}[A-Z]?$/.test(code)))) {
+      throw new Error('course_unit_evidence_artifact.codes must contain unique canonical course codes');
+    }
+    const availableArtifactCodes = new Set(parsed.entries.map((entry) => (
+      String(entry?.code || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase()
+    )));
+    const missingSelectedCodes = selectedCodes == null ? []
+      : [...selectedCodes].filter((code) => !availableArtifactCodes.has(code));
+    if (missingSelectedCodes.length) {
+      throw new Error(
+        `course_unit_evidence_artifact selects missing code(s): ${missingSelectedCodes.join(', ')}`,
+      );
+    }
+    for (const entry of parsed.entries) {
+      const artifactCode = String(entry?.code || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+      if (selectedCodes && !selectedCodes.has(artifactCode)) continue;
+      const excerpt = String(entry?.source_excerpt || '');
+      const excerptHash = createHash('sha256').update(excerpt).digest('hex');
+      const exactExcerpt = excerptHash === entry?.source_excerpt_sha256
+        && /^https:\/\//.test(entry?.official_url || '')
+        && /^[a-f0-9]{64}$/.test(entry?.source_sha256 || '')
+        && new RegExp(`\\b${String(entry?.code || '').replace(/(\D+)(\d.*)/, '$1\\s*$2')}\\b`, 'i')
+          .test(excerpt)
+        && new RegExp(`\\bCredits:\\s*${Number(entry?.units)}\\b`, 'i').test(excerpt);
+      if (!exactExcerpt) {
+        throw new Error(`invalid supplemental course-unit evidence for ${entry?.code || '<missing>'}`);
+      }
+      reviewedEntries.push({
+        ...entry,
+        source_refs: artifact.source_refs || [],
+        source_path: `${relativePath}#${entry.code}`,
+        evidence: 'captured_official_course_detail',
+      });
+    }
+  }
+  for (const entry of reviewedEntries) add(entry, true);
+
+  const evidence = [];
+  for (const [code, rows] of observations) {
+    const explicit = rows.filter((row) => row.explicit);
+    const candidates = explicit.length ? explicit : rows;
+    const units = [...new Set(candidates.map((row) => row.units))];
+    if (units.length !== 1) continue;
+    const identity = courseIdentityForNamespace(code, namespace);
+    if (!identity) continue;
+    evidence.push({
+      ...identity,
+      units: units[0],
+      min_units: units[0],
+      max_units: units[0],
+      source_refs: [...new Set(candidates.flatMap((row) => row.source_refs))].sort(),
+      source_paths: candidates.map((row) => row.source_path).filter(Boolean),
+      evidence: candidates[0].evidence,
+      unit_sources: candidates.map((row) => row.unit_source).filter(Boolean),
+    });
+  }
+  return evidence.sort((a, b) => a.code.localeCompare(b.code));
+}
+
 // ── documents ───────────────────────────────────────────────────────────────
 
 function validatedCourseNamespace(composition, inst, availableSourceIds) {
@@ -599,7 +787,10 @@ function toDocument(extract, inst, creditsByCode, composition = null) {
   }
   const courseNamespace = validatedCourseNamespace(composition, inst, availableSourceIds);
   const compiled = composition
-    ? compileDegreeComposition(composition, { institutionLevel: inst.level })
+    ? compileDegreeComposition(composition, {
+      institutionLevel: inst.level,
+      courseNamespace,
+    })
     : null;
   // Some awards publish materially different requirement maps under one award
   // identity (Reynolds' B.A.-destination and B.S.-destination A.S. maps are the
@@ -615,7 +806,10 @@ function toDocument(extract, inst, creditsByCode, composition = null) {
       const variantCompiled = compileDegreeComposition({
         requirement_groups: variant.requirement_groups,
         course_titles: { ...(composition.course_titles || {}), ...(variant.course_titles || {}) },
-      }, { institutionLevel: inst.level });
+      }, {
+        institutionLevel: inst.level,
+        courseNamespace,
+      });
       return {
         ...variant,
         requirement_groups: variantCompiled.requirement_groups,
@@ -631,6 +825,23 @@ function toDocument(extract, inst, creditsByCode, composition = null) {
   const groups = compiled
     ? compiled.requirement_groups
     : requirementGroups(extract, { cc, creditsByCode, availableSourceIds });
+  const resolvedCourseTitles = {
+    ...courseTitles(extract),
+    ...(compiled?.course_titles || {}),
+    ...Object.assign({}, ...requirementVariants.map((variant) => variant.course_titles || {})),
+  };
+  const exactCourseUnits = sourceCourseUnitEvidence(extract, composition, {
+    namespace: courseNamespace,
+    availableSourceIds,
+    requiredCodes: new Set(codes),
+  });
+  const localCourseCatalog = institutionCourseCatalog({
+    codes,
+    courseTitles: resolvedCourseTitles,
+    requirementGroups: groups,
+    unitEvidence: exactCourseUnits,
+    namespace: courseNamespace,
+  });
   const captured = extract.outcome === 'captured' && groups.length > 0;
 
   const status = captured ? 'extracted'
@@ -663,11 +874,9 @@ function toDocument(extract, inst, creditsByCode, composition = null) {
     option_sets: composition?.option_sets || null,
     catalog_platform: inst.platform || null,
     codes_seen: codes,
-    course_titles: {
-      ...courseTitles(extract),
-      ...(compiled?.course_titles || {}),
-      ...Object.assign({}, ...requirementVariants.map((variant) => variant.course_titles || {})),
-    },
+    course_titles: resolvedCourseTitles,
+    ...(exactCourseUnits.length ? { course_unit_evidence: exactCourseUnits } : {}),
+    ...(localCourseCatalog.length ? { institution_course_catalog: localCourseCatalog } : {}),
     offers_cs: extract.offers_cs !== false,
     capture_layers: extract.source_layers || null,
     requirement_layers: composition?.requirement_layers || null,
@@ -1027,6 +1236,11 @@ function replacementRevision(prior, next, at = new Date()) {
       status: next.status || null,
       source_bundle_hash: next?.provenance?.source_bundle_hash || null,
     },
+    // The leaf diff is for review, not rollback: it intentionally omits
+    // bookkeeping fields. Retain the complete prior BSON document so a
+    // publication replacement is exactly recoverable, including signatures
+    // and timestamps that must never be reconstructed from prose.
+    before_document: prior,
     // Preserve the old values, not just counts. This makes a source-driven
     // replacement of a previously curated tree reconstructible from history.
     changes: diffDocs(prior, next),
@@ -1058,9 +1272,16 @@ async function main() {
     // Read every source for collision detection. A non-catalog document that
     // happens to use a catalog-shaped ID must abort rather than be overwritten
     // through an `_id`-only upsert.
-    const existing = new Map(
-      (await db.collection('va_requirements').find({}).toArray()).map((document) => [document._id, document]),
-    );
+    // A source plan answers whether the checked-in cache is internally ready;
+    // it deliberately does not inspect or authorize replacement of persisted
+    // researcher verification. Normal dry-runs still enforce those conflicts,
+    // and every write path always does.
+    const existing = opts.sourcePlan
+      ? new Map()
+      : new Map(
+        (await db.collection('va_requirements').find({}).toArray())
+          .map((document) => [document._id, document]),
+      );
     const idCollisions = list.map((institution) => requirementIdForInstitution(institution))
       .filter((id) => {
         const prior = existing.get(id);
@@ -1142,6 +1363,21 @@ async function main() {
         'refusing to overwrite verified Mongo content that differs from the unchanged composition artifact: '
         + verifiedConflicts.map((doc) => doc._id).join(', '),
       );
+    }
+    const verifiedCoreConflicts = docs.filter((doc) => (
+      verifiedCoreConflict(existing.get(doc._id), doc)
+    ));
+    if (verifiedCoreConflicts.length) {
+      log(
+        'verified core-content conflicts (course/choice/unit/policy changes are not standardization): '
+        + verifiedCoreConflicts.map((doc) => doc._id).join(', '),
+      );
+      if (opts.apply) {
+        throw new Error(
+          'refusing to change the core content of verified Virginia majors: '
+          + verifiedCoreConflicts.map((doc) => doc._id).join(', '),
+        );
+      }
     }
     if (reopenedVerificationIds.length) {
       log(`verified records reopened by changed/missing source bundle hash: ${reopenedVerificationIds.join(', ')}`);
@@ -1291,6 +1527,7 @@ async function main() {
               verification: prior?.verification || null,
               provenance: prior?.provenance || null,
             },
+            before_document: prior,
             after: {
               status: supersedePatch.status,
               collection_status: supersedePatch.collection_status,
@@ -1421,6 +1658,65 @@ function coverageRow(inst, extract, collected, doc = null, { publication = null 
   };
 }
 
+/**
+ * Rebuild the accepted 37-document publication source set from checked-in
+ * cache artifacts without consulting persisted requirement documents. This is
+ * a read-only pre-import plan: it intentionally carries no Mongo verification
+ * signatures, so the publication audit will require fresh human review.
+ */
+function cachedAcceptedSourcePlan(creditsByCode = new Map()) {
+  const registry = JSON.parse(fs.readFileSync(path.join(CAT, 'institutions.json'), 'utf8'));
+  const documents = [];
+  const evaluatedDocuments = [];
+  const coverage = [];
+  const skipped = [];
+
+  for (const inst of registry.institutions) {
+    const file = path.join(REQS, `${inst.slug}.json`);
+    if (!fs.existsSync(file)) {
+      skipped.push({ slug: inst.slug, why: 'current_extraction_required' });
+      coverage.push(coverageRow(inst, null, false, null, {
+        publication: { eligible: false, reason: 'current_extraction_required' },
+      }));
+      continue;
+    }
+    const extract = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const compositionFile = path.join(COMPOSED, `${inst.slug}.json`);
+    const composition = fs.existsSync(compositionFile)
+      ? JSON.parse(fs.readFileSync(compositionFile, 'utf8'))
+      : null;
+    if (extract?.validation?.verdict === 'fail' && !composition) {
+      skipped.push({ slug: inst.slug, why: 'parser_validation_failed' });
+      coverage.push(coverageRow(inst, extract, false, null, {
+        publication: { eligible: false, reason: 'parser_validation_failed' },
+      }));
+      continue;
+    }
+
+    const doc = toDocument(extract, inst, creditsByCode, composition);
+    doc.acceptance = validateDegreeAcceptance(doc, {
+      institutionLevel: inst.level,
+      resolveCourse: acceptanceResolver(doc, creditsByCode),
+    });
+    if (doc.acceptance.ready_for_analysis) doc.collection_status = 'analysis_ready';
+    else if (doc.acceptance.accepted) doc.collection_status = 'catalog_accepted';
+    evaluatedDocuments.push(doc);
+
+    const findingEvidence = programFindingEvidence(extract);
+    const publication = findingEvidence.complete
+      ? { eligible: false, reason: 'not_applicable_no_program', finding_complete: true }
+      : acceptedCompositionPublication(composition, doc);
+    if (publication.eligible) documents.push(doc);
+    else skipped.push({ slug: inst.slug, why: publication.reason });
+    coverage.push(coverageRow(inst, extract, publication.eligible && doc.status === 'extracted', doc, {
+      publication,
+    }));
+  }
+
+  const manifest = assertPrimaryPublicationCohort(registry, documents, coverage);
+  return { registry, documents, evaluatedDocuments, coverage, skipped, manifest };
+}
+
 if (require.main === module) {
   if (opts.help) console.log(HELP_TEXT);
   else main().catch((error) => {
@@ -1433,22 +1729,26 @@ module.exports = {
   acceptanceResolver,
   acceptedCompositionPublication,
   assertPrimaryPublicationCohort,
+  cachedAcceptedSourcePlan,
   canonicalSections,
   courseTitles,
   coverageRow,
   coverageReplacementFilter,
   importMaterialHash,
+  majorCoreHash,
   parseCliArgs,
   receiversForRow,
   retiredRequirementIds,
   requirementGroups,
   replacementRevision,
   selectedInstitutions,
+  sourceCourseUnitEvidence,
   sourceBundleHash,
   supersededCatalogPatch,
   unpublishedRequirementIds,
   validatedCourseNamespace,
   verificationForSourceBundle,
   verifiedImportConflict,
+  verifiedCoreConflict,
   toDocument,
 };

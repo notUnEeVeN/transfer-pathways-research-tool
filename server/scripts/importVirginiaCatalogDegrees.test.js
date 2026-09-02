@@ -13,6 +13,7 @@ import {
   requirementGroups,
   replacementRevision,
   selectedInstitutions,
+  sourceCourseUnitEvidence,
   sourceBundleHash,
   supersededCatalogPatch,
   toDocument,
@@ -41,6 +42,14 @@ describe('Virginia catalog requirement conversion', () => {
       .toThrow(/valid only with --apply/);
     expect(() => parseCliArgs(['--allow-verified-reopen'], {}))
       .toThrow(/valid only with --apply/);
+    expect(() => parseCliArgs(['--source-plan'], {}))
+      .toThrow(/accepted-compositions-only/);
+    expect(() => parseCliArgs([
+      '--accepted-compositions-only', '--source-plan', '--apply',
+    ], { MONGO_URI: 'mongodb://example', DB_NAME: 'db' })).toThrow(/read-only/);
+    expect(parseCliArgs([
+      '--accepted-compositions-only', '--source-plan',
+    ], {})).toMatchObject({ sourcePlan: true, apply: false, dryRun: true });
     expect(parseCliArgs([
       '--accepted-compositions-only', '--apply', '--uri', 'mongodb://example', '--db', 'research',
     ], {})).toMatchObject({
@@ -81,6 +90,44 @@ describe('Virginia catalog requirement conversion', () => {
       { kind: 'course', parent_id: courseIdFor('CS471'), units: 3 },
       { kind: 'course', parent_id: courseIdFor('CS571'), units: 3 },
     ]);
+  });
+
+  it('retains exact single-course credit rows without dividing bundled totals', () => {
+    const evidence = sourceCourseUnitEvidence({
+      groups: [{ sections: [{ rows: [
+        { text: 'CSCI 222 Programming II 4', codes: [course('CSCI222')], credits: { min: 4, max: 4 } },
+        { text: 'MATH 254 Linear Algebra 3', codes: [course('MATH254')], credits: { min: 3, max: 3 } },
+        {
+          text: 'CSCI 222 and MATH 254 7',
+          codes: [course('CSCI222'), course('MATH254')],
+          credits: { min: 7, max: 7 },
+        },
+        { text: 'VARIABLE 101 Topics 1-3', codes: [course('VARIABLE')], credits: { min: 1, max: 3 } },
+      ] }] }],
+    }, null, { availableSourceIds: new Set(['major']) });
+
+    expect(evidence).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'CSCI222', units: 4, source_refs: ['major'] }),
+      expect.objectContaining({ code: 'MATH254', units: 3, source_refs: ['major'] }),
+    ]));
+    expect(evidence.map((row) => row.code)).not.toContain('VARIABLE');
+  });
+
+  it('rejects parser-made unit values and identities that the source row does not prove', () => {
+    const evidence = sourceCourseUnitEvidence({
+      groups: [{ sections: [{ rows: [
+        { text: 'HIS 121: United States History to', codes: [course('HIS121')], credits: { min: 1877, max: 1877 } },
+        { text: 'SDV 100: College Success Skills or SDV', codes: [course('SDV100')], credits: { min: 101, max: 101 } },
+        { text: 'or MTH 161 or Mathematics', codes: [course('MTH161')], credits: { min: 2, max: 2 } },
+        { text: 'ITE 152 - Digital Literacy', codes: [course('TE152')], credits: { min: 3, max: 3 } },
+        { text: 'CSC 221 Programming I', codes: [course('CSC221')], credits: { min: 3, max: 3 } },
+      ] }] }],
+    }, null, {
+      availableSourceIds: new Set(['major']),
+      requiredCodes: new Set(['HIS121', 'SDV100', 'MTH161', 'TE152']),
+    });
+
+    expect(evidence).toEqual([]);
   });
 
   it('makes ordinary fixed rows explicit required slots and joins a marked OR alternative', () => {
@@ -417,6 +464,7 @@ describe('Virginia catalog requirement conversion', () => {
       from: 'Researcher-corrected Core',
       to: 'Current Catalog Core',
     });
+    expect(revision.before_document).toEqual(prior);
   });
 
   it('requires the exact primary release manifest before a full publication', () => {

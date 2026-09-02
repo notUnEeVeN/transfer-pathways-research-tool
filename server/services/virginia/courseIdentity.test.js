@@ -1,7 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import {
-  canonicalCourseCode, courseIdFor, courseKeyFor, parentIdForLanding,
+  canonicalCourseCode,
+  courseIdFor,
+  courseKeyFor,
+  courseIdentityForNamespace,
+  courseRowMatchesIdentity,
+  institutionCourseIdentity,
+  institutionCourseIdFor,
+  institutionCourseKeyFor,
+  parentIdForLanding,
+  parseCourseKey,
+  sharedCourseIdentity,
 } from './courseIdentity';
+
+const RBC = 'va:cc:richard-bland-college';
 
 describe('Virginia course identities', () => {
   it('preserves the existing deterministic ids', () => {
@@ -21,6 +33,45 @@ describe('Virginia course identities', () => {
     expect(canonicalCourseCode('CIS 231WX')).toBe('CIS231WX');
     expect(courseIdFor('CIS 231WX')).toBeTypeOf('number');
     expect(courseKeyFor('CIS 231WX')).toBe('va:CIS231WX');
+  });
+
+  it.each(['MATH251', 'PHYS201', 'PHYS202'])(
+    'separates Richard Bland %s from a same-code VCCS or university course',
+    (code) => {
+      const local = institutionCourseIdentity(RBC, code);
+      const shared = sharedCourseIdentity(code);
+      expect(local).toMatchObject({
+        code,
+        course_id: institutionCourseIdFor(RBC, code),
+        course_key: institutionCourseKeyFor(RBC, code),
+        institution_id: RBC,
+        identity_scope: 'institution_local',
+        identity_contract: 'owner_plus_course_id',
+        vccs_master_applicable: false,
+      });
+      expect(local.course_id).not.toBe(shared.course_id);
+      expect(local.course_key).not.toBe(shared.course_key);
+      expect(parseCourseKey(local.course_key)).toEqual(local);
+      expect(parseCourseKey(shared.course_key)).toEqual(shared);
+    },
+  );
+
+  it('resolves a namespace explicitly and requires matching row ownership', () => {
+    const namespace = {
+      kind: 'institution_local',
+      institution_id: RBC,
+      vccs_master_applicable: false,
+      identity_contract: 'owner_plus_course_id',
+      scoped_key_format: `${RBC}:<code>`,
+    };
+    const local = courseIdentityForNamespace('MATH251', namespace);
+    expect(courseRowMatchesIdentity(local, local)).toBe(true);
+    expect(courseRowMatchesIdentity({
+      ...local,
+      institution_id: 'va:uni:james-madison-university',
+      title: 'Database Queries',
+    }, local)).toBe(false);
+    expect(courseRowMatchesIdentity(sharedCourseIdentity('MATH251'), local)).toBe(false);
   });
 
   it.each(['TRNS1XX', 'MATHElective', 'CS----', 'PE118+', 'XXXX0000', 'ELEC000']) (

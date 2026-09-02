@@ -21,6 +21,40 @@
 
 const TIERS = ['transferable', 'breadth', 'nontransferable'];
 
+const {
+  CANONICAL_REQUIREMENT_ROLES,
+  canonicalRequirementRole,
+} = require('./analysis/canonicalRequirementRole');
+const {
+  usesCanonicalSourceContract,
+} = require('./analysis/canonicalSourceContract');
+const {
+  oduSectionTier,
+  oduTechnicalSciencePairs,
+} = require('./analysis/georgeMasonOldDominionConstraintProofs');
+const {
+  bridgewaterTrackSelection,
+} = require('./analysis/bridgewaterConstraintProofs');
+const {
+  cnuFigureSelection,
+} = require('./analysis/christopherNewportConstraintProofs');
+const {
+  norfolkStateCoverageSelection,
+} = require('./analysis/norfolkStateConstraintProofs');
+const {
+  longwoodFigureSelection,
+} = require('./analysis/longwoodConstraintProofs');
+const {
+  standardMathAndPathwaysSelection,
+  virginiaTechSectionTier,
+} = require('./analysis/virginiaTechConstraintProofs');
+const {
+  vmiCoverageSelection,
+} = require('./analysis/virginiaMilitaryInstituteConstraintProofs');
+const {
+  vcuFigureSelection,
+} = require('./analysis/vcuConstraintProofs');
+
 const codeOf = (c) => `${c.prefix} ${c.number}`.trim();
 
 // A receiver's university parent_ids: one for a course, several for a series
@@ -35,6 +69,92 @@ const receiverArticulated = (rec, articulated) => {
   const pids = receiverPids(rec);
   return pids.length > 0 && pids.every((pid) => articulated.has(pid));
 };
+
+function exactInstitutionSectionTier(document, group, section) {
+  return oduSectionTier(document, group, section)
+    || virginiaTechSectionTier(document, group, section);
+}
+
+function exactOduCoverageSelection(document, articulated) {
+  const report = oduTechnicalSciencePairs(document);
+  if (!report.ready) return null;
+  const expansion = (receiver) => receiverPids(receiver?.receiving).length || 1;
+  return report.pairs.map((pair) => {
+    const technicalCovered = receiverArticulated(
+      pair.technical_receiver.receiving, articulated,
+    );
+    const scienceCovered = receiverArticulated(
+      pair.science_receiver.receiving, articulated,
+    );
+    return {
+      ...pair,
+      covered_units: (technicalCovered ? 3 : 0) + (scienceCovered ? 8 : 0),
+      covered_slots: Number(technicalCovered) + Number(scienceCovered),
+      course_count: expansion(pair.technical_receiver) + expansion(pair.science_receiver),
+    };
+  }).sort((a, b) => b.covered_units - a.covered_units
+    || b.covered_slots - a.covered_slots
+    || a.course_count - b.course_count
+    || a.technical_index - b.technical_index
+    || a.science_index - b.science_index)[0] || null;
+}
+
+function exactOduReceiverIndex(selection, groupIndex, sectionIndex) {
+  if (!selection || sectionIndex !== 0) return null;
+  if (groupIndex === 3) return selection.technical_index;
+  if (groupIndex === 10) return selection.science_index;
+  return null;
+}
+
+function exactCnuReceiverIndices(selection, groupIndex, sectionIndex) {
+  if (!selection?.ready) return null;
+  const indices = selection.section_receiver_indices?.[`${groupIndex}:${sectionIndex}`];
+  return Array.isArray(indices) ? indices : null;
+}
+
+function exactNsuReceiverIndices(selection, groupIndex, sectionIndex) {
+  if (!selection?.ready) return null;
+  const indices = selection.section_receiver_indices?.[`${groupIndex}:${sectionIndex}`];
+  return Array.isArray(indices) ? indices : null;
+}
+
+function exactVmiReceiverIndices(selection, groupIndex, sectionIndex) {
+  if (!selection?.ready) return null;
+  const indices = selection.section_receiver_indices?.[`${groupIndex}:${sectionIndex}`];
+  return Array.isArray(indices) ? indices : null;
+}
+
+function exactVcuReceiverIndices(selection, groupIndex, sectionIndex) {
+  if (!selection?.ready) return null;
+  const indices = selection.section_receiver_indices?.[`${groupIndex}:${sectionIndex}`];
+  return Array.isArray(indices) ? indices : null;
+}
+
+function exactVirginiaTechReceiverIndices(selection, groupIndex, sectionIndex) {
+  if (!selection?.ready) return null;
+  const indices = selection.section_receiver_indices?.[`${groupIndex}:${sectionIndex}`];
+  return Array.isArray(indices) ? indices : null;
+}
+
+function exactLongwoodReceiverIndices(selection, groupIndex, sectionIndex) {
+  if (!selection?.ready) return null;
+  const indices = selection.section_receiver_indices?.[`${groupIndex}:${sectionIndex}`];
+  return Array.isArray(indices) ? indices : null;
+}
+
+function exactLongwoodSection(selection, section, groupIndex, sectionIndex) {
+  if (!selection?.ready) return section;
+  return selection.virtual_sections?.[`${groupIndex}:${sectionIndex}`] || section;
+}
+
+function exactLongwoodTransferEligibility(selection, groupIndex) {
+  // Both authored major-elective pools explicitly carry
+  // `cc_articulable:false`. Accepted-source wrappers predate the canonical
+  // contract stamp, so bind this result to the complete Longwood proof instead
+  // of letting the legacy compatibility branch turn the virtual roster into a
+  // transferable menu.
+  return selection?.ready && [11, 12].includes(groupIndex) ? false : null;
+}
 
 function ccCodes(options, coursesById) {
   const codes = [];
@@ -160,11 +280,20 @@ const namedGeFlavored = (g, s) => {
   // is represented with the generic ge_area carrier.
   if (namedGeTitled(g, s)) return true;
   if (namedCollegeRequirement(g)) return false;
+  const receivers = Array.isArray(s.receivers) ? s.receivers : [];
+  // An open category may be one legal alternative inside an otherwise named
+  // course menu (Virginia CNU/NSU are live examples). It does not turn the
+  // other concrete alternatives—or the section's choose-N obligation—into GE.
+  // Only a non-empty roster whose every receiver is GE-shaped may classify the
+  // whole section through receiver storage shape.
+  const allReceiversGeShaped = receivers.length > 0 && receivers.every((r) => (
+    r.receiving?.kind === 'ge_area'
+      || r.assume_satisfiable
+      || (Array.isArray(r.ge_areas) && r.ge_areas.length)
+  ));
   return s.assume_satisfiable
     || (Array.isArray(s.ge_areas) && s.ge_areas.length > 0)
-    || (s.receivers || []).some((r) => r.receiving?.kind === 'ge_area'
-      || r.assume_satisfiable
-      || (Array.isArray(r.ge_areas) && r.ge_areas.length));
+    || allReceiversGeShaped;
 };
 // The source paper's population is all named degree/college requirements with
 // GE excluded. University-only and upper-division named courses therefore stay
@@ -173,8 +302,27 @@ const namedGeFlavored = (g, s) => {
 // model, but it cannot redefine the paper-equivalent course-count population.
 function namedRequirementCourses(requirementGroups, {
   articulated = null, articulatedRequirements = null, categoryOf = null,
+  sourceDocument = null,
 } = {}) {
   const evaluated = articulated != null;
+  const exactSource = usesCanonicalSourceContract(sourceDocument);
+  const exactOduSelection = exactSource
+    ? exactOduCoverageSelection(sourceDocument, articulated || new Set()) : null;
+  const exactBridgewaterSelection = exactSource
+    ? bridgewaterTrackSelection(sourceDocument, {
+      articulated: articulated || new Set(), transferEntry: true,
+    }) : null;
+  const exactCnuSelection = exactSource ? cnuFigureSelection(sourceDocument) : null;
+  const exactNsuSelection = exactSource
+    ? norfolkStateCoverageSelection(sourceDocument, articulated || new Set()) : null;
+  const exactVmiSelection = exactSource ? vmiCoverageSelection(sourceDocument) : null;
+  const exactVcuSelection = exactSource
+    ? vcuFigureSelection(sourceDocument, { transferEntry: true }) : null;
+  const exactVirginiaTechSelection = exactSource
+    ? standardMathAndPathwaysSelection(sourceDocument, {
+      articulated: articulated || new Set(),
+    }) : null;
+  const exactLongwoodSelection = longwoodFigureSelection(sourceDocument);
   const expansion = (r) => (r.receiving?.kind === 'series'
     ? (r.receiving.parent_ids || []).length || 1
     : 1);
@@ -206,19 +354,27 @@ function namedRequirementCourses(requirementGroups, {
         || fallback;
     });
   };
-  const observationsForReceiver = (r, g, s, covered = false) => (
+  const observationsForReceiver = (
+    r, g, s, covered = false, lowerDivisionOverride = null,
+  ) => (
     receiverCategories(r, g, s).map((category) => ({
       category,
       covered: Boolean(covered),
-      lowerDivision: resolveSectionTier(g, s) !== 'nontransferable',
+      lowerDivision: typeof lowerDivisionOverride === 'boolean'
+        ? lowerDivisionOverride
+        : resolveSectionTier(g, s, sourceDocument) !== 'nontransferable',
     }))
   );
-  const genericObservations = (g, s, total, covered) => Array.from(
+  const genericObservations = (
+    g, s, total, covered, lowerDivisionOverride = null,
+  ) => Array.from(
     { length: Math.max(0, Number(total) || 0) },
     () => ({
       category: sectionCategory(g, s),
       covered: Boolean(covered),
-      lowerDivision: resolveSectionTier(g, s) !== 'nontransferable',
+      lowerDivision: typeof lowerDivisionOverride === 'boolean'
+        ? lowerDivisionOverride
+        : resolveSectionTier(g, s, sourceDocument) !== 'nontransferable',
     }),
   );
   // A choose-N section can be satisfied by an articulated alternative other
@@ -246,14 +402,23 @@ function namedRequirementCourses(requirementGroups, {
     return names.length > 0 && names.every((name) => articulatedRequirements?.has(name));
   };
 
-  const sectionCourses = (g, s) => {
+  const sectionCourses = (g, s, groupIndex = null) => {
     const recvs = s.receivers || [];
     const ask = s.section_advisement;
     const groupBlock = evaluated && blockSatisfied(g.assist_requirement);
-    const recvCovered = (r) => groupBlock
+    const exactTier = exactInstitutionSectionTier(sourceDocument, g, s);
+    const longwoodTransferEligible = exactLongwoodTransferEligibility(
+      exactLongwoodSelection, groupIndex,
+    );
+    const transferEligible = typeof longwoodTransferEligible === 'boolean'
+      ? longwoodTransferEligible
+      : (exactTier
+        ? exactTier.tier !== 'nontransferable'
+        : !exactSource || resolveSectionTier(g, s, sourceDocument) !== 'nontransferable');
+    const recvCovered = (r) => transferEligible && (groupBlock
       || (evaluated && (s.assume_satisfiable || r.assume_satisfiable
         || receiverArticulated(r.receiving, articulated)
-        || (r.assist_requirement && blockSatisfied(r.assist_requirement))));
+        || (r.assist_requirement && blockSatisfied(r.assist_requirement)))));
 
     if (ask != null && Number(ask) < recvs.length) {
       // Choose-N: the requirement costs the N cheapest alternatives; covered
@@ -262,9 +427,13 @@ function namedRequirementCourses(requirementGroups, {
       const n = Math.max(0, Number(ask));
       const cheapestFirst = [...recvs].sort((a, b) => expansion(a) - expansion(b));
       const denominator = cheapestFirst.slice(0, n)
-        .flatMap((r) => observationsForReceiver(r, g, s));
+        .flatMap((r) => observationsForReceiver(
+          r, g, s, false, longwoodTransferEligible,
+        ));
       const coveredCandidates = cheapestFirst.filter(recvCovered).slice(0, n)
-        .flatMap((r) => observationsForReceiver(r, g, s, true));
+        .flatMap((r) => observationsForReceiver(
+          r, g, s, true, longwoodTransferEligible,
+        ));
       const observations = applyCoveredCategories(denominator, coveredCandidates);
       return {
         total: observations.length,
@@ -276,7 +445,9 @@ function namedRequirementCourses(requirementGroups, {
       && recvs.every((r) => ['course', 'series'].includes(r.receiving?.kind));
     if (enumerated) {
       const observations = recvs.flatMap((r) => (
-        observationsForReceiver(r, g, s, recvCovered(r))
+        observationsForReceiver(
+          r, g, s, recvCovered(r), longwoodTransferEligible,
+        )
       ));
       return {
         total: observations.length,
@@ -292,8 +463,14 @@ function namedRequirementCourses(requirementGroups, {
       : s.unit_advisement != null
         ? Math.max(1, Math.round(Number(s.unit_advisement) / ASSUMED_UNITS_PER_COURSE))
         : (recvs.length || 1);
-    const covered = groupBlock || recvs.some(recvCovered) ? total : 0;
-    return { total, covered, observations: genericObservations(g, s, total, covered > 0) };
+    const covered = transferEligible && (groupBlock || recvs.some(recvCovered)) ? total : 0;
+    return {
+      total,
+      covered,
+      observations: genericObservations(
+        g, s, total, covered > 0, longwoodTransferEligible,
+      ),
+    };
   };
 
   // A general-education section under the GE-on variant: counted at the same
@@ -309,15 +486,25 @@ function namedRequirementCourses(requirementGroups, {
       : s.unit_advisement != null
         ? Math.max(1, Math.round(Number(s.unit_advisement) / ASSUMED_UNITS_PER_COURSE))
         : (recvs.length || 1);
-    const covered = evaluated && resolveSectionTier(g, s) !== 'nontransferable' ? total : 0;
-    return { total, covered };
+    const covered = evaluated
+      && resolveSectionTier(g, s, sourceDocument) !== 'nontransferable' ? total : 0;
+    // The same section measured in units, so a unit lens can take general
+    // education off both sides of its ratio without a second, independent
+    // notion of what general education is. The formula matches the one the
+    // unit rollup below uses, so subtracting these from that rollup is exact.
+    const units = s.unit_advisement != null
+      ? Number(s.unit_advisement)
+      : (ask != null ? Number(ask) : (recvs.length || 1)) * ASSUMED_UNITS_PER_COURSE;
+    return { total, covered, units, unitsCovered: covered > 0 ? units : 0 };
   };
 
   const out = {
     total: 0,
     covered: 0,
     with_ge: { total: 0, covered: 0 },
+    ge_units: { total: 0, covered: 0 },
     by_category: categoryOf ? {} : null,
+    requirement_role_issues: [],
   };
   const addObservations = (observations = []) => {
     if (!out.by_category) return;
@@ -347,20 +534,82 @@ function namedRequirementCourses(requirementGroups, {
   const addGe = (c) => {
     out.with_ge.total += c.total;
     out.with_ge.covered += c.covered;
+    out.ge_units.total += c.units || 0;
+    out.ge_units.covered += c.unitsCovered || 0;
   };
 
-  for (const g of requirementGroups || []) {
-    if (namedPadding(g)) continue;
+  for (const [groupIndex, g] of (requirementGroups || []).entries()) {
     // Figure 1 includes every named non-GE degree/college requirement. A
     // `cc_articulable: false` flag explains why a section is uncovered; it does
     // not remove that course from the source paper's denominator.
-    const sections = g.sections || [];
+    const sections = (g.sections || []).map((section, sectionIndex) => (
+      exactLongwoodSection(exactLongwoodSelection, section, groupIndex, sectionIndex)
+    ));
     if (!sections.length) continue;
+    const classified = sections.map((section, sectionIndex) => {
+      const receiverIndex = exactOduReceiverIndex(
+        exactOduSelection, groupIndex, sectionIndex,
+      );
+      const cnuReceiverIndices = exactCnuReceiverIndices(
+        exactCnuSelection, groupIndex, sectionIndex,
+      );
+      const nsuReceiverIndices = exactNsuReceiverIndices(
+        exactNsuSelection, groupIndex, sectionIndex,
+      );
+      const vmiReceiverIndices = exactVmiReceiverIndices(
+        exactVmiSelection, groupIndex, sectionIndex,
+      );
+      const vcuReceiverIndices = exactVcuReceiverIndices(
+        exactVcuSelection, groupIndex, sectionIndex,
+      );
+      const virginiaTechReceiverIndices = exactVirginiaTechReceiverIndices(
+        exactVirginiaTechSelection, groupIndex, sectionIndex,
+      );
+      const longwoodReceiverIndices = exactLongwoodReceiverIndices(
+        exactLongwoodSelection, groupIndex, sectionIndex,
+      );
+      const exactReceiverIndices = [
+        cnuReceiverIndices, nsuReceiverIndices, vmiReceiverIndices, vcuReceiverIndices,
+        virginiaTechReceiverIndices, longwoodReceiverIndices,
+      ].find(Array.isArray);
+      const selectedSection = Array.isArray(exactReceiverIndices)
+        ? { ...section, receivers: exactReceiverIndices
+          .map((index) => section.receivers?.[index]).filter(Boolean) }
+        : (Number.isInteger(receiverIndex)
+          ? { ...section, receivers: [section.receivers[receiverIndex]] } : section);
+      const exact = canonicalRequirementRole(sourceDocument, g, selectedSection);
+      if (!exact.applies) {
+        return {
+          section: selectedSection,
+          role: namedGeFlavored(g, selectedSection)
+            ? CANONICAL_REQUIREMENT_ROLES.GENERAL_EDUCATION
+            : CANONICAL_REQUIREMENT_ROLES.NAMED,
+          legacy: true,
+          sectionIndex,
+        };
+      }
+      if (!exact.exact) {
+        out.requirement_role_issues.push({
+          path: `requirement_groups[${groupIndex}].sections[${sectionIndex}]`,
+          issues: exact.issues,
+          evidence: exact.evidence,
+        });
+      }
+      return { section: selectedSection, role: exact.role, legacy: false, sectionIndex };
+    });
+    // Legacy CA/MA documents retain their title-based padding rule byte for
+    // byte.  In a canonical document, authored role fields outrank prose: a
+    // major requirement cannot disappear merely because its title says
+    // "elective", and explicit capacity is excluded without title matching.
+    if (classified.every((entry) => entry.legacy) && namedPadding(g)) continue;
     const isOr = String(g.group_conjunction || '').toLowerCase() === 'or' && sections.length > 1;
     if (!isOr) {
-      for (const s of sections) {
-        if (namedGeFlavored(g, s)) addGe(geSectionCourses(g, s));
-        else addBase(sectionCourses(g, s));
+      for (const { section: s, role } of classified) {
+        if (role === CANONICAL_REQUIREMENT_ROLES.GENERAL_EDUCATION) {
+          addGe(geSectionCourses(g, s));
+        } else if (role === CANONICAL_REQUIREMENT_ROLES.NAMED) {
+          addBase(sectionCourses(g, s, groupIndex));
+        }
       }
       continue;
     }
@@ -369,15 +618,36 @@ function namedRequirementCourses(requirementGroups, {
     // way the unit budget does. (Every Or alternative in the corpus is a
     // named-requirement path; a hypothetical all-GE choice falls back to the
     // same rule over its GE pricing.)
-    const base = sections.filter((s) => !namedGeFlavored(g, s));
-    const pool = base.length ? base : sections;
-    const stats = pool.map((s) => (base.length ? sectionCourses(g, s) : geSectionCourses(g, s)));
+    const base = classified.filter((entry) => (
+      entry.role === CANONICAL_REQUIREMENT_ROLES.NAMED
+    ));
+    const ge = classified.filter((entry) => (
+      entry.role === CANONICAL_REQUIREMENT_ROLES.GENERAL_EDUCATION
+    ));
+    const pool = base.length ? base : ge;
+    if (!pool.length) continue;
+    const stats = pool.map(({ section }) => (
+      base.length ? sectionCourses(g, section, groupIndex) : geSectionCourses(g, section)
+    ));
     const ratio = (x) => (x.total ? x.covered / x.total : 0);
-    let pick = stats[0];
-    for (const candidate of stats.slice(1)) {
-      if (ratio(candidate) > ratio(pick)
-        || (ratio(candidate) === ratio(pick) && candidate.total < pick.total)) {
-        pick = candidate;
+    const bridgewaterSectionIndex = exactBridgewaterSelection?.ready
+      ? exactBridgewaterSelection.group_section_indices[groupIndex] : null;
+    const longwoodSectionIndex = exactLongwoodSelection?.ready
+      ? exactLongwoodSelection.group_section_indices[groupIndex] : null;
+    const exactSectionIndex = Number.isInteger(bridgewaterSectionIndex)
+      ? bridgewaterSectionIndex
+      : (Number.isInteger(longwoodSectionIndex) ? longwoodSectionIndex
+        : (exactSource && Number.isInteger(g.canonical_section_index)
+          ? g.canonical_section_index : null));
+    const canonicalPoolIndex = Number.isInteger(exactSectionIndex)
+      ? pool.findIndex((entry) => entry.sectionIndex === exactSectionIndex) : -1;
+    let pick = canonicalPoolIndex >= 0 ? stats[canonicalPoolIndex] : stats[0];
+    if (canonicalPoolIndex < 0) {
+      for (const candidate of stats.slice(1)) {
+        if (ratio(candidate) > ratio(pick)
+          || (ratio(candidate) === ratio(pick) && candidate.total < pick.total)) {
+          pick = candidate;
+        }
       }
     }
     if (base.length) addBase(pick);
@@ -391,9 +661,27 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     articulated = null, optionsByParent = new Map(),
     universityCoursesById = {}, coursesById = new Map(), ccGeAreas = null,
     categoryOf = null, articulatedRequirements = null,
-    excludeGeFromCategories = false,
+    excludeGeFromCategories = false, sourceDocument = null,
   } = ctx;
   const evaluated = articulated != null;
+  const exactSource = usesCanonicalSourceContract(sourceDocument);
+  const exactOduSelection = exactSource
+    ? exactOduCoverageSelection(sourceDocument, articulated || new Set()) : null;
+  const exactBridgewaterSelection = exactSource
+    ? bridgewaterTrackSelection(sourceDocument, {
+      articulated: articulated || new Set(), transferEntry: true,
+    }) : null;
+  const exactCnuSelection = exactSource ? cnuFigureSelection(sourceDocument) : null;
+  const exactNsuSelection = exactSource
+    ? norfolkStateCoverageSelection(sourceDocument, articulated || new Set()) : null;
+  const exactVmiSelection = exactSource ? vmiCoverageSelection(sourceDocument) : null;
+  const exactVcuSelection = exactSource
+    ? vcuFigureSelection(sourceDocument, { transferEntry: true }) : null;
+  const exactVirginiaTechSelection = exactSource
+    ? standardMathAndPathwaysSelection(sourceDocument, {
+      articulated: articulated || new Set(),
+    }) : null;
+  const exactLongwoodSelection = longwoodFigureSelection(sourceDocument);
 
   // Optional course-type rollup (Computing / Math / Science / Non-STEM) for the
   // MA paper's Figure 2. Off unless the caller supplies a categoryOf callback,
@@ -460,7 +748,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
   let unitsTotal = 0;
   let unitsCovered = 0;
 
-  const groups = (requirementGroups || []).map((g) => {
+  const groups = (requirementGroups || []).map((g, groupIndex) => {
     const tier = g.tier || 'transferable';
     bumpTier = tier;
     let gTotal = 0;
@@ -476,8 +764,11 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
     // picks the sequence their college articulates. Berkeley MCB's math group
     // is exactly that case: Math 51/52 articulates widely, Math 10A/10B never
     // does, and the group is covered, not half-covered.
+    const runtimeSections = (g.sections || []).map((section, sectionIndex) => (
+      exactLongwoodSection(exactLongwoodSelection, section, groupIndex, sectionIndex)
+    ));
     const isOr = String(g.group_conjunction || '').toLowerCase() === 'or'
-      && (g.sections || []).length > 1;
+      && runtimeSections.length > 1;
     const unitsBefore = unitsTotal;
     const coveredUnitsBefore = unitsCovered;
     // Per-section deltas, recorded at the TOP of the next iteration so the
@@ -533,7 +824,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       evaluated && r?.assist_requirement && blocksSatisfied(r.assist_requirement)
     );
 
-    for (const s of g.sections || []) {
+    for (const [sectionIndex, s] of runtimeSections.entries()) {
       bumpExcluded = excludeGeFromCategories && (namedPadding(g) || namedGeTitled(g, s));
       if (isOr) {
         closeSection();
@@ -541,8 +832,45 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         sectionBumps = [];
       }
       const ask = s.section_advisement ?? 1;
-      const recvs = s.receivers || [];
+      const receiverIndex = exactOduReceiverIndex(
+        exactOduSelection, groupIndex, sectionIndex,
+      );
+      const cnuReceiverIndices = exactCnuReceiverIndices(
+        exactCnuSelection, groupIndex, sectionIndex,
+      );
+      const nsuReceiverIndices = exactNsuReceiverIndices(
+        exactNsuSelection, groupIndex, sectionIndex,
+      );
+      const vmiReceiverIndices = exactVmiReceiverIndices(
+        exactVmiSelection, groupIndex, sectionIndex,
+      );
+      const vcuReceiverIndices = exactVcuReceiverIndices(
+        exactVcuSelection, groupIndex, sectionIndex,
+      );
+      const virginiaTechReceiverIndices = exactVirginiaTechReceiverIndices(
+        exactVirginiaTechSelection, groupIndex, sectionIndex,
+      );
+      const longwoodReceiverIndices = exactLongwoodReceiverIndices(
+        exactLongwoodSelection, groupIndex, sectionIndex,
+      );
+      const exactReceiverIndices = [
+        cnuReceiverIndices, nsuReceiverIndices, vmiReceiverIndices, vcuReceiverIndices,
+        virginiaTechReceiverIndices, longwoodReceiverIndices,
+      ].find(Array.isArray);
+      const recvs = Array.isArray(exactReceiverIndices)
+        ? exactReceiverIndices.map((index) => s.receivers?.[index]).filter(Boolean)
+        : (Number.isInteger(receiverIndex)
+          ? [s.receivers?.[receiverIndex]].filter(Boolean) : (s.receivers || []));
       const kind = recvs[0]?.receiving?.kind;
+      const exactTier = exactInstitutionSectionTier(sourceDocument, g, s);
+      const longwoodTransferEligible = exactLongwoodTransferEligibility(
+        exactLongwoodSelection, groupIndex,
+      );
+      const transferEligible = typeof longwoodTransferEligible === 'boolean'
+        ? longwoodTransferEligible
+        : (exactTier
+          ? exactTier.tier !== 'nontransferable'
+          : !exactSource || resolveSectionTier(g, s, sourceDocument) !== 'nontransferable');
       gTotal += ask;
       const sectionCoveredBefore = gCovered;
       const sectionUnits = s.unit_advisement != null ? Number(s.unit_advisement) : ask * 4;
@@ -550,7 +878,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
 
       // The group's named ASSIST block is articulated here, so every slot it
       // covers is met however the campus chose to enumerate the courses.
-      if (namedBlockSatisfied) {
+      if (namedBlockSatisfied && transferEligible) {
         gCovered += ask;
         bump(categoryOf && categoryOf({ section: s, group: g }), ask, ask);
         unitsCovered += sectionUnits;
@@ -566,15 +894,15 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
 
       // Assumed satisfiable at every college (AH&I, Cal-GETC, capped electives).
       if (recvs[0]?.assume_satisfiable) {
-        const cov = evaluated ? ask : 0;
+        const cov = evaluated && transferEligible ? ask : 0;
         gCovered += cov;
         bump(categoryOf && categoryOf({ section: s, group: g }), ask, cov);
-        if (evaluated) unitsCovered += sectionUnits;
+        if (evaluated && transferEligible) unitsCovered += sectionUnits;
         lines.push({
           title: recvs[0].receiving?.name || g.title,
           detail: 'assumed — satisfiable at every CC',
           need: ask, covered: evaluated ? cov : null,
-          status: !evaluated ? 'template' : 'covered',
+          status: !evaluated ? 'template' : transferEligible ? 'covered' : 'university',
         });
         continue;
       }
@@ -582,7 +910,8 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       // H/SS breadth — coverage from the college's IGETC Area 3 + 4 courses. The
       // list of qualifying courses is huge, so we report the count, not the codes.
       if (kind === 'ge_area' && Array.isArray(s.ge_areas) && s.ge_areas.length) {
-        const hits = evaluated ? geCoverCourses(s.ge_areas, ccGeAreas) : [];
+        const hits = evaluated && transferEligible
+          ? geCoverCourses(s.ge_areas, ccGeAreas) : [];
         const cov = Math.min(hits.length, ask);
         gCovered += cov;
         bump(categoryOf && categoryOf({ section: s, group: g }), ask, cov);
@@ -602,13 +931,14 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         for (const r of recvs) {
           if (r.receiving?.kind === 'course' || r.receiving?.kind === 'series') {
             const pids = receiverPids(r.receiving);
-            let isCovered = evaluated
+            let isCovered = evaluated && transferEligible
               && (receiverArticulated(r.receiving, articulated) || receiverBlockSatisfied(r));
             let cc = isCovered
               ? pids.flatMap((pid) => ccCodes(optionsByParent.get(pid) || r.options || [], coursesById))
               : [];
             // GE fallback (R&C R1A/R1B → IGETC 1A/1B) when major-prep articulation is absent.
-            if (evaluated && !isCovered && Array.isArray(r.ge_areas) && r.ge_areas.length) {
+            if (evaluated && transferEligible && !isCovered
+                && Array.isArray(r.ge_areas) && r.ge_areas.length) {
               const geHits = geCoverCourses(r.ge_areas, ccGeAreas);
               if (geHits.length) { isCovered = true; cc = geHits.slice(0, 3).map(codeOf); }
             }
@@ -637,7 +967,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       } else {
         // Choose `ask` of many (e.g. the natural-science elective, 1 of 10;
         // or "pick one series in its entirety" where each option is a series).
-        const artRecvs = evaluated
+        const artRecvs = evaluated && transferEligible
           ? recvs.filter((r) => receiverArticulated(r.receiving, articulated)
             || receiverBlockSatisfied(r))
           : [];
@@ -646,7 +976,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         // ge_area on the requirement means a CC course in that IGETC area fills
         // the slot when major-prep articulation is absent (e.g. UCR's elective
         // slots — CHEM/MATH options never appear in the CS major agreement).
-        if (evaluated && cov < ask) {
+        if (evaluated && transferEligible && cov < ask) {
           const areas = s.ge_areas || recvs.find((r) => Array.isArray(r.ge_areas) && r.ge_areas.length)?.ge_areas;
           if (Array.isArray(areas) && areas.length) {
             const geHits = geCoverCourses(areas, ccGeAreas);
@@ -675,8 +1005,19 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       // Best-covered path wins; ties keep the authored order, so an unevaluated
       // template reports its primary alternative rather than an arbitrary one.
       const ratio = (x) => (x.total ? x.covered / x.total : 0);
-      const pick = sectionStats.reduce((a, b) => (ratio(b) > ratio(a) ? b : a),
-        sectionStats[0] || { total: 0, covered: 0, unitsTotal: 0, unitsCovered: 0, bumps: [] });
+      const bridgewaterSectionIndex = exactBridgewaterSelection?.ready
+        ? exactBridgewaterSelection.group_section_indices[groupIndex] : null;
+      const longwoodSectionIndex = exactLongwoodSelection?.ready
+        ? exactLongwoodSelection.group_section_indices[groupIndex] : null;
+      const canonicalIndex = Number.isInteger(bridgewaterSectionIndex)
+        ? bridgewaterSectionIndex
+        : (Number.isInteger(longwoodSectionIndex) ? longwoodSectionIndex
+          : (exactSource && Number.isInteger(g.canonical_section_index)
+            ? g.canonical_section_index : null));
+      const pick = (canonicalIndex != null && sectionStats[canonicalIndex])
+        ? sectionStats[canonicalIndex]
+        : sectionStats.reduce((a, b) => (ratio(b) > ratio(a) ? b : a),
+          sectionStats[0] || { total: 0, covered: 0, unitsTotal: 0, unitsCovered: 0, bumps: [] });
       gTotal = pick.total;
       gCovered = pick.covered;
       unitsTotal = unitsBefore + pick.unitsTotal;
@@ -692,7 +1033,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
   });
 
   const named = namedRequirementCourses(requirementGroups, {
-    articulated, articulatedRequirements, categoryOf,
+    articulated, articulatedRequirements, categoryOf, sourceDocument,
   });
   return {
     total,
@@ -714,6 +1055,14 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       // example, one of three slots in a 10-unit block). Keep one decimal so
       // the primary percentage is not distorted by whole-unit rounding.
       covered: evaluated ? +(unitsCovered.toFixed(1)) : null,
+      // The general-education share of those same units, so a caller can take
+      // it off both sides of the ratio. Clamped to what the rollup actually
+      // holds: an Or group can price its chosen path differently in the two
+      // passes, and a subtraction must never exceed its own minuend.
+      ge_total: Math.min(+unitsTotal.toFixed(1), +named.ge_units.total.toFixed(1)),
+      ge_covered: evaluated
+        ? Math.min(+unitsCovered.toFixed(1), +named.ge_units.covered.toFixed(1))
+        : null,
     },
     // The Massachusetts paper's population, counted the paper's way: binary
     // per required COURSE, at every level — GE excluded (their published
@@ -725,6 +1074,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         covered: evaluated ? named.with_ge.covered : null,
       },
     },
+    requirement_role_issues: named.requirement_role_issues,
     groups,
   };
 }
@@ -869,14 +1219,41 @@ const ASSUMED_UNITS_PER_COURSE = 4;
  * carried fifteen such sections, and readers that let the section win reported
  * all 392 of its mis-summed units as lower division.
  *
- * Under any other group a section may still state its own tier (the CS
- * documents put upper-division sections inside mixed groups this way).
+ * Canonical Virginia adds one deliberately narrow exception.  A source-authored
+ * `course_level: 'mixed'` group is a carrier for sections on both sides of the
+ * transfer boundary, so its section-level `cc_articulable`, `course_level`, and
+ * `tier` facts must be read.  The document and full canonical contract are part
+ * of that authority: context-free and legacy CA/MA callers retain the historic
+ * group-final rule above.
  */
-function resolveSectionTier(group, section) {
+function resolveSectionTier(group, section, sourceDocument = null) {
+  const exactInstitutionTier = exactInstitutionSectionTier(sourceDocument, group, section);
+  if (exactInstitutionTier) return exactInstitutionTier.tier;
   const universityOnly = /^upper/.test(String(group.course_level || ''))
     || group.cc_articulable === false
     || group.tier === 'nontransferable';
-  if (universityOnly) return 'nontransferable';
+  const canonicalVirginiaMixed = sourceDocument?.state === 'va'
+    && usesCanonicalSourceContract(sourceDocument)
+    && String(group.course_level || '').toLowerCase() === 'mixed';
+  if (!canonicalVirginiaMixed) {
+    if (universityOnly) return 'nontransferable';
+    const tier = section.tier || group.tier;
+    return TIERS.includes(tier) ? tier : 'transferable';
+  }
+
+  const sectionLevel = String(section.course_level || '').toLowerCase();
+  // Contradictory authored facts fail toward university-only.  In particular,
+  // an upper-division or explicitly non-articulable section can never be made
+  // transferable by an inherited/stray section tier.
+  if (section.cc_articulable === false || /^upper/.test(sectionLevel)) {
+    return 'nontransferable';
+  }
+  // Breadth is a separate transferable demand class.  Keep that distinction
+  // before interpreting a positive articulability/lower-division refinement.
+  if (section.tier === 'breadth') return 'breadth';
+  if (section.cc_articulable === true || /^lower/.test(sectionLevel)) {
+    return 'transferable';
+  }
   const tier = section.tier || group.tier;
   return TIERS.includes(tier) ? tier : 'transferable';
 }
@@ -888,7 +1265,7 @@ function sectionUnits(section) {
     : slots * ASSUMED_UNITS_PER_COURSE;
 }
 
-function computeUnitBudget(requirementGroups) {
+function computeUnitBudget(requirementGroups, { sourceDocument = null } = {}) {
   const perTier = { transferable: 0, breadth: 0, nontransferable: 0 };
   for (const g of requirementGroups || []) {
     const sections = g.sections || [];
@@ -899,14 +1276,16 @@ function computeUnitBudget(requirementGroups) {
       // articulates nowhere and cannot set the price; unrecorded reach is
       // assumed live. Same convention as degreeTransferBudget's groupUnits,
       // so the denominator and the budget agree about every document.
+      const canonical = Number.isInteger(g.canonical_section_index)
+        ? sections[g.canonical_section_index] : null;
       const reachable = sections.filter((s) => (s.articulation_reach ?? 1) > 0);
-      const pick = (reachable.length ? reachable : sections)
+      const pick = canonical || (reachable.length ? reachable : sections)
         .reduce((a, b) => (sectionUnits(b) < sectionUnits(a) ? b : a));
-      perTier[resolveSectionTier(g, pick)] += sectionUnits(pick);
+      perTier[resolveSectionTier(g, pick, sourceDocument)] += sectionUnits(pick);
       continue;
     }
     for (const s of sections) {
-      perTier[resolveSectionTier(g, s)] += sectionUnits(s);
+      perTier[resolveSectionTier(g, s, sourceDocument)] += sectionUnits(s);
     }
   }
   return {

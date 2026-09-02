@@ -116,10 +116,19 @@ describe('Virginia broad Science A.S. Computer Science scope audit', () => {
         computer_science_specific_prescribed_branch: false,
         residency: { minimum_percent: 25, minimum_units_on_60_credit_path: 15 },
       },
+      course_unit_evidence: [expect.objectContaining({
+        code: 'MTH261',
+        units: 3,
+        min_units: 3,
+        max_units: 3,
+        source_refs: ['uniform_general_studies'],
+      })],
     });
     expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
     expect(acceptance.catalog.failed).toEqual([]);
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance.analysis_ready.failed).toEqual([
+      'analysis_quality_flags', 'constraint_support',
+    ]);
     expect(acceptance.analysis_ready.checks.find((check) => check.name === 'unit_closure')).toMatchObject({
       severity: 'pass', modeled_units: 60,
     });

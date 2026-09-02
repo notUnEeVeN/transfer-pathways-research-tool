@@ -426,7 +426,8 @@ The local matplotlib render reproduces the paper's axes, grouped bars,
 hatching, labels, and Blues palette (`#08306b`, `#1764ab`, `#4a98c9`,
 `#94c4df`). Value and geometry checks are recorded in
 [`assets/paper-credit-loss/`](assets/paper-credit-loss/). After verification,
-the finished Figure is published to the gallery with `pmt.publish(fig, ...)`.
+the finished Figure is published to the gallery with
+`pmt.publish(fig, major_slug="cs", ...)`.
 
 ## Reproduce it yourself
 

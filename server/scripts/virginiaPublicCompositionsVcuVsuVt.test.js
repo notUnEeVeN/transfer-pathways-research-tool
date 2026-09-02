@@ -36,7 +36,9 @@ describe('VCU, VSU, and Virginia Tech official full-degree compositions', () => 
 
     expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
     expect(acceptance.catalog.failed).toEqual([]);
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance.analysis_ready.failed).toEqual([
+      'analysis_quality_flags', 'constraint_support',
+    ]);
     expect(doc).toMatchObject({
       total_units: 120,
       academic_unit: 'Department of Computer Science',
@@ -80,7 +82,9 @@ describe('VCU, VSU, and Virginia Tech official full-degree compositions', () => 
 
     expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
     expect(acceptance.catalog.failed).toEqual([]);
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance.analysis_ready.failed).toEqual([
+      'analysis_quality_flags', 'constraint_support',
+    ]);
     expect(doc.total_units).toBe(120);
     expect(canonicalUnits(doc.requirement_groups)).toBe(120);
     expect(doc.codes_seen).toHaveLength(161);
@@ -104,6 +108,16 @@ describe('VCU, VSU, and Virginia Tech official full-degree compositions', () => 
     });
     expect(doc.requirement_groups.find((group) => group.title === 'General Education: English composition')
       .sections.map((section) => section.unit_advisement)).toEqual([3, 3]);
+    const mathematics = doc.requirement_groups.find((group) => (
+      group.title === 'General Education: Mathematics'
+    )).sections[0];
+    expect(mathematics).toMatchObject({
+      section_advisement: 2,
+      unit_advisement: 6,
+      unit_advisement_max: 8,
+    });
+    expect(mathematics.receivers.map((receiver) => receiver.receiving.units))
+      .toEqual(expect.arrayContaining([3, 4]));
     expect(doc.requirement_groups.find((group) => group.title === 'General Education and university nonunit policies')
       .sections).toHaveLength(2);
     expect(doc.requirement_groups.map((group) => group.title)).toContain(
@@ -122,7 +136,9 @@ describe('VCU, VSU, and Virginia Tech official full-degree compositions', () => 
 
     expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
     expect(acceptance.catalog.failed).toEqual([]);
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance.analysis_ready.failed).toEqual([
+      'analysis_quality_flags', 'constraint_support',
+    ]);
     expect(doc.total_units).toBe(123);
     expect(canonicalUnits(doc.requirement_groups)).toBe(123);
     expect(doc.unit_audit).toMatchObject({

@@ -55,6 +55,21 @@ const APPLY = process.argv.includes('--apply');
 const RESTORE = process.argv.includes('--restore');
 const STATE = (process.argv.find((a) => a.startsWith('--state=')) || '--state=va').split('=')[1];
 
+// RETIRED: the canonical Virginia builder now projects the source-authored
+// tree directly. Running this historical rewrite afterward would once again
+// infer OR from prose labels and clamp source unit asks from potentially wrong
+// course joins. Both behaviors failed independent audit. Keep the file in git
+// as the provenance of the old migration, but make every CLI invocation fail
+// before it can connect to MongoDB or mutate shared data.
+if (require.main === module) {
+  console.error([
+    'normalizeVirginiaSchema.js is retired and performed no work.',
+    'Use scripts/va/buildVaDocuments.js; it emits the shared schema directly.',
+    'Use that builder\'s generation-scoped restore command for rollback.',
+  ].join('\n'));
+  process.exit(1);
+}
+
 // Deliberately NOT stamping `ge_area` on Virginia groups.
 //
 // California's associate degrees cite general education as an aggregate block

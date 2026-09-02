@@ -51,6 +51,21 @@
  * and `units_fill` are the only associate-degree special forms.
  */
 
+const {
+  courseIdentityForNamespace,
+  parseCourseKey,
+} = require('./courseIdentity');
+const {
+  associateConstraintContextIssues,
+  hasAssociateConstraintEvaluator,
+  supportsAssociateConstraintKind,
+} = require('../analysis/transferCreditConstraints');
+const {
+  blockingFourYearUnitAuditRules,
+  evaluateFourYearConstraint,
+  hasFourYearConstraintEvaluator,
+} = require('../analysis/fourYearConstraints');
+
 const LEVEL_ALIASES = new Map([
   ['four_year', 'four_year'],
   ['four-year', 'four_year'],
@@ -312,6 +327,25 @@ function contaminationHits(doc) {
     .map(([path, value]) => ({ path, value }));
 }
 
+function blockingQualityFlags(doc) {
+  const flags = Array.isArray(doc?.data_quality_flags) ? doc.data_quality_flags : [];
+  const rows = flags.map((flag, index) => ({
+    path: `data_quality_flags[${index}]`,
+    code: flag?.code || null,
+    message: flag?.message || null,
+    severity: String(flag?.severity || '').trim().toLowerCase(),
+  }));
+  return {
+    catalog: rows.filter((flag) => (
+      flag.severity === 'block_catalog_acceptance'
+    )),
+    analysis: rows.filter((flag) => (
+      flag.severity === 'block' || flag.severity === 'block_catalog_acceptance'
+        || flag.severity === 'block_analysis'
+    )),
+  };
+}
+
 function layerName(value) {
   const normalized = String(value || '').trim().toLowerCase();
   return Object.keys(LAYER_ALIASES).find((name) => LAYER_ALIASES[name].includes(normalized)) || null;
@@ -417,7 +451,7 @@ function sectionShapeIssues(doc, level) {
       if (!own(section, 'unit_advisement') || !nonNegative(section.unit_advisement)) {
         issues.push({ path: `${sp}.unit_advisement`, reason: 'explicit non-negative units required' });
       }
-      if (ge) {
+      if (ge && !(Array.isArray(section.receivers) && section.receivers.length)) {
         if (!positive(section.unit_advisement)) {
           issues.push({ path: `${sp}.unit_advisement`, reason: 'CC ge_area needs an explicit positive unit amount' });
         }
@@ -425,13 +459,20 @@ function sectionShapeIssues(doc, level) {
             && (!Number.isInteger(section.section_advisement) || section.section_advisement < 0)) {
           issues.push({ path: `${sp}.section_advisement`, reason: 'GE selection must be null or a non-negative integer' });
         }
-        if (Array.isArray(section.receivers) && section.receivers.length) {
-          issues.push({ path: `${sp}.receivers`, reason: 'CC ge_area sections must not enumerate receivers' });
-        }
         return;
       }
-      if (!own(section, 'section_advisement') || !Number.isInteger(section.section_advisement)
-          || section.section_advisement <= 0) {
+      // Virginia uses `ge_area` for two source-faithful forms: an aggregate
+      // credit block with no published roster, and a named/category-qualified
+      // pool whose official page enumerates concrete courses.  The latter is
+      // stronger evidence and must retain those receivers.  It is selected by
+      // units when the catalog publishes no universal course count.
+      const unitSelectedNamedPool = ge
+        && positive(section.unit_advisement)
+        && section.section_advisement == null;
+      const validCourseCount = own(section, 'section_advisement')
+        && Number.isInteger(section.section_advisement)
+        && section.section_advisement > 0;
+      if (!validCourseCount && !unitSelectedNamedPool) {
         issues.push({ path: `${sp}.section_advisement`, reason: 'explicit positive integer selection required' });
       }
       if (!Array.isArray(section.receivers) || section.receivers.length === 0) {
@@ -512,9 +553,39 @@ function receiverIssues(doc, level, resolveCourse) {
               semantics.push({ path: `${op}.course_ids`, reason: 'non-empty positive integer ids required' });
               return;
             }
-            if (!Array.isArray(keys) || keys.length !== ids.length || keys.some((key) => !/^va:[A-Z]{2,5}\d{2,4}[A-Z]?$/.test(key))) {
-              semantics.push({ path: `${op}.course_keys`, reason: 'course_keys must align with ids as va:CODE' });
+            const parsedKeys = Array.isArray(keys) ? keys.map(parseCourseKey) : [];
+            if (!Array.isArray(keys) || keys.length !== ids.length || parsedKeys.some((identity) => !identity)) {
+              semantics.push({
+                path: `${op}.course_keys`,
+                reason: 'course_keys must be concrete Virginia shared or owner-scoped identities',
+              });
               return;
+            }
+            // Existing VCCS documents use the stable `va:CODE` key while the
+            // collection-specific numeric id is checked by the supplied
+            // resolver. Institution-local catalogs are different: their
+            // owner+code id is itself the collision boundary and must be
+            // enforced here even if a permissive resolver is supplied.
+            const identityMismatches = doc.course_namespace?.kind === 'institution_local'
+              ? parsedKeys.map((parsed, ii) => {
+              try {
+                const expected = courseIdentityForNamespace(parsed.code, doc.course_namespace || null);
+                return expected.course_id !== ids[ii] || expected.course_key !== keys[ii]
+                  ? { index: ii, expected_id: expected.course_id, expected_key: expected.course_key }
+                  : null;
+              } catch (error) {
+                return { index: ii, reason: error.message };
+              }
+              }).filter(Boolean)
+              : [];
+            if (identityMismatches.length) {
+              semantics.push({
+                path: op,
+                reason: doc.course_namespace?.kind === 'institution_local'
+                  ? 'course ids/keys must include the owning institution namespace'
+                  : 'course ids/keys must use the VCCS shared-master identity',
+                identities: identityMismatches,
+              });
             }
             if (new Set(ids).size !== ids.length || new Set(keys).size !== keys.length) {
               semantics.push({ path: op, reason: 'duplicate course identity inside option' });
@@ -719,7 +790,9 @@ function unitAuditIssues(doc, level, sourceIds) {
  * that richer requirement in the catalog record, but do not call the document
  * analysis-ready until every cross-choice/exclusion rule has an implementation.
  */
-function unsupportedConstraintIssues(doc) {
+function unsupportedConstraintIssues(doc, level) {
+  const associateEvaluator = level === 'community_college';
+  const bachelorEvaluator = level === 'four_year';
   const issues = [];
   const visit = (value, path = 'doc') => {
     if (!value || typeof value !== 'object') return;
@@ -727,10 +800,18 @@ function unsupportedConstraintIssues(doc) {
       value.forEach((entry, index) => visit(entry, `${path}[${index}]`));
       return;
     }
-    if (value.distinct_course_ids_across_sections === true) {
+    if (value.distinct_course_ids_across_sections === true
+        && !(associateEvaluator
+          && supportsAssociateConstraintKind('distinct_course_ids_across_sections'))) {
       issues.push({ path: `${path}.distinct_course_ids_across_sections`, reason: 'cross-section distinct-course evaluator is not implemented' });
     }
-    if (positive(value.distinct_areas)) {
+    const exactDistinctAreaConstraint = Array.isArray(value.analysis_constraints)
+      && value.analysis_constraints.some((constraint) => (
+        ['distinct_ge_areas', 'distinct_categories_across_sections'].includes(constraint?.kind)
+        && hasAssociateConstraintEvaluator(constraint, { owner: value, doc })
+        && associateConstraintContextIssues(constraint, value, doc).length === 0
+      ));
+    if (positive(value.distinct_areas) && !exactDistinctAreaConstraint) {
       issues.push({ path: `${path}.distinct_areas`, reason: 'distinct GE-area evaluator is not implemented' });
     }
     if (text(value.overlap_key)) {
@@ -738,11 +819,34 @@ function unsupportedConstraintIssues(doc) {
     }
     if (Array.isArray(value.analysis_constraints)) {
       value.analysis_constraints.forEach((constraint, index) => {
-        if (String(constraint?.status || '').toLowerCase() !== 'supported') {
+        // Source-authored status is evidence about the model, not evidence
+        // that this analysis service implements it. Only the exact associate
+        // primitives exported by the planner may pass this gate. Bachelor
+        // constraints pass only when the exact structural proof in
+        // fourYearConstraints succeeds for this specific source container.
+        const bachelorCapability = bachelorEvaluator
+          ? evaluateFourYearConstraint(constraint, { container: value, document: doc, path })
+          : null;
+        const associateCapability = associateEvaluator
+          && hasAssociateConstraintEvaluator(constraint, { owner: value, doc });
+        const associateContextIssues = associateCapability
+          ? associateConstraintContextIssues(constraint, value, doc)
+          : [];
+        if (!(associateCapability && associateContextIssues.length === 0)
+            && !(bachelorEvaluator
+              && hasFourYearConstraintEvaluator(constraint, {
+                container: value, document: doc, path,
+              }))) {
           issues.push({
             path: `${path}.analysis_constraints[${index}]`,
-            reason: constraint?.description || constraint?.kind || 'constraint has no supported evaluator',
+            reason: associateContextIssues[0]
+              || constraint?.description || constraint?.kind || 'constraint has no supported evaluator',
             kind: constraint?.kind || null,
+            ...(bachelorCapability ? {
+              evaluator: bachelorCapability.evaluator,
+              evaluator_reason: bachelorCapability.reason,
+              affected_figures: bachelorCapability.affected_figures,
+            } : {}),
           });
         }
       });
@@ -751,7 +855,41 @@ function unsupportedConstraintIssues(doc) {
       if (key !== 'analysis_constraints') visit(child, `${path}.${key}`);
     }
   };
-  visit(doc);
+  // Only the selected requirement tree feeds the shared figures. Alternative
+  // concentrations/tracks remain preserved under `requirement_variants`, but
+  // their rules cannot block the explicitly selected base degree (and must be
+  // revalidated if a future projection selects that variant instead).
+  if (Array.isArray(doc?.analysis_constraints) && doc.analysis_constraints.length) {
+    visit({ analysis_constraints: doc.analysis_constraints }, 'doc');
+  }
+  // Degree-wide audit constraints (published total conflicts, residency/grade
+  // rules, and variable-credit closure) govern the selected base degree. They
+  // are not optional requirement variants and must remain in the fail-closed
+  // analysis verdict.
+  if (doc?.unit_audit && typeof doc.unit_audit === 'object') {
+    visit(doc.unit_audit, 'doc.unit_audit');
+  }
+  visit(doc?.requirement_groups || [], 'doc.requirement_groups');
+  // A selected variant carrying its own requirement tree is active evidence,
+  // even though today's bachelor artifacts keep the selected base tree in
+  // `requirement_groups` and use variant subtrees only for unselected tracks.
+  // This prevents a future selected track from being silently promoted.
+  (doc?.requirement_variants || []).forEach((variant, index) => {
+    if (variant?.selected === true) {
+      visit(variant, `doc.requirement_variants[${index}]`);
+    }
+  });
+  if (bachelorEvaluator) {
+    for (const rule of blockingFourYearUnitAuditRules(doc)) {
+      issues.push({
+        path: `doc.${rule.path}`,
+        reason: rule.reason,
+        kind: rule.kind,
+        evaluator: rule.evaluator || null,
+        affected_figures: rule.affected_figures,
+      });
+    }
+  }
   return issues.filter((issue, index) => issues.findIndex((other) =>
     other.path === issue.path && other.reason === issue.reason) === index);
 }
@@ -808,6 +946,18 @@ function validateDegreeAcceptance(doc, options = {}) {
     contamination.length ? 'sample-plan, accelerated, or honors material contaminated the degree tree' : 'degree tree is isolated from schedule/accelerated variants',
     contamination.length ? { issues: contamination } : {});
 
+  const qualityFlags = blockingQualityFlags(value);
+  catalogChecks.add('source_quality', qualityFlags.catalog.length === 0,
+    qualityFlags.catalog.length
+      ? 'one or more source conflicts explicitly block catalog acceptance'
+      : 'no source flag blocks catalog acceptance',
+    qualityFlags.catalog.length ? { issues: qualityFlags.catalog } : {});
+  analysisChecks.add('analysis_quality_flags', qualityFlags.analysis.length === 0,
+    qualityFlags.analysis.length
+      ? 'one or more source-authored quality flags explicitly block analysis'
+      : 'no source-authored quality flag blocks analysis',
+    qualityFlags.analysis.length ? { issues: qualityFlags.analysis } : {});
+
   if (level === 'four_year') {
     const layers = fourYearLayerIssues(value, registry.ids, byId);
     catalogChecks.add('four_year_layers', layers.length === 0,
@@ -848,7 +998,7 @@ function validateDegreeAcceptance(doc, options = {}) {
     audit.issues.length ? 'unit budget or upper-division/residency declarations are incomplete' : `modeled units close at ${audit.modeled_units}`,
     audit.issues.length ? { issues: audit.issues, modeled_units: audit.modeled_units } : { modeled_units: audit.modeled_units });
 
-  const unsupportedConstraints = unsupportedConstraintIssues(value);
+  const unsupportedConstraints = unsupportedConstraintIssues(value, level);
   analysisChecks.add('constraint_support', unsupportedConstraints.length === 0,
     unsupportedConstraints.length
       ? 'one or more exact catalog constraints do not yet have an analysis evaluator'

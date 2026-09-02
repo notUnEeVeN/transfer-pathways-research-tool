@@ -36,7 +36,9 @@ describe('official-source CNU, JMU, and NSU compositions', () => {
     const { acceptance, doc } = composedDegree(slug);
     expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
     expect(acceptance.catalog.failed).toEqual([]);
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance.analysis_ready.failed).toEqual([
+      'analysis_quality_flags', 'constraint_support',
+    ]);
     expect(doc.requirement_layers).toMatchObject({
       major: { status: 'complete' },
       ge_college: { status: 'complete' },
@@ -77,12 +79,13 @@ describe('official-source CNU, JMU, and NSU compositions', () => {
       title: 'Advanced major selection',
       sections: [{ section_advisement: 3, unit_advisement: 9 }],
     });
-    expect(acceptance.analysis_ready.checks.find((check) => check.name === 'constraint_support')
-      .issues.map((issue) => issue.kind)).toEqual(expect.arrayContaining([
-        'variable_topics_credit_must_close_selection',
+    const unsupported = acceptance.analysis_ready.checks
+      .find((check) => check.name === 'constraint_support').issues.map((issue) => issue.kind);
+    expect(unsupported).toEqual(expect.arrayContaining([
         'area_of_inquiry_discipline_limits',
         'writing_intensive_attribute_within_capacity',
       ]));
+    expect(unsupported).not.toContain('variable_topics_credit_must_close_selection');
   });
 
   it('models JMU degree requirements, all 14 GE requirements, and the canonical variable major path', () => {
@@ -158,10 +161,16 @@ describe('official-source CNU, JMU, and NSU compositions', () => {
       kind: 'ge_area',
       code: 'NSU-MATH-300',
     });
-    expect(acceptance.analysis_ready.checks.find((check) => check.name === 'constraint_support')
-      .issues.map((issue) => issue.kind).filter(Boolean)).toEqual(expect.arrayContaining([
+    const unsupported = acceptance.analysis_ready.checks
+      .find((check) => check.name === 'constraint_support')
+      .issues.map((issue) => issue.kind).filter(Boolean);
+    expect(unsupported).toEqual(expect.arrayContaining([
         'distinct_laboratory_science_sequences',
         'general_education_major_overlap',
+        // This isolated composition test deliberately resolves every course
+        // as three credits. The publication evaluator is bound instead to the
+        // real accepted/final 120-credit tree and therefore rejects this
+        // synthetic unit projection, as its fail-closed contract requires.
         'minimum_major_menu_units',
       ]));
   });

@@ -15,12 +15,81 @@ const {
 } = require('../services/degreeSlots');
 const { evaluateDegreeAtCollege } = require('../services/degreeCoverage');
 const { defaultMajor, getMajor, listMajors } = require('../config/majors');
+const {
+  VA_ANALYSIS_MAJOR,
+  VA_ANALYSIS_PUBLICATION_CONTRACT,
+  virginiaAnalysisPublicationStatus,
+} = require('../services/virginia/analysisPublicationGate');
 
 const COLLECTION = 'curated_requirements';
 
+function configuredPublicationError(major) {
+  return {
+    ready: false,
+    blocker: 'analysis_publication_gate_configuration_error',
+    contract: major?.publicationGate?.contract || null,
+    major_slug: major?.slug || null,
+    generation_id: null,
+    issues: [{ code: 'unsupported_publication_gate_contract' }],
+  };
+}
+
+async function publicationStatusForMajor(db, major) {
+  if (!major?.publicationGate) return null;
+  if (major.publicationGate.contract !== VA_ANALYSIS_PUBLICATION_CONTRACT) {
+    return configuredPublicationError(major);
+  }
+  return virginiaAnalysisPublicationStatus(db);
+}
+
+function publicationReadyForMajor(status, major) {
+  return status?.ready === true
+    && status.major_slug === major?.slug
+    && status.contract === major?.publicationGate?.contract;
+}
+
+function publicationMajorForDegree(doc) {
+  const declared = getMajor(doc?.major_slug);
+  if (declared?.publicationGate) return declared;
+  // Virginia projection documents are state stamped. Keep that stamp
+  // authoritative even if a malformed or historical row lacks the major slug:
+  // falling back to California CS here would expose the exact rows the
+  // publication receipt is meant to withhold.
+  if (doc?.state === 'va') return getMajor(VA_ANALYSIS_MAJOR);
+  return null;
+}
+
+function sendPublicationBlocked(res, major, status) {
+  return res.status(503).json({
+    error: 'publication_receipt_required',
+    capability: 'analysisPublicationReceipt',
+    major: major.slug,
+    detail: 'Virginia analysis is unavailable until one exact, current publication receipt passes every figure gate.',
+    publication_blocker: status,
+  });
+}
+
 exports.list = asyncHandler(async (req, res) => {
   const db = req.app.locals.db;
-  const docs = await db.collection(COLLECTION).find({ kind: 'degree' }).sort({ school_id: 1 }).toArray();
+  const candidates = await db.collection(COLLECTION)
+    .find({ kind: 'degree' }).sort({ school_id: 1 }).toArray();
+  const gatedMajors = new Map();
+  for (const doc of candidates) {
+    const major = publicationMajorForDegree(doc);
+    if (major) gatedMajors.set(major.slug, major);
+  }
+  const publicationStatuses = new Map();
+  // Gate before enriching any Virginia row. The raw source documents remain
+  // available through the existing Virginia/curated research endpoints, while
+  // this computed view cannot leak totals, unit summaries, or resolved ledgers
+  // from an unpublished corpus.
+  for (const major of gatedMajors.values()) {
+    publicationStatuses.set(major.slug, await publicationStatusForMajor(db, major));
+  }
+  const docs = candidates.filter((doc) => {
+    const major = publicationMajorForDegree(doc);
+    return !major || publicationReadyForMajor(publicationStatuses.get(major.slug), major);
+  });
   const calendars = await db.collection('assist_institutions')
     .find({ kind: 'university' }, { projection: { source_id: 1, academic_calendar: 1, _id: 0 } })
     .toArray();
@@ -29,7 +98,10 @@ exports.list = asyncHandler(async (req, res) => {
   const rows = [];
   for (const doc of docs) {
     const universityCoursesById = await loadUniversityCourses(db, doc.requirement_groups, doc.course_unit_overrides);
-    const { total } = buildDegreeGroups(doc.requirement_groups, { universityCoursesById });
+    const { total } = buildDegreeGroups(doc.requirement_groups, {
+      universityCoursesById,
+      sourceDocument: doc,
+    });
     const ledger = buildLedgerGroups(doc.requirement_groups, { template: true });
     rows.push({
       _id: doc._id,
@@ -60,14 +132,20 @@ exports.list = asyncHandler(async (req, res) => {
       // usually recorded as notes, but may also be an explicit verdict flag
       // (verified + verified_by) for verification done outside the notes flow.
       verification: doc.verification || null,
-      units_summary: computeUnitBudget(doc.requirement_groups),
+      units_summary: computeUnitBudget(doc.requirement_groups, { sourceDocument: doc }),
       updated_at: doc.updated_at || null,
       total,
       requirement_groups: ledger.requirement_groups,
       university_courses_by_id: universityCoursesById,
     });
   }
-  res.json({ rows, generated_at: new Date() });
+  const publication_blockers = [...gatedMajors.values()]
+    .filter((major) => !publicationReadyForMajor(publicationStatuses.get(major.slug), major))
+    .map((major) => ({
+      major_slug: major.slug,
+      publication_blocker: publicationStatuses.get(major.slug),
+    }));
+  res.json({ rows, publication_blockers, generated_at: new Date() });
 });
 
 // One degree evaluated against one community college.
@@ -79,11 +157,16 @@ exports.evaluate = asyncHandler(async (req, res) => {
     return res.status(400).json({ error: 'school_id and community_college_id are required' });
   }
   const majorSlug = String(req.query.majorSlug || defaultMajor().slug).trim();
-  if (!getMajor(majorSlug)) {
+  const major = getMajor(majorSlug);
+  if (!major) {
     return res.status(400).json({
       error: `unknown major: ${majorSlug}`,
       known: listMajors({ includeStates: true }).map((major) => major.slug),
     });
+  }
+  const publicationStatus = await publicationStatusForMajor(req.app.locals.db, major);
+  if (publicationStatus && !publicationReadyForMajor(publicationStatus, major)) {
+    return sendPublicationBlocked(res, major, publicationStatus);
   }
   const result = await evaluateDegreeAtCollege(req.app.locals.db, {
     schoolId: school_id, communityCollegeId: community_college_id, majorSlug,

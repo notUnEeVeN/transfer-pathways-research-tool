@@ -71,11 +71,12 @@ and JMU all publish them. That asymmetry is the reason this layer went first.
 ## Running the import
 
 ```bash
-node scripts/importVirginiaCourses.js --uri mongodb://localhost:27017 --db pmt_research --crosscheck 25
+node scripts/importVirginiaCourses.js --apply --uri mongodb://localhost:27017 --db pmt_research --crosscheck 25
 ```
 
 `--uri` and `--db` beat every environment variable, and the resolved destination
-is logged before any write — an earlier import in this project silently
+is logged before any write. A bare invocation is a dry run; replacing the two
+Virginia source collections requires the explicit `--apply` shown above. An earlier import silently
 preferred `TARGET_MONGO_URI` from `scripts/.env` and wrote to the shared
 research cluster. Collections are staged and renamed atomically, so a failed run
 never leaves a half-written collection in place of a good one.

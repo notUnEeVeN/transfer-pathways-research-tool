@@ -42,7 +42,9 @@ describe('Wytheville and Tidewater current Computer Science A.S. compositions', 
     const { acceptance, composition, doc, extract } = degree(slug);
     expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
     expect(acceptance.catalog.failed).toEqual([]);
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance.analysis_ready.failed).toEqual([
+      'analysis_quality_flags', 'constraint_support',
+    ]);
     expect(check(acceptance, 'analysis_ready', 'unit_closure')).toMatchObject({
       severity: 'pass', modeled_units: composition.total_units,
     });

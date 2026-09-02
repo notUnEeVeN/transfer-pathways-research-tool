@@ -101,13 +101,47 @@ describe('VCCS requisite grammar', () => {
       .toEqual(['BIO101', 'BIO102', 'CHM111']);
   });
 
-  it('marks semicolon grammar unsafe while retaining the raw clause', () => {
+  it('distributes conjunctive semicolon groups before a whole-clause approval alternative', () => {
     const group = parseRequisiteClause(
       'prerequisite',
       'Eligible for ENG 111; MTH 162 or MTH 167 with a grade of C or better; or divisional approval.'
     );
     expect(group.raw).toContain('Eligible for ENG 111;');
-    expect(group.flags).toContain('unsupported_semicolon_grammar');
+    expect(group.semicolon_topology).toBe('conjunctive_groups_then_whole_clause_alternatives');
+    expect(group.paths.map((formulaPath) => formulaPath.all_of.map((condition) => (
+      condition.code || condition.condition
+    )))).toEqual([
+      ['ENG111', 'MTH162'],
+      ['ENG111', 'MTH167'],
+      ['consent'],
+    ]);
+    expect(group.flags).not.toContain('unsupported_semicolon_grammar');
+  });
+
+  it('keeps ambiguous semicolon ordering blocked', () => {
+    const group = parseRequisiteClause(
+      'prerequisite',
+      'MTH 162; or divisional approval; ENG 111 eligible.'
+    );
+    expect(group.paths).toEqual([]);
+    expect(group.flags).toEqual(expect.arrayContaining([
+      'unsupported_semicolon_grammar', 'unparsed_clause',
+    ]));
+  });
+
+  it('does not preserve an approval waiver when its leading OR is removed', () => {
+    const group = parseRequisiteClause(
+      'prerequisite',
+      'ENG 111 eligible; MTH 162 or MTH 167, or equivalent; departmental approval.'
+    );
+    expect(group.semicolon_topology).toBe('conjunctive_groups');
+    expect(group.paths).toHaveLength(2);
+    expect(group.paths.every((formulaPath) => formulaPath.all_of.some((condition) => (
+      condition.condition === 'consent'
+    )))).toBe(true);
+    expect(group.paths.some((formulaPath) => (
+      formulaPath.all_of.length === 1 && formulaPath.all_of[0].condition === 'consent'
+    ))).toBe(false);
   });
 
   it('treats ampersand as AND and course eligibility as readiness', () => {
@@ -120,6 +154,21 @@ describe('VCCS requisite grammar', () => {
     expect(chemistry.paths[0].all_of[0]).toMatchObject({
       type: 'non_course', condition: 'course_eligibility', code: 'ENG111',
     });
+
+    const historical = parseRequisiteClause(
+      'prerequisite',
+      'Readiness to enroll in ENG 111.',
+    );
+    expect(historical.paths).toEqual([expect.objectContaining({
+      all_of: [expect.objectContaining({
+        type: 'non_course',
+        condition: 'course_eligibility',
+        code: 'ENG111',
+        raw: 'Readiness to enroll in ENG 111',
+      })],
+    })]);
+    expect(historical.paths[0].residual_text).toBeUndefined();
+    expect(historical.flags).not.toContain('unparsed_residue');
   });
 
   it('preserves free-form non-course alternatives without calling them residue', () => {
@@ -195,9 +244,111 @@ describe('VCCS master course page parser', () => {
   });
 
   it('distinguishes no requisites from a missing master course', () => {
-    expect(parseVccsCoursePage(page('CSC221', 'Programming'), { requestedCode: 'CSC221' }).status)
-      .toBe('none');
+    const explicitBoundary = parseVccsCoursePage(
+      page('CSC221', 'Programming'),
+      { requestedCode: 'CSC221', url: 'https://courses.vccs.edu/courses/CSC221' },
+    );
+    expect(explicitBoundary.status).toBe('none');
+    expect(explicitBoundary.source_evidence).toMatchObject({
+      kind: 'official_course_entry',
+      raw_text: expect.stringContaining('CSC 221 - Programming'),
+      content_sha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+      source_page_content_sha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+      record_html_sha256: expect.stringMatching(/^[a-f0-9]{64}$/),
+      record_boundary: 'dl > dt + dd',
+      requisite_text_boundary: '.endtext',
+      parser_contract: 'vccs-master-dt-dd-endtext-v1',
+    });
+    expect(explicitBoundary.explicit_none_evidence).toMatchObject({
+      kind: 'structured_vccs_master_record_boundary',
+      course_entry_status: 'published_exact_vccs_master_course_record',
+      finding: 'no_prerequisite_or_corequisite_published_in_complete_master_record',
+      literal_none_statement: false,
+      requisite_clause_count: 0,
+    });
     expect(parseVccsCoursePage('<h2>CSC i221</h2>', { requestedCode: 'CSCI221' }))
       .toMatchObject({ found: false, status: 'missing', flags: ['no_exact_master_course'] });
+  });
+
+  it('never issues structured none when the record boundary is incomplete or hides a label', () => {
+    const missingBoundary = page('CSC221', 'Programming').replace('class="endtext"', 'class="other"');
+    expect(parseVccsCoursePage(missingBoundary, { requestedCode: 'CSC221' })).toMatchObject({
+      status: 'unparsed',
+      flags: expect.arrayContaining(['incomplete_master_record_boundary']),
+    });
+
+    const outsideLabel = page('CSC221', 'Programming').replace(
+      '<div class="credits">',
+      '<div>Prerequisite: CSC 110.</div><div class="credits">',
+    );
+    const parsed = parseVccsCoursePage(outsideLabel, { requestedCode: 'CSC221' });
+    expect(parsed).toMatchObject({
+      status: 'unparsed',
+      flags: expect.arrayContaining(['requisite_label_outside_endtext_boundary']),
+    });
+    expect(parsed.explicit_none_evidence).toBeUndefined();
+  });
+
+  it('represents the exact BIO 141 master timing and semicolon alternatives', () => {
+    const parsed = parseVccsCoursePage(page(
+      'BIO141',
+      'Human Anatomy and Physiology I',
+      'Corequisite or Prerequisite: Demonstration of NAS 2 concepts through NAS 2 completion; or assessment; or module completion; or equivalent.'
+    ), { requestedCode: 'BIO141' });
+    expect(parsed.status).toBe('parsed');
+    expect(parsed.raw_requisites).toContain('Corequisite or Prerequisite:');
+    expect(parsed.groups[0]).toMatchObject({
+      kind: 'corequisite',
+      source_label: 'Corequisite or Prerequisite',
+      timing: 'corequisite_or_prerequisite',
+      semicolon_topology: 'whole_clause_alternatives',
+    });
+    expect(parsed.groups[0].paths.map((formulaPath) => (
+      formulaPath.all_of[0].condition
+    ))).toEqual(['other', 'placement', 'other', 'equivalent']);
+    expect(parsed.flags).not.toContain('unsupported_semicolon_grammar');
+
+    const prerequisiteOnly = parseVccsCoursePage(page(
+      'BIO141',
+      'Human Anatomy and Physiology I',
+      'Prerequisite: Demonstration of NAS 2 concepts through NAS 2 completion; or assessment; or module completion; or equivalent.'
+    ), { requestedCode: 'BIO141' });
+    expect(prerequisiteOnly.groups[0]).toMatchObject({
+      kind: 'prerequisite', source_label: 'Prerequisite',
+    });
+    expect(prerequisiteOnly.groups[0].timing).toBeUndefined();
+  });
+
+  it('represents the exact EGR 121 master AND/OR formula', () => {
+    const parsed = parseVccsCoursePage(page(
+      'EGR121',
+      'Foundations of Engineering',
+      'Prerequisite: ENG 111 eligible; MTH 162 or MTH 167, or equivalent; or departmental approval.'
+    ), { requestedCode: 'EGR121' });
+    expect(parsed.status).toBe('parsed');
+    expect(parsed.groups[0].semicolon_topology)
+      .toBe('conjunctive_groups_then_whole_clause_alternatives');
+    expect(parsed.groups[0].paths.map((formulaPath) => formulaPath.all_of.map((condition) => (
+      condition.code || condition.condition
+    )))).toEqual([
+      ['ENG111', 'MTH162'],
+      ['ENG111', 'MTH167'],
+      ['consent'],
+    ]);
+    const math = parsed.groups[0].paths.slice(0, 2)
+      .flatMap((formulaPath) => formulaPath.all_of)
+      .filter((condition) => condition.type === 'course');
+    expect(math.every((condition) => condition.equivalent_allowed === true)).toBe(true);
+    expect(parsed.flags).not.toContain('unsupported_semicolon_grammar');
+
+    const noApprovalOr = parseVccsCoursePage(page(
+      'EGR121',
+      'Foundations of Engineering',
+      'Prerequisite: ENG 111 eligible; MTH 162 or MTH 167, or equivalent; departmental approval.'
+    ), { requestedCode: 'EGR121' });
+    expect(noApprovalOr.groups[0].paths).toHaveLength(2);
+    expect(noApprovalOr.groups[0].paths.every((formulaPath) => (
+      formulaPath.all_of.some((condition) => condition.condition === 'consent')
+    ))).toBe(true);
   });
 });

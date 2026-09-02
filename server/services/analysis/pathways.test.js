@@ -6,6 +6,7 @@ import {
   receiversExportData, _maFigure1PdfValue, _roundHalfEven, _settingsMajors, _canonicalCsPrograms,
 } from './pathways';
 import { getMajor, programPairs } from '../../config/majors';
+import { canonicalSourceContract } from './canonicalSourceContract';
 import maPdfFigures from '../../data/ma/pdf-figures.json';
 
 let mongo;
@@ -1012,6 +1013,15 @@ describe('exact configured major isolation', () => {
         ]),
       },
       {
+        _id: 'scope:va-cs-must-not-leak', state: 'va',
+        uc_school: 'Virginia Test University', uc_school_id: 9279,
+        community_college: 'Virginia Test College', community_college_id: 9370,
+        major: 'Computer Science, B.S.',
+        requirement_groups: oneGroup([
+          recv([opt(['scope-extra'])], { hash: 'scope-va', parentId: 701 }),
+        ]),
+      },
+      {
         _id: 'scope:bio', uc_school: 'UC Berkeley', uc_school_id: 79,
         community_college: 'Scope College', community_college_id: 70,
         major: 'Molecular and Cell Biology, B.A.',
@@ -1067,6 +1077,7 @@ describe('exact configured major isolation', () => {
     // configured slug must not silently degrade to it.
     const legacy = await agreementsExportData(db, db, { majorContains: 'computer science' });
     expect(legacy.map((row) => row._id)).toContain('scope:extra-cs');
+    expect(legacy.map((row) => row._id)).not.toContain('scope:va-cs-must-not-leak');
   });
 
   it.each(['paper', 'settings'])('%s compatibility pin cannot restore an extra CS program', async (pin) => {
@@ -1222,6 +1233,185 @@ describe('unit-lens gating for corpora the unit model does not describe', () => 
     } finally {
       await db.collection('curated_requirements').deleteOne({ _id: added.degree._id });
       await db.collection('assist_agreements').deleteOne({ _id: added.agreement._id });
+    }
+  });
+});
+
+describe('Virginia Figure 1 publication gate', () => {
+  it('nulls every computed coverage metric until the bachelor source passes the common gate', async () => {
+    const degree = {
+      _id: 'degree:9205:va-cs:figure1-gate',
+      kind: 'degree', state: 'va', major_slug: 'va-cs', school_id: 9205,
+      analysis_contract: canonicalSourceContract(),
+      school: 'Bridgewater College', program: 'Computer Science, B.S.',
+      total_units: 120, unit_system: 'semester',
+      va_requirement_id: 'va:degree:bridgewater-college:cs',
+      va_requirement_status: 'extracted',
+      source: 'institution_catalog',
+      source_method: 'official_catalog_composition',
+      sources: [{ id: 'program', url: 'https://example.edu/program' }],
+      provenance: { source_bundle_hash: 'bridgewater-source-hash' },
+      verification: { verified: false, stale: false },
+      analysis_ready: true,
+      acceptance: {
+        accepted: true,
+        ready_for_analysis: true,
+        catalog: { checks: [] },
+        analysis_ready: { checks: [] },
+      },
+      unit_audit: {
+        graduation_minimum: 120,
+        modeled_units: 120,
+        upper_division: { status: 'none_stated', reason: 'No aggregate rule.' },
+        residency: { status: 'none_stated', reason: 'No numeric rule.' },
+      },
+      requirement_groups: [
+        {
+          title: 'Lower-division major requirements', tier: 'transferable',
+          requirement_layer: 'major', course_level: 'lower_division',
+          cc_articulable: true,
+          group_conjunction: 'And',
+          source_refs: ['program'],
+          sections: [{
+            section_advisement: 1, unit_advisement: 3, tier: 'transferable',
+            source_refs: ['program'],
+            receivers: [{
+              receiving: {
+                kind: 'course', parent_id: 9205001, code: 'CSC 201', name: 'Computer Science I',
+              },
+            }],
+          }],
+        },
+        {
+          title: 'Free electives to reach the 120-unit minimum', tier: 'nontransferable',
+          requirement_layer: 'university_graduation', course_level: 'elective_capacity',
+          cc_articulable: true,
+          group_conjunction: 'And',
+          source_refs: ['program'],
+          sections: [{
+            section_advisement: 1, unit_advisement: 117, tier: 'nontransferable',
+            source_refs: ['program'],
+            receivers: [{ receiving: { kind: 'requirement', name: 'Elective capacity' } }],
+          }],
+        },
+      ],
+    };
+    const agreement = {
+      _id: 'va:agreement:9205:9301:figure1-gate', state: 'va',
+      uc_school_id: 9205, community_college_id: 9301,
+      major: 'Computer Science, B.S.',
+      requirement_groups: [{
+        sections: [{
+          receivers: [{
+            receiving: { kind: 'course', parent_id: 9205001 },
+            articulation_status: 'articulated',
+            options: [{ course_ids: [9301001] }],
+          }],
+        }],
+      }],
+    };
+    const institution = {
+      _id: 'va:cc:9301:figure1-gate', state: 'va', kind: 'community_college',
+      source_id: 9301, name: 'Blue Ridge Community College',
+    };
+    const receivingCourse = {
+      _id: 'va:receiving:9205001:figure1-gate', state: 'va', side: 'receiving',
+      parent_id: 9205001, institution_id: 'va:uni:9205',
+      prefix: 'CSC', number: '201', title: 'Computer Science I',
+    };
+    await db.collection('curated_requirements').insertOne(degree);
+    await db.collection('assist_agreements').insertOne(agreement);
+    await db.collection('assist_institutions').insertOne(institution);
+    await db.collection('assist_courses').insertOne(receivingCourse);
+    try {
+      const blocked = await coverageData(db, db, {
+        requirements: 'degree', majorSlug: 'va-cs', groupBy: 'college',
+      });
+      expect(blocked).toHaveLength(1);
+      expect(blocked[0]).toMatchObject({
+        method_status: 'excluded',
+        exclusion_reason: 'virginia_source_not_publication_ready',
+        degree_template_publication_ready: false,
+        pct_named_requirement_courses: null,
+        named_requirement_courses_total: null,
+        receivers_required: null,
+        fully_articulated: null,
+        degree_groups_not_modelable: null,
+      });
+      expect(blocked[0].degree_template_publication_blockers)
+        .toContain('current_human_verification_required');
+
+      await db.collection('curated_requirements').updateOne(
+        { _id: degree._id },
+        { $set: { 'verification.verified': true } },
+      );
+      const ready = await coverageData(db, db, {
+        requirements: 'degree', majorSlug: 'va-cs', groupBy: 'college',
+      });
+      expect(ready).toHaveLength(1);
+      expect(ready[0]).toMatchObject({
+        method_status: 'ok',
+        degree_template_publication_ready: true,
+        degree_template_figure_ready: true,
+        degree_template_requested_figures: ['1'],
+        degree_template_complete_degree_ready: true,
+        pct_named_requirement_courses: 100,
+        named_requirement_courses_total: 1,
+      });
+
+      // Complete-degree acceptance is stricter than Figure 1. An audited
+      // administrative-only rule may keep that receipt false without erasing
+      // a course-articulation cell.
+      await db.collection('curated_requirements').updateOne(
+        { _id: degree._id },
+        { $set: {
+          analysis_ready: false,
+          'acceptance.ready_for_analysis': false,
+          'acceptance.analysis_ready.checks': [{
+            name: 'constraint_support', severity: 'fail',
+          }],
+          'requirement_groups.0.analysis_constraints': [{
+            kind: 'general_education_assessment', status: 'evaluator_not_implemented',
+          }],
+        } },
+      );
+      const figureReady = await coverageData(db, db, {
+        requirements: 'degree', majorSlug: 'va-cs', groupBy: 'college',
+      });
+      expect(figureReady[0]).toMatchObject({
+        method_status: 'ok',
+        degree_template_publication_ready: true,
+        degree_template_figure_ready: true,
+        degree_template_requested_figures: ['1'],
+        degree_template_complete_degree_ready: false,
+        degree_template_figure_constraint_blockers: [],
+        pct_named_requirement_courses: 100,
+      });
+
+      await db.collection('curated_requirements').updateOne(
+        { _id: degree._id },
+        { $set: {
+          'requirement_groups.0.analysis_constraints': [{
+            kind: 'advisor_approval', status: 'evaluator_not_implemented',
+          }],
+        } },
+      );
+      const unknownRule = await coverageData(db, db, {
+        requirements: 'degree', majorSlug: 'va-cs', groupBy: 'college',
+      });
+      expect(unknownRule[0]).toMatchObject({
+        method_status: 'excluded',
+        degree_template_figure_ready: false,
+        degree_template_complete_degree_ready: false,
+        pct_named_requirement_courses: null,
+      });
+      expect(unknownRule[0].degree_template_figure_constraint_blockers)
+        .toContainEqual(expect.objectContaining({ kind: 'advisor_approval' }));
+    } finally {
+      await db.collection('curated_requirements').deleteOne({ _id: degree._id });
+      await db.collection('assist_agreements').deleteOne({ _id: agreement._id });
+      await db.collection('assist_institutions').deleteOne({ _id: institution._id });
+      await db.collection('assist_courses').deleteOne({ _id: receivingCourse._id });
     }
   });
 });

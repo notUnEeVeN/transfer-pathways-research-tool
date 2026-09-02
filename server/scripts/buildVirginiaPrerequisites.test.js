@@ -1,12 +1,82 @@
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const {
+  artifactDriftIssues,
   courseIdFor,
   classifyCourse,
   loadRichardBlandEvidence,
   prepareCorpus,
   buildArtifacts,
+  fetchMasterClosure,
 } = require('./buildVirginiaPrerequisites');
 
 describe('Virginia prerequisite artifact builder', () => {
+  it('checks generated artifacts byte-for-byte without modifying them', () => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'va-prerequisite-drift-'));
+    const courseOutput = path.join(directory, 'concepts.json');
+    const requisiteOutput = path.join(directory, 'requisites.json');
+    const artifacts = { concepts: { rows: [{ code: 'CSC221' }] }, requisites: { rows: [] } };
+    try {
+      fs.writeFileSync(courseOutput, `${JSON.stringify(artifacts.concepts, null, 1)}\n`);
+      fs.writeFileSync(requisiteOutput, `${JSON.stringify(artifacts.requisites, null, 1)}\n`);
+      expect(artifactDriftIssues(artifacts, { courseOutput, requisiteOutput })).toEqual([]);
+      fs.writeFileSync(requisiteOutput, '{}\n');
+      expect(artifactDriftIssues(artifacts, { courseOutput, requisiteOutput }))
+        .toEqual([`checked-in artifact drift ${requisiteOutput}`]);
+    } finally {
+      fs.rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it('applies owner evidence during the crawl so supplemental formulas reach a fixed point', async () => {
+    const calls = [];
+    const client = {
+      mapLimit: async (values, fn) => Promise.all(values.map(fn)),
+      getCourse: async (code) => {
+        calls.push(code);
+        return {
+          code, found: false, status: 'missing', groups: [],
+          source_url: `https://courses.vccs.edu/courses/${code}`,
+          flags: ['no_exact_master_course'],
+        };
+      },
+    };
+    const formula = (code, dependency = null) => ({
+      code, found: true, status: dependency ? 'parsed' : 'none', flags: [],
+      groups: dependency ? [{
+        kind: 'prerequisite', formula: 'paths_or__conditions_and', flags: [],
+        paths: [{ all_of: [{ type: 'course', code: dependency }] }],
+      }] : [],
+    });
+    const supplements = new Map([
+      ['CSC201', formula('CSC201', 'CSC200')],
+      ['CSC200', formula('CSC200', 'EGR126')],
+    ]);
+    const closure = await fetchMasterClosure(client, ['CSC201'], () => {}, supplements);
+    expect(calls).toEqual(['CSC201', 'CSC200', 'EGR126']);
+    expect([...closure.keys()]).toEqual(['CSC201', 'CSC200', 'EGR126']);
+    expect(closure.get('CSC201')).toMatchObject({
+      found: true,
+      current_vccs_master_evidence: { status: 'missing' },
+    });
+    expect(closure.get('EGR126')).toMatchObject({ found: false, status: 'missing' });
+  });
+
+  it('rejects owner evidence outside the reachable canonical closure', async () => {
+    const client = {
+      mapLimit: async (values, fn) => Promise.all(values.map(fn)),
+      getCourse: async (code) => ({
+        code, found: false, status: 'missing', groups: [],
+        source_url: `https://courses.vccs.edu/courses/${code}`,
+      }),
+    };
+    await expect(fetchMasterClosure(client, ['CSC201'], () => {}, new Map([
+      ['CSC201', { code: 'CSC201', found: true, status: 'none', groups: [] }],
+      ['ENG249', { code: 'ENG249', found: true, status: 'none', groups: [] }],
+    ]))).rejects.toThrow(/outside the canonical fixed-point closure: ENG249/);
+  });
+
   it('uses the same deterministic Virginia ids and canonical join keys', () => {
     expect(courseIdFor('CSC221')).toBe(courseIdFor('CSC 221'));
     expect(courseIdFor('CSC221')).toBeGreaterThanOrEqual(900000000);

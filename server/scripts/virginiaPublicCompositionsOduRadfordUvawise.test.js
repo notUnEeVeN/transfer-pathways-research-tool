@@ -72,7 +72,9 @@ describe('ODU, Radford, and UVA Wise 2026-2027 official-source compositions', ()
     expect(extract).toMatchObject({ outcome: 'captured', catalog_year: '2026-2027' });
     expect(acceptance).toMatchObject({ accepted: true, ready_for_analysis: false });
     expect(acceptance.catalog.failed).toEqual([]);
-    expect(acceptance.analysis_ready.failed).toEqual(['constraint_support']);
+    expect(acceptance.analysis_ready.failed).toEqual(slug === 'radford-university'
+      ? ['analysis_quality_flags', 'constraint_support']
+      : ['constraint_support']);
     expect(doc.requirement_layers).toMatchObject({
       major: { status: 'complete' },
       ge_college: { status: 'complete' },

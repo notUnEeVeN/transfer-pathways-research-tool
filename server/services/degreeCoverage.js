@@ -99,7 +99,8 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId, major
   );
 
   const { total, covered, by_tier, units } = buildDegreeGroups(degree.requirement_groups, {
-    articulated, articulatedRequirements, optionsByParent, universityCoursesById, coursesById, ccGeAreas,
+    articulated, articulatedRequirements, optionsByParent, universityCoursesById, coursesById,
+    ccGeAreas, sourceDocument: degree,
   });
   // Merged agreement-shaped groups so the frontend renders this tab through the
   // shared RequirementsLedger, matching the Rendered tab.

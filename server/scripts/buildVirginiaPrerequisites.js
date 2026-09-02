@@ -13,6 +13,7 @@
  *
  * Usage (from server/):
  *   node scripts/buildVirginiaPrerequisites.js
+ *   node scripts/buildVirginiaPrerequisites.js --check
  *   node scripts/buildVirginiaPrerequisites.js --write
  *   node scripts/buildVirginiaPrerequisites.js --write --refresh
  */
@@ -24,6 +25,14 @@ const {
   normalizeCode,
 } = require('../services/virginia/vccsCourse');
 const { courseIdFor } = require('../services/virginia/courseIdentity');
+const {
+  DEFAULT_EVIDENCE: DEFAULT_SOUTHWEST_PREREQUISITE_EVIDENCE,
+  loadSouthwestVccsPrerequisiteEvidence,
+} = require('../services/virginia/southwestVccsPrerequisiteEvidence');
+const {
+  DEFAULT_EVIDENCE: DEFAULT_LAUREL_RIDGE_PREREQUISITE_EVIDENCE,
+  loadLaurelRidgeVccsPrerequisiteEvidence,
+} = require('../services/virginia/laurelRidgeVccsPrerequisiteEvidence');
 
 const REPO = path.resolve(__dirname, '..', '..');
 const DEFAULT_SCOPE = path.join(__dirname, '..', '.va-degrees', 'cs_course_scope.json');
@@ -48,6 +57,7 @@ function valueAfter(argv, flag, fallback = null) {
 function optionsFrom(argv = process.argv.slice(2)) {
   return {
     write: argv.includes('--write'),
+    check: argv.includes('--check'),
     refresh: argv.includes('--refresh'),
     localAudit: !argv.includes('--skip-local-audit'),
     uri: valueAfter(argv, '--uri', 'mongodb://localhost:27017'),
@@ -57,6 +67,16 @@ function optionsFrom(argv = process.argv.slice(2)) {
       argv,
       '--richard-bland-requirements',
       DEFAULT_RICHARD_BLAND_REQUIREMENTS
+    ),
+    southwestPrerequisiteEvidenceFile: valueAfter(
+      argv,
+      '--southwest-prerequisite-evidence',
+      DEFAULT_SOUTHWEST_PREREQUISITE_EVIDENCE,
+    ),
+    laurelRidgePrerequisiteEvidenceFile: valueAfter(
+      argv,
+      '--laurel-ridge-prerequisite-evidence',
+      DEFAULT_LAUREL_RIDGE_PREREQUISITE_EVIDENCE,
     ),
     cacheDir: valueAfter(argv, '--cache', DEFAULT_CACHE),
     conceptsFile: valueAfter(argv, '--concepts', DEFAULT_CONCEPTS),
@@ -475,8 +495,14 @@ async function readVirginiaCourses({ uri, dbName }) {
   }
 }
 
-async function fetchMasterClosure(client, initialCodes, log = () => {}) {
+async function fetchMasterClosure(
+  client,
+  initialCodes,
+  log = () => {},
+  ownerCompleteSupplements = new Map(),
+) {
   const masterByCode = new Map();
+  const usedSupplements = new Set();
   let pending = sortedUnique(initialCodes.map(normalizeCode));
   let round = 0;
   while (pending.length) {
@@ -486,10 +512,32 @@ async function fetchMasterClosure(client, initialCodes, log = () => {}) {
       if ((index + 1) % 75 === 0) log(`  master pages ${index + 1}/${pending.length}`);
       return client.getCourse(code);
     });
-    for (const row of parsed) masterByCode.set(row.code, row);
+    const resolved = parsed.map((row) => {
+      const supplemental = ownerCompleteSupplements.get(row.code);
+      if (!supplemental) {
+        masterByCode.set(row.code, row);
+        return row;
+      }
+      if (row.found || row.status !== 'missing') {
+        throw new Error(
+          `${row.code} owner-complete supplement requires a currently missing exact VCCS master record`,
+        );
+      }
+      const overlaid = {
+        ...supplemental,
+        current_vccs_master_evidence: {
+          source_url: row.source_url,
+          status: row.status,
+          flags: row.flags || [],
+        },
+      };
+      masterByCode.set(row.code, overlaid);
+      usedSupplements.add(row.code);
+      return overlaid;
+    });
 
     const next = new Set();
-    for (const row of parsed) {
+    for (const row of resolved) {
       for (const group of row.groups || []) {
         for (const pathRow of group.paths || []) {
           for (const condition of pathRow.all_of || []) {
@@ -501,6 +549,14 @@ async function fetchMasterClosure(client, initialCodes, log = () => {}) {
     }
     pending = [...next].sort();
     if (masterByCode.size > 1000) throw new Error('prerequisite closure exceeded 1,000 courses');
+  }
+  const unusedSupplements = [...ownerCompleteSupplements.keys()]
+    .filter((code) => !usedSupplements.has(code))
+    .sort();
+  if (unusedSupplements.length) {
+    throw new Error(
+      `owner-complete evidence is outside the canonical fixed-point closure: ${unusedSupplements.join(', ')}`,
+    );
   }
   return masterByCode;
 }
@@ -678,7 +734,7 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
     const source = course.supply_kind === 'richard_bland_scope'
       ? course.local_requirement_evidence ? 'richard_bland_requirement_catalog' : 'requirement_scope_only'
       : master?.found
-      ? 'vccs_master_course_file'
+      ? master.source || 'vccs_master_course_file'
       : course.transfer_record_status === 'scope_college_overlap'
         ? 'transferva_scope_overlap'
         : 'requirement_scope_only';
@@ -705,7 +761,8 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
       concept_source: course.supply_kind === 'richard_bland_scope'
         ? `richard_bland_catalog:${classification.classification_method}`
         : master?.found
-        ? `vccs_master:${classification.classification_method}`
+        ? `${master.source === 'official_owner_catalog_course_entry'
+          ? 'official_owner_catalog' : 'vccs_master'}:${classification.classification_method}`
         : course.transfer_record_status === 'scope_college_overlap'
           ? `transferva_scope_overlap:${classification.classification_method}`
           : `scope_only:${classification.classification_method}`,
@@ -767,6 +824,8 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
       'and_or_language',
       'unsupported_boolean_grammar',
       'unsupported_semicolon_grammar',
+      'incomplete_master_record_boundary',
+      'requisite_label_outside_endtext_boundary',
     ]);
     const flags = (master?.flags || []).filter((flag) => unsafeParserFlags.has(flag));
     if (!found && !richardBlandScope) flags.push('no_master_course', 'needs_review');
@@ -824,7 +883,7 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
       source: richardBlandScope
         ? directCourse.local_requirement_evidence ? 'richard_bland_requirement_catalog' : 'requirement_scope_only'
         : found
-        ? 'vccs_master_course_file'
+        ? master.source || 'vccs_master_course_file'
         : directCourse?.transfer_record_status === 'scope_college_overlap'
           ? 'transferva_scope_overlap'
           : 'requirement_scope_only',
@@ -850,6 +909,17 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
       raw_course_endtext: master?.raw_course_endtext || null,
       groups: master?.groups || [],
       vccs_colleges: directCourse?.vccs_colleges || master?.supply?.map((row) => row.name) || [],
+      ...(master?.source_evidence ? {
+        source_evidence: master.source_evidence,
+        source_content_sha256: master.source_content_sha256,
+        explicit_none_evidence: master.explicit_none_evidence,
+        authority_scope: master.authority_scope,
+        owner_coverage: master.owner_coverage,
+        required_by: master.required_by,
+        required_by_owner_coverage: master.required_by_owner_coverage,
+        catalog_year: master.catalog_year,
+        current_vccs_master_evidence: master.current_vccs_master_evidence,
+      } : {}),
       ...(institutionOverrides.length ? { institution_overrides: institutionOverrides } : {}),
       ...(richardBlandScope && rawMaster?.found ? {
         vccs_master_evidence: {
@@ -869,6 +939,26 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
   const scopeCodes = new Set(scope.map((row) => normalizeCode(row.code)));
   const applicableDirectRows = directlyIncluded.filter((course) => course.supply_kind !== 'richard_bland_scope');
   const masterMissingApplicable = applicableDirectRows
+    .filter((course) => {
+      const evidence = masterByCode.get(course.code);
+      return !evidence?.found || evidence.source === 'official_owner_catalog_course_entry';
+    })
+    .map((course) => course.code)
+    .sort();
+  const ownerCatalogResolved = applicableDirectRows
+    .filter((course) => (
+      masterByCode.get(course.code)?.source === 'official_owner_catalog_course_entry'
+    ))
+    .map((course) => course.code)
+    .sort();
+  const ownerCatalogResolvedClosure = requisiteRows
+    .filter((row) => (
+      row.scope_role === 'prerequisite_only'
+      && row.source === 'official_owner_catalog_course_entry'
+    ))
+    .map((row) => row.code)
+    .sort();
+  const unresolvedApplicable = applicableDirectRows
     .filter((course) => !masterByCode.get(course.code)?.found)
     .map((course) => course.code)
     .sort();
@@ -894,7 +984,7 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
   }
   if (legacyExaminedNullRows.some((row) => (
     row.classification_method !== 'legacy_examined_null'
-    && row.source !== 'vccs_master_course_file'
+    && !['vccs_master_course_file', 'official_owner_catalog_course_entry'].includes(row.source)
   ))) {
     throw new Error('legacy review contains an implicit/unexamined null classification');
   }
@@ -918,8 +1008,8 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
     vocabulary: 'scripts/data/prereq_concepts.json',
     source_scope: 'server/.va-degrees/cs_course_scope.json; every listed course is retained as direct major preparation',
     transfer_corpus_role: 'va_courses supplies corroborating VCCS title/description evidence only when offered_by overlaps a college that named the code in cs_course_scope. Richard Bland identities come from its requirement catalog; same-code records without applicable overlap are retained for audit but never used as identity evidence.',
-    source_authority: 'https://courses.vccs.edu (VCCS Master Course File)',
-    source_warning: 'The Master Course File is the statewide minimum. Colleges may add local prerequisites/corequisites; chain-relevant linked college pages are compared below.',
+    source_authority: 'VCCS Master Course File, plus exact official owner-complete college entries where the current master record is absent',
+    source_warning: 'The Master Course File is the statewide minimum. An owner catalog formula is used only when every canonical requirement-scope owner is covered; omission never establishes no prerequisites.',
     counts: {
       scope_codes: scope.length,
       live_va_courses: corpus.rows.length,
@@ -932,6 +1022,9 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
       master_applicable_direct: applicableDirectRows.length,
       master_found_applicable_direct: masterFoundApplicable,
       master_missing_applicable_direct: masterMissingApplicable.length,
+      owner_catalog_resolved_applicable_direct: ownerCatalogResolved.length,
+      owner_catalog_resolved_prerequisite_closure: ownerCatalogResolvedClosure.length,
+      unresolved_prerequisite_source_direct: unresolvedApplicable.length,
       vccs_master_not_applicable_direct: masterNotApplicable.length,
       local_requisite_source_missing_direct: corpus.richardBlandScope.length,
       mixed_scope_identity_collision: mixedIdentityCollisions.length,
@@ -939,6 +1032,9 @@ function buildArtifacts({ scope, corpus, masterByCode, allowedConcepts, override
     },
     coverage_issues: {
       master_missing_applicable_direct: masterMissingApplicable,
+      owner_catalog_resolved_applicable_direct: ownerCatalogResolved,
+      owner_catalog_resolved_prerequisite_closure: ownerCatalogResolvedClosure,
+      unresolved_prerequisite_source_direct: unresolvedApplicable,
       vccs_master_not_applicable_direct: masterNotApplicable,
       local_requisite_source_missing_direct: corpus.richardBlandScope.map((course) => course.code),
       mixed_scope_identity_collision: mixedIdentityCollisions,
@@ -1014,6 +1110,21 @@ function writeJson(file, value) {
   fs.writeFileSync(file, `${JSON.stringify(value, null, 1)}\n`);
 }
 
+function artifactDriftIssues(artifacts, {
+  courseOutput = DEFAULT_COURSE_OUTPUT,
+  requisiteOutput = DEFAULT_REQUISITE_OUTPUT,
+} = {}) {
+  return [
+    [courseOutput, artifacts?.concepts],
+    [requisiteOutput, artifacts?.requisites],
+  ].flatMap(([file, artifact]) => {
+    if (!fs.existsSync(file)) return [`missing checked-in artifact ${file}`];
+    const expected = `${JSON.stringify(artifact, null, 1)}\n`;
+    return fs.readFileSync(file, 'utf8') === expected
+      ? [] : [`checked-in artifact drift ${file}`];
+  });
+}
+
 async function run(opts = optionsFrom()) {
   const log = (...args) => console.log('[va:prereqs]', ...args);
   if (!fs.existsSync(opts.scopeFile)) throw new Error(`missing scope file ${opts.scopeFile}`);
@@ -1022,6 +1133,23 @@ async function run(opts = optionsFrom()) {
   }
   const scope = JSON.parse(fs.readFileSync(opts.scopeFile, 'utf8'));
   const richardBlandEvidence = loadRichardBlandEvidence(opts.richardBlandRequirementsFile);
+  const southwestPrerequisiteEvidence = loadSouthwestVccsPrerequisiteEvidence({
+    evidenceFile: opts.southwestPrerequisiteEvidenceFile,
+    scopeRows: scope,
+  });
+  const laurelRidgePrerequisiteEvidence = loadLaurelRidgeVccsPrerequisiteEvidence({
+    evidenceFile: opts.laurelRidgePrerequisiteEvidenceFile,
+    scopeRows: scope,
+    cacheDir: opts.cacheDir,
+  });
+  const ownerCompleteSupplements = new Map([
+    ...southwestPrerequisiteEvidence.accepted,
+    ...laurelRidgePrerequisiteEvidence.accepted,
+  ]);
+  if (ownerCompleteSupplements.size !== southwestPrerequisiteEvidence.accepted.size
+      + laurelRidgePrerequisiteEvidence.accepted.size) {
+    throw new Error('duplicate owner-complete prerequisite evidence code');
+  }
   const allowedConcepts = new Set(
     JSON.parse(fs.readFileSync(opts.conceptsFile, 'utf8')).concepts.map((concept) => concept.slug)
   );
@@ -1036,7 +1164,16 @@ async function run(opts = optionsFrom()) {
     concurrency: opts.concurrency,
     refresh: opts.refresh,
   });
-  const masterByCode = await fetchMasterClosure(client, corpus.scoped.map((course) => course.code), log);
+  const fetchedMasterByCode = await fetchMasterClosure(
+    client,
+    corpus.scoped.map((course) => course.code),
+    log,
+    ownerCompleteSupplements,
+  );
+  const masterByCode = fetchedMasterByCode;
+  const archivedSilentRecords = southwestPrerequisiteEvidence.report.unresolved_no_explicit_none
+    + laurelRidgePrerequisiteEvidence.report.unresolved_no_explicit_none;
+  log(`owner-complete evidence: ${ownerCompleteSupplements.size} accepted exact records · ${archivedSilentRecords} archived silent ${archivedSilentRecords === 1 ? 'record' : 'records'} retained as nonauthoritative`);
 
   // First pass identifies the exact set whose prerequisite graph is material.
   const preliminary = buildArtifacts({ scope, corpus, masterByCode, allowedConcepts });
@@ -1057,6 +1194,13 @@ async function run(opts = optionsFrom()) {
   log(`local audit: ${artifacts.requisites.meta.local_override_audit.checked_pages} pages · ${artifacts.requisites.meta.local_override_audit.differing_pages} differences · ${artifacts.requisites.meta.local_override_audit.failed_pages} failures`);
   log(`HTTP: ${client.stats.hits} cached · ${client.stats.misses} fetched · ${client.stats.errors} errors`);
 
+  if (opts.check) {
+    if (opts.write) throw new Error('--check and --write are mutually exclusive');
+    const drift = artifactDriftIssues(artifacts, opts);
+    if (drift.length) throw new Error(drift.join('; '));
+    log('checked-in concept and prerequisite artifacts match byte-for-byte');
+    return artifacts;
+  }
   if (!opts.write) {
     log('report only — pass --write to replace the two local JSON artifacts');
     return artifacts;
@@ -1080,6 +1224,7 @@ module.exports = {
   loadRichardBlandEvidence,
   prepareCorpus,
   buildArtifacts,
+  artifactDriftIssues,
   fetchMasterClosure,
   auditLocalOverrides,
   optionsFrom,

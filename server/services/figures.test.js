@@ -19,6 +19,7 @@ beforeEach(async () => { await db.collection('published_figures').deleteMany({})
 const payload = (slug = 'figure-a') => ({
   slug,
   title: 'Figure A',
+  major_slug: 'cs',
   caption: null,
   source_url: null,
   formats: { svg: b64('<svg/>'), png: b64('png'), pdf: b64('pdf') },
@@ -27,6 +28,7 @@ const payload = (slug = 'figure-a') => ({
 const variantPayload = () => ({
   slug: 'paper-figure',
   title: 'Paper figure',
+  major_slug: 'cs',
   caption: null,
   source_url: null,
   controls: [
@@ -59,6 +61,7 @@ const variantPayload = () => ({
 const interactivePayload = () => ({
   slug: 'paper-credit-loss-copy',
   title: 'Paper-style credit loss (published copy)',
+  major_slug: 'cs',
   caption: 'Interactive publication pilot',
   source_url: null,
   visual: 'paper-credit-loss',
@@ -111,7 +114,7 @@ describe('published figures', () => {
     expect(checked.error).toBeUndefined();
     expect(checked.value).toMatchObject({
       publication_type: 'interactive',
-      visual: { id: 'paper-credit-loss', options: {} },
+      visual: { id: 'paper-credit-loss', options: { majorSlug: 'cs' } },
     });
 
     await upsertFigure(db, checked.value, { author_uid: 'u1', author_label: 'Ada' });
@@ -121,12 +124,14 @@ describe('published figures', () => {
     expect(stored.formats).toEqual({});
 
     const [listed] = await listFigures(db);
-    expect(listed.visual).toEqual({ id: 'paper-credit-loss', options: {} });
+    expect(listed.visual).toEqual({ id: 'paper-credit-loss', options: { majorSlug: 'cs' } });
     expect(listed.formats).toBeUndefined();
   });
 
   it('validates slugs, required SVG, and the total file cap', () => {
     expect(validateFigurePayload(payload()).error).toBeUndefined();
+    expect(validateFigurePayload({ ...payload(), major_slug: undefined }).error)
+      .toMatch(/major_slug/);
     expect(validateFigurePayload(payload('Bad slug')).error).toMatch(/slug/);
     expect(validateFigurePayload({ ...payload(), formats: { png: b64('png') } }).error).toMatch(/svg/);
     expect(validateFigurePayload({

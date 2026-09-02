@@ -81,7 +81,8 @@ Every ported figure keeps three artifacts in sync:
 
 1. **Auditable local Python** (`analysis/`) that computes and renders the figure
    from canonical data (`--diff`, `--explain` flags where applicable).
-2. **A published gallery artifact** created with `pmt.publish(fig, ...)` after
+2. **A published gallery artifact** created with
+   `pmt.publish(fig, major_slug="cs", ...)` after
    local values and rendering have been checked.
 3. **A figure doc** (`docs/figures/*.md`) recording provenance, the verification
    performed, known rendering substitutions, and the difference analysis with

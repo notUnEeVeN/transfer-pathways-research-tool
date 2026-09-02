@@ -3,10 +3,26 @@ import path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import {
   eligibleAssociateProgram,
+  optionsFrom,
   writeTransferVirginiaDocuments,
 } from './importVirginiaDegrees';
 
 describe('Transfer Virginia associate-map scope', () => {
+  it('is dry-run by default and preserves explicit apply target selection', () => {
+    expect(optionsFrom([], {})).toMatchObject({ apply: false, dryRun: true });
+    expect(optionsFrom([
+      '--apply', '--uri', 'mongodb://example.test:27017', '--db', 'va_target',
+    ], { MONGO_URI: 'mongodb://environment.test:27017', DB_NAME: 'environment_target' }))
+      .toMatchObject({
+        apply: true,
+        dryRun: false,
+        uri: 'mongodb://example.test:27017',
+        dbName: 'va_target',
+      });
+    expect(() => optionsFrom(['--apply', '--dry-run'], {})).toThrow(/mutually exclusive/);
+    expect(() => optionsFrom(['--aply'], {})).toThrow(/unknown option/);
+  });
+
   it('keeps transfer A.S./AA&S awards and rejects certificates and A.A.S. awards', () => {
     expect(eligibleAssociateProgram('Computer Science, A.S.')).toBe(true);
     expect(eligibleAssociateProgram('Associate of Science-Math/Computer Science')).toBe(true);

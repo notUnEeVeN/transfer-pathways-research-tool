@@ -1,8 +1,18 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   buildDegreeGroups, buildLedgerGroups, computeUnitBudget, degreeUnitSystem,
 } from './degreeSlots';
 import { getMajor } from '../config/majors';
+import { compileDegreeComposition } from './virginia/degreeComposition';
+import { canonicalSourceContract } from './analysis/canonicalSourceContract';
+
+const VA_COMPOSED = path.resolve(__dirname, '../.va-catalogs/composed');
+const vaRequirementGroups = (slug) => compileDegreeComposition(
+  JSON.parse(fs.readFileSync(path.join(VA_COMPOSED, `${slug}.json`), 'utf8')),
+  { institutionLevel: 'four_year' },
+).requirement_groups;
 
 const breadthGroups = [{
   title: 'Humanities & Social Sciences breadth',
@@ -696,6 +706,100 @@ describe('buildDegreeGroups named-requirement rollup (MA-paper population)', () 
     }];
     expect(buildDegreeGroups(groups, { articulated: new Set() })
       .named_requirements.courses).toEqual({ total: 0, covered: 0 });
+  });
+
+  it('keeps a mixed named-course menu when one alternative is an open GE-shaped carrier', () => {
+    const groups = [{
+      title: 'Advanced major selection',
+      tier: 'nontransferable',
+      sections: [{
+        section_advisement: 3,
+        receivers: [
+          { receiving: { kind: 'course', parent_id: 1 } },
+          { receiving: { kind: 'course', parent_id: 2 } },
+          { receiving: { kind: 'ge_area', code: 'OPEN-500' } },
+        ],
+      }],
+    }];
+    expect(buildDegreeGroups(groups, {}).named_requirements.courses)
+      .toEqual({ total: 3, covered: null });
+  });
+
+  it.each([
+    ['christopher-newport-university', 37],
+    ['norfolk-state-university', 39],
+    // VMI has pure GE-shaped sections, not a mixed-receiver section; the
+    // stricter classification must leave its existing denominator unchanged.
+    ['virginia-military-institute', 36],
+  ])('retains every named Virginia course slot in the real %s tree', (slug, expected) => {
+    const groups = vaRequirementGroups(slug);
+    const result = buildDegreeGroups(groups, {});
+    expect(result.named_requirements.courses.total).toBe(expected);
+
+    // Removing only open GE-shaped alternatives must not change the named
+    // course denominator of an otherwise concrete course-choice section.
+    const withoutOpenCarriers = structuredClone(groups);
+    for (const group of withoutOpenCarriers) {
+      for (const section of group.sections || []) {
+        if ((section.receivers || []).some((receiver) => receiver.receiving?.kind === 'course')) {
+          section.receivers = section.receivers.filter((receiver) => (
+            receiver.receiving?.kind !== 'ge_area'
+          ));
+        }
+      }
+    }
+    expect(buildDegreeGroups(withoutOpenCarriers, {}).named_requirements.courses.total)
+      .toBe(expected);
+  });
+
+  it.each([
+    ['james-madison-university', 16],
+    ['christopher-newport-university', 26],
+    ['norfolk-state-university', 29],
+    ['william-mary', 12],
+  ])('uses authored roles for the canonical Figure 1 population in %s', (slug, expected) => {
+    const requirementGroups = vaRequirementGroups(slug);
+    const sourceDocument = {
+      state: 'va',
+      analysis_contract: canonicalSourceContract(),
+      requirement_groups: requirementGroups,
+    };
+    const result = buildDegreeGroups(requirementGroups, {
+      sourceDocument,
+      articulated: new Set(),
+    });
+
+    expect(result.requirement_role_issues).toEqual([]);
+    expect(result.named_requirements.courses).toEqual({ total: expected, covered: 0 });
+  });
+
+  it('counts an all-open upper-level major menu as named and gives it no assumed coverage', () => {
+    const groups = [{
+      requirement_layer: 'major',
+      course_level: 'upper_division',
+      tier: 'breadth',
+      cc_articulable: false,
+      sections: [{
+        section_advisement: 3,
+        unit_advisement: 9,
+        receivers: [
+          { receiving: { kind: 'ge_area', code: 'OPEN-A' } },
+          { receiving: { kind: 'ge_area', code: 'OPEN-B' } },
+          { receiving: { kind: 'ge_area', code: 'OPEN-C' } },
+        ],
+      }],
+    }];
+    const sourceDocument = {
+      analysis_contract: canonicalSourceContract(),
+      requirement_groups: groups,
+    };
+    const result = buildDegreeGroups(groups, {
+      sourceDocument,
+      articulated: new Set(),
+    });
+
+    expect(result.named_requirements.courses).toEqual({ total: 3, covered: 0 });
+    expect(result.named_requirements.courses_with_ge).toEqual({ total: 3, covered: 0 });
   });
 
   it('prices a choose-one between alternative series at the cheapest path', () => {

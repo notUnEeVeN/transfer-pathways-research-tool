@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
- * Stamp every CA degree section with a canonical display category, so all 27
- * documents (9 campuses × 3 majors) read with ONE organization instead of each
- * campus's hand-authored idiosyncrasies.
+ * Stamp degree sections with a canonical display category. California uses
+ * this as a standalone guarded migration; Virginia's atomic projection builder
+ * imports the pure `stampDegreeCategories` helper below and writes the stamps
+ * in the same transaction as the source projection.
  *
  * The taxonomy is DERIVED, not authored: each section's category comes from the
  * same classifier functions the figure engine applies (degreeSlots.namedPadding,
@@ -25,6 +26,7 @@
  *   node scripts/normalizeDegreeCategories.js --apply
  */
 const path = require('node:path');
+const { isDeepStrictEqual } = require('node:util');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const { MongoClient } = require('mongodb');
 const {
@@ -36,23 +38,62 @@ const { transferCreditRateData } = require('../services/analysis/transferCreditR
 
 const CATEGORY_ORDER = ['lower-division', 'general-education', 'upper-division', 'electives', 'unit-accounting'];
 
-function categoryOf(group, section) {
+function categoryOf(group, section, sourceDocument = null) {
   if (section.requirement_kind === 'unit-accounting') return 'unit-accounting';
   // Padding is a group-level classification in the reader; a padding group's
   // sections are all elective capacity.
   if (namedPadding(group)) return 'electives';
   if (namedGeFlavored(group, section)) return 'general-education';
-  return resolveSectionTier(group, section) === 'nontransferable' ? 'upper-division' : 'lower-division';
+  return resolveSectionTier(group, section, sourceDocument) === 'nontransferable'
+    ? 'upper-division' : 'lower-division';
 }
 
 /** Deep-clone with the stamped fields removed, for the additive-only proof. */
 function stripStamps(doc) {
-  const clone = JSON.parse(JSON.stringify(doc));
+  const clone = structuredClone(doc);
   for (const group of clone.requirement_groups || []) {
     delete group.category;
     for (const section of group.sections || []) delete section.category;
   }
   return clone;
+}
+
+/**
+ * Return an additive-only copy of one degree with the canonical display
+ * taxonomy stamped in memory.  Keeping this pure lets an atomic projection
+ * builder include the categories in the same transaction as the source
+ * projection instead of requiring a second database mutation.
+ */
+function stampDegreeCategories(degree) {
+  const doc = structuredClone(degree);
+  const tally = {};
+  const mixedGroups = [];
+  for (const group of doc.requirement_groups || []) {
+    const unitsByCategory = {};
+    for (const section of group.sections || []) {
+      const category = categoryOf(group, section, doc);
+      section.category = category;
+      tally[category] = (tally[category] || 0) + 1;
+      unitsByCategory[category] = (unitsByCategory[category] || 0)
+        + (Number(section.unit_advisement) || 0);
+    }
+    // The group's bucket is where most of its units live; ties break by
+    // canonical order. Mixed groups are retained for the caller's audit log.
+    const present = Object.keys(unitsByCategory);
+    group.category = present.sort((a, b) => (unitsByCategory[b] - unitsByCategory[a])
+      || (CATEGORY_ORDER.indexOf(a) - CATEGORY_ORDER.indexOf(b)))[0] || 'lower-division';
+    if (present.length > 1) {
+      mixedGroups.push({
+        doc: doc._id,
+        group: group.title || '(untitled)',
+        categories: present,
+      });
+    }
+  }
+  if (!isDeepStrictEqual(stripStamps(doc), stripStamps(degree))) {
+    throw new Error(`normalizer modified existing data on ${degree._id} — refusing`);
+  }
+  return { doc, tally, mixedGroups };
 }
 
 async function figureFingerprint(db, majorSlug) {
@@ -87,6 +128,12 @@ async function main() {
   // the complexity figure keys its GE vertices on `category`, and an unstamped
   // corpus silently reads as having none.
   const stateArg = (process.argv.find((a) => a.startsWith('--state=')) || '').split('=')[1] || null;
+  if (apply && stateArg === 'va') {
+    throw new Error(
+      'Virginia category stamps are owned by scripts/va/buildVaDocuments.js; '
+      + 'refusing a separate non-atomic VA write.',
+    );
+  }
   const stateClause = stateArg ? { state: stateArg } : { state: { $exists: false } };
   const client = new MongoClient(process.env.MONGO_URI);
   await client.connect();
@@ -105,31 +152,12 @@ async function main() {
   const tally = {};
   const mixedGroups = [];
   for (const degree of degrees) {
-    const doc = JSON.parse(JSON.stringify(degree));
-    for (const group of doc.requirement_groups || []) {
-      const unitsByCategory = {};
-      for (const section of group.sections || []) {
-        const category = categoryOf(group, section);
-        section.category = category;
-        tally[category] = (tally[category] || 0) + 1;
-        unitsByCategory[category] = (unitsByCategory[category] || 0) + (Number(section.unit_advisement) || 0);
-      }
-      // The group's bucket is where most of its units live; ties break by
-      // canonical order. Mixed groups are reported for the audit.
-      const present = Object.keys(unitsByCategory);
-      group.category = present.sort((a, b) => (unitsByCategory[b] - unitsByCategory[a])
-        || (CATEGORY_ORDER.indexOf(a) - CATEGORY_ORDER.indexOf(b)))[0] || 'lower-division';
-      if (present.length > 1) {
-        mixedGroups.push({ doc: doc._id, group: group.title || '(untitled)', categories: present });
-      }
+    const stamped = stampDegreeCategories(degree);
+    for (const [category, count] of Object.entries(stamped.tally)) {
+      tally[category] = (tally[category] || 0) + count;
     }
-    // Gate 1: this writer is additive-only, provably. Stamps are stripped from
-    // BOTH sides so a re-run (which rewrites earlier stamps) still proves it
-    // touched nothing but the stamped fields.
-    if (JSON.stringify(stripStamps(doc)) !== JSON.stringify(stripStamps(degree))) {
-      throw new Error(`normalizer modified existing data on ${degree._id} — refusing`);
-    }
-    plan.push({ id: degree._id, original: degree, doc });
+    mixedGroups.push(...stamped.mixedGroups);
+    plan.push({ id: degree._id, original: degree, doc: stamped.doc });
   }
 
   console.log('sections stamped:', JSON.stringify(tally));
@@ -159,4 +187,13 @@ async function main() {
   await client.close();
 }
 
-main().catch((error) => { console.error(error); process.exit(1); });
+if (require.main === module) {
+  main().catch((error) => { console.error(error); process.exit(1); });
+}
+
+module.exports = {
+  CATEGORY_ORDER,
+  categoryOf,
+  stampDegreeCategories,
+  stripStamps,
+};
