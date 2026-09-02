@@ -1,0 +1,21 @@
+{
+  "route_id": "radford-university__cs345",
+  "requested_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109016",
+  "final_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109016",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 78759,
+  "content_sha256": "776133b703595f8e62c12ff394ec496d62481541cf41a8b529c006a9c53de632",
+  "fetched_at": "2026-08-24T21:17:51.467Z",
+  "robots": {
+    "url": "https://catalog.radford.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "CS345"
+  ]
+}

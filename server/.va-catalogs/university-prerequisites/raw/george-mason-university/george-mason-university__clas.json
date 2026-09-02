@@ -1,0 +1,26 @@
+{
+  "route_id": "george-mason-university__clas",
+  "requested_url": "https://catalog.gmu.edu/courses/clas/",
+  "final_url": "https://catalog.gmu.edu/courses/clas/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 32332,
+  "content_sha256": "8b686efe51cff3cd7f5447c25e8c261a53e7f4ea084eda6fe3680802dc36b619",
+  "fetched_at": "2026-08-24T20:20:34.056Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CLAS250",
+    "CLAS260",
+    "CLAS340",
+    "CLAS350",
+    "CLAS360",
+    "CLAS380"
+  ]
+}

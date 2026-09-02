@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-commonwealth-university__engr",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/engr/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/engr/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 44995,
+  "content_sha256": "f5ba24ba0e45205e23e537669cc333790924e7ed87b1c48665b5fd1b69ac0b6e",
+  "fetched_at": "2026-08-24T18:03:44.576Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ENGR395"
+  ]
+}

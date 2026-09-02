@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-commonwealth-university__cmsc",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/cmsc/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/cmsc/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 96164,
+  "content_sha256": "4bedbc06a4d447c8a4ecf4a6c0b50857b38dd0eb2ee1aa95fac818e1b1d96d2d",
+  "fetched_at": "2026-08-24T18:03:40.451Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CMSC312"
+  ]
+}

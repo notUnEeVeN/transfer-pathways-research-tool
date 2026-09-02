@@ -1,0 +1,27 @@
+{
+  "route_id": "old-dominion-university__oeas",
+  "requested_url": "https://catalog.odu.edu/courses/oeas/",
+  "final_url": "https://catalog.odu.edu/courses/oeas/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 276008,
+  "content_sha256": "b5e84c22bc71fe0f2d47cc03d986ece02d29ab5ed64b96b83d16ebc6adaee77b",
+  "fetched_at": "2026-08-24T18:03:21.170Z",
+  "robots": {
+    "url": "https://catalog.odu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "04c0328aabd3f05afd6a4ec0382500f973b6457f737639ac2933372331d0e045",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "OEAS106N",
+    "OEAS108N",
+    "OEAS110N",
+    "OEAS111N",
+    "OEAS112N",
+    "OEAS126N",
+    "OEAS250N"
+  ]
+}

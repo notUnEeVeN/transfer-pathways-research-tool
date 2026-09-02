@@ -1,0 +1,23 @@
+{
+  "route_id": "george-mason-university__hist",
+  "requested_url": "https://catalog.gmu.edu/courses/hist/",
+  "final_url": "https://catalog.gmu.edu/courses/hist/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 216368,
+  "content_sha256": "bebe812df2c3a62d60fc32ae44b109a20ec8c04c41450c43e0685d6247756195",
+  "fetched_at": "2026-08-24T20:20:42.194Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "HIST334",
+    "HIST381",
+    "HIST403"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "requested_url": "https://mymaconweb.rmc.edu/robots.txt",
+  "final_url": "https://mymaconweb.rmc.edu/robots.txt",
+  "method": "GET",
+  "request_body_sha256": null,
+  "http_status": 404,
+  "content_type": "text/html",
+  "response_bytes": 1245,
+  "response_sha256": "dc1d54dab6ec8c00f70137927504e4f222c8395f10760b6beecfcfa94e08249f",
+  "fetched_at": "2026-08-25T13:00:07.248Z"
+}

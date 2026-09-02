@@ -67,8 +67,8 @@
     },
     {
       "code": "non_vccs_course_namespace",
-      "severity": "block",
-      "message": "Richard Bland course codes are institution-local and must not join the VCCS course registry solely by normalized code."
+      "severity": "resolved",
+      "message": "Richard Bland course codes are now resolved only through owner-scoped institution-local identities and cannot join the VCCS registry by normalized code."
     },
     {
       "code": "published_component_range_conflict",

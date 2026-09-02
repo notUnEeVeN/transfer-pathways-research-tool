@@ -1,0 +1,21 @@
+{
+  "route_id": "old-dominion-university__it",
+  "requested_url": "https://catalog.odu.edu/courses/it/",
+  "final_url": "https://catalog.odu.edu/courses/it/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 205104,
+  "content_sha256": "f38fa1d2349e7c6e96307374bc9554c42015995493f58c34db909a962483ab12",
+  "fetched_at": "2026-08-24T18:03:17.975Z",
+  "robots": {
+    "url": "https://catalog.odu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "04c0328aabd3f05afd6a4ec0382500f973b6457f737639ac2933372331d0e045",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "IT205"
+  ]
+}

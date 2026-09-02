@@ -1,0 +1,9 @@
+{
+  "requested_url": "https://catalog.rmc.edu/robots.txt",
+  "final_url": "https://catalog.rmc.edu/robots.txt",
+  "http_status": 200,
+  "content_type": "text/plain; charset=UTF-8",
+  "byte_length": 633,
+  "content_sha256": "f6305026d827feeb54fa3dee76e89fb169b56467844ba340d22366c95ef81349",
+  "fetched_at": "2026-08-24T18:03:26.171Z"
+}

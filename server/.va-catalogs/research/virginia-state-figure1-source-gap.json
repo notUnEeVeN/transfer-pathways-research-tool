@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_state_2026_2027_figure1_source_gap",
+  "audited_at": "2026-08-25",
+  "owner": {
+    "institution": "Virginia State University",
+    "slug": "virginia-state-university",
+    "catalog_year": "2026-2027",
+    "degree": "Computer Science Major, Bachelor of Science (B.S.)",
+    "target_figures": [
+      "1",
+      "6"
+    ]
+  },
+  "source_policy": {
+    "allowed": "current official Virginia State University catalog, department, and registrar sources only",
+    "excluded": [
+      "search-result snippets as evidence",
+      "prior catalog editions as current authority",
+      "graduate-only rules applied to a bachelor degree",
+      "advisor-dependent practice inferred without an official written rule"
+    ],
+    "absence_rule": "A searched phrase being absent is not positive proof; it leaves the affected topology blocked."
+  },
+  "attempted_official_routes": [
+    {
+      "id": "catalog_program_html",
+      "url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-engineering-computer-science/computer-science-major-bs/",
+      "scope": "authoritative current catalog Summary of Requirements and Plan of Study",
+      "catalog_year": "2026-2027",
+      "http_status": 200,
+      "response_bytes": 125973,
+      "response_sha256": "3fd3202caeced75524b2f66d3619a756bce5d55b75e9d294d5703f4143a63804",
+      "normalized_text_bytes": 7440,
+      "normalized_text_sha256": "a3b7b3e40240ae0a78a1c8ad07d1c965524a11a0e2dd65293f653dcd47128ec8",
+      "retained_html_path": "server/.va-catalogs/pages/virginia-state-university__program.html",
+      "retained_text_path": "server/.va-catalogs/pages/virginia-state-university__program.txt",
+      "retention": "exact_current_raw_and_normalized_bytes",
+      "result": "closed course roster and 13-credit total; no per-menu distribution"
+    },
+    {
+      "id": "catalog_program_pdf",
+      "url": "https://catalog.vsu.edu/undergraduate/college-engineering-technology/department-engineering-computer-science/computer-science-major-bs/computer-science-major-bs.pdf",
+      "scope": "current catalog-generated PDF control for the program page",
+      "catalog_year": "2026-2027",
+      "http_status": 200,
+      "response_bytes": 90454,
+      "response_sha256": "b69838a73194c417345719d0eb321f8b0c4ad3abd2cb6dc4da1e4b668a2ba28b",
+      "normalized_text_bytes": null,
+      "normalized_text_sha256": null,
+      "retained_html_path": null,
+      "retained_text_path": null,
+      "retention": "current_hash_receipt_only",
+      "result": "same unresolved 13-credit table as the HTML program page"
+    },
+    {
+      "id": "department_course_of_study",
+      "url": "https://www.vsu.edu/cet/departments/computer-science/programs/cs-courses.php",
+      "scope": "official department semester schedule and elective labels",
+      "catalog_year": null,
+      "http_status": 200,
+      "response_bytes": 45375,
+      "response_sha256": "5dde2f6af4fe2670604d5dccc419504fd2239228f61302740156e877a8fb7bc2",
+      "normalized_text_bytes": 4257,
+      "normalized_text_sha256": "2d9d9e51f67d4622976481bafc9375043cd60ba1704548ada32921df1c8a5a9c",
+      "retained_html_path": null,
+      "retained_text_path": null,
+      "retention": "current_hash_receipt_only",
+      "result": "unversioned plan conflicts with the current catalog and contains row-total errors"
+    },
+    {
+      "id": "catalog_general_education",
+      "url": "https://catalog.vsu.edu/undergraduate/general-education-programs/",
+      "scope": "current General Education distribution and cross-layer reuse rule",
+      "catalog_year": "2026-2027",
+      "http_status": 200,
+      "response_bytes": 114966,
+      "response_sha256": "e95fd1e560df0316a94f1bc4748a74d3478045899074f3d36cb0ff41a472f500",
+      "normalized_text_bytes": 8903,
+      "normalized_text_sha256": "02d2e2935e9a20f1674f5998d76222bcd87e3e63caba167d2356f80e4fa78a39",
+      "retained_html_path": null,
+      "retained_text_path": "server/.va-catalogs/pages/virginia-state-university__ge.txt",
+      "retention": "exact_current_normalized_bytes_raw_transport_changed",
+      "result": "permits GE-major reuse and forbids only reuse across two GE areas"
+    },
+    {
+      "id": "catalog_academic_regulations",
+      "url": "https://catalog.vsu.edu/undergraduate/academic-regulations-procedures/",
+      "scope": "current undergraduate duplicate-credit, repeat, and transfer-application policies",
+      "catalog_year": "2026-2027",
+      "http_status": 200,
+      "response_bytes": 140797,
+      "response_sha256": "bf6f6ec3e4b9c6a41897d1a67cbf7a43eaba652ee68f08854f11d278c8e3cef6",
+      "normalized_text_bytes": 25649,
+      "normalized_text_sha256": "f4a933571c1eb545a29f177e6671b8fa249ab3e1912cc05cdaf221c0ee89f491",
+      "retained_html_path": null,
+      "retained_text_path": null,
+      "retention": "current_hash_receipt_only",
+      "result": "no undergraduate major-slot reuse topology located; transfer application remains program-discretionary"
+    },
+    {
+      "id": "catalog_policy_statements",
+      "url": "https://catalog.vsu.edu/undergraduate/university/policy-statements/",
+      "scope": "current undergraduate university policy statements",
+      "catalog_year": "2026-2027",
+      "http_status": 200,
+      "response_bytes": 150014,
+      "response_sha256": "91cc4437d3acb24d2508eb2045308b130df5d9c7f4a883b5a8254ad07a3a3a6c",
+      "normalized_text_bytes": 63248,
+      "normalized_text_sha256": "8231eec2870bed927cd7eff20b190aa1f2bdd8b3977b478d665caf555b7851ee",
+      "retained_html_path": "server/.va-catalogs/pages/virginia-state-university__graduation.html",
+      "retained_text_path": "server/.va-catalogs/pages/virginia-state-university__graduation.txt",
+      "retention": "exact_current_raw_and_normalized_bytes",
+      "result": "no undergraduate major-slot reuse or restricted-elective distribution rule located"
+    },
+    {
+      "id": "registrar_faq",
+      "url": "https://www.vsu.edu/registrar/faq/",
+      "scope": "current registrar graduation and degree-requirement guidance",
+      "catalog_year": null,
+      "http_status": 200,
+      "response_bytes": 98126,
+      "response_sha256": "687594670b1c2358941b9bfbe9e6e09f22c2b728a6a019e622414dedbe7a6e7a",
+      "normalized_text_bytes": 15206,
+      "normalized_text_sha256": "cdc75c0af3f155048046efce0caf542bdce02324fab87dce78a24c44f345c745",
+      "retained_html_path": null,
+      "retained_text_path": null,
+      "retention": "current_hash_receipt_only",
+      "result": "directs students to the departmental advisor; publishes no missing topology"
+    },
+    {
+      "id": "catalog_csci_courses",
+      "url": "https://catalog.vsu.edu/undergraduate/courses/csci/",
+      "scope": "current CSCI credits and repeatability, especially CSCI 298",
+      "catalog_year": "2026-2027",
+      "http_status": 200,
+      "response_bytes": 108837,
+      "response_sha256": "38d7e37321ff41fb2a50949b2b45bc59d5123e1c809b2ede6d11c3a56e8879da",
+      "normalized_text_bytes": 20781,
+      "normalized_text_sha256": "7ee1d66dff64e490d142ab13c1be44130408a6d13e156b532c930229f4ccc39a",
+      "retained_html_path": null,
+      "retained_text_path": null,
+      "retention": "current_hash_receipt_only",
+      "result": "CSCI 298 is one credit and repeatable up to three times; applicability repetitions are not specified"
+    },
+    {
+      "id": "graduate_duplicate_credit_negative_control",
+      "url": "https://catalog.vsu.edu/graduate/academic-requirements/academic-performance-standards/",
+      "scope": "graduate-only duplicate-credit rule, inspected solely as a scope control",
+      "catalog_year": "2026-2027",
+      "http_status": 200,
+      "response_bytes": 85704,
+      "response_sha256": "5712a1e6ae8fd7988b30f8580be7a52def4277c928163b0d2886a8962b49a21f",
+      "normalized_text_bytes": 9274,
+      "normalized_text_sha256": "1ba4d6f9c8225543d3ff43e343a62ecf743fba406b9389c1160b8b9a45b5b733",
+      "retained_html_path": null,
+      "retained_text_path": null,
+      "retention": "current_hash_receipt_only",
+      "result": "explicit no-duplicate-credit language is graduate-only and cannot be promoted to this bachelor degree"
+    }
+  ],
+  "exact_published_facts": {
+    "restricted_credits": 13,
+    "unrestricted_credits": 6,
+    "combined_elective_credits": 19,
+    "roster_is_closed": true,
+    "menu_alternative_counts": {
+      "csci": 21,
+      "math_statistics": 18,
+      "laboratory_science": 8,
+      "total": 47
+    },
+    "underlying_course_code_count": 49,
+    "restricted_roster_sha256": "bdc4fcc9e6062363675068c93a77b4b8daa48840de5e6201f8eabc00a8fb754b",
+    "per_menu_published_hours": {
+      "csci": null,
+      "math_statistics": null,
+      "laboratory_science": null
+    },
+    "fixed_required_roster_intersection": [],
+    "csci_298": {
+      "credits": 1,
+      "catalog_repeatability": "may be taken more than once for credit but no more than 3 times",
+      "repeated_attempts_applicable_to_restricted_13": "not_published"
+    },
+    "general_education_reuse": {
+      "ge_and_major_same_course": "explicitly_allowed",
+      "same_course_in_two_ge_areas": "explicitly_forbidden",
+      "exact_rule": "Students may use one course simultaneously to satisfy a requirement for general education and their major discipline; however students may not use one course to satisfy more than one general education course requirement."
+    }
+  },
+  "conflicting_non_authoritative_topology": {
+    "current_catalog_plan_of_study": {
+      "csci_math_stat_elective_hours": [
+        3
+      ],
+      "csci_330_plus_elective_hours": [
+        6
+      ],
+      "math_restricted_elective_hours": [
+        3
+      ],
+      "laboratory_science_hours": [
+        4,
+        4
+      ],
+      "csci_470_hours": [
+        3
+      ],
+      "csci_471_row_count": 0
+    },
+    "current_catalog_summary_core_uses_csci_471": true,
+    "official_department_page": {
+      "catalog_year_label": null,
+      "csci_470_present": true,
+      "csci_471_present": false,
+      "row_total_conflicts": [
+        {
+          "row": "Health & Wellness",
+          "semester_hours": 2,
+          "displayed_total_hours": 3
+        },
+        {
+          "row": "CSCI 303",
+          "semester_hours": 3,
+          "displayed_total_hours": 4
+        },
+        {
+          "row": "CSCI 470",
+          "semester_hours": 3,
+          "displayed_total_hours": 1
+        }
+      ]
+    },
+    "arithmetic_ambiguity": {
+      "if_csci_math_stat_is_restricted_and_one_lab_is_ge": 16,
+      "if_csci_math_stat_is_not_restricted_and_one_lab_is_ge": 13,
+      "published_restricted_total": 13,
+      "finding": "Neither current official page labels which interpretation governs the 13-credit summary row."
+    },
+    "authority_decision": "Do not promote either plan as the missing requirement topology."
+  },
+  "unresolved_topology": {
+    "exact_submenu_credit_distribution": false,
+    "exact_selection_cardinality": false,
+    "csci_298_repeat_application": false,
+    "exact_ge_science_and_restricted_science_credit_application": false,
+    "universal_undergraduate_major_slot_no_double_count_rule": false,
+    "figure_1_named_course_count_safe": false,
+    "figure_6_identity_graph_safe": false
+  },
+  "disposition": {
+    "status": "blocked_source_gap",
+    "publishable_for_figure_1": false,
+    "publishable_for_figure_6": false,
+    "safe_for_figures_3_4_aggregate_only": true,
+    "mutation_authorized": false,
+    "reason": "The current catalog closes the eligible roster and 13-credit total but not the submenu allocation, selection count, repeat application, or cross-layer identity topology."
+  },
+  "institutional_request": {
+    "authority_needed": "Virginia State University Department of Computer Science degree-audit owner, confirmed by the Registrar if necessary",
+    "exact_question": "For a student governed by the 2026-2027 Computer Science B.S. catalog, how must the 13 restricted-elective credits be allocated among the CSCI menu, the MATH/STAT menu, and the approved BIOL/CHEM/PHYS laboratory-science menu? Please state the exact minimum or maximum credits/courses from each menu, whether the total must equal 13 or may exceed it, whether repeated CSCI 298 registrations may apply more than once, and whether a laboratory-science course used for the four-credit General Education science area also satisfies the restricted pool while its credits count only once toward the 120-credit degree.",
+    "acceptable_closure": "A catalog erratum, official curriculum checksheet, or signed degree-audit rule that is explicitly effective for the 2026-2027 Computer Science B.S. and answers every clause above."
+  },
+  "verification": {
+    "verified": true,
+    "issues": []
+  },
+  "evidence_fingerprint_sha256": "c25f24aa4f7821e6a6b2bd20305d29e30fd2ade85a6522d1b5351dc9eedb6887"
+}

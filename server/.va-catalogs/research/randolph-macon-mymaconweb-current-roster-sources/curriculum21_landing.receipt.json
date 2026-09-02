@@ -1,0 +1,11 @@
+{
+  "requested_url": "https://mymaconweb.rmc.edu/ICS/Academics/Curriculum21.jnz",
+  "final_url": "https://mymaconweb.rmc.edu/ICS/Academics/Curriculum21.jnz",
+  "method": "GET",
+  "request_body_sha256": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "response_bytes": 83097,
+  "response_sha256": "752cbd3c524290787e0de721c419b62a32a17d64264055645d8ef754d3818cdb",
+  "fetched_at": "2026-08-25T13:00:08.900Z"
+}

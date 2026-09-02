@@ -1,0 +1,22 @@
+{
+  "route_id": "virginia-state-university__soci",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/soci/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/soci/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 97956,
+  "content_sha256": "da29521d252ee1fc5fdb5e4b38a9d066193427297396b456acf123d2738fcbdb",
+  "fetched_at": "2026-08-24T18:04:26.332Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "SOCI101",
+    "SOCI102"
+  ]
+}

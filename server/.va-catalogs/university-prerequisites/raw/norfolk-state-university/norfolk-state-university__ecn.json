@@ -1,0 +1,21 @@
+{
+  "route_id": "norfolk-state-university__ecn",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/ecn/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/ecn/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 29908,
+  "content_sha256": "80cd6910a889ee88c00717361b61ea172ef2fd51a678e11d365b94361008fe5c",
+  "fetched_at": "2026-08-24T18:02:48.712Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ECN200"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "route_id": "shenandoah-university__csc122",
+  "requested_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=55149",
+  "final_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=55149",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 167698,
+  "content_sha256": "dd8b09d01dd59ae3ccbf516efcfcc0b0ddd79345b436f2985dc16f71fa80ed66",
+  "fetched_at": "2026-08-25T00:09:22.296Z",
+  "robots": {
+    "url": "https://catalog.su.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "CSC122"
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "generated_on": "2026-08-24",
+  "institution": "Virginia Polytechnic Institute and State University",
+  "program": "Computer Science, B.S.",
+  "catalog_year": "2026-2027",
+  "purpose": "Exact supplemental source receipt proving that the 30-credit CS nontechnical overlay has a disjoint legal witness inside already-modeled degree capacity.",
+  "source_scope_note": "These receipts supplement the analysis proof only; they do not modify the reviewed major composition or its accepted source-bundle signature.",
+  "robots_receipts": [
+    {
+      "id": "pathways_host_robots",
+      "requested_url": "https://www.pathways.prov.vt.edu/robots.txt",
+      "final_url": "https://www.pathways.prov.vt.edu/content/dam/pathways_prov_vt_edu/robots.txt",
+      "official_https": true,
+      "status": 200,
+      "content_type": "text/plain;charset=iso-8859-1",
+      "bytes": 25,
+      "sha256": "b1282f723cd580b0cf3c38125d24259ceab3b897d38b63376d9fa6c302558fcf",
+      "user_agent": "pmt-research-import/0.1 (+transfer pathways research; contact via repo owner)",
+      "transport": "node_fetch",
+      "exact_path_decisions": [
+        {
+          "source_id": "pathways_guide_2026_27",
+          "path": "/content/dam/pathways_prov_vt_edu/1AboutPathways/course-catalog/Pathways%20Course%20Guide%20by%20Concept%2026-27.pdf",
+          "allowed": true
+        }
+      ]
+    },
+    {
+      "id": "catalog_host_robots",
+      "requested_url": "https://catalog.vt.edu/robots.txt",
+      "final_url": "https://catalog.vt.edu/robots.txt",
+      "official_https": true,
+      "status": 200,
+      "content_type": "text/plain; charset=UTF-8",
+      "bytes": 739,
+      "sha256": "1ff455d3338e249a25649b204d1c4bf56d736869320afac5e219250bf5cc0692",
+      "user_agent": "pmt-research-import/0.1 (+transfer pathways research; contact via repo owner)",
+      "transport": "playwright_same_origin_after_landing",
+      "bootstrap_landing_url": "https://catalog.vt.edu/course-descriptions/art/",
+      "bootstrap_status": 202,
+      "bootstrap_final_url": "https://catalog.vt.edu/course-descriptions/art/",
+      "exact_path_decisions": [
+        {
+          "source_id": "visual_arts_course_descriptions",
+          "path": "/course-descriptions/art/art.pdf",
+          "allowed": true
+        },
+        {
+          "source_id": "psychology_course_descriptions",
+          "path": "/course-descriptions/psyc/psyc.pdf",
+          "allowed": true
+        },
+        {
+          "source_id": "sociology_course_descriptions",
+          "path": "/course-descriptions/soc/soc.pdf",
+          "allowed": true
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "pathways_guide_2026_27",
+      "requested_url": "https://www.pathways.prov.vt.edu/content/dam/pathways_prov_vt_edu/1AboutPathways/course-catalog/Pathways%20Course%20Guide%20by%20Concept%2026-27.pdf",
+      "final_url": "https://www.pathways.prov.vt.edu/content/dam/pathways_prov_vt_edu/1AboutPathways/course-catalog/Pathways%20Course%20Guide%20by%20Concept%2026-27.pdf",
+      "official_https": true,
+      "content_type": "application/pdf",
+      "response_status": 200,
+      "response_content_type": "application/pdf",
+      "bytes": 650248,
+      "sha256": "8306820beb7517e9687871701768682ee28ac16be40b2277db2c6dc3e42ca45c"
+    },
+    {
+      "id": "visual_arts_course_descriptions",
+      "requested_url": "https://catalog.vt.edu/course-descriptions/art/art.pdf",
+      "final_url": "https://catalog.vt.edu/course-descriptions/art/art.pdf",
+      "official_https": true,
+      "content_type": "application/pdf",
+      "response_status": 200,
+      "response_content_type": "application/pdf",
+      "bytes": 391997,
+      "sha256": "ced61d4d446976c51729b79cabcebc39a21f182058025cfbf57f855eb27bdb4c"
+    },
+    {
+      "id": "psychology_course_descriptions",
+      "requested_url": "https://catalog.vt.edu/course-descriptions/psyc/psyc.pdf",
+      "final_url": "https://catalog.vt.edu/course-descriptions/psyc/psyc.pdf",
+      "official_https": true,
+      "content_type": "application/pdf",
+      "response_status": 200,
+      "response_content_type": "application/pdf",
+      "bytes": 268197,
+      "sha256": "c5b476391a3f33843a3e7826d63d354661c8c21867109d4e088bfd867ef5f8b4"
+    },
+    {
+      "id": "sociology_course_descriptions",
+      "requested_url": "https://catalog.vt.edu/course-descriptions/soc/soc.pdf",
+      "final_url": "https://catalog.vt.edu/course-descriptions/soc/soc.pdf",
+      "official_https": true,
+      "content_type": "application/pdf",
+      "response_status": 200,
+      "response_content_type": "application/pdf",
+      "bytes": 291666,
+      "sha256": "ec713098d2eb52fb0c7a26ddea08126e189f70c678da2a9ddaa4f38f7201abeb"
+    }
+  ],
+  "witness": {
+    "pathways_concept_1f": [
+      {
+        "code": "ENGL1105",
+        "units": 3,
+        "source": "reviewed_program"
+      },
+      {
+        "code": "ENGL1106",
+        "units": 3,
+        "source": "reviewed_program"
+      }
+    ],
+    "pathways_concept_2": [
+      {
+        "code": "ART1104",
+        "units": 3,
+        "source": "pathways_guide_2026_27+visual_arts_course_descriptions"
+      },
+      {
+        "code": "ART1334",
+        "units": 3,
+        "source": "pathways_guide_2026_27+visual_arts_course_descriptions"
+      }
+    ],
+    "pathways_concept_3": [
+      {
+        "code": "PSYC1004",
+        "units": 3,
+        "source": "pathways_guide_2026_27+psychology_course_descriptions"
+      },
+      {
+        "code": "SOC1004",
+        "units": 3,
+        "source": "pathways_guide_2026_27+sociology_course_descriptions"
+      }
+    ],
+    "pathways_concept_6a": [
+      {
+        "code": "ART1004",
+        "units": 3,
+        "source": "pathways_guide_2026_27+visual_arts_course_descriptions"
+      }
+    ],
+    "communications_and_writing": [
+      {
+        "code": "COMM2004",
+        "units": 3,
+        "source": "reviewed_program"
+      },
+      {
+        "code": "ENGL3764",
+        "units": 3,
+        "source": "reviewed_program"
+      }
+    ],
+    "free_elective": [
+      {
+        "code": "ART1204",
+        "units": 3,
+        "source": "visual_arts_course_descriptions"
+      }
+    ]
+  },
+  "exclusions_checked_against_reviewed_program": {
+    "excluded_subjects": [
+      "BIOL",
+      "CHEM",
+      "GEOS",
+      "PHYS",
+      "MATH",
+      "STAT",
+      "all College of Engineering subjects except qualifying Pathways 7",
+      "courses listed as CS technical electives"
+    ],
+    "witness_subjects": [
+      "ART",
+      "COMM",
+      "ENGL",
+      "PSYC",
+      "SOC"
+    ],
+    "witness_codes_on_cs_technical_elective_list": []
+  },
+  "arithmetic": {
+    "pathways_concept_1f_units": 6,
+    "pathways_concept_2_units": 6,
+    "pathways_concept_3_units": 6,
+    "pathways_concept_6a_units": 3,
+    "communications_and_writing_units": 6,
+    "free_elective_units": 3,
+    "total_nontechnical_units": 30,
+    "additional_degree_units": 0
+  }
+}

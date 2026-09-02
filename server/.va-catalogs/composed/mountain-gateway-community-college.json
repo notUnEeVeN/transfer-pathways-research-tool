@@ -69,6 +69,15 @@
     "CST110": "Introduction to Human Communication",
     "ITE152": "Introduction to Digital and Information Literacy and Computer Applications"
   },
+  "course_unit_evidence": [
+    {
+      "code": "MTH261",
+      "units": 3,
+      "source_refs": ["uniform_general_studies"],
+      "source_path": "pages/mountain-gateway-community-college__uniform_general_studies.txt:129",
+      "evidence": "official course row states MTH 261 - Applied Calculus I Credits: 3"
+    }
+  ],
   "option_sets": {
     "ucgs_block_i": {
       "source_refs": ["uniform_general_studies"],
@@ -218,7 +227,13 @@
       "analysis_constraints": [
         {
           "kind": "distinct_ge_areas",
-          "status": "evaluator_not_implemented",
+          "status": "supported",
+          "minimum_distinct_categories": 2,
+          "category_subjects": {
+            "art": ["ART", "CST", "MUS"],
+            "humanities": ["HUM", "PHI", "REL"],
+            "literature": ["ENG"]
+          },
           "description": "The two selections must come from two different Art, Humanities, or Literature categories."
         }
       ],

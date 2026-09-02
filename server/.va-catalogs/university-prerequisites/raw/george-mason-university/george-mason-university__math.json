@@ -1,0 +1,33 @@
+{
+  "route_id": "george-mason-university__math",
+  "requested_url": "https://catalog.gmu.edu/courses/math/",
+  "final_url": "https://catalog.gmu.edu/courses/math/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 244695,
+  "content_sha256": "462a362c8deb2cf6275426dab87618b289b968818f3acc7dce4bd6f8ae1366e0",
+  "fetched_at": "2026-08-24T18:02:33.995Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "MATH104",
+    "MATH105",
+    "MATH113",
+    "MATH114",
+    "MATH115",
+    "MATH123",
+    "MATH124",
+    "MATH125",
+    "MATH203",
+    "MATH213",
+    "MATH351",
+    "MATH352",
+    "MATH446"
+  ]
+}

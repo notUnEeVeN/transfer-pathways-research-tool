@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "captured_on": "2026-08-25",
+  "purpose": "Exact current official receipts for the remaining Richard Bland and Southwest Radford science-pair audit; no statewide identity inference.",
+  "robots": {
+    "transfer": {
+      "requestedUrl": "https://www.transfervirginia.org/robots.txt",
+      "finalUrl": "https://www.transfervirginia.org/robots.txt",
+      "status": 200,
+      "contentType": "text/plain",
+      "responseBytes": 2189,
+      "responseSha256": "278e83bcf567badfebcdea4d5d20ca9898e4449fe4eb2e3b5a08227b4ca9b762",
+      "host": "www.transfervirginia.org",
+      "crawlDelay": 10
+    },
+    "radford": {
+      "requestedUrl": "https://www.radford.edu/robots.txt",
+      "finalUrl": "https://www.radford.edu/robots.txt",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "responseBytes": 401,
+      "responseSha256": "16bbefe843bf06054d6f7df31d8978a401777519bbf5558066477dc0a8af0a4e",
+      "host": "www.radford.edu",
+      "crawlDelay": 0
+    }
+  },
+  "transferResponses": {
+    "richard-bland-college:PHYS201": {
+      "requestedUrl": "https://www.transfervirginia.org/course/2FB60A081F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/2FB60A081F9511F082AC0242AC15010A",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "responseBytes": 44040,
+      "responseSha256": "c6af4364c181f0d3a1c8e530f540f5ef77c612a9139aec568e5703b511f24288"
+    },
+    "richard-bland-college:PHYS202": {
+      "requestedUrl": "https://www.transfervirginia.org/course/2FB60A911F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/2FB60A911F9511F082AC0242AC15010A",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "responseBytes": 43691,
+      "responseSha256": "1e0b16b566448e44afd2c67522b995c7cd762470cef62e10a54352b5fa366a2c"
+    },
+    "southwest-virginia-community-college:PHY241": {
+      "requestedUrl": "https://www.transfervirginia.org/course/0E2F34D61F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/0E2F34D61F9511F082AC0242AC15010A",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "responseBytes": 47643,
+      "responseSha256": "939694b81bbed69db16478432249ade9d8a43a6ee7f3dc8f8d57c21e4086b6e1"
+    },
+    "southwest-virginia-community-college:PHY242": {
+      "requestedUrl": "https://www.transfervirginia.org/course/0E2F35301F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/0E2F35301F9511F082AC0242AC15010A",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "responseBytes": 47104,
+      "responseSha256": "7a7a90b5630677f85c3d6d1fb69ddabcf20a131b46bd9920ba76a7a80946c59f"
+    }
+  },
+  "radfordResponses": {
+    "PHYS221": {
+      "requestedUrl": "https://www.radford.edu/registrar/course-descriptions/physics/phys-221.html",
+      "finalUrl": "https://www.radford.edu/registrar/course-descriptions/physics/phys-221.html",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "responseBytes": 111045,
+      "responseSha256": "fd957d8cf9b9fdc48b8d8708f688977fcae92a7ceda96a81820e3d639374f108"
+    },
+    "PHYS222": {
+      "requestedUrl": "https://www.radford.edu/registrar/course-descriptions/physics/phys-222.html",
+      "finalUrl": "https://www.radford.edu/registrar/course-descriptions/physics/phys-222.html",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "responseBytes": 111516,
+      "responseSha256": "af355d4c6f0108f9b22b7be61120ec50b133bdd53958f35781cc4ec6e0bc7dcd"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "route_id": "william-mary__csci",
+  "requested_url": "https://catalog.wm.edu/undergraduate/courses/csci/",
+  "final_url": "https://catalog.wm.edu/undergraduate/courses/csci/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 102381,
+  "content_sha256": "54b9e44c308f6205f5d05437c649e4f19ecf9d0d027c7379374e0d84ad844eed",
+  "fetched_at": "2026-08-24T18:04:30.058Z",
+  "robots": {
+    "url": "https://catalog.wm.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "4eaac51773cf2538bbac642a1926ea98f51c25819252a0094007028fa72d069a",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CSCI140",
+    "CSCI142"
+  ]
+}

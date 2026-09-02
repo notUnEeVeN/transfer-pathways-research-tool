@@ -1,0 +1,22 @@
+{
+  "route_id": "virginia-state-university__arts",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/arts/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/arts/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 102770,
+  "content_sha256": "21548b1513ef15f93e1d5bb0784f808ec363d85ea041fe8b337a1daf1ddcbd2f",
+  "fetched_at": "2026-08-24T18:03:55.564Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ARTS199",
+    "ARTS200"
+  ]
+}

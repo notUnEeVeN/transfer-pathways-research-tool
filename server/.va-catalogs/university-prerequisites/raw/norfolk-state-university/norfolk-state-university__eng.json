@@ -1,0 +1,26 @@
+{
+  "route_id": "norfolk-state-university__eng",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/eng/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/eng/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 74600,
+  "content_sha256": "58dbd739260457d00b3532c2cc27ca9197cd7687bdf6d86c36794de5deb3dd9c",
+  "fetched_at": "2026-08-24T18:02:51.598Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ENG101",
+    "ENG102",
+    "ENG207",
+    "ENG285",
+    "ENG303",
+    "ENG383"
+  ]
+}

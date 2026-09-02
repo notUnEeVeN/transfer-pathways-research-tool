@@ -1,0 +1,1223 @@
+{
+ "built_at": "2026-08-30T20:48:26.722Z",
+ "basis": "transfer_guides",
+ "pooled": {
+  "figure1_units": 0.4752428705734879,
+  "figure1_count": 0.4923747276688453,
+  "figure3_units": 0.8353228431904504,
+  "outcomes": {
+   "elective_only": 33,
+   "named_requirement": 131,
+   "named_course": 328,
+   "unclassified": 3,
+   "indeterminate": 22,
+   "unstated": 31,
+   "no_credit": 7
+  }
+ },
+ "guides": [
+  {
+   "guide": "bridgewater-computer-science-bs-transfer-guide",
+   "title": "Bridgewater Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 13,
+    "denied_count": 2,
+    "university_only_count": 10,
+    "denominator_count": 25,
+    "coverage_count": 0.52,
+    "covered_units": 43.5,
+    "denied_units": 10,
+    "university_only_units": 48,
+    "denominator_units": 101.5,
+    "coverage_units": 0.42857142857142855,
+    "covered_units_ex_ge": 17,
+    "denominator_units_ex_ge": 75,
+    "coverage_units_ex_ge": 0.22666666666666666,
+    "coverage_ceiling": 0.47540983606557374
+   },
+   "figure3": {
+    "total_units": 60,
+    "stated_total_units": 61,
+    "stated_delta": -1,
+    "applied_units": 43.5,
+    "lost_units": 10,
+    "utilization": 0.725,
+    "loss_rate": 0.16666666666666666
+   },
+   "outcomes": {
+    "elective_only": 2,
+    "named_requirement": 8,
+    "named_course": 5,
+    "unclassified": 1,
+    "indeterminate": 1
+   },
+   "unclassified": [
+    "Creative/Artistic Practice"
+   ]
+  },
+  {
+   "guide": "cnu-computer-foundations-bs-computer-science-transfer-guide",
+   "title": "CNU Computer Foundations BS Computer Science Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 15,
+    "denied_count": 2,
+    "university_only_count": 13,
+    "denominator_count": 30,
+    "coverage_count": 0.5,
+    "covered_units": 52.5,
+    "denied_units": 7.5,
+    "university_only_units": 46,
+    "denominator_units": 106,
+    "coverage_units": 0.49528301886792453,
+    "covered_units_ex_ge": 40.5,
+    "denominator_units_ex_ge": 94,
+    "coverage_units_ex_ge": 0.4308510638297872,
+    "coverage_ceiling": 0.5329949238578681
+   },
+   "figure3": {
+    "total_units": 61.5,
+    "stated_total_units": 60,
+    "stated_delta": 1.5,
+    "applied_units": 52.5,
+    "lost_units": 7.5,
+    "utilization": 0.8536585365853658,
+    "loss_rate": 0.12195121951219512
+   },
+   "outcomes": {
+    "unstated": 1,
+    "named_course": 11,
+    "named_requirement": 4,
+    "elective_only": 2
+   },
+   "unclassified": [
+    null
+   ]
+  },
+  {
+   "guide": "george-mason-computer-science-bs-transfer-guide",
+   "title": "George Mason Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 19,
+    "denied_count": 1,
+    "university_only_count": 16,
+    "denominator_count": 36,
+    "coverage_count": 0.5277777777777778,
+    "covered_units": 59,
+    "denied_units": 3,
+    "university_only_units": 49.5,
+    "denominator_units": 111.5,
+    "coverage_units": 0.5291479820627802,
+    "covered_units_ex_ge": 37,
+    "denominator_units_ex_ge": 89.5,
+    "coverage_units_ex_ge": 0.4134078212290503,
+    "coverage_ceiling": 0.543778801843318
+   },
+   "figure3": {
+    "total_units": 62,
+    "stated_total_units": 61.5,
+    "stated_delta": 0.5,
+    "applied_units": 59,
+    "lost_units": 3,
+    "utilization": 0.9516129032258065,
+    "loss_rate": 0.04838709677419355
+   },
+   "outcomes": {
+    "named_course": 12,
+    "elective_only": 1,
+    "named_requirement": 7
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "george-mason-secondary-education-bsed-computer-science-transfer-guide",
+   "title": "George Mason Secondary Education BSEd Computer Science Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 18,
+    "denied_count": 2,
+    "university_only_count": 20,
+    "denominator_count": 40,
+    "coverage_count": 0.45,
+    "covered_units": 60.5,
+    "denied_units": 6,
+    "university_only_units": 61.5,
+    "denominator_units": 128,
+    "coverage_units": 0.47265625,
+    "covered_units_ex_ge": 37.5,
+    "denominator_units_ex_ge": 105,
+    "coverage_units_ex_ge": 0.35714285714285715,
+    "coverage_ceiling": 0.4959016393442623
+   },
+   "figure3": {
+    "total_units": 66.5,
+    "stated_total_units": 62,
+    "stated_delta": 4.5,
+    "applied_units": 60.5,
+    "lost_units": 6,
+    "utilization": 0.9097744360902256,
+    "loss_rate": 0.09022556390977443
+   },
+   "outcomes": {
+    "named_course": 11,
+    "elective_only": 2,
+    "named_requirement": 7
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "gw-cps-cybersecurity-bps-transfer-guide",
+   "title": "GW CPS Cybersecurity BPS Transfer Guide",
+   "course_level_equivalents": false,
+   "figure1": {
+    "covered_count": 7,
+    "denied_count": 3,
+    "university_only_count": 15,
+    "denominator_count": 25,
+    "coverage_count": 0.28,
+    "covered_units": 23,
+    "denied_units": 8,
+    "university_only_units": 60,
+    "denominator_units": 91,
+    "coverage_units": 0.25274725274725274,
+    "covered_units_ex_ge": 0,
+    "denominator_units_ex_ge": 68,
+    "coverage_units_ex_ge": 0,
+    "coverage_ceiling": 0.27710843373493976
+   },
+   "figure3": {
+    "total_units": 52,
+    "stated_total_units": 61,
+    "stated_delta": -9,
+    "applied_units": 23,
+    "lost_units": 8,
+    "utilization": 0.4423076923076923,
+    "loss_rate": 0.15384615384615385
+   },
+   "outcomes": {
+    "elective_only": 3,
+    "named_requirement": 7,
+    "unstated": 6
+   },
+   "unclassified": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+   ]
+  },
+  {
+   "guide": "hollins-mathematics-bs-data-science-concentration-transfer-guide-0",
+   "title": "Hollins Mathematics BS Data Science Concentration Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 15,
+    "denied_count": 1,
+    "university_only_count": 13,
+    "denominator_count": 29,
+    "coverage_count": 0.5172413793103449,
+    "covered_units": 48.5,
+    "denied_units": 3,
+    "university_only_units": 77,
+    "denominator_units": 128.5,
+    "coverage_units": 0.377431906614786,
+    "covered_units_ex_ge": 21,
+    "denominator_units_ex_ge": 101,
+    "coverage_units_ex_ge": 0.2079207920792079,
+    "coverage_ceiling": 0.38645418326693226
+   },
+   "figure3": {
+    "total_units": 61.5,
+    "stated_total_units": 61.5,
+    "stated_delta": 0,
+    "applied_units": 48.5,
+    "lost_units": 3,
+    "utilization": 0.7886178861788617,
+    "loss_rate": 0.04878048780487805
+   },
+   "outcomes": {
+    "named_requirement": 9,
+    "named_course": 6,
+    "elective_only": 1,
+    "unstated": 1
+   },
+   "unclassified": [
+    null
+   ]
+  },
+  {
+   "guide": "jmu-information-technology-bs-transfer-guide",
+   "title": "JMU Information Technology BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 17,
+    "denied_count": 1,
+    "university_only_count": 11,
+    "denominator_count": 29,
+    "coverage_count": 0.5862068965517241,
+    "covered_units": 53.5,
+    "denied_units": 3.5,
+    "university_only_units": 31,
+    "denominator_units": 88,
+    "coverage_units": 0.6079545454545454,
+    "covered_units_ex_ge": 31.5,
+    "denominator_units_ex_ge": 66,
+    "coverage_units_ex_ge": 0.4772727272727273,
+    "coverage_ceiling": 0.6331360946745562
+   },
+   "figure3": {
+    "total_units": 57,
+    "stated_total_units": 61,
+    "stated_delta": -4,
+    "applied_units": 53.5,
+    "lost_units": 3.5,
+    "utilization": 0.9385964912280702,
+    "loss_rate": 0.06140350877192982
+   },
+   "outcomes": {
+    "named_course": 10,
+    "named_requirement": 7,
+    "elective_only": 1
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "longwood-computer-science-ba-or-bs-transfer-guide",
+   "title": "Longwood Computer Science BA or BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 9,
+    "denied_count": 2,
+    "university_only_count": 11,
+    "denominator_count": 22,
+    "coverage_count": 0.4090909090909091,
+    "covered_units": 35.5,
+    "denied_units": 4.5,
+    "university_only_units": 31,
+    "denominator_units": 71,
+    "coverage_units": 0.5,
+    "covered_units_ex_ge": 35.5,
+    "denominator_units_ex_ge": 71,
+    "coverage_units_ex_ge": 0.5,
+    "coverage_ceiling": 0.5338345864661654
+   },
+   "figure3": {
+    "total_units": 59.5,
+    "stated_total_units": 61,
+    "stated_delta": -1.5,
+    "applied_units": 35.5,
+    "lost_units": 4.5,
+    "utilization": 0.5966386554621849,
+    "loss_rate": 0.07563025210084033
+   },
+   "outcomes": {
+    "no_credit": 1,
+    "named_course": 9,
+    "elective_only": 1,
+    "indeterminate": 6
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "marymount-information-technology-bs-transfer-guide",
+   "title": "Marymount Information Technology BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 11,
+    "denied_count": 1,
+    "university_only_count": 18,
+    "denominator_count": 30,
+    "coverage_count": 0.36666666666666664,
+    "covered_units": 45,
+    "denied_units": 1.5,
+    "university_only_units": 62,
+    "denominator_units": 108.5,
+    "coverage_units": 0.4147465437788018,
+    "covered_units_ex_ge": 39,
+    "denominator_units_ex_ge": 102.5,
+    "coverage_units_ex_ge": 0.3804878048780488,
+    "coverage_ceiling": 0.4205607476635514
+   },
+   "figure3": {
+    "total_units": 56.5,
+    "stated_total_units": 61,
+    "stated_delta": -4.5,
+    "applied_units": 45,
+    "lost_units": 1.5,
+    "utilization": 0.7964601769911505,
+    "loss_rate": 0.02654867256637168
+   },
+   "outcomes": {
+    "no_credit": 1,
+    "named_course": 9,
+    "named_requirement": 2,
+    "unstated": 4
+   },
+   "unclassified": [
+    null,
+    null,
+    null,
+    null
+   ]
+  },
+  {
+   "guide": "nsu-computer-science-bs-transfer-guide",
+   "title": "NSU Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 17,
+    "denied_count": 1,
+    "university_only_count": 18,
+    "denominator_count": 36,
+    "coverage_count": 0.4722222222222222,
+    "covered_units": 61,
+    "denied_units": 3,
+    "university_only_units": 93,
+    "denominator_units": 157,
+    "coverage_units": 0.3885350318471338,
+    "covered_units_ex_ge": 61,
+    "denominator_units_ex_ge": 157,
+    "coverage_units_ex_ge": 0.3885350318471338,
+    "coverage_ceiling": 0.3961038961038961
+   },
+   "figure3": {
+    "total_units": 64,
+    "stated_total_units": 61,
+    "stated_delta": 3,
+    "applied_units": 61,
+    "lost_units": 3,
+    "utilization": 0.953125,
+    "loss_rate": 0.046875
+   },
+   "outcomes": {
+    "named_course": 17,
+    "elective_only": 1
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "nsu-information-technology-bs-transfer-guide",
+   "title": "NSU Information Technology BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 18,
+    "denied_count": 2,
+    "university_only_count": 15,
+    "denominator_count": 35,
+    "coverage_count": 0.5142857142857142,
+    "covered_units": 59.5,
+    "denied_units": 6,
+    "university_only_units": 84,
+    "denominator_units": 149.5,
+    "coverage_units": 0.3979933110367893,
+    "covered_units_ex_ge": 59.5,
+    "denominator_units_ex_ge": 149.5,
+    "coverage_units_ex_ge": 0.3979933110367893,
+    "coverage_ceiling": 0.4146341463414634
+   },
+   "figure3": {
+    "total_units": 65.5,
+    "stated_total_units": 63,
+    "stated_delta": 2.5,
+    "applied_units": 59.5,
+    "lost_units": 6,
+    "utilization": 0.9083969465648855,
+    "loss_rate": 0.0916030534351145
+   },
+   "outcomes": {
+    "named_course": 18,
+    "elective_only": 2
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "odu-computer-science-bs-transfer-guide",
+   "title": "ODU Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 17,
+    "denied_count": 1,
+    "university_only_count": 15,
+    "denominator_count": 33,
+    "coverage_count": 0.5151515151515151,
+    "covered_units": 58.5,
+    "denied_units": 4,
+    "university_only_units": 42,
+    "denominator_units": 104.5,
+    "coverage_units": 0.5598086124401914,
+    "covered_units_ex_ge": 35.5,
+    "denominator_units_ex_ge": 81.5,
+    "coverage_units_ex_ge": 0.43558282208588955,
+    "coverage_ceiling": 0.582089552238806
+   },
+   "figure3": {
+    "total_units": 62.5,
+    "stated_total_units": 62.5,
+    "stated_delta": 0,
+    "applied_units": 58.5,
+    "lost_units": 4,
+    "utilization": 0.936,
+    "loss_rate": 0.064
+   },
+   "outcomes": {
+    "named_course": 11,
+    "named_requirement": 6,
+    "elective_only": 1
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "radford-computer-science-bs-advanced-computer-science-concentration-transfer-guide",
+   "title": "Radford Computer Science BS Advanced Computer Science Concentration Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 16,
+    "denominator_count": 32,
+    "coverage_count": 0.5,
+    "covered_units": 51.5,
+    "denied_units": 0,
+    "university_only_units": 66,
+    "denominator_units": 117.5,
+    "coverage_units": 0.43829787234042555,
+    "covered_units_ex_ge": 34.5,
+    "denominator_units_ex_ge": 100.5,
+    "coverage_units_ex_ge": 0.34328358208955223,
+    "coverage_ceiling": 0.43829787234042555
+   },
+   "figure3": {
+    "total_units": 51.5,
+    "stated_total_units": 60,
+    "stated_delta": -8.5,
+    "applied_units": 51.5,
+    "lost_units": 0,
+    "utilization": 1,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 11,
+    "named_requirement": 5
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "radford-computer-science-bs-database-concentration-transfer-guide",
+   "title": "Radford Computer Science BS Database Concentration Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 13,
+    "denominator_count": 29,
+    "coverage_count": 0.5517241379310345,
+    "covered_units": 51.5,
+    "denied_units": 0,
+    "university_only_units": 54,
+    "denominator_units": 105.5,
+    "coverage_units": 0.4881516587677725,
+    "covered_units_ex_ge": 34.5,
+    "denominator_units_ex_ge": 88.5,
+    "coverage_units_ex_ge": 0.3898305084745763,
+    "coverage_ceiling": 0.4881516587677725
+   },
+   "figure3": {
+    "total_units": 55,
+    "stated_total_units": null,
+    "stated_delta": null,
+    "applied_units": 51.5,
+    "lost_units": 0,
+    "utilization": 0.9363636363636364,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 11,
+    "named_requirement": 5,
+    "indeterminate": 1
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "radford-computer-science-bs-network-concentration-transfer-guide",
+   "title": "Radford Computer Science BS Network Concentration Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 13,
+    "denominator_count": 29,
+    "coverage_count": 0.5517241379310345,
+    "covered_units": 51.5,
+    "denied_units": 0,
+    "university_only_units": 57,
+    "denominator_units": 108.5,
+    "coverage_units": 0.47465437788018433,
+    "covered_units_ex_ge": 34.5,
+    "denominator_units_ex_ge": 91.5,
+    "coverage_units_ex_ge": 0.3770491803278688,
+    "coverage_ceiling": 0.47465437788018433
+   },
+   "figure3": {
+    "total_units": 55,
+    "stated_total_units": null,
+    "stated_delta": null,
+    "applied_units": 51.5,
+    "lost_units": 0,
+    "utilization": 0.9363636363636364,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 11,
+    "named_requirement": 5,
+    "indeterminate": 1
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "radford-computer-science-bs-software-engineering-concentration-transfer-guide",
+   "title": "Radford Computer Science BS Software Engineering Concentration Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 13,
+    "denominator_count": 29,
+    "coverage_count": 0.5517241379310345,
+    "covered_units": 51.5,
+    "denied_units": 0,
+    "university_only_units": 57,
+    "denominator_units": 108.5,
+    "coverage_units": 0.47465437788018433,
+    "covered_units_ex_ge": 34.5,
+    "denominator_units_ex_ge": 91.5,
+    "coverage_units_ex_ge": 0.3770491803278688,
+    "coverage_ceiling": 0.47465437788018433
+   },
+   "figure3": {
+    "total_units": 55,
+    "stated_total_units": null,
+    "stated_delta": null,
+    "applied_units": 51.5,
+    "lost_units": 0,
+    "utilization": 0.9363636363636364,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 11,
+    "named_requirement": 5,
+    "indeterminate": 1
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "radford-cybersecurity-bs-transfer-guide",
+   "title": "Radford Cybersecurity BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 17,
+    "denominator_count": 33,
+    "coverage_count": 0.48484848484848486,
+    "covered_units": 51.5,
+    "denied_units": 0,
+    "university_only_units": 63,
+    "denominator_units": 114.5,
+    "coverage_units": 0.4497816593886463,
+    "covered_units_ex_ge": 34.5,
+    "denominator_units_ex_ge": 97.5,
+    "coverage_units_ex_ge": 0.35384615384615387,
+    "coverage_ceiling": 0.4497816593886463
+   },
+   "figure3": {
+    "total_units": 55,
+    "stated_total_units": null,
+    "stated_delta": null,
+    "applied_units": 51.5,
+    "lost_units": 0,
+    "utilization": 0.9363636363636364,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 11,
+    "named_requirement": 5,
+    "indeterminate": 1
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "rmc-computer-science-bs-transfer-guide",
+   "title": "RMC Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 10,
+    "denied_count": 1,
+    "university_only_count": 11,
+    "denominator_count": 22,
+    "coverage_count": 0.45454545454545453,
+    "covered_units": 37.5,
+    "denied_units": 1.5,
+    "university_only_units": 52,
+    "denominator_units": 91,
+    "coverage_units": 0.41208791208791207,
+    "covered_units_ex_ge": 30.5,
+    "denominator_units_ex_ge": 84,
+    "coverage_units_ex_ge": 0.3630952380952381,
+    "coverage_ceiling": 0.41899441340782123
+   },
+   "figure3": {
+    "total_units": 55,
+    "stated_total_units": 60,
+    "stated_delta": -5,
+    "applied_units": 37.5,
+    "lost_units": 1.5,
+    "utilization": 0.6818181818181818,
+    "loss_rate": 0.02727272727272727
+   },
+   "outcomes": {
+    "no_credit": 1,
+    "named_course": 9,
+    "indeterminate": 5,
+    "named_requirement": 1
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "rmc-cybersecurity-bs-transfer-guide",
+   "title": "RMC Cybersecurity BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 11,
+    "denied_count": 1,
+    "university_only_count": 13,
+    "denominator_count": 25,
+    "coverage_count": 0.44,
+    "covered_units": 40.5,
+    "denied_units": 1.5,
+    "university_only_units": 50.5,
+    "denominator_units": 92.5,
+    "coverage_units": 0.43783783783783786,
+    "covered_units_ex_ge": 33.5,
+    "denominator_units_ex_ge": 85.5,
+    "coverage_units_ex_ge": 0.391812865497076,
+    "coverage_ceiling": 0.44505494505494503
+   },
+   "figure3": {
+    "total_units": 55,
+    "stated_total_units": 60,
+    "stated_delta": -5,
+    "applied_units": 40.5,
+    "lost_units": 1.5,
+    "utilization": 0.7363636363636363,
+    "loss_rate": 0.02727272727272727
+   },
+   "outcomes": {
+    "no_credit": 1,
+    "named_course": 10,
+    "indeterminate": 4,
+    "named_requirement": 1
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "ul-computer-science-bs-transfer-guide",
+   "title": "UL Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 13,
+    "denied_count": 4,
+    "university_only_count": 9,
+    "denominator_count": 26,
+    "coverage_count": 0.5,
+    "covered_units": 47.5,
+    "denied_units": 12.5,
+    "university_only_units": 37,
+    "denominator_units": 97,
+    "coverage_units": 0.4896907216494845,
+    "covered_units_ex_ge": 31.5,
+    "denominator_units_ex_ge": 81,
+    "coverage_units_ex_ge": 0.3888888888888889,
+    "coverage_ceiling": 0.5621301775147929
+   },
+   "figure3": {
+    "total_units": 60,
+    "stated_total_units": 61,
+    "stated_delta": -1,
+    "applied_units": 47.5,
+    "lost_units": 12.5,
+    "utilization": 0.7916666666666666,
+    "loss_rate": 0.20833333333333334
+   },
+   "outcomes": {
+    "no_credit": 1,
+    "named_course": 8,
+    "named_requirement": 5,
+    "elective_only": 3
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "umw-computer-science-bs-transfer-guide",
+   "title": "UMW Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 13,
+    "denied_count": 1,
+    "university_only_count": 12,
+    "denominator_count": 26,
+    "coverage_count": 0.5,
+    "covered_units": 43.5,
+    "denied_units": 1.5,
+    "university_only_units": 37,
+    "denominator_units": 82,
+    "coverage_units": 0.5304878048780488,
+    "covered_units_ex_ge": 20,
+    "denominator_units_ex_ge": 58.5,
+    "coverage_units_ex_ge": 0.3418803418803419,
+    "coverage_ceiling": 0.5403726708074534
+   },
+   "figure3": {
+    "total_units": 62.5,
+    "stated_total_units": 61,
+    "stated_delta": 1.5,
+    "applied_units": 43.5,
+    "lost_units": 1.5,
+    "utilization": 0.696,
+    "loss_rate": 0.024
+   },
+   "outcomes": {
+    "no_credit": 1,
+    "named_course": 6,
+    "unclassified": 1,
+    "named_requirement": 7,
+    "indeterminate": 2
+   },
+   "unclassified": [
+    "ENGL non-major"
+   ]
+  },
+  {
+   "guide": "uva-computer-science-bs-transfer-guide",
+   "title": "UVA Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 13,
+    "denied_count": 7,
+    "university_only_count": 20,
+    "denominator_count": 40,
+    "coverage_count": 0.325,
+    "covered_units": 45,
+    "denied_units": 20.5,
+    "university_only_units": 61.5,
+    "denominator_units": 127,
+    "coverage_units": 0.3543307086614173,
+    "covered_units_ex_ge": 45,
+    "denominator_units_ex_ge": 127,
+    "coverage_units_ex_ge": 0.3543307086614173,
+    "coverage_ceiling": 0.4225352112676056
+   },
+   "figure3": {
+    "total_units": 65.5,
+    "stated_total_units": 65.5,
+    "stated_delta": 0,
+    "applied_units": 45,
+    "lost_units": 20.5,
+    "utilization": 0.6870229007633588,
+    "loss_rate": 0.31297709923664124
+   },
+   "outcomes": {
+    "no_credit": 1,
+    "elective_only": 6,
+    "named_course": 13
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "uva-wise-computer-science-bs-transfer-guide-0",
+   "title": "UVA Wise Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 17,
+    "denied_count": 0,
+    "university_only_count": 12,
+    "denominator_count": 29,
+    "coverage_count": 0.5862068965517241,
+    "covered_units": 60.5,
+    "denied_units": 0,
+    "university_only_units": 46,
+    "denominator_units": 106.5,
+    "coverage_units": 0.568075117370892,
+    "covered_units_ex_ge": 46.5,
+    "denominator_units_ex_ge": 92.5,
+    "coverage_units_ex_ge": 0.5027027027027027,
+    "coverage_ceiling": 0.568075117370892
+   },
+   "figure3": {
+    "total_units": 62,
+    "stated_total_units": 61.5,
+    "stated_delta": 0.5,
+    "applied_units": 60.5,
+    "lost_units": 0,
+    "utilization": 0.9758064516129032,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "unstated": 1,
+    "named_course": 13,
+    "named_requirement": 4
+   },
+   "unclassified": [
+    null
+   ]
+  },
+  {
+   "guide": "vcu-computer-science-ba-transfer-guide",
+   "title": "VCU Computer Science BA Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 7,
+    "denominator_count": 23,
+    "coverage_count": 0.6956521739130435,
+    "covered_units": 51.5,
+    "denied_units": 0,
+    "university_only_units": 33,
+    "denominator_units": 84.5,
+    "coverage_units": 0.6094674556213018,
+    "covered_units_ex_ge": 32,
+    "denominator_units_ex_ge": 65,
+    "coverage_units_ex_ge": 0.49230769230769234,
+    "coverage_ceiling": 0.6094674556213018
+   },
+   "figure3": {
+    "total_units": 51.5,
+    "stated_total_units": 61,
+    "stated_delta": -9.5,
+    "applied_units": 51.5,
+    "lost_units": 0,
+    "utilization": 1,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 10,
+    "named_requirement": 6
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "vcu-computer-science-bs-concentration-cybersecurity-transfer-guide",
+   "title": "VCU Computer Science BS Concentration in Cybersecurity Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 16,
+    "denominator_count": 32,
+    "coverage_count": 0.5,
+    "covered_units": 52,
+    "denied_units": 0,
+    "university_only_units": 45.5,
+    "denominator_units": 97.5,
+    "coverage_units": 0.5333333333333333,
+    "covered_units_ex_ge": 39,
+    "denominator_units_ex_ge": 84.5,
+    "coverage_units_ex_ge": 0.46153846153846156,
+    "coverage_ceiling": 0.5333333333333333
+   },
+   "figure3": {
+    "total_units": 52,
+    "stated_total_units": 61,
+    "stated_delta": -9,
+    "applied_units": 52,
+    "lost_units": 0,
+    "utilization": 1,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 12,
+    "named_requirement": 4
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "vcu-computer-science-bs-concentration-data-science-transfer-guide",
+   "title": "VCU Computer Science BS Concentration in Data Science Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 14,
+    "denominator_count": 30,
+    "coverage_count": 0.5333333333333333,
+    "covered_units": 52,
+    "denied_units": 0,
+    "university_only_units": 45.5,
+    "denominator_units": 97.5,
+    "coverage_units": 0.5333333333333333,
+    "covered_units_ex_ge": 39,
+    "denominator_units_ex_ge": 84.5,
+    "coverage_units_ex_ge": 0.46153846153846156,
+    "coverage_ceiling": 0.5333333333333333
+   },
+   "figure3": {
+    "total_units": 52,
+    "stated_total_units": 61,
+    "stated_delta": -9,
+    "applied_units": 52,
+    "lost_units": 0,
+    "utilization": 1,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 12,
+    "named_requirement": 4
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "vcu-computer-science-bs-concentration-software-engineering-transfer-guide",
+   "title": "VCU Computer Science BS Concentration in Software Engineering Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 14,
+    "denominator_count": 30,
+    "coverage_count": 0.5333333333333333,
+    "covered_units": 52,
+    "denied_units": 0,
+    "university_only_units": 45.5,
+    "denominator_units": 97.5,
+    "coverage_units": 0.5333333333333333,
+    "covered_units_ex_ge": 39,
+    "denominator_units_ex_ge": 84.5,
+    "coverage_units_ex_ge": 0.46153846153846156,
+    "coverage_ceiling": 0.5333333333333333
+   },
+   "figure3": {
+    "total_units": 52,
+    "stated_total_units": 61,
+    "stated_delta": -9,
+    "applied_units": 52,
+    "lost_units": 0,
+    "utilization": 1,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 12,
+    "named_requirement": 4
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "vcu-computer-science-bs-transfer-guide",
+   "title": "VCU Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 16,
+    "denied_count": 0,
+    "university_only_count": 13,
+    "denominator_count": 29,
+    "coverage_count": 0.5517241379310345,
+    "covered_units": 52,
+    "denied_units": 0,
+    "university_only_units": 36.5,
+    "denominator_units": 88.5,
+    "coverage_units": 0.5875706214689266,
+    "covered_units_ex_ge": 39,
+    "denominator_units_ex_ge": 75.5,
+    "coverage_units_ex_ge": 0.5165562913907285,
+    "coverage_ceiling": 0.5875706214689266
+   },
+   "figure3": {
+    "total_units": 52,
+    "stated_total_units": 61,
+    "stated_delta": -9,
+    "applied_units": 52,
+    "lost_units": 0,
+    "utilization": 1,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "named_course": 12,
+    "named_requirement": 4
+   },
+   "unclassified": []
+  },
+  {
+   "guide": "vt-computer-science-bs-transfer-guide",
+   "title": "VT Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 18,
+    "denied_count": 0,
+    "university_only_count": 13,
+    "denominator_count": 31,
+    "coverage_count": 0.5806451612903226,
+    "covered_units": 63,
+    "denied_units": 0,
+    "university_only_units": 32,
+    "denominator_units": 95,
+    "coverage_units": 0.6631578947368421,
+    "covered_units_ex_ge": 43,
+    "denominator_units_ex_ge": 75,
+    "coverage_units_ex_ge": 0.5733333333333334,
+    "coverage_ceiling": 0.6631578947368421
+   },
+   "figure3": {
+    "total_units": 64.5,
+    "stated_total_units": 64.5,
+    "stated_delta": 0,
+    "applied_units": 63,
+    "lost_units": 0,
+    "utilization": 0.9767441860465116,
+    "loss_rate": 0
+   },
+   "outcomes": {
+    "unclassified": 1,
+    "named_course": 12,
+    "named_requirement": 6
+   },
+   "unclassified": [
+    "VT 1XXX"
+   ]
+  },
+  {
+   "guide": "wm-business-analytics-data-science-bba-transfer-guide",
+   "title": "W&M Business Analytics with Data Science BBA Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 8,
+    "denied_count": 3,
+    "university_only_count": 17,
+    "denominator_count": 28,
+    "coverage_count": 0.2857142857142857,
+    "covered_units": 21,
+    "denied_units": 12,
+    "university_only_units": 51,
+    "denominator_units": 84,
+    "coverage_units": 0.25,
+    "covered_units_ex_ge": 21,
+    "denominator_units_ex_ge": 84,
+    "coverage_units_ex_ge": 0.25,
+    "coverage_ceiling": 0.2916666666666667
+   },
+   "figure3": {
+    "total_units": 54,
+    "stated_total_units": 61.5,
+    "stated_delta": -7.5,
+    "applied_units": 21,
+    "lost_units": 12,
+    "utilization": 0.3888888888888889,
+    "loss_rate": 0.2222222222222222
+   },
+   "outcomes": {
+    "unstated": 8,
+    "named_course": 7,
+    "elective_only": 3,
+    "named_requirement": 1
+   },
+   "unclassified": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+   ]
+  },
+  {
+   "guide": "wm-computer-science-ba-transfer-guide-0",
+   "title": "W&M Computer Science BA Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 10,
+    "denied_count": 2,
+    "university_only_count": 12,
+    "denominator_count": 24,
+    "coverage_count": 0.4166666666666667,
+    "covered_units": 32,
+    "denied_units": 7,
+    "university_only_units": 24.5,
+    "denominator_units": 63.5,
+    "coverage_units": 0.5039370078740157,
+    "covered_units_ex_ge": 32,
+    "denominator_units_ex_ge": 63.5,
+    "coverage_units_ex_ge": 0.5039370078740157,
+    "coverage_ceiling": 0.5663716814159292
+   },
+   "figure3": {
+    "total_units": 52.5,
+    "stated_total_units": 61.5,
+    "stated_delta": -9,
+    "applied_units": 32,
+    "lost_units": 7,
+    "utilization": 0.6095238095238096,
+    "loss_rate": 0.13333333333333333
+   },
+   "outcomes": {
+    "unstated": 5,
+    "named_course": 9,
+    "elective_only": 2,
+    "named_requirement": 1
+   },
+   "unclassified": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ]
+  },
+  {
+   "guide": "wm-computer-science-bs-transfer-guide-0",
+   "title": "W&M Computer Science BS Transfer Guide",
+   "course_level_equivalents": true,
+   "figure1": {
+    "covered_count": 10,
+    "denied_count": 2,
+    "university_only_count": 14,
+    "denominator_count": 26,
+    "coverage_count": 0.38461538461538464,
+    "covered_units": 32,
+    "denied_units": 7,
+    "university_only_units": 39.5,
+    "denominator_units": 78.5,
+    "coverage_units": 0.40764331210191085,
+    "covered_units_ex_ge": 32,
+    "denominator_units_ex_ge": 78.5,
+    "coverage_units_ex_ge": 0.40764331210191085,
+    "coverage_ceiling": 0.44755244755244755
+   },
+   "figure3": {
+    "total_units": 52.5,
+    "stated_total_units": 61.5,
+    "stated_delta": -9,
+    "applied_units": 32,
+    "lost_units": 7,
+    "utilization": 0.6095238095238096,
+    "loss_rate": 0.13333333333333333
+   },
+   "outcomes": {
+    "unstated": 5,
+    "named_course": 9,
+    "elective_only": 2,
+    "named_requirement": 1
+   },
+   "unclassified": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ]
+  }
+ ]
+}

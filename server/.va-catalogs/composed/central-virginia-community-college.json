@@ -227,7 +227,13 @@
       "analysis_constraints": [
         {
           "kind": "distinct_ge_areas",
-          "status": "evaluator_not_implemented",
+          "status": "supported",
+          "minimum_distinct_categories": 2,
+          "category_subjects": {
+            "art": ["ART", "CST", "MUS"],
+            "humanities": ["HUM", "PHI", "REL"],
+            "literature": ["ENG"]
+          },
           "description": "The two selected courses must come from different Art, Humanities, or Literature categories."
         }
       ],

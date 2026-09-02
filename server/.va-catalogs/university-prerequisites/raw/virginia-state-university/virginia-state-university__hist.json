@@ -1,0 +1,29 @@
+{
+  "route_id": "virginia-state-university__hist",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/hist/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/hist/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 103784,
+  "content_sha256": "254ae25fce28b3be3231225119d7818d86a65b10adc576ef0fdff7fcde435a34",
+  "fetched_at": "2026-08-24T18:04:14.067Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "HIST114",
+    "HIST115",
+    "HIST122",
+    "HIST123",
+    "HIST240",
+    "HIST241",
+    "HIST245",
+    "HIST274",
+    "HIST275"
+  ]
+}

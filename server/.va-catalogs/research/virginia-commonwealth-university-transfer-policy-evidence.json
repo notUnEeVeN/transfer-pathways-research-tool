@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "artifact": "vcu_2026_2027_transfer_pathway_policy_evidence",
+  "generated_on": "2026-08-24",
+  "institution": {
+    "name": "Virginia Commonwealth University",
+    "slug": "virginia-commonwealth-university",
+    "school_id": 9229
+  },
+  "catalog_year": "2026-2027",
+  "purpose": "Supplemental exact policy receipt for the fixed transfer-oriented associate-degree paper cohort. It does not modify the reviewed Computer Science major tree or source-bundle signature.",
+  "verified": true,
+  "issues": [],
+  "source": {
+    "requested_url": "https://bulletin.vcu.edu/undergraduate/undergraduate-study/admission-university/transfer-admission-guidelines/",
+    "final_url": "https://bulletin.vcu.edu/undergraduate/undergraduate-study/admission-university/transfer-admission-guidelines/",
+    "content_type": "text/html; charset=UTF-8",
+    "response_bytes": 38101,
+    "response_sha256": "e87fcb75ab376d05a0a975ce6737ba1a282afa404b6098e15a67ff233976bcc5",
+    "captured_at": null,
+    "title": "Admission guidelines for transfer students < Virginia Commonwealth University Academic Catalog",
+    "heading": "Admission guidelines for transfer students",
+    "catalog_edition": "2026-27 Edition",
+    "preliminary": true
+  },
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "response_bytes": 736,
+    "response_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "policy_path_allowed": true
+  },
+  "policy_facts": {
+    "accepted_transfer_credit": {
+      "contributes_to_hours_earned": true,
+      "contributes_toward_degree_requirements": true,
+      "exact_text": "Accepted transfer credit contributes to hours earned and toward fulfillment of degree requirements at VCU. The grades of accepted transfer courses are recorded as TR on the student’s VCU transcript. Hours attempted and quality points earned are not recorded."
+    },
+    "transfer_ceiling": {
+      "maximum_units": 90,
+      "exact_text": "A maximum of 90 total undergraduate transfer credits will be accepted. Regardless of how many transfer credits are accepted, students must satisfy all VCU graduation requirements noted in the graduation checklist, including the following:"
+    },
+    "residency": {
+      "degree_fraction_minimum": 0.25,
+      "degree_units_minimum_at_120": 30,
+      "final_window_units": 45,
+      "final_window_resident_units_minimum": 30,
+      "upper_level_units_minimum": 45,
+      "major_external_course_fraction_maximum": 0.5,
+      "exact_text": {
+        "overall": "Completion of at least 25 percent of the semester-hour credits required for their bachelor’s degree program at VCU",
+        "final_window": "Completion of at least 30 of the last 45 semester-hour credits required for their bachelor’s degree program at VCU",
+        "upper_level": "Completion of at least 45 upper-level credits (courses numbered 300 or higher)",
+        "major": "No more than half (50 percent) of the courses applied to the major requirements can be transferred from another college. In other words, students may need to complete at least 50 percent of their major degree requirements at VCU."
+      }
+    },
+    "transfer_degree_general_education": {
+      "timing": "earned_prior_to_vcu_enrollment",
+      "qualifying_awards": [
+        "AA",
+        "AS",
+        "AA&S",
+        "AFA",
+        "bachelors"
+      ],
+      "lower_division_general_education_met": true,
+      "native_program_requirements_still_apply": true,
+      "exact_text": "Transfer students who earn a Uniform Certificate of General Studies, a transfer-oriented associate degree (A.A., A.S., or A.A.& S.), an Associate of Fine Arts (A.F.A.) or a bachelor’s degree from a regionally accredited institution prior to enrollment at VCU will be considered to have met all lower-division general education requirements with the exception of certain lower-level and upper-level degree program requirements that also apply to native students."
+    },
+    "transfer_course_conditions": {
+      "minimum_grade": "C",
+      "major_credit_uses_equivalency_tables_or_program_agreements": true,
+      "exact_text": {
+        "grade": "Only courses with minimum grades of C are transferable.",
+        "equivalency": "Credits needed to meet major prerequisites will be based on the course equivalency tables or agreements resulting from program-to-program articulation agreements. (See the list of agreements.)"
+      }
+    }
+  },
+  "policy_facts_sha256": "19f6d869fc73c6f5596cad3705450ff003e66393db11b151227f058ca675bce6",
+  "paper_interpretation": {
+    "incoming_award": "AS",
+    "award_earned_before_vcu_enrollment": true,
+    "successful_grade_eligible_pathway": true,
+    "lower_division_connected_category_distribution_waived": true,
+    "program_specific_named_requirements_waived": false,
+    "accepted_transfer_units_may_apply_to_degree_hours": true,
+    "maximum_transfer_units": 90,
+    "figure_3_4_exact_for_qualifying_as": true,
+    "figure_6_connected_course_identity_increment": 0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "route_id": "george-mason-university__chem",
+  "requested_url": "https://catalog.gmu.edu/courses/chem/",
+  "final_url": "https://catalog.gmu.edu/courses/chem/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 206849,
+  "content_sha256": "b461ae025f816a3ddf4604611a1eb28c1d04b67ece2d1c67a2f66a60e57639dc",
+  "fetched_at": "2026-08-24T18:02:23.345Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CHEM211",
+    "CHEM212",
+    "CHEM213",
+    "CHEM214"
+  ]
+}

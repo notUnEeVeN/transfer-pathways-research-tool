@@ -1,0 +1,21 @@
+{
+  "route_id": "bridgewater-college__art321",
+  "requested_url": "https://bridgewater.cleancatalog.io/art/art321",
+  "final_url": "https://bridgewater.cleancatalog.io/art/art321",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "byte_length": 11921,
+  "content_sha256": "abee82b0a08855c1c01bd8b0ba28d03a096b3676c4d8151238d25b2cc204d047",
+  "fetched_at": "2026-08-24T19:11:41.620Z",
+  "robots": {
+    "url": "https://bridgewater.cleancatalog.io/robots.txt",
+    "http_status": 200,
+    "content_sha256": "418e112c89979b34678c945b45186d0cff4d829bcdc9d6d8437be76f50ef38f9",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ART321"
+  ]
+}

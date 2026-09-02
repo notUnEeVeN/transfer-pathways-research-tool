@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "artifact": "longwood_2026_2027_civitae_figure_34_evidence",
+  "generated_on": "2026-08-24",
+  "institution": {
+    "slug": "longwood-university",
+    "school_id": 9214
+  },
+  "catalog_year": "2026-2027",
+  "paper_scope": {
+    "figures_proven_zero_impact": [
+      "3",
+      "4"
+    ],
+    "figures_still_blocked": [
+      "6"
+    ],
+    "reason_figure_6_remains_blocked": "The paper prerequisite graph still needs exact course vertices/formulas for the selected resident Perspectives and the language-placement route; this artifact does not bypass that runtime boundary."
+  },
+  "source_contract": {
+    "catalog_id": 19,
+    "catalog_context_url": "https://catalog.longwood.edu/content.php?catoid=19&navoid=1004",
+    "retained_general_education_sha256": "fae1bd018d79fd6b92d6c0df855c3d6997d874bda8efa911396b0adbb2d907e0",
+    "retained_program_sha256": "4a606eb3c72ad6cd10fb96dab19c5fde56c69a187349ff18099c7f2d947f27f0",
+    "acalog_ajax_note": "Volatile presentation markup is excluded; every complete ordered roster and selected exact course entry is retained structurally.",
+    "program_sources": [
+      {
+        "id": "pillar_overview",
+        "poid": 2788,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2788",
+        "title": "Pillar Courses (18-19 credits)",
+        "roster_count": 0,
+        "roster_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "child_programs_sha256": "bf48a0e3b6d7c62afe532902b09e03dcbdc504039622465af66d90fe61017503"
+      },
+      {
+        "id": "pillar_historical",
+        "poid": 2789,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2789",
+        "title": "Historical and Contemporary Insights (3 credits)",
+        "roster_count": 10,
+        "roster_sha256": "5dbe52d3bebf9c68a8888bdb9caddf90d0fc92ef64d68b3019fa243f549cffe8",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "pillar_behavioral",
+        "poid": 2791,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2791",
+        "title": "Human Behavior and Social Institutions (3 credits)",
+        "roster_count": 19,
+        "roster_sha256": "d8845dacd0e2182ae97c95202389a8079f78cdc2dd71856c8bff7d77c89b5cf1",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "pillar_global",
+        "poid": 2792,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2792",
+        "title": "Global Citizenship (3-4 credits)",
+        "roster_count": 14,
+        "roster_sha256": "eaf17037b0e54b8dd0ed2f460e8bd899f3a3a8b506cc463718e79faa6e6257f0",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "pillar_aesthetic",
+        "poid": 2793,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2793",
+        "title": "Aesthetic Expression (3 credits)",
+        "roster_count": 37,
+        "roster_sha256": "9f9a1d4543dbf6e094a9641a2b02b28fafee8e5f31238d34516e286f2b712ed9",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "pillar_quantitative",
+        "poid": 2794,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2794",
+        "title": "Quantitative Reasoning (3 credits)",
+        "roster_count": 7,
+        "roster_sha256": "0e65c2716dd5b6757d910119fc10040cd6eceb4f52aad056fbb7e4976df91bd0",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "pillar_scientific",
+        "poid": 2795,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2795",
+        "title": "Scientific Reasoning (3 credits)",
+        "roster_count": 8,
+        "roster_sha256": "b8b96b912ea72f45d8b93821be44ea7eb9723108e2d2d96d5e3deeec3ea07e29",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "perspectives_overview",
+        "poid": 2796,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2796",
+        "title": "Perspectives Courses (12 credits)",
+        "roster_count": 0,
+        "roster_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "child_programs_sha256": "77733c51131272caf99e248c6f8a8658e818b4f5c15fa9e35f09063278964d02"
+      },
+      {
+        "id": "perspective_historical_or_behavioral",
+        "poid": 2797,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2797",
+        "title": "Historical & Contemporary Insights Perspectives OR Behavioral & Social Institutions Perspectives (3 credits)",
+        "roster_count": 56,
+        "roster_sha256": "6b9d596c3464bbeb93c005471e815a99dfcef815c65c99be28837d4cfbec48c3",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "perspective_global_or_aesthetic",
+        "poid": 2798,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2798",
+        "title": "Global Citizenship Perspectives OR Aesthetic Expression Perspectives (3 credits)",
+        "roster_count": 41,
+        "roster_sha256": "adb6867e59c3570813b3b88614df9d810fed14113074886ad686b59b38d1ee5d",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "perspective_quantitative_or_scientific",
+        "poid": 2799,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2799",
+        "title": "Quantitative Reasoning Perspectives OR Scientific Reasoning Perspectives (3 credits)",
+        "roster_count": 35,
+        "roster_sha256": "f46ab22aa72a23bfe977d5c40c017a659053b5105c4c5a91195fcca5f851ed08",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "perspective_integrating_world_languages",
+        "poid": 2800,
+        "official_url": "https://catalog.longwood.edu/ajax/preview_program.php?catoid=19&poid=2800",
+        "title": "Integrating World Languages Perspectives (3 credits)",
+        "roster_count": 14,
+        "roster_sha256": "14263c5667330828231e916d6675075e821d78c613a766aa02fe265bb50dd85e",
+        "child_programs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    ]
+  },
+  "rules": {
+    "pillars_may_transfer_with_approval": true,
+    "perspectives_transferable": false,
+    "perspectives_waivable": false,
+    "selected_major_pillar_overlap_maximum": 2,
+    "selected_major_perspective_overlap_maximum": 1,
+    "cross_listed_course_requirement_maximum": 1,
+    "sacsco_categories_required": [
+      "humanities_fine_arts",
+      "social_behavioral_science",
+      "mathematics_natural_sciences"
+    ]
+  },
+  "deterministic_witness": {
+    "selected_courses": [
+      {
+        "code": "HIST150",
+        "coid": 25345,
+        "program_source_id": "pillar_historical",
+        "units": 3,
+        "designation": "FHCI",
+        "role": "pillar_historical",
+        "prerequisite": "None",
+        "title": "Historical Encounters I",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=25345",
+        "exact_entry_text": "HIST 150 - Historical Encounters I 3 credits Study of the cultural consequences of encounters between Europeans and non-Europeans from prehistory to 1500 CE. Topics will vary by section. Prerequisite(s): None Corequisite(s): None *Fulfills Civitae Core FHCI WI",
+        "exact_entry_sha256": "afedb04d64596e648f02e230baf628a9a370eb5ab0472e12c8fe0f8b3e95651c"
+      },
+      {
+        "code": "PSYC230",
+        "coid": 24702,
+        "program_source_id": "pillar_behavioral",
+        "units": 3,
+        "designation": "FHBS",
+        "role": "pillar_behavioral",
+        "prerequisite": "None",
+        "title": "Life-Span Developmental Psychology",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=24702",
+        "exact_entry_text": "PSYC 230 - Life-Span Developmental Psychology 3 credits Principles and research covering the development of human abilities and behavior across the lifespan within social and cultural contexts. Topics include developmental research methodologies, variables influencing development, basic processes in development; and physical, motor, perceptual, cognitive, linguistic, motivational, emotional, social, and personality development. Prerequisite(s): None Corequisite(s): None *Fulfills Civitae Core FHBS WI",
+        "exact_entry_sha256": "7d5a2f19a16458d4dde6911834518f29ed27d5476a60038e0a6ea62d9c7cdfdd"
+      },
+      {
+        "code": "RELI242",
+        "coid": 24377,
+        "program_source_id": "pillar_global",
+        "units": 3,
+        "designation": "FGLO",
+        "role": "pillar_global",
+        "prerequisite": "None",
+        "title": "World Religions",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=24377",
+        "exact_entry_text": "RELI 242 - World Religions 3 credits An investigation of the nature and development of the religious practices and traditions that have most shaped the global community, including their teachings, rituals, institutions and ethics. The course includes the major traditions of Hinduism, Buddhism, Judaism, Christianity, Islam and some other traditions which have contributed to their development. Prerequisite(s): None Corequisite(s): None *Fulfills Civitae Core FGLO. SI",
+        "exact_entry_sha256": "b2be088ab180602876b084e1e15d0b9921cefd76dcc01219290db799e9b96a63"
+      },
+      {
+        "code": "ART125",
+        "coid": 24848,
+        "program_source_id": "pillar_aesthetic",
+        "units": 3,
+        "designation": "FAES",
+        "role": "pillar_aesthetic",
+        "prerequisite": null,
+        "title": "Aesthetic Expression in Studio Art",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=24848",
+        "exact_entry_text": "ART 125 - Aesthetic Expression in Studio Art 3 credits An introduction to aesthetic expression by exploring a variety of techniques, materials and tools utilized in the production of 2 and 3 dimensional works of art. Course fee: $50. *Fulfills Civitae Core FAES AA",
+        "exact_entry_sha256": "c3a16cc813fc21d078993a9aa4e016c57e997539edb869178bfe888651d01143"
+      },
+      {
+        "code": "MATH171",
+        "coid": 24502,
+        "program_source_id": "pillar_quantitative",
+        "units": 3,
+        "designation": "FQRC",
+        "role": "pillar_quantitative_and_major",
+        "prerequisite": "None",
+        "title": "Statistical Decision Making",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=24502",
+        "exact_entry_text": "MATH 171 - Statistical Decision Making 3 credits An elementary statistics course designed to give students a working knowledge of the ideas and tools of practical statistics and their usefulness in problem solving and decision making. Topics include graphical displays of data, measures of central tendency and variability, sampling distributions, and confidence intervals and hypothesis testing for means and proportions. Additional topics may include elementary probability concepts, correlation and regression, or Chi Square analysis. Special emphasis is placed upon the proper use and interpretation of statistics in real life situations. Prerequisite(s): None Corequisite(s): None *Fulfills Civitae Core FQRC WI",
+        "exact_entry_sha256": "80c45762d592d16356ed6e337fa5708f1fe60e44089ef83e9a3d731c05cb97ef"
+      },
+      {
+        "code": "ENSC162",
+        "coid": 25329,
+        "program_source_id": "pillar_scientific",
+        "units": 3,
+        "designation": "FSRC",
+        "role": "pillar_scientific",
+        "prerequisite": null,
+        "title": "Explorations in Environmental Science",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=25329",
+        "exact_entry_text": "ENSC 162 - Explorations in Environmental Science 3 credits This course is an introductory-level survey course designed to provide an understanding of how science works to address environmental problems. Students will become familiar with the Earth's major systems, how they function, and how they are affected by human activity. Fundamental concepts addressed by this course include ecosystems, biogeochemical cycles, population growth, air, water, and soil pollution, climate change, natural resources, and waste management. 2 lecture and one 2-hour lab periods. Course fee: $30. *Fulfills Civitae Core FSRC WI",
+        "exact_entry_sha256": "1c37038e6f1b7c0a40ff5052931c4bc45803bf348438f679db65e70a27534aa4"
+      },
+      {
+        "code": "PSYC335",
+        "coid": 25651,
+        "program_source_id": "perspective_historical_or_behavioral",
+        "units": 3,
+        "designation": "PHBS",
+        "role": "perspective_behavioral",
+        "prerequisite": "Completion of FHBS pillar",
+        "sacsco_category": "social_behavioral_science",
+        "title": "Psychology of Belief",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=25651",
+        "exact_entry_text": "PSYC 335 - Psychology of Belief 3 credits This course will examine the social and psychological aspects of belief and belief systems from a scientific perspective. The course integrates moral psychology, political psychology, psychology of religion and their intersection in American life. Prerequisite(s): Completion of FHBS pillar Corequisite(s): None *Fulfills Civitae Core PHBS WI",
+        "exact_entry_sha256": "51a700c7d9e0b6b3dedfdfed8033a72263e24c1b740d1b2bfd367c75ef974ed3"
+      },
+      {
+        "code": "RELI301",
+        "coid": 25603,
+        "program_source_id": "perspective_global_or_aesthetic",
+        "units": 3,
+        "designation": "PGLO",
+        "role": "perspective_global",
+        "prerequisite": "Completion of FGLO pillar",
+        "sacsco_category": "humanities_fine_arts",
+        "title": "Elements of a World Religion",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=25603",
+        "exact_entry_text": "RELI 301 - Elements of a World Religion 3 credits An in-depth study of key elements of religion, as evidenced within a single religious tradition. This approach permits a nuanced look at the elements of religion, as well as a greater appreciation for the diversity that exists within each religious tradition. Elements of religion that will be studied in this course include at least three of the following: 1) origin story, 2) sacred narrative, 3) liturgy, 4) popular or folk traditions, 5) ethics/moral code, 6) wisdom literature, 7) mysticism, 8) conceptions of an afterlife, 9) theories of community/social critique, and 10) intellectual self-reflection on the religious tradition (i.e., theology). Each of these elements will be studied through engagement with both historical and contemporary primary texts. All sections of the course will enrich the students' understanding through the application of a secondary disciplinary lens that is relevant to the elements of religion under consideration (as, for instance, philosophy relates to the speculative elements of religion-5, 6, 8, 9 in the list above-and literary studies relates to its narrative and poetic elements-1, 2, 3, and 6 in the list above). Special emphasis will be placed on the religion's role in the global community and the ways in which religious thought can be used to benefit the global community. No previous religion coursework is required. Prerequisite(s): Completion of FGLO pillar *Fulfills Civitae Core PGLO WI",
+        "exact_entry_sha256": "863c443387a77ba999f4279d68a5338ff20e41efcaa9e09709868b8cd82adae5"
+      },
+      {
+        "code": "MATH301",
+        "coid": 24510,
+        "program_source_id": "perspective_quantitative_or_scientific",
+        "units": 3,
+        "designation": "PQRC",
+        "role": "perspective_quantitative",
+        "prerequisite": "MATH 171 with a grade of C- or better and completion of FHBS pillar",
+        "sacsco_category": "mathematics_natural_sciences",
+        "title": "Applied Statistics",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=24510",
+        "exact_entry_text": "MATH 301 - Applied Statistics 3 credits Topics include one-way and two-way analysis of variance, correlation and linear regression, multiple linear regression, and nonparametric tests. The emphasis will be on practical applications of these techniques and the use of computer software. Prerequisite(s): MATH 171 with a grade of C- or better and completion of FHBS pillar Corequisite(s): None *Fulfills Civitae Core PQRC. WI",
+        "exact_entry_sha256": "3b3da9b1a1972559c435a9eddbeca5be83db8a290636eb186fa0e6ec47b7d941"
+      },
+      {
+        "code": "SPAN320",
+        "coid": 24360,
+        "program_source_id": "perspective_integrating_world_languages",
+        "units": 3,
+        "designation": "PWLA",
+        "role": "perspective_integrating_world_languages",
+        "prerequisite": "SPAN 212 or appropriate placement test score",
+        "selected_prerequisite_route": "appropriate placement test score",
+        "title": "Integrated Inquiry into Culture & Language",
+        "official_url": "https://catalog.longwood.edu/ajax/preview_course.php?catoid=19&coid=24360",
+        "exact_entry_text": "SPAN 320 - Integrated Inquiry into Culture & Language 3 credits A course designed to facilitate exploration of the cultures of Spanish-speaking countries through more advanced interdisciplinary inquiry. Students will integrate themes from various disciplines as they further improve their interpersonal, interpretive, and presentational communication in Spanish. Prerequisite(s): SPAN 212 or appropriate placement test score Corequisite(s): None *Fulfills Civitae Core PWLA WI SI",
+        "exact_entry_sha256": "f7552cbf27c232b2df43649e5fea38593b6fb9c921b51fd21ea202be43aae5fb"
+      }
+    ],
+    "selected_course_codes": [
+      "HIST150",
+      "PSYC230",
+      "RELI242",
+      "ART125",
+      "MATH171",
+      "ENSC162",
+      "PSYC335",
+      "RELI301",
+      "MATH301",
+      "SPAN320"
+    ],
+    "selected_pillar_codes": [
+      "HIST150",
+      "PSYC230",
+      "RELI242",
+      "ART125",
+      "MATH171",
+      "ENSC162"
+    ],
+    "selected_perspective_codes": [
+      "PSYC335",
+      "RELI301",
+      "MATH301",
+      "SPAN320"
+    ],
+    "perspective_sacsco_witnesses": {
+      "social_behavioral_science": "PSYC335",
+      "humanities_fine_arts": "RELI301",
+      "mathematics_natural_sciences": "MATH301"
+    },
+    "major_pillar_overlap_codes": [
+      "MATH171"
+    ],
+    "major_perspective_overlap_codes": [],
+    "selected_current_major_elective_overlap_codes": [],
+    "fixed_first_year_units": 6,
+    "pillar_units": 18,
+    "perspective_units": 12,
+    "symposium_units": 3,
+    "total_civitae_units": 39,
+    "degree_total_units": 120,
+    "additional_units_due_to_distribution_or_single_count": 0,
+    "transferable_units_changed_by_resident_perspective_selection": 0
+  }
+}

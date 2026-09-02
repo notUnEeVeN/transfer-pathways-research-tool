@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "artifact": "radford_2026_2027_transfer_degree_real_evidence",
+  "generated_on": "2026-08-24",
+  "institution": {
+    "name": "Radford University",
+    "slug": "radford-university",
+    "school_id": 9219
+  },
+  "catalog_year": "2026-2027",
+  "purpose": "Supplemental official policy receipt for the paper's completed Virginia A.S. cohort. It does not modify the reviewed Computer Science major tree or waive program-specific major requirements.",
+  "verified": true,
+  "issues": [],
+  "sources": {
+    "transfer_degree_waiver": {
+      "requested_url": "https://www.radford.edu/academics/curriculum/real-curriculum/transfer.html",
+      "final_url": "https://www.radford.edu/academics/curriculum/real-curriculum/transfer.html",
+      "content_type": "text/html; charset=UTF-8",
+      "response_bytes": 119746,
+      "response_sha256": "97dc8017c79ad693d3be02884e4149859d378b3a54c716de9ca51690a0d6425e",
+      "title": "Transfer Students",
+      "heading": "Transfer Students"
+    },
+    "current_real_requirements": {
+      "requested_url": "https://www.radford.edu/academics/curriculum/real-curriculum/real-curriculum-requirements-2025-forward.html",
+      "final_url": "https://www.radford.edu/academics/curriculum/real-curriculum/real-curriculum-requirements-2025-forward.html",
+      "content_type": "text/html; charset=UTF-8",
+      "response_bytes": 121630,
+      "response_sha256": "ba70bd4176175833616c503a9e28268a5557b52dad1f1bab155ebe658f720c07",
+      "title": "REAL Curriculum Requirements (Fall 2025 to Summer 2027) | Radford University",
+      "heading": "REAL Curriculum Requirements (Fall 2025 to Summer 2027)"
+    },
+    "faculty_transition_faq": {
+      "requested_url": "https://www.radford.edu/academics/curriculum/real-curriculum/faculty.html",
+      "final_url": "https://www.radford.edu/academics/curriculum/real-curriculum/faculty.html",
+      "content_type": "text/html; charset=UTF-8",
+      "response_bytes": 172498,
+      "response_sha256": "11e38f0d262b64cd2305f7d4adb544fa9108e5a33793c35839c92a1d467f1b38",
+      "title": "Faculty | REAL Curriculum | Radford University",
+      "heading": "Faculty"
+    }
+  },
+  "robots": {
+    "url": "https://www.radford.edu/robots.txt",
+    "http_status": 200,
+    "response_bytes": 401,
+    "response_sha256": "16bbefe843bf06054d6f7df31d8978a401777519bbf5558066477dc0a8af0a4e",
+    "policy_paths_allowed": true
+  },
+  "policy_facts": {
+    "catalog_boundary": {
+      "applies_to_catalogs": [
+        "2025-2026",
+        "2026-2027"
+      ],
+      "exact_text": "This transitional model applies to students entering Radford University under the 2025-26 or 2026-27 catalogs."
+    },
+    "completed_transfer_degree_waiver": {
+      "qualifying_awards": [
+        "AA",
+        "AS",
+        "AAS"
+      ],
+      "qualifying_institution": "Virginia community college or higher education institution",
+      "real_areas_met": true,
+      "foundational_writing_met": true,
+      "foundational_math_met": true,
+      "writing_intensive_met": true,
+      "general_education_units_met": 30,
+      "exact_text": {
+        "eligibility": "Students who have earned an Associate of Arts (AA), Associate of Science (AS), or Associate of Arts and Sciences (AAS) degree from a Virginia community college or higher education institution will have the following met:",
+        "real": "REAL requirements (all 4 areas)",
+        "foundations_and_wi": "Foundational Writing, Foundational Math, and Writing Intensive courses",
+        "general_education": "30 credits required in General Education"
+      }
+    },
+    "current_real_model": {
+      "foundational_writing_units": 3,
+      "foundational_math_units": 3,
+      "writing_intensive_units": 6,
+      "writing_intensive_upper_units_minimum": 3,
+      "area_units": {
+        "R": 9,
+        "E": 9,
+        "A": 9,
+        "L": 9
+      },
+      "unique_total_units_minimum": 39,
+      "unique_total_units_maximum": 48,
+      "outside_major_units_minimum": 15,
+      "exact_text": {
+        "total": "39-48 hours",
+        "outside_major": "You'll also take Writing Intensive (WI) courses. At least 15 credits (not including foundational writing/math) must come from outside your major's department."
+      }
+    },
+    "nonqualifying_transfer_requirements": {
+      "completed_degree_students_excluded_by_other": true,
+      "outside_major_units": 15,
+      "exact_text": {
+        "lead": "Yes. Transfer students may qualify for waivers under the Legacy Transfer Policy (based on credit hours and key courses). All other transfer students must complete the REAL 2025-27 model in full, including:",
+        "outside_major": "15 credits outside the major"
+      }
+    },
+    "program_specific_major_requirements_waived": false
+  },
+  "policy_facts_sha256": "242e20f3663e8107bbfb76763c1c5a4dc01b18deeeea59d919a9a8b7fe2c5cae",
+  "paper_interpretation": {
+    "incoming_award": "AS",
+    "completed_before_radford_enrollment": true,
+    "real_areas_met": true,
+    "foundational_requirements_met": true,
+    "writing_intensive_met": true,
+    "general_education_units_met": 30,
+    "outside_major_rule_met_by_completed_degree_waiver": true,
+    "program_specific_two_sciences_one_laboratory_waived": false,
+    "figure_3_4_policy_rules_exact_for_qualifying_as": true,
+    "figure_6_open_course_identity_rules_waived": false
+  }
+}

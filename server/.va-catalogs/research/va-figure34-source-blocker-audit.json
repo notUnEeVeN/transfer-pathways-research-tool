@@ -1,0 +1,752 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_figure34_source_blocker_audit",
+  "reviewed_at": "2026-08-25",
+  "scope": "The 14 authoritative source documents currently blocking both Virginia Figure 3 and Figure 4. This is a read-only closure classification, not a publication approval, protected-core replacement, or source edit.",
+  "classification_policy": {
+    "a_existing_evidence_automation": "The retained official evidence already fixes the relevant semantics; deterministic, source-bound evaluator or projection work can close this blocker without adding a substantive fact.",
+    "b_new_official_source_capture": "The retained evidence does not publish or reproducibly retain the closed roster, attribute, destination choice, or topology required by the computation.",
+    "c_human_institutional_verification": "The official evidence conflicts, delegates the decision, or requires an independent/current verification signature; code or another scrape of the same wording cannot select one truth safely.",
+    "fail_closed_rule": "A blocker is not class a merely because a plausible minimum plan can be constructed. Existing evidence must determine the complete feasible set or prove exact zero Figure 3/4 impact."
+  },
+  "gate_reproduction": {
+    "figures": ["3", "4"],
+    "total_rows": 35,
+    "ready_rows": 21,
+    "blocked_rows": 14,
+    "blocked_associate_documents": 9,
+    "blocked_bachelor_documents": 5,
+    "human_verification_documents": 5,
+    "source_projection_blocked_id_parity": true,
+    "figure_3_4_blocked_id_parity": true,
+    "blocked_document_ids": [
+      "va:as:blue-ridge-community-college:cs",
+      "va:as:j-sargeant-reynolds-community-college:cs",
+      "va:as:mountain-gateway-community-college:cs",
+      "va:as:new-river-community-college:cs",
+      "va:as:paul-d-camp-community-college:cs",
+      "va:as:rappahannock-community-college:cs",
+      "va:as:richard-bland-college:cs",
+      "va:as:tidewater-community-college:cs",
+      "va:as:wytheville-community-college:cs",
+      "va:degree:bridgewater-college:cs",
+      "va:degree:randolph-macon-college:cs",
+      "va:degree:shenandoah-university:cs",
+      "va:degree:the-university-of-virginia-s-college-at-wise:cs",
+      "va:degree:virginia-polytechnic-institute-and-state-university:cs"
+    ]
+  },
+  "documents": [
+    {
+      "id": "va:as:blue-ridge-community-college:cs",
+      "slug": "blue-ridge-community-college",
+      "kind": "as_degree",
+      "source_bundle_sha256": "2b25b54fbb7b9d029cde78b3544cac6706c001114f9596aae532d152b92bdf99",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["analysis_acceptance_failed", "associate_constraint_evaluator_required"],
+      "operational_refs": [
+        "constraint:requirement_groups[7].analysis_constraints[0]:alternative_course_credit_mismatch",
+        "quality:general_education_slot_credit_conflict"
+      ],
+      "findings": [
+        {
+          "key": "blue_ridge_four_credit_slot_conflict",
+          "classification": "c_human_institutional_verification",
+          "refs": [
+            "constraint:requirement_groups[7].analysis_constraints[0]:alternative_course_credit_mismatch",
+            "quality:general_education_slot_credit_conflict"
+          ],
+          "basis": "The retained program prints a four-credit slot, the retained approved menu includes exact three-credit alternatives, and the graduation rule requires both specified courses and hours; no retained source supplies filler or offset credit.",
+          "closure": "Obtain an authoritative institutional interpretation or corrected catalog rule identifying the filler/offset, limiting the menu to four-credit choices, or correcting the slot/degree arithmetic."
+        }
+      ]
+    },
+    {
+      "id": "va:as:j-sargeant-reynolds-community-college:cs",
+      "slug": "j-sargeant-reynolds-community-college",
+      "kind": "as_degree",
+      "source_bundle_sha256": "5d520c60b011fbec1b29ca9163018d916c535cd7f55a23662fc81e1c0d666278",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["current_human_verification_required", "analysis_acceptance_failed", "associate_constraint_evaluator_required"],
+      "operational_refs": [
+        "human:current_human_verification_required",
+        "constraint:requirement_groups[9].analysis_constraints[0]:advisor_approved_substitution",
+        "quality:destination_variants_change_requirements",
+        "quality:bs_map_one_credit_internal_conflict",
+        "quality:advisor_selected_destination_electives"
+      ],
+      "findings": [
+        {
+          "key": "jsr_destination_variants",
+          "classification": "b_new_official_source_capture",
+          "refs": ["quality:destination_variants_change_requirements"],
+          "basis": "Separate retained B.A.- and B.S.-destination pages prove that the structures differ, but no exact current receipt binds one variant to every one of the paper's 16 receiving-program pairs. Observing that current degree labels appear to be B.S. is not a source-bound pair selector.",
+          "closure": "Capture and retain an official destination designation or transfer-map receipt for every receiving-program pair, then implement a whole-cohort/hash-bound variant selector while retaining one associate identity."
+        },
+        {
+          "key": "jsr_open_advisor_choices",
+          "classification": "b_new_official_source_capture",
+          "refs": [
+            "constraint:requirement_groups[9].analysis_constraints[0]:advisor_approved_substitution",
+            "quality:advisor_selected_destination_electives"
+          ],
+          "basis": "The current pages delegate substitutions and several destination slots to an advisor and do not publish a universal closed roster.",
+          "closure": "Capture an official destination-specific map or approved substitution/elective roster for every receiving program represented in the paper matrix."
+        },
+        {
+          "key": "jsr_bs_one_credit_conflict",
+          "classification": "c_human_institutional_verification",
+          "refs": ["quality:bs_map_one_credit_internal_conflict"],
+          "basis": "The B.S. page's rows sum to 64 while its headings and program total sum to 63; both statements are official and current.",
+          "closure": "Obtain an institutional correction or signed interpretation identifying the extra/missing credit."
+        },
+        {
+          "key": "jsr_current_verification",
+          "classification": "c_human_institutional_verification",
+          "refs": ["human:current_human_verification_required"],
+          "basis": "No current independent approval receipt covers this exact source bundle and composed tree.",
+          "closure": "Complete independent review after every source/evaluator issue above is resolved and sign the exact resulting hashes."
+        }
+      ]
+    },
+    {
+      "id": "va:as:mountain-gateway-community-college:cs",
+      "slug": "mountain-gateway-community-college",
+      "kind": "as_degree",
+      "source_bundle_sha256": "2c688475f1da92bf51c46b0b5cf7574251a82e426635aee3637491a366b42be0",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["analysis_acceptance_failed", "associate_constraint_evaluator_required"],
+      "operational_refs": [
+        "constraint:requirement_groups[7].analysis_constraints[0]:choose_two_variable_credit_open_roster",
+        "constraint:requirement_groups[8].analysis_constraints[0]:destination_selected_open_stem_roster",
+        "constraint:requirement_groups[9].analysis_constraints[0]:destination_selected_transfer_core",
+        "quality:generic_multi_pathway_science_as",
+        "quality:open_destination_selected_science_and_transfer_components"
+      ],
+      "findings": [
+        {
+          "key": "mountain_gateway_open_destination_components",
+          "classification": "b_new_official_source_capture",
+          "refs": [
+            "constraint:requirement_groups[7].analysis_constraints[0]:choose_two_variable_credit_open_roster",
+            "constraint:requirement_groups[8].analysis_constraints[0]:destination_selected_open_stem_roster",
+            "constraint:requirement_groups[9].analysis_constraints[0]:destination_selected_transfer_core",
+            "quality:generic_multi_pathway_science_as",
+            "quality:open_destination_selected_science_and_transfer_components"
+          ],
+          "basis": "Mountain Gateway publishes a generic Science A.S., not a prescribed Computer Science branch, and explicitly permits receiving-curriculum-selected courses outside the local lists.",
+          "closure": "Capture a current official CS/destination-specific pathway or complete approved destination rosters and row topology; otherwise keep this source outside an exact CS paper cohort."
+        }
+      ]
+    },
+    {
+      "id": "va:as:new-river-community-college:cs",
+      "slug": "new-river-community-college",
+      "kind": "as_degree",
+      "source_bundle_sha256": "2eb566b844869dd6e1dd2eca09a181f3fc29eb4a3780c93adb2a2af4d36ac20d",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["associate_constraint_evaluator_required"],
+      "operational_refs": ["constraint:requirement_groups[9].analysis_constraints[0]:variable_credit_category_with_sequences"],
+      "findings": [
+        {
+          "key": "new_river_open_variable_category",
+          "classification": "b_new_official_source_capture",
+          "refs": ["constraint:requirement_groups[9].analysis_constraints[0]:variable_credit_category_with_sequences"],
+          "basis": "The retained source mixes two credit rows, named courses, four sequences, and open CSC 1XX/world-language categories without a universal roster or cardinality. The hash-bound negative probe rejects the sole apparent six-credit receiver witness because CSC 205 requires CSC 215, producing nine credits against the eight-credit maximum.",
+          "closure": "Capture destination-specific approved choices for each receiver or a complete current category roster plus exact row/cardinality topology."
+        }
+      ]
+    },
+    {
+      "id": "va:as:paul-d-camp-community-college:cs",
+      "slug": "paul-d-camp-community-college",
+      "kind": "as_degree",
+      "source_bundle_sha256": "dada36fc64828ffc5a2063947e53630000842e0e616a7755bad80787bb2a03ea",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["current_human_verification_required", "analysis_acceptance_failed", "associate_constraint_evaluator_required"],
+      "operational_refs": [
+        "human:current_human_verification_required",
+        "constraint:requirement_groups[3].sections[0].analysis_constraints[0]:alternative_course_credit_mismatch",
+        "quality:catalog_credit_arithmetic_conflict",
+        "source_flag:catalog_credit_arithmetic_conflict"
+      ],
+      "findings": [
+        {
+          "key": "camp_credit_conflicts",
+          "classification": "c_human_institutional_verification",
+          "refs": [
+            "constraint:requirement_groups[3].sections[0].analysis_constraints[0]:alternative_course_credit_mismatch",
+            "quality:catalog_credit_arithmetic_conflict",
+            "source_flag:catalog_credit_arithmetic_conflict"
+          ],
+          "basis": "The same retained official PDF prints a four-credit MTH 264/MTH 245 row although MTH 245 is three credits; required rows total 61, the first-term subtotal is off by one, and printed term subtotals total 62.",
+          "closure": "Obtain an institutional correction or signed interpretation that reconciles the row, term, and degree totals without deleting an authorized route."
+        },
+        {
+          "key": "camp_current_verification",
+          "classification": "c_human_institutional_verification",
+          "refs": ["human:current_human_verification_required"],
+          "basis": "No current independent approval receipt covers the exact source bundle after reconciliation.",
+          "closure": "Sign the final exact hashes only after the arithmetic conflict is institutionally resolved."
+        }
+      ]
+    },
+    {
+      "id": "va:as:rappahannock-community-college:cs",
+      "slug": "rappahannock-community-college",
+      "kind": "as_degree",
+      "source_bundle_sha256": "c804c0c017e4c78c22cb76e757c3b5ca8f4ae99bddb12f83cb6ba402ddd49555",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["associate_constraint_evaluator_required"],
+      "operational_refs": [
+        "constraint:requirement_groups[5].analysis_constraints[0]:paired_math_slots_with_cross_row_routes",
+        "constraint:requirement_groups[12].analysis_constraints[1]:receiving_program_alignment_required"
+      ],
+      "findings": [
+        {
+          "key": "rappahannock_math_topology",
+          "classification": "b_new_official_source_capture",
+          "refs": ["constraint:requirement_groups[5].analysis_constraints[0]:paired_math_slots_with_cross_row_routes"],
+          "basis": "The published calculus recommendations do not allocate MTH 167 or the MTH 263/MTH 264 sequence across the two math rows and six elective rows; a valid 60-credit witness does not determine the full feasible set.",
+          "closure": "Capture an official row-by-row allocation of every recommended mathematics route."
+        },
+        {
+          "key": "rappahannock_destination_alignment",
+          "classification": "b_new_official_source_capture",
+          "refs": ["constraint:requirement_groups[12].analysis_constraints[1]:receiving_program_alignment_required"],
+          "basis": "The college directs advisor selection for the intended receiving degree and publishes no universal CS subset; an unbound intersection with database edges is not sufficient publication evidence.",
+          "closure": "Retain hash-bound official destination-alignment receipts or destination-specific transfer maps for all 16 receiving programs."
+        }
+      ]
+    },
+    {
+      "id": "va:as:richard-bland-college:cs",
+      "slug": "richard-bland-college",
+      "kind": "as_degree",
+      "source_bundle_sha256": "eaae55d519535782ad80339e3365627a7855dededae58b8326bf643478d94186",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["catalog_acceptance_failed", "analysis_acceptance_failed", "associate_constraint_evaluator_required"],
+      "operational_refs": [
+        "catalog:receiver_structure",
+        "constraint:requirement_groups[6].sections[0].analysis_constraints[0]:published_variable_component_closure",
+        "quality:non_vccs_course_namespace",
+        "quality:published_component_range_conflict",
+        "source_flag:published_component_range_conflict"
+      ],
+      "findings": [
+        {
+          "key": "richard_bland_owner_scoped_identity",
+          "classification": "c_human_institutional_verification",
+          "refs": ["catalog:receiver_structure", "quality:non_vccs_course_namespace"],
+          "basis": "The checked-in candidate proposes owner-scoped local identities, but the protected operational tree still contains 93 globally scoped ids and 93 globally scoped keys and fails catalog acceptance. Replacing 186 protected identity fields is a verified-core reconciliation, not an already integrated proof-only repair.",
+          "closure": "Independently reconcile and sign the exact 93-course owner-local identity mapping and its unit evidence against the protected tree; only then apply a source-hash-pinned operational projection overlay."
+        },
+        {
+          "key": "richard_bland_component_range_conflict",
+          "classification": "c_human_institutional_verification",
+          "refs": [
+            "constraint:requirement_groups[6].sections[0].analysis_constraints[0]:published_variable_component_closure",
+            "quality:published_component_range_conflict",
+            "source_flag:published_component_range_conflict"
+          ],
+          "basis": "The same official page authorizes component combinations totaling 60, 61, and 62 while printing a 60-credit total; selecting only the 60-credit branch would delete real authorized routes.",
+          "closure": "Obtain an authoritative hard-cap, offset/filler rule, or corrected component ranges from Richard Bland."
+        }
+      ]
+    },
+    {
+      "id": "va:as:tidewater-community-college:cs",
+      "slug": "tidewater-community-college",
+      "kind": "as_degree",
+      "source_bundle_sha256": "9baba94d24a5fd9bcac8880741722005ddb5da00dca3a31d69e9bf0c26829140",
+      "retained_source_status": "transparent_render_transport_exception",
+      "operational_blockers": ["analysis_acceptance_failed", "associate_constraint_evaluator_required"],
+      "operational_refs": [
+        "constraint:requirement_groups[2].analysis_constraints[0]:direct_placement_with_category_replacement",
+        "constraint:requirement_groups[10].analysis_constraints[0]:footnote_8_source_language_ambiguity",
+        "constraint:requirement_groups[10].analysis_constraints[1]:world_language_category_open",
+        "constraint:requirement_groups[11].analysis_constraints[1]:world_language_category_open",
+        "quality:catalog_footnote_8_ambiguous",
+        "quality:direct_placement_receiver_not_supported"
+      ],
+      "findings": [
+        {
+          "key": "tidewater_reproducible_source_capture",
+          "classification": "b_new_official_source_capture",
+          "refs": [
+            "constraint:requirement_groups[2].analysis_constraints[0]:direct_placement_with_category_replacement",
+            "constraint:requirement_groups[10].analysis_constraints[1]:world_language_category_open",
+            "constraint:requirement_groups[11].analysis_constraints[1]:world_language_category_open",
+            "quality:direct_placement_receiver_not_supported"
+          ],
+          "basis": "All four retained Tidewater catalog fetches are 403 challenge pages. The composition has declared transparent-render hashes, but no exact official catalog bytes are retained; the open language roster and direct-placement carrier therefore cannot reach CA/MA provenance fidelity.",
+          "closure": "Capture exact current official program, GE, approved-elective, and graduation bytes through a reproducible allowed transport, including the complete language roster and placement replacement rule."
+        },
+        {
+          "key": "tidewater_footnote_8_ambiguity",
+          "classification": "c_human_institutional_verification",
+          "refs": [
+            "constraint:requirement_groups[10].analysis_constraints[0]:footnote_8_source_language_ambiguity",
+            "quality:catalog_footnote_8_ambiguous"
+          ],
+          "basis": "The retained interpretation cannot delimit whether the additional-science and PHY 201 language is conjunctive or alternative without inventing a connector.",
+          "closure": "After reproducible capture, obtain an institutional interpretation or independently signed source reading that fixes the exact Boolean grouping."
+        }
+      ]
+    },
+    {
+      "id": "va:as:wytheville-community-college:cs",
+      "slug": "wytheville-community-college",
+      "kind": "as_degree",
+      "source_bundle_sha256": "f0e904d0aeb67c27a6679585cf566af1ebd6ccd46c2af8568685e64f04b2d60e",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["analysis_acceptance_failed", "associate_constraint_evaluator_required"],
+      "operational_refs": [
+        "constraint:requirement_groups[4].analysis_constraints[0]:distinct_humanities_clusters",
+        "constraint:requirement_groups[7].analysis_constraints[0]:advisor_approved_transfer_course_open_option",
+        "quality:humanities_cluster_dictionary_not_printed",
+        "quality:advisor_approved_transfer_option_is_open"
+      ],
+      "findings": [
+        {
+          "key": "wytheville_humanities_clusters",
+          "classification": "b_new_official_source_capture",
+          "refs": [
+            "constraint:requirement_groups[4].analysis_constraints[0]:distinct_humanities_clusters",
+            "quality:humanities_cluster_dictionary_not_printed"
+          ],
+          "basis": "The program requires different humanities clusters but the complete retained bundle does not assign the seven eligible courses to cluster identities.",
+          "closure": "Capture an official current humanities-cluster dictionary or institution-approved mapping."
+        },
+        {
+          "key": "wytheville_open_advisor_transfer_option",
+          "classification": "b_new_official_source_capture",
+          "refs": [
+            "constraint:requirement_groups[7].analysis_constraints[0]:advisor_approved_transfer_course_open_option",
+            "quality:advisor_approved_transfer_option_is_open"
+          ],
+          "basis": "The source expressly allows an advisor-approved transfer course outside the three named options, so the current tree is not a closed feasible set.",
+          "closure": "Capture an official approved-option roster or destination-specific advisor/transfer maps for every receiving program."
+        }
+      ]
+    },
+    {
+      "id": "va:degree:bridgewater-college:cs",
+      "slug": "bridgewater-college",
+      "kind": "degree",
+      "source_bundle_sha256": "b940a5eb1e2faf13ca06fc552dece7d711f878022ad23bdfd53900c3aea8ca3f",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["current_human_verification_required"],
+      "operational_refs": [
+        "human:current_human_verification_required",
+        "source_flag:full_stack_cl200_corequisite_policy_gap"
+      ],
+      "findings": [
+        {
+          "key": "bridgewater_cl200_exception_conflict",
+          "classification": "c_human_institutional_verification",
+          "affected_figures": ["6"],
+          "refs": ["source_flag:full_stack_cl200_corequisite_policy_gap"],
+          "basis": "ART-321's official course entry requires CL-200 as a corequisite, while the official approved-transfer-associate exception does not retain CL-200. Both exact sources are current. The exact constraint proof reports zero blocked rules for Figures 1, 3, and 4 and five for Figure 6, so this conflict is retained fail-closed but is not a Figure 3/4 remaining action.",
+          "closure": "Obtain Bridgewater's authoritative treatment of CL-200 for an approved-associate transfer student choosing the Full-Stack track before publishing Figure 6."
+        },
+        {
+          "key": "bridgewater_current_verification",
+          "classification": "c_human_institutional_verification",
+          "affected_figures": ["3", "4"],
+          "refs": ["human:current_human_verification_required"],
+          "basis": "The exact source-bound Figure 3/4 proof is complete, but no current independent approval receipt covers its exact source and evaluator hashes. The independent Figure 6 CL-200 conflict does not alter Figure 3/4 totals.",
+          "closure": "Independently review and sign the exact Figure 3/4 source/evaluator hashes while retaining the CL-200 conflict as fail-closed for Figure 6."
+        }
+      ],
+      "figure34_remaining_actions": [
+        {
+          "key": "bridgewater_figure34_exact_hash_signature",
+          "classification": "c_human_institutional_verification",
+          "refs": ["human:current_human_verification_required"],
+          "action": "Independently review and sign the exact Figure 3/4 source/evaluator hashes; do not promote or resolve the separate Figure 6 CL-200 conflict."
+        }
+      ]
+    },
+    {
+      "id": "va:degree:randolph-macon-college:cs",
+      "slug": "randolph-macon-college",
+      "kind": "degree",
+      "source_bundle_sha256": "f3efd5b6da4e2344d788b1849f26d16ee9163b6505482928a0e058256c2ff966",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["current_human_verification_required", "analysis_acceptance_failed", "four_year_constraint_evaluator_required"],
+      "operational_refs": [
+        "human:current_human_verification_required",
+        "constraint:requirement_groups[3].analysis_constraints[0]:foreign_language_sequence_or_proficiency",
+        "constraint:requirement_groups[4].analysis_constraints[0]:distinct_pillar_courses",
+        "constraint:requirement_groups[4].analysis_constraints[1]:major_to_pillar_overlap_limit",
+        "constraint:requirement_groups[5].analysis_constraints[0]:pillar_distribution_attributes",
+        "constraint:requirement_groups[6].analysis_constraints[0]:cross_area_overlap_limit",
+        "constraint:requirement_groups[6].analysis_constraints[1]:cross_area_course_or_project_forms",
+        "constraint:requirement_groups[8].analysis_constraints[1]:official_catalog_wording_conflict",
+        "constraint:requirement_groups[9].analysis_constraints[0]:transfer_cap_and_residence_overlap",
+        "constraint:requirement_groups[9].analysis_constraints[1]:transfer_grade_and_application_review",
+        "constraint:unit_audit.residency:residency",
+        "quality:general_education_nonadditive_overlap"
+      ],
+      "findings": [
+        {
+          "key": "rmc_collegiate_attribute_roster_capture",
+          "classification": "b_new_official_source_capture",
+          "refs": [
+            "constraint:requirement_groups[5].analysis_constraints[0]:pillar_distribution_attributes"
+          ],
+          "basis": "The retained current MyMaconWeb all-catalog query contains 745 row occurrences and 743 unique course codes with the published Collegiate attributes, but the Spring 2027 response states that Spring courses are not yet available. The official public overview also excludes temporary designations, special-topics courses, and recent approvals. These bytes are positive membership evidence, not an exhaustive current roster from which absence can be inferred.",
+          "closure": "Repeat and retain all current-term queries after Spring 2027 is published, or obtain a Registrar export explicitly certified as exhaustive for every current Collegiate attribute and temporary/recent approval."
+        },
+        {
+          "key": "rmc_collegiate_overlap_evaluator",
+          "classification": "a_existing_evidence_automation",
+          "refs": [
+            "constraint:requirement_groups[4].analysis_constraints[0]:distinct_pillar_courses",
+            "constraint:requirement_groups[4].analysis_constraints[1]:major_to_pillar_overlap_limit",
+            "constraint:requirement_groups[6].analysis_constraints[0]:cross_area_overlap_limit",
+            "quality:general_education_nonadditive_overlap"
+          ],
+          "basis": "The distinct-course and overlap arithmetic is stated exactly and is an evaluator problem once the exhaustive attribute roster is available. The existing nonadditive 40-major plus 80-remainder proof prevents double counting, but no shared Figure 3/4 allocation pass currently enforces all Pillar and Cross-Area identities together.",
+          "closure": "After exhaustive roster capture, implement one source-hash-bound allocation evaluator for distinct Pillars, major-to-Pillar overlap, Cross-Area overlap, and the nonadditive GE quality check."
+        },
+        {
+          "key": "rmc_proficiency_and_project_application",
+          "classification": "c_human_institutional_verification",
+          "refs": [
+            "constraint:requirement_groups[3].analysis_constraints[0]:foreign_language_sequence_or_proficiency",
+            "constraint:requirement_groups[6].analysis_constraints[1]:cross_area_course_or_project_forms"
+          ],
+          "basis": "The catalog delegates native-language proficiency and qualifying curricular-project application rather than publishing a closed course-only rule. Course roster scraping cannot decide whether those non-course routes apply to a paper-cohort student.",
+          "closure": "Obtain Registrar-approved proficiency treatment and institution-verified curricular-project application rules for the exact cohort; do not infer either route from course membership alone."
+        },
+        {
+          "key": "rmc_capacity_and_residency",
+          "classification": "a_existing_evidence_automation",
+          "refs": [
+          "constraint:requirement_groups[9].analysis_constraints[0]:transfer_cap_and_residence_overlap",
+          "constraint:unit_audit.residency:residency"
+        ],
+        "basis": "The exact nonadditive 40-major plus 80-remainder accounting is now implemented. The retained sources also fix the 75-credit combined transfer cap, derived 45-credit institutional floor, and one-half-major residence rule, but the allocation state does not yet identify resident major credit.",
+        "closure": "Implement shared transfer/resident-major allocation after the missing attribute rosters are captured; do not treat the 80-credit remainder as a freely transferable closed roster."
+        },
+        {
+          "key": "rmc_official_wording_conflict",
+          "classification": "c_human_institutional_verification",
+          "refs": ["constraint:requirement_groups[8].analysis_constraints[1]:official_catalog_wording_conflict"],
+          "basis": "The current summary says two 100-level PE courses while the detailed rule says two no-credit experiences; code cannot choose which official statement controls.",
+          "closure": "Obtain an institutional correction or authoritative controlling-rule interpretation."
+        },
+        {
+          "key": "rmc_transfer_application_review",
+          "classification": "c_human_institutional_verification",
+          "refs": ["constraint:requirement_groups[9].analysis_constraints[1]:transfer_grade_and_application_review"],
+          "basis": "The source delegates whether accepted transfer credit applies to GE, major, minor, or electives to Randolph-Macon's evaluation process; a generic equivalency is not a degree-application decision.",
+          "closure": "Obtain official program-level transfer application decisions or an institution-approved rule for the exact paper cohort."
+        },
+        {
+          "key": "rmc_current_verification",
+          "classification": "c_human_institutional_verification",
+          "refs": ["human:current_human_verification_required"],
+          "basis": "No current independent approval receipt covers the final source/evaluator state.",
+          "closure": "Complete independent review and sign exact hashes after source and policy issues are resolved."
+        }
+      ],
+      "figure34_remaining_actions": [
+        {
+          "key": "rmc_complete_current_collegiate_roster",
+          "classification": "b_new_official_source_capture",
+          "refs": [
+            "constraint:requirement_groups[3].analysis_constraints[0]:foreign_language_sequence_or_proficiency",
+            "constraint:requirement_groups[4].analysis_constraints[0]:distinct_pillar_courses",
+            "constraint:requirement_groups[4].analysis_constraints[1]:major_to_pillar_overlap_limit",
+            "constraint:requirement_groups[5].analysis_constraints[0]:pillar_distribution_attributes",
+            "constraint:requirement_groups[6].analysis_constraints[0]:cross_area_overlap_limit",
+            "constraint:requirement_groups[6].analysis_constraints[1]:cross_area_course_or_project_forms",
+            "quality:general_education_nonadditive_overlap"
+          ],
+          "action": "Retain an exhaustive Spring-inclusive MyMaconWeb capture or a Registrar-certified export for all current Collegiate attributes; preserve the rule that absence from the public lower-bound lists is not negative evidence."
+        },
+        {
+          "key": "rmc_integrate_collegiate_overlap_evaluator",
+          "classification": "a_existing_evidence_automation",
+          "refs": [
+            "constraint:requirement_groups[4].analysis_constraints[0]:distinct_pillar_courses",
+            "constraint:requirement_groups[4].analysis_constraints[1]:major_to_pillar_overlap_limit",
+            "constraint:requirement_groups[6].analysis_constraints[0]:cross_area_overlap_limit",
+            "quality:general_education_nonadditive_overlap"
+          ],
+          "depends_on": ["rmc_complete_current_collegiate_roster"],
+          "action": "Implement one hash-bound allocation pass for distinct Pillars and all major, Pillar, and Cross-Area overlap limits after the exhaustive roster is retained."
+        },
+        {
+          "key": "rmc_obtain_proficiency_and_project_decisions",
+          "classification": "c_human_institutional_verification",
+          "refs": [
+            "constraint:requirement_groups[3].analysis_constraints[0]:foreign_language_sequence_or_proficiency",
+            "constraint:requirement_groups[6].analysis_constraints[1]:cross_area_course_or_project_forms"
+          ],
+          "action": "Obtain institution-approved treatment of the proficiency and curricular-project routes for the exact paper cohort."
+        },
+        {
+          "key": "rmc_integrate_transfer_residency_allocator",
+          "classification": "a_existing_evidence_automation",
+          "refs": [
+            "constraint:requirement_groups[9].analysis_constraints[0]:transfer_cap_and_residence_overlap",
+            "constraint:unit_audit.residency:residency"
+          ],
+          "depends_on": ["rmc_obtain_program_transfer_application_decisions"],
+          "action": "Integrate the exact 75-credit cap, 45-credit institutional floor, and one-half-major residence rule with resident-major allocation; keep the 40-major and 80-remainder capacities nonadditive."
+        },
+        {
+          "key": "rmc_resolve_pe_wording_conflict",
+          "classification": "c_human_institutional_verification",
+          "refs": ["constraint:requirement_groups[8].analysis_constraints[1]:official_catalog_wording_conflict"],
+          "action": "Obtain an institutional correction or signed controlling interpretation of the conflicting PE course and zero-credit-experience statements."
+        },
+        {
+          "key": "rmc_obtain_program_transfer_application_decisions",
+          "classification": "c_human_institutional_verification",
+          "refs": ["constraint:requirement_groups[9].analysis_constraints[1]:transfer_grade_and_application_review"],
+          "action": "Obtain official program-level decisions governing how accepted transfer credit applies to the major, Collegiate requirements, and electives for the paper cohort."
+        },
+        {
+          "key": "rmc_figure34_exact_hash_signature",
+          "classification": "c_human_institutional_verification",
+          "refs": ["human:current_human_verification_required"],
+          "depends_on": [
+            "rmc_complete_current_collegiate_roster",
+            "rmc_integrate_collegiate_overlap_evaluator",
+            "rmc_obtain_proficiency_and_project_decisions",
+            "rmc_integrate_transfer_residency_allocator",
+            "rmc_resolve_pe_wording_conflict",
+            "rmc_obtain_program_transfer_application_decisions"
+          ],
+          "action": "Independently review and sign the final exact Figure 3/4 source/evaluator hashes only after every preceding source, evaluator, and institutional action closes."
+        }
+      ]
+    },
+    {
+      "id": "va:degree:shenandoah-university:cs",
+      "slug": "shenandoah-university",
+      "kind": "degree",
+      "source_bundle_sha256": "0d156af2b4800bfe3fcf98f75964623b3d020d458bf5956f849055934fb5e1aa",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["current_human_verification_required"],
+      "operational_refs": ["human:current_human_verification_required"],
+      "findings": [
+        {
+          "key": "shenandoah_current_verification",
+          "classification": "c_human_institutional_verification",
+          "affected_figures": ["3", "4"],
+          "refs": ["human:current_human_verification_required"],
+          "basis": "The exact whole-tree Figure 3/4 proof now resolves the fixed nontransferable menus, qualifying A.S. ShenEd treatment, ranged-capacity allocation, and nonbinding residency exception for all 19 fixed senders. No current independent approval receipt covers that final proof and its exact source/evaluator hashes.",
+          "closure": "Independently review and sign the implemented source/evaluator receipt; retain every non-Figure-3/4 identity and prerequisite gap as fail-closed."
+        }
+      ],
+      "figure34_remaining_actions": [
+        {
+          "key": "shenandoah_figure34_exact_hash_signature",
+          "classification": "c_human_institutional_verification",
+          "refs": ["human:current_human_verification_required"],
+          "action": "Independently review and sign the exact Figure 3/4 source/evaluator hashes; retain every identity and prerequisite question outside Figures 3/4 as fail-closed."
+        }
+      ]
+    },
+    {
+      "id": "va:degree:the-university-of-virginia-s-college-at-wise:cs",
+      "slug": "the-university-of-virginia-s-college-at-wise",
+      "kind": "degree",
+      "source_bundle_sha256": "f8c48454fb9f5b57dee396b0c75721e9ae3d9a20f0031f19a80ba707787e82f3",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["four_year_constraint_evaluator_required"],
+      "operational_refs": [
+        "constraint:requirement_groups[2].analysis_constraints[0]:two_distinct_lab_sciences_from_approved_disciplines",
+        "constraint:requirement_groups[12].analysis_constraints[2]:inclusive_excellence_designation"
+      ],
+      "findings": [
+        {
+          "key": "uva_wise_major_lab_roster_and_pair_qualification",
+          "classification": "b_new_official_source_capture",
+          "affected_figures": ["1", "3", "4", "6"],
+          "refs": [
+            "constraint:requirement_groups[2].analysis_constraints[0]:two_distinct_lab_sciences_from_approved_disciplines"
+          ],
+          "basis": "The exact retained GE page proves twelve positive Scientific Reasoning routes, but the CS-major rule is broader: it also names Environmental Science and never states that the GE list exhausts the approved major-lab choices. The current VCCS equivalency guide supplies positive general equivalencies but does not cover Richard Bland and cannot decide application to the CS major because UVA Wise expressly reserves major-credit application decisions to academic departments.",
+          "closure": "Capture an official current closed CS-major laboratory-science roster (or an official statement that the GE Scientific Reasoning list is exhaustive), then obtain exact program-level application decisions for each sender's two distinct lecture/lab science pairs, including Richard Bland."
+        },
+        {
+          "key": "uva_wise_inclusive_excellence_roster",
+          "classification": "b_new_official_source_capture",
+          "affected_figures": ["3", "4", "6"],
+          "refs": ["constraint:requirement_groups[12].analysis_constraints[2]:inclusive_excellence_designation"],
+          "basis": "The retained current page states the IE requirement, publishes no course membership rows, and directs course-designation questions to the Registrar. The exact contextual-capacity witness does not manufacture the missing IE attribute.",
+          "closure": "Capture a current Registrar or Liberal Arts Committee export, or a signed course-level IE designation roster, for the exact catalog cohort."
+        }
+      ],
+      "figure34_remaining_actions": [
+        {
+          "key": "uva_wise_capture_closed_major_lab_roster",
+          "classification": "b_new_official_source_capture",
+          "refs": ["constraint:requirement_groups[2].analysis_constraints[0]:two_distinct_lab_sciences_from_approved_disciplines"],
+          "action": "Retain all current official lab-course pages or a certified closed CS-major lab roster; do not treat the twelve positive GE Scientific Reasoning routes as exhaustive."
+        },
+        {
+          "key": "uva_wise_certify_sender_lab_application",
+          "classification": "c_human_institutional_verification",
+          "refs": ["constraint:requirement_groups[2].analysis_constraints[0]:two_distinct_lab_sciences_from_approved_disciplines"],
+          "depends_on": ["uva_wise_capture_closed_major_lab_roster"],
+          "action": "Obtain exact CS-department application decisions for each sender's two-discipline lecture/lab bundle, including Richard Bland; generic VCCS equivalencies are not major-application decisions."
+        },
+        {
+          "key": "uva_wise_capture_inclusive_excellence_roster",
+          "classification": "b_new_official_source_capture",
+          "refs": ["constraint:requirement_groups[12].analysis_constraints[2]:inclusive_excellence_designation"],
+          "action": "Retain a current Registrar or Liberal Arts Committee export, or a signed course-level roster, that exhaustively identifies Inclusive Excellence designations."
+        }
+      ]
+    },
+    {
+      "id": "va:degree:virginia-polytechnic-institute-and-state-university:cs",
+      "slug": "virginia-polytechnic-institute-and-state-university",
+      "kind": "degree",
+      "source_bundle_sha256": "f5e40722ad7608e153d4e7d68192ada50abc6875645316c6e433508747407075",
+      "retained_source_status": "exact_retained_official_bytes",
+      "operational_blockers": ["analysis_acceptance_failed", "four_year_constraint_evaluator_required"],
+      "operational_refs": [
+        "constraint:requirement_groups[0].analysis_constraints[0]:honors_math_substitution_and_free_credit_adjustment",
+        "constraint:requirement_groups[1].analysis_constraints[0]:no_double_count_across_cs_elective_groups",
+        "constraint:requirement_groups[1].analysis_constraints[1]:conditional_5000_level_undergraduate_eligibility",
+        "constraint:requirement_groups[17].analysis_constraints[0]:pathways_1a_inside_existing_capacity",
+        "constraint:requirement_groups[17].analysis_constraints[1]:pathways_concept_4_natural_science_overlap",
+        "constraint:requirement_groups[17].analysis_constraints[2]:pathways_no_degree_core_overlap",
+        "constraint:requirement_groups[18].analysis_constraints[0]:nontechnical_course_distribution",
+        "constraint:requirement_groups[19].analysis_constraints[0]:minimum_course_grades_and_gpas",
+        "constraint:requirement_groups[2].analysis_constraints[0]:approved_experience_and_plan",
+        "constraint:requirement_groups[20].analysis_constraints[1]:foreign_language_proficiency",
+        "constraint:requirement_groups[4].analysis_constraints[0]:eligible_course_exclusions_and_distinctness",
+        "constraint:requirement_groups[5].analysis_constraints[0]:department_approval_and_no_double_count",
+        "quality:cross_group_elective_distinctness",
+        "quality:pathways_attribute_and_overlap_evaluator_required",
+        "quality:program_listed_codes_absent_from_course_catalog",
+        "quality:variable_credit_and_conditional_5000_level_options",
+        "source_flag:program_listed_codes_absent_from_course_catalog"
+      ],
+      "protected_tree_reconciliation": {
+        "contract": "virginia_tech_protected_candidate_core_reconciliation_v1",
+        "source_bundle_sha256": "f5e40722ad7608e153d4e7d68192ada50abc6875645316c6e433508747407075",
+        "protected_proof_tree_sha256": "14bc69c7b2e40a83e875f41ef0a3d8cb980348e25e6b643ad1f3571d88ba6c67",
+        "candidate_proof_tree_sha256": "7914e1e4ebff823fdc00d3e345f8db2c604109c7a15739960a7122ea5fb49376",
+        "protected_major_core_sha256": "f4448d879189e426d36192e1f165a920d8545a5c284a40cce91d0a041de99469",
+        "candidate_major_core_sha256": "aa0c2173007ff7a6ca97164f391941f4a3365361ca57099ce545abb900593f2d",
+        "candidate_only_official_alternatives": [
+          {"code": "CS2064", "units": 3, "path": "requirement_groups[0].sections[0].receivers[1]"},
+          {"code": "ECE2564", "units": 3, "path": "requirement_groups[0].sections[1].receivers[1]"},
+          {"code": "MATH2405H", "units": 5, "path": "requirement_groups[0].sections[5].receivers[1]"},
+          {"code": "MATH2406H", "units": 5, "path": "requirement_groups[0].sections[6].receivers[2]"},
+          {"code": "ECE3514", "units": 3, "path": "requirement_groups[3].sections[1].receivers[1]"}
+        ],
+        "raw_candidate_signature_status": "unsigned",
+        "raw_candidate_import_blocked": true,
+        "automatic_overlay_allowed": false,
+        "required_closure": "independent_protected_core_reconciliation_and_current_signature",
+        "publication_verification_receipt": {
+          "category": "verified_protected_core_change",
+          "unresolved": true,
+          "raw_candidate_import_blocked": true,
+          "protected_core_diff_count": 5,
+          "protected_core_path_receipts": [
+            {
+              "category": "course_or_choice",
+              "path_pattern": "requirement_groups[].sections[].receivers[]",
+              "change": "added",
+              "leaf_diff_count": 5
+            }
+          ],
+          "requirement_capacity_evidence_projection": {"safe": false}
+        }
+      },
+      "findings": [
+        {
+          "key": "virginia_tech_protected_core_reconciliation",
+          "classification": "c_human_institutional_verification",
+          "affected_figures": ["3", "4"],
+          "refs": [
+            "constraint:requirement_groups[0].analysis_constraints[0]:honors_math_substitution_and_free_credit_adjustment",
+            "constraint:requirement_groups[1].analysis_constraints[0]:no_double_count_across_cs_elective_groups",
+            "constraint:requirement_groups[1].analysis_constraints[1]:conditional_5000_level_undergraduate_eligibility",
+            "constraint:requirement_groups[17].analysis_constraints[0]:pathways_1a_inside_existing_capacity",
+            "constraint:requirement_groups[17].analysis_constraints[1]:pathways_concept_4_natural_science_overlap",
+            "constraint:requirement_groups[17].analysis_constraints[2]:pathways_no_degree_core_overlap",
+            "constraint:requirement_groups[18].analysis_constraints[0]:nontechnical_course_distribution",
+            "constraint:requirement_groups[19].analysis_constraints[0]:minimum_course_grades_and_gpas",
+            "constraint:requirement_groups[2].analysis_constraints[0]:approved_experience_and_plan",
+            "constraint:requirement_groups[20].analysis_constraints[1]:foreign_language_proficiency",
+            "constraint:requirement_groups[4].analysis_constraints[0]:eligible_course_exclusions_and_distinctness",
+            "constraint:requirement_groups[5].analysis_constraints[0]:department_approval_and_no_double_count",
+            "quality:cross_group_elective_distinctness",
+            "quality:pathways_attribute_and_overlap_evaluator_required",
+            "quality:program_listed_codes_absent_from_course_catalog",
+            "quality:variable_credit_and_conditional_5000_level_options",
+            "source_flag:program_listed_codes_absent_from_course_catalog"
+          ],
+          "basis": "The retained official source bundle is unchanged, but the verified protected tree hashes to 14bc69c7b2e40a83e875f41ef0a3d8cb980348e25e6b643ad1f3571d88ba6c67 and lacks five alternatives present in the exact current candidate: CS 2064, ECE 2564, MATH 2405H, MATH 2406H, and ECE 3514. Removing exactly those five receivers from the unsigned candidate reproduces both the protected proof-tree hash and protected major-core hash. The candidate proof hash is 7914e1e4ebff823fdc00d3e345f8db2c604109c7a15739960a7122ea5fb49376, and the live publication-verification plan reports an unresolved five-leaf verified protected-core change with raw_candidate_import_blocked=true. Candidate evaluator success therefore cannot authorize mutation of the verified protected core.",
+          "closure": "Independently reconcile all five receiver additions against the retained official source receipts, review the final exact Figure 3/4 proof and evaluator hashes, and sign the protected-core replacement. Never carry the old signature or apply the raw candidate as an automatic overlay."
+        }
+      ],
+      "figure34_remaining_actions": [
+        {
+          "key": "virginia_tech_independent_protected_core_reconciliation_and_signature",
+          "classification": "c_human_institutional_verification",
+          "refs": [
+            "constraint:requirement_groups[0].analysis_constraints[0]:honors_math_substitution_and_free_credit_adjustment",
+            "constraint:requirement_groups[1].analysis_constraints[0]:no_double_count_across_cs_elective_groups",
+            "constraint:requirement_groups[1].analysis_constraints[1]:conditional_5000_level_undergraduate_eligibility",
+            "constraint:requirement_groups[17].analysis_constraints[0]:pathways_1a_inside_existing_capacity",
+            "constraint:requirement_groups[17].analysis_constraints[1]:pathways_concept_4_natural_science_overlap",
+            "constraint:requirement_groups[17].analysis_constraints[2]:pathways_no_degree_core_overlap",
+            "constraint:requirement_groups[18].analysis_constraints[0]:nontechnical_course_distribution",
+            "constraint:requirement_groups[19].analysis_constraints[0]:minimum_course_grades_and_gpas",
+            "constraint:requirement_groups[2].analysis_constraints[0]:approved_experience_and_plan",
+            "constraint:requirement_groups[20].analysis_constraints[1]:foreign_language_proficiency",
+            "constraint:requirement_groups[4].analysis_constraints[0]:eligible_course_exclusions_and_distinctness",
+            "constraint:requirement_groups[5].analysis_constraints[0]:department_approval_and_no_double_count",
+            "quality:cross_group_elective_distinctness",
+            "quality:pathways_attribute_and_overlap_evaluator_required",
+            "quality:program_listed_codes_absent_from_course_catalog",
+            "quality:variable_credit_and_conditional_5000_level_options",
+            "source_flag:program_listed_codes_absent_from_course_catalog"
+          ],
+          "action": "Independently reconcile the exact five-receiver protected-core difference, review the final source/proof/evaluator hashes, and create a current signature. Do not auto-overlay the unsigned raw candidate or carry the protected tree's prior signature."
+        }
+      ]
+    }
+  ],
+  "priority_closure_plan": [
+    {
+      "priority": 1,
+      "action": "Preserve the implemented source-bound Figure 3/4 proofs through the next import: JSR and Camp fixed six-credit distinct-area aggregates plus Rappahannock's exact published 123-course bundle carrier.",
+      "expected_document_closures": 0,
+      "reason": "These remove only the exact operational Figure 3/4 sub-blockers; each document still retains independent source, arithmetic, destination, mathematics, Figure 6, or human-verification blockers."
+    },
+    {
+      "priority": 2,
+      "action": "Preserve the completed Mountain Gateway, Rappahannock bundle, RMC major/noncredit and capacity, Shenandoah, and UVA Wise contextual-capacity proofs through regeneration.",
+      "expected_document_closures_before_review": 0,
+      "reason": "Shenandoah still needs an independent signature, RMC still lacks GE attributes and policy decisions, Rappahannock still lacks math/alignment evidence, and UVA Wise still lacks a complete IE roster and pair-qualified major-lab evidence."
+    },
+    {
+      "priority": 3,
+      "action": "Acquire new official closed evidence for JSR's pair-scoped destination variant, Mountain Gateway, New River, Rappahannock destination/math rules, Tidewater reproducible pages, Wytheville clusters/advisor options, RMC GE attributes/language routes, and UVA Wise IE designations plus pair-qualified major-lab choices.",
+      "expected_document_closures": "dependent_on_capture",
+      "reason": "The current retained evidence does not determine the complete feasible set."
+    },
+    {
+      "priority": 4,
+      "action": "Seek institutional adjudication for Blue Ridge, Camp, Richard Bland's component range, Bridgewater, JSR's one-credit conflict, Tidewater footnote 8, and RMC's wording/application policies; independently reconcile Richard Bland's 93 owner-local identities and Virginia Tech's exact five-receiver protected-core difference; then complete the required current signatures.",
+      "expected_document_closures": "dependent_on_institutional_answers_and_review",
+      "reason": "These are contradictions, delegated decisions, or protected verified-core changes. Virginia Tech's unsigned raw candidate is never an automatic overlay even though its retained official source bundle is exact."
+    }
+  ]
+}

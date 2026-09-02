@@ -1,0 +1,100 @@
+275
+PSYC 207 or 208, and 312; SOCL 314/314L; CPSC 110;
+ENGR 212/212L.
+Graduate courses* required (senior year):
+Selectsixcredithours:PHYS501,502,or504(thesecourses
+can replace PHYS 401, 402, or 404 required for the major).
+*See the graduate catalog for course descriptions.
+The Curriculum in
+Computer Engineering
+CPEN 214. Digital Logic Design (3-3-0)
+Pre or Corequisite: ENGR 121 or PHYS 152 or 202.
+Introduction to logic circuits; combinatorial logic circuits;
+memoryelements;sequentiallogiccircuits;registertransfer
+logic. Hands-on experience with devices emphasized.
+CPEN 315. Digital System Design (3-3-0)
+Prerequisite: CPEN 214 with a grade of C- or higher.
+Pre or Corequisite: CPEN 315L.
+Restricted to CPEN, EE, or PHYS majors.
+Digital design methodology and techniques; control and
+timing; machine organization, instruction sequencing and
+data for flow control; control unit design; and techniques.
+CPEN 315L. Digital System Design Lab (1-0-3)
+Corequisite: CPEN 315.
+Advanced sequential circuit design and implementation,
+design with programmable logic, digital circuit simulation.
+The use of modern Electronic Design Automation (EDA)
+tools is emphasized. Lab fees apply each term.
+CPEN 371. WI: Computer Ethics (2-2-0)
+Prerequisites: ENGL 223 with a C- or higher; major or
+minor in PCSE.
+This course covers contemporary ethical issues in science
+and engineering. A framework for professional activity is
+developed, which involves considerations and decisions of
+social impact. Current examples will be studied, discussed,
+and reported: IEEE and ACM codes of ethics, software
+and hardware property law, privacy, social implications of
+computers,responsibilityandliabilities,andcomputercrime.
+CPEN 414. ComputerArchitecture (3-3-0)
+Prerequisite: CPEN 315.
+Corequisite: PHYS 341.
+Fundamentals of modern computer architecture and
+quantitative design principles. Topics include: evaluation
+of performance and energy efficiency; instruction set
+architecture (ISA) design; processor microarchitecture,
+includingadvancedpipelining,superscalar,andout-of-order
+execution;memoryhierarchyandcachecoherence;multicore
+architectures; and an introduction to GPU and specialized
+accelerators.
+CPEN 422. Embedded Systems (3-3-0)
+Prerequisites: CPSC 256 or 327, CPEN 214.
+Introduces the principles and practices of designing and
+programming embedded systems. Study the hardware and
+software foundations of embedded platforms, including
+hardwareorganization,digitalI/O,timers,interrupts,analog-
+to-digital conversion, and serial communication protocols.
+Emphasis is placed on hardware abstraction layers and
+software architectures for embedded systems, low-level
+C programming, and interface with sensors and actuators.
+CPEN 431. Computer Engineering Design (3-2-1)
+Prerequisites: CPEN 315/315L
+Pre or Corequisite: CPSC 270.
+The engineering design course focuses on applications of
+computerengineering.Engineeringskillsdevelopedthrough
+supervised design projects. Design projects incorporate
+techniques and concepts developed in previous courses.
+Topics include field programmable gate arrays (FPGA)
+implementation, micro-programmable controllers, and
+device interfacing. Development systems and Electronic
+DesignAutomationsoftwareareusedthroughoutthecourse.
+CPEN 495. Special Topics (3-3-0)
+Prerequisites: As announced.
+Topics vary, determined by the special interests and needs
+of students and the expertise of faculty.
+CPEN 497. WI: Computer Engineering Capstone
+Design 1 (2-2-0)
+Prerequisite: ENGL 223.
+Pre or Corequisites: CPEN 371W, computer engineering
+major, senior standing.
+Part one of the capstone design project in which a senior
+student completes a practical computer engineering project
+through applying the engineering knowledge and judgment
+they have acquired during their college career. This course
+will focus on developing a project proposal, the design
+process, and developing technical writing skills. A formal
+written technical report is required.
+CPEN 498. Computer Engineering Capstone Design 2
+(2-2-0)
+Prerequisite: CPEN 497W
+Part two of the capstone design project in which a senior
+student completes a practical computer engineering project
+through applying the engineering knowledge and judgment
+they have acquired during their college career. The course
+will focus on prototyping, testing, and other design skills.A
+formal oral presentation and a written report are required as
+well as the artifact that is the design.
+The Curriculum in Computer Science
+CPSC 110. Introduction to Computing (3-3-0) LLFR
+Prerequisite:Highschoolalgebraoronesemesterofcollege-
+level mathematics.
+Designed for students majoring in other than the computer

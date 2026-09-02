@@ -1,0 +1,157 @@
+<!-- 11.0701 --><!-- 11.0701 --><!-- select po.acad_plan, p.cip_code, p.descr254, po.descr, po.degree, po.institution 
+					from programs p, program_offerings po
+					where 
+					p.cip_code = '11.0701'
+					and ((p.acad_plan=substring(po.acad_plan,1,3) and p.acad_plan!='221')
+						OR
+						(p.acad_plan=substring(po.acad_plan,5,3) and po.acad_plan like '221%')
+						)
+					and po.institution='JT290' 	ORDER By po.degree, po.institution, p.descr254, p.descr --><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+	<title>Brightpoint Community College: Computer Science</title>
+	<link rel="icon" href="https://www.vccs.edu/wp-content/uploads/2019/02/cropped-favicon-32x32.png" sizes="32x32" />
+	<link rel="icon" href="https://www.vccs.edu/wp-content/uploads/2019/02/cropped-favicon-192x192.png" sizes="192x192" />
+	<link rel="apple-touch-icon" href="https://www.vccs.edu/wp-content/uploads/2019/02/cropped-favicon-180x180.png" />
+	<meta name="msapplication-TileImage" content="https://www.vccs.edu/wp-content/uploads/2019/02/cropped-favicon-270x270.png" />
+	<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+	<link rel="preconnect" href="//fonts.gstatic.com" />
+	<link rel="preload" id="educatito-google-fonts-css" href="//fonts.googleapis.com/css?family=Roboto%3A100%2C100i%2C300%2C300i%2C400%2C400i%2C500%2C500i%2C700%2C700i%7CMontserrat%3A300%2C400%2C500%2C600%2C700" type="text/css" media="all"  as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<link rel="preload" id="redux-google-fonts-educatito_options-css" href="https://fonts.googleapis.com/css?family=Roboto+Slab%3A100%2C300%2C400%2C700&amp;ver=1588756781" type="text/css" media="all" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous" defer></script>
+	<link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous" defer ></script>
+	<link rel="stylesheet" type="text/css" href="/style.css"  as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<link rel="stylesheet" type="text/css" href="/styles/theme.css"  as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<!-- link rel="stylesheet" type="text/css" href="/styles/vccs-new.css" />
+	<link rel="preload" type="text/css" href="/styles/vccs-new-style.css"  as="style" onload="this.onload=null;this.rel='stylesheet'" / -->
+	<!-- link rel="stylesheet" type="text/css" media="print" href="/print.css" / -->
+	<script type="text/javascript" src="/common.js?version=2021-02-04" defer></script>
+	<meta name=viewport content="width=device-width, initial-scale=1" />
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6GW2NG3QC0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6GW2NG3QC0');
+</script>
+
+		</head>
+		
+<body id="programs">
+
+<!-- VCCS Header -->
+<!-- header -->
+<header role="banner">
+<div class="menu-bg small shadow-sm p-3">
+         <div class="row container">
+                <div id="logo" class="three column columns">
+                   <a class="small" href="/" title="courses home page"><img src="/vccs-logo-258x105.png" alt="VCCS Logo" width="258" height="105"></a>
+                </div>
+<!-- 
+                <div id="top_menu" class="column columns">
+                     <div class="categories-content"><ul id="menu-top_menu" class="menu"><li id="menu-item-78" class="item-1 menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a title="About" href="http://www.vccs.edu/about/" class="small">About</a></li>
+<li id="menu-item-290" class="item-2 menu-item menu-item-type-post_type menu-item-object-page menu-item-290"><a title="Statewide Innovations" href="http://www.vccs.edu/statewide-innovations/" class="small">Statewide<br> Innovations</a></li>
+<li id="menu-item-242" class="item-3 menu-item menu-item-type-post_type menu-item-object-page menu-item-242"><a title="Students" href="http://www.vccs.edu/students/" class="small">Students</a></li>
+<li id="menu-item-367" class="item-4 menu-item menu-item-type-post_type menu-item-object-page menu-item-367"><a title="Workforce" href="http://www.vccs.edu/workforce/" class="small">Workforce</a></li>
+<li id="menu-item-79" class="item-5 menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a title="Giving" href="http://www.vccs.edu/giving/" class="small">Giving</a></li>
+<li id="menu-item-167" class="item-6 menu-item menu-item-type-post_type menu-item-object-page menu-item-167"><a title="Careers" href="http://www.vccs.edu/careers/" class="small">Careers</a></li>
+<li id="menu-item-745" class="item-7 menu-item menu-item-type-post_type menu-item-object-page menu-item-745"><a title="Contact Us" href="http://www.vccs.edu/contact-us/" class="small">Contact Us</a></li>
+</ul></div>                 </div>
+-->
+          </div>
+     </div>
+</header>
+<!-- End VCCS Header -->
+
+<div id="maincontent" class="m-2">
+
+
+<nav role="navigation"><ul class="breadcrumb">
+	<li class="breadcrumb-item"><a href="/">Home</a></li><li class="breadcrumb-item"><a href="/colleges">Colleges</a></li>
+<li class="breadcrumb-item"><a href="/colleges/brightpoint">Brightpoint</a></li>
+<li class="breadcrumb-item"><a href="/colleges/brightpoint/programs">Programs</a></li>
+<li class="breadcrumb-item active">Computer Science</li></ul></nav>
+
+<a name="cont" id="cont"></a>
+<h2 id="mainHeader">Computer Science at Brightpoint Community College</h2>
+                        <div class="searchForm pb-4">
+                        <form method="get" action="/colleges/brightpoint/programs/search" id="programsearch">
+                                                <fieldset>
+                                                <label for="pfind">Search programs</label>
+                        <input type="text" size="40" placeholder="search words" name="find" id="pfind" value="" />
+                                                <input type="submit" value="Search" />
+                                                <br />
+				<select aria-label="College Selector" style="appearance:auto !important; width: auto; min-width: 300px; margin-top: 5px;" name="scope" id="scope"  onchange="this.form.action='/' + this[this.selectedIndex].dataset.stem + 'programs/search';">
+				<option value="vccs" data-stem="" />All colleges</option><option value="college"   data-stem="colleges/brcc\/"/>Blue Ridge</option><option value="college" selected  data-stem="colleges/brightpoint\/"/>Brightpoint</option><option value="college"   data-stem="colleges/camp\/"/>Camp</option><option value="college"   data-stem="colleges/cvcc\/"/>Central Virginia</option><option value="college"   data-stem="colleges/dcc\/"/>Danville</option><option value="college"   data-stem="colleges/escc\/"/>Eastern Shore</option><option value="college"   data-stem="colleges/gcc\/"/>Germanna</option><option value="college"   data-stem="colleges/laurelridge\/"/>Laurel Ridge</option><option value="college"   data-stem="colleges/mecc\/"/>Mountain Empire</option><option value="college"   data-stem="colleges/mgcc\/"/>Mountain Gateway</option><option value="college"   data-stem="colleges/nrcc\/"/>New River</option><option value="college"   data-stem="colleges/nova\/"/>Northern Virginia</option><option value="college"   data-stem="colleges/phcc\/"/>Patrick & Henry</option><option value="college"   data-stem="colleges/pvcc\/"/>Piedmont Virginia</option><option value="college"   data-stem="colleges/rcc\/"/>Rappahannock</option><option value="college"   data-stem="colleges/reynolds\/"/>Reynolds</option><option value="college"   data-stem="colleges/svcc\/"/>Southside Virginia</option><option value="college"   data-stem="colleges/swcc\/"/>Southwest Virginia</option><option value="college"   data-stem="colleges/tcc\/"/>Tidewater</option><option value="college"   data-stem="colleges/vhcc\/"/>Virginia Highlands</option><option value="college"   data-stem="colleges/vpcc\/"/>Virginia Peninsula</option><option value="college"   data-stem="colleges/vwcc\/"/>Virginia Western</option><option value="college"   data-stem="colleges/wcc\/"/>Wytheville</option>
+				</select>
+                                                </fieldset>
+                        </form>
+
+                                                </div>
+
+
+<div id="main">
+<p>The following degrees and majors are offered as part of the <span style="font-weight:bold;">Computer Science</span> program at <span style="font-weight:bold;">Brightpoint Community College</span>.</p>
+
+
+				
+					<!-- start degree --> 
+					<a name="AssociateofScience"></a>
+					
+					<div class="degreeDiv shadow p-3 m-3">
+					<h3>Associate of Science&nbsp;&nbsp;<a style="text-decoration:none;" href="#AssociateofScience">&#8595;</a></h3>
+					
+				<!-- start programs -->
+				<div class="programDiv">
+					<h4><a href="/colleges/brightpoint/programs/11.0701-ComputerScience">Computer Science</a></h4>
+					<!-- start majors -->
+					<ul>
+					<li class="major"><a href="/colleges/brightpoint/programs/major/246-01.AssociateofScienceDegreeinComputerScience">Associate of Science Degree in Computer Science</a> (AS)</li>
+			
+		<!-- last end majors -->
+		</ul>
+		<!-- last end program -->
+		</div>
+		<!-- last end degree -->
+		</div>
+		
+		</div>
+
+
+<div id="nav" class="row justify-content-around pt-3">
+	<div class="col-sm-3">
+		<h2><a href="/courses">Courses</a></h2>
+				<p>Search all courses offered across Virginia's Community Colleges and browse subjects and courses across all colleges.  View each individual course description, content summary, and schedule across Virginia.  Find the colleges which offer the course as well as when and where the course is offered, the admission requirements and student services available at those colleges.</p>
+		<ul>
+			<li><a href="/courses">Full Subject listing</a></li>
+			<li><a href="/courses?filter=WW-ER">Distance learning courses</a></li>
+			<li><a href="/courses/outlines">Courses with detailed outlines</a></li>
+		</ul>
+		</div>
+	<div class="col-sm-3">
+		<h2><a href="/programs">Programs</a></h2>
+				<p>Search for key information about Programs and Majors across Virginia's Community Colleges.  Browse all Degree types and curriculums offered by Virginia's Community Colleges.  Focus on a specific Program and all possible majors are presented.  Focus on a Major and see all the community colleges in Virginia that offer that curriculum.</p>
+		<ul>
+			<li><a href="/programs">Full Programs listing</a></li>
+		</ul>
+		</div>
+	<div class="col-sm-3">
+		<h2><a href="/colleges">Colleges</a></h2>
+		<p>Focus on courses and programs offered by specific colleges.  Search for, and browse, specific courses and programs at the college you are interested in.</p>
+		</div>
+		<div class="clearer">&nbsp;</div>
+</div>
+
+	</div>
+	
+
+	
+
+
+</body>
+</html>

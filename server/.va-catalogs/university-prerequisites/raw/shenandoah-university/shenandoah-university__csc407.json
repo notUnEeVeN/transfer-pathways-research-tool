@@ -1,0 +1,21 @@
+{
+  "route_id": "shenandoah-university__csc407",
+  "requested_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=55428",
+  "final_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=55428",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 168257,
+  "content_sha256": "0e77a02257bcda64ce4541c546cc04b85eeb8be6c79e0f6a77a218b77f730af5",
+  "fetched_at": "2026-08-25T00:19:26.109Z",
+  "robots": {
+    "url": "https://catalog.su.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "CSC407"
+  ]
+}

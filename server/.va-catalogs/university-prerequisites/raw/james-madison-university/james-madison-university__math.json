@@ -1,0 +1,88 @@
+{
+  "route_id": "james-madison-university__math",
+  "requested_url": "https://catalog.jmu.edu/courses/math/",
+  "final_url": "https://catalog.jmu.edu/courses/math/",
+  "capture_status": "official_browser_document_captured",
+  "blocked_reason": null,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 174336,
+  "content_sha256": "b0bb5de8fd65f4a48f183582c4abbd1faa2fe57241692595bcdd75bbab72f853",
+  "fetched_at": "2026-08-25T02:31:43.144Z",
+  "browser_challenge_receipt": {
+    "contract": "known_courseleaf_host_exact_same_url_document_202_then_200_raw_response_v1",
+    "requested_url": "https://catalog.jmu.edu/courses/math/",
+    "exact_same_url": true,
+    "document_response_count": 2,
+    "browser_engine": "chromium",
+    "browser_version": "151.0.7922.34",
+    "document_responses": [
+      {
+        "ordinal": 1,
+        "http_status": 202,
+        "url": "https://catalog.jmu.edu/courses/math/",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 2431,
+        "content_sha256": "48778973e01453f8cfbff2397d680610338ebc85fdbefdb6320fc01522c45bbe",
+        "cache_path": "university-prerequisites/raw/james-madison-university/james-madison-university__math.challenge.html"
+      },
+      {
+        "ordinal": 2,
+        "http_status": 200,
+        "url": "https://catalog.jmu.edu/courses/math/",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 174336,
+        "content_sha256": "b0bb5de8fd65f4a48f183582c4abbd1faa2fe57241692595bcdd75bbab72f853",
+        "cache_path": "university-prerequisites/raw/james-madison-university/james-madison-university__math.html"
+      }
+    ]
+  },
+  "robots_receipt": {
+    "contract": "known_courseleaf_host_browser_challenge_robots_policy_and_exact_path_allowance_v1",
+    "capture": {
+      "contract": "known_courseleaf_host_exact_same_url_document_202_then_200_raw_response_v1",
+      "requested_url": "https://catalog.jmu.edu/robots.txt",
+      "exact_same_url": true,
+      "document_response_count": 2,
+      "browser_engine": "chromium",
+      "browser_version": "151.0.7922.34",
+      "document_responses": [
+        {
+          "ordinal": 1,
+          "http_status": 202,
+          "url": "https://catalog.jmu.edu/robots.txt",
+          "content_type": "text/html; charset=UTF-8",
+          "byte_length": 2431,
+          "content_sha256": "695e765c9a65a4d1003153d7136fed09d3f0ffd8bb8246de1cbf737fc0fc7274",
+          "cache_path": "university-prerequisites/raw/_robots/catalog.jmu.edu__browser.challenge.html"
+        },
+        {
+          "ordinal": 2,
+          "http_status": 200,
+          "url": "https://catalog.jmu.edu/robots.txt",
+          "content_type": "text/plain; charset=UTF-8",
+          "byte_length": 799,
+          "content_sha256": "ff666b5101859b11ad1dfb9c7b408e7235a5f31998e372c1a33eb7fc3ce267c9",
+          "cache_path": "university-prerequisites/raw/_robots/catalog.jmu.edu__browser.txt"
+        }
+      ]
+    },
+    "nonempty_final_body": true,
+    "parsed_policy": {
+      "rule_count": 34,
+      "crawl_delay_seconds": 0,
+      "policy_sha256": "183c4fb1daf5258275229a8afcd54193b653a050de971c514b2cb0a08ae2bb0f"
+    },
+    "checked_path": "/courses/math/",
+    "path_allowed": true
+  },
+  "target_course_codes": [
+    "MATH220",
+    "MATH227",
+    "MATH229",
+    "MATH231",
+    "MATH232",
+    "MATH235",
+    "MATH245",
+    "MATH318"
+  ]
+}

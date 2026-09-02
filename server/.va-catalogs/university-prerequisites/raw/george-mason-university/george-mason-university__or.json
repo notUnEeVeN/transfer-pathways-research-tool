@@ -1,0 +1,24 @@
+{
+  "route_id": "george-mason-university__or",
+  "requested_url": "https://catalog.gmu.edu/courses/or/",
+  "final_url": "https://catalog.gmu.edu/courses/or/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 147968,
+  "content_sha256": "e8e6691f665250346dba533506012c0cc18c5c3d77eb928772d9b7d176632188",
+  "fetched_at": "2026-08-24T18:02:35.464Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "OR335",
+    "OR441",
+    "OR442",
+    "OR481"
+  ]
+}

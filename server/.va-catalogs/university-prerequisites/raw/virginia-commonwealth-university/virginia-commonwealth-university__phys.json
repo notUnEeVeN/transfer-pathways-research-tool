@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-commonwealth-university__phys",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/phys/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/phys/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 50259,
+  "content_sha256": "1da547bee3612282a35abc4a2c5cd1eecb35e0129f343f892aa663646dd425db",
+  "fetched_at": "2026-08-24T18:03:48.280Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "PHYS207"
+  ]
+}

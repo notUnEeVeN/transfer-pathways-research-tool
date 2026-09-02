@@ -1,0 +1,23 @@
+# Oberlin's bot.
+User-agent: archive.org_bot
+Disallow: /portfolio.php
+Disallow: /portfolio_nopop.php
+Disallow: /ajax/
+Disallow: /search_advanced.php
+crawl-delay: 15
+
+#Owens Community College
+User-agent: occ-crawler
+Disallow: /portfolio.php
+Disallow: /portfolio_nopop.php
+Disallow: /ajax/
+Disallow: /search_advanced.php
+crawl-delay: 15
+
+# Everyone else.
+User-agent: *
+Disallow: /portfolio.php
+Disallow: /portfolio_nopop.php
+Disallow: /ajax/
+Disallow: /search_advanced.php
+crawl-delay: 120

@@ -1,0 +1,11 @@
+{
+  "requested_url": "https://mymaconweb.rmc.edu/ICS/Portlets/CUS/ICS/SimpleQuery/Query.ashx",
+  "final_url": "https://mymaconweb.rmc.edu/ICS/Portlets/CUS/ICS/SimpleQuery/Query.ashx",
+  "method": "POST",
+  "request_body_sha256": "0cedb67d44c2381b71564969aab6f0d744002106a8323f3b19d205a963ebea92",
+  "http_status": 200,
+  "content_type": "application/json; charset=utf-8",
+  "response_bytes": 202,
+  "response_sha256": "cb412cb2fd9f87be057c01439aeebaec92e69a8ab2db92b2c634aba5acd8dd40",
+  "fetched_at": "2026-08-25T13:00:12.009Z"
+}

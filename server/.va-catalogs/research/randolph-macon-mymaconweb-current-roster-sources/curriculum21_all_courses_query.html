@@ -1,0 +1,751 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta http-equiv="X-UA-Compatible" content="IE=EDGE" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" /><title>
+	Curriculum21 Courses - Main View | Curriculum21 | MyMaconWeb | MyMaconWeb
+</title><base href="https://mymaconweb.rmc.edu/ICS/">
+<script type="text/javascript">
+    window.jenzabar = {};
+    jenzabar.userSettings = {
+        culture:    'en-US',
+        language:   'en',
+        dateFormat: 'm/d/yy'
+    };
+    window.userSettings = jenzabar.userSettings;
+
+    jenzabar.jicsVersion = {
+        text: {
+	        version: '?v=' + '2026.1.0.2'
+        }
+    }
+    jenzabar.siteSettings = {
+        textEditorSettings: {
+            customAudioMinutesLimit: 5,
+            customVideoMinutesLimit: 5
+        },
+        text: {
+            more: 'More'
+        }
+    };
+</script>
+
+<!-- BEGIN Html Head Elements -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.3.0"></script>
+<link rel="stylesheet" type="text/css" href="/ICS/UI/Common/Styles/jQuery/jquery-ui.custom.css" />
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<script type="text/javascript" src="portlets/cus/ics/BCProxyLogin/Scripts/ProxyLogin.js"></script>
+			<link type="text/css" rel="stylesheet" href="portlets/cus/ics/BCProxyLogin/Styles/ProxyLoginStyles.css" />
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/signalr.js/2.4.3/jquery.signalR.min.js?v=2026.1.0.2"></script>
+<script type="text/javascript" src="/ICS/signalr/hubs?v=2026.1.0.2"></script>
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/Plugins/moment.min.js?v=2026.1.0.2"></script>
+<!-- END Html Head Elements -->
+
+<link href="/ICS/UI/Common/Styles/css/site-bundle.css?v=zA8oHtllLoc6lqHHLvtXlVnTaGp6Itc4Y33WyvJvx241" rel="stylesheet"/>
+
+
+<link href="/ICS/Portlets/CUS/ICS/SimpleQuery/Style/SimpleQueryPortletStyle.css" type="text/css" rel="stylesheet" />
+
+<link rel="stylesheet" type="text/css" media="print" href="/ICS/UI/Common/Styles/print.css" />
+
+
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/jcsfl.js"></script>
+<script src="/ICS/UI/Common/Scripts/site-bundle.js?v=zFL0EX8MV2e-edYNRN2i8pJQVZB2x25fvSfp_-2ACvE1"></script>
+
+
+<!-- BEGIN Html Head Elements After JICS JS Framework -->
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/SignalRManager.js?v=2026.1.0.2"></script>
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/LayoutManager.js?v=2026.1.0.2"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css?v=2026.1.0.2">
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js?v=2026.1.0.2"></script>
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/FootableAccessibilityExtensions.js?v=2026.1.0.2"></script>
+<!-- END Html Head Elements After JICS JS Framework -->
+
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/Globalization.js.aspx?id=4bdd8481e55346f288b569748db29904"></script>
+<!--[if IE]>
+<style type="text/css" media="all">@import url( UI/Common/Styles/IEOnly.css );</style>
+<script type="text/javascript" language="JavaScript" src="UI/Common/Scripts/IEOnly.js"></SCRIPT>
+<![endif]-->
+<script type="text/javascript">
+    window.Portal =
+    {
+        url: 'https://mymaconweb.rmc.edu/ICS/',
+        uid: null,
+    };
+</script>
+
+
+<script type="text/javascript">
+    $.extend(window.Portal,{
+        timeout: 30,
+        SessionMonitor: JCSL.JICS.get_session_monitor()
+        
+    });
+</script>
+
+<script type="text/javascript">
+    jQuery(function () {
+        jenzabar.framework.timeoutWarning.create(true);
+    });
+</script>
+<script type="text/javascript" language="javascript">
+
+    $.connection.portalHub.client.sendLoginWarning = function (userId) {
+        let id = "b0b00000-c542-4d2a-86e6-55ebbbcd85da";
+        if (id === userId) {
+            alert("Your username has been used to authenticate in another browser.  If you are not responsible for this login, your account may be compromised!  Contact an administrator for assistance.");
+        }
+    }
+
+</script><link rel="stylesheet" type="text/css" href="/ICS/UI/Themes/Indio/style.css?v=1&u=08%2f25%2f2026+09%3a00%3a09" />
+<script type="text/javascript" src="/ICS/UI/Themes/Indio/js/javascript.js?v=1"></script>
+
+<style id="customCssImport_custom" type="text/css" media="all">
+	@import url( /ICS/StaticPages/GetFile.aspx?target=be7884da-8f42-4016-b362-9c70b7f95a83);
+</style>
+<link rel="Shortcut Icon" href="favicon.ico" type="image/x-icon">
+<style id="customHead_custom" type="text/css" media="all">
+                @import url( /ICS/ClientConfig/HtmlContent/custom-bundle.css?v=);
+</style>
+<script type="text/javascript">
+ //<![CDATA[
+  jQuery(document).ready(function($){
+ 	$("div#header-tabs li").filter(function() {
+		return ($.trim($(this).text()) === "My Pages");
+		}).remove();
+  });
+ //]]>
+</script></head>
+<body onload="doLoad();" >
+	<div id="siteWrapper" class="custom-grid">
+		<form name="MAINFORM" method="post" action="/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query" id="MAINFORM" enctype="multipart/form-data" autocomplete="off">
+<input type="hidden" name="_scriptManager_HiddenField" id="_scriptManager_HiddenField" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="EcNwXhPOW4Xb+s1heNxsD/gLJmnY/oX3S9lD6mPhsUGrFTppWjtuungUGe7mhWROl8WnOwxC1tmp21zwvSxuKyvcdvX0vU3cFGF4ehemvRBtm1U+QYHCJh8msqbmbNj/rfWXUgn5CcwuHmKMUKb7HSTVq58kzaqhFL+JeKVH052UMwxncdMP19YcoRDWLNm8TEIJXXxUDOnncSrk1MC4Y36V6AJdbme23bRcwQljxXACMjQwYmrmO/ZbKPyaLyK6/wKhqaE0tcgYiX+jRh1N8oIamJoZCWxyoSs74vcLixGJp+xgKUJTUrzs/dOrGAdntOftdojaOPbopTD3QifrB4nktCV6rUrPme9D3gveUoy2QIohaeuIoZrrUQMN/ONGqhL6sQZptpKPMmlRUwBrGeszfk72EP0lrEG/XDKKQ2kvW/bCAIY3qzKrjgFHbLw1lR+glECYAjlCF7FvY8b8IIO6sMcNlAOerjRCdYFX9kvllciCxTWZpYxycQWrYtfAVmuHiR7NOx/nv1p5Hr9WO4G6CkaZs89Pxn3vt2XoCaCmFA5RMF5H9OY0k9Qz1FXjczpSFzYBrRU4CRVr8lAkS8UZcgfzD+0R1q++V+GHJj15Wq1NM5uspwOjTtCS8dSM7Y9vB/lrE7f4w45TtP417PFCgw5L0WG7gIyugpt4vFxTdMoaGXXpqVC8sLDDsOsKYQZTUdGFcIaSCAfhy1khyq9FcYADgsh8AtPrHMeSffTzouaoKbH7RRVtrH09YPCwN1HUbUiG9xme87iA5R6hyw==" />
+
+
+<script type="text/javascript">
+//<![CDATA[
+$(function() {jenzabar.framework.login.initializeForPossibleRedirect({continueButton: $('#siteNavBar_welcomeBackBarLoggedOut_JicsLoginRedirectContinue'),userNameSection: $('.init-user-username-section'),standardLoginFields: $('.init-user-password-section, .forgot-password-link, .init-user-login-btn'),userNameField: $('#userName'),passwordField: $('#password'),userLoginSection: $('#user-login-section'),simpleLoginButton: $('#jics-login-redirect-simple-button'),showStandardFieldsSection: $('#jics-login-show-standard-fields-section'),showStandardFieldsButton: $('#jics-login-show-standard-fields-button'),simpleLogin: $('.js-simple-login') },{"pleaseWaitForRedirect":"Please wait...","redirectModalTitle":"Login","checkingUserNameAccessibility":"Please wait for the login process to continue.","errorOccurred":"An unexpected error occurred during login. Try again, or contact an administrator for assistance."},null);});(function( pi, $) {pi.PageID = '';pi.DisplayName = '';pi.PageURL = '';pi.IsCustomizing ='';pi.IsShowingPortlet = '';}(window.PageInfo = window.PageInfo || {}, PageInfo));try {window.PageInfo.PageID = 'f4fbf6f3-e80e-4d6d-9d44-e04b80890e59';window.PageInfo.DisplayName = 'Curriculum21';window.PageInfo.PageURL = '/ICS/Academics/Curriculum21.jnz';window.PageInfo.IsCustomizing ='False';window.PageInfo.IsShowingPortlet = 'True';window.PageInfo.IsReadOnly = 'False';}catch(ex){ console.error(ex);}//]]>
+</script>
+
+<script src="/ICS/ScriptResource.axd?d=x6wALODbMJK5e0eRC_p1Ldpv0AHIroiAfbVUf8vzJ5UnYVHAteq0Jjl82oavguXEA2qedvKo8-k8iz2jbwEX-pj_z0wW-EMqp3h_iRNz48joALmMoqQCX7fVyhNEwxHV0&amp;t=245582f9" type="text/javascript"></script>
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="38ABEAAB" />
+			
+			<input name="___BrowserRefresh" type="hidden" id="___BrowserRefresh" value="b3ed3b90-723a-4daf-b4f4-7387980aa193" />
+			
+			<header>
+				<a href="#content" class="skip-navigation sr-only-focusable">Skip to content</a>
+				
+
+<div class="site-header-container">
+    <div class="mobile-fixed-container"></div>
+    <div id="sitemasthead">
+        <div>
+            
+                <button id="main-nav-btn" class="btn btn-no-bg-hover-color-content-one glyphicons glyphicons-menu-hamburger main-nav-btn" type="button" data-toggle="collapse" data-target="#hamburger-menu-section" aria-expanded="false" aria-controls="hamburger-menu-section"><span class="sr-only">main navigation</span></button>
+                <h1 id="logo-heading">
+<a class="site-logo-link" href=".">
+	<img class="site-logo" src="/ICS/icsfs/RMC_MyMaconWeb_Profile_wordmark.png?target=875f0947-a626-4e6d-b7c1-60d19ffa93b9" alt="MyMaconWeb logo, Go to home page"/>
+</a>
+</h1>
+<div id="welcomeBackBar" class="main-nav-submenu-container">
+	<div id="siteNavBar_welcomeBackBarLoggedOut_welcomeBackBarLoggedOut">
+		<button id="siteNavBar_welcomeBackBarLoggedOut_loginToggle" class="btn login-btn" type="button" data-toggle="collapse" data-target="#user-login-section" aria-expanded="false" aria-controls="user-login-section"><span>Login</span></button>
+		<div id="user-login-section" aria-label="Login" class="collapse user-login form-inline">
+			<div class="input-group init-user-username-section">
+				<span class="input-group-addon glyphicons glyphicons-user"></span>
+				<label id="siteNavBar_welcomeBackBarLoggedOut_UserNameLabel" for="userName" class="sr-only">Username</label>
+				<input type="text" name="userName" id="userName" placeholder="Username" class="form-control user-name" autocomplete="username" value="" />
+			</div>
+			<div class="input-group init-user-password-section">
+				<span class="input-group-addon glyphicons glyphicons-asterisk"></span>
+				<label id="siteNavBar_welcomeBackBarLoggedOut_PasswordLabel" for="password" class="sr-only">Password</label>
+				<input type="password" name="password" id="password" placeholder="Password" class="form-control user-password" autocomplete="off" />
+			</div>
+			<input type="submit" name="siteNavBar$welcomeBackBarLoggedOut$ButtonLogin" value="Login" id="siteNavBar_welcomeBackBarLoggedOut_ButtonLogin" class="btn btn-sm btn-block btn-primary init-user-login-btn" />
+			<button id="siteNavBar_welcomeBackBarLoggedOut_JicsLoginRedirectContinue" type="button" class="btn btn-sm btn-block btn-primary init-user-login-continue-btn">Continue</button>
+			<div id="siteNavBar_welcomeBackBarLoggedOut_JicsSimpleLogin" class="js-simple-login">
+				
+			</div>
+            
+			<a onclick="preventDefaultEvent(event, ValidateLoginUserName());" id="siteNavBar_welcomeBackBarLoggedOut_ForgotPasswordLink" class="forgot-password-link margin-t-md" tabindex="0" href="javascript:__doPostBack(&#39;siteNavBar$welcomeBackBarLoggedOut$ForgotPasswordLink&#39;,&#39;&#39;)">I forgot my password</a>
+		</div>
+	</div>
+</div>
+<iframe id="siteNavBar_welcomeBackBarLoggedOut_AutoLoginFrame" style="display:none" width="1" height="1"></iframe>
+<script>
+	$(function () {
+		$('#top-nav-bar').attr("aria-label", "Site tabs");
+	});
+</script>
+<nav id="top-nav-bar" class="top-nav-bar navbar navbar-default navbar-fixed-top">
+	<div class="nav-container">
+		<div id="header-tabs" class="link-scroll horizontal-slide">
+			<div class="collapse h-menu" id="hamburger-menu-section">
+				
+						<ul id="main-nav" class="nav navbar-nav no-margin">
+					
+						<li class="tabs tab_Home firstTab">
+							<a href="/ICS/">
+								Home
+							</a>
+						</li>
+					
+						<li class="tabs tab_Academics selected">
+							<a href="/ICS/Academics/">
+								Academics
+							</a>
+						</li>
+					
+						<li class="tabs tab_Campus_Life">
+							<a href="/ICS/Campus_Life/">
+								Campus Life
+							</a>
+						</li>
+					
+						<li class="tabs tab_Resources">
+							<a href="/ICS/Resources/">
+								Resources
+							</a>
+						</li>
+					
+						<li class="tabs tab_Help lastTab">
+							<a href="/ICS/Help/">
+								Help
+							</a>
+						</li>
+					
+						</ul>
+					
+			</div>
+		</div>
+	</div>
+</nav>
+
+        </div>
+    </div>
+</div>
+			</header>
+			
+<div id="mainCrumbs" class="main-crumbs" role="navigation" aria-label="Site breadcrumb">
+	<span class="breadcrumbs-title text-bold">You are here:</span>
+	<span class="crumbs">
+		<ul id="youAreHere" class="breadcrumbs-container">
+			 <li><a href="/ICS/Academics/">Academics</a></li>  <li><a href="/ICS/Academics/Curriculum21.jnz">Curriculum21</a></li>  <li><a href="/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query">Curriculum21 Courses</a></li> 
+			
+		</ul>
+	</span>
+</div>
+
+			
+			
+			<div id="mainLayout" class="main-layout">
+				<div class="container-fluid">
+					<div class="row">
+						
+						<nav aria-label="Site pages">
+							<div id="sideBar" aria-label="Sidebar links" class="col-md-2 mobile-padding-horizontal-none sidebar">
+								<div id="sidebar-slide-menu-container" class="slide-menu-right">
+									
+									<div id="thisContext" class="side-section"><span class="sidebar-link-title"><a href="/ICS/Academics/"  accesskey="">Academics</a></span><div class="navbar navbar-default"><ul id="contextPages" class="nav nav-pills nav-stacked"><li class="slide-menu-toggle-btns-wrapper"><ul id="slide-menu-toggle-btns" class="nav nav-pills nav-stacked slide-menu-toggle-btns"><li class="active"><a id="menu-links-tab" data-toggle="tab" href="#menu-links" aria-expanded="true" aria-controls="menu-links">Menu</a></li><li><a id="quick-links-tab" data-toggle="tab" href="#quick-links" aria-expanded="false" aria-controls="quick-links">Quick Links</a></li></ul></li><li id="menu-links" class="menu-links tab-pane fade in active"><ul id="this-context-pages" class="nav nav-pills nav-stacked" aria-label="Page menu "><li><a href="/ICS/Academics/Home.jnz" >Home</a></li><li class="current-page"><button id="page-portlets-label" type="button" class="page-portlets sub-nav" data-toggle="collapse" data-target="#pagePortlets" aria-expanded="false" aria-controls="pagePortlets">Curriculum21<span class="glyphicons glyphicons-chevron-down"></span></button><ul id="pagePortlets" class="nav nav-pills nav-stacked sub-nav collapse" aria-labelledby="page-portlets-label"><li><a href="/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query" >Curriculum21 Courses</a></li><li><a href="/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query_1" >Fall Course Offerings</a></li><li><a href="/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query_2022-09-23T08-47-29-459" >J-Term Course Offerings</a></li><li><a href="/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query_2" >Spring Course Offerings</a></li></ul></li><li><a href="/ICS/Academics/Registrar%27s_Office.jnz" >Registrar's Office</a></li><li class="sub-context-parent"><ul class="nav nav-pills nav-stacked sub-contexts" id="subContexts"><li><a href="/ICS/Academics/Registrar/" class="sub-context anchor-contains-icon">Registrar<span  class="glyphicons glyphicons-folder-closed sidebar-icon-link"></span></a></li></ul></li></ul></li><li id="quick-links" class="quick-links tab-pane fade"><span class="sidebar-link-title">Quick Links</span><ul id="quick-links-menu" class="nav nav-pills nav-stacked"><li class="sidebar-quick-link"><a class="anchor-contains-icon" target="_blank" href="https://outlook.office.com/mail/inbox" title="Outlook">Outlook<span class="glyphicons glyphicons-link sidebar-icon-link"></span></a></li><li class="sidebar-quick-link"><a class="anchor-contains-icon" target="_blank" href="https://www.rmc.edu/contact-rmc/" title="Contact RMC">Contact RMC<span class="glyphicons glyphicons-link sidebar-icon-link"></span></a></li><li class="sidebar-quick-link"><a class="anchor-contains-icon" href="https://mymaconweb.rmc.edu/ICS/Academics/Home.jnz?portlet=Course_Schedules&screen=Advanced+Course+Search&screenType=next" title="Course Search">Course Search<span class="glyphicons glyphicons-link sidebar-icon-link"></span></a></li><li class="sidebar-quick-link"><a class="anchor-contains-icon" target="_blank" href="https://catalog.rmc.edu" title="Academic Catalog">Academic Catalog<span class="glyphicons glyphicons-link sidebar-icon-link"></span></a></li></ul></li></ul></div></div>
+									
+
+
+
+									
+									<div class="sideBarFoot containerFoot"></div>
+								</div>
+								<button id="sidebar-slide-menu-button" class="slide-menu-btn mobile-hide nsn is-closed" type="button" aria-expanded="false">
+									<span class="sidebar-slide-btn-icon glyphicons glyphicons-chevron-right">
+										<span class="sr-only">Sidebar</span>
+									</span>
+								</button>
+							</div>
+						</nav>
+						
+						<div id="portlets" role="main" class="col-md-10 mobile-padding-horizontal-none">
+							
+							
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $(`[id*="pageOpenMoxieManager"]`).click(function () {
+            // Below we check every 200ms if the MoxieManager dialog is opened yet, then move keyboard focus if it is.
+            // We have to do this check because MoxieManager removed the 'onopen' option from the moxman.browse() function...
+            let intervalIndex = 0;
+            let interval = setInterval(function () {
+                let createButton = $($(`.moxman-reset .moxman-i-create`)[0].parentElement.parentElement);
+                if (createButton.length === 1) {
+                    createButton.focus();
+                    clearInterval(interval);
+                } else if (createButton.length === 0 && intervalIndex === 20000) { // We will stop trying to shift focus after 20 seconds.
+                    console.log("Error: Keyboard focus could not be shifted to the MoxieManager window");
+                    clearInterval(interval);
+                }
+                intervalIndex = intervalIndex + 200;
+            }, 200);
+        });
+    });
+</script>
+
+<div id="PageBar_pageTitle" class="page-title page-title-bar">
+    <h2><a href="/ICS/Academics/Curriculum21.jnz" id="contextName">Curriculum21</a></h2>
+</div>
+<div id="PageBar_pageTitleButtons" class="page-title-btn">
+    
+    
+    <button id="PageBar_btnPrintView" class="btn btn-no-bg-hover-color-content-one glyphicons glyphicons-print" type="button" onclick="window.print(); return false;">
+        <span class="sr-only">Send to Printer</span>
+    </button>
+    
+</div>
+
+
+							
+							<span id="content" tabindex="-1"></span>
+							<div id="portlet-grid" class="portlet-grid one_column"><div class="row"><div class="portlet-column col-md-12"><div id="pg0_SimpleQuery" class="portlet pt_SimpleQuery pi_Simple_Query" style="z-index:0;"><div class="portlet-header-bar"><h3><a href="/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query" title="Go to main Curriculum21 Courses screen">Curriculum21 Courses</a></h3></div><div class="portlet-padding simplequery-portlet">
+
+<script type="text/javascript">
+    var lastSqClicked = "";
+
+    jQuery(function ($) {
+        // Setup 
+        
+        Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+            console.log(v1 + " " + operator + " " + v2);
+            switch (operator) {
+                case '==':
+                    return (v1 == v2) ? options.fn(this) : options.inverse(this);
+                case '===':
+                    return (v1 === v2) ? options.fn(this) : options.inverse(this);
+                case '<':
+                    return (v1 < v2) ? options.fn(this) : options.inverse(this);
+                case '<=':
+                    return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+                case '>':
+                    return (v1 > v2) ? options.fn(this) : options.inverse(this);
+                case '>=':
+                    return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+                case '&&':
+                    return (v1 && v2) ? options.fn(this) : options.inverse(this);
+                case '||':
+                    return (v1 || v2) ? options.fn(this) : options.inverse(this);
+                case '<>', '!=':
+                    return (v1 != v2) ? options.fn(this) : options.inverse(this);
+                default:
+                    return options.inverse(this);
+            }
+        });
+        
+        var portletLocation = '/ICS/Portlets/CUS/ICS/SimpleQuery/';
+
+        var portletId = '9e1fb40b-9fad-4eeb-bcfa-25363794acfa';
+
+        var controls = {
+            datatable: $('#pg0_V_tblDataTable'),
+            htmlDiv: $('#pg0_V_divSQResults'),
+            error: $('#pg0_V_error'),
+            message: $('#pg0_V_message'),
+            loading: $('#pg0_V_lnbGetData')
+        };
+
+        var isMinimized = false;
+
+
+        function getData() {
+	        $.ajax({
+                url: portletLocation + "Query.ashx",
+                data: { portletId: portletId, action: "RunQueryHtml" },
+                dataType: "json",
+                type: "POST",
+                success: function (ret) {
+                    if (ret.d.success) {
+                        if (ret.d.html == "") {
+                            $(controls.message).show().html('No results returned by this query.' + (ret.d.query != null ? ('<br />Query text (visible by Query Admin only):<br />' + ret.d.query) : ''));
+                        } else {
+                            controls.htmlDiv.html(ret.d.html);
+                        }
+                        controls.loading.hide();
+                    } else {
+                        $(controls.error).show().html(ret.d.message + "<br />" + ret.d.exception);
+                    }
+                },
+                failure: function (ret) {
+                    $(controls.error).html(ret.Message + "<br />" + ret.StackTrace).show();
+                }
+            });
+        }
+		
+		
+        function loadTable() {
+	        
+            var dataPromise = $.Deferred();
+            var columnPromise = $.Deferred();
+
+	var oTable = controls.datatable.footable({
+                "rows": dataPromise.done(),
+                "columns": columnPromise.done(),
+                "sorting": { enabled: true },
+                "paging": {
+                    "enabled": true,
+                    "limit": 10,
+                    "countFormat": "Showing {PF}-{PL} of {TR} results"
+                },
+                "filtering": {
+                    "enabled": true
+                },                
+                components: {
+                    filtering: FooTable.Filtering.extend({
+                        construct: function(instance){
+                            this._super(instance);
+                            this.sizes = [25,50,100];
+                            this.def = 10;
+                            this.$size = null;
+                        },
+                        $create: function(){
+                            this._super();
+                            var self = this,
+                                $form_grp = $('<div/>', {'class': 'form-group'})
+                                    .append($('<label/>', {'class': 'sr-only', text: 'Table Size'}))
+                                    .prependTo(self.$form);
+
+                            self.$size = $('<select/>', { 'class': 'form-control' })
+                                .on('change', {self: self}, self._onStatusDropdownChanged)
+                                .append($('<option/>', {text: self.def}))
+                                .appendTo($form_grp);
+
+                            $.each(self.sizes, function(i, size){
+                                self.$size.append($('<option/>').text(size));
+                            });
+                        },
+                        _onStatusDropdownChanged: function(e){    
+                            var newSize = $(this).val();
+                            console.log('New Size: ' + newSize);
+                            FooTable.get( '#pg0_V_tblDataTable').pageSize(newSize);
+                                },
+                        draw: function(){
+                            this._super();
+                        }
+                    })                
+                }
+            });
+
+
+            $.ajax({
+                url: portletLocation + "Query.ashx",
+                data: { portletId: portletId, action: "RunQuery" },
+                dataType: "json",
+                type: "POST",
+                success: function (ret) {
+                    if (ret.d.success) {
+                        var data = [];
+
+                        var reverseMap = [];
+
+                        $.each(ret.d.columnref, function(index, row) {
+                                reverseMap[row] = index;
+                        });
+
+                        $.each(ret.d.data, function(index, row) {
+                            var temp = {};
+                            $.each(row, function(colindex, column) {
+                                var name = reverseMap[colindex];
+                                temp[name] = column;
+                            });
+                            data.push(temp);
+                        });
+
+                        var mode = $('#pg0_V_hdnDtMode').val();
+
+                        if (mode == "Template") {
+                            var source = $('#dtTemplate_' + portletId).html().replace(/\[\[\[/g, '<').replace(/\]\]\]/g, '>');
+                            var template = Handlebars.compile(source);
+                            var helpers = {};
+                            $.each(ret.d.columnref, function (i, e) {
+                                helpers["has_" + i] = function (block) {
+                                    return (undefined == this[i] ? "" : new Handlebars.SafeString(this[i])) == "" ? block.inverse(this) : block.fn(this);
+                                };
+                            });
+                            
+
+                            ret.d.columns.push({
+                                "formatter": function(value, options, rowData) {
+                                    return "<div>" + template(rowData, { helpers: helpers }) + "</div>";
+                                },
+                                "breakpoints": "all",
+                                "title":""
+                            });
+
+                        }
+                        columnPromise.resolve(ret.d.columns);
+                        dataPromise.resolve(data);
+                    } else {
+                        $(controls.error).show().html(ret.d.message + "<br />" + ret.d.exception);
+                        $('.footable-loader').hide();
+                        $(controls.error).removeClass('hidden');
+                        $(controls.error).show().html('No data returned by this query.<br/>' + ret.d.message + "<br />" + ret.d.exception);
+                    }
+                },
+                failure: function (ret) {
+                    $(controls.error).show().html(ret.Message + "<br />" + ret.StackTrace);
+                }
+            });
+        }
+        
+        function loadTemplate() {
+            $.ajax({
+                url: portletLocation + "Query.ashx",
+                data: { portletId: portletId, action: "RunQuery" },
+                dataType: "json",
+                type: "POST",
+                success: function (ret) {
+                    if (ret.d.success) {
+                        var source = $('#template_' + portletId).html().replace(/\[\[\[/g,'<').replace(/\]\]\]/g,'>');
+                        var template = Handlebars.compile(source);
+                        var helpers = {};
+                        $.each(ret.d.columnref, function(i, e) {
+                            helpers[i] = function () {
+                                return undefined == this[e] ? "" : new Handlebars.SafeString(this[e]);
+                            };
+                        });
+                        controls.htmlDiv.html(template(ret.d,{ helpers: helpers }));
+                    } else {
+                        $(controls.error).show().html(ret.d.message + "<br />" + ret.d.exception);
+                    }
+                },
+                failure: function (ret) {
+                    $(controls.error).show().html(ret.Message + "<br />" + ret.StackTrace);
+                }
+            });
+        }
+
+        function getChartData() {
+            
+            var chartColors = {
+                red: 'rgb(255, 99, 132)',
+                orange: 'rgb(255, 159, 64)',
+                yellow: 'rgb(255, 205, 86)',
+                green: 'rgb(75, 192, 192)',
+                blue: 'rgb(54, 162, 235)',
+                purple: 'rgb(153, 102, 255)',
+                grey: 'rgb(201, 203, 207)',
+                black: 'rgb(0,0,0)',
+                darkcyan: 'rgb(0,139,139)',
+                cyan: 'rgb(0,255,255)',
+                mediumpurple: 'rgb(147,112,219)'
+            };
+
+            $.ajax({
+                url: portletLocation + "Query.ashx",
+                data: { portletId: portletId, action: "RunQuery" },
+                dataType: "json",
+                type: "POST",
+                success: function (ret) {
+                    if (ret.d.success) {
+                        var color = Chart.helpers.color;
+                        var chart = {};
+                        var datasetpos = {};
+                        $.each(chart.data.datasets, function(i, e) {
+                            datasetpos[e.data] = i;
+                            e.data = [];
+                            if (e.backgroundColor === undefined && chart.type === "pie") {
+                                e.backgroundColor = [];
+                            }
+                        });
+
+                        var colors = $.map(chartColors, function(val) { return val; })
+
+                        $.each(ret.d.data, function(i, e) {
+                                    //if (e.hasOwnProperty("datasetkey")) {
+                                        var key = e[2];
+                                        if (datasetpos.hasOwnProperty(key)) {
+                                            var dataset = chart.data.datasets[datasetpos[key]];
+                                            dataset.data.push(e[0]);
+                                            if (dataset.backgroundColor.length < dataset.data.length && chart.type === "pie") {
+                                                dataset.backgroundColor.push(colors.shift());
+                                            }
+                                            if (chart.data.labels.indexOf(e[1]) === -1)
+                                            {
+                                                chart.data.labels.push(e[1]);
+                                            }
+                                        }
+                                    //}
+                                });
+
+                        var ctx = document.getElementById('pg0_V_sqCanvas').getContext('2d');
+                        console.log(chart);
+                        var temp = new Chart(ctx, chart);
+
+                    } else {
+                        $(controls.error).show().html(ret.d.message + "<br />" + ret.d.exception);
+                    }
+                },
+                failure: function (ret) {
+                    $(controls.error).show().html(ret.Message + "<br />" + ret.StackTrace);
+                }
+            });
+        }
+
+        if ($('#pg0_V_tblDataTable').length != 0)
+            loadTable(controls, portletLocation, portletId);
+        
+        if ($('#pg0_V_pnlTemplate').length != 0)
+            loadTemplate(controls, portletLocation, portletId);
+            
+        if ($('#pg0_V_lnbGetData').length != 0) {
+            getData(controls, portletLocation, portletId);
+        }
+
+        if ($('#pg0_V_pnlChartJs').length != 0) {
+            getChartData(controls, portletLocation, portletId);
+        }
+        
+        
+    });
+
+    
+
+</script>
+<style type="text/css">
+    .hidden
+    {
+        display: none;
+    }
+    .viewResults
+    {
+        cursor: pointer;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    #tblDataTable
+    {
+        margin-top: 5px;
+    }
+    #pg0_V_pnlExport
+    {
+        border: 2px solid #D2D2D2;
+        border-radius: 4px 4px 4px 4px;
+        float: right;
+        height: 28px;
+        margin-bottom: 5px;
+        padding-left: 5px;
+        margin-top: 5px;
+    }
+    #pg0_V_pnlExport a
+    {
+        float: left;
+        background-image: none !important;
+        margin-left: 5px;   
+        margin-right: 5px;
+        margin-top: 5px;
+        padding: 0px !important;
+    }
+</style>
+<div class="pContent">
+	<input type="hidden" name="pg0$V$hdnUseAJAX" id="pg0_V_hdnUseAJAX" />
+    <div id="pg0_V_message" class="feedbackMessage hidden">
+    </div>
+    <div id="pg0_V_error" class="feedbackError hidden">
+    </div>
+    <div id="pg0_V_pnlQueryTitle">
+	
+        <h4>
+            <span id="pg0_V_lblQueryTitle">Curriculum21 Courses</span>
+        </h4>
+    
+</div>
+    <div class="pSection">
+		<div class="row">
+        <div id="pg0_V_pnlExport">
+	
+            <span style="float: left; margin-top: 5px; padding-right: 10px;">Export To:</span>
+            <a id="pg0_V_lnkSQExportExcel" href="Portlets/CUS/ICS/SimpleQuery/Export_Data.aspx?format=xls&amp;sqkey=9e1fb40b-9fad-4eeb-bcfa-25363794acfa" target="_blank">Excel</a>
+            <a id="pg0_V_lnkSQExportCsv" href="Portlets/CUS/ICS/SimpleQuery/Export_Data.aspx?format=csv&amp;sqkey=9e1fb40b-9fad-4eeb-bcfa-25363794acfa" target="_blank">CSV</a>
+            
+            
+        
+</div>
+		</div>
+        
+        
+        
+        
+        <div id="pg0_V_divSQResults" style="float: left;"></div>
+        
+        <div id="pg0_V_pnlDataTableResults">
+	
+            <input name="pg0$V$hdnDtMode" type="hidden" id="pg0_V_hdnDtMode" value="Columns" />
+            <script type="text/x-handlebars-template" id="dtTemplate_9e1fb40b-9fad-4eeb-bcfa-25363794acfa">
+                
+            </script>
+	        <div class="footable-container secondary-alternate-background-one collapse in relative">
+		        <table id="pg0_V_tblDataTable" class="table table-bordered">
+	</table>
+	
+	        </div>
+        
+</div>
+        
+    </div>
+</div>
+<div style="clear: both">
+</div>
+</div></div>
+</div></div></div>
+							<div class="portletsFoot containerFoot"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container-fluid footer-wrapper primary">
+				<div class="row no-margin-r no-margin-l">
+					<div class="col-md-12"><footer><div id="foot" class="footer-links"><a target="_blank" href="https://www.rmc.edu/about-rmc/college-leadership/offices-departments/marketing-communications/terms-of-service-and-privacy-policy/" >Terms of Use and Privacy Policy</a><a target="_blank" href="https://www.rmc.edu/about-rmc/" >About RMC</a><a target="_blank" href="https://www.rmc.edu/contact-rmc/" >Contact Us</a><a target="_blank" href="https://www.rmc.edu/about-rmc/college-leadership/offices-departments/title-ix/title-ix-policy/" >Title IX</a><a target="_blank" href="https://www.rmc.edu/about-rmc/college-leadership/offices-departments/dean-of-students-student-affairs/student-conduct/adams-law-report/" >Adam's Law</a><span id="copyright">  Powered by Jenzabar. v2026.1</span></div></footer></div>
+				</div>
+			</div>
+			
+<div id="newfoot">
+<rmcfooter>
+<div class="wrapper">
+	    <div class="social-icons">
+		<ul>
+			<li class="facebook"><a href="https://www.facebook.com/RandolphMacon" target="_blank"></a></li>
+			<li class="youtube"><a href="https://www.youtube.com/user/RMCWebMaster" target="_blank"></a></li>
+			<li class="linkedin"><a href="http://www.linkedin.com/groups?gid=138646" target="_blank"></a></li>
+			<li class="twitter"><a href="https://twitter.com/RandolphMacon" target="_blank"></a></li>
+			<li class="instagram"><a href="https://www.instagram.com/randolphmacon/" target="_blank"></a></li>
+		</ul>
+	    </div>
+   
+</div>
+</rmcfooter>
+</div>
+		
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {var fn = function() {$get("_scriptManager_HiddenField").value = '';Sys.Application.remove_init(fn);};Sys.Application.add_init(fn);})();//]]>
+</script>
+</form>
+	</div>
+<script type="text/javascript">
+	$(function() {
+		$("#youAreHere a:last").attr("aria-current", "page");
+
+		jenzabar.framework.accessibleSidebarMenu.init();
+		jenzabar.framework.accessibleSearchMenu.init();
+		jenzabar.framework.accessibleLoginMenu.init();
+		jenzabar.framework.accessibleHamburgerMenu.init();
+
+		jenzabar.framework.enableKeyboardDatePickerSupport();
+	});
+</script>
+</body>
+</html>

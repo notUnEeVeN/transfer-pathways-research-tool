@@ -1,0 +1,21 @@
+{
+  "route_id": "george-mason-university__frln",
+  "requested_url": "https://catalog.gmu.edu/courses/frln/",
+  "final_url": "https://catalog.gmu.edu/courses/frln/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 55194,
+  "content_sha256": "27b876f506f0bcbd5fde69106c3085b767811ae732f5ef72e9e491af9a47d513",
+  "fetched_at": "2026-08-24T20:20:39.579Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "FRLN330"
+  ]
+}

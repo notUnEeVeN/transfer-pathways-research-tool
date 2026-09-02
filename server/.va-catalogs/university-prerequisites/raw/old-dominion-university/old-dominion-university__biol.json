@@ -1,0 +1,28 @@
+{
+  "route_id": "old-dominion-university__biol",
+  "requested_url": "https://catalog.odu.edu/courses/biol/",
+  "final_url": "https://catalog.odu.edu/courses/biol/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 463838,
+  "content_sha256": "274ec6e4fe289c3e0e773cb4d94a63e7e031ff988dcba1b10d452244e5659d4a",
+  "fetched_at": "2026-08-24T18:03:07.112Z",
+  "robots": {
+    "url": "https://catalog.odu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "04c0328aabd3f05afd6a4ec0382500f973b6457f737639ac2933372331d0e045",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "BIOL121N",
+    "BIOL122N",
+    "BIOL123N",
+    "BIOL124N",
+    "BIOL136N",
+    "BIOL137N",
+    "BIOL138N",
+    "BIOL139N"
+  ]
+}

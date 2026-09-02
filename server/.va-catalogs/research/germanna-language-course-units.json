@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "institution": "germanna-community-college",
+  "catalog_year": "2026-2027",
+  "captured_at": "2026-08-24T00:36:16Z",
+  "purpose": "Exact course-credit evidence for the fourteen world-language courses referenced by the Computer Science A.S. composition but absent from the Transfer Virginia equivalency course corpus.",
+  "capture_method": "Direct HTTPS GET of each official Modern Campus course-detail URL. source_sha256 hashes the complete response bytes; source_excerpt is the exact course-title and Credits field retained for review.",
+  "entries": [
+    {
+      "code": "ARA201",
+      "catalog_course_id": 14173,
+      "title": "ARA 201: Intermediate Arabic I",
+      "units": 3,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14173",
+      "source_sha256": "0095b1a1a119ee78e5b4ee71a65d1af110d02d5e1b50233e16988026780c7300",
+      "source_excerpt": "ARA 201: Intermediate Arabic I Credits: 3",
+      "source_excerpt_sha256": "3291e65ebb7ae966ef21aa95cd1c8e36680da292db179fdc98df425c9ceaf7ec"
+    },
+    {
+      "code": "ARA202",
+      "catalog_course_id": 14174,
+      "title": "ARA 202: Intermediate Arabic II",
+      "units": 3,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14174",
+      "source_sha256": "cc48bef3d1c359dfc2bfa016ceb8de626bb77b4a53f64cb9346ddba8827e0984",
+      "source_excerpt": "ARA 202: Intermediate Arabic II Credits: 3",
+      "source_excerpt_sha256": "84118c3dabaeaf4f65867f47cd283557544aba7abda05b9117cb5cae8fc6ffce"
+    },
+    {
+      "code": "CHI202",
+      "catalog_course_id": 14262,
+      "title": "CHI 202: Conversational Chinese (Mandarin) II",
+      "units": 4,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14262",
+      "source_sha256": "e385d44c1fbc94776b7d1129665f131e08a91ecab08c6b8fd65fd4606286d79b",
+      "source_excerpt": "CHI 202: Conversational Chinese (Mandarin) II Credits: 4",
+      "source_excerpt_sha256": "1b7bc14238d31e98d8a959c24898eeeba9591b31cab2e5e5bd07256da9080308"
+    },
+    {
+      "code": "GER202",
+      "catalog_course_id": 14393,
+      "title": "GER 202: Intermediate German II",
+      "units": 3,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14393",
+      "source_sha256": "1fe769ba0341b07610e13a8f2bbb83689d1254a56e2e9cb1df46fc7d65887fc2",
+      "source_excerpt": "GER 202: Intermediate German II Credits: 3",
+      "source_excerpt_sha256": "8874e0725cccfe002d3cf375d3b83278e3a12cf58f2601f7ff90a84a7cc996ef"
+    },
+    {
+      "code": "ITA101",
+      "catalog_course_id": 14459,
+      "title": "ITA 101: Beginning Italian I",
+      "units": 4,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14459",
+      "source_sha256": "aacc2e332319099cdc92416dc262d435215d9a86f14561d5418bd904bd27faca",
+      "source_excerpt": "ITA 101: Beginning Italian I Credits: 4",
+      "source_excerpt_sha256": "f87b0609fbaec2a1b2759378eea905b0f014a772b527c803b3715e122f103b01"
+    },
+    {
+      "code": "ITA102",
+      "catalog_course_id": 14460,
+      "title": "ITA 102: Beginning Italian II",
+      "units": 4,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14460",
+      "source_sha256": "8ff171fd6ee203644e2a4ae9481066b3bfed904f992e6cde7bfed46b71628cd3",
+      "source_excerpt": "ITA 102: Beginning Italian II Credits: 4",
+      "source_excerpt_sha256": "b8dd077a7f19f498806cddfb2e102d03d721e8bef1c3f3c0299ba5abdb9dfb82"
+    },
+    {
+      "code": "ITA201",
+      "catalog_course_id": 14461,
+      "title": "ITA 201: Intermediate Italian I",
+      "units": 3,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14461",
+      "source_sha256": "69e04c592a89a282e8838fedd46bdd2d88a10753189040b8deabab4d3776cf91",
+      "source_excerpt": "ITA 201: Intermediate Italian I Credits: 3",
+      "source_excerpt_sha256": "57bd2bf98c47e64c06f47d6b8e1961f9e6a8d5ac26db90fcfc67f96eea97373a"
+    },
+    {
+      "code": "ITA202",
+      "catalog_course_id": 14462,
+      "title": "ITA 202: Intermediate Italian I",
+      "units": 3,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14462",
+      "source_sha256": "610c057140ddc04c4377e32ea7339d56bf69b7b7b7f5c8727266692015ffdcf8",
+      "source_excerpt": "ITA 202: Intermediate Italian I Credits: 3",
+      "source_excerpt_sha256": "df047e03c1fe2cb09339229c12b17218833f1afdc7174259a635dd87c776b9ff"
+    },
+    {
+      "code": "JPN201",
+      "catalog_course_id": 14506,
+      "title": "JPN 201: Intermediate Japanese I",
+      "units": 4,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14506",
+      "source_sha256": "05cac974cb502e37c0c299f5b4817000217e40939dc5946b29e900612fe065fc",
+      "source_excerpt": "JPN 201: Intermediate Japanese I Credits: 4",
+      "source_excerpt_sha256": "aa10f6ea428a7aa0a6f4f338d06f66c79a617ad66af300ef9ad6bd3656176155"
+    },
+    {
+      "code": "JPN202",
+      "catalog_course_id": 14507,
+      "title": "JPN 202: Intermediate Japanese II",
+      "units": 4,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14507",
+      "source_sha256": "5816951e5cf28cfa53849853ee90881ec1a067ba8a5101aa5cb0dea093eb4a35",
+      "source_excerpt": "JPN 202: Intermediate Japanese II Credits: 4",
+      "source_excerpt_sha256": "24709b46519f7008cbd01c78e10c213b1080cfbd251a1a320f3e007c134a4ede"
+    },
+    {
+      "code": "LAT101",
+      "catalog_course_id": 14903,
+      "title": "LAT 101: Beginning Latin I",
+      "units": 4,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14903",
+      "source_sha256": "594cffb64cd037af425f2e5426bd8dfdc80cc93ba17864774275541d3edd5b1a",
+      "source_excerpt": "LAT 101: Beginning Latin I Credits: 4",
+      "source_excerpt_sha256": "0e537b314bcf22859a92a919dafd22a2e7913eb0bde1f943c95ff6f9fb37cc45"
+    },
+    {
+      "code": "LAT102",
+      "catalog_course_id": 14901,
+      "title": "LAT 102: Beginning Latin II",
+      "units": 4,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14901",
+      "source_sha256": "0145aef1bf342902e50d7c813c2de888133b79fd006b5cbb1b746bc51ad02a9d",
+      "source_excerpt": "LAT 102: Beginning Latin II Credits: 4",
+      "source_excerpt_sha256": "2a1bc3cdff00eb15a90b0c731693cbecf3d79d512f1f1dfd5db43815901f40fe"
+    },
+    {
+      "code": "LAT201",
+      "catalog_course_id": 14902,
+      "title": "LAT 201: Intermediate Latin I",
+      "units": 3,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14902",
+      "source_sha256": "bf5a3c440c89cf7150c885a75f757feff72ab8086cdb42db0aa63c263af5de8d",
+      "source_excerpt": "LAT 201: Intermediate Latin I Credits: 3",
+      "source_excerpt_sha256": "c4229c0b0eb4644eed86a9b46b3b34d6751f8338a28dae72437c07fe27384218"
+    },
+    {
+      "code": "LAT202",
+      "catalog_course_id": 14904,
+      "title": "LAT 202: Intermediate Latin II",
+      "units": 3,
+      "official_url": "https://catalog.germanna.edu/preview_course_nopop.php?catoid=15&coid=14904",
+      "source_sha256": "de47564b0d5a5614d7cc8997e771e52202b94232ad8808b7970caf55009ed2c3",
+      "source_excerpt": "LAT 202: Intermediate Latin II Credits: 3",
+      "source_excerpt_sha256": "cc7780c6e78662a2f98e6d54547fb1817e0974f2bf50d4ba6e7017f8376b2562"
+    }
+  ]
+}

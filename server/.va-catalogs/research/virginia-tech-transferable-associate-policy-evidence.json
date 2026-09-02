@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_tech_transferable_associate_policy_evidence",
+  "generated_on": "2026-08-24",
+  "institution": {
+    "name": "Virginia Polytechnic Institute and State University",
+    "slug": "virginia-polytechnic-institute-and-state-university",
+    "school_id": 9230
+  },
+  "purpose": "Exact supplemental receipt for treating a Passport/UCGS selected-edge annotation as advisory only when the paper cell independently models a completed, transferable Virginia A.S. degree. It does not assert that a student earned Passport/UCGS and does not waive major-specific requirements.",
+  "verified": true,
+  "issues": [],
+  "source": {
+    "requested_url": "https://transferguide.registrar.vt.edu/Transfer-Requirements/VCCS-Transfer.html",
+    "final_url": "https://transferguide.registrar.vt.edu/Transfer-Requirements/VCCS-Transfer.html",
+    "content_type": "text/html;charset=utf-8",
+    "response_bytes": 78794,
+    "response_sha256": "0a77a5f0affe5fd39eb286b9f5fa3cc7a82be4bfc45b06dc01251584f38cb1ff",
+    "captured_at": null,
+    "title": "Policy on Transfer of Virginia Community College Students | transferguide.registrar | Virginia Tech",
+    "heading": "Policy on Transfer of Virginia Community College Students"
+  },
+  "robots": {
+    "requested_url": "https://transferguide.registrar.vt.edu/robots.txt",
+    "final_url": "https://transferguide.registrar.vt.edu/content/dam/transferguide_registrar_vt_edu/robots.txt",
+    "http_status": 200,
+    "content_type": "text/plain;charset=iso-8859-1",
+    "response_bytes": 25,
+    "response_sha256": "b1282f723cd580b0cf3c38125d24259ceab3b897d38b63376d9fa6c302558fcf",
+    "same_host_redirect": true,
+    "policy_path_allowed": true
+  },
+  "policy_facts": {
+    "completed_transferable_associate": {
+      "source_systems": [
+        "VCCS",
+        "RBC"
+      ],
+      "baccalaureate_oriented_sequence_required": true,
+      "admission_required": true,
+      "pathways_general_education_satisfied": true,
+      "major_specific_requirements_still_apply": true,
+      "exact_text": "Per State Policy on Transfer, students who earn a transferrable associate degree by enrolling in transfer programs at a Virginia Community College or Richard Bland College, and who graduate with associate degrees based upon a baccalaureate-oriented sequence of courses, and who are offered admission to Virginia Tech, will be granted junior level status upon admission. Additionally, these students will have satisfied the requirements of the University Pathways to General Education. It may take such students longer than two years to complete the baccalaureate degree because of major prerequisites and other circumstances or requirements."
+    },
+    "transferable_associate_awards": {
+      "included": [
+        "AA",
+        "AS",
+        "AA&S"
+      ],
+      "excluded": [
+        "AAS",
+        "AFA"
+      ],
+      "exact_text": "A transferable associate degree is an Associate of Arts, an Associate of Science, or an Associate of Arts and Sciences. Neither an Associate of Applied Science nor an Associate of Fine Arts is transferable."
+    },
+    "transferable_vccs_associate_general_education": {
+      "all_general_education_requirements_fulfilled": true,
+      "major_specific_course_requirements_still_apply": true,
+      "exact_text": "Fulfills all general education requirements but students must also complete the specific course requirements for their major."
+    },
+    "passport_ucgs": {
+      "earned_milestone_or_credential_required_for_transcript_notation": true,
+      "individual_completed_course_minimum_grade": "C",
+      "exact_text": "VCCS students can earn a Passport or Uniform Certificate of General Studies (UCGS) by completing approved general education courses. All completed courses with a grade of C or better will transfer to Virginia Tech individually to satisfy a portion of our general education requirements. Once a transcript with the earned milestone or credential is processed, a notation will appear on the Transfer Credit screen on Hokie Spa and in the degree audit report (DARS)."
+    }
+  },
+  "policy_facts_sha256": "a61d5a75b7d626b5e87525f4b6d6f87e4c9e4b0e1219801bef2b10d895765112",
+  "paper_interpretation": {
+    "incoming_award": "AS",
+    "completed_transferable_associate_degree": true,
+    "pathways_general_education_satisfied": true,
+    "major_specific_course_requirements_waived": false,
+    "passport_or_ucgs_earned_assumed": false,
+    "selected_edge_note_resolution_basis": "independently_qualifying_completed_as",
+    "figure_model": "complete_degree_path"
+  }
+}

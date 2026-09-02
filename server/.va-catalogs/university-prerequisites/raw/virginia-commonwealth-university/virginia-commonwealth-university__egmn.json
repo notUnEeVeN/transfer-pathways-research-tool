@@ -1,0 +1,23 @@
+{
+  "route_id": "virginia-commonwealth-university__egmn",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/egmn/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/egmn/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 103695,
+  "content_sha256": "e8781daf458905d93cf998b33488e87ad55f830e960a326608b824dc900a1142",
+  "fetched_at": "2026-08-25T23:39:51.986Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "EGMN102",
+    "EGMN190",
+    "EGMN203"
+  ]
+}

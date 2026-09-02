@@ -1,0 +1,22 @@
+{
+  "route_id": "virginia-commonwealth-university__stat",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/stat/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/stat/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 73758,
+  "content_sha256": "bb644fcb583c61f1af811ffc882d546e1529092d69574a1471c2768640f47e7e",
+  "fetched_at": "2026-08-24T18:03:50.666Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "STAT210",
+    "STAT212"
+  ]
+}

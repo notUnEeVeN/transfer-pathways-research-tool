@@ -1,0 +1,46 @@
+{
+  "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+  "final_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 189276,
+  "content_sha256": "c3722be423c803d43b7db611c980780e643fef2841bbf69d53062bc8633e9748",
+  "fetched_at": "2026-08-25T10:38:18.009Z",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "robots": {
+    "url": "https://catalog.su.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "browser_challenge_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__int101_discovery.challenge.html",
+  "browser_challenge_receipt": {
+    "contract": "shenandoah_acalog_exact_same_url_document_202_then_200_raw_response_v1",
+    "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+    "exact_same_url": true,
+    "document_response_count": 2,
+    "browser_engine": "chromium",
+    "browser_version": "151.0.7922.34",
+    "document_responses": [
+      {
+        "ordinal": 1,
+        "http_status": 202,
+        "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 2011,
+        "content_sha256": "be93bcde0e0e59ccce9cd23e0305585c2e6763ebe18251da24effac89a0fead9",
+        "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__int101_discovery.challenge.html"
+      },
+      {
+        "ordinal": 2,
+        "http_status": 200,
+        "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 189276,
+        "content_sha256": "c3722be423c803d43b7db611c980780e643fef2841bbf69d53062bc8633e9748",
+        "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__int101_discovery.html"
+      }
+    ]
+  }
+}

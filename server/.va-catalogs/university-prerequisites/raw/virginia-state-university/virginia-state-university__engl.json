@@ -1,0 +1,32 @@
+{
+  "route_id": "virginia-state-university__engl",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/engl/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/engl/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 145416,
+  "content_sha256": "1d5487f804a52b83265e8a947afe3b66e4d0e50388803227d2f853d1743ae747",
+  "fetched_at": "2026-08-24T18:04:07.215Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ENGL110",
+    "ENGL111",
+    "ENGL112",
+    "ENGL113",
+    "ENGL201",
+    "ENGL202",
+    "ENGL210",
+    "ENGL211",
+    "ENGL212",
+    "ENGL213",
+    "ENGL214",
+    "ENGL215"
+  ]
+}

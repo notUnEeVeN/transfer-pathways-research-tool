@@ -1,0 +1,25 @@
+{
+  "route_id": "george-mason-university__biol",
+  "requested_url": "https://catalog.gmu.edu/courses/biol/",
+  "final_url": "https://catalog.gmu.edu/courses/biol/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 307055,
+  "content_sha256": "4eaecb7ae7b85aa4460ce5c110f6fa915a515808370de3d37fe546c111877fcd",
+  "fetched_at": "2026-08-24T18:02:21.862Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "BIOL102",
+    "BIOL103",
+    "BIOL105",
+    "BIOL106",
+    "BIOL107"
+  ]
+}

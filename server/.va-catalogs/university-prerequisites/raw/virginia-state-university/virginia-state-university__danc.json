@@ -1,0 +1,22 @@
+{
+  "route_id": "virginia-state-university__danc",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/danc/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/danc/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 85062,
+  "content_sha256": "ddd06000745b7de41f9abb9bd9fdeded636eb829e5e7f5ebf1bfd5b33ae98118",
+  "fetched_at": "2026-08-24T18:04:01.356Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "DANC100",
+    "DANC251"
+  ]
+}

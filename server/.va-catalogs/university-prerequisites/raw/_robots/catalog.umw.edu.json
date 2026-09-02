@@ -1,0 +1,9 @@
+{
+  "requested_url": "https://catalog.umw.edu/robots.txt",
+  "final_url": "https://catalog.umw.edu/robots.txt",
+  "http_status": 200,
+  "content_type": "text/plain; charset=UTF-8",
+  "byte_length": 675,
+  "content_sha256": "9af88841b60eba3bc0a51410766b46ee3e14142647ceee383ff256f062c5a4a1",
+  "fetched_at": "2026-08-24T18:03:30.884Z"
+}

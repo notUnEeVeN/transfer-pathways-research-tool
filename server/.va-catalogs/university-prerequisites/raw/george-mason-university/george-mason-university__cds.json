@@ -1,0 +1,21 @@
+{
+  "route_id": "george-mason-university__cds",
+  "requested_url": "https://catalog.gmu.edu/courses/cds/",
+  "final_url": "https://catalog.gmu.edu/courses/cds/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 59765,
+  "content_sha256": "19700bd251c814bb990f1b441122e2a32191f1885044a154ba834e8bf8dd5e3f",
+  "fetched_at": "2026-08-24T18:08:46.951Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CDS130"
+  ]
+}

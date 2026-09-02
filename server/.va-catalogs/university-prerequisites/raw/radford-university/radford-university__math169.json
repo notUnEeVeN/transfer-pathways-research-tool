@@ -1,0 +1,21 @@
+{
+  "route_id": "radford-university__math169",
+  "requested_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109886",
+  "final_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109886",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 81447,
+  "content_sha256": "ccb51ddc322df0f874a615cdea734fe7c99a7e0e207ad8a1c6180d75db5ac09e",
+  "fetched_at": "2026-08-24T21:31:57.456Z",
+  "robots": {
+    "url": "https://catalog.radford.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "MATH169"
+  ]
+}

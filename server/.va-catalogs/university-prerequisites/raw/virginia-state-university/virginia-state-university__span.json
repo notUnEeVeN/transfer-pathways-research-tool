@@ -1,0 +1,24 @@
+{
+  "route_id": "virginia-state-university__span",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/span/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/span/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 84367,
+  "content_sha256": "bf9a4f90dbbc5b6dbad5c4a472561a64f7063eb0a020dc58703484ab6de2c9d7",
+  "fetched_at": "2026-08-24T18:04:27.795Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "SPAN110",
+    "SPAN111",
+    "SPAN212",
+    "SPAN213"
+  ]
+}

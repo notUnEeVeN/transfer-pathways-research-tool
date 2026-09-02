@@ -1,0 +1,24 @@
+{
+  "route_id": "george-mason-university__engh",
+  "requested_url": "https://catalog.gmu.edu/courses/engh/",
+  "final_url": "https://catalog.gmu.edu/courses/engh/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 288842,
+  "content_sha256": "35036ea113eaf362d2e9d6eccd9db508c40e36452dcab0a2a1d1237884bd7b42",
+  "fetched_at": "2026-08-24T18:02:29.544Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ENGH100",
+    "ENGH101",
+    "ENGH302",
+    "ENGH388"
+  ]
+}

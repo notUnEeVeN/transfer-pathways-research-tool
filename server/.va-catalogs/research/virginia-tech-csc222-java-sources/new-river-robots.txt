@@ -1,0 +1,10 @@
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AdsBot-Google
+Disallow:
+Allow: /
+
+User-Agent: *
+Disallow: 
+Allow: /

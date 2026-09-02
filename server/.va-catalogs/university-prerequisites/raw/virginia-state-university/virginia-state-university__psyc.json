@@ -1,0 +1,22 @@
+{
+  "route_id": "virginia-state-university__psyc",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/psyc/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/psyc/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 99125,
+  "content_sha256": "ba08279cc7254f745bbde59b31bc5371a0b321e7ffa2cbcdfaefc5b51ad93cc3",
+  "fetched_at": "2026-08-24T18:04:24.865Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "PSYC101",
+    "PSYC212"
+  ]
+}

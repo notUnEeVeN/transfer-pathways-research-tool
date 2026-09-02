@@ -1,0 +1,9 @@
+{
+  "requested_url": "https://catalog.nsu.edu/robots.txt",
+  "final_url": "https://catalog.nsu.edu/robots.txt",
+  "http_status": 200,
+  "content_type": "text/plain; charset=UTF-8",
+  "byte_length": 596,
+  "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+  "fetched_at": "2026-08-24T18:02:42.617Z"
+}

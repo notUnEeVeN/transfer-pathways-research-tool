@@ -1,0 +1,21 @@
+{
+  "route_id": "bridgewater-college__math150",
+  "requested_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/math150",
+  "final_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/math150",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "byte_length": 12079,
+  "content_sha256": "d502ddf4e423d40faf1ce9b2130f526d57ec0f6baccc7ca1a98dbb3fa011777b",
+  "fetched_at": "2026-08-25T02:04:26.638Z",
+  "robots": {
+    "url": "https://bridgewater.cleancatalog.io/robots.txt",
+    "http_status": 200,
+    "content_sha256": "418e112c89979b34678c945b45186d0cff4d829bcdc9d6d8437be76f50ef38f9",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "MATH150"
+  ]
+}

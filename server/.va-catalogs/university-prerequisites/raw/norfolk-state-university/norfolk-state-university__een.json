@@ -1,0 +1,21 @@
+{
+  "route_id": "norfolk-state-university__een",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/een/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/een/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 61230,
+  "content_sha256": "9614386910196581d390a47bff654b79fe8ccf68de576d682bda47b8885ab4cd",
+  "fetched_at": "2026-08-24T18:02:50.203Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "EEN470"
+  ]
+}

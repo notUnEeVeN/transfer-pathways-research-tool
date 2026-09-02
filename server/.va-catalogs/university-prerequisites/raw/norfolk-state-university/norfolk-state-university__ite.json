@@ -1,0 +1,21 @@
+{
+  "route_id": "norfolk-state-university__ite",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/ite/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/ite/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 29203,
+  "content_sha256": "336dc3d6a88bfd5a06045b912de2cf9f37998d33373fb8e28e82ac9c77c8db82",
+  "fetched_at": "2026-08-24T18:02:58.031Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ITE111"
+  ]
+}

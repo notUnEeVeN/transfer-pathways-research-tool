@@ -1,0 +1,401 @@
+{
+  "schema_version": 1,
+  "artifact": "va_vcu_egmn_outside_scope_prerequisite_evidence",
+  "contract": "vcu_2026_2027_egmn_exact_formula_and_structural_silence_v1",
+  "snapshot_date": "2026-08-25",
+  "publication_ready": false,
+  "summary": {
+    "target_rows": 3,
+    "exact_complete_entry_rows": 3,
+    "exact_formula_rows": 1,
+    "safe_structural_none_rows": 2,
+    "runtime_blocked_rows": 1,
+    "prerequisite_groups": 1,
+    "corequisite_groups": 1,
+    "owner_local_course_reference_keys": 2,
+    "non_course_condition_occurrences": 2
+  },
+  "policy": {
+    "exact_formula": "Every formula character and alternative is retained from one exact complete entry; a non-course permission alternative keeps the row runtime-blocked.",
+    "structural_none": "Only an exact complete entry with zero requisite and constraint markers plus a same-source positive control is classified as Figure 6 structural none.",
+    "scope": "This standalone evidence does not modify the shared review, prerequisite graph, release gate, documentation, or database."
+  },
+  "facts": {
+    "source": {
+      "route_id": "virginia-commonwealth-university__egmn",
+      "official_url": "https://bulletin.vcu.edu/azcourses/egmn/",
+      "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__egmn.html",
+      "metadata_cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__egmn.json",
+      "robots_cache_path": "university-prerequisites/raw/_robots/bulletin.vcu.edu.txt",
+      "response_sha256": "e8781daf458905d93cf998b33488e87ad55f830e960a326608b824dc900a1142",
+      "response_bytes": 103695,
+      "robots_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+      "courseblock_count": 110,
+      "complete_entry_count": 110,
+      "positive_required_marker_entry_count": 67,
+      "catalog_year": "2026-2027",
+      "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+      "metadata_sha256": "0a2e54a02c9f8caa9567ad2803878015e878c7a3f5a6f16e9fc04b91c88913eb",
+      "fetched_at": "2026-08-25T23:39:51.986Z",
+      "same_source_positive_control": true
+    },
+    "target_rows": [
+      {
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_key": "va:uni:9229:EGMN102",
+        "course_code": "EGMN102",
+        "scope_role": "recursive_closure",
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/egmn/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__egmn.html",
+          "source_response_sha256": "e8781daf458905d93cf998b33488e87ad55f830e960a326608b824dc900a1142",
+          "source_response_bytes": 103695,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "courseblock_index": 0,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3 Hours",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3,
+            "heading_text_sha256": "9507338c580fd111725c7ea97be93f48fbe9322bae6c5daa3483ba683c1b2da2"
+          },
+          "raw_entry_sha256": "45e621c88035dcb73d4ffcdc3c1bed6437085b614cfd76f781d9990d81e9c845",
+          "raw_entry_html_sha256": "ab3be9ebb9e1c0c4e2aac6ec57c397e81d2983ad81c2546a2bb34a807db6195f",
+          "raw_entry_text": "EGMN 102. Engineering Statics. 3 Hours. Semester course; 3 lecture hours. 3 credits. Prerequisite: MATH 200 with a minimum grade of C or by permission of the instructor. Concurrent prerequisite: PHYS 207 or by permission of the instructor. The theory and application of engineering mechanics applied to the design and analysis of rigid structures. Equilibrium of two- and three-dimensional bodies. The study of forces and their effects. Applications to engineering systems.",
+          "complete_entry_receipt": {
+            "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+            "source_courseblock_count": 110,
+            "source_complete_entry_count": 110,
+            "source_complete_entries_with_required_requisite_marker_count": 67,
+            "entry_required_requisite_marker_count": 2,
+            "entry_corequisite_marker_count": 0,
+            "entry_requisite_marker_like_count": 2,
+            "entry_constraint_like_signal_count": 4,
+            "same_source_positive_control": true
+          },
+          "structured_requisite_fields": []
+        },
+        "disposition": "exact_formula_runtime_blocked",
+        "publication_status_recommendation": "unparsed",
+        "review_status_recommendation": "not_promoted",
+        "review_reason": "exact_egmn_formula_preserved_but_instructor_permission_runtime_unbound",
+        "raw_requisites": "Prerequisite: MATH 200 with a minimum grade of C or by permission of the instructor. Concurrent prerequisite: PHYS 207 or by permission of the instructor.",
+        "raw_requisites_receipt": {
+          "raw": "Prerequisite: MATH 200 with a minimum grade of C or by permission of the instructor. Concurrent prerequisite: PHYS 207 or by permission of the instructor.",
+          "raw_sha256": "3ac47151f0a03beb865173a5595307ffeb48ae2f8ecf57b2c262d868445686f8",
+          "relative_start": 85,
+          "relative_end": 239,
+          "source_content_preserved": true
+        },
+        "groups": [
+          {
+            "kind": "prerequisite",
+            "catalog_label": "Prerequisite",
+            "raw": "MATH 200 with a minimum grade of C or by permission of the instructor",
+            "raw_sha256": "f81b91812b18619b1c84b6266942f1aa11335caabcdb3053594a37ec1b7eb56d",
+            "relative_start": 99,
+            "relative_end": 168,
+            "statement_receipt": {
+              "raw": "Prerequisite: MATH 200 with a minimum grade of C or by permission of the instructor.",
+              "raw_sha256": "c34d3f1aa4eee9ae528e7518039969d921e55baf1636e1d0ab49249b6f000c56",
+              "relative_start": 85,
+              "relative_end": 169,
+              "source_content_preserved": true
+            },
+            "formula": "paths_or__conditions_and",
+            "paths": [
+              {
+                "raw": "MATH 200 with a minimum grade of C or by permission of the instructor",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "code": "MATH200",
+                    "course_key": "va:uni:9229:MATH200",
+                    "raw": "MATH 200",
+                    "raw_sha256": "7d91587b3987d5da4dc1f452701cbb2ab51564e62fc1f4869db1fb56d4679598",
+                    "relative_start": 99,
+                    "relative_end": 107,
+                    "minimum_grade": "C",
+                    "minimum_grade_evidence": {
+                      "raw": "with a minimum grade of C",
+                      "raw_sha256": "9c03a1c820e107b95b078d9d695b2e949efdc884e6d94b92c05040b88d3fbdbf",
+                      "relative_start": 108,
+                      "relative_end": 133,
+                      "source_content_preserved": true
+                    }
+                  }
+                ]
+              },
+              {
+                "raw": "MATH 200 with a minimum grade of C or by permission of the instructor",
+                "all_of": [
+                  {
+                    "type": "non_course",
+                    "condition": "permission_of_instructor",
+                    "raw": "by permission of the instructor",
+                    "raw_sha256": "3568a1952dfc7d740e89fd82dd34203b98832bd3669b3b92d5c216494457063a",
+                    "relative_start": 137,
+                    "relative_end": 168,
+                    "authorization_kind": "permission",
+                    "authorization_authority": "instructor",
+                    "applies_to_group_kind": "prerequisite",
+                    "runtime_binding_status": "unresolved"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "corequisite",
+            "catalog_label": "Concurrent prerequisite",
+            "raw": "PHYS 207 or by permission of the instructor",
+            "raw_sha256": "04e2778e55a4250dbe2d4104f15c3c8386c5028b2e07d34a957009943191b5e2",
+            "relative_start": 195,
+            "relative_end": 238,
+            "statement_receipt": {
+              "raw": "Concurrent prerequisite: PHYS 207 or by permission of the instructor.",
+              "raw_sha256": "caa1cd1301575ee3598c3fec9222ce1f74c54e436f52518d09b6ef2e156d5a7c",
+              "relative_start": 170,
+              "relative_end": 239,
+              "source_content_preserved": true
+            },
+            "formula": "paths_or__conditions_and",
+            "paths": [
+              {
+                "raw": "PHYS 207 or by permission of the instructor",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "code": "PHYS207",
+                    "course_key": "va:uni:9229:PHYS207",
+                    "raw": "PHYS 207",
+                    "raw_sha256": "8c558d212fb05636ce765f24f312dceb434e5f73272dc955d73d63a1e53e16fb",
+                    "relative_start": 195,
+                    "relative_end": 203,
+                    "concurrent_required": true,
+                    "catalog_concurrency_label": "Concurrent prerequisite"
+                  }
+                ]
+              },
+              {
+                "raw": "PHYS 207 or by permission of the instructor",
+                "all_of": [
+                  {
+                    "type": "non_course",
+                    "condition": "permission_of_instructor",
+                    "raw": "by permission of the instructor",
+                    "raw_sha256": "3568a1952dfc7d740e89fd82dd34203b98832bd3669b3b92d5c216494457063a",
+                    "relative_start": 207,
+                    "relative_end": 238,
+                    "authorization_kind": "permission",
+                    "authorization_authority": "instructor",
+                    "applies_to_group_kind": "corequisite",
+                    "runtime_binding_status": "unresolved"
+                  }
+                ]
+              }
+            ],
+            "source_semantics": "catalog_labelled_concurrent_prerequisite",
+            "concurrent_required": true
+          }
+        ],
+        "formula_status": "exact_source_formula_preserved",
+        "course_reference_keys": [
+          "va:uni:9229:MATH200",
+          "va:uni:9229:PHYS207"
+        ],
+        "incoming_course_edge_count": 2,
+        "non_course_condition_occurrences": 2,
+        "runtime_blockers": [
+          {
+            "kind": "non_course_condition_binding_required",
+            "condition": "permission_of_instructor",
+            "occurrence_count": 2,
+            "formula_dropped_or_rewritten": false
+          }
+        ],
+        "constraint_signal_receipts": [
+          {
+            "raw": "with a minimum grade of C",
+            "raw_sha256": "9c03a1c820e107b95b078d9d695b2e949efdc884e6d94b92c05040b88d3fbdbf",
+            "relative_start": 108,
+            "relative_end": 133,
+            "source_content_preserved": true
+          },
+          {
+            "raw": "by permission of the instructor",
+            "raw_sha256": "3568a1952dfc7d740e89fd82dd34203b98832bd3669b3b92d5c216494457063a",
+            "occurrence_index": 0,
+            "relative_start": 137,
+            "relative_end": 168,
+            "source_content_preserved": true
+          },
+          {
+            "raw": "Concurrent prerequisite:",
+            "raw_sha256": "64750f654f9beaf2eb63a3cef07ce8f4d5679f23c8f89d1cee44b96d31bf95e1",
+            "relative_start": 170,
+            "relative_end": 194,
+            "source_content_preserved": true
+          },
+          {
+            "raw": "by permission of the instructor",
+            "raw_sha256": "3568a1952dfc7d740e89fd82dd34203b98832bd3669b3b92d5c216494457063a",
+            "occurrence_index": 1,
+            "relative_start": 207,
+            "relative_end": 238,
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "required_marker_count": 2,
+          "classified_required_statement_count": 2,
+          "constraint_like_signal_count": 4,
+          "classified_constraint_signal_count": 4,
+          "every_formula_character_preserved": true,
+          "non_course_alternatives_preserved": true,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "The two Boolean formulas and both instructor-permission alternatives are exact. The formula remains publication-blocked until the non-course permission condition has an explicit runtime binding; the permission alternatives may not be deleted to leave unconditional course edges."
+      },
+      {
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_key": "va:uni:9229:EGMN190",
+        "course_code": "EGMN190",
+        "scope_role": "recursive_closure",
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/egmn/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__egmn.html",
+          "source_response_sha256": "e8781daf458905d93cf998b33488e87ad55f830e960a326608b824dc900a1142",
+          "source_response_bytes": 103695,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "courseblock_index": 4,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "1 Hour",
+            "credit_hours_min": 1,
+            "credit_hours_max": 1,
+            "heading_text_sha256": "71ce60b2ea70fbb43005c2c1f686277d5974735b94fc89410683effa01b22dcc"
+          },
+          "raw_entry_sha256": "4aceccdf07f1745756443dc4a45e8873dd84ce0353447a2fc1c3e7295ea604a2",
+          "raw_entry_html_sha256": "e480fb872b30ab4bce5e5adac9bdbd6ab4f85988d5688178fe3f67bb68f6431a",
+          "raw_entry_text": "EGMN 190. Introduction to Mechanical and Nuclear Engineering. 1 Hour. Semester course; 1 lecture hour. 1 credit. The course will introduce students to the engineering profession, present basic mechanical and nuclear engineering concepts and include seminars presented by alumni, industry and experts in their fields.",
+          "complete_entry_receipt": {
+            "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+            "source_courseblock_count": 110,
+            "source_complete_entry_count": 110,
+            "source_complete_entries_with_required_requisite_marker_count": 67,
+            "entry_required_requisite_marker_count": 0,
+            "entry_corequisite_marker_count": 0,
+            "entry_requisite_marker_like_count": 0,
+            "entry_constraint_like_signal_count": 0,
+            "same_source_positive_control": true
+          },
+          "structured_requisite_fields": []
+        },
+        "disposition": "safe_structural_none",
+        "publication_status_recommendation": "none",
+        "review_status_recommendation": "promoted_structural_none",
+        "review_reason": "exact_complete_egmn_entry_zero_required_requisite_markers",
+        "raw_requisites": null,
+        "groups": [],
+        "formula_status": "structural_none_source_proved",
+        "course_reference_keys": [],
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "literal_no_requirement_statement": false,
+        "graph_effect": {
+          "added_course_vertices": 0,
+          "added_prerequisite_edges": 0,
+          "added_corequisite_edges": 0
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "same_source_positive_control": true,
+          "required_marker_count": 0,
+          "corequisite_marker_count": 0,
+          "requisite_marker_like_count": 0,
+          "constraint_like_signal_count": 0,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "Structural none is limited to this exact complete current entry and the Figure 6 prerequisite/corequisite graph. It is not a literal catalog statement that the course has no requirements."
+      },
+      {
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_key": "va:uni:9229:EGMN203",
+        "course_code": "EGMN203",
+        "scope_role": "recursive_closure",
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/egmn/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__egmn.html",
+          "source_response_sha256": "e8781daf458905d93cf998b33488e87ad55f830e960a326608b824dc900a1142",
+          "source_response_bytes": 103695,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "courseblock_index": 7,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "1 Hour",
+            "credit_hours_min": 1,
+            "credit_hours_max": 1,
+            "heading_text_sha256": "5536bc6fc2d2149e288ff1d96fa775e0a5b9acaa9ea903f10b34162104755e3f"
+          },
+          "raw_entry_sha256": "65dc13375219b5d0bbb8fc0b2e6254c3858e8e45bb7f990d65552a4f37357405",
+          "raw_entry_html_sha256": "6bebec8e9b090b432a2fc6094215519ee5b61443ea0a0e14e3c56b89b1c8eab7",
+          "raw_entry_text": "EGMN 203. Mechanical and Nuclear Engineering Practicum. 1 Hour. Semester course; 3 laboratory hours. 1 credit. Students will perform a sequence of laboratory modules designed to provide practical hands-on exposure to important topics, equipment and experimental methods in mechanical and nuclear engineering. Topics covered include additive manufacturing, radiation detection and measurement, radiation shielding, data acquisition and computer interfacing, coding for instrumentation control.",
+          "complete_entry_receipt": {
+            "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+            "source_courseblock_count": 110,
+            "source_complete_entry_count": 110,
+            "source_complete_entries_with_required_requisite_marker_count": 67,
+            "entry_required_requisite_marker_count": 0,
+            "entry_corequisite_marker_count": 0,
+            "entry_requisite_marker_like_count": 0,
+            "entry_constraint_like_signal_count": 0,
+            "same_source_positive_control": true
+          },
+          "structured_requisite_fields": []
+        },
+        "disposition": "safe_structural_none",
+        "publication_status_recommendation": "none",
+        "review_status_recommendation": "promoted_structural_none",
+        "review_reason": "exact_complete_egmn_entry_zero_required_requisite_markers",
+        "raw_requisites": null,
+        "groups": [],
+        "formula_status": "structural_none_source_proved",
+        "course_reference_keys": [],
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "literal_no_requirement_statement": false,
+        "graph_effect": {
+          "added_course_vertices": 0,
+          "added_prerequisite_edges": 0,
+          "added_corequisite_edges": 0
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "same_source_positive_control": true,
+          "required_marker_count": 0,
+          "corequisite_marker_count": 0,
+          "requisite_marker_like_count": 0,
+          "constraint_like_signal_count": 0,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "Structural none is limited to this exact complete current entry and the Figure 6 prerequisite/corequisite graph. It is not a literal catalog statement that the course has no requirements."
+      }
+    ],
+    "formula_reference_keys": [
+      "va:uni:9229:MATH200",
+      "va:uni:9229:PHYS207"
+    ]
+  },
+  "facts_sha256": "e72d8f6fc12c8aae2922b2061b6ee539a652894dab60398ac1fbb63b95709506"
+}

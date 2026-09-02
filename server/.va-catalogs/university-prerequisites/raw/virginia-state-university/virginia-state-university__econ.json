@@ -1,0 +1,23 @@
+{
+  "route_id": "virginia-state-university__econ",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/econ/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/econ/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 86323,
+  "content_sha256": "67bf56958c3c38e5315c959f3d90eb70baf1d2194ef5c270d35b9ec426d252f9",
+  "fetched_at": "2026-08-24T18:04:05.705Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ECON100",
+    "ECON210",
+    "ECON211"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "route_id": "virginia-state-university__biol",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/biol/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/biol/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 127113,
+  "content_sha256": "29cbaeed3575cf8b354065206d1eb90bf6ea324f08102b40db1c528fdd9d5e61",
+  "fetched_at": "2026-08-24T18:03:57.141Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "BIOL116",
+    "BIOL120",
+    "BIOL121"
+  ]
+}

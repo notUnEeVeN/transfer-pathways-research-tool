@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_tech_vccs_equivalency_quantity_evidence",
+  "generated_on": "2026-08-24",
+  "institution": {
+    "name": "Virginia Polytechnic Institute and State University",
+    "slug": "virginia-polytechnic-institute-and-state-university",
+    "school_id": 9230
+  },
+  "purpose": "Exact official receiving-credit quantities for the selected CSC 223 and EGR 122 Virginia Tech equivalencies. The separate CSC 222 Java/advisor condition remains unresolved without college-specific language evidence.",
+  "verified": true,
+  "issues": [],
+  "source": {
+    "requested_url": "https://transferguide.registrar.vt.edu/VCCS-Equivalencies/VCCS-Equivalencies-2026.html",
+    "final_url": "https://transferguide.registrar.vt.edu/VCCS-Equivalencies/VCCS-Equivalencies-2026.html",
+    "content_type": "text/html;charset=utf-8",
+    "response_bytes": 434257,
+    "response_sha256": "05536558dd8ee2d16e2b5ffac680f7c460e1c244b4569d16b18c322dd21bd9a9",
+    "captured_at": null,
+    "title": "VCCS Equivalencies Summer 2026 - Spring 2027 | transferguide.registrar | Virginia Tech",
+    "table_count": 1,
+    "header": [
+      "VCCS Course Number",
+      "VCCS Course Title",
+      "VCCS Credits",
+      "VT Course Number",
+      "VT Course Title",
+      "VT Credits",
+      "Comments"
+    ],
+    "exact_rows": {
+      "CSC222": {
+        "cells": [
+          "CSC 222",
+          "Object-Oriented Programming",
+          "4",
+          "CS 1114 + CS 1XXX",
+          "Introduction to Software Design and Computer Science Elective",
+          "3+1",
+          "If taught in a language other than Java, please see your advisor."
+        ],
+        "fragment_sha256": "a3bfd914fb699f245832ba3c1ec50bc7fbe631ee0151c84c4e507524c36f18cb"
+      },
+      "CSC223": {
+        "cells": [
+          "CSC 223",
+          "Data Structures and Analysis of Algorithms",
+          "4",
+          "CS 2114 + CS 2XXX",
+          "Software Design and Data Structures + Computer Science Elective",
+          "3+1",
+          ""
+        ],
+        "fragment_sha256": "b4ef9181f1a975dc14aa1a7ae50be94a1c0e21596b318a08c3664f74e0af6612"
+      },
+      "EGR122": {
+        "cells": [
+          "EGR 122",
+          "Engineering Design",
+          "3",
+          "ENGE 1216 + ENGE 1XXX",
+          "Foundations of Engineering + Engineering Education Elective",
+          "2+1",
+          ""
+        ],
+        "fragment_sha256": "0f9206bc697e75fbda5579990f7d73bac1839ccb59db6a1a38d5a53fe2b4424f"
+      }
+    }
+  },
+  "robots": {
+    "requested_url": "https://transferguide.registrar.vt.edu/robots.txt",
+    "final_url": "https://transferguide.registrar.vt.edu/content/dam/transferguide_registrar_vt_edu/robots.txt",
+    "http_status": 200,
+    "content_type": "text/plain;charset=iso-8859-1",
+    "response_bytes": 25,
+    "response_sha256": "b1282f723cd580b0cf3c38125d24259ceab3b897d38b63376d9fa6c302558fcf",
+    "same_host_redirect": true,
+    "equivalency_path_allowed": true
+  },
+  "quantity_facts": {
+    "catalog_window": "Summer 2026 - Spring 2027",
+    "rows": {
+      "CSC222": {
+        "sending_code": "CSC222",
+        "sending_units": 4,
+        "named_receiving_code": "CS1114",
+        "named_receiving_units": 3,
+        "elective_receiving_code": "CS1XXX",
+        "elective_receiving_units": 1,
+        "total_receiving_units": 4,
+        "language_condition": "java_or_advisor_review",
+        "exact_cells": [
+          "CSC 222",
+          "Object-Oriented Programming",
+          "4",
+          "CS 1114 + CS 1XXX",
+          "Introduction to Software Design and Computer Science Elective",
+          "3+1",
+          "If taught in a language other than Java, please see your advisor."
+        ]
+      },
+      "CSC223": {
+        "sending_code": "CSC223",
+        "sending_units": 4,
+        "named_receiving_code": "CS2114",
+        "named_receiving_units": 3,
+        "elective_receiving_code": "CS2XXX",
+        "elective_receiving_units": 1,
+        "total_receiving_units": 4,
+        "language_condition": null,
+        "exact_cells": [
+          "CSC 223",
+          "Data Structures and Analysis of Algorithms",
+          "4",
+          "CS 2114 + CS 2XXX",
+          "Software Design and Data Structures + Computer Science Elective",
+          "3+1",
+          ""
+        ]
+      },
+      "EGR122": {
+        "sending_code": "EGR122",
+        "sending_units": 3,
+        "named_receiving_code": "ENGE1216",
+        "named_receiving_units": 2,
+        "elective_receiving_code": "ENGE1XXX",
+        "elective_receiving_units": 1,
+        "total_receiving_units": 3,
+        "language_condition": null,
+        "exact_cells": [
+          "EGR 122",
+          "Engineering Design",
+          "3",
+          "ENGE 1216 + ENGE 1XXX",
+          "Foundations of Engineering + Engineering Education Elective",
+          "2+1",
+          ""
+        ]
+      }
+    }
+  },
+  "quantity_facts_sha256": "e655ca8c1cc0bdef35326d1ce52cc32ee05d87c9f28b4e342f9031ac4942f300",
+  "paper_interpretation": {
+    "quantity_resolution_codes": [
+      "CSC223",
+      "EGR122"
+    ],
+    "csc222_quantity_known": true,
+    "csc222_language_condition_resolved": false,
+    "generic_variable_credit_rule_inferred": false
+  }
+}

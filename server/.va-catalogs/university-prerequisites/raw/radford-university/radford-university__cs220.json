@@ -1,0 +1,21 @@
+{
+  "route_id": "radford-university__cs220",
+  "requested_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109002",
+  "final_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109002",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 78769,
+  "content_sha256": "f75a6d6614c7457ef86cafa11e9bfec3b9552c6d9e60fe537f1461a7136f9174",
+  "fetched_at": "2026-08-24T21:07:47.067Z",
+  "robots": {
+    "url": "https://catalog.radford.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "CS220"
+  ]
+}

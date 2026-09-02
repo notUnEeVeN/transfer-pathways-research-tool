@@ -1,0 +1,249 @@
+--- PDF PAGES 42-42 ---
+VIRGINIA MILITARY INSTITUTE ACADEMIC CATALOG, 2025-2026
+42
+Core Curriculum
+The Core Curriculum develops foundational knowledge and skills that are essential to VMI's ac-
+ademic and military missions. Designed thematically as "The Nucleus of Effective Citizenship and
+Leadership," VMI's Core requirements are organized into four components.
+I. Key Competencies
+A. Written Communication (ERH 101 - ERH 102) 6 hours1
+B. Oral Communication (ERH 103) 1 hour
+C. Scientific Analysis (approved BI, CH, or PY sequence) 8 hours
+D. Mathematical Reasoning (approved MA sequence) 6 hours
+E. Human Performance and Wellness (seven semesters) 4 hours
+II. Foundations of Citizenship and Leadership
+A. Reserve Officers Training Corps (ROTC) 12 hours
+B. LEAD 344 - Leadership in Organizations 3 hours
+III. Perspectives on Civilization and Human Achievement
+A. World History (HI 103 - HI 104) 6 hours
+B. Civilizations and Cultures (two courses)2
+IV. Integrative Experiences
+A. Writing-Intensive Courses(two courses)3
+B. Capstone Experience variable
+1
+All activity must be passed with a grade of "C" or better.
+2
+One of these courses may be replaced by a credit-bearing, Institute-approved Study Abroad
+experience.
+3
+At least one of these courses must be in the major.
+--- PDF PAGES 132-134 ---
+VIRGINIA MILITARY INSTITUTE ACADEMIC CATALOG, 2025-2026
+132
+Computer Science, B.S. - Theory and Application (TA) Track
+Requirements for the B.S. Degree in Computer Science - TA Track
+The Bachelor of Science degree in Computer Science – Theory and Application Track requires
+136 semester hours. A minimum 2.00 GPA must be maintained in the computer and infor-
+mation sciences courses. The following outline gives minimum requirements.
+Recommended Minors: Business, Economics, Psychology, Applied Mathematics, Astronomy,
+Physics, Biology, Chemistry, or Computer Engineering.
+VMI Core Curriculum: 34 Credits
+B.S. in Computer Science - Theory and Application Track must complete mathematics sequence:
+• MA 123 - Calculus & Analytic Geometry I Credit Hours: 3
+• MA 124 - Calculus & Analytic Geometry II Credit Hours: 3
+B.S. in Computer Science - Theory and Application Track must complete science sequence:
+• Science Requirement I - (BI, CH, or PY w/ lab) Credit Hours: 4
+• Science Requirement II - (BI, CH, or PY w/ lab) Credit Hours: 4
+Required Computer Science Core Courses: 30 Credits
+• CIS 101 - Introduction to Computer Science Credit Hours: 3
+• CIS 111 - Programming I Credit Hours: 3
+• CIS 111L - Laboratory for Programming I Credit Hours: 1
+• CIS 112 - Programming II Credit Hours: 3
+• CIS 112L - Laboratory for Programming II Credit Hours: 1
+• CIS 213 - Data Structures and Applications Credit Hours: 3
+• CIS 222 - Database Management Systems Credit Hours: 3
+• CIS 301 - Networking Credit Hours: 3
+• CIS 301L - Networking Lab Credit Hours: 1
+• CIS 380W - Research Topics in Computer and Information Sciences Credit Hours: 3
+• CIS 480 - Capstone I Credit Hours: 3
+• CIS 490 - Capstone II Credit Hours: 3VIRGINIA MILITARY INSTITUTE ACADEMIC CATALOG, 2025-2026
+133
+Required Theory and Application Track Courses: 18 credits
+• CIS 201 - Computer Architecture and Organization Credit Hours: 3
+• CIS 302 - Modern Operating Systems Credit Hours: 3
+• CIS 312W - Software Engineering Credit Hours: 3
+• CIS 343 - Design and Analysis of Algorithms Credit Hours: 3
+• CIS 411 - Distributed Computing and Applications Credit Hours: 3
+• CIS 430 - Theory of Computation and Programming Languages Credit Hours: 3
+Computer and Information Sciences Electives*: 6 credits
+• CIS 211 - Internet and Mobile Programming Credit Hours: 3
+• CIS 303 - Computer & Information Security Credit Hours: 3
+• CIS 303L - Computer and Information Security Laboratory Credit Hours: 1
+• CIS 342 - Data Analytics Credit Hours: 3
+• CIS 331 - Human Computer Interaction and Usability Analysis Credit Hours: 3
+• CIS 377 - Linux Fundamentals, Administration, and Security Credit Hours: 3
+Computer and Information Sciences Upper-Level Electives*: 3 credits
+Choose from below:
+• CIS 401 - Advanced Network Security Credit Hours: 3
+• CIS 402 - Computer Forensics Credit Hours: 3
+• CIS 477 - Secure Software Engineering Credit Hours: 3
+• CIS 431 - Information Organization & Management Credit Hours: 3
+• CIS 432 - Computer Vision Credit Hours: 3
+• CIS 434 - Bioinformatics Credit Hours: 3
+• CIS 476W - Internship in Computer Science Credit Hours: 1-3
+• CIS 412 - Mobile Computing and Applications Credit Hours: 3
+• CIS 421 - Database Design and Development Credit Hours: 3
+• CIS 422 - Information Retrieval Credit Hours: 3
+• CIS 424 - Artificial Intelligence Credit Hours: 3
+• EE 428 - Reverse Engineering Credit Hours: 3
+Required Additional Mathematics Courses: 9 Credits
+• MA 220 - Probability & Statistics for Engineers & Scientists Credit Hours: 3
+• ELEC MA - Mathematics Elective Credit Hours: 3 **VIRGINIA MILITARY INSTITUTE ACADEMIC CATALOG, 2025-2026
+134
+• CIS 241 - Discrete Structures Credit Hours: 3
+ROTC: 12 credits
+Free Electives: 24 credits
+Notes:
+* If more than one track is declared, required courses of another track cannot be taken as a
+Computer and Information Sciences Elective or a Computer and Information Sciences Upper-
+Level elective.
+** MA Elective must be 200 level or higher
+--- PDF PAGES 233-233 ---
+VIRGINIA MILITARY INSTITUTE ACADEMIC CATALOG, 2025-2026
+233
+applied to the Traveling Salesman Problem (TSP).
+The course concludes with the development of a
+TSP graphical user interface (GUI) that integrates
+these algorithms. Prerequisite(s): MA 110, ME
+203, or PY 223.
+MA 311 - Elementary Differential Equa-
+tions
+Lecture Hours: 3 | Lab Hours: 0 | Credit Hours: 3
+Ordinary differential equations; applications; La-
+place transforms; Systems of ODEs. Prerequi-
+site(s): MA 124.
+MA 319 - Mathematical Methods of Oper-
+ations Research
+Lecture Hours: 3 | Lab Hours: 0 | Credit Hours: 3
+Mathematical modeling, linear programming, al-
+location models, the simplex algorithm, sensitivity
+analysis, introduction to an industry standard
+programming language and solvers for opera-
+tions research. Prerequisite(s): MA 103 and MA
+124.
+MA 320 - Mathematical Modeling
+Lecture Hours: 3 | Lab Hours: 0 | Credit Hours: 3
+This course considers a variety of mathematical
+models in the physical, life, and social sciences. In
+addition to analyzing models, a major component
+of the course is using computational tools to con-
+struct mathematical models and test their validity
+against empirical data. Prerequisite(s): MA
+110 and MA 311
+MA 330WX - History of Mathematics
+Lecture Hours: 3 | Lab Hours: 0 | Credit Hours: 3
+This is a topics course in the history of mathemat-
+ics beginning with the ancients. This is a guided
+tour of the most important aspects from the be-
+ginnings of recorded mathematical activity
+through the development of calculus. Topics be-
+yond the development of the calculus will be cov-
+ered as time permits. Coverage includes the mo-
+tives, influences, and methods affecting the de-
+velopment of algebra, geometry, trigonometry,
+and calculus in Mesopotamian, Egyptian, Greek,
+Islamic,Indian, andEuropean civilizations.Prereq-
+uisite(s): MA 123 or permission of instructor. Pref-
+erence is given to AM Majors and Minors. Note:
+Writing Intensive (W) and Civilizations & Cultures
+Course (X).
+MA 331X - History of Mathematics II
+Lecture Hours: 3 | Lab Hours: 0 | Credit Hours: 3
+In this course, we consider the works and lives of
+mathematicians in Europe and the United States.
+We focus on major developments during the time
+frame from the development of thecalculusin the
+late 1600s to the present day. We study mathe-
+matical contributions to fields such as geometry,
+number theory, and calculus as well as to physics
+and engineering and how each culture has sup-
+ported mathematical discovery. Prerequisite(s):
+MA 124 Note: Civilizations & Cultures Course (X).
+MA 339 - Introduction to Python
+Lecture Hours: 1 | Lab Hours: 0 | Credit Hours: 1
+This course is an introduction to the Python pro-
+gramming language. In this course, you will learn
+the basic syntax required to write programs in Py-
+thon. The course assumes you have learned at
+least one programming language and are com-
+fortable with basic flow control (if-statements,
+for-loops, etc.).
+MA 340 - Introduction to R Programming
+for Data Science and Statistics
+Lecture Hours: 1 | Lab Hours: 0 | Credit Hours: 1
+This 300-level course is an introduction to pro-
+gramming with R, a language for statistical com-
+puting and graphics. The topics covered include
+basic operations on vectors, matrices, and data
+frames. Students also learn how to use R func-
+tions for data analysis, like data manipulation, ob-
+taining summary of data, data visualization, data
+cleansing, and fitting models. Prerequisite(s): MA
+220 or PS 205
+--- PDF PAGES 243-243 ---
+VIRGINIA MILITARY INSTITUTE ACADEMIC CATALOG, 2025-2026
+243
+BIOLOGY
+Department of Biology | Department Head: Col. Smythe
+Requirements for major in biology are specified in Biology.
+BI 101 - General Biology I
+Lecture Hours: 3 | Lab Hours: 3 | Credit Hours: 4
+Lecture material will be derived from the con-
+cepts presented in the text. BI 101 will focus
+upon basic biochemistry and the structure
+and function of the principle biomolecules;
+cell structure and function, membrane char-
+acteristics and the transport of material
+acrossthe cell membrane; cell division includ-
+ing the process of fission, mitosis, and meio-
+sis; the structure of DNA and the process of
+protein synthesis; basic Mendelian and non-
+Mendelian genetics. Laboratory topics will
+complement lecture material as well as in-
+clude use of the scientific method activities as
+a means of reinforcing lecture material and
+preparing for an original research project to
+be conducted at the end of BI 102.
+BI 102 - General Biology II
+Lecture Hours: 3 | Lab Hours: 3 | Credit Hours: 4
+This course is a continuation of BI 101. Lec-
+ture material will be derived from the con-
+cepts presented in the text. BI 102 will focus
+upon evolutionary principles including selec-
+tion, speciation, phylogeny and homology;
+ecological principles including population
+and community dynamics, niche theory, com-
+petition, trophic levels and symbiosis; and the
+structure and functioning of specific organ
+systems. Laboratory topics will complement
+lecture material as well as include use of the
+scientific method activities as a means of re-
+inforcing lecture material and preparing for
+an original research project to be conducted
+at the end of the semester.
+BI 105 - Concepts in Biology I
+Lecture Hours: 3 | Lab Hours: 3 | Credit Hours: 4
+Cadets will explore biology from the molecu-
+lar to organismal level and compare the di-
+verse ways organisms have solved common
+problems. Topics will include characteristics
+of life, biological molecules, cell structure and
+function, bioenergetics, biological infor-
+mation flow, cell replication, and genetics. In
+addition to their textbook, students will read
+and interpret scientific literature. Students
+will engage in biological inquiry in both the
+laboratory and the field, learning how to de-
+sign and conduct a scientific study, essential
+methods for the research of biology, collect
+and analyze data using statistics, and inter-
+pret results within the broader field of biol-
+ogy.
+BI 106 - Concepts in Biology II
+Lecture Hours: 3 | Lab Hours: 3 | Credit Hours: 4
+Cadets will explore biology from the organis-
+mal to ecological level and compare the di-
+verse ways organisms have solved common
+problems. Topics will include evolution, ecol-
+ogy, biological diversity, form and function of
+organisms, and human impacts. In addition to

@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "artifact": "radford_remaining_science_pair_exact_source_audit",
+  "generated_on": "2026-08-25",
+  "catalog_year": "2026-2027",
+  "purpose": "Exact-source audit of the two omitted Radford two-sciences/one-laboratory cells. Equivalency evidence never adds an unselected sending course or collapses institution-local identity into VCCS identity.",
+  "verified": true,
+  "issues": [],
+  "robots": {
+    "transfer": {
+      "url": "https://www.transfervirginia.org/robots.txt",
+      "http_status": 200,
+      "response_bytes": 2189,
+      "response_sha256": "278e83bcf567badfebcdea4d5d20ca9898e4449fe4eb2e3b5a08227b4ca9b762",
+      "crawl_delay_seconds": 10,
+      "policy_paths_allowed": true
+    },
+    "radford": {
+      "url": "https://www.radford.edu/robots.txt",
+      "http_status": 200,
+      "response_bytes": 401,
+      "response_sha256": "16bbefe843bf06054d6f7df31d8978a401777519bbf5558066477dc0a8af0a4e",
+      "crawl_delay_seconds": 0,
+      "policy_paths_allowed": true
+    }
+  },
+  "facts": {
+    "existing_corpus_target_count": 17,
+    "audited_numeric_ids": [
+      9317,
+      9319
+    ],
+    "exact_cells_closed": [
+      9317
+    ],
+    "irreducible_numeric_ids": [
+      9319
+    ],
+    "cells": [
+      {
+        "numeric_id": 9317,
+        "slug": "richard-bland-college",
+        "institution": "Richard Bland College",
+        "existing_omission": {
+          "existing_pair_target": false,
+          "observed_legacy_discovery_codes": [
+            "CHEM101",
+            "CHEM102",
+            "PHYS101",
+            "PHYS102"
+          ],
+          "selected_plan_codes": [
+            "PHYS201",
+            "PHYS202"
+          ],
+          "exact_selected_codes_discovered": [],
+          "matrix_pair": null,
+          "matrix_blocker": "the exact A.S. tree has local PHYS identities but the current incoming Radford equivalency corpus has no exact edge",
+          "matrix_source_bundle_sha256": "eaae55d519535782ad80339e3365627a7855dededae58b8326bf643478d94186",
+          "reproduced": true
+        },
+        "sending_plan": {
+          "source_url": "http://catalog.rbc.edu/preview_program.php?catoid=10&poid=197&returnto=412&print=1",
+          "response_bytes": 6442,
+          "response_sha256": "a77c485b8d11292d18c445a8f956b7a75e59ef84a909d336b801e3f5acf48a89",
+          "source_bundle_sha256": "eaae55d519535782ad80339e3365627a7855dededae58b8326bf643478d94186",
+          "composition_sha256": "40c4bbf5eb4fa651dcb48dbda3eb295cffec6359e8d1614b76c6179d7d4f6d34",
+          "degree_total_units": 60,
+          "science_requirement_units": 8,
+          "selected_sciences": [
+            {
+              "code": "PHYS201",
+              "course_id": 1407447376,
+              "course_key": "va:cc:richard-bland-college:PHYS201",
+              "institution_id": "va:cc:richard-bland-college",
+              "identity_scope": "institution_local",
+              "identity_contract": "owner_plus_course_id",
+              "vccs_master_applicable": false
+            },
+            {
+              "code": "PHYS202",
+              "course_id": 1320637504,
+              "course_key": "va:cc:richard-bland-college:PHYS202",
+              "institution_id": "va:cc:richard-bland-college",
+              "identity_scope": "institution_local",
+              "identity_contract": "owner_plus_course_id",
+              "vccs_master_applicable": false
+            }
+          ],
+          "laboratory_basis": "Both exact official plan rows are labeled Lecture and Lab.",
+          "exact_plan_fragment": "Investigation of the Natural World: 8 Credit Hours Required Courses: PHYS - 201 University Physics (Lecture and Lab) Credits: 4 PHYS - 202 University Physics (Lecture and Lab) Credits: 4"
+        },
+        "selected_pair": [
+          {
+            "source_institution": "Richard Bland College",
+            "sending_code": "PHYS201",
+            "sending_title": "University Physics",
+            "sending_credits": 4,
+            "sending_course_note": "Continuous course; three hours lecture; one hour laboratory. UCGS approved course, 2021.",
+            "receiving_institution": "Radford University",
+            "receiving_code": "PHYS221",
+            "receiving_name": "Physics",
+            "receiving_notes": null,
+            "observed_radford_edges": [
+              {
+                "receiving_code": "PHYS221",
+                "receiving_name": "Physics",
+                "receiving_notes": null
+              }
+            ],
+            "source": {
+              "requested_url": "https://www.transfervirginia.org/course/2FB60A081F9511F082AC0242AC15010A",
+              "final_url": "https://www.transfervirginia.org/course/2FB60A081F9511F082AC0242AC15010A",
+              "http_status": 200,
+              "content_type": "text/html; charset=utf-8",
+              "response_bytes": 44040,
+              "response_sha256": "c6af4364c181f0d3a1c8e530f540f5ef77c612a9139aec568e5703b511f24288"
+            }
+          },
+          {
+            "source_institution": "Richard Bland College",
+            "sending_code": "PHYS202",
+            "sending_title": "University Physics",
+            "sending_credits": 4,
+            "sending_course_note": "Continuous course; three hours lecture; one hour laboratory. UCGS approved course, 2021.",
+            "receiving_institution": "Radford University",
+            "receiving_code": "PHYS222",
+            "receiving_name": "Physics",
+            "receiving_notes": null,
+            "observed_radford_edges": [
+              {
+                "receiving_code": "PHYS222",
+                "receiving_name": "Physics",
+                "receiving_notes": null
+              }
+            ],
+            "source": {
+              "requested_url": "https://www.transfervirginia.org/course/2FB60A911F9511F082AC0242AC15010A",
+              "final_url": "https://www.transfervirginia.org/course/2FB60A911F9511F082AC0242AC15010A",
+              "http_status": 200,
+              "content_type": "text/html; charset=utf-8",
+              "response_bytes": 43691,
+              "response_sha256": "1e0b16b566448e44afd2c67522b995c7cd762470cef62e10a54352b5fa366a2c"
+            }
+          }
+        ],
+        "receiving_courses": [
+          {
+            "course_code": "PHYS221",
+            "title": "Physics I (GE)",
+            "credits": 4,
+            "laboratory_exercises_required": "The lab exercises are designed to reinforce the student's understanding",
+            "laboratory_report_required": "A lab report must be submitted for each lab exercise.",
+            "source": {
+              "requested_url": "https://www.radford.edu/registrar/course-descriptions/physics/phys-221.html",
+              "final_url": "https://www.radford.edu/registrar/course-descriptions/physics/phys-221.html",
+              "http_status": 200,
+              "content_type": "text/html; charset=UTF-8",
+              "response_bytes": 111045,
+              "response_sha256": "fd957d8cf9b9fdc48b8d8708f688977fcae92a7ceda96a81820e3d639374f108"
+            }
+          },
+          {
+            "course_code": "PHYS222",
+            "title": "Physics II (GE)",
+            "credits": 4,
+            "laboratory_exercises_required": "The lab exercises are designed to reinforce the student's understanding",
+            "laboratory_report_required": "A lab report must be submitted for each lab exercise.",
+            "source": {
+              "requested_url": "https://www.radford.edu/registrar/course-descriptions/physics/phys-222.html",
+              "final_url": "https://www.radford.edu/registrar/course-descriptions/physics/phys-222.html",
+              "http_status": 200,
+              "content_type": "text/html; charset=UTF-8",
+              "response_bytes": 111516,
+              "response_sha256": "af355d4c6f0108f9b22b7be61120ec50b133bdd53958f35781cc4ec6e0bc7dcd"
+            }
+          }
+        ],
+        "selected_sending_units": 8,
+        "selected_receiving_units": 8,
+        "distinct_selected_sciences": 2,
+        "selected_laboratory_courses": 2,
+        "safe_to_close": true,
+        "verdict": "closed_by_exact_college_specific_evidence",
+        "blocker": null
+      },
+      {
+        "numeric_id": 9319,
+        "slug": "southwest-virginia-community-college",
+        "institution": "Southwest Virginia Community College",
+        "existing_omission": {
+          "existing_pair_target": false,
+          "observed_legacy_discovery_codes": [
+            "CHM111",
+            "CHM112",
+            "PHY201",
+            "PHY202"
+          ],
+          "selected_plan_codes": [
+            "PHY241"
+          ],
+          "exact_selected_codes_discovered": [],
+          "matrix_pair": null,
+          "matrix_blocker": "the exact A.S. tree exposes only one named eligible science course",
+          "matrix_source_bundle_sha256": "0dfe87d22adef2dcc0588b3c13e7fab92748c027add477fd087f91f93a981d1c",
+          "reproduced": true
+        },
+        "sending_plan": {
+          "source_url": "https://catalog.sw.edu/preview_program.php?catoid=13&poid=1613&returnto=761&print=1",
+          "response_bytes": 2350,
+          "response_sha256": "14d006b4f24c1f790c799faf988df8bbb4c46345a93de778832713942b05e130",
+          "source_bundle_sha256": "0dfe87d22adef2dcc0588b3c13e7fab92748c027add477fd087f91f93a981d1c",
+          "composition_sha256": "900428318fe220f6571836dcb78bf85b119f5cbde164461d4d96785de0b09fb3",
+          "degree_total_units": 60,
+          "fixed_or_typed_rows": [
+            [
+              "MTH263",
+              4
+            ],
+            [
+              "EGR121",
+              2
+            ],
+            [
+              "CSC221",
+              3
+            ],
+            [
+              "HISTORY_ELECTIVE",
+              3
+            ],
+            [
+              "ENG111",
+              3
+            ],
+            [
+              "SDV100",
+              1
+            ],
+            [
+              "ENG112",
+              3
+            ],
+            [
+              "MTH264",
+              4
+            ],
+            [
+              "EGR122",
+              3
+            ],
+            [
+              "CSC222",
+              4
+            ],
+            [
+              "MTH288",
+              3
+            ],
+            [
+              "PHY241",
+              4
+            ],
+            [
+              "CSC205",
+              3
+            ],
+            [
+              "HUMANITIES_ELECTIVE",
+              3
+            ],
+            [
+              "MTH265",
+              4
+            ],
+            [
+              "CSC223",
+              4
+            ],
+            [
+              "PHI220",
+              3
+            ],
+            [
+              "CST100",
+              3
+            ],
+            [
+              "SOCIAL_BEHAVIORAL_ELECTIVE",
+              3
+            ]
+          ],
+          "fixed_or_typed_row_units": 60,
+          "selected_sciences": [
+            "PHY241"
+          ],
+          "open_science_capacity": false,
+          "selected_laboratory_hours": 4,
+          "missing_pair_course": "PHY242"
+        },
+        "selected_pair": null,
+        "selected_course_receipt": {
+          "source_institution": "Southwest Virginia Community College",
+          "sending_code": "PHY241",
+          "sending_title": "University Physics I",
+          "sending_credits": 4,
+          "sending_course_note": null,
+          "receiving_institution": "Radford University",
+          "receiving_code": "PHYS221",
+          "receiving_name": "Physics",
+          "receiving_notes": null,
+          "observed_radford_edges": [
+            {
+              "receiving_code": "PHYS221",
+              "receiving_name": "Physics",
+              "receiving_notes": null
+            }
+          ],
+          "source": {
+            "requested_url": "https://www.transfervirginia.org/course/0E2F34D61F9511F082AC0242AC15010A",
+            "final_url": "https://www.transfervirginia.org/course/0E2F34D61F9511F082AC0242AC15010A",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "response_bytes": 47643,
+            "response_sha256": "939694b81bbed69db16478432249ade9d8a43a6ee7f3dc8f8d57c21e4086b6e1"
+          }
+        },
+        "absent_plan_course_receipt": {
+          "source_institution": "Southwest Virginia Community College",
+          "sending_code": "PHY242",
+          "sending_title": "University Physics II",
+          "sending_credits": 4,
+          "sending_course_note": null,
+          "receiving_institution": "Radford University",
+          "receiving_code": "PHYS222",
+          "receiving_name": "Physics",
+          "receiving_notes": null,
+          "observed_radford_edges": [
+            {
+              "receiving_code": "PHYS222",
+              "receiving_name": "Physics",
+              "receiving_notes": null
+            }
+          ],
+          "source": {
+            "requested_url": "https://www.transfervirginia.org/course/0E2F35301F9511F082AC0242AC15010A",
+            "final_url": "https://www.transfervirginia.org/course/0E2F35301F9511F082AC0242AC15010A",
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "response_bytes": 47104,
+            "response_sha256": "7a7a90b5630677f85c3d6d1fb69ddabcf20a131b46bd9920ba76a7a80946c59f"
+          }
+        },
+        "receiving_courses": [
+          {
+            "course_code": "PHYS221",
+            "title": "Physics I (GE)",
+            "credits": 4,
+            "laboratory_exercises_required": "The lab exercises are designed to reinforce the student's understanding",
+            "laboratory_report_required": "A lab report must be submitted for each lab exercise.",
+            "source": {
+              "requested_url": "https://www.radford.edu/registrar/course-descriptions/physics/phys-221.html",
+              "final_url": "https://www.radford.edu/registrar/course-descriptions/physics/phys-221.html",
+              "http_status": 200,
+              "content_type": "text/html; charset=UTF-8",
+              "response_bytes": 111045,
+              "response_sha256": "fd957d8cf9b9fdc48b8d8708f688977fcae92a7ceda96a81820e3d639374f108"
+            }
+          },
+          {
+            "course_code": "PHYS222",
+            "title": "Physics II (GE)",
+            "credits": 4,
+            "laboratory_exercises_required": "The lab exercises are designed to reinforce the student's understanding",
+            "laboratory_report_required": "A lab report must be submitted for each lab exercise.",
+            "source": {
+              "requested_url": "https://www.radford.edu/registrar/course-descriptions/physics/phys-222.html",
+              "final_url": "https://www.radford.edu/registrar/course-descriptions/physics/phys-222.html",
+              "http_status": 200,
+              "content_type": "text/html; charset=UTF-8",
+              "response_bytes": 111516,
+              "response_sha256": "af355d4c6f0108f9b22b7be61120ec50b133bdd53958f35781cc4ec6e0bc7dcd"
+            }
+          }
+        ],
+        "selected_sending_units": 4,
+        "selected_receiving_units": 4,
+        "distinct_selected_sciences": 1,
+        "selected_laboratory_courses": 1,
+        "safe_to_close": false,
+        "verdict": "irreducible_selected_plan_gap",
+        "blocker": "The exact 60-credit selected plan contains PHY241 but not PHY242 and has no open science capacity; the unselected PHY242 equivalency cannot create a requirement."
+      }
+    ]
+  },
+  "facts_sha256": "24594cf34fdcdecd7118bee2879b09e8c082bbb24583f82f715a8cfeda17e6fb",
+  "safe_resolution_delta": 1,
+  "exact_cells_closed": [
+    9317
+  ],
+  "irreducible_numeric_ids": [
+    9319
+  ]
+}

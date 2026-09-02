@@ -1,0 +1,21 @@
+{
+  "route_id": "old-dominion-university__cs",
+  "requested_url": "https://catalog.odu.edu/courses/cs/",
+  "final_url": "https://catalog.odu.edu/courses/cs/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 383649,
+  "content_sha256": "b9f70355e3b03f4554816a7bb966ff016b23bb472d38e5fe693982d4f1d891b6",
+  "fetched_at": "2026-08-24T18:03:11.647Z",
+  "robots": {
+    "url": "https://catalog.odu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "04c0328aabd3f05afd6a4ec0382500f973b6457f737639ac2933372331d0e045",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CS263"
+  ]
+}

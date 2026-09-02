@@ -1,0 +1,22 @@
+{
+  "route_id": "norfolk-state-university__mus",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/mus/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/mus/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 152668,
+  "content_sha256": "89aac49ad392b4691bf98fd9d0d46625074fc441098b8fa5db6168b220595ca2",
+  "fetched_at": "2026-08-24T18:03:00.894Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "MUS234",
+    "MUS301"
+  ]
+}

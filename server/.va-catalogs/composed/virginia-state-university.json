@@ -270,7 +270,7 @@
         {"kind": "minimum_credit_selection", "status": "evaluator_not_implemented", "description": "Earn at least six credits from the menu; four-credit courses can make the completed category exceed six credits."}
       ],
       "sections": [
-        {"select": 2, "units": 6, "receivers": [
+        {"select": 2, "units": 6, "units_max": 8, "receivers": [
           {"kind": "course", "code": "MATH112", "title": "Basic Mathematics I", "units": 3},
           {"kind": "course", "code": "MATH113", "title": "Basic Mathematics II", "units": 3},
           {"kind": "course", "code": "MATH120", "title": "College Algebra", "units": 3},

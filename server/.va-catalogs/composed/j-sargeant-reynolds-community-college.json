@@ -337,6 +337,16 @@
           "ge_area": "reynolds_ucgs_humanities_fine_arts_literature",
           "units": 6,
           "distinct_areas": 2,
+          "analysis_constraints": [
+            {
+              "kind": "distinct_ge_areas",
+              "status": "supported",
+              "evaluation_scope": "aggregate_ge_units",
+              "minimum_distinct_categories": 2,
+              "category_names": ["fine_arts", "humanities", "literature"],
+              "description": "The two aggregate UCGS courses must come from different discipline areas."
+            }
+          ],
           "note": "The two courses cannot come from the same discipline area."
         },
         {
@@ -709,6 +719,16 @@
       "ge_area": "reynolds_ucgs_humanities_fine_arts_literature",
       "units": 6,
       "distinct_areas": 2,
+      "analysis_constraints": [
+        {
+          "kind": "distinct_ge_areas",
+          "status": "supported",
+          "evaluation_scope": "aggregate_ge_units",
+          "minimum_distinct_categories": 2,
+          "category_names": ["fine_arts", "humanities", "literature"],
+          "description": "The two aggregate UCGS courses must come from different discipline areas."
+        }
+      ],
       "note": "Choose the two printed UCGS courses from different discipline areas."
     },
     {

@@ -1,0 +1,22 @@
+{
+  "route_id": "university-of-mary-washington__math",
+  "requested_url": "https://catalog.umw.edu/undergraduate/course-descriptions/math/",
+  "final_url": "https://catalog.umw.edu/undergraduate/course-descriptions/math/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 57453,
+  "content_sha256": "0fb66c873745c38d2bd9707fb6d492139ed6756dce7d08c22a3a986fd68b0b21",
+  "fetched_at": "2026-08-24T18:03:33.950Z",
+  "robots": {
+    "url": "https://catalog.umw.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9af88841b60eba3bc0a51410766b46ee3e14142647ceee383ff256f062c5a4a1",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "MATH201",
+    "MATH300"
+  ]
+}

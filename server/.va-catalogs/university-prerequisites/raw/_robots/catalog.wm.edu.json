@@ -1,0 +1,9 @@
+{
+  "requested_url": "https://catalog.wm.edu/robots.txt",
+  "final_url": "https://catalog.wm.edu/robots.txt",
+  "http_status": 200,
+  "content_type": "text/plain; charset=UTF-8",
+  "byte_length": 850,
+  "content_sha256": "4eaac51773cf2538bbac642a1926ea98f51c25819252a0094007028fa72d069a",
+  "fetched_at": "2026-08-24T18:04:29.544Z"
+}

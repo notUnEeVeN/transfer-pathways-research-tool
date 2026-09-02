@@ -1,0 +1,1180 @@
+{
+  "schema_version": 1,
+  "artifact": "va_remaining_university_prerequisite_closure_evidence",
+  "contract": "va_residual_exact_prerequisite_formula_and_zero_course_edge_v1",
+  "snapshot_date": "2026-08-25",
+  "publication_ready": false,
+  "publication_blockers": [
+    "three_exact_formulas_not_runtime_ready",
+    "two_new_recursive_course_references_blocked",
+    "human_publication_verification_not_requested"
+  ],
+  "summary": {
+    "residual_target_rows": 10,
+    "exact_complete_entry_rows": 10,
+    "safe_zero_course_edge_rows": 7,
+    "exact_formula_rows": 3,
+    "runtime_ready_formula_rows": 0,
+    "direct_rows": 6,
+    "recursive_closure_rows": 3,
+    "induced_recursive_closure_rows": 1,
+    "outside_scope_rows": 0,
+    "new_blocked_reference_rows": 2,
+    "externally_owned_accounting_rows": 9,
+    "adversarial_conflict_rows": 2
+  },
+  "facts_sha256": "f2f9e8fd4e11d005813cec8bade78b5facc11af86eef908e57fdad233563763b",
+  "facts": {
+    "policy": {
+      "graph_measure": "Figure 6 Curricular Analytics h(G)",
+      "graph_vertices": "selected curriculum courses",
+      "graph_edges": "required owner-local prerequisite and corequisite course dependencies",
+      "zero_edge_dimensions": [
+        "population enrollment restriction",
+        "program enrollment restriction",
+        "absolute class standing restriction",
+        "negative repeat-credit limit",
+        "descriptive use of requirements"
+      ],
+      "fail_closed_dimensions": [
+        "required prior knowledge without a satisfaction rule",
+        "unnamed required course or lab",
+        "unbound assessment or placement alternative",
+        "missing or ambiguous recursive course formula"
+      ],
+      "missing_result_inference_allowed": false
+    },
+    "existing_contract_accounting": {
+      "university_tail": {
+        "contract": "va_exact_university_prerequisite_tail_closure_v1",
+        "facts_sha256": "2f80e6fac96e2d0a443911768cbb8c8fee633272d8fd874ae6bc5049f4c30ad2",
+        "excluded_course_keys": [
+          "va:uni:9213:MATH234",
+          "va:uni:9218:MATH100",
+          "va:uni:9233:CSCI141L"
+        ]
+      },
+      "radford_randolph_macon_tail": {
+        "contract": "va_radford_randolph_macon_exact_zero_course_edge_tail_audit_v1",
+        "facts_sha256": "b131f86d074d010c3a02c677335525bf309423ab059a309828cb9db72642b6b2",
+        "excluded_course_keys": [
+          "va:uni:9219:ENGL111",
+          "va:uni:9221:CSCI111",
+          "va:uni:9221:CSCI382",
+          "va:uni:9221:CSEC121",
+          "va:uni:9221:ENGL185",
+          "va:uni:9221:MATH131"
+        ]
+      }
+    },
+    "conflict_reconciliations": [
+      {
+        "course_key": "va:uni:9230:CHEM1014",
+        "owner_contract": "virginia_tech_recursive_prerequisite_exact_receipts_v1",
+        "raw": "Mathematical problem solving skills required for success in general chemistry.",
+        "disposition": "blocked_underspecified_required_knowledge",
+        "policy_comparison": "Unlike a population restriction, the statement expressly requires prior knowledge but publishes no satisfying course, assessment, or threshold. It cannot become a zero-edge none row."
+      },
+      {
+        "course_key": "va:uni:9233:MATH111",
+        "owner_contract": "va_six_university_exact_prerequisite_formula_and_structural_none_v1",
+        "raw": "Concurrent enrollment in Math 111 calculus lab required.",
+        "disposition": "blocked_unnamed_required_lab_corequisite",
+        "policy_comparison": "Unlike an integrated activity description, the statement expressly requires concurrent lab enrollment but does not publish a bounded course identity. No lab code may be invented."
+      }
+    ],
+    "source_pages": {
+      "vcu_clse": {
+        "official_url": "https://bulletin.vcu.edu/azcourses/clse/",
+        "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__clse.html",
+        "source_response_sha256": "623e6df38bef40f2c388b3d556399f3bf73f6869ef82dbef28dfd0ae5810fb9d",
+        "source_response_bytes": 54798,
+        "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+        "catalog_year": "2026-2027",
+        "source_courseblock_count": 52,
+        "source_complete_entry_count": 52,
+        "source_positive_count": 31,
+        "same_source_positive_control": true,
+        "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1"
+      },
+      "vcu_egre": {
+        "official_url": "https://bulletin.vcu.edu/azcourses/egre/",
+        "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__egre.html",
+        "source_response_sha256": "9676e761ea9e8741dc9d6a31c833dc54b6116c496f96f7ba68d9a817c9132c9b",
+        "source_response_bytes": 89977,
+        "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+        "catalog_year": "2026-2027",
+        "source_courseblock_count": 76,
+        "source_complete_entry_count": 76,
+        "source_positive_count": 71,
+        "same_source_positive_control": true,
+        "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1"
+      },
+      "vcu_engr": {
+        "official_url": "https://bulletin.vcu.edu/azcourses/engr/",
+        "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__engr.html",
+        "source_response_sha256": "f5ba24ba0e45205e23e537669cc333790924e7ed87b1c48665b5fd1b69ac0b6e",
+        "source_response_bytes": 44995,
+        "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+        "catalog_year": "2026-2027",
+        "source_courseblock_count": 43,
+        "source_complete_entry_count": 43,
+        "source_positive_count": 24,
+        "same_source_positive_control": true,
+        "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1"
+      },
+      "vcu_honr": {
+        "official_url": "https://bulletin.vcu.edu/azcourses/honr/",
+        "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__honr.html",
+        "source_response_sha256": "cfb3554e81444a6a73313b015a021727b30a380661a9cb2a4fbc1415c871a42c",
+        "source_response_bytes": 33913,
+        "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+        "catalog_year": "2026-2027",
+        "source_courseblock_count": 32,
+        "source_complete_entry_count": 32,
+        "source_positive_count": 11,
+        "same_source_positive_control": true,
+        "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1"
+      },
+      "vcu_univ": {
+        "official_url": "https://bulletin.vcu.edu/azcourses/univ/",
+        "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__univ.html",
+        "source_response_sha256": "a997c46bfcd3d8ed3627ebb86d586ce539dd2c61d71b189c468d73a368464960",
+        "source_response_bytes": 21562,
+        "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+        "catalog_year": "2026-2027",
+        "source_courseblock_count": 12,
+        "source_complete_entry_count": 12,
+        "source_positive_count": 4,
+        "same_source_positive_control": true,
+        "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1"
+      },
+      "jmu_math": {
+        "official_url": "https://catalog.jmu.edu/courses/math/",
+        "cache_path": "university-prerequisites/raw/james-madison-university/james-madison-university__math.html",
+        "source_response_sha256": "b0bb5de8fd65f4a48f183582c4abbd1faa2fe57241692595bcdd75bbab72f853",
+        "source_response_bytes": 174336,
+        "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+        "catalog_year": "2026-2027",
+        "source_courseblock_count": 109,
+        "source_complete_entry_count": 109,
+        "source_positive_count": 79,
+        "same_source_positive_control": true,
+        "positive_control_course_code": "MATH220"
+      },
+      "longwood_banner": {
+        "official_url": "https://www.longwood.edu/site-assets/courses-from-banner/",
+        "cache_path": "university-prerequisites/raw/longwood-university/longwood-university__courses_from_banner.html",
+        "source_response_sha256": "2f4fc77307b8b4f045ed0f3809a6c57e534fbe7145ad8d5142fb1ca7adb37841",
+        "source_response_bytes": 973047,
+        "boundary_contract": "longwood_banner_unique_course_listing_entry_with_published_credits_v1",
+        "catalog_year": null,
+        "source_courseblock_count": null,
+        "source_complete_entry_count": null,
+        "source_positive_count": null,
+        "edition_boundary": "banner_course_text_from_unversioned_first_party_page_bound_to_separately_retained_2026_2027_catoid_19_catalog_context",
+        "exact_positive_formula_entry": true
+      },
+      "radford_cs322": {
+        "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108998",
+        "cache_path": "university-prerequisites/raw/radford-university/radford-university__cs322.html",
+        "source_response_sha256": "d758a62ec2310f5e1a8652d9a9669a518a391afb2ba9589845700d9096ec9b74",
+        "source_response_bytes": 79125,
+        "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+        "catalog_year": "2026-2027",
+        "source_courseblock_count": null,
+        "source_complete_entry_count": null,
+        "source_positive_count": null,
+        "exact_program_discovery": true,
+        "program_source_sha256": "73ddf85d1e1ffad17765730415afd55d7f1c043dfcf8e9fd0dc52fc37328b535",
+        "catoid": 62,
+        "coid": 108998
+      }
+    },
+    "induction_receipt": {
+      "owner_contract": "va_exact_university_prerequisite_tail_closure_v1",
+      "owner_contract_facts_sha256": "2f80e6fac96e2d0a443911768cbb8c8fee633272d8fd874ae6bc5049f4c30ad2",
+      "upstream_course_key": "va:uni:9213:MATH234",
+      "upstream_disposition_owned_elsewhere": true,
+      "upstream_raw_entry_sha256": "cb22b4f3d8e54a65c8d19f068a9cd8ec7578817224fd9f1894a0f5450e78865b",
+      "upstream_raw_entry_html_sha256": "84c48d65830f85706609045213479ec8f774a4d9980f1aa34e9e9679c1ca8cdf",
+      "exact_reference_course_key": "va:uni:9213:MATH233",
+      "minimum_grade": "C-",
+      "same_source_response_sha256": "b0bb5de8fd65f4a48f183582c4abbd1faa2fe57241692595bcdd75bbab72f853"
+    },
+    "target_rows": [
+      {
+        "course_key": "va:uni:9213:MATH233",
+        "school_id": 9213,
+        "slug": "james-madison-university",
+        "owner_namespace": "va:uni:9213",
+        "course_code": "MATH233",
+        "scope_role": "induced_recursive_closure",
+        "disposition": "exact_formula_runtime_blocked",
+        "publication_status_recommendation": "unparsed",
+        "review_reason": "exact_source_formula_preserved_but_recursive_or_noncourse_runtime_blocked",
+        "source_formula_status": "exact",
+        "runtime_ready": false,
+        "raw_requisites": "Prerequisites: MATH 155 or MATH 156 or Appropriate Placement Score.",
+        "groups": [
+          {
+            "id": "va:uni:9213:MATH233:prerequisite:0",
+            "kind": "prerequisite",
+            "raw": "MATH 155 or MATH 156 or Appropriate Placement Score.",
+            "formula": "paths_or__conditions_and",
+            "flags": [
+              "strict_full_text_accounting",
+              "exact_retained_official_source_formula",
+              "exact_three_way_course_course_or_placement_score"
+            ],
+            "paths": [
+              {
+                "id": "va:uni:9213:MATH233:prerequisite:0:path:0",
+                "raw": "MATH 155 or MATH 156 or Appropriate Placement Score.",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "code": "MATH155",
+                    "raw": "MATH 155",
+                    "course_key": "va:uni:9213:MATH155"
+                  }
+                ]
+              },
+              {
+                "id": "va:uni:9213:MATH233:prerequisite:0:path:1",
+                "raw": "MATH 155 or MATH 156 or Appropriate Placement Score.",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "code": "MATH156",
+                    "raw": "MATH 156",
+                    "course_key": "va:uni:9213:MATH156"
+                  }
+                ]
+              },
+              {
+                "id": "va:uni:9213:MATH233:prerequisite:0:path:2",
+                "raw": "MATH 155 or MATH 156 or Appropriate Placement Score.",
+                "all_of": [
+                  {
+                    "type": "non_course",
+                    "condition": "appropriate_jmu_math_placement_score",
+                    "raw": "Appropriate Placement Score",
+                    "placement_domain": "mathematics",
+                    "appropriate_score_required": true,
+                    "threshold_published": false
+                  }
+                ]
+              }
+            ],
+            "source_receipt": {
+              "statement_relative_start": 493,
+              "statement_relative_end": 560,
+              "statement_sha256": "b3bf74ac158535d70e58b4c174bfd6c9dccc6db27ed76647a1aa00151aa649bf",
+              "raw_relative_start": 508,
+              "raw_relative_end": 560,
+              "raw_sha256": "f1c3bad04b15d163101b291c64f9df8dd2d3acf56a4be66ccb3e28b518bc6fbf"
+            }
+          }
+        ],
+        "preserved_signals": [
+          {
+            "kind": "prior_credit_exclusion",
+            "raw": "Not open to students who have already earned credit for MATH 232 or MATH 235.",
+            "excluded_course_codes": [
+              "MATH232",
+              "MATH235"
+            ],
+            "figure6_course_edge_effect": false,
+            "raw_sha256": "092ea6bfa26f5f43ccffe0d8a3443a18b672899385ab1ac73d639fa4d67ba4cb",
+            "relative_start": 561,
+            "relative_end": 638,
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9213:MATH155",
+          "va:uni:9213:MATH156"
+        ],
+        "possible_incoming_course_edge_count_by_path": [
+          1,
+          1,
+          0
+        ],
+        "runtime_blockers": [
+          "non_course_condition_binding_required"
+        ],
+        "source": {
+          "official_url": "https://catalog.jmu.edu/courses/math/",
+          "cache_path": "university-prerequisites/raw/james-madison-university/james-madison-university__math.html",
+          "source_response_sha256": "b0bb5de8fd65f4a48f183582c4abbd1faa2fe57241692595bcdd75bbab72f853",
+          "source_response_bytes": 174336,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "courseblock_index": 20,
+          "raw_entry_sha256": "21b9537ca68d2dd1aceda2c0d0ad84311eb3178ff0b79f21f0e47fdc934ee79b",
+          "raw_entry_html_sha256": "1780b82ac17a9241052f0066362d0514d2290cd0565af94f248b04855a27d335",
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "Credits 3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3,
+            "heading_text_sha256": "52934f5ef9028bcc9c1fe362b18360c5bdd66ce1e12898c2d0c24c096fbc5c8b",
+            "structural_field": "unique_detail-hours_html",
+            "structural_field_html_sha256": "1ff97c098f65a2da6106b5fd1cdbb8b8eecc52f9913cf172b63482214111d864"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 109,
+          "source_complete_entry_count": 109,
+          "source_complete_entries_with_required_requisite_marker_count": 79,
+          "entry_required_requisite_marker_count": 1,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 1,
+          "entry_constraint_like_signal_count": 1,
+          "same_source_positive_control": true
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formula_group_span_exact": true,
+          "every_nonformula_signal_span_preserved": true,
+          "formula_rewritten_or_dropped": false,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "The source formula is exact, but it is not publication-ready until every owner-local course reference has a closed exact row and every non-course alternative has an explicit production binding. The formula is neither flattened nor treated as zero edge."
+      },
+      {
+        "course_key": "va:uni:9214:SPAN212",
+        "school_id": 9214,
+        "slug": "longwood-university",
+        "owner_namespace": "va:uni:9214",
+        "course_code": "SPAN212",
+        "scope_role": "recursive_closure",
+        "disposition": "exact_formula_runtime_blocked",
+        "publication_status_recommendation": "unparsed",
+        "review_reason": "exact_source_formula_preserved_but_recursive_or_noncourse_runtime_blocked",
+        "source_formula_status": "exact",
+        "runtime_ready": false,
+        "raw_requisites": "Prerequisite: SPAN 211 or an appropriate placement score.",
+        "groups": [
+          {
+            "id": "va:uni:9214:SPAN212:prerequisite:0",
+            "kind": "prerequisite",
+            "raw": "SPAN 211 or an appropriate placement score.",
+            "formula": "paths_or__conditions_and",
+            "flags": [
+              "strict_full_text_accounting",
+              "exact_retained_official_source_formula",
+              "exact_course_or_placement_score"
+            ],
+            "paths": [
+              {
+                "id": "va:uni:9214:SPAN212:prerequisite:0:path:0",
+                "raw": "SPAN 211 or an appropriate placement score.",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "code": "SPAN211",
+                    "raw": "SPAN 211",
+                    "course_key": "va:uni:9214:SPAN211"
+                  }
+                ]
+              },
+              {
+                "id": "va:uni:9214:SPAN212:prerequisite:0:path:1",
+                "raw": "SPAN 211 or an appropriate placement score.",
+                "all_of": [
+                  {
+                    "type": "non_course",
+                    "condition": "appropriate_spanish_placement_score",
+                    "raw": "an appropriate placement score",
+                    "placement_domain": "spanish",
+                    "appropriate_score_required": true,
+                    "threshold_published": false
+                  }
+                ]
+              }
+            ],
+            "source_receipt": {
+              "statement_relative_start": 313,
+              "statement_relative_end": 370,
+              "statement_sha256": "41aca0015a2ec2ee14cd2cd38180311eabd0012dd2e9529a31421e8b822b9973",
+              "raw_relative_start": 327,
+              "raw_relative_end": 370,
+              "raw_sha256": "be3110b7002aa1833bb15fcf1a4733aa946d09d8fe1ccd3d34d4d075b9e16d26"
+            }
+          }
+        ],
+        "preserved_signals": [],
+        "referenced_course_keys": [
+          "va:uni:9214:SPAN211"
+        ],
+        "possible_incoming_course_edge_count_by_path": [
+          1,
+          0
+        ],
+        "runtime_blockers": [
+          "recursive_reference_formula_ambiguous",
+          "non_course_condition_binding_required"
+        ],
+        "source": {
+          "official_url": "https://www.longwood.edu/site-assets/courses-from-banner/",
+          "cache_path": "university-prerequisites/raw/longwood-university/longwood-university__courses_from_banner.html",
+          "source_response_sha256": "2f4fc77307b8b4f045ed0f3809a6c57e534fbe7145ad8d5142fb1ca7adb37841",
+          "source_response_bytes": 973047,
+          "boundary_contract": "longwood_banner_unique_course_listing_entry_with_published_credits_v1",
+          "catalog_year": null,
+          "courseblock_index": null,
+          "raw_entry_sha256": "042e3a8025c9ffc3764713d8c2c627a5bb020467e0f93c31a6e46b2692b70452",
+          "raw_entry_html_sha256": "3fcf1af468c61622834ee3aaa24d128fad0ea72691a27c0205d52dbb2aaa9450",
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          }
+        },
+        "marker_control": {
+          "contract": "longwood_banner_exact_positive_formula_entry_v1",
+          "exact_formula_marker_present": true,
+          "missing_result_inference_used": false,
+          "edition_status": "unversioned_current_first_party_page"
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formula_group_span_exact": true,
+          "every_nonformula_signal_span_preserved": true,
+          "formula_rewritten_or_dropped": false,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "The source formula is exact, but it is not publication-ready until every owner-local course reference has a closed exact row and every non-course alternative has an explicit production binding. The formula is neither flattened nor treated as zero edge."
+      },
+      {
+        "course_key": "va:uni:9219:CS322",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "CS322",
+        "scope_role": "direct_remediation",
+        "disposition": "exact_formula_runtime_blocked",
+        "publication_status_recommendation": "unparsed",
+        "review_reason": "exact_source_formula_preserved_but_recursive_or_noncourse_runtime_blocked",
+        "source_formula_status": "exact",
+        "runtime_ready": false,
+        "raw_requisites": "Prerequisites: CS 220 (Grade of “C” or better) and MATH 171 , MATH 169 , or MATH 151 .",
+        "groups": [
+          {
+            "id": "va:uni:9219:CS322:prerequisite:0",
+            "kind": "prerequisite",
+            "raw": "CS 220 (Grade of “C” or better) and MATH 171 , MATH 169 , or MATH 151 .",
+            "formula": "paths_or__conditions_and",
+            "flags": [
+              "strict_full_text_accounting",
+              "exact_retained_official_source_formula",
+              "exact_common_course_and_three_math_alternatives"
+            ],
+            "paths": [
+              {
+                "id": "va:uni:9219:CS322:prerequisite:0:path:0",
+                "raw": "CS 220 (Grade of “C” or better) and MATH 171 , MATH 169 , or MATH 151 .",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "code": "CS220",
+                    "raw": "CS 220",
+                    "minimum_grade": "C",
+                    "course_key": "va:uni:9219:CS220"
+                  },
+                  {
+                    "type": "course",
+                    "code": "MATH171",
+                    "raw": "MATH 171",
+                    "course_key": "va:uni:9219:MATH171"
+                  }
+                ]
+              },
+              {
+                "id": "va:uni:9219:CS322:prerequisite:0:path:1",
+                "raw": "CS 220 (Grade of “C” or better) and MATH 171 , MATH 169 , or MATH 151 .",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "code": "CS220",
+                    "raw": "CS 220",
+                    "minimum_grade": "C",
+                    "course_key": "va:uni:9219:CS220"
+                  },
+                  {
+                    "type": "course",
+                    "code": "MATH169",
+                    "raw": "MATH 169",
+                    "course_key": "va:uni:9219:MATH169"
+                  }
+                ]
+              },
+              {
+                "id": "va:uni:9219:CS322:prerequisite:0:path:2",
+                "raw": "CS 220 (Grade of “C” or better) and MATH 171 , MATH 169 , or MATH 151 .",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "code": "CS220",
+                    "raw": "CS 220",
+                    "minimum_grade": "C",
+                    "course_key": "va:uni:9219:CS220"
+                  },
+                  {
+                    "type": "course",
+                    "code": "MATH151",
+                    "raw": "MATH 151",
+                    "course_key": "va:uni:9219:MATH151"
+                  }
+                ]
+              }
+            ],
+            "source_receipt": {
+              "statement_relative_start": 107,
+              "statement_relative_end": 193,
+              "statement_sha256": "61fad9625ac85c6690a035780c29ab76b9aeb75108127b7198dcfbc41bb17fd0",
+              "raw_relative_start": 122,
+              "raw_relative_end": 193,
+              "raw_sha256": "7ad66cfbe703575c2fc8c303a41e4e2aaba08d8190ea34391b9a885bc63a8cb2"
+            },
+            "grade_scope": "parenthetical_grade_attaches_only_to_cs220"
+          }
+        ],
+        "preserved_signals": [],
+        "referenced_course_keys": [
+          "va:uni:9219:CS220",
+          "va:uni:9219:MATH151",
+          "va:uni:9219:MATH169",
+          "va:uni:9219:MATH171"
+        ],
+        "possible_incoming_course_edge_count_by_path": [
+          2,
+          2,
+          2
+        ],
+        "runtime_blockers": [
+          "recursive_reference_missing_exact_entry"
+        ],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108998",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__cs322.html",
+          "source_response_sha256": "d758a62ec2310f5e1a8652d9a9669a518a391afb2ba9589845700d9096ec9b74",
+          "source_response_bytes": 79125,
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year": "2026-2027",
+          "courseblock_index": null,
+          "raw_entry_sha256": "a43ab5b50c8e64f7ed7e2d5cc8ebe22e4c201489640624c839371d69182f5b24",
+          "raw_entry_html_sha256": "5ab2cb5cc47e41b9ba1efd0f33b2f06afeaee613c5472a8dd0da27918c30f3e6",
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(3)",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          }
+        },
+        "marker_control": {
+          "contract": "radford_exact_current_course_required_clause_receipt_v1",
+          "required_requisite_clause": {
+            "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "CS 220 (Grade of “C” or better) and MATH 171 , MATH 169 , or MATH 151 .",
+            "raw_sha256": "7ad66cfbe703575c2fc8c303a41e4e2aaba08d8190ea34391b9a885bc63a8cb2",
+            "relative_start": 122,
+            "relative_end": 193,
+            "statement_relative_start": 107,
+            "statement_relative_end": 193,
+            "raw_html_sha256": "d70b514b734a360c7ff252c89ff8077b5f088b9bf67638b7990686881b7c7d9e",
+            "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+          },
+          "exact_program_discovery": true,
+          "program_source_sha256": "73ddf85d1e1ffad17765730415afd55d7f1c043dfcf8e9fd0dc52fc37328b535"
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formula_group_span_exact": true,
+          "every_nonformula_signal_span_preserved": true,
+          "formula_rewritten_or_dropped": false,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "The source formula is exact, but it is not publication-ready until every owner-local course reference has a closed exact row and every non-course alternative has an explicit production binding. The formula is neither flattened nor treated as zero edge."
+      },
+      {
+        "course_key": "va:uni:9229:CLSE101",
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_code": "CLSE101",
+        "scope_role": "recursive_closure",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "review_reason": "exact_noncourse_population_or_enrollment_signal_has_zero_figure6_course_edge_effect",
+        "raw_requisites": null,
+        "groups": [],
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "literal_no_requirement_statement": false,
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/clse/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__clse.html",
+          "source_response_sha256": "623e6df38bef40f2c388b3d556399f3bf73f6869ef82dbef28dfd0ae5810fb9d",
+          "source_response_bytes": 54798,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "source_courseblock_count": 52,
+          "source_complete_entry_count": 52,
+          "source_positive_count": 31,
+          "same_source_positive_control": true,
+          "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1",
+          "courseblock_index": 0,
+          "raw_entry_sha256": "a2af0f27846f96a6a31fd7b9601d2a702c0cada29c4741a2b1a21899afad89a6",
+          "raw_entry_html_sha256": "c8afd6ac0f4d435cbf1baab9ae8f7506ca8b8c964593b51c2d3a4dab863f14f0",
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3 Hours",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3,
+            "heading_text_sha256": "7f701f80a5884e1785c2652f8291819736305f872cf2dd21c8e5f93d609dbd20"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 52,
+          "source_complete_entry_count": 52,
+          "source_complete_entries_with_required_requisite_marker_count": 31,
+          "entry_required_requisite_marker_count": 1,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 1,
+          "entry_constraint_like_signal_count": 0,
+          "same_source_positive_control": true
+        },
+        "preserved_signals": [
+          {
+            "kind": "program_and_class_enrollment_prerequisite",
+            "raw": "course open to first-year students majoring in chemical and life science engineering",
+            "classification": "population_enrollment_restriction_zero_course_edge",
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "raw_sha256": "f845322be435c8e6cdf631a21edfd606b9216d3c163f9060ddbe5dcec14e38b0",
+            "relative_start": 125,
+            "relative_end": 209,
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "same_source_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "graph_effect": {
+          "added_course_vertices": 0,
+          "added_prerequisite_edges": 0,
+          "added_corequisite_edges": 0
+        },
+        "inference_boundary": "Status none is limited to the Figure 6 owner-local course graph. The exact population, class, program, repeat-credit, and descriptive signals remain attached and may constrain other analyses."
+      },
+      {
+        "course_key": "va:uni:9229:EGRE101",
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_code": "EGRE101",
+        "scope_role": "recursive_closure",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "review_reason": "exact_noncourse_population_or_enrollment_signal_has_zero_figure6_course_edge_effect",
+        "raw_requisites": null,
+        "groups": [],
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "literal_no_requirement_statement": false,
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/egre/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__egre.html",
+          "source_response_sha256": "9676e761ea9e8741dc9d6a31c833dc54b6116c496f96f7ba68d9a817c9132c9b",
+          "source_response_bytes": 89977,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "source_courseblock_count": 76,
+          "source_complete_entry_count": 76,
+          "source_positive_count": 71,
+          "same_source_positive_control": true,
+          "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1",
+          "courseblock_index": 0,
+          "raw_entry_sha256": "258f474522c2f6c1e0ab39409506fd093566967c6aae0692c12ae77b87eddfc0",
+          "raw_entry_html_sha256": "8a02233821496aaf975603c38f29bad511aef288dc6e7145eb3b124672c7096f",
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3 Hours",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3,
+            "heading_text_sha256": "ff5dc3ff9c0b2c6728b0cd93d9073a9a9137c589f284f2080b355dfff01577eb"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 76,
+          "source_complete_entry_count": 76,
+          "source_complete_entries_with_required_requisite_marker_count": 71,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 1,
+          "same_source_positive_control": true
+        },
+        "preserved_signals": [
+          {
+            "kind": "program_enrollment_restriction",
+            "raw": "Enrollment is restricted to students in the B.S. in Computer Engineering, B.S. in Electrical Engineering, pre-engineering, undeclared - engineering, B.S.Ed. in Secondary Education and Teaching, and B.S. in Education with a concentration in engineering education.",
+            "classification": "population_enrollment_restriction_zero_course_edge",
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "raw_sha256": "31019a26920f1090be32e2fdebee2b45047d6b57981c2028b4534444a8fdb545",
+            "relative_start": 109,
+            "relative_end": 371,
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "same_source_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "graph_effect": {
+          "added_course_vertices": 0,
+          "added_prerequisite_edges": 0,
+          "added_corequisite_edges": 0
+        },
+        "inference_boundary": "Status none is limited to the Figure 6 owner-local course graph. The exact population, class, program, repeat-credit, and descriptive signals remain attached and may constrain other analyses."
+      },
+      {
+        "course_key": "va:uni:9229:ENGR395",
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_code": "ENGR395",
+        "scope_role": "direct_remediation",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "review_reason": "exact_noncourse_population_or_enrollment_signal_has_zero_figure6_course_edge_effect",
+        "raw_requisites": null,
+        "groups": [],
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "literal_no_requirement_statement": false,
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/engr/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__engr.html",
+          "source_response_sha256": "f5ba24ba0e45205e23e537669cc333790924e7ed87b1c48665b5fd1b69ac0b6e",
+          "source_response_bytes": 44995,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "source_courseblock_count": 43,
+          "source_complete_entry_count": 43,
+          "source_positive_count": 24,
+          "same_source_positive_control": true,
+          "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1",
+          "courseblock_index": 14,
+          "raw_entry_sha256": "de3e5bfe657f76de90f94989cc15b061f169f9f50f8978c4706cb02e437415e7",
+          "raw_entry_html_sha256": "d99da30d7f6ebd66320d22969b7101beb4627d8bde4dc1927f548798c0ef7eff",
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "1 Hour",
+            "credit_hours_min": 1,
+            "credit_hours_max": 1,
+            "heading_text_sha256": "357896c0c47f489c0ddf78de2695f8222e559971491ca7da5c987c38491b28da"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 43,
+          "source_complete_entry_count": 43,
+          "source_complete_entries_with_required_requisite_marker_count": 24,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 2,
+          "same_source_positive_control": true
+        },
+        "preserved_signals": [
+          {
+            "kind": "program_enrollment_restriction",
+            "raw": "Enrollment is restricted to majors in the School of Engineering.",
+            "classification": "population_enrollment_restriction_zero_course_edge",
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "raw_sha256": "8311cb6fca049dc11155e76f3b8e2dd3f5d522c9a81bbd45ebfe12767663d14b",
+            "relative_start": 102,
+            "relative_end": 166,
+            "source_content_preserved": true
+          },
+          {
+            "kind": "descriptive_internship_requirements_phrase",
+            "raw": "expectations and requirements for internships and cooperative education positions.",
+            "classification": "course_description_zero_course_edge",
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "raw_sha256": "aafbc86ecc95a80a04ca11123d1c7b169b9501082b7a157f1df5b82206ff7d3e",
+            "relative_start": 767,
+            "relative_end": 849,
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "same_source_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "graph_effect": {
+          "added_course_vertices": 0,
+          "added_prerequisite_edges": 0,
+          "added_corequisite_edges": 0
+        },
+        "inference_boundary": "Status none is limited to the Figure 6 owner-local course graph. The exact population, class, program, repeat-credit, and descriptive signals remain attached and may constrain other analyses."
+      },
+      {
+        "course_key": "va:uni:9229:HONR230",
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_code": "HONR230",
+        "scope_role": "direct_remediation",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "review_reason": "exact_noncourse_population_or_enrollment_signal_has_zero_figure6_course_edge_effect",
+        "raw_requisites": null,
+        "groups": [],
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "literal_no_requirement_statement": false,
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/honr/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__honr.html",
+          "source_response_sha256": "cfb3554e81444a6a73313b015a021727b30a380661a9cb2a4fbc1415c871a42c",
+          "source_response_bytes": 33913,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "source_courseblock_count": 32,
+          "source_complete_entry_count": 32,
+          "source_positive_count": 11,
+          "same_source_positive_control": true,
+          "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1",
+          "courseblock_index": 8,
+          "raw_entry_sha256": "cd9e5ea779367261f014aa43cd68d5dd064c490a57a1fb47b6a5445e852eb12a",
+          "raw_entry_html_sha256": "5b184247519e9c384822c99bc1acf2debc2220874a18545e785633b2e9a50a3a",
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3 Hours",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3,
+            "heading_text_sha256": "4947768744a2468c339eab5946ab4d6f030ee5f29beeb05e8227d72dab287512"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 32,
+          "source_complete_entry_count": 32,
+          "source_complete_entries_with_required_requisite_marker_count": 11,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 2,
+          "same_source_positive_control": true
+        },
+        "preserved_signals": [
+          {
+            "kind": "honors_attribute_enrollment_restriction",
+            "raw": "Enrollment is restricted Honors College students enrolled in one of the following attributes: Honors Active (HN1) or Honors (HN3).",
+            "classification": "population_enrollment_restriction_zero_course_edge",
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "raw_sha256": "bd8cfac2b4dd9b7818a04783f9c90e9b637cadcd2947b0f57c1dd5bdf271ef87",
+            "relative_start": 141,
+            "relative_end": 271,
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "same_source_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "graph_effect": {
+          "added_course_vertices": 0,
+          "added_prerequisite_edges": 0,
+          "added_corequisite_edges": 0
+        },
+        "inference_boundary": "Status none is limited to the Figure 6 owner-local course graph. The exact population, class, program, repeat-credit, and descriptive signals remain attached and may constrain other analyses."
+      },
+      {
+        "course_key": "va:uni:9229:HONR240",
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_code": "HONR240",
+        "scope_role": "direct_remediation",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "review_reason": "exact_noncourse_population_or_enrollment_signal_has_zero_figure6_course_edge_effect",
+        "raw_requisites": null,
+        "groups": [],
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "literal_no_requirement_statement": false,
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/honr/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__honr.html",
+          "source_response_sha256": "cfb3554e81444a6a73313b015a021727b30a380661a9cb2a4fbc1415c871a42c",
+          "source_response_bytes": 33913,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "source_courseblock_count": 32,
+          "source_complete_entry_count": 32,
+          "source_positive_count": 11,
+          "same_source_positive_control": true,
+          "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1",
+          "courseblock_index": 9,
+          "raw_entry_sha256": "6215fb61976725f5e198cc481036004a2923f6a53241efb2e5882d7d2b9e3452",
+          "raw_entry_html_sha256": "0edccfc3abb1e8cd0ac839d559479b14c577936324f5251da770e0db19dbe422",
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3 Hours",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3,
+            "heading_text_sha256": "095921395ac10680637d0b16b0162b6029870b56693439a719af924dfedf2d2b"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 32,
+          "source_complete_entry_count": 32,
+          "source_complete_entries_with_required_requisite_marker_count": 11,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 2,
+          "same_source_positive_control": true
+        },
+        "preserved_signals": [
+          {
+            "kind": "honors_attribute_enrollment_restriction",
+            "raw": "Enrollment is restricted to Honors College students enrolled in one of the following attributes: Honors Active (HN1) or Honors (HN3).",
+            "classification": "population_enrollment_restriction_zero_course_edge",
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "raw_sha256": "3edcd33af102459468ac1eea8dc453191b516e4cab0529dd7fcd5a38064582d4",
+            "relative_start": 147,
+            "relative_end": 280,
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "same_source_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "graph_effect": {
+          "added_course_vertices": 0,
+          "added_prerequisite_edges": 0,
+          "added_corequisite_edges": 0
+        },
+        "inference_boundary": "Status none is limited to the Figure 6 owner-local course graph. The exact population, class, program, repeat-credit, and descriptive signals remain attached and may constrain other analyses."
+      },
+      {
+        "course_key": "va:uni:9229:UNIV101",
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_code": "UNIV101",
+        "scope_role": "direct_remediation",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "review_reason": "exact_noncourse_population_or_enrollment_signal_has_zero_figure6_course_edge_effect",
+        "raw_requisites": null,
+        "groups": [],
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "literal_no_requirement_statement": false,
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/univ/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__univ.html",
+          "source_response_sha256": "a997c46bfcd3d8ed3627ebb86d586ce539dd2c61d71b189c468d73a368464960",
+          "source_response_bytes": 21562,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "source_courseblock_count": 12,
+          "source_complete_entry_count": 12,
+          "source_positive_count": 4,
+          "same_source_positive_control": true,
+          "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1",
+          "courseblock_index": 0,
+          "raw_entry_sha256": "22afb4f659f29808c9136b1fd64d7d88d2824e4d69825dd25283961eba8cb236",
+          "raw_entry_html_sha256": "0b89081830414c3c2b0ed5e759ae4725aed3bc55e0aa47e964a24aa063bc5e6e",
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "1 Hour",
+            "credit_hours_min": 1,
+            "credit_hours_max": 1,
+            "heading_text_sha256": "7d2e5c4fb78300ea3795c480a9c706a53b70c4f376509084386f0a242ab36078"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 12,
+          "source_complete_entry_count": 12,
+          "source_complete_entries_with_required_requisite_marker_count": 4,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 2,
+          "same_source_positive_control": true
+        },
+        "preserved_signals": [
+          {
+            "kind": "class_enrollment_restriction",
+            "raw": "Enrollment is restricted to freshmen or by override for students with advanced standing.",
+            "classification": "population_enrollment_restriction_zero_course_edge",
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "raw_sha256": "409ea06b1907d96eb96dfda1405cc2f68cda0c24145a57212baa1e38f8108410",
+            "relative_start": 128,
+            "relative_end": 216,
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "same_source_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "graph_effect": {
+          "added_course_vertices": 0,
+          "added_prerequisite_edges": 0,
+          "added_corequisite_edges": 0
+        },
+        "inference_boundary": "Status none is limited to the Figure 6 owner-local course graph. The exact population, class, program, repeat-credit, and descriptive signals remain attached and may constrain other analyses."
+      },
+      {
+        "course_key": "va:uni:9229:UNIV191",
+        "school_id": 9229,
+        "slug": "virginia-commonwealth-university",
+        "owner_namespace": "va:uni:9229",
+        "course_code": "UNIV191",
+        "scope_role": "direct_remediation",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "review_reason": "exact_noncourse_population_or_enrollment_signal_has_zero_figure6_course_edge_effect",
+        "raw_requisites": null,
+        "groups": [],
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "literal_no_requirement_statement": false,
+        "source": {
+          "official_url": "https://bulletin.vcu.edu/azcourses/univ/",
+          "cache_path": "university-prerequisites/raw/virginia-commonwealth-university/virginia-commonwealth-university__univ.html",
+          "source_response_sha256": "a997c46bfcd3d8ed3627ebb86d586ce539dd2c61d71b189c468d73a368464960",
+          "source_response_bytes": 21562,
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "source_courseblock_count": 12,
+          "source_complete_entry_count": 12,
+          "source_positive_count": 4,
+          "same_source_positive_control": true,
+          "source_control_contract": "vcu_2026_2027_exact_prerequisite_closure_disposition_v1",
+          "courseblock_index": 5,
+          "raw_entry_sha256": "6177d4d538c302da830a4a6341febd888d16bde716f8a2b6ab4497df7549f9d1",
+          "raw_entry_html_sha256": "c5fd740e74fa91652151b9cad6b90d326c7d2dfeaece0d2de77c070a28793c28",
+          "published_units": {
+            "kind": "published_variable_credit_range",
+            "notation": "1-3 Hours",
+            "credit_hours_min": 1,
+            "credit_hours_max": 3,
+            "heading_text_sha256": "0b57396ab69b794e8397fb26c8273ef57c6d82cd8f9f0e410bc812f51d2f1ef0"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 12,
+          "source_complete_entry_count": 12,
+          "source_complete_entries_with_required_requisite_marker_count": 4,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 2,
+          "same_source_positive_control": true
+        },
+        "preserved_signals": [
+          {
+            "kind": "class_enrollment_restriction",
+            "raw": "Enrollment is restricted to freshmen or by override for students with advanced standing.",
+            "classification": "population_enrollment_restriction_zero_course_edge",
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "raw_sha256": "409ea06b1907d96eb96dfda1405cc2f68cda0c24145a57212baa1e38f8108410",
+            "relative_start": 137,
+            "relative_end": 225,
+            "source_content_preserved": true
+          },
+          {
+            "kind": "repeat_credit_limit",
+            "raw": "May be repeated with different content for a maximum of three credits.",
+            "classification": "negative_credit_rule_zero_course_edge",
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "raw_sha256": "3bf48cb93bff68490d26819125cfb84e9aba6dc319db8ca66098afaa0c71363c",
+            "relative_start": 226,
+            "relative_end": 296,
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "same_source_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "graph_effect": {
+          "added_course_vertices": 0,
+          "added_prerequisite_edges": 0,
+          "added_corequisite_edges": 0
+        },
+        "inference_boundary": "Status none is limited to the Figure 6 owner-local course graph. The exact population, class, program, repeat-credit, and descriptive signals remain attached and may constrain other analyses."
+      }
+    ],
+    "new_blocked_references": [
+      {
+        "required_by_course_key": "va:uni:9219:CS322",
+        "course_key": "va:uni:9219:MATH151",
+        "course_code": "MATH151",
+        "blocker": "no_retained_exact_owner_course_entry",
+        "formula_rewritten_or_dropped": false
+      },
+      {
+        "required_by_course_key": "va:uni:9214:SPAN212",
+        "course_key": "va:uni:9214:SPAN211",
+        "course_code": "SPAN211",
+        "blocker": "implicit_comma_boolean_formula_not_source_grouped",
+        "exact_source_raw": "Prerequisites: SPAN 111, SPAN 210 or an appropriate placement score.",
+        "formula_rewritten_or_dropped": false,
+        "source_receipt": {
+          "course_key": "va:uni:9214:SPAN211",
+          "raw_entry_sha256": "aa5ebda2cc7de6e90245fd7a3141f40144b2b931c9736e71e740a022cedaa652",
+          "raw_entry_html_sha256": "216ce07d9db1b646c3b02d4f554839c04ca5bd52dd5a04ccb9b9c302e36c279a",
+          "exact_source_raw": "Prerequisites: SPAN 111, SPAN 210 or an appropriate placement score.",
+          "exact_source_raw_sha256": "d077bfdafae9f7e35bfdfa2eb9628151aa17fd2f00858eebbbd0cca519ca6bd7",
+          "blocker": "implicit_comma_boolean_formula_not_source_grouped"
+        }
+      }
+    ]
+  }
+}

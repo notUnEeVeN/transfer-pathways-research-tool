@@ -1,0 +1,23 @@
+{
+  "route_id": "virginia-state-university__stat",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/stat/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/stat/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 82807,
+  "content_sha256": "607e33412852ad0dc786f2cdf0b43c6c273d97ce181616952b1225ec0b5229bb",
+  "fetched_at": "2026-08-24T18:04:29.232Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "STAT210",
+    "STAT340",
+    "STAT380"
+  ]
+}

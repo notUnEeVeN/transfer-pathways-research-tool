@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-commonwealth-university__bnfo",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/bnfo/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/bnfo/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 45763,
+  "content_sha256": "bf68b3fc618cda0fb6ec54cbe3947ade7dac42755a69f51d709e58b6337cd8e5",
+  "fetched_at": "2026-08-25T10:52:09.335Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "BNFO201"
+  ]
+}

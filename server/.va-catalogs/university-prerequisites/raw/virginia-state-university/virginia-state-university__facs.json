@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-state-university__facs",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/facs/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/facs/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 83542,
+  "content_sha256": "41500a05309b7fb44b3425c88bfc4f27177a25265417795822b37d149bd1328e",
+  "fetched_at": "2026-08-24T18:04:08.612Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "FACS201"
+  ]
+}

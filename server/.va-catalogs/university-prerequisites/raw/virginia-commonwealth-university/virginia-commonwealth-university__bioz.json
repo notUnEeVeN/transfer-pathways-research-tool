@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-commonwealth-university__bioz",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/bioz/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/bioz/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 37230,
+  "content_sha256": "e3bf28b33592aaf4905ebe3e2e12497e60311a8ffc94ed1a0dea471ad6b12264",
+  "fetched_at": "2026-08-24T18:03:36.112Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "BIOZ151"
+  ]
+}

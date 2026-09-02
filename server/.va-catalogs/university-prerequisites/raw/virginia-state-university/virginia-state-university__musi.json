@@ -1,0 +1,23 @@
+{
+  "route_id": "virginia-state-university__musi",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/musi/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/musi/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 161800,
+  "content_sha256": "c22f7bc1a6788232457d0141c792693850e3ea399a59f173373196bdb6dc9d91",
+  "fetched_at": "2026-08-24T18:04:19.186Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "MUSI198",
+    "MUSI199",
+    "MUSI200"
+  ]
+}

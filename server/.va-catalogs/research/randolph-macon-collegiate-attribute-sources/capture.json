@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-25T10:01:36.340Z",
+  "user_agent": "pmt-research-import/0.1 (+transfer pathways research; contact via repo owner)",
+  "robots": {
+    "url": "https://catalog.rmc.edu/robots.txt",
+    "final_url": "https://catalog.rmc.edu/robots.txt",
+    "status": 200,
+    "content_type": "text/plain; charset=UTF-8",
+    "sha256": "f6305026d827feeb54fa3dee76e89fb169b56467844ba340d22366c95ef81349",
+    "bytes": 633,
+    "required_catalog_routes_allowed": true
+  },
+  "sources": [
+    {
+      "id": "overview",
+      "requested_url": "https://catalog.rmc.edu/collegiate-requirement-courses/",
+      "final_url": "https://catalog.rmc.edu/collegiate-requirement-courses/",
+      "status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "raw_sha256": "34dddf753cdb799cdb9cbee243246299a0fda9e74a4fb55c01de5c187b89a6b9",
+      "raw_bytes": 28930,
+      "normalized_sha256": "8293b401ebf9e350d1eac9e099e6021d9823b893237fc56123e7bc257fe51110",
+      "normalized_bytes": 2931
+    },
+    {
+      "id": "effective_communication",
+      "requested_url": "https://catalog.rmc.edu/collegiate-requirement-courses/effective-communication/",
+      "final_url": "https://catalog.rmc.edu/collegiate-requirement-courses/effective-communication/",
+      "status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "raw_sha256": "883736c3a144058149a60b8044b968555e0b4872ce346de7d42701b987486bed",
+      "raw_bytes": 65588,
+      "normalized_sha256": "517b2cc228df8f6f0cd1723eb3a4a3a98ef8a80013f74b4049032c940380016a",
+      "normalized_bytes": 7904
+    },
+    {
+      "id": "pillars",
+      "requested_url": "https://catalog.rmc.edu/collegiate-requirement-courses/pillars/",
+      "final_url": "https://catalog.rmc.edu/collegiate-requirement-courses/pillars/",
+      "status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "raw_sha256": "c6c248d89bf1be571d5ce062062db1bc9f9beff9e647b0f8e6d0dda7797149ab",
+      "raw_bytes": 144317,
+      "normalized_sha256": "9dfff11bb89285dfe3f7b0a1e9770c0270ad12101ec720586b49c373152bc3eb",
+      "normalized_bytes": 23512
+    },
+    {
+      "id": "cross_area",
+      "requested_url": "https://catalog.rmc.edu/collegiate-requirement-courses/cross-area-requirements/",
+      "final_url": "https://catalog.rmc.edu/collegiate-requirement-courses/cross-area-requirements/",
+      "status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "raw_sha256": "a12be3dd8cb73fcb4b736a48b773dab9a63b8c8a0bf3a53a9a0c539a4b08622b",
+      "raw_bytes": 152368,
+      "normalized_sha256": "c0324f3ee6664ce5adb6bcb6d1160b6ff933696e24435b3f04e5dd070a7e4713",
+      "normalized_bytes": 21360
+    },
+    {
+      "id": "collegiate_requirements",
+      "requested_url": "https://catalog.rmc.edu/academic-program/collegiate-requirements/",
+      "final_url": "https://catalog.rmc.edu/academic-program/collegiate-requirements/",
+      "status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "raw_sha256": "3c4f906add141fda9fa34ea8852ef63fcf4ccb851a91aa21181aaf6828ba1662",
+      "raw_bytes": 37636,
+      "normalized_sha256": "fd58e0a02de8a2ae43309dd739f03ec02ca2770a5f14022d2aa1dc56158ea568",
+      "normalized_bytes": 10444
+    }
+  ]
+}

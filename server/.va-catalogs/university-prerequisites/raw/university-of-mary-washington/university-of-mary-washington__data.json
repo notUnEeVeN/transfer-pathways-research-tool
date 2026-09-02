@@ -1,0 +1,21 @@
+{
+  "route_id": "university-of-mary-washington__data",
+  "requested_url": "https://catalog.umw.edu/undergraduate/course-descriptions/data/",
+  "final_url": "https://catalog.umw.edu/undergraduate/course-descriptions/data/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 38331,
+  "content_sha256": "48b1d2da45feeb62995bd46eac21b0923fb35e3812de57052d7b54c95dedff2d",
+  "fetched_at": "2026-08-24T18:03:32.651Z",
+  "robots": {
+    "url": "https://catalog.umw.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9af88841b60eba3bc0a51410766b46ee3e14142647ceee383ff256f062c5a4a1",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "DATA219"
+  ]
+}

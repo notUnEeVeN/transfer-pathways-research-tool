@@ -1,0 +1,8 @@
+User-agent: SemrushBot
+Disallow: /
+User-agent: SEOkicks
+Disallow: /
+User-agent: *
+Disallow: /*?*
+User-agent: *
+Crawl-delay: 1

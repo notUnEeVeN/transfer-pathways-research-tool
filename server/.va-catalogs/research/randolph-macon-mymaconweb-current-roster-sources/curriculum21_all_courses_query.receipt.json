@@ -1,0 +1,11 @@
+{
+  "requested_url": "https://mymaconweb.rmc.edu/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query",
+  "final_url": "https://mymaconweb.rmc.edu/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query",
+  "method": "GET",
+  "request_body_sha256": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "response_bytes": 38364,
+  "response_sha256": "9bd67f94499f35bf16e4e7f5026a95f6daf17016ecfc7b1b9501265020200b23",
+  "fetched_at": "2026-08-25T13:00:09.195Z"
+}

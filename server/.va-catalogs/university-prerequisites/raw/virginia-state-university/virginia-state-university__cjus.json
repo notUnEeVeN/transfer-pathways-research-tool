@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-state-university__cjus",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/cjus/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/cjus/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 104140,
+  "content_sha256": "66e324ba5d0763cccff165c8ce0e512c540d7f9471be2cbe4493f3b86aa47463",
+  "fetched_at": "2026-08-24T18:03:59.969Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CJUS116"
+  ]
+}

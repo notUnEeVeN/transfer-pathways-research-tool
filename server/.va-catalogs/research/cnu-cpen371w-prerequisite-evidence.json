@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "artifact": "cnu_cpen371w_prerequisite_identity_evidence",
+  "generated_on": "2026-08-24",
+  "institution": {
+    "name": "Christopher Newport University",
+    "slug": "christopher-newport-university",
+    "school_id": 9206,
+    "owner_namespace": "va:uni:9206"
+  },
+  "purpose": "Resolve only CPEN 371W by joining the current exact Computer Science degree code/title to the current unique CPEN 371 WI course entry, then retain that entry prerequisite without creating a broad suffix alias rule.",
+  "verified": true,
+  "issues": [],
+  "catalog_source": {
+    "requested_url": "https://cnu.edu/public/_documents/undergrad-catalog/2026-27-undergraduate_catalog.pdf",
+    "final_url": "https://cnu.edu/public/_documents/undergrad-catalog/2026-27-undergraduate_catalog.pdf",
+    "http_status": 200,
+    "content_type": "application/pdf",
+    "response_bytes": 12618538,
+    "response_sha256": "1a5a03803b744f9ace8e9d927d00cee2809f4feaa73268c64c372cd60eea6575",
+    "pdf_info": {
+      "title": "CNU 2026-2027 Undergraduate Catalog",
+      "creator": "Adobe InDesign 21.4 (Windows)",
+      "producer": "Adobe PDF Library 18.0",
+      "creationdate": "Wed Aug  5 08:50:58 2026 PDT",
+      "moddate": "Wed Aug  5 12:51:07 2026 PDT",
+      "custom_metadata": "no",
+      "metadata_stream": "yes",
+      "tagged": "yes",
+      "userproperties": "no",
+      "suspects": "no",
+      "form": "AcroForm",
+      "javascript": "no",
+      "pages": "321",
+      "encrypted": "no",
+      "page_size": "602.503 x 787.5 pts",
+      "page_rot": "0",
+      "file_size": "12618538 bytes",
+      "optimized": "no",
+      "pdf_version": "1.7"
+    },
+    "pdf_info_sha256": "cfb818dd8ed18ec87a3d71e800cc45d63c29d4450de7305fbc2e5e06057e7834",
+    "raw_text_projection_sha256": "52772bdbeecbd8992a714321e4bc36f8d6331612519c4f806da139aa51a71599",
+    "program_physical_pdf_page": 272,
+    "course_physical_pdf_page": 275
+  },
+  "program_source": {
+    "requested_url": "https://cnu.edu/academics/programs/computer-science.html",
+    "final_url": "https://cnu.edu/academics/programs/computer-science.html",
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "response_bytes": 56793,
+    "response_sha256": "6d0fbb01dd45864c841f0a7b2b7212cd606457d1b33ded079ac784ec6bd24c8a"
+  },
+  "robots": {
+    "requested_url": "https://cnu.edu/robots.txt",
+    "final_url": "https://cnu.edu/robots.txt",
+    "http_status": 200,
+    "content_type": "text/plain; charset=UTF-8",
+    "response_bytes": 231,
+    "response_sha256": "34bf572890be69f4c49533093ca40d36d51c37a7b62eb80bb7ea56dd4d7f2a79",
+    "catalog_path_allowed": true,
+    "program_path_allowed": true
+  },
+  "facts": {
+    "catalog_year": "2026-2027",
+    "target_course_code": "CPEN371W",
+    "program_requirement": {
+      "program": "Computer Science",
+      "degree": "BS, Computer Foundations",
+      "exact_degree_statement": "Students majoring in Computer Science who complete all requirements earn the degree of BS, Computer Foundations.",
+      "target_course_code": "CPEN371W",
+      "target_display_code": "CPEN 371W",
+      "target_title": "Computer Ethics",
+      "exact_requirement_text": "CPEN 371W - Computer Ethics",
+      "exact_requirement_html_sha256": "4c9ac4d685b48d96e9f9242b5632da480677de25dbc0d896fb93d204dc4bb51f",
+      "program_panel_html_sha256": "c46eae233c20efcc6506ba307696565d00b9ebe57b07eed13b7ddcc53157804b",
+      "published_time": "2026-07-27T11:37:43-0400",
+      "og_url": "https://cnu.edu/academics/programs/computer-science"
+    },
+    "catalog_degree_requirement": {
+      "major": "Computer Science",
+      "exact_requirement_text": "1. CPEN 214, 371W;",
+      "physical_pdf_page": 272,
+      "page_raw_text_sha256": "4e4ce3f36cf16751a06b074d73422396f31acdcb5628c504599e238d94b3ff40"
+    },
+    "catalog_course_entry": {
+      "resolved_course_code": "CPEN371W",
+      "catalog_entry_course_code": "CPEN371",
+      "owner_namespace": "va:uni:9206",
+      "boundary_contract": "cnu_2026_2027_pdf_raw_physical_page_unique_exact_heading_to_next_heading_v1",
+      "physical_pdf_page": 275,
+      "heading_text": "CPEN 371. WI: Computer Ethics (2-2-0)",
+      "catalog_entry_title": "WI: Computer Ethics",
+      "identity_title": "Computer Ethics",
+      "published_units": {
+        "kind": "credit_lecture_lab_tuple",
+        "notation": "(2-2-0)",
+        "credit_hours_min": 2,
+        "credit_hours_max": 2,
+        "lecture_hours": 2,
+        "laboratory_hours": 0
+      },
+      "raw_entry_text": "CPEN 371. WI: Computer Ethics (2-2-0) Prerequisites: ENGL 223 with a C- or higher; major or minor in PCSE. This course covers contemporary ethical issues in science and engineering. A framework for professional activity is developed, which involves considerations and decisions of social impact. Current examples will be studied, discussed, and reported: IEEE and ACM codes of ethics, software and hardware property law, privacy, social implications of computers,responsibilityandliabilities,andcomputercrime.",
+      "raw_entry_sha256": "8f4497cc8e4bef8c23130ec97000e8fbe65cc526d2a89d8197c8925c6371da73",
+      "required_requisite_clause": {
+        "receipt_contract": "cnu_2026_2027_exact_prerequisites_statement_in_bounded_entry_v1",
+        "kind": "prerequisite",
+        "label": "Prerequisites",
+        "raw": "ENGL 223 with a C- or higher; major or minor in PCSE",
+        "raw_sha256": "e838005448927190c81e7b2209ee6bd9435e89f531bee3119fcdaf6a3327d5f7",
+        "relative_start": 53,
+        "relative_end": 105,
+        "statement_relative_start": 38,
+        "statement_relative_end": 106
+      },
+      "semantic_prerequisite": {
+        "status": "parsed",
+        "formula": "paths_or__conditions_and",
+        "paths": [
+          {
+            "all_of": [
+              {
+                "type": "course",
+                "code": "ENGL223",
+                "course_key": "va:uni:9206:ENGL223",
+                "minimum_grade": "C-",
+                "raw": "ENGL 223 with a C- or higher"
+              },
+              {
+                "type": "non_course",
+                "condition": "pcse_major_or_minor",
+                "academic_program": "PCSE",
+                "eligible_academic_program_roles": [
+                  "major",
+                  "minor"
+                ],
+                "raw": "major or minor in PCSE"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "identity_resolution": {
+      "receipt_contract": "cnu_current_degree_code_title_plus_catalog_wi_entry_identity_v1",
+      "resolved": true,
+      "scope": "CPEN371W_only",
+      "broad_suffix_alias_rule_created": false,
+      "target_is_catalog_entry_code_plus_w": true,
+      "catalog_entry_writing_intensive_marker": "WI",
+      "exact_title_match_after_wi_marker": true,
+      "exact_catalog_entry_count": 1,
+      "competing_target_heading_count": 0,
+      "same_catalog_target_reference_count": 5,
+      "same_catalog_cross_reference": "Pre or Corequisites: CPEN 371W, computer engineering major, senior standing."
+    }
+  },
+  "facts_sha256": "653614c38340a26306157189a7ac8720a44d8db5efa3c5754e8f34205b6e195c",
+  "disposition": {
+    "resolved_course_codes": [
+      "CPEN371W"
+    ],
+    "unresolved_course_codes": [],
+    "identity_scope": "exact_single_target",
+    "verified_major_core_changed": false
+  }
+}

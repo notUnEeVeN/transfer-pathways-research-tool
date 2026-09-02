@@ -1,0 +1,22 @@
+{
+  "route_id": "george-mason-university__comm",
+  "requested_url": "https://catalog.gmu.edu/courses/comm/",
+  "final_url": "https://catalog.gmu.edu/courses/comm/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 196104,
+  "content_sha256": "c8b0a121b9019033fbae726d88eee684f01840fa6bcd5e39b3435647c5a34c2c",
+  "fetched_at": "2026-08-24T18:02:24.887Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "COMM100",
+    "COMM101"
+  ]
+}

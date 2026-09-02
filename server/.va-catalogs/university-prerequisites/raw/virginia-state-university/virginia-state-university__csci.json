@@ -1,0 +1,23 @@
+{
+  "route_id": "virginia-state-university__csci",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/csci/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/csci/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 108837,
+  "content_sha256": "38d7e37321ff41fb2a50949b2b45bc59d5123e1c809b2ede6d11c3a56e8879da",
+  "fetched_at": "2026-08-25T11:49:10.731Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CSCI150",
+    "CSCI151",
+    "CSCI457"
+  ]
+}

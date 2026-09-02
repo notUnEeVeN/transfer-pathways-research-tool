@@ -1,0 +1,21 @@
+{
+  "route_id": "randolph-macon-college__math",
+  "requested_url": "https://catalog.rmc.edu/courses-az/math/",
+  "final_url": "https://catalog.rmc.edu/courses-az/math/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 74742,
+  "content_sha256": "6fda9e1f512d38460711793372c766f2959dda60cd2201f225fd6b23f0c515a4",
+  "fetched_at": "2026-08-24T18:03:30.483Z",
+  "robots": {
+    "url": "https://catalog.rmc.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "f6305026d827feeb54fa3dee76e89fb169b56467844ba340d22366c95ef81349",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "MATH220"
+  ]
+}

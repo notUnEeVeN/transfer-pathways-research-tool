@@ -1,0 +1,94 @@
+{
+  "route_id": "virginia-polytechnic-institute-and-state-university__ece_department",
+  "requested_url": "https://catalog.vt.edu/undergraduate/college-engineering/electrical-computer-engineering/",
+  "final_url": "https://catalog.vt.edu/undergraduate/college-engineering/electrical-computer-engineering/",
+  "capture_status": "official_browser_document_captured",
+  "blocked_reason": null,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 198230,
+  "content_sha256": "9afb190dc8aaa155e313bd47544cbf7b1f1422a6f9b4f26bd30ec6057238baea",
+  "fetched_at": "2026-08-25T02:32:09.735Z",
+  "browser_challenge_receipt": {
+    "contract": "known_courseleaf_host_exact_same_url_document_202_then_200_raw_response_v1",
+    "requested_url": "https://catalog.vt.edu/undergraduate/college-engineering/electrical-computer-engineering/",
+    "exact_same_url": true,
+    "document_response_count": 2,
+    "browser_engine": "chromium",
+    "browser_version": "151.0.7922.34",
+    "document_responses": [
+      {
+        "ordinal": 1,
+        "http_status": 202,
+        "url": "https://catalog.vt.edu/undergraduate/college-engineering/electrical-computer-engineering/",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 2431,
+        "content_sha256": "6a994d2556dcc9970b9a6c6b61b3359baf6ec46f5a0447c3dffd58ea3a0e2e0c",
+        "cache_path": "university-prerequisites/raw/virginia-polytechnic-institute-and-state-university/virginia-polytechnic-institute-and-state-university__ece_department.challenge.html"
+      },
+      {
+        "ordinal": 2,
+        "http_status": 200,
+        "url": "https://catalog.vt.edu/undergraduate/college-engineering/electrical-computer-engineering/",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 198230,
+        "content_sha256": "9afb190dc8aaa155e313bd47544cbf7b1f1422a6f9b4f26bd30ec6057238baea",
+        "cache_path": "university-prerequisites/raw/virginia-polytechnic-institute-and-state-university/virginia-polytechnic-institute-and-state-university__ece_department.html"
+      }
+    ]
+  },
+  "robots_receipt": {
+    "contract": "known_courseleaf_host_browser_challenge_robots_policy_and_exact_path_allowance_v1",
+    "capture": {
+      "contract": "known_courseleaf_host_exact_same_url_document_202_then_200_raw_response_v1",
+      "requested_url": "https://catalog.vt.edu/robots.txt",
+      "exact_same_url": true,
+      "document_response_count": 2,
+      "browser_engine": "chromium",
+      "browser_version": "151.0.7922.34",
+      "document_responses": [
+        {
+          "ordinal": 1,
+          "http_status": 202,
+          "url": "https://catalog.vt.edu/robots.txt",
+          "content_type": "text/html; charset=UTF-8",
+          "byte_length": 2431,
+          "content_sha256": "c2b01278167bd519c15b604327952bf868778167bb2403a2d1161dad162c1a2a",
+          "cache_path": "university-prerequisites/raw/_robots/catalog.vt.edu__browser.challenge.html"
+        },
+        {
+          "ordinal": 2,
+          "http_status": 200,
+          "url": "https://catalog.vt.edu/robots.txt",
+          "content_type": "text/plain; charset=UTF-8",
+          "byte_length": 739,
+          "content_sha256": "1ff455d3338e249a25649b204d1c4bf56d736869320afac5e219250bf5cc0692",
+          "cache_path": "university-prerequisites/raw/_robots/catalog.vt.edu__browser.txt"
+        }
+      ]
+    },
+    "nonempty_final_body": true,
+    "parsed_policy": {
+      "rule_count": 33,
+      "crawl_delay_seconds": 0,
+      "policy_sha256": "2c04ce7819dae6343b3de23ce69cb667e8313cb1273e43ac620a15c1bfbbc6b1"
+    },
+    "checked_path": "/undergraduate/college-engineering/electrical-computer-engineering/",
+    "path_allowed": true
+  },
+  "target_course_codes": [
+    "ECE2514",
+    "ECE2564",
+    "ECE3504",
+    "ECE3514",
+    "ECE3544",
+    "ECE3574",
+    "ECE4424",
+    "ECE4504",
+    "ECE4524",
+    "ECE4550",
+    "ECE4560",
+    "ECE4564",
+    "ECE4580",
+    "ECE4704"
+  ]
+}

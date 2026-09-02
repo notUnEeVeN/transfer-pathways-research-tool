@@ -1,0 +1,21 @@
+{
+  "route_id": "norfolk-state-university__engg",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/engg/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/engg/",
+  "capture_status": "blocked_fail_closed",
+  "blocked_reason": "response_failed_status_content_type_or_interstitial_check",
+  "http_status": 404,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 10943,
+  "content_sha256": "49280e27699d59ac873caf14c626e7ac81820be29eb1317cc775a225cd751af6",
+  "fetched_at": "2026-08-24T18:08:50.158Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ENGG101H"
+  ]
+}

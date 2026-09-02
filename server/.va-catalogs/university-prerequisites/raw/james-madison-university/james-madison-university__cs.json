@@ -1,0 +1,96 @@
+{
+  "route_id": "james-madison-university__cs",
+  "requested_url": "https://catalog.jmu.edu/courses/cs/",
+  "final_url": "https://catalog.jmu.edu/courses/cs/",
+  "capture_status": "official_browser_document_captured",
+  "blocked_reason": null,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 123603,
+  "content_sha256": "16c2246baa0023a3e1a5087260e92f023f49ae268a6fce12d0f405a1d4c0d27c",
+  "fetched_at": "2026-08-25T02:31:40.431Z",
+  "browser_challenge_receipt": {
+    "contract": "known_courseleaf_host_exact_same_url_document_202_then_200_raw_response_v1",
+    "requested_url": "https://catalog.jmu.edu/courses/cs/",
+    "exact_same_url": true,
+    "document_response_count": 2,
+    "browser_engine": "chromium",
+    "browser_version": "151.0.7922.34",
+    "document_responses": [
+      {
+        "ordinal": 1,
+        "http_status": 202,
+        "url": "https://catalog.jmu.edu/courses/cs/",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 2431,
+        "content_sha256": "afb40437ac8d95bc9fbd5e7f3f04c1769d79a5792f5b03a339d340ca6bc4fefb",
+        "cache_path": "university-prerequisites/raw/james-madison-university/james-madison-university__cs.challenge.html"
+      },
+      {
+        "ordinal": 2,
+        "http_status": 200,
+        "url": "https://catalog.jmu.edu/courses/cs/",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 123603,
+        "content_sha256": "16c2246baa0023a3e1a5087260e92f023f49ae268a6fce12d0f405a1d4c0d27c",
+        "cache_path": "university-prerequisites/raw/james-madison-university/james-madison-university__cs.html"
+      }
+    ]
+  },
+  "robots_receipt": {
+    "contract": "known_courseleaf_host_browser_challenge_robots_policy_and_exact_path_allowance_v1",
+    "capture": {
+      "contract": "known_courseleaf_host_exact_same_url_document_202_then_200_raw_response_v1",
+      "requested_url": "https://catalog.jmu.edu/robots.txt",
+      "exact_same_url": true,
+      "document_response_count": 2,
+      "browser_engine": "chromium",
+      "browser_version": "151.0.7922.34",
+      "document_responses": [
+        {
+          "ordinal": 1,
+          "http_status": 202,
+          "url": "https://catalog.jmu.edu/robots.txt",
+          "content_type": "text/html; charset=UTF-8",
+          "byte_length": 2431,
+          "content_sha256": "695e765c9a65a4d1003153d7136fed09d3f0ffd8bb8246de1cbf737fc0fc7274",
+          "cache_path": "university-prerequisites/raw/_robots/catalog.jmu.edu__browser.challenge.html"
+        },
+        {
+          "ordinal": 2,
+          "http_status": 200,
+          "url": "https://catalog.jmu.edu/robots.txt",
+          "content_type": "text/plain; charset=UTF-8",
+          "byte_length": 799,
+          "content_sha256": "ff666b5101859b11ad1dfb9c7b408e7235a5f31998e372c1a33eb7fc3ce267c9",
+          "cache_path": "university-prerequisites/raw/_robots/catalog.jmu.edu__browser.txt"
+        }
+      ]
+    },
+    "nonempty_final_body": true,
+    "parsed_policy": {
+      "rule_count": 34,
+      "crawl_delay_seconds": 0,
+      "policy_sha256": "183c4fb1daf5258275229a8afcd54193b653a050de971c514b2cb0a08ae2bb0f"
+    },
+    "checked_path": "/courses/cs/",
+    "path_allowed": true
+  },
+  "target_course_codes": [
+    "CS149",
+    "CS159",
+    "CS227",
+    "CS240",
+    "CS261",
+    "CS327",
+    "CS345",
+    "CS361",
+    "CS412",
+    "CS430",
+    "CS432",
+    "CS450",
+    "CS452",
+    "CS455",
+    "CS456",
+    "CS470"
+  ]
+}

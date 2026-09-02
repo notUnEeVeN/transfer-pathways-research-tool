@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-24",
+  "institution": "Laurel Ridge Community College",
+  "authority_rule": "A historical formula is accepted only from an exact official owner catalog entry on the canonical CSC 210 prerequisite closure. Absence of a prerequisite marker remains unresolved and is never inferred as none.",
+  "source_document": {
+    "catalog_year": "2019-2020",
+    "source_url": "https://laurelridge.edu/files/documents/current-students/college-catalog/2019-20/2019-20%20CATALOG.pdf",
+    "content_bytes": 2239158,
+    "content_sha256": "eaf380a923383e2c59c41df590ca6d6e6c3306f1d4d8249dc4446e4aaaac9273"
+  },
+  "rows": [
+    {
+      "code": "CSC200",
+      "title": "Introduction to Computer Science",
+      "credits": 3,
+      "catalog_page": 158,
+      "pdf_page": 168,
+      "required_by": [
+        "CSC201"
+      ],
+      "owning_colleges": [
+        "Laurel Ridge Community College"
+      ],
+      "raw_entry_text": "CSC 200 Introduction to Computer Science (3 Cr.)\nProvides broad introduction to computer science. Discusses architecture and function of computer hardware, including networks and operating systems, data and instruction representation and data organization. Covers software, algorithms, programming languages and software engineering. Discusses artificial intelligence and theory of computation. Includes a hands-on component. Prerequisite(s): Readiness to enroll in ENG 111. Lecture 3 hours per week.",
+      "raw_entry_sha256": "2fdea8e048f063733f4473ecc67793fd34b595056f4cb4c51708d908a93fbbf6",
+      "raw_requisites": "Prerequisite(s): Readiness to enroll in ENG 111.",
+      "disposition": "accepted_exact_owner_complete_formula",
+      "accepted_explicit_none": false
+    },
+    {
+      "code": "CSC201",
+      "title": "Computer Science I",
+      "credits": 4,
+      "catalog_page": 158,
+      "pdf_page": 168,
+      "required_by": [
+        "CSC210"
+      ],
+      "owning_colleges": [
+        "Laurel Ridge Community College"
+      ],
+      "raw_entry_text": "CSC 201 Computer Science I (4 Cr.)\nIntroduces algorithm and problem solving methods. Emphasizes structured programming concepts, elementary data structures and the study and use of a high level programming language. Prerequisite(s): CSC 200 or EGR 126. Lecture 4 hours per week.",
+      "raw_entry_sha256": "fa346011855950529e4e852120174e3e600fb0f420f969e816c1bf77f138019c",
+      "raw_requisites": "Prerequisite(s): CSC 200 or EGR 126.",
+      "disposition": "accepted_exact_owner_complete_formula",
+      "accepted_explicit_none": false
+    },
+    {
+      "code": "CSC202",
+      "title": "Computer Science II",
+      "credits": 4,
+      "catalog_page": 159,
+      "pdf_page": 169,
+      "required_by": [
+        "CSC210"
+      ],
+      "owning_colleges": [
+        "Laurel Ridge Community College"
+      ],
+      "raw_entry_text": "CSC 202 Computer Science II (4 Cr.)\nExamines data structures and analyzes algorithms. Covers data structures (including sets, strings, stacks, queues, arrays, records, files, linked lists, and trees), abstract data types, algorithm analysis (including searching and sorting methods), and objects. Prerequisite(s): CSC 201. Lecture 4 hours per week.",
+      "raw_entry_sha256": "142e429585c112c55cb5f9e6d541e295c64afb1788c863a82699edec834a5a9a",
+      "raw_requisites": "Prerequisite(s): CSC 201.",
+      "disposition": "accepted_exact_owner_complete_formula",
+      "accepted_explicit_none": false
+    },
+    {
+      "code": "EGR126",
+      "title": "Computer Programming for Engineers",
+      "credits": 3,
+      "catalog_page": 165,
+      "pdf_page": 175,
+      "required_by": [
+        "CSC201"
+      ],
+      "owning_colleges": [
+        "Laurel Ridge Community College"
+      ],
+      "raw_entry_text": "EGR 126 Computer Programming for Engineers (3 Cr.)\nIntroduces computers, their architecture and software. Teaches program development using flowcharts. Solves engineering problems involving programming in languages such as FORTRAN, PASCAL, or C++. Lecture 3 hours per week. Total 3 hours per week.",
+      "raw_entry_sha256": "2202137c22de656724f14704dd5252d2d06ff03f279508ce8a52ea7c37d7565c",
+      "raw_requisites": null,
+      "disposition": "unresolved_no_explicit_none_statement",
+      "accepted_explicit_none": false
+    }
+  ]
+}

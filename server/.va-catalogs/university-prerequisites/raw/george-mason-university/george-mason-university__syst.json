@@ -1,0 +1,22 @@
+{
+  "route_id": "george-mason-university__syst",
+  "requested_url": "https://catalog.gmu.edu/courses/syst/",
+  "final_url": "https://catalog.gmu.edu/courses/syst/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 259634,
+  "content_sha256": "b9d848195b2aa4de8a4075af1134570e5e2c56182b7d958e2e907c6b04802bf7",
+  "fetched_at": "2026-08-24T18:02:42.294Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "SYST371",
+    "SYST470"
+  ]
+}

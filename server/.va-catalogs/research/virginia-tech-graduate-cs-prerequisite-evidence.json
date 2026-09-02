@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_tech_graduate_cs_prerequisite_evidence",
+  "generated_on": "2026-08-25",
+  "institution": {
+    "name": "Virginia Polytechnic Institute and State University",
+    "slug": "virginia-polytechnic-institute-and-state-university",
+    "school_id": 9230,
+    "owner_namespace": "va:uni:9230"
+  },
+  "purpose": "Resolve only the two missing CS5104/CS5114 prerequisite targets from their exact current first-party graduate CS heading-to-next-heading entries; BIT4614 remains missing.",
+  "verified": true,
+  "issues": [],
+  "source": {
+    "requested_url": "https://students.cs.vt.edu/Graduate/Courses/GradCourseDescriptions.html",
+    "final_url": "https://students.cs.vt.edu/Graduate/Courses/GradCourseDescriptions.html",
+    "http_status": 200,
+    "content_type": "text/html;charset=utf-8",
+    "response_bytes": 105535,
+    "response_sha256": "e745b75628f4e0c9fc3ce53a6fd28725e50f52a5451d777c53c892ff504eab17",
+    "document_title": "Course Descriptions | students.cs | Virginia Tech",
+    "canonical_url": "https://students.cs.vt.edu/Graduate/Courses/GradCourseDescriptions.html",
+    "generator": "Ensemble: https://ensemble.cms.vt.edu/",
+    "created": "2026-07-01T12:54:10Z",
+    "pubdate": "2026-07-01T12:54:08Z",
+    "last_modified": "2026-07-01T12:54:08Z"
+  },
+  "robots": {
+    "requested_url": "https://students.cs.vt.edu/robots.txt",
+    "final_url": "https://students.cs.vt.edu/content/dam/students_cs_vt_edu/robots.txt",
+    "http_status": 200,
+    "content_type": "text/plain;charset=iso-8859-1",
+    "response_bytes": 225,
+    "response_sha256": "373aba6c1f3e06d978ca61387bc4cec762d5841311734ada9c679c81db0669eb",
+    "wildcard_path_allowed": true,
+    "wildcard_crawl_delay_seconds": 10
+  },
+  "facts": {
+    "source_temporal_binding": {
+      "contract": "virginia_tech_first_party_current_page_exact_meta_pubdate_and_capture_v1",
+      "page_created": "2026-07-01T12:54:10Z",
+      "page_pubdate": "2026-07-01T12:54:08Z",
+      "page_last_modified": "2026-07-01T12:54:08Z",
+      "captured_on": "2026-08-25",
+      "catalog_edition_claimed": false
+    },
+    "boundary_contract": "virginia_tech_current_graduate_cs_unique_heading_to_next_heading_v1",
+    "target_course_codes": [
+      "CS5104",
+      "CS5114"
+    ],
+    "same_page_positive_controls": {
+      "bounded_heading_count": 56,
+      "entries_with_pre_marker_count": 43,
+      "pre_marker_count": 46,
+      "exact_positive_control_course_code": "CS5114",
+      "exact_positive_control_statement": "Pre: CS3114"
+    },
+    "entries": [
+      {
+        "course_code": "CS5104",
+        "owner_namespace": "va:uni:9230",
+        "heading_text": "CS 5104 - Computability and Formal Languages",
+        "title": "Computability and Formal Languages",
+        "boundary_contract": "virginia_tech_current_graduate_cs_unique_heading_to_next_heading_v1",
+        "source_current_contract": "virginia_tech_first_party_current_page_exact_meta_pubdate_and_capture_v1",
+        "source_effective_pubdate": "2026-07-01T12:54:08Z",
+        "catalog_edition_claimed": false,
+        "boundary_start": 58179,
+        "boundary_end": 58404,
+        "next_heading_code": "CS5114",
+        "published_units": {
+          "kind": "published_contact_credit_tuple",
+          "notation": "(3H,3C)",
+          "contact_hours": 3,
+          "credit_hours_min": 3,
+          "credit_hours_max": 3
+        },
+        "raw_entry_html_sha256": "d6fd87328fa99eae33bb359499143de27616fd56e105d3d13b0b44b802018e48",
+        "raw_entry_text": "CS 5104 - Computability and Formal Languages\nFormal theory of computability, the halting problem, models of computation, and Church's thesis, and formal languages. (3H,3C)",
+        "raw_entry_sha256": "48affaf32abc3b7314d081dd28d9784ff0e9fba100c93e601bf2c4c74431f05d",
+        "formal_prerequisite_marker_count": 0,
+        "formal_corequisite_marker_count": 0,
+        "prerequisite_marker_like_count": 0,
+        "constraint_like_signal_count": 0,
+        "required_requisite_clause": null,
+        "structural_none_evidence": {
+          "receipt_contract": "virginia_tech_current_graduate_cs_complete_entry_zero_marker_with_same_page_controls_v1",
+          "finding": "zero requisite markers and zero unmodeled constraint-like signals in one exact complete heading-to-next-heading entry with same-page positive controls",
+          "literal_none_statement": false,
+          "missing_search_result_used": false,
+          "exact_complete_entry_present": true,
+          "same_page_positive_control": true,
+          "source_bounded_entry_count": 56,
+          "source_entries_with_pre_marker_count": 43,
+          "source_pre_marker_count": 46,
+          "positive_control_course_code": "CS5114",
+          "positive_control_statement": "Pre: CS3114",
+          "entry_required_prerequisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 0
+        },
+        "semantic_prerequisite": null
+      },
+      {
+        "course_code": "CS5114",
+        "owner_namespace": "va:uni:9230",
+        "heading_text": "CS 5114 - Theory of Algorithms",
+        "title": "Theory of Algorithms",
+        "boundary_contract": "virginia_tech_current_graduate_cs_unique_heading_to_next_heading_v1",
+        "source_current_contract": "virginia_tech_first_party_current_page_exact_meta_pubdate_and_capture_v1",
+        "source_effective_pubdate": "2026-07-01T12:54:08Z",
+        "catalog_edition_claimed": false,
+        "boundary_start": 58404,
+        "boundary_end": 58784,
+        "next_heading_code": "CS5124",
+        "published_units": {
+          "kind": "published_contact_credit_tuple",
+          "notation": "(3H,3C)",
+          "contact_hours": 3,
+          "credit_hours_min": 3,
+          "credit_hours_max": 3
+        },
+        "raw_entry_html_sha256": "903a882002ed64508944c6e0610fb372999077ca83db8d1995f3e2ee834d4c3c",
+        "raw_entry_text": "CS 5114 - Theory of Algorithms\nMethods for constructing and analyzing algorithms. Measures of computational complexity, determination of efficient algorithms for a variety of problems such as searching, sorting and pattern matching. Geometric algorithms, mathematical algorithms, and theory of NP-completeness. (3H,3C) Pre: CS3114",
+        "raw_entry_sha256": "ab9ad1826498e5950212a5e870ba2746f6ddce6bc4ee39bd2ba76c34672bbedb",
+        "formal_prerequisite_marker_count": 1,
+        "formal_corequisite_marker_count": 0,
+        "prerequisite_marker_like_count": 1,
+        "constraint_like_signal_count": 0,
+        "required_requisite_clause": {
+          "receipt_contract": "virginia_tech_current_graduate_cs_exact_pre_clause_v1",
+          "kind": "prerequisite",
+          "label": "Pre",
+          "raw": "CS3114",
+          "raw_sha256": "d6bd6631b99a70315df504dd9f9375a9d2b281aa554bff43ff759992643b5ff8",
+          "relative_start": 324,
+          "relative_end": 330,
+          "statement_raw": "Pre: CS3114",
+          "statement_sha256": "296f740355708631f098a3ae507b705c651b42029c7d1f1c506fcc3fe6a29ae1",
+          "statement_relative_start": 319,
+          "statement_relative_end": 330
+        },
+        "structural_none_evidence": null,
+        "semantic_prerequisite": {
+          "status": "parsed",
+          "formula": "paths_or__conditions_and",
+          "paths": [
+            {
+              "all_of": [
+                {
+                  "type": "course",
+                  "code": "CS3114",
+                  "course_key": "va:uni:9230:CS3114",
+                  "raw": "CS3114"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "facts_sha256": "f814c273b86092e8a0c0c0231621860486a1dcd432f399d0775f3f0cf35dbaac",
+  "disposition": {
+    "resolved_course_codes": [
+      "CS5104",
+      "CS5114"
+    ],
+    "structural_none_course_codes": [
+      "CS5104"
+    ],
+    "formal_course_prerequisite_codes": [
+      "CS5114"
+    ],
+    "unresolved_course_codes": [
+      "BIT4614"
+    ],
+    "missing_search_result_used": false,
+    "catalog_edition_claimed": false
+  }
+}

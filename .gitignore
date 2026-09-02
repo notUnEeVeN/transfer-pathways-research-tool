@@ -40,6 +40,22 @@ server/.va-prerequisites-cache/
 server/.va-catalogs/pages/
 server/.va-catalogs/.browser-profile/
 
+# VCCS per-college course-catalogue captures. Regenerable by
+# `node scripts/captureVccsCourseCatalogs.js`; the reviewable output is
+# .va-courses/catalog/<slug>.json and .va-courses/index.json, which ARE
+# committed — they are the course-supply evidence the guide join reads.
+server/.va-courses/pages/
+
+# Transfer Guide captures. Regenerable by
+# `node scripts/captureVirginiaTransferGuides.js`; the reviewable output is
+# .va-guides/guides.json, which IS committed.
+server/.va-guides/pages/
+
+# Pre-rebuild snapshots of replaced Virginia collections. Regenerable only in
+# the sense that they preserve data a rebuild discarded — kept out of git for
+# size (43 MB), not because they are disposable.
+server/.va-backups/
+
 # UC catalogue captures. Regenerable by scripts/captureUcCatalogs.js,
 # captureCoursedogCatalogs.js, captureAcalogCatalogs.js and
 # captureUcMajorRequirements.js; the reviewable outputs are the small index

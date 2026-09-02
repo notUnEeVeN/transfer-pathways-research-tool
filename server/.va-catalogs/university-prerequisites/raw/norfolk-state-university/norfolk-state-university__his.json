@@ -1,0 +1,25 @@
+{
+  "route_id": "norfolk-state-university__his",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/his/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/his/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 74300,
+  "content_sha256": "28afb1c26348fd89587e0de0e066b8657fa1ef30f82c01e4c46860d7796c2311",
+  "fetched_at": "2026-08-24T18:02:55.725Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "HIS101",
+    "HIS103",
+    "HIS335",
+    "HIS336",
+    "HIS371"
+  ]
+}

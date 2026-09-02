@@ -166,7 +166,7 @@
       },
       "source_conflicts_and_analysis_blockers": [
         "A four-credit General Education Elective slot offers multiple three-credit courses with no published compensating-credit instruction.",
-        "The two Block II choices require distinct categories, a cross-choice rule not implemented by the evaluator.",
+        "The two Block II choices require distinct categories; the evaluator now enforces the retained source-backed Art, Humanities, and Literature dictionary.",
         "The nine-credit Computer Science elective menu includes two-, three-, four-, and five-credit courses but states no choose-N rule.",
         "Several elective menus overlap fixed or other choice menus, so applied-credit double counting must be prevented rather than assumed away."
       ],

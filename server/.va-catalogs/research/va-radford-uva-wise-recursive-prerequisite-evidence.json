@@ -1,0 +1,1673 @@
+{
+  "schema_version": 1,
+  "artifact": "va_radford_uva_wise_recursive_prerequisite_evidence",
+  "contract": "va_radford_uva_wise_exact_recursive_prerequisite_replay_v1",
+  "snapshot_date": "2026-08-25",
+  "publication_ready": false,
+  "publication_blockers": [
+    "nine_exact_rows_require_noncourse_timing_boolean_or_exclusion_policy",
+    "human_publication_verification_not_requested"
+  ],
+  "summary": {
+    "captured_exact_entry_rows": 14,
+    "safe_exact_formula_rows": 5,
+    "blocked_exact_source_rows": 9,
+    "promoted_prerequisite_groups": 5,
+    "blocked_partial_edge_rows": 4,
+    "exact_formal_reference_keys": 11,
+    "unresolved_formal_reference_keys": 0
+  },
+  "facts_sha256": "3a8f43f03b32a06e5d0cea44c2068aa798ef8cb8ea57d8335387ca2f4a213377",
+  "facts": {
+    "policy": {
+      "promote_only_complete_compiler_safe_formula": true,
+      "pre_or_corequisite_timing_retained": true,
+      "non_course_paths_retained": true,
+      "exclusions_retained": true,
+      "partial_course_edges_for_blocked_rows": false,
+      "missing_result_inference_allowed": false
+    },
+    "target_rows": [
+      {
+        "course_key": "va:uni:9219:CS101",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "CS101",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_exact_source_semantics",
+        "publication_status_recommendation": "unparsed",
+        "runtime_ready": false,
+        "raw_requisites": null,
+        "source_formulas": [],
+        "referenced_course_keys": [],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students who have credit for CS 120 may not take CS 101.",
+            "raw_sha256": "a113ed219fc444728360a5053674ac0fdab1c1f1e660ea15a50e12f21bca192e",
+            "relative_start": 267,
+            "relative_end": 323,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          },
+          {
+            "kind": "retained_constraint_signal",
+            "raw": "CS 101 may only be attempted twice.",
+            "raw_sha256": "bc2c604f7134da8aca1d8e2cd0717d88fee5ddf0bf18b4af6fdc552131d6bd94",
+            "relative_start": 324,
+            "relative_end": 359,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [
+          "exclusion_only_entry_requires_explicit_zero_edge_policy"
+        ],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=110714",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__cs101.html",
+          "source_response_sha256": "c5373cc1acb446eab4e5b166df4c5311a492b27ac4213813613994aee8df7c78",
+          "source_response_bytes": 78876,
+          "raw_entry_sha256": "1a3115f288805cd2608f9e738f92ac07e71df8984ba6b18c75d6a3c2ab987df1",
+          "raw_entry_html_sha256": "b4f3bfa51ebf00c4e9df3880ca3c2ab9576845ee16d25ab3cf5631b3a514dad5",
+          "raw_entry_text": "CS 101 - Computational Thinking Credits: (3) Instructional Method: Three hours lecture. CS 101 is designed to prepare students for CS 120 by introducing real world problems (AI, Cybersecurity, Gaming, etc…), problem solving strategies, and the tools used in CS 120 . Students who have credit for CS 120 may not take CS 101. CS 101 may only be attempted twice.",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 110714,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(3)",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": null,
+          "pre_or_corequisite_clause": null,
+          "formal_requisite_marker_count": 0,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+          "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295",
+          "discovery_link_receipt": {
+            "course_code": "CS101",
+            "catoid": 62,
+            "coid": 110714,
+            "link_text": "CS 101",
+            "aria_label": "View course details for CS 101",
+            "href": "preview_course_nopop.php?catoid=62&coid=110714",
+            "href_sha256": "b29d31041ff247857682ebb884700df16addc49babbd3028ff88403d11d550a6",
+            "discovery_course_code": "CS120",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+            "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:CS109",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "CS109",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_exact_source_semantics",
+        "publication_status_recommendation": "unparsed",
+        "runtime_ready": false,
+        "raw_requisites": null,
+        "source_formulas": [],
+        "referenced_course_keys": [],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students that have earned credit for CS 120 cannot subsequently earn credit for ITEC 109.",
+            "raw_sha256": "844be177a8b33ef2f5d77495e9e8637f7b64091564513de930648a15c78a5d9c",
+            "relative_start": 468,
+            "relative_end": 557,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          },
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students may not take ITEC 109 and CS 120 concurrently.",
+            "raw_sha256": "0a4803a336c77b4da567f61abdf73c4b512b078af89005a7df37a57084d354db",
+            "relative_start": 558,
+            "relative_end": 613,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [
+          "exclusion_only_entry_requires_explicit_zero_edge_policy"
+        ],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108994",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__cs109.html",
+          "source_response_sha256": "62fbeda83213cfe29e36820467696a69ca8dc45e4ddf3232b8b04c576e90ef94",
+          "source_response_bytes": 78823,
+          "raw_entry_sha256": "9ccfc710832b1239e281b49f00a8f240e29463d630d4ab875297d22a10952285",
+          "raw_entry_html_sha256": "e1c2b7d3df2828b32da85bc7bb32692ac79fef4a74f54aa53cffa36247461f80",
+          "raw_entry_text": "CS 109 - Problem Solving and Programming (GE) Credits: (3) Instructional Method: Two hours lecture; two hours laboratory. An introduction to problem solving using programming. Topics include a survey of techniques used in problem solving, methods for representing the solution of a problem as an algorithm and the implementation of an algorithm as a computer program. REAL Area R Note(s): General Education and Scientific and Quantitative Reasoning designated course. Students that have earned credit for CS 120 cannot subsequently earn credit for ITEC 109. Students may not take ITEC 109 and CS 120 concurrently.",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 108994,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(3)",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": null,
+          "pre_or_corequisite_clause": null,
+          "formal_requisite_marker_count": 0,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs119.html",
+          "discovery_response_sha256": "7d365cc7369ce45569a0bbcb8291d7da331f89eb0a935756b0b3344ca82cd94f",
+          "discovery_link_receipt": {
+            "course_code": "CS109",
+            "catoid": 62,
+            "coid": 108994,
+            "link_text": "CS 109",
+            "aria_label": "View course details for CS 109",
+            "href": "preview_course_nopop.php?catoid=62&coid=108994",
+            "href_sha256": "060f54f378a201f6b5a3c6d2f231b42e11dac553ed4ce45d0f350c93b85336d7",
+            "discovery_course_code": "CS119",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs119.html",
+            "discovery_response_sha256": "7d365cc7369ce45569a0bbcb8291d7da331f89eb0a935756b0b3344ca82cd94f"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:CS118",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "CS118",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_exact_source_semantics",
+        "publication_status_recommendation": "unparsed",
+        "runtime_ready": false,
+        "raw_requisites": "Pre- or Corequisites: MATH 125 , MATH 138 , MATH 168 , MATH 169 or MATH 171 .",
+        "source_formulas": [
+          {
+            "kind": "pre_or_corequisite",
+            "timing": "corequisite_or_prerequisite",
+            "raw": "MATH 125 , MATH 138 , MATH 168 , MATH 169 or MATH 171 .",
+            "paths": null,
+            "formal_course_references": [
+              "MATH125",
+              "MATH138",
+              "MATH168",
+              "MATH169",
+              "MATH171"
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_pre_or_corequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "pre_or_corequisite",
+              "label": "Pre- or Corequisites",
+              "raw": "MATH 125 , MATH 138 , MATH 168 , MATH 169 or MATH 171 .",
+              "raw_sha256": "540edc82a335188b07ee45ff5dd905339594dd4388c5b9279d19ebbfa320876a",
+              "relative_start": 131,
+              "relative_end": 186,
+              "statement_relative_start": 109,
+              "statement_relative_end": 186,
+              "raw_html_sha256": "4012cb31b775be2ac18304548d0b26227e4c24f1457c26ca753b2513b2925e41",
+              "boundary_terminal": "first_br_after_unique_strong_pre_or_corequisite_marker"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9219:MATH125",
+          "va:uni:9219:MATH138",
+          "va:uni:9219:MATH168",
+          "va:uni:9219:MATH169",
+          "va:uni:9219:MATH171"
+        ],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students may not receive credit for both CS 120 and the sequence CS 118:CS 119 .",
+            "raw_sha256": "ca9af5866a94f34832fd579cc9c6d44eebe94c4202ba932e01bd76397530b418",
+            "relative_start": 371,
+            "relative_end": 451,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          },
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students may not attempt to take ITEC 118 more than two times (a “W” will count as an attempt).",
+            "raw_sha256": "531a6647bddad4e77ea131bea7d11f0997c2c97bff3f6e3a4556b965b7a0068d",
+            "relative_start": 452,
+            "relative_end": 547,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [
+          "pre_or_corequisite_timing_not_supported_by_publication_graph",
+          "comma_boolean_list_not_source_grouped"
+        ],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=110599",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__cs118.html",
+          "source_response_sha256": "a2fb8e2c7e8458408d8da81188c23b73d674e6dbf7ff2bff1ffd1d232ed1655d",
+          "source_response_bytes": 80854,
+          "raw_entry_sha256": "fcecc6469efba974a8fc89b04122dcf52420a07f387637f1d13dd3e97224dfbd",
+          "raw_entry_html_sha256": "1392633ac87f430d53662270f24c226fe65f619cccf089446ddb37af89b8bfcd",
+          "raw_entry_text": "CS 118 - Principles of Programming I (GE) Credits: (3) Instructional Method: Two hour lecture. One hour lab. Pre- or Corequisites: MATH 125 , MATH 138 , MATH 168 , MATH 169 or MATH 171 . A rigorous, systematic approach to object-oriented problem solving and programming. REAL Area R Note(s): General Education and Scientific and Quantitative Reasoning Designated Course. Students may not receive credit for both CS 120 and the sequence CS 118:CS 119 . Students may not attempt to take ITEC 118 more than two times (a “W” will count as an attempt).",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 110599,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(3)",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": null,
+          "pre_or_corequisite_clause": {
+            "receipt_contract": "radford_acalog_strong_pre_or_corequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "pre_or_corequisite",
+            "label": "Pre- or Corequisites",
+            "raw": "MATH 125 , MATH 138 , MATH 168 , MATH 169 or MATH 171 .",
+            "raw_sha256": "540edc82a335188b07ee45ff5dd905339594dd4388c5b9279d19ebbfa320876a",
+            "relative_start": 131,
+            "relative_end": 186,
+            "statement_relative_start": 109,
+            "statement_relative_end": 186,
+            "raw_html_sha256": "4012cb31b775be2ac18304548d0b26227e4c24f1457c26ca753b2513b2925e41",
+            "boundary_terminal": "first_br_after_unique_strong_pre_or_corequisite_marker"
+          },
+          "formal_requisite_marker_count": 1,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs252.html",
+          "discovery_response_sha256": "340867cae1fdef5501b24bc21290d2188a1ae95e519bb62cbc750110ea13aa66",
+          "discovery_link_receipt": {
+            "course_code": "CS118",
+            "catoid": 62,
+            "coid": 110599,
+            "link_text": "CS 118",
+            "aria_label": "View course details for CS 118",
+            "href": "preview_course_nopop.php?catoid=62&coid=110599",
+            "href_sha256": "5451b7fcbd4c86400c8add18c7f5be684a85f63af250c827e78c0691f3cc7e5b",
+            "discovery_course_code": "CS252",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs252.html",
+            "discovery_response_sha256": "340867cae1fdef5501b24bc21290d2188a1ae95e519bb62cbc750110ea13aa66"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:CS119",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "CS119",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_exact_source_semantics",
+        "publication_status_recommendation": "unparsed",
+        "runtime_ready": false,
+        "raw_requisites": "Prerequisites: A “C” or better in CS 118 or CS 109 . Pre- or Corequisites: MATH 125 , MATH 138 , MATH 168 , MATH 169 , or MATH 171 .",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "A “C” or better in CS 118 or CS 109 .",
+            "paths": [
+              [
+                {
+                  "type": "course",
+                  "code": "CS118",
+                  "raw": "CS 118",
+                  "minimum_grade": "C",
+                  "course_key": "va:uni:9219:CS118"
+                }
+              ],
+              [
+                {
+                  "type": "course",
+                  "code": "CS109",
+                  "raw": "CS 109",
+                  "minimum_grade": "C",
+                  "course_key": "va:uni:9219:CS109"
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "A “C” or better in CS 118 or CS 109 .",
+              "raw_sha256": "5ec3984afb761737d09bd0e9da6c61efe740ea495b6bef0c45ab266afcd3c8af",
+              "relative_start": 126,
+              "relative_end": 163,
+              "statement_relative_start": 111,
+              "statement_relative_end": 163,
+              "raw_html_sha256": "f668fcdc27caa4cff89b7840bd55025eadd4cd1dc4a78aef18202d7ec0d031c5",
+              "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+            },
+            "source_content_preserved": true
+          },
+          {
+            "kind": "pre_or_corequisite",
+            "timing": "corequisite_or_prerequisite",
+            "raw": "MATH 125 , MATH 138 , MATH 168 , MATH 169 , or MATH 171 .",
+            "paths": null,
+            "formal_course_references": [
+              "MATH125",
+              "MATH138",
+              "MATH168",
+              "MATH169",
+              "MATH171"
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_pre_or_corequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "pre_or_corequisite",
+              "label": "Pre- or Corequisites",
+              "raw": "MATH 125 , MATH 138 , MATH 168 , MATH 169 , or MATH 171 .",
+              "raw_sha256": "3716bd5956b0cf20209828645699987996277b3fd845798109844d52e6dba973",
+              "relative_start": 186,
+              "relative_end": 243,
+              "statement_relative_start": 164,
+              "statement_relative_end": 243,
+              "raw_html_sha256": "86731bbbb35bb9be45d81c57ccb121848dc25284c467085913fe6d4ab7d88301",
+              "boundary_terminal": "first_br_after_unique_strong_pre_or_corequisite_marker"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9219:CS109",
+          "va:uni:9219:CS118",
+          "va:uni:9219:MATH125",
+          "va:uni:9219:MATH138",
+          "va:uni:9219:MATH168",
+          "va:uni:9219:MATH169",
+          "va:uni:9219:MATH171"
+        ],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students may not receive credit for both CS 120 and the sequence CS 118 :CS 119.",
+            "raw_sha256": "35d77d7e3d584ecf11fe35d5db2d5437d6c7eaccfe88e34113522eb9c5f0760f",
+            "relative_start": 428,
+            "relative_end": 508,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          },
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students may not attempt to take ITEC 119 more than two times (a “W” will count as an attempt).",
+            "raw_sha256": "808ac4b0c0c62cdec4ee8770dc61b4ea171651e1ef6d76ebb071e5d7d382536a",
+            "relative_start": 509,
+            "relative_end": 604,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [
+          "pre_or_corequisite_timing_not_supported_by_publication_graph",
+          "comma_boolean_list_not_source_grouped",
+          "whole_row_atomicity_forbids_partial_prerequisite_edges"
+        ],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=110600",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__cs119.html",
+          "source_response_sha256": "7d365cc7369ce45569a0bbcb8291d7da331f89eb0a935756b0b3344ca82cd94f",
+          "source_response_bytes": 81724,
+          "raw_entry_sha256": "a2a28edcc5f8a862bcfc2d559d1246fdb0bd34365e5e2ffb66603769348420c6",
+          "raw_entry_html_sha256": "dd88023356a516eb323f6913771ae23b73569de72dee7a1b15937ed5183c560a",
+          "raw_entry_text": "CS 119 - Principles of Programming II (GE) Credits: (3) Instructional Method: Two hours lecture. One hour lab. Prerequisites: A “C” or better in CS 118 or CS 109 . Pre- or Corequisites: MATH 125 , MATH 138 , MATH 168 , MATH 169 , or MATH 171 . A rigorous, systematic approach to object-oriented problem solving and programming. REAL Area R Note(s): General Education and Scientific and Quantitative Reasoning Designated Course. Students may not receive credit for both CS 120 and the sequence CS 118 :CS 119. Students may not attempt to take ITEC 119 more than two times (a “W” will count as an attempt).",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 110600,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(3)",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "A “C” or better in CS 118 or CS 109 .",
+            "raw_sha256": "5ec3984afb761737d09bd0e9da6c61efe740ea495b6bef0c45ab266afcd3c8af",
+            "relative_start": 126,
+            "relative_end": 163,
+            "statement_relative_start": 111,
+            "statement_relative_end": 163,
+            "raw_html_sha256": "f668fcdc27caa4cff89b7840bd55025eadd4cd1dc4a78aef18202d7ec0d031c5",
+            "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+          },
+          "pre_or_corequisite_clause": {
+            "receipt_contract": "radford_acalog_strong_pre_or_corequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "pre_or_corequisite",
+            "label": "Pre- or Corequisites",
+            "raw": "MATH 125 , MATH 138 , MATH 168 , MATH 169 , or MATH 171 .",
+            "raw_sha256": "3716bd5956b0cf20209828645699987996277b3fd845798109844d52e6dba973",
+            "relative_start": 186,
+            "relative_end": 243,
+            "statement_relative_start": 164,
+            "statement_relative_end": 243,
+            "raw_html_sha256": "86731bbbb35bb9be45d81c57ccb121848dc25284c467085913fe6d4ab7d88301",
+            "boundary_terminal": "first_br_after_unique_strong_pre_or_corequisite_marker"
+          },
+          "formal_requisite_marker_count": 2,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs220.html",
+          "discovery_response_sha256": "f75a6d6614c7457ef86cafa11e9bfec3b9552c6d9e60fe537f1461a7136f9174",
+          "discovery_link_receipt": {
+            "course_code": "CS119",
+            "catoid": 62,
+            "coid": 110600,
+            "link_text": "CS 119",
+            "aria_label": "View course details for CS 119",
+            "href": "preview_course_nopop.php?catoid=62&coid=110600",
+            "href_sha256": "22a7bfaa523653289d46240dfddc541249f2f872498d0b30727fa07155f3ae64",
+            "discovery_course_code": "CS220",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs220.html",
+            "discovery_response_sha256": "f75a6d6614c7457ef86cafa11e9bfec3b9552c6d9e60fe537f1461a7136f9174"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:MATH125",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "MATH125",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_exact_source_semantics",
+        "publication_status_recommendation": "unparsed",
+        "runtime_ready": false,
+        "raw_requisites": "Prerequisites: Two years of high school algebra (or equivalent).",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "Two years of high school algebra (or equivalent).",
+            "paths": [
+              [
+                {
+                  "type": "non_course",
+                  "condition": "two_years_high_school_algebra_or_equivalent",
+                  "raw": "Two years of high school algebra (or equivalent)",
+                  "subject": "algebra",
+                  "minimum_high_school_years": 2,
+                  "equivalent_allowed": true
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "Two years of high school algebra (or equivalent).",
+              "raw_sha256": "ac6aaaad6b87829a5efadaf024876a90fed9077970b2180b8a5c7a1ea75a0a7b",
+              "relative_start": 58,
+              "relative_end": 107,
+              "statement_relative_start": 43,
+              "statement_relative_end": 107,
+              "raw_html_sha256": "31a58bb931903a1abcb88fac7fc1578ef7fbf5a8e05d3b40616fee8dc2ce4f1d",
+              "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Credit for MATH 125 may not be received after receiving credit for a MATH course numbered higher unless it is required by a degree program.",
+            "raw_sha256": "8675b6182e81da3c147ffd5dd5b5388def813fdc78c11ae7d11aa8be4b05410a",
+            "relative_start": 966,
+            "relative_end": 1105,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [
+          "unbound_high_school_equivalency_condition"
+        ],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109057",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__math125.html",
+          "source_response_sha256": "9cb77423359404abdb5279fe43a366237998946e94108ef16b3271014f75fe2c",
+          "source_response_bytes": 78467,
+          "raw_entry_sha256": "08f19c1571949e684bda4d79dd9654c62e95923b2679983c1d41671db9cf1954",
+          "raw_entry_html_sha256": "44eb26181979d3612ba96080835459fb48ea2014c60b7691a4da406203a8dd01",
+          "raw_entry_text": "MATH 125 - Precalculus I (GE) Credits: (3) Prerequisites: Two years of high school algebra (or equivalent). This introductory course is designed to establish the essential mathematical foundation students need for success in degree programs and careers where quantitative reasoning is a key component. The course develops a deep understanding of linear, quadratic, algebraic, exponential, and logarithmic functions, along with their graphical representations. Students will explore real‑world applications including linear models, systems of equations, optimization using quadratic functions, and a variety of career-related applications of the course topics. Throughout the course, students will use various forms of technology to solve applied problems with the emphasis on building practical skills that extend beyond the classroom and into future academic and career pathways. Note(s): This is a Foundational Mathematics and General Education designated course. Credit for MATH 125 may not be received after receiving credit for a MATH course numbered higher unless it is required by a degree program.",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 109057,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(3)",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "Two years of high school algebra (or equivalent).",
+            "raw_sha256": "ac6aaaad6b87829a5efadaf024876a90fed9077970b2180b8a5c7a1ea75a0a7b",
+            "relative_start": 58,
+            "relative_end": 107,
+            "statement_relative_start": 43,
+            "statement_relative_end": 107,
+            "raw_html_sha256": "31a58bb931903a1abcb88fac7fc1578ef7fbf5a8e05d3b40616fee8dc2ce4f1d",
+            "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+          },
+          "pre_or_corequisite_clause": null,
+          "formal_requisite_marker_count": 1,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+          "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295",
+          "discovery_link_receipt": {
+            "course_code": "MATH125",
+            "catoid": 62,
+            "coid": 109057,
+            "link_text": "MATH 125",
+            "aria_label": "View course details for MATH 125",
+            "href": "preview_course_nopop.php?catoid=62&coid=109057",
+            "href_sha256": "7269713719db0230ca3fc40f4f12585da4f218e9b4519361b513b3f842f07868",
+            "discovery_course_code": "CS120",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+            "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:MATH126",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "MATH126",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_exact_source_semantics",
+        "publication_status_recommendation": "unparsed",
+        "runtime_ready": false,
+        "raw_requisites": "Prerequisites: Either: 1) a C or better in MATH 125 , or 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics.",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "Either: 1) a C or better in MATH 125 , or 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics.",
+            "paths": [
+              [
+                {
+                  "type": "course",
+                  "code": "MATH125",
+                  "raw": "MATH 125",
+                  "minimum_grade": "C",
+                  "course_key": "va:uni:9219:MATH125"
+                }
+              ],
+              [
+                {
+                  "type": "non_course",
+                  "condition": "approved_mathematics_placement_exam_passing_score",
+                  "raw": "a passing score on a placement exam approved by the Department of Mathematics and Statistics",
+                  "placement_domain": "mathematics",
+                  "passing_score_required": true,
+                  "approving_authority": "Department of Mathematics and Statistics",
+                  "threshold_published": false
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "Either: 1) a C or better in MATH 125 , or 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics.",
+              "raw_sha256": "f8aecf0718a4c8d41c514932a317c0066cd9bb9a207948e4a5d9a3a20fb17c4f",
+              "relative_start": 105,
+              "relative_end": 243,
+              "statement_relative_start": 90,
+              "statement_relative_end": 243,
+              "raw_html_sha256": "de529f55c02f2769bf08e8c77bf6c5b8184a9ed6f8cfb1cdce4cd6fd98251f84",
+              "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9219:MATH125"
+        ],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students who have received credit for MATH 171 or MATH 151 may not also receive credit for MATH 126.",
+            "raw_sha256": "f48a8a12dbe8b4e4c64ac1fbb1553030aaf2490af9f951f503c5c7749538bb7b",
+            "relative_start": 579,
+            "relative_end": 679,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [
+          "unbound_placement_exam_condition"
+        ],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109058",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__math126.html",
+          "source_response_sha256": "a59796688a569715ac0927ca2aa45ff7e05b92b460eeb9b93da725c94cb6261a",
+          "source_response_bytes": 78968,
+          "raw_entry_sha256": "f34e856ab51432a1e947b271260fb65ee54e507b94c1306cea96e081ad249276",
+          "raw_entry_html_sha256": "eb07787069e66baa20481fe5e2b1d9ab03d8a8058e03cd6e464c09a40a43da83",
+          "raw_entry_text": "MATH 126 - Business Calculus (GE) Credits: (3) Instructional Method: Three hours lecture. Prerequisites: Either: 1) a C or better in MATH 125 , or 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics. An introduction to calculus with particular emphasis on applications in business and economics. Topics include functions, limits and continuity, differentiation, exponential functions and logarithms, anti-derivatives and the integral. REAL Area R Note(s): General Education and Scientific and Quantitative Reasoning designated course. Students who have received credit for MATH 171 or MATH 151 may not also receive credit for MATH 126.",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 109058,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(3)",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "Either: 1) a C or better in MATH 125 , or 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics.",
+            "raw_sha256": "f8aecf0718a4c8d41c514932a317c0066cd9bb9a207948e4a5d9a3a20fb17c4f",
+            "relative_start": 105,
+            "relative_end": 243,
+            "statement_relative_start": 90,
+            "statement_relative_end": 243,
+            "raw_html_sha256": "de529f55c02f2769bf08e8c77bf6c5b8184a9ed6f8cfb1cdce4cd6fd98251f84",
+            "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+          },
+          "pre_or_corequisite_clause": null,
+          "formal_requisite_marker_count": 1,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+          "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295",
+          "discovery_link_receipt": {
+            "course_code": "MATH126",
+            "catoid": 62,
+            "coid": 109058,
+            "link_text": "MATH 126",
+            "aria_label": "View course details for MATH 126",
+            "href": "preview_course_nopop.php?catoid=62&coid=109058",
+            "href_sha256": "0cfad9120e142946a61cd3e53ea342f27777bf8463e4c5c129677b0ffb53e1ca",
+            "discovery_course_code": "CS120",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+            "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:MATH138",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "MATH138",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_exact_source_semantics",
+        "publication_status_recommendation": "unparsed",
+        "runtime_ready": false,
+        "raw_requisites": "Prerequisites: One of the following: 1) a C or better in MATH 125 , 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics, or 3) a C or better in a high school precalculus class.",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "One of the following: 1) a C or better in MATH 125 , 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics, or 3) a C or better in a high school precalculus class.",
+            "paths": [
+              [
+                {
+                  "type": "course",
+                  "code": "MATH125",
+                  "raw": "MATH 125",
+                  "minimum_grade": "C",
+                  "course_key": "va:uni:9219:MATH125"
+                }
+              ],
+              [
+                {
+                  "type": "non_course",
+                  "condition": "approved_mathematics_placement_exam_passing_score",
+                  "raw": "a passing score on a placement exam approved by the Department of Mathematics and Statistics",
+                  "placement_domain": "mathematics",
+                  "passing_score_required": true,
+                  "approving_authority": "Department of Mathematics and Statistics",
+                  "threshold_published": false
+                }
+              ],
+              [
+                {
+                  "type": "non_course",
+                  "condition": "high_school_precalculus_minimum_grade_c",
+                  "raw": "a C or better in a high school precalculus class",
+                  "subject": "precalculus",
+                  "level": "high_school",
+                  "minimum_grade": "C"
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "One of the following: 1) a C or better in MATH 125 , 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics, or 3) a C or better in a high school precalculus class.",
+              "raw_sha256": "150527caaed272510c239860b7b888ba0c3b693bafd04415208bd54b4a81ccdc",
+              "relative_start": 59,
+              "relative_end": 264,
+              "statement_relative_start": 44,
+              "statement_relative_end": 264,
+              "raw_html_sha256": "6c9449b141dcbfcff8844a949cd22d29f217055d12442c74331c9b8e8b5cc437",
+              "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9219:MATH125"
+        ],
+        "preserved_signals": [],
+        "runtime_blockers": [
+          "unbound_placement_exam_condition",
+          "unbound_high_school_course_condition"
+        ],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109062",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__math138.html",
+          "source_response_sha256": "d3adc93087a1ff06c36fe5c020e9419c809ad8a998f008f71900f3aff06a898d",
+          "source_response_bytes": 78580,
+          "raw_entry_sha256": "8de10ce495961da57680447c2d9fe14cf787ff7e8cc16329c95b4c6c145910d7",
+          "raw_entry_html_sha256": "43f43ef78a88403904c2833ae9c56cc3a6b318d2248f34ddbbffe29d7b5130e4",
+          "raw_entry_text": "MATH 138 - Precalculus II (GE) Credits: (3) Prerequisites: One of the following: 1) a C or better in MATH 125 , 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics, or 3) a C or better in a high school precalculus class. This is the second course in precalculus to prepare undergraduates for the calculus sequence. This course focuses on transformations and inverses of functions, angles and their measurement, trigonometric and inverse trigonometric functions and their geometric properties, trigonometric identities, and solving trigonometric equations. Polar coordinates and functions as well as the complex numbers and conics are also included. Throughout the course, students will use established models and applications used in industry. REAL Area R",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 109062,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(3)",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "One of the following: 1) a C or better in MATH 125 , 2) a passing score on a placement exam approved by the Department of Mathematics and Statistics, or 3) a C or better in a high school precalculus class.",
+            "raw_sha256": "150527caaed272510c239860b7b888ba0c3b693bafd04415208bd54b4a81ccdc",
+            "relative_start": 59,
+            "relative_end": 264,
+            "statement_relative_start": 44,
+            "statement_relative_end": 264,
+            "raw_html_sha256": "6c9449b141dcbfcff8844a949cd22d29f217055d12442c74331c9b8e8b5cc437",
+            "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+          },
+          "pre_or_corequisite_clause": null,
+          "formal_requisite_marker_count": 1,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+          "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295",
+          "discovery_link_receipt": {
+            "course_code": "MATH138",
+            "catoid": 62,
+            "coid": 109062,
+            "link_text": "MATH 138",
+            "aria_label": "View course details for MATH 138",
+            "href": "preview_course_nopop.php?catoid=62&coid=109062",
+            "href_sha256": "8feca1e9f5b71785acc54dd5a1d0cb6c222a87c7d2316313d8da5f4f1a8d7366",
+            "discovery_course_code": "CS120",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+            "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:PHYS111",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "PHYS111",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_exact_source_semantics",
+        "publication_status_recommendation": "unparsed",
+        "runtime_ready": false,
+        "raw_requisites": "Prerequisites: High school mathematics.",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "High school mathematics.",
+            "paths": [
+              [
+                {
+                  "type": "non_course",
+                  "condition": "high_school_mathematics",
+                  "raw": "High school mathematics",
+                  "subject": "mathematics",
+                  "level": "high_school"
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "High school mathematics.",
+              "raw_sha256": "e6641f66b920be30f37cdfe6f10a6036016a83885d66ada416303c66484a14fb",
+              "relative_start": 122,
+              "relative_end": 146,
+              "statement_relative_start": 107,
+              "statement_relative_end": 146,
+              "raw_html_sha256": "7fecb18e3eac07937e5b6f3b3f341edcec6d2dada23250657ff82d5490b97ab2",
+              "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students may not receive credit for both PHYS 111:PHYS 112 and PHYS 221 :PHYS 222 .",
+            "raw_sha256": "cd9d8cb5af4453e946b676ed4476b409dfe8b42df02469c4805fe2436fe81e3b",
+            "relative_start": 349,
+            "relative_end": 432,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [
+          "underspecified_required_high_school_mathematics"
+        ],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109347",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__phys111.html",
+          "source_response_sha256": "5ac2d73d26c788dcbf82fac163438ce30ad23597ac43ed137abbaf6038aac4f8",
+          "source_response_bytes": 79000,
+          "raw_entry_sha256": "1169932afd6dfa5519b5b03af3a5b51499ac71893649ecbc23489b265b21c01f",
+          "raw_entry_html_sha256": "192fc2118389018e79407c74f3ad2462fac32aa91f344876785ebde7e0197cd9",
+          "raw_entry_text": "PHYS 111 - General Physics I Credits: (4) Instructional Method: Three hours lecture; two hours laboratory. Prerequisites: High school mathematics. Vectors, mechanics, heat, electricity, magnetism, sound, light and selected topics in modern physics. REAL Area R Note(s): General Education and Scientific and Quantitative Reasoning designated course. Students may not receive credit for both PHYS 111:PHYS 112 and PHYS 221 :PHYS 222 .",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 109347,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(4)",
+            "credit_hours_min": 4,
+            "credit_hours_max": 4
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "High school mathematics.",
+            "raw_sha256": "e6641f66b920be30f37cdfe6f10a6036016a83885d66ada416303c66484a14fb",
+            "relative_start": 122,
+            "relative_end": 146,
+            "statement_relative_start": 107,
+            "statement_relative_end": 146,
+            "raw_html_sha256": "7fecb18e3eac07937e5b6f3b3f341edcec6d2dada23250657ff82d5490b97ab2",
+            "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+          },
+          "pre_or_corequisite_clause": null,
+          "formal_requisite_marker_count": 1,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+          "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295",
+          "discovery_link_receipt": {
+            "course_code": "PHYS111",
+            "catoid": 62,
+            "coid": 109347,
+            "link_text": "PHYS 111",
+            "aria_label": "View course details for PHYS 111",
+            "href": "preview_course_nopop.php?catoid=62&coid=109347",
+            "href_sha256": "a2369423f4d00dcdd75f97f0a1d7031470ce3e0c19273f99b31f44bee69933ec",
+            "discovery_course_code": "CS120",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+            "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:PHYS112",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "PHYS112",
+        "scope_role": "recursive_closure",
+        "disposition": "safe_exact_formula",
+        "publication_status_recommendation": "parsed",
+        "runtime_ready": true,
+        "raw_requisites": "Prerequisites: PHYS 111 .",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "PHYS 111 .",
+            "paths": [
+              [
+                {
+                  "type": "course",
+                  "code": "PHYS111",
+                  "raw": "PHYS 111",
+                  "course_key": "va:uni:9219:PHYS111"
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "PHYS 111 .",
+              "raw_sha256": "1184a932fe2a66159b74b25b236aec230ab2d54e0e3dea93c372ddc57acf7046",
+              "relative_start": 128,
+              "relative_end": 138,
+              "statement_relative_start": 113,
+              "statement_relative_end": 138,
+              "raw_html_sha256": "1d25225e7633bd3ae95ab066783eba12919ffa4e9c7eeeeabe36b3cfc794db63",
+              "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9219:PHYS111"
+        ],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students may not receive credit for both PHYS 111 :112 and PHYS 221 :PHYS 222 .",
+            "raw_sha256": "1562e613516f135a16a67029bd9d385c92d8622a3034f2140c01d394911a33cd",
+            "relative_start": 341,
+            "relative_end": 420,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109348",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__phys112.html",
+          "source_response_sha256": "2f8489829167266b2863cb3358490adff065d477f384ffdc05685e30b45510b4",
+          "source_response_bytes": 79397,
+          "raw_entry_sha256": "8d0d4c7d3f375192331353dfc68ad432f6489b575bf2e72ccce7d30483d91272",
+          "raw_entry_html_sha256": "ca4550cc0a5312f0ee898fb66526d9c39d5c05f51c25f6a03326ac83dcef7c27",
+          "raw_entry_text": "PHYS 112 - General Physics II (GE) Credits: (4) Instructional Method: Three hours lecture; two hours laboratory. Prerequisites: PHYS 111 . Vectors, mechanics, heat, electricity, magnetism, sound, light and selected topics in modern physics. REAL Area R Note(s): General Education and Scientific and Quantitative Reasoning designated course. Students may not receive credit for both PHYS 111 :112 and PHYS 221 :PHYS 222 .",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 109348,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(4)",
+            "credit_hours_min": 4,
+            "credit_hours_max": 4
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "PHYS 111 .",
+            "raw_sha256": "1184a932fe2a66159b74b25b236aec230ab2d54e0e3dea93c372ddc57acf7046",
+            "relative_start": 128,
+            "relative_end": 138,
+            "statement_relative_start": 113,
+            "statement_relative_end": 138,
+            "raw_html_sha256": "1d25225e7633bd3ae95ab066783eba12919ffa4e9c7eeeeabe36b3cfc794db63",
+            "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+          },
+          "pre_or_corequisite_clause": null,
+          "formal_requisite_marker_count": 1,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+          "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295",
+          "discovery_link_receipt": {
+            "course_code": "PHYS112",
+            "catoid": 62,
+            "coid": 109348,
+            "link_text": "PHYS 112",
+            "aria_label": "View course details for PHYS 112",
+            "href": "preview_course_nopop.php?catoid=62&coid=109348",
+            "href_sha256": "0b54a6851df2b8ea266268e07f324e59123549e8ed10bcd35b7c889343245161",
+            "discovery_course_code": "CS120",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+            "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:PHYS221",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "PHYS221",
+        "scope_role": "recursive_closure",
+        "disposition": "safe_exact_formula",
+        "publication_status_recommendation": "parsed",
+        "runtime_ready": true,
+        "raw_requisites": "Prerequisites: MATH 169 or MATH 171 .",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "MATH 169 or MATH 171 .",
+            "paths": [
+              [
+                {
+                  "type": "course",
+                  "code": "MATH169",
+                  "raw": "MATH 169",
+                  "course_key": "va:uni:9219:MATH169"
+                }
+              ],
+              [
+                {
+                  "type": "course",
+                  "code": "MATH171",
+                  "raw": "MATH 171",
+                  "course_key": "va:uni:9219:MATH171"
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "MATH 169 or MATH 171 .",
+              "raw_sha256": "9a5f69bc22c2d7f62eb5a214f775a1c4e4b62606c7338a6cdbbf54cca207d6b9",
+              "relative_start": 119,
+              "relative_end": 141,
+              "statement_relative_start": 104,
+              "statement_relative_end": 141,
+              "raw_html_sha256": "ba77090b89ccbb56390810debdebf355865455e1da50b8ee2e5b63dd8e7cd5f9",
+              "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9219:MATH169",
+          "va:uni:9219:MATH171"
+        ],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students may not receive credit for both PHYS 111 :PHYS 112 and PHYS 221:PHYS 222 .",
+            "raw_sha256": "5202bfb5390fbfc8f808036f634666ea08fc7085677093a99a4126c9ff96440b",
+            "relative_start": 281,
+            "relative_end": 364,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109349",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__phys221.html",
+          "source_response_sha256": "a915c7e45000fd0d84339677782528ab13a3f63a40af41f2a5f38e0148eb3c2a",
+          "source_response_bytes": 79711,
+          "raw_entry_sha256": "d5222256ffdbdb5dabd4abdced4db0d6a126d073874c48e6b700ca4866cf3a34",
+          "raw_entry_html_sha256": "1f2adb5b0edc184be3c649a84f9edd252b7ec22a22edf73b79cbb410c0684828",
+          "raw_entry_text": "PHYS 221 - Physics I (GE) Credits: (4) Instructional Method: Three hours lecture; two hours laboratory. Prerequisites: MATH 169 or MATH 171 . Topics are studied utilizing calculus. REAL Area R Note(s): General Education and Scientific and Quantitative Reasoning designated course. Students may not receive credit for both PHYS 111 :PHYS 112 and PHYS 221:PHYS 222 .",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 109349,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(4)",
+            "credit_hours_min": 4,
+            "credit_hours_max": 4
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "MATH 169 or MATH 171 .",
+            "raw_sha256": "9a5f69bc22c2d7f62eb5a214f775a1c4e4b62606c7338a6cdbbf54cca207d6b9",
+            "relative_start": 119,
+            "relative_end": 141,
+            "statement_relative_start": 104,
+            "statement_relative_end": 141,
+            "raw_html_sha256": "ba77090b89ccbb56390810debdebf355865455e1da50b8ee2e5b63dd8e7cd5f9",
+            "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+          },
+          "pre_or_corequisite_clause": null,
+          "formal_requisite_marker_count": 1,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+          "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295",
+          "discovery_link_receipt": {
+            "course_code": "PHYS221",
+            "catoid": 62,
+            "coid": 109349,
+            "link_text": "PHYS 221",
+            "aria_label": "View course details for PHYS 221",
+            "href": "preview_course_nopop.php?catoid=62&coid=109349",
+            "href_sha256": "31659f9e5439350758b670d64e5989e0ba490424baf6cbcdb46fadd7c038e492",
+            "discovery_course_code": "CS120",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+            "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9219:PHYS222",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "PHYS222",
+        "scope_role": "recursive_closure",
+        "disposition": "safe_exact_formula",
+        "publication_status_recommendation": "parsed",
+        "runtime_ready": true,
+        "raw_requisites": "Prerequisites: PHYS 221 .",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "PHYS 221 .",
+            "paths": [
+              [
+                {
+                  "type": "course",
+                  "code": "PHYS221",
+                  "raw": "PHYS 221",
+                  "course_key": "va:uni:9219:PHYS221"
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "PHYS 221 .",
+              "raw_sha256": "0fca49fe2eccdb6e85d9b543cd5d2be49b0d9542a457dc93162dafd805e6df0c",
+              "relative_start": 120,
+              "relative_end": 130,
+              "statement_relative_start": 105,
+              "statement_relative_end": 130,
+              "raw_html_sha256": "4bbfcb30ccff27dc74426b44443676608d0119a3999db472585f3b11fba535ad",
+              "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9219:PHYS221"
+        ],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "Students may not receive credit for both PHYS 111 :PHYS 112 and PHYS 221 :222.",
+            "raw_sha256": "68a94177523c579f01cb6796c3e415b74c243503ce747061986a11605d484ab5",
+            "relative_start": 270,
+            "relative_end": 348,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [],
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109350",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__phys222.html",
+          "source_response_sha256": "76b2584e160f3e9acf62cdd42f161eabdd6a8f207ff2a6b7916e81172d881d32",
+          "source_response_bytes": 79302,
+          "raw_entry_sha256": "cdec0668353d33114b4c66f9fb578b32455ccb4e909fea8cca5cf6a636d074c4",
+          "raw_entry_html_sha256": "296c28b23a75ec90a2d8b42501f68dd43f336bb779b861f24fc9656fe9f61dca",
+          "raw_entry_text": "PHYS 222 - Physics II (GE) Credits: (4) Instructional Method: Three hours lecture; two hours laboratory. Prerequisites: PHYS 221 . Topics are studied utilizing calculus. REAL Area R Note(s): General Education and Scientific and Quantitative Reasoning designated course. Students may not receive credit for both PHYS 111 :PHYS 112 and PHYS 221 :222.",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "radford_acalog_course_page",
+          "catoid": 62,
+          "coid": 109350,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(4)",
+            "credit_hours_min": 4,
+            "credit_hours_max": 4
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "radford_acalog_strong_prerequisite_marker_to_first_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "PHYS 221 .",
+            "raw_sha256": "0fca49fe2eccdb6e85d9b543cd5d2be49b0d9542a457dc93162dafd805e6df0c",
+            "relative_start": 120,
+            "relative_end": 130,
+            "statement_relative_start": 105,
+            "statement_relative_end": 130,
+            "raw_html_sha256": "4bbfcb30ccff27dc74426b44443676608d0119a3999db472585f3b11fba535ad",
+            "boundary_terminal": "first_br_after_unique_strong_prerequisite_marker"
+          },
+          "pre_or_corequisite_clause": null,
+          "formal_requisite_marker_count": 1,
+          "discovery_contract": "radford_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+          "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295",
+          "discovery_link_receipt": {
+            "course_code": "PHYS222",
+            "catoid": 62,
+            "coid": 109350,
+            "link_text": "PHYS 222",
+            "aria_label": "View course details for PHYS 222",
+            "href": "preview_course_nopop.php?catoid=62&coid=109350",
+            "href_sha256": "e6675a72410107ce7b25bde45cf3e75d0e9276c05d4ce7e2d86caa4d7e8c739b",
+            "discovery_course_code": "CS120",
+            "discovery_cache_path": "university-prerequisites/raw/radford-university/radford-university__cs120.html",
+            "discovery_response_sha256": "8110f1dd56fe51edf61c44a4f922c4797037ad36a713b4a52275a4c9f80e3295"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9226:MTH1010",
+        "school_id": 9226,
+        "slug": "the-university-of-virginia-s-college-at-wise",
+        "owner_namespace": "va:uni:9226",
+        "course_code": "MTH1010",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_exact_source_semantics",
+        "publication_status_recommendation": "unparsed",
+        "runtime_ready": false,
+        "raw_requisites": null,
+        "source_formulas": [],
+        "referenced_course_keys": [],
+        "preserved_signals": [
+          {
+            "kind": "credit_or_enrollment_exclusion",
+            "raw": "(No credit is given for this course if a student has satisfactorily completed MTH 1110 or above).",
+            "raw_sha256": "3c93cb64564f7c7b457a5621af0b9e10f85da839f624cb9e4563d0f50d879285",
+            "relative_start": 212,
+            "relative_end": 309,
+            "source_content_preserved": true,
+            "figure6_course_edge_effect": false
+          }
+        ],
+        "runtime_blockers": [
+          "exclusion_only_entry_requires_explicit_zero_edge_policy"
+        ],
+        "source": {
+          "official_url": "http://catalog.uvawise.edu/preview_course_nopop.php?catoid=9&coid=18331",
+          "cache_path": "university-prerequisites/raw/the-university-of-virginia-s-college-at-wise/the-university-of-virginia-s-college-at-wise__mth1010.html",
+          "source_response_sha256": "c72151e5c7ceb9bdc4fe519642e310ea3fd34f0099b6e233054e2a76c8886229",
+          "source_response_bytes": 56345,
+          "raw_entry_sha256": "c4bf54e073c46f4d27e077efac22a4bf773c142a32cfce14ad74b1fcd1f17034",
+          "raw_entry_html_sha256": "779ce16929f2a596c745f612c8907ccbf55b03106f6649fcc201247f6680f009",
+          "raw_entry_text": "MTH 1010 - College Algebra Credit(s) 3 Linear, quadratic, absolute value, radical, and rational equations, linear inequalities, systems of linear equations and inequalities, functions, modeling and applications. (No credit is given for this course if a student has satisfactorily completed MTH 1110 or above). Repeatable: Yes Modality: Face to face Lab: No Course Frequency: Fall, Spring",
+          "boundary_contract": "uva_wise_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "uva_wise_acalog_course_page",
+          "catoid": 9,
+          "coid": 18331,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": null,
+          "pre_or_corequisite_clause": null,
+          "discovery_contract": "uva_wise_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/the-university-of-virginia-s-college-at-wise/the-university-of-virginia-s-college-at-wise__csc1180.html",
+          "discovery_response_sha256": "ecbfaf9c488dbe8cdfd7c2adff6e413877207cf7d23ebb6a1dde754904cd84e5",
+          "discovery_link_receipt": {
+            "course_code": "MTH1010",
+            "catoid": 9,
+            "coid": 18331,
+            "link_text": "MTH 1010",
+            "aria_label": "View course details for MTH 1010",
+            "href": "preview_course_nopop.php?catoid=9&coid=18331",
+            "href_sha256": "160696a25f7a7ead4b5c0da60fb992247821fda02205708bb7925c67e80422f8",
+            "discovery_course_code": "CSC1180",
+            "discovery_cache_path": "university-prerequisites/raw/the-university-of-virginia-s-college-at-wise/the-university-of-virginia-s-college-at-wise__csc1180.html",
+            "discovery_response_sha256": "ecbfaf9c488dbe8cdfd7c2adff6e413877207cf7d23ebb6a1dde754904cd84e5"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9226:MTH1110",
+        "school_id": 9226,
+        "slug": "the-university-of-virginia-s-college-at-wise",
+        "owner_namespace": "va:uni:9226",
+        "course_code": "MTH1110",
+        "scope_role": "recursive_closure",
+        "disposition": "safe_exact_formula",
+        "publication_status_recommendation": "parsed",
+        "runtime_ready": true,
+        "raw_requisites": "Prerequisites: MTH 1010 with a C or better",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "MTH 1010 with a C or better",
+            "paths": [
+              [
+                {
+                  "type": "course",
+                  "code": "MTH1010",
+                  "raw": "MTH 1010",
+                  "minimum_grade": "C",
+                  "course_key": "va:uni:9226:MTH1010"
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "uva_wise_acalog_strong_prerequisite_marker_first_br_to_next_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "MTH 1010 with a C or better",
+              "raw_sha256": "e7befcb47abe86aafb37c20ef49c637b2467d3fcc35d5046f7d30bbc0db088c1",
+              "relative_start": 448,
+              "relative_end": 475,
+              "statement_relative_start": 434,
+              "statement_relative_end": 475,
+              "raw_html_sha256": "fa05a7f1c7aaa4478810a14c47128f2e2c11f6583a891d89dc57d3e4f8f78f4a",
+              "boundary_terminal": "next_br_after_unique_strong_prerequisite_marker_and_first_br"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9226:MTH1010"
+        ],
+        "preserved_signals": [],
+        "runtime_blockers": [],
+        "source": {
+          "official_url": "http://catalog.uvawise.edu/preview_course_nopop.php?catoid=9&coid=18334",
+          "cache_path": "university-prerequisites/raw/the-university-of-virginia-s-college-at-wise/the-university-of-virginia-s-college-at-wise__mth1110.html",
+          "source_response_sha256": "e4a0db8d35d6e82af8282ce376eaa8722bccd0aaef9d9559349aa38dc58f35cd",
+          "source_response_bytes": 56405,
+          "raw_entry_sha256": "fa3cd3d5c521a3303dd78b58dca80f10950450e3c8b58c7d63b8676e1f1970b7",
+          "raw_entry_html_sha256": "dcc9249ca85b1fbeff6e4e03ed64d70fbea7978fc7a223e21f478692bc8c2d93",
+          "raw_entry_text": "MTH 1110 - Precalculus I Credit(s) 3 Mathematical models; linear and quadratic functions, models, and applications; polynomial and rational functions and models; composite functions; inverse functions; exponential and logarithmic equations, functions and models; financial models; exponential growth and decay; and logistic growth and decay models. (This course is designed for students whose major requires precalculus or calculus.) Prerequisites MTH 1010 with a C or better Course Frequency: Fall, Spring",
+          "boundary_contract": "uva_wise_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "uva_wise_acalog_course_page",
+          "catoid": 9,
+          "coid": 18334,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "uva_wise_acalog_strong_prerequisite_marker_first_br_to_next_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "MTH 1010 with a C or better",
+            "raw_sha256": "e7befcb47abe86aafb37c20ef49c637b2467d3fcc35d5046f7d30bbc0db088c1",
+            "relative_start": 448,
+            "relative_end": 475,
+            "statement_relative_start": 434,
+            "statement_relative_end": 475,
+            "raw_html_sha256": "fa05a7f1c7aaa4478810a14c47128f2e2c11f6583a891d89dc57d3e4f8f78f4a",
+            "boundary_terminal": "next_br_after_unique_strong_prerequisite_marker_and_first_br"
+          },
+          "pre_or_corequisite_clause": null,
+          "discovery_contract": "uva_wise_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/the-university-of-virginia-s-college-at-wise/the-university-of-virginia-s-college-at-wise__csc2180.html",
+          "discovery_response_sha256": "321c6211d3e8bddda50228f5a24678f769f866e7dd4f4b576f7ea63ee1815a23",
+          "discovery_link_receipt": {
+            "course_code": "MTH1110",
+            "catoid": 9,
+            "coid": 18334,
+            "link_text": "MTH 1110",
+            "aria_label": "View course details for MTH 1110",
+            "href": "preview_course_nopop.php?catoid=9&coid=18334",
+            "href_sha256": "300f977146a0974f9884d74b6bbe15eb845138aea18895638a8e09d552d43a81",
+            "discovery_course_code": "CSC2180",
+            "discovery_cache_path": "university-prerequisites/raw/the-university-of-virginia-s-college-at-wise/the-university-of-virginia-s-college-at-wise__csc2180.html",
+            "discovery_response_sha256": "321c6211d3e8bddda50228f5a24678f769f866e7dd4f4b576f7ea63ee1815a23"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      },
+      {
+        "course_key": "va:uni:9226:MTH1210",
+        "school_id": 9226,
+        "slug": "the-university-of-virginia-s-college-at-wise",
+        "owner_namespace": "va:uni:9226",
+        "course_code": "MTH1210",
+        "scope_role": "recursive_closure",
+        "disposition": "safe_exact_formula",
+        "publication_status_recommendation": "parsed",
+        "runtime_ready": true,
+        "raw_requisites": "Prerequisites: MTH 1110 with a C or better",
+        "source_formulas": [
+          {
+            "kind": "prerequisite",
+            "raw": "MTH 1110 with a C or better",
+            "paths": [
+              [
+                {
+                  "type": "course",
+                  "code": "MTH1110",
+                  "raw": "MTH 1110",
+                  "minimum_grade": "C",
+                  "course_key": "va:uni:9226:MTH1110"
+                }
+              ]
+            ],
+            "source_clause_receipt": {
+              "receipt_contract": "uva_wise_acalog_strong_prerequisite_marker_first_br_to_next_br_exact_clause_v1",
+              "kind": "prerequisite",
+              "label": "Prerequisites",
+              "raw": "MTH 1110 with a C or better",
+              "raw_sha256": "73c77e6c200f28607a222afcfcfaee04825b79190c3bf5e7d9171075292ad12f",
+              "relative_start": 295,
+              "relative_end": 322,
+              "statement_relative_start": 281,
+              "statement_relative_end": 322,
+              "raw_html_sha256": "057460b170a4c74190ad215de6bab7e99abc0adbb65d60d67e019d6f4ae16699",
+              "boundary_terminal": "next_br_after_unique_strong_prerequisite_marker_and_first_br"
+            },
+            "source_content_preserved": true
+          }
+        ],
+        "referenced_course_keys": [
+          "va:uni:9226:MTH1110"
+        ],
+        "preserved_signals": [],
+        "runtime_blockers": [],
+        "source": {
+          "official_url": "http://catalog.uvawise.edu/preview_course_nopop.php?catoid=9&coid=18337",
+          "cache_path": "university-prerequisites/raw/the-university-of-virginia-s-college-at-wise/the-university-of-virginia-s-college-at-wise__mth1210.html",
+          "source_response_sha256": "9780c8e124b8237eaddca02a2656989f97b29544c836cf32d1cc6c34ec3f7626",
+          "source_response_bytes": 56363,
+          "raw_entry_sha256": "5bd8f8b3b795f7a59cb2de5e6d9c5b5e2def8c482859dc909fcbfff94a58d63a",
+          "raw_entry_html_sha256": "fdebc2ad6a6506e31624611e89a5526282c0baae4aceec317e27d97113adc085",
+          "raw_entry_text": "MTH 1210 - Precalculus II Credit(s) 3 Degree and radian measures; arc length and sector area; trigonometric functions on triangles and on the unit circle; trigonometric graphs; trigonometric equations and identities; laws of sines and cosines. Applications are heavily emphasized. Prerequisites MTH 1110 with a C or better Repeatable: Yes Modality: Face-to-Face Lab: No Course Frequency: Fall, Spring",
+          "boundary_contract": "uva_wise_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year_verified": "2026-2027",
+          "source_format": "uva_wise_acalog_course_page",
+          "catoid": 9,
+          "coid": 18337,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "required_requisite_clause": {
+            "receipt_contract": "uva_wise_acalog_strong_prerequisite_marker_first_br_to_next_br_exact_clause_v1",
+            "kind": "prerequisite",
+            "label": "Prerequisites",
+            "raw": "MTH 1110 with a C or better",
+            "raw_sha256": "73c77e6c200f28607a222afcfcfaee04825b79190c3bf5e7d9171075292ad12f",
+            "relative_start": 295,
+            "relative_end": 322,
+            "statement_relative_start": 281,
+            "statement_relative_end": 322,
+            "raw_html_sha256": "057460b170a4c74190ad215de6bab7e99abc0adbb65d60d67e019d6f4ae16699",
+            "boundary_terminal": "next_br_after_unique_strong_prerequisite_marker_and_first_br"
+          },
+          "pre_or_corequisite_clause": null,
+          "discovery_contract": "uva_wise_hash_pinned_retained_course_entry_exact_link_and_coid_v1",
+          "discovery_cache_path": "university-prerequisites/raw/the-university-of-virginia-s-college-at-wise/the-university-of-virginia-s-college-at-wise__mth2040.html",
+          "discovery_response_sha256": "bcc0e5bc6bd79a4506ef2df7617c4281686f702ec98ae32dcbd17e54224ca726",
+          "discovery_link_receipt": {
+            "course_code": "MTH1210",
+            "catoid": 9,
+            "coid": 18337,
+            "link_text": "MTH 1210",
+            "aria_label": "View course details for MTH 1210",
+            "href": "preview_course_nopop.php?catoid=9&coid=18337",
+            "href_sha256": "57b8644eae3f94c858741b0d51bbe6be68f95c24b0e628ae051b4eea599b0a4f",
+            "discovery_course_code": "MTH2040",
+            "discovery_cache_path": "university-prerequisites/raw/the-university-of-virginia-s-college-at-wise/the-university-of-virginia-s-college-at-wise__mth2040.html",
+            "discovery_response_sha256": "bcc0e5bc6bd79a4506ef2df7617c4281686f702ec98ae32dcbd17e54224ca726"
+          }
+        },
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "every_formal_requisite_clause_preserved": true,
+          "every_identified_constraint_signal_span_preserved": true,
+          "partial_course_edges_emitted": false,
+          "source_content_discarded": false
+        }
+      }
+    ],
+    "formal_reference_inventory": [
+      {
+        "course_key": "va:uni:9219:CS109",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9219:CS118",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9219:MATH125",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9219:MATH138",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9219:MATH168",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9219:MATH169",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9219:MATH171",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9219:PHYS111",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9219:PHYS221",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9226:MTH1010",
+        "exact_candidate_present": true
+      },
+      {
+        "course_key": "va:uni:9226:MTH1110",
+        "exact_candidate_present": true
+      }
+    ]
+  }
+}

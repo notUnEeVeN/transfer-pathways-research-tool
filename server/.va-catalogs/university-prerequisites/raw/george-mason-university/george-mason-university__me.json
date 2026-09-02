@@ -1,0 +1,22 @@
+{
+  "route_id": "george-mason-university__me",
+  "requested_url": "https://catalog.gmu.edu/courses/me/",
+  "final_url": "https://catalog.gmu.edu/courses/me/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 167259,
+  "content_sha256": "322b94970b21640da51c3a8b24aa2a100fd7436a47064f3ecf94a40df11e572d",
+  "fetched_at": "2026-08-24T18:34:38.826Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ME331",
+    "ME351"
+  ]
+}

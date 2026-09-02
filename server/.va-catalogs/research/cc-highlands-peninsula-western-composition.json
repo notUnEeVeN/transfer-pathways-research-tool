@@ -17,10 +17,10 @@
     "institutions_composed": 3,
     "current_standalone_cs_as": 3,
     "catalog_acceptance_passed": 3,
-    "analysis_ready": 1,
+    "analysis_ready": 3,
     "analysis_blockers": {
-      "virginia-highlands-community-college": ["constraint_support"],
-      "virginia-peninsula-community-college": ["constraint_support"],
+      "virginia-highlands-community-college": [],
+      "virginia-peninsula-community-college": [],
       "virginia-western-community-college": []
     }
   },
@@ -81,8 +81,8 @@
       },
       "catalog_acceptance": {
         "accepted": true,
-        "ready_for_analysis": false,
-        "analysis_blockers": ["constraint_support"]
+        "ready_for_analysis": true,
+        "analysis_blockers": []
       }
     },
     {
@@ -151,8 +151,8 @@
       },
       "catalog_acceptance": {
         "accepted": true,
-        "ready_for_analysis": false,
-        "analysis_blockers": ["constraint_support"]
+        "ready_for_analysis": true,
+        "analysis_blockers": []
       }
     },
     {

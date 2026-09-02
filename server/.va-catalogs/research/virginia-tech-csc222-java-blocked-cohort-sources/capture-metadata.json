@@ -1,0 +1,138 @@
+{
+  "vccs_robots": {
+    "requestedUrl": "https://courses.vccs.edu/robots.txt",
+    "finalUrl": "https://courses.vccs.edu/robots.txt",
+    "contentType": "text/plain",
+    "status": 200
+  },
+  "schedule_9301": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/brcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/brcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9302": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/brightpoint/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/brightpoint/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9306": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/germanna/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/germanna/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9307": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/reynolds/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/reynolds/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9308": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/laurelridge/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/laurelridge/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9311": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/nrcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/nrcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9314": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/camp/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/camp/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9315": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/pvcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/pvcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9319": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/swcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/swcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9320": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/tcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/tcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9321": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/vhcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/vhcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9322": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/vpcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/vpcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9323": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/vwcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/vwcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "schedule_9324": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/wcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/wcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "germanna_robots": {
+    "requestedUrl": "https://germanna.edu/robots.txt",
+    "finalUrl": "https://germanna.edu/robots.txt",
+    "contentType": "text/plain",
+    "status": 200
+  },
+  "germanna_resources": {
+    "requestedUrl": "https://germanna.edu/academic-center-excellence/ist-course-resources",
+    "finalUrl": "https://germanna.edu/academic-center-excellence/ist-course-resources",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "laurel_ridge_robots": {
+    "requestedUrl": "https://laurelridge.edu/robots.txt",
+    "finalUrl": "https://laurelridge.edu/robots.txt",
+    "contentType": "text/plain; charset=utf-8",
+    "status": 200
+  },
+  "laurel_ridge_article": {
+    "requestedUrl": "https://laurelridge.edu/2022/12/22/grant-allows-teachers-to-further-education-with-computer-science-certification/",
+    "finalUrl": "https://laurelridge.edu/2022/12/22/grant-allows-teachers-to-further-education-with-computer-science-certification/",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  },
+  "reynolds_robots": {
+    "requestedUrl": "https://www.reynolds.edu/robots.txt",
+    "finalUrl": "https://www.reynolds.edu/robots.txt",
+    "contentType": "text/html",
+    "status": 200
+  },
+  "reynolds_outline": {
+    "requestedUrl": "https://www.reynolds.edu/curriculum/Outlines/CSC/CSC222.pdf",
+    "finalUrl": "https://www.reynolds.edu/curriculum/Outlines/CSC/CSC222.pdf",
+    "contentType": "application/pdf",
+    "status": 200
+  },
+  "reynolds_outline_text": {
+    "extractedFromSha256": "58c00502e23b9d83c98ee2da35557d4c5146f8ebd044109137b7195a57232b16",
+    "derivation": "pdftotext - -"
+  },
+  "schedule_9303": {
+    "requestedUrl": "https://courses.vccs.edu/colleges/cvcc/courses/CSC222",
+    "finalUrl": "https://courses.vccs.edu/colleges/cvcc/courses/CSC222",
+    "contentType": "text/html; charset=UTF-8",
+    "status": 200
+  }
+}

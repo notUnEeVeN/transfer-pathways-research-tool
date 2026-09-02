@@ -1,0 +1,22 @@
+{
+  "route_id": "george-mason-university__arab",
+  "requested_url": "https://catalog.gmu.edu/courses/arab/",
+  "final_url": "https://catalog.gmu.edu/courses/arab/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 59116,
+  "content_sha256": "0ccfb984d2b0b19928a75e11a02ffd5ebdab90788f8c41a82f3eda51f1e49459",
+  "fetched_at": "2026-08-24T20:20:31.663Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ARAB325",
+    "ARAB365"
+  ]
+}

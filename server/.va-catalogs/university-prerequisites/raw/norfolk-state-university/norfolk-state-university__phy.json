@@ -1,0 +1,22 @@
+{
+  "route_id": "norfolk-state-university__phy",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/phy/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/phy/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 53000,
+  "content_sha256": "e768789cd1ee24a2c2f06a55f919447413ae41b8cf407281e0f23f10edbc309d",
+  "fetched_at": "2026-08-24T18:03:03.703Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "PHY152",
+    "PHY152L"
+  ]
+}

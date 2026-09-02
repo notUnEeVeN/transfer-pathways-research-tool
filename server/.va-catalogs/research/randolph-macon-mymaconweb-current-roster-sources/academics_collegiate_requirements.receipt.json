@@ -1,0 +1,11 @@
+{
+  "requested_url": "https://mymaconweb.rmc.edu/ICS/Academics/Home.jnz?portlet=Curriculum",
+  "final_url": "https://mymaconweb.rmc.edu/ICS/Academics/Home.jnz?portlet=Curriculum",
+  "method": "GET",
+  "request_body_sha256": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "response_bytes": 28049,
+  "response_sha256": "97b000a6d99e0a47637b7486ad6f6a5d849a797c666ab90533bb334371d13c4e",
+  "fetched_at": "2026-08-25T13:00:08.042Z"
+}

@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-commonwealth-university__info",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/info/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/info/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 58921,
+  "content_sha256": "be095486d21aad03a1e79e946c0632470b53d621e6353e721aa7094c597b8472",
+  "fetched_at": "2026-08-25T10:52:13.028Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "INFO202"
+  ]
+}

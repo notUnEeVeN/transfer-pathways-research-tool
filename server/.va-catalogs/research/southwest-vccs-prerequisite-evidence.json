@@ -1,0 +1,89 @@
+{
+  "schema_version": 3,
+  "captured_at": "2026-08-24",
+  "institution": "Southwest Virginia Community College",
+  "authority_rule": "A formula is accepted only from an exact official course entry covering every canonical requirement-scope owner. A no-stated-requisite finding is accepted only from one complete, hash-bound CourseLeaf course record whose same-catalog control entry demonstrates that prerequisite markers are emitted inside the same record boundary when present; it is never represented as a literal none statement.",
+  "rows": [
+    {
+      "code": "ENG249",
+      "title": "Survey of Asian American Literature",
+      "credits": 3,
+      "catalog_year": "2026-2027",
+      "source_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=13&coid=13128",
+      "owning_colleges": [
+        "Southwest Virginia Community College"
+      ],
+      "raw_entry_text": "ENG 249: Survey of Asian American Literature\n3 Credits\nLecture hours per week: 3\nCovers major works by Asian American writers from 1900 to the present. Examines the formation of Asian American subjectivities across the axes of ethnicity, gender, sexuality, and class. Develops student critical reading, writing and thinking skills via texts, films and cultural studies theories.\nPrerequisite(s): ENG 112 or divisional approval",
+      "raw_entry_sha256": "811cd3b1bc297df2d431ed7222940081fa2645fa2a05e9d4f4e34dcfcebecbb1",
+      "raw_requisites": "Prerequisite(s): ENG 112 or divisional approval",
+      "disposition": "accepted_exact_owner_complete_formula",
+      "accepted_explicit_none": false,
+      "source_capture": {
+        "kind": "official_http_response_and_single_course_fragment",
+        "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-13__coid-13128.html",
+        "source_response_sha256": "d191460ec575408ba34dfc6000d0373aae654fa73ee54cbd1340f9dfeddacc09",
+        "source_response_bytes": 71015,
+        "course_fragment_html_sha256": "b1eb5513e31eaebd5dae500d3770ac0c8e228b296cf0b480292815067a2bf19e",
+        "course_fragment_html_bytes": 936,
+        "extracted_entry_sha256": "811cd3b1bc297df2d431ed7222940081fa2645fa2a05e9d4f4e34dcfcebecbb1",
+        "course_heading_seen": "ENG 249: Survey of Asian American Literature",
+        "catalog_name_seen": "2026-2027 Catalog",
+        "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+      }
+    },
+    {
+      "code": "ENG268",
+      "title": "The Modern Drama",
+      "credits": 3,
+      "catalog_year": "2020-2021",
+      "source_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=2&coid=1161",
+      "owning_colleges": [
+        "Southwest Virginia Community College"
+      ],
+      "raw_entry_text": "ENG 268: The Modern Drama\n3 credit\nLecture 3 hours per week.\nStudies the modern drama. Emphasizes the understanding and enjoyment of dramatic literature. Requires critical reading and writing.\nPrerequisite(s): ENG 112 or divisional approval.",
+      "raw_entry_sha256": "a6ca92ff47cfdf94e039a69f7edb0dd1ee1a5edbccc5a143302d02efb218d00d",
+      "raw_requisites": "Prerequisite(s): ENG 112 or divisional approval.",
+      "disposition": "accepted_exact_owner_complete_formula",
+      "accepted_explicit_none": false,
+      "source_capture": {
+        "kind": "official_http_response_and_single_course_fragment",
+        "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-2__coid-1161.html",
+        "source_response_sha256": "070f7a8bc42fd4e991284dcf708dd9df15c637b1b745764ebbab73e9bed643a1",
+        "source_response_bytes": 70684,
+        "course_fragment_html_sha256": "bb3e4ed9b4f432127cff149b4069a126cd31a95767c6b025f2ba4026aff1fc99",
+        "course_fragment_html_bytes": 748,
+        "extracted_entry_sha256": "a6ca92ff47cfdf94e039a69f7edb0dd1ee1a5edbccc5a143302d02efb218d00d",
+        "course_heading_seen": "ENG 268: The Modern Drama",
+        "catalog_name_seen": "2020-2021 Catalog",
+        "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+      }
+    },
+    {
+      "code": "PHI102",
+      "title": "Introduction to Philosophy II",
+      "credits": 3,
+      "catalog_year": "2020-2021",
+      "source_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=2&coid=1504",
+      "owning_colleges": [
+        "Southwest Virginia Community College"
+      ],
+      "raw_entry_text": "PHI 102: Introduction to Philosophy II\n3 credit\nLecture 3 hours per week.\nIntroduces a broad spectrum of philosophical problems and perspectives with an emphasis on the systematic questioning of basic assumptions about meaning, knowledge, reality, and values.",
+      "raw_entry_sha256": "abe25a096233bd14ee2d20935d2b456f1ae740c924c4c658870296da7e682a6e",
+      "raw_requisites": null,
+      "disposition": "accepted_owner_complete_record_no_stated_requisite",
+      "accepted_explicit_none": false,
+      "source_capture": {
+        "kind": "official_http_response_and_single_course_fragment",
+        "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-2__coid-1504.html",
+        "source_response_sha256": "e84ae9af17aa950e1430e746212f14c6f7e2338042bb3ebf04df492c15ef3a0f",
+        "source_response_bytes": 70310,
+        "course_fragment_html_sha256": "9106c24d941673e0f0c3e90314010a57c7b61bd541cd9e7a0bddd3a53242afe2",
+        "course_fragment_html_bytes": 361,
+        "extracted_entry_sha256": "abe25a096233bd14ee2d20935d2b456f1ae740c924c4c658870296da7e682a6e",
+        "course_heading_seen": "PHI 102: Introduction to Philosophy II",
+        "catalog_name_seen": "2020-2021 Catalog",
+        "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-commonwealth-university__egrb",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/egrb/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/egrb/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 78935,
+  "content_sha256": "f12e5f7b196f6d72070dff372c55f42b3c6ec0799c0f73a90ecfdccb197c5e63",
+  "fetched_at": "2026-08-25T10:52:11.798Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "EGRB215"
+  ]
+}

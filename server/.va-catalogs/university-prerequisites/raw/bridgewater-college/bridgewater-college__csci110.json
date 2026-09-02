@@ -1,0 +1,21 @@
+{
+  "route_id": "bridgewater-college__csci110",
+  "requested_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci110",
+  "final_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci110",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "byte_length": 12189,
+  "content_sha256": "8e1eb8caa8ddf33573ab5d3b68c923a86eca1bbfc76bf3a65a5ccc8c2eb11ef2",
+  "fetched_at": "2026-08-25T02:04:05.017Z",
+  "robots": {
+    "url": "https://bridgewater.cleancatalog.io/robots.txt",
+    "http_status": 200,
+    "content_sha256": "418e112c89979b34678c945b45186d0cff4d829bcdc9d6d8437be76f50ef38f9",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CSCI110"
+  ]
+}

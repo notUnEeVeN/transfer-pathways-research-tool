@@ -1,0 +1,9 @@
+{
+  "requested_url": "https://bridgewater.cleancatalog.io/robots.txt",
+  "final_url": "https://bridgewater.cleancatalog.io/robots.txt",
+  "http_status": 200,
+  "content_type": "text/plain",
+  "byte_length": 2213,
+  "content_sha256": "418e112c89979b34678c945b45186d0cff4d829bcdc9d6d8437be76f50ef38f9",
+  "fetched_at": "2026-08-24T19:11:40.440Z"
+}

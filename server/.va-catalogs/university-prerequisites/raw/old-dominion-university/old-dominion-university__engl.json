@@ -1,0 +1,23 @@
+{
+  "route_id": "old-dominion-university__engl",
+  "requested_url": "https://catalog.odu.edu/courses/engl/",
+  "final_url": "https://catalog.odu.edu/courses/engl/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 435116,
+  "content_sha256": "1b928509f6106dca0e7108d0d3298e3d0ad159d562ffc2a963d8e8391922a599",
+  "fetched_at": "2026-08-24T18:03:14.910Z",
+  "robots": {
+    "url": "https://catalog.odu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "04c0328aabd3f05afd6a4ec0382500f973b6457f737639ac2933372331d0e045",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ENGL110C",
+    "ENGL211C",
+    "ENGL231C"
+  ]
+}

@@ -1,0 +1,113 @@
+272
+the Laser Interferometer Gravitational-Wave Observatory
+(LIGO) Scientific Collaboration.
+Physicists have a wide range of career options. They
+work in a variety of areas from research at universities
+and government laboratories to education, healthcare,
+manufacturing, and consulting and analysis firms. Their
+jobs involve working as software developers, engineers
+and science/lab technicians, and managers, or even patent
+lawyers.
+DegreerequirementsarethoseoftheBachelorofScience
+degree.Inadditiontorequiringthesuccessfulcompletionof
+the liberal learning curriculum, the physics major requires
+successfulcompletionofthefollowingcourseswithnomore
+than two a grades below C-:
+1. CPEN 214;
+2. CPSC 150/150L-250/250L;
+3. PHYS 201/201L-202/202L, 301, 303, 304, 340, 341,
+351, 402 and 406;
+4. Select one: PHYS 401 or 4041
+;
+5. ENGR 211/211L;
+6. MATH 140 or 148, 240, 247, 250;
+7. PCSE 498W (3 credit hour capstone course);
+8. Select two: ENGR 212/212L; MATH 350 or 355,
+any 300-level or higher PHYS course(s) that is not
+already listed as required above.
+1
+ThestudentmusttakeeitherPHYS401or404aspartoftheir
+degree requirements. Students planning on graduate school
+in physics are encouraged to complete the other as a major
+elective. Students in the five-year program should take the
+crosslisted graduate course PHYS 501 or 504.
+Major in Computer Science
+Computer science plays an essential role in many
+disciplines ranging from business to scientific research.
+Examples of jobs include software engineering and
+development, information technology operations, web
+development, cybersecurity, and database design and
+administration.
+Computer science majors at Christopher Newport
+University take core courses that provide a background in
+computer engineering, computer science, mathematics, and
+physics. The major and support courses continue building
+this background.Advanced courses in the program provide
+additionalstudyindatastructures,programminglanguages,
+operatingsystems,andalgorithms,withadditionalelectives
+to extend the student’s knowledge in an area of their choice.
+Graduateswillbepreparedforfurtherstudyingraduate
+schooloremploymentascomputerscientistsorresearchers.
+Studentspursuingthemajorincomputersciencearestrongly
+encouraged to pursue studies in other academic fields in
+whichtherearesignificantapplicationsofcomputerscience.
+A minor in business, economics, mathematics, science, or
+psychology would be a viable choice. See your advisor for
+more details on the computer science major.
+DegreerequirementsarethoseoftheBachelorofScience
+degree.Inadditiontorequiringthesuccessfulcompletionof
+the liberal learning curriculum, the computer science major
+requiressuccessfulcompletionofthefollowingcourseswith
+no more than two grades below C-:
+1. CPEN 214, 371W;
+2. CPSC 150/150L-250/250L, 255, 270, 280, 327, 360,
+410, 420;
+3. MATH 140 or 148, 240;
+4. PHYS 151/151L-152/152L or PHYS 201/201L-
+202/202L and PHYS 340 or ENGR 210 or MATH 235
+or 260;
+5. ENGR 213;
+6. PHYS 341;
+7. Select three: CPSC 425, 440, 470, 471, 472, 475, 480,
+495; any 500-level course with advisor’s permission;
+MATH 380; PCSE 495; PHYS 421, 441; CYBR 428;
+with courses numbered 495 and above used no more
+than twice;
+8. CPSC 498 (3 credit hour capstone course).
+Major in Cybersecurity
+Cybersecurity focuses on the protection of computing
+systemsincludinghardware,software,anddatafromdigital
+attacks. The cybersecurity major provides students with
+a strong foundation in computer science and information
+science. Building on this foundation of knowledge,
+students then study specific topics and techniques related
+to cybersecurity. Students end their studies with the
+cybersecurity capstone, an opportunity to explore and
+develop a cybersecurity-related project.
+DegreerequirementsarethoseoftheBachelorofScience
+degree. In addition to requiring the successful completion
+of the liberal learning curriculum, the cybersecurity major
+requiressuccessfulcompletionofthefollowingcourseswith
+no more than two grades below C-:
+1. MATH 125 or PHYS 341, MATH 140 or 148, MATH
+235 or 260, ENGR 213;
+2. CPSC 150/150L-250/250L, 255, 256 or 327;
+3. CPSC 335, 336, 440;
+4. CYBR 328, 428, 429, 448, CPEN 371W;
+5. Select four courses with three at the 300-level or
+higher: CYBR 426, 444, CPSC 216, 270, 280, 350,
+360, 410, 430, 470, 471, 472, 475, 480; CPEN 422;
+6. CYBR 498W.
+Major inArtificial Intelligence
+Artificial intelligence is an increasingly important
+technology that affects many disciplines, including science,
+engineering, business, and public policy. Applications of
+artificial intelligence include machine learning, computer
+vision, natural language processing, robotics, data analysis,
+and automated decision systems. Graduates with training
+in artificial intelligence work in fields such as data science,
+machinelearningengineering,robotics,intelligentsoftware
+development and research.
+Artificial intelligence majors at Christopher Newport
+University study the computational, mathematical and
+scientific foundations required to design and deploy

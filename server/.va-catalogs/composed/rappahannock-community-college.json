@@ -15,6 +15,16 @@
     "graduation",
     "course_catalog"
   ],
+  "course_unit_evidence_artifact": {
+    "path": "research/vccs-missing-course-units.json",
+    "sha256": "bfdb38f32b48b05c088a0a7704e1d34bb19aa286ce764659d9d166ce7bcff732",
+    "source_refs": ["course_catalog"],
+    "codes": [
+      "BIO141", "BIO142", "BIO150", "ENG210", "ENG249", "ENG268",
+      "ENG276", "GOL111", "GOL112", "MAR101", "MAR102", "MAR201",
+      "MAR202", "MUS112", "PHI102", "PSY120", "REL238"
+    ]
+  },
   "option_sets": {
     "ucgs_laboratory_science_i": {
       "source_refs": ["major"],

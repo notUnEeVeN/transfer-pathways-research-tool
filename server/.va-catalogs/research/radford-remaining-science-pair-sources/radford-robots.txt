@@ -1,0 +1,18 @@
+User-agent: *
+Disallow: /_resources
+Disallow: /_showcase
+Disallow: /_training
+Disallow: /_nav
+Disallow: /_qa
+Disallow: /_props
+Disallow: /libraryhours
+Disallow: /errors
+Disallow: /az-index
+Disallow: /player.vimeo.com/
+Disallow: /_migration_4_3
+Disallow: /procurement/_documents/*
+Disallow: /pdf-accessibility-report/*
+Allow: /sitemap.xml
+Disallow: /*.xml$
+
+Sitemap: https://www.radford.edu/sitemap.xml

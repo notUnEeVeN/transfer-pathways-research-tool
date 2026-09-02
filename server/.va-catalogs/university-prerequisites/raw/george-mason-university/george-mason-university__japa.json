@@ -1,0 +1,21 @@
+{
+  "route_id": "george-mason-university__japa",
+  "requested_url": "https://catalog.gmu.edu/courses/japa/",
+  "final_url": "https://catalog.gmu.edu/courses/japa/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 48356,
+  "content_sha256": "79fef88dd7a20edd96d2a975448186531fbfa97b93a3def50fa1259eaebe3e9d",
+  "fetched_at": "2026-08-24T20:20:45.830Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "JAPA340"
+  ]
+}

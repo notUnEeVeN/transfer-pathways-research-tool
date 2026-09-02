@@ -1,0 +1,1337 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_tech_csc222_java_blocked_cohort_evidence",
+  "generated_on": "2026-08-25",
+  "verified": true,
+  "issues": [],
+  "purpose": "Reproduce and adversarially audit the 15 blocked Virginia Tech CSC 222 to CS 1114 sender cells without inferring Java from a statewide title, support resource, instructor, provider, or historical cohort.",
+  "sources": {
+    "vccs_robots": {
+      "requested_url": "https://courses.vccs.edu/robots.txt",
+      "final_url": "https://courses.vccs.edu/robots.txt",
+      "content_type": "text/plain",
+      "http_status": 200,
+      "response_bytes": 126,
+      "response_sha256": "23ff21a5ebd4649c2a062308c0a9689bbc2727abe24ebed666cd78553bfc082d",
+      "protected_url": "https://courses.vccs.edu/colleges/brcc/courses/CSC222",
+      "policy_published": true,
+      "protected_path_allowed": true,
+      "crawl_delay_seconds": 1
+    },
+    "schedule_9301": {
+      "requested_url": "https://courses.vccs.edu/colleges/brcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/brcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 25158,
+      "response_sha256": "e14a2ae88011b45b8bfb7a7a0786606f4b614c6c103fe1a7aec54978d98844e3",
+      "fragment_sha256": "66fd8ec4001c9565627594fc5a3a032e2fefc983a2971a162d4241ac73c99589"
+    },
+    "schedule_9302": {
+      "requested_url": "https://courses.vccs.edu/colleges/brightpoint/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/brightpoint/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 31711,
+      "response_sha256": "5becad267bff8d46dd2a1111002a2d29a26c5d6d3ef4620359aae30f6b3b2cc5",
+      "fragment_sha256": "67588178c5d0ac5ed44a4484fa5f01815e5d4ca03cbf424e0577f6532ea53ac4"
+    },
+    "schedule_9303": {
+      "requested_url": "https://courses.vccs.edu/colleges/cvcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/cvcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 20361,
+      "response_sha256": "dbc547b26866d4e828f69edc4ea876652b082a7fef32bfcdfcab9481ee6c828b",
+      "fragment_sha256": "5edf1e3d135d0e67884e3ad793bea7c54feb380b80df5d46550b4ea9bdb7b34a"
+    },
+    "schedule_9306": {
+      "requested_url": "https://courses.vccs.edu/colleges/germanna/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/germanna/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 9092,
+      "response_sha256": "907512460c0005adb2f995f410a0e8190d03feac52f5b5f98a5b659df49263f1",
+      "fragment_sha256": "a253e1323749db355460396fbf0eacd00f71bdde50937e3fd0655fcff9a6fedf"
+    },
+    "schedule_9307": {
+      "requested_url": "https://courses.vccs.edu/colleges/reynolds/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/reynolds/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 29659,
+      "response_sha256": "18deb02b45d290ed5ac31e05b2e304174c252c3aaac3819b746b23049ea8dda5",
+      "fragment_sha256": "beb2b273a391e3492f2bb3bd1190aa72ca587cae5a9c013f6a1b23175c9dfa2c"
+    },
+    "schedule_9308": {
+      "requested_url": "https://courses.vccs.edu/colleges/laurelridge/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/laurelridge/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 23417,
+      "response_sha256": "0b8144c922e06f733108aaf77f5e537f85c2710a172e747ae7734f4f4f1b267d",
+      "fragment_sha256": "011c5fc888625385c6dfa8d9b9dceaaafa16eaf07a0ec5264d308b88d7e450e0"
+    },
+    "schedule_9311": {
+      "requested_url": "https://courses.vccs.edu/colleges/nrcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/nrcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 26911,
+      "response_sha256": "b295031eae072ad2a6ce7b32dfca83b461ebde1b0cdf86232bfccfd6510c8956",
+      "fragment_sha256": "f1f70b92f1b11aa65a431df789216e496440f665906845bb088497fee1ec4221"
+    },
+    "schedule_9314": {
+      "requested_url": "https://courses.vccs.edu/colleges/camp/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/camp/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 20277,
+      "response_sha256": "a5eb36eb3ceec55ca7ac60d4a391e2c4f849936cc3b437c2c63ca91ba06087f0",
+      "fragment_sha256": "667cd316f895c4ea19b3450399fcf9585d347177d586589952dab5729ae6e74b"
+    },
+    "schedule_9315": {
+      "requested_url": "https://courses.vccs.edu/colleges/pvcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/pvcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 23722,
+      "response_sha256": "647fd7d9decb4e2a595b73e125f55638ee05d8267a560bc87a4cca63ca63e938",
+      "fragment_sha256": "198ba1cdbb4b64a5c6bf8d2a0c5c0236f4a60e93da529ceebbc828a992e8b30c"
+    },
+    "schedule_9319": {
+      "requested_url": "https://courses.vccs.edu/colleges/swcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/swcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 20375,
+      "response_sha256": "5ed963309a64f97c42c8a74173b2bc44b565ff613a26f7152af9225b89de9bc4",
+      "fragment_sha256": "283d2489911a76ea70838863c58b826a323f580b8cc425a1dd35986d93fc3912"
+    },
+    "schedule_9320": {
+      "requested_url": "https://courses.vccs.edu/colleges/tcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/tcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 29474,
+      "response_sha256": "61fee84e951e517a9260d6cdf2114ecb1558306296ee6ad34227f5ed0a1172b7",
+      "fragment_sha256": "46b4d705bf7c439d0b675f93c1e23d1f52c8c966d7d1bb84bc9ba2827f8fc7d5"
+    },
+    "schedule_9321": {
+      "requested_url": "https://courses.vccs.edu/colleges/vhcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/vhcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 24930,
+      "response_sha256": "0c109d3c129873dec5c9d8d7b4a6a9625bee90d0a9e581348136829f7ea2698d",
+      "fragment_sha256": "519477a200005174056e6404c57d3515ed2afd02efaa4755a249a62a1e47d753"
+    },
+    "schedule_9322": {
+      "requested_url": "https://courses.vccs.edu/colleges/vpcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/vpcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 33332,
+      "response_sha256": "ad7e56917a77841c77b632e70cfd61df15079736e461c26f65d76790a9b16e56",
+      "fragment_sha256": "4c88087eecad50428dc33db1fe4bd933c16cb8b93d47f24118c2c24b7bc5b0d1"
+    },
+    "schedule_9323": {
+      "requested_url": "https://courses.vccs.edu/colleges/vwcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/vwcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 27300,
+      "response_sha256": "d374974d5bbed43193024c1e2f5bc5a5adc0d1c39199f09e10e40600dc07298e",
+      "fragment_sha256": "120d8f72a754c3370e14d38a53ea39d22e07e78f8d9bb134e4b8181eee40f14e"
+    },
+    "schedule_9324": {
+      "requested_url": "https://courses.vccs.edu/colleges/wcc/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/wcc/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 25691,
+      "response_sha256": "ec2a81aa7f99c114dc5561f0bece2b673a7beadfc3b98bcbaf0a139c992b20d5",
+      "fragment_sha256": "9cba0f496f7acf9d2b6b531faad6d494a867be0aef987e80f6cdacef64bee7f0"
+    },
+    "germanna_robots": {
+      "requested_url": "https://germanna.edu/robots.txt",
+      "final_url": "https://germanna.edu/robots.txt",
+      "content_type": "text/plain",
+      "http_status": 200,
+      "response_bytes": 2027,
+      "response_sha256": "773fb8d35bb9a39d35335ee6db8dc5c912d2aacbfb823152d9c61cd647dd902d",
+      "protected_url": "https://germanna.edu/academic-center-excellence/ist-course-resources",
+      "policy_published": true,
+      "protected_path_allowed": true,
+      "crawl_delay_seconds": 0
+    },
+    "germanna_resources": {
+      "requested_url": "https://germanna.edu/academic-center-excellence/ist-course-resources",
+      "final_url": "https://germanna.edu/academic-center-excellence/ist-course-resources",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 105544,
+      "response_sha256": "1f06ec9ea5742f45b76334e0e5bf919402d91187386fc07a3407fb3a9803ff82",
+      "fragment_sha256": "c321401e1497d8c42ddd55ff974ee5dbfa78aaf2ba91922c92f5aefd5116aa84"
+    },
+    "laurel_ridge_robots": {
+      "requested_url": "https://laurelridge.edu/robots.txt",
+      "final_url": "https://laurelridge.edu/robots.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "http_status": 200,
+      "response_bytes": 180,
+      "response_sha256": "6dcfa5dab4f5b46d13495b38e69f3b1d70773cf8e8415d275d61ed14c117d7cf",
+      "protected_url": "https://laurelridge.edu/2022/12/22/grant-allows-teachers-to-further-education-with-computer-science-certification/",
+      "policy_published": true,
+      "protected_path_allowed": true,
+      "crawl_delay_seconds": 10
+    },
+    "laurel_ridge_article": {
+      "requested_url": "https://laurelridge.edu/2022/12/22/grant-allows-teachers-to-further-education-with-computer-science-certification/",
+      "final_url": "https://laurelridge.edu/2022/12/22/grant-allows-teachers-to-further-education-with-computer-science-certification/",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 200,
+      "response_bytes": 167891,
+      "response_sha256": "e2402118ebcbfe88effca162fe3f77c4e71a66ddb707f94cf3b86a44438758f5",
+      "fragment_sha256": "31de73df68837a8e9d5f052a9b3e6561f99713fe4d3062309fe2a29e0c1fad83"
+    },
+    "reynolds_robots": {
+      "requested_url": "https://www.reynolds.edu/robots.txt",
+      "final_url": "https://www.reynolds.edu/robots.txt",
+      "content_type": "text/html",
+      "http_status": 200,
+      "response_bytes": 58010,
+      "response_sha256": "a86782edf5a9821764d412c6b180d213fce5579bc848c60ec1448aa34f8b3708",
+      "protected_url": "https://www.reynolds.edu/curriculum/Outlines/CSC/CSC222.pdf",
+      "policy_published": false,
+      "protected_path_allowed": true
+    },
+    "reynolds_outline": {
+      "requested_url": "https://www.reynolds.edu/curriculum/Outlines/CSC/CSC222.pdf",
+      "final_url": "https://www.reynolds.edu/curriculum/Outlines/CSC/CSC222.pdf",
+      "content_type": "application/pdf",
+      "http_status": 200,
+      "response_bytes": 145023,
+      "response_sha256": "58c00502e23b9d83c98ee2da35557d4c5146f8ebd044109137b7195a57232b16",
+      "fragment_sha256": "c59d91c53fbf2b22cdb311eb5d51eb54a2d0d1b4aabf5400c7dc2437408e592b"
+    },
+    "reynolds_outline_text": {
+      "response_bytes": 5245,
+      "response_sha256": "1a34fe0fe303b17b3555ad4376b6d296d6369af4409e76b9a1a54eedde3dcab4",
+      "derived_from_response_sha256": "58c00502e23b9d83c98ee2da35557d4c5146f8ebd044109137b7195a57232b16",
+      "derivation": "pdftotext - -"
+    }
+  },
+  "facts": {
+    "source_plan_reproduction": {
+      "receiving_institution_id": 9230,
+      "sending_course_id": 1029042724,
+      "sending_code": "CSC222",
+      "receiving_identifier": "CS1114",
+      "receiving_parent_id": 997045076,
+      "condition_kind": "advisor_or_approval_condition",
+      "receiving_notes": "If taught in a language other than Java, please see your VT advisor. Elective Elective equivalent credit hours varies based on transfer course.",
+      "sending_source_url": "https://www.transfervirginia.org/course/D37A6A9C1F9411F082AC0242AC15010A",
+      "blocked_cell_count": 15,
+      "blocked_community_college_ids": [
+        9301,
+        9302,
+        9303,
+        9306,
+        9307,
+        9308,
+        9311,
+        9314,
+        9315,
+        9319,
+        9320,
+        9321,
+        9322,
+        9323,
+        9324
+      ],
+      "blocked_cells": [
+        {
+          "community_college_id": 9301,
+          "college_name": "Blue Ridge Community College",
+          "agreement_id": "va:agreement:9230:9301"
+        },
+        {
+          "community_college_id": 9302,
+          "college_name": "Brightpoint Community College",
+          "agreement_id": "va:agreement:9230:9302"
+        },
+        {
+          "community_college_id": 9303,
+          "college_name": "Central Virginia Community College",
+          "agreement_id": "va:agreement:9230:9303"
+        },
+        {
+          "community_college_id": 9306,
+          "college_name": "Germanna Community College",
+          "agreement_id": "va:agreement:9230:9306"
+        },
+        {
+          "community_college_id": 9307,
+          "college_name": "J Sargeant Reynolds Community College",
+          "agreement_id": "va:agreement:9230:9307"
+        },
+        {
+          "community_college_id": 9308,
+          "college_name": "Laurel Ridge Community College",
+          "agreement_id": "va:agreement:9230:9308"
+        },
+        {
+          "community_college_id": 9311,
+          "college_name": "New River Community College",
+          "agreement_id": "va:agreement:9230:9311"
+        },
+        {
+          "community_college_id": 9314,
+          "college_name": "Paul D. Camp Community College",
+          "agreement_id": "va:agreement:9230:9314"
+        },
+        {
+          "community_college_id": 9315,
+          "college_name": "Piedmont Virginia Community College",
+          "agreement_id": "va:agreement:9230:9315"
+        },
+        {
+          "community_college_id": 9319,
+          "college_name": "Southwest Virginia Community College",
+          "agreement_id": "va:agreement:9230:9319"
+        },
+        {
+          "community_college_id": 9320,
+          "college_name": "Tidewater Community College",
+          "agreement_id": "va:agreement:9230:9320"
+        },
+        {
+          "community_college_id": 9321,
+          "college_name": "Virginia Highlands Community College",
+          "agreement_id": "va:agreement:9230:9321"
+        },
+        {
+          "community_college_id": 9322,
+          "college_name": "Virginia Peninsula Community College",
+          "agreement_id": "va:agreement:9230:9322"
+        },
+        {
+          "community_college_id": 9323,
+          "college_name": "Virginia Western Community College",
+          "agreement_id": "va:agreement:9230:9323"
+        },
+        {
+          "community_college_id": 9324,
+          "college_name": "Wytheville Community College",
+          "agreement_id": "va:agreement:9230:9324"
+        }
+      ]
+    },
+    "schedule_audit": {
+      "source": "current public courses.vccs.edu CSC 222 college endpoints",
+      "colleges": {
+        "9301": {
+          "community_college_id": 9301,
+          "college_name": "Blue Ridge Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "70442",
+                  "section": "CSC 222-F01",
+                  "credits": 4,
+                  "days": "Tu Th",
+                  "time": "11:00 a.m.-12:22 p.m.0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-08-19",
+                  "location": "Main Campus",
+                  "mode": "HY",
+                  "note": "Students may attend this class in-person, and/or synchronously online via Zoom during the scheduled dates and times of the class (webcam and microphone required), and/or asynchronously online (using Canvas and recorded video lectures). In-person and on Zoom lab sessions, offered on the second class of each week, are highly recommended but not required. Online and in-person office hours will be provided on Zoom throughout the semester. Students may be required to take at least one proctored assessment; faculty will inform students of the proctored assessment requirements in the syllabus and class notes. This course is part of a project called Follett Access. Electronic course materials will be available to students in Canvas on the first day of classes. The cost for your materials will be billed at the time tuition is due. To see a breakdown of charges please visit the Charges Due tab in your Student Center under Account Details.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "cbd523adadaa7a0456b9aaa2bea5c60dc0b4275d1fa79df78e1fb99ab45a20db"
+                }
+              ]
+            },
+            {
+              "term": "Spring 2027",
+              "term_code": "2272",
+              "sections": []
+            }
+          ],
+          "scheduled_section_count": 1,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 1,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9302": {
+          "community_college_id": 9302,
+          "college_name": "Brightpoint Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "80221",
+                  "section": "CSC 222-A01",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-08-24",
+                  "location": "Virtual Campus (ELI, Internet)",
+                  "mode": "ER",
+                  "note": "PREREQUISITE: CSC 221. This course is part of the Follett ACCESS program (formerly \"IncludED\"). You will be automatically billed for these course materials upon registration. You will receive information via your school email on how you can opt out of this program. If you have questions about this program, visit the bookstore on either campus or email 1399mgr@follett.com. This asynchronous online class has no scheduled Zoom or on-campus meetings. Reliable internet access is required to complete course activities and assignments. Students will access course material using Canvas, and it will be made available on or before the first day of the class session. Regular weekly assignments with established due dates are provided in Canvas.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "fa426f38b7cce823d601b2acda57db90bac7d4b3317d80d034a1dabb8e304ee9"
+                },
+                {
+                  "class_number": "80216",
+                  "section": "CSC 222-BC1",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-10-19",
+                  "location": "Virtual Campus (ELI, Internet)",
+                  "mode": "ER",
+                  "note": "PREREQUISITE: CSC 221. This asynchronous online class has no scheduled Zoom or on-campus meetings. Reliable internet access is required to complete course activities and assignments. Students will access course material using Canvas, and it will be made available on or before the first day of the class session. Regular weekly assignments with established due dates are provided in Canvas.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "17383fa9e2fcf759baf342e286f9e2018ee484f47561d5a4f02bd350885d7936"
+                }
+              ]
+            },
+            {
+              "term": "Spring 2027",
+              "term_code": "2272",
+              "sections": [
+                {
+                  "class_number": "26664",
+                  "section": "CSC 222-A01",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-01-13",
+                  "location": "Virtual Campus (ELI, Internet)",
+                  "mode": "ER",
+                  "note": "This asynchronous online class has no scheduled Zoom or on-campus meetings. Reliable internet access is required to complete course activities and assignments. Students will access course material using Canvas, and it will be made available on or before the first day of the class session. Regular weekly assignments with established due dates are provided in Canvas.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "e5166121a2583e02467d113992d2759cf911fdf15e41b477ae134c1cc784580a"
+                },
+                {
+                  "class_number": "25534",
+                  "section": "CSC 222-A31",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-03-15",
+                  "location": "Virtual Campus (ELI, Internet)",
+                  "mode": "ER",
+                  "note": "This asynchronous online class has no scheduled Zoom or on-campus meetings. Reliable internet access is required to complete course activities and assignments. Students will access course material using Canvas, and it will be made available on or before the first day of the class session. Regular weekly assignments with established due dates are provided in Canvas.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "c190c29613a84f72fc09c3670f6cce317569a37276c672292721cb9bd5f86929"
+                },
+                {
+                  "class_number": "26093",
+                  "section": "CSC 222-BC1",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-03-15",
+                  "location": "Virtual Campus (ELI, Internet)",
+                  "mode": "ER",
+                  "note": "PREREQUISITE: CSC 221. This course is part of the Follett ACCESS program (formerly \"IncludED\"). You will be automatically billed for these course materials upon registration. You will receive information via your school email on how you can opt out of this program. If you have questions about this program, visit the bookstore on either campus or email 1399mgr@follett.com.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "54c441d39cf802e41c3ed243623a047135c48653fb9600515df670cad2314128"
+                },
+                {
+                  "class_number": "25896",
+                  "section": "CSC 222-MFH1",
+                  "credits": 4,
+                  "days": "W",
+                  "time": "10:00 a.m.-11:50 a.m.0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-01-13",
+                  "location": "Virtual Campus (ELI, Internet)",
+                  "mode": "HY",
+                  "note": "On Campus MONDAYS Only Flex (F2F + Zoom + Asynchronous) in Midlothian + Asynchronous Hybrid - On-campus classes in Midlothian where students have the option to attend in person, through Zoom, and/or asynchronously AND where they must complete required asynchronous online activities by published weekly deadlines. The synchronous classes will be abbreviated.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "f0b309394b5c2aad1a0f6e25ac1b3926744482507bcf82402f6423a800d1f8d0"
+                }
+              ]
+            },
+            {
+              "term": "Summer 2027",
+              "term_code": "2273",
+              "sections": []
+            }
+          ],
+          "scheduled_section_count": 6,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 6,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9303": {
+          "community_college_id": 9303,
+          "college_name": "Central Virginia Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [],
+          "scheduled_section_count": 0,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 0,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 section-language binding is published at this endpoint."
+        },
+        "9306": {
+          "community_college_id": 9306,
+          "college_name": "Germanna Community College",
+          "course_endpoint_available": false,
+          "current_schedule_terms": [],
+          "scheduled_section_count": 0,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 0,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 section-language binding is published at this endpoint."
+        },
+        "9307": {
+          "community_college_id": 9307,
+          "college_name": "Reynolds Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "74188",
+                  "section": "CSC 222-01HX",
+                  "credits": 4,
+                  "days": "Tu",
+                  "time": "7:30 p.m.-9:30 p.m.0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-08-24",
+                  "location": "Parham Road Campus",
+                  "mode": "HY",
+                  "note": "Students in FLEX courses have the option of attending class in-person, live through Zoom, or asynchronous Online. This is a hybrid course that also requires students to complete asynchronous coursework online. Students who register for this section must have regular access to the Internet.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "be44fb7bda0a87ccb528c894e34fcb4a6a85ec62ea6ec0cfa87e76e9fbd8c3ff"
+                }
+              ]
+            },
+            {
+              "term": "Spring 2027",
+              "term_code": "2272",
+              "sections": [
+                {
+                  "class_number": "22190",
+                  "section": "CSC 222-01OA",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Virtual",
+                  "mode": "WW",
+                  "note": "Click on the Canvas tile when you log into MyReynolds to access your online courses; you will not see your courses until the first day of class.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "d7a91c44ebdcdf68ced1c2dabbc72d9d84191ccb62c15a664ffb4def42682b0b"
+                },
+                {
+                  "class_number": "22189",
+                  "section": "CSC 222-02OA",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-03-15",
+                  "location": "Virtual",
+                  "mode": "WW",
+                  "note": "Click on the Canvas tile when you log into MyReynolds to access your online courses; you will not see your courses until the first day of class.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "a8be66948a406b6aca6f332989bc23e0424a7dd1ed11c911e9e6e81a1523d316"
+                },
+                {
+                  "class_number": "22191",
+                  "section": "CSC 222-81HX",
+                  "credits": 4,
+                  "days": "Tu Th",
+                  "time": "7:30 p.m.-9:30 p.m.0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Parham Road Campus",
+                  "mode": "HY",
+                  "note": "Students in FLEX courses have the option of attending class in-person, live through Zoom, or asynchronous Online. This is a hybrid course that also requires students to complete asynchronous coursework online. Students who register for this section must have regular access to the Internet.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "2f76bcbc84a1756747d4287d4866fe00baae5dc3823b258cead3c38f50d411d9"
+                }
+              ]
+            },
+            {
+              "term": "Summer 2027",
+              "term_code": "2273",
+              "sections": [
+                {
+                  "class_number": "30745",
+                  "section": "CSC 222-01OA",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-05-17",
+                  "location": "Virtual",
+                  "mode": "WW",
+                  "note": "Click on the Canvas tile when you log into MyReynolds to access your online courses; you will not see your courses until the first day of class.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "ca06c86899b296bec1046e489ceaced1c094d82ff9964cc7508c164947c8c0e1"
+                }
+              ]
+            }
+          ],
+          "scheduled_section_count": 5,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 5,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9308": {
+          "community_college_id": 9308,
+          "college_name": "Laurel Ridge Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "96449",
+                  "section": "CSC 222-200V",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-09-08",
+                  "location": "Virtual-Distance Learning",
+                  "mode": "WW",
+                  "note": "Course requires ability to download and install software on personal computer.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "4ab52bc3b008daa3382d6f2062018587e6f63d9ce1a85205f30df6cecd8d7750"
+                }
+              ]
+            }
+          ],
+          "scheduled_section_count": 1,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 1,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9311": {
+          "community_college_id": 9311,
+          "college_name": "New River Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "76155",
+                  "section": "CSC 222-35",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-08-24",
+                  "location": "Virtual",
+                  "mode": "WW",
+                  "note": "",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "480a4027b4038f665bed7b7111ed04f97742482a7bdc4977b3ff1a977fe3696e"
+                },
+                {
+                  "class_number": "76515",
+                  "section": "CSC 222-D35",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-08-01",
+                  "location": "Virtual",
+                  "mode": "WW",
+                  "note": "Dual Enrollment",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "b9b8ced329a2055afe532be594ae9f3bbe19b28a7d5cac340cf549c1a47e38cd"
+                }
+              ]
+            },
+            {
+              "term": "Spring 2027",
+              "term_code": "2272",
+              "sections": [
+                {
+                  "class_number": "42270",
+                  "section": "CSC 222-M1",
+                  "credits": 4,
+                  "days": "M W",
+                  "time": "9:00 a.m.-11:00 a.m.",
+                  "start_date": "2027-01-20",
+                  "location": "Christiansburg Site",
+                  "mode": "P",
+                  "note": "",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "157144a5d2ff25d709236468657235f51fa896488850f0032fd26708f13bb70a"
+                }
+              ]
+            },
+            {
+              "term": "Summer 2027",
+              "term_code": "2273",
+              "sections": [
+                {
+                  "class_number": "31600",
+                  "section": "CSC 222-35",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-05-19",
+                  "location": "Virtual",
+                  "mode": "WW",
+                  "note": "",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "0e2769d93ffeb68ed932b4e159644381e43912c968e8f454743a919657002c35"
+                }
+              ]
+            }
+          ],
+          "scheduled_section_count": 4,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 4,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9314": {
+          "community_college_id": 9314,
+          "college_name": "Camp Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [],
+          "scheduled_section_count": 0,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 0,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 section-language binding is published at this endpoint."
+        },
+        "9315": {
+          "community_college_id": 9315,
+          "college_name": "Piedmont Virginia Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "89204",
+                  "section": "CSC 222-01",
+                  "credits": 4,
+                  "days": "Tu Th",
+                  "time": "8:00 a.m.-9:40 a.m.",
+                  "start_date": "2026-08-24",
+                  "location": "MAIN",
+                  "mode": "P",
+                  "note": "",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "4360599f366b2e20cc77046b4c933d3ac204a11bd749cb6b24077fbe47ba2e37"
+                }
+              ]
+            },
+            {
+              "term": "Spring 2027",
+              "term_code": "2272",
+              "sections": []
+            }
+          ],
+          "scheduled_section_count": 1,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 1,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9319": {
+          "community_college_id": 9319,
+          "college_name": "Southwest Virginia Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [],
+          "scheduled_section_count": 0,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 0,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 section-language binding is published at this endpoint."
+        },
+        "9320": {
+          "community_college_id": 9320,
+          "college_name": "Tidewater Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "91553",
+                  "section": "CSC 222-D01B",
+                  "credits": 4,
+                  "days": "Tu Th",
+                  "time": "9:00 a.m.-10:45 a.m.",
+                  "start_date": "2026-08-24",
+                  "location": "Virginia Beach Campus",
+                  "mode": "P",
+                  "note": "This section does satisfy the veteran residency requirement.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "37697518c11a740daf7b5e1425ed06cfd68b364b17aab0dfc6bc48db019ce851"
+                },
+                {
+                  "class_number": "91552",
+                  "section": "CSC 222-O01B",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-08-24",
+                  "location": "Virtual Location",
+                  "mode": "WW",
+                  "note": "This class has no scheduled meeting times. It will be conducted online, requiring students to have reliable and daily access to a computer and Internet service.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "f28e098cc381f115e1445c1e6fa02558739727af34239e948999a2150f120de6"
+                },
+                {
+                  "class_number": "91543",
+                  "section": "CSC 222-O01C",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-09-28",
+                  "location": "Virtual Location",
+                  "mode": "WW",
+                  "note": "This class has no scheduled meeting times. It will be conducted online, requiring students to have reliable and daily access to a computer and Internet service.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "511880cce95a0f43b79c9fbca84ce18da9facd9312c3c122ad42203d57a549b1"
+                }
+              ]
+            },
+            {
+              "term": "Spring 2027",
+              "term_code": "2272",
+              "sections": [
+                {
+                  "class_number": "38227",
+                  "section": "CSC 222-D01B",
+                  "credits": 4,
+                  "days": "Tu Th",
+                  "time": "9:00 a.m.-10:45 a.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Virginia Beach Campus",
+                  "mode": "P",
+                  "note": "This section does satisfy the veteran residency requirement.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "6d5ec36141ee337b719f4f3d4b44552191df760459ce074f77e4f897f771fe03"
+                },
+                {
+                  "class_number": "38229",
+                  "section": "CSC 222-D01N",
+                  "credits": 4,
+                  "days": "M",
+                  "time": "2:00 p.m.-7:15 p.m.",
+                  "start_date": "2027-02-15",
+                  "location": "Virtual Location - Real Time",
+                  "mode": "WW",
+                  "note": "This course is conducted online in real time with scheduled meeting days and times as published in the class schedule, supplemented with online asynchronous (anytime) computer coursework. Student participation in the synchronous (real time) sessions may be required. Specific expectations regarding real time sessions will be communicated by the faculty. Students are required to have reliable and daily access to a computer and internet service.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "d4f105972ab043f4316fd0158d69e4dc5ad2327b7c2cc96ec7274ff9d81c27d2"
+                },
+                {
+                  "class_number": "38228",
+                  "section": "CSC 222-N01B",
+                  "credits": 4,
+                  "days": "W",
+                  "time": "6:00 p.m.-9:45 p.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Virginia Beach Campus",
+                  "mode": "P",
+                  "note": "This section does satisfy the veteran residency requirement.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "0977c04dd2f8e03b44ac23c50556c41abe3b51d0da56cde5300858a083816215"
+                },
+                {
+                  "class_number": "38226",
+                  "section": "CSC 222-O01B",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Virtual Location",
+                  "mode": "WW",
+                  "note": "This class has no scheduled meeting times. It will be conducted online, requiring students to have reliable and daily access to a computer and Internet service.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "8118dd03df8ef6868925f6eb0d8463a381e98c8e1fb6ddd9c3999bd6f4844f9e"
+                }
+              ]
+            }
+          ],
+          "scheduled_section_count": 7,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 7,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9321": {
+          "community_college_id": 9321,
+          "college_name": "Virginia Highlands Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "78394",
+                  "section": "CSC 222-01",
+                  "credits": 4,
+                  "days": "Tu Th",
+                  "time": "1:30 p.m.-2:51 p.m.",
+                  "start_date": "2026-08-31",
+                  "location": "Virginia Highlands Comm Coll",
+                  "mode": "P",
+                  "note": "This is a seated class with in-person instruction.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "37a5c4ab5a950ffcd671f31d74ea62faf9d9d81fdbcdd0743cd4a77c7b6b0c3f"
+                },
+                {
+                  "class_number": "78498",
+                  "section": "CSC 222-40",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-08-31",
+                  "location": "Virtual Location",
+                  "mode": "WW",
+                  "note": "This distance education course may require the student's identity to be verified for certain assignments. VHCC does not charge any additional fees for the purpose of verifying student identity. If external identity verification services are required or if the student chooses to use such services, the student may be responsible for any and all costs incurred.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "7919cc0ea5103196ff6e4bd02a14a4c6c95d6b9bc608c8bf1062b880ad13d8ac"
+                }
+              ]
+            },
+            {
+              "term": "Summer 2027",
+              "term_code": "2273",
+              "sections": []
+            }
+          ],
+          "scheduled_section_count": 2,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 2,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9322": {
+          "community_college_id": 9322,
+          "college_name": "Virginia Peninsula Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "71041",
+                  "section": "CSC 222-61H",
+                  "credits": 4,
+                  "days": "M W",
+                  "time": "2:00 p.m.-3:50 p.m.",
+                  "start_date": "2026-08-19",
+                  "location": "Hampton Campus",
+                  "mode": "P",
+                  "note": "",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "94270e46444fa88d2dd632f0a3d33cb5224d2a3b76ef3dc70baa9fd81effd0ec"
+                },
+                {
+                  "class_number": "71043",
+                  "section": "CSC 222-D61",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-08-19",
+                  "location": "Virtual Location",
+                  "mode": "WW",
+                  "note": "This is an ***Asynchronous*** online section. Online courses are 100% online requiring students to have reliable access to a computer and internet service. This class has no scheduled meeting times. Due dates can be found in the syllabus. Students must login to Canvas regularly to check for course announcements, complete assignments, check grades and feedback, and participate in any other course activities required by the instructor. Students must have regular access to a computer and the Internet to successfully complete this course. Some courses require proctored testing. Students can visit https://vpcc.edu/distance/students for information and resources for online students.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "94f7741c5812c6f2891eb176503b820e55e08837f38d1c1680bcb096b76fc3aa"
+                },
+                {
+                  "class_number": "71042",
+                  "section": "CSC 222-DR61",
+                  "credits": 4,
+                  "days": "M W",
+                  "time": "2:00 p.m.-3:50 p.m.",
+                  "start_date": "2026-08-19",
+                  "location": "Virtual-Real Time",
+                  "mode": "WW",
+                  "note": "This is a ***SYNCHRONOUS*** online section. Attendance at live online class meetings is required on the days and times listed in the course information. These meetings will be held via Zoom or other application designated by the instructor. Students must login to Canvas regularly to check for course announcements, complete assignments, check grades and feedback, and participate in any other course activities required by the instructor. Students must have regular access to a computer and the Internet to successfully complete this course. Some courses require proctored testing. Students can visit https://vpcc.edu/distance/students for information and resources for online students.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "9064cd31879c7ea13d3a56d8e921a450c831aba7132fcd8aef485584e1e128b8"
+                }
+              ]
+            },
+            {
+              "term": "Spring 2027",
+              "term_code": "2272",
+              "sections": [
+                {
+                  "class_number": "34653",
+                  "section": "CSC 222-61H",
+                  "credits": 4,
+                  "days": "Tu Th",
+                  "time": "9:30 a.m.-11:20 a.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Hampton Campus",
+                  "mode": "P",
+                  "note": "",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "2039442a9a3786ee53846863956cd131d7e53515c79fcc78a3bdaa948b522aef"
+                },
+                {
+                  "class_number": "35089",
+                  "section": "CSC 222-D01",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Virtual Location",
+                  "mode": "WW",
+                  "note": "",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "78e666d551485ba31f800aef4b6ff99123901d5ca91bad25fec0670e3821f25f"
+                },
+                {
+                  "class_number": "34655",
+                  "section": "CSC 222-D61",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Virtual Location",
+                  "mode": "WW",
+                  "note": "This is a ***HY-FLEX*** class that allows students the flexibility to decide, from one class meeting to the next, whether they want to attend in-person, synchronously online (live-streaming), or asynchronously online (watching recorded lectures at a time that is convenient for them). Students are encouraged to register for their preferred course delivery mode (in-person, synchronous, or asynchronous), but can move freely between these modalities *without* having to swap their enrollment into a different class section. Some courses require proctored testing. Students can visit https://vpcc.edu/distance/students for information and resources for online students. This is an ***Asynchronous*** online section. Online courses are 100% online requiring students to have reliable access to a computer and internet service. This class has no scheduled meeting times. Due dates can be found in the syllabus. Students must login to Canvas regularly to check for course announcements, complete assignments, check grades and feedback, and participate in any other course activities required by the instructor. Students must have regular access to a computer and the Internet to successfully complete this course. Some courses require proctored testing. Students can visit https://vpcc.edu/distance/students for information and resources for online students.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "736014b28fefe3b224973f5535dd1a3d8f467dae5994170390606629b38121fa"
+                },
+                {
+                  "class_number": "34654",
+                  "section": "CSC 222-DR61",
+                  "credits": 4,
+                  "days": "Tu Th",
+                  "time": "9:30 a.m.-11:20 a.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Virtual-Real Time",
+                  "mode": "HY",
+                  "note": "This is a ***SYNCHRONOUS*** online section. Attendance at live online class meetings is required on the days and times listed in the course information. These meetings will be held via Zoom or other application designated by the instructor. Students must login to Canvas regularly to check for course announcements, complete assignments, check grades and feedback, and participate in any other course activities required by the instructor. Students must have regular access to a computer and the Internet to successfully complete this course. Some courses require proctored testing. Students can visit https://vpcc.edu/distance/students for information and resources for online students. This is a ***HY-FLEX*** class that allows students the flexibility to decide, from one class meeting to the next, whether they want to attend in-person, synchronously online (live-streaming), or asynchronously online (watching recorded lectures at a time that is convenient for them). Students are encouraged to register for their preferred course delivery mode (in-person, synchronous, or asynchronous), but can move freely between these modalities *without* having to swap their enrollment into a different class section. Some courses require proctored testing. Students can visit https://vpcc.edu/distance/students for information and resources for online students.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "edc1f05f7ee418ba96545bc14f2a9903984a6ab9c49b2b2ec46294441f8566f6"
+                },
+                {
+                  "class_number": "35410",
+                  "section": "CSC 222-U01H",
+                  "credits": 4,
+                  "days": "MTuWThF",
+                  "time": "12:00 p.m.-12:50 p.m.",
+                  "start_date": "2027-01-11",
+                  "location": "Governor's School/Science/Tech",
+                  "mode": "P",
+                  "note": "",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "6f32bc56a6e4defca7c9ed54ebb41932602002d24312acdf8bbeb889d6f5d5ef"
+                }
+              ]
+            }
+          ],
+          "scheduled_section_count": 8,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 8,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9323": {
+          "community_college_id": 9323,
+          "college_name": "Virginia Western Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "77351",
+                  "section": "CSC 222-V1",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2026-08-24",
+                  "location": "Virtual Distance Learning",
+                  "mode": "WW",
+                  "note": "Access to a personal computer and internet are required for this online course. For information on the required minimum computer specifications visit: https://www.virginiawestern.edu/online/computer-access/ See College Catalog for course requisite(s). This course may require proctored testing as described in the course syllabus. A student may request an alternative proctoring method, but the student will be responsible for any additional fees associated with the alternative method.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "49c2f2a032b4e9a30b7844e1e508d04954e4abdde5adcafac7ec192e4a98dd33"
+                }
+              ]
+            },
+            {
+              "term": "Spring 2027",
+              "term_code": "2272",
+              "sections": [
+                {
+                  "class_number": "40845",
+                  "section": "CSC 222-V1",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-01-19",
+                  "location": "Virtual Distance Learning",
+                  "mode": "WW",
+                  "note": "Access to a personal computer and internet are required for this online course. For information on the required minimum computer specifications visit: https://www.virginiawestern.edu/online/computer-access/ See College Catalog for course requisite(s). This course may require proctored testing as described in the course syllabus. A student may request an alternative proctoring method, but the student will be responsible for any additional fees associated with the alternative method.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "0fd63e8f5c9cbfcd2907ed3a56c828a5f2c1b1dcdd6deea78bdf2d37780af824"
+                },
+                {
+                  "class_number": "41075",
+                  "section": "CSC 222-V2",
+                  "credits": 4,
+                  "days": null,
+                  "time": "0:00 a.m.-0:00 a.m.",
+                  "start_date": "2027-01-19",
+                  "location": "Virtual Distance Learning",
+                  "mode": "WW",
+                  "note": "See College Catalog for course requisite(s). Access to a personal computer and internet are required for this online course. For information on the required minimum computer specifications visit: https://www.virginiawestern.edu/online/computer-access/ This course may require proctored testing as described in the course syllabus. A student may request an alternative proctoring method, but the student will be responsible for any additional fees associated with the alternative method.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "c3e7bd6f6cc7a31e55c9a25376ec303bbdbc6687b9273b911e4330595329935e"
+                }
+              ]
+            }
+          ],
+          "scheduled_section_count": 3,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 3,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        },
+        "9324": {
+          "community_college_id": 9324,
+          "college_name": "Wytheville Community College",
+          "course_endpoint_available": true,
+          "current_schedule_terms": [
+            {
+              "term": "Fall 2026",
+              "term_code": "2264",
+              "sections": [
+                {
+                  "class_number": "2324",
+                  "section": "CSC 222-E06L",
+                  "credits": 4,
+                  "days": "SuMTuWThFSa",
+                  "time": "1:40 a.m.-1:41 a.m.",
+                  "start_date": "2026-08-24",
+                  "location": "Virtual Location",
+                  "mode": "ER",
+                  "note": "15-week online course offered by NOVA Online. NOVA Online courses are 100% online requiring students to have reliable access to a computer and internet service. This class has no scheduled meeting times. Due dates can be found in the syllabus. Starts August 24. Ends December 14. This distance education course may require the student identity to be verified for certain assignments. WCC does not charge any additional fees for the purpose of verifying student identity. If external identity verification services are required or if the student chooses to use such services, the student is responsible for any and all costs incurred.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "a5ffe2f201ecf149f5e27ed714667a71496955da86f8274756f3919cd772cb92"
+                },
+                {
+                  "class_number": "7857",
+                  "section": "CSC 222-E60A",
+                  "credits": 4,
+                  "days": "SuMTuWThFSa",
+                  "time": "2:32 a.m.-2:33 a.m.",
+                  "start_date": "2026-09-22",
+                  "location": "Virtual Location",
+                  "mode": "ER",
+                  "note": "3rd twelve-week online course offered by NOVA Online. NOVA Online courses are 100% online requiring students to have reliable access to a computer and internet service. This class has no scheduled meeting times. Due dates can be found in the syllabus. Starts September 22. Ends December 14. This distance education course may require the student identity to be verified for certain assignments. WCC does not charge any additional fees for the purpose of verifying student identity. If external identity verification services are required or if the student chooses to use such services, the student is responsible for any and all costs incurred.",
+                  "explicit_java_statement": false,
+                  "java_mentioned": false,
+                  "fragment_sha256": "25a947c4062c105d89eb26fcf77c58e730a41cc47fbf47dd52d416ff87916e5a"
+                }
+              ]
+            },
+            {
+              "term": "Spring 2027",
+              "term_code": "2272",
+              "sections": []
+            }
+          ],
+          "scheduled_section_count": 2,
+          "explicitly_java_bound_section_count": 0,
+          "unbound_section_count": 2,
+          "has_exact_current_java_section_binding": false,
+          "all_scheduled_sections_explicitly_java": false,
+          "resolution_status": "fail_closed",
+          "qualification_gap": "No current CSC 222 row at this college explicitly binds a listed section to Java."
+        }
+      }
+    },
+    "supplemental_context": {
+      "germanna": {
+        "community_college_id": 9306,
+        "evidence_scope": "current_course_support_resources_not_delivery_policy",
+        "java_specific_handouts": [
+          {
+            "label": "Java: Input and Output",
+            "url": "https://germanna.edu/sites/default/files/2026-05/Java%20Input%20and%20Output.pdf"
+          },
+          {
+            "label": "Java: File Handling",
+            "url": "https://germanna.edu/sites/default/files/2024-12/Java%20Programming%20File%20Handling.pdf"
+          },
+          {
+            "label": "Java: Variables and Data Types",
+            "url": "https://germanna.edu/sites/default/files/2026-01/Java%20Variables%20and%20Data%20Types.pdf"
+          },
+          {
+            "label": "Object-Oriented Programming with Java",
+            "url": "https://germanna.edu/sites/default/files/2022-03/Object%20Oriented%20Programming%20with%20Java.pdf"
+          }
+        ],
+        "universal_current_csc222_java_binding": false,
+        "resolution_status": "fail_closed",
+        "qualification_gap": "Java-specific tutoring resources are grouped under CSC 222, but the page does not state that every current CSC 222 delivery uses Java."
+      },
+      "laurel_ridge": {
+        "community_college_id": 9308,
+        "evidence_scope": "historical_grant_cohort_certificate_description",
+        "published_at": "2022-12-23T01:53:45+00:00",
+        "csc222_java_statement": "The 18-credit certificate for the grant includes CSC221 – Introduction to Problem Solving & Programming (Python), CSC222 – Object-Oriented Programming (Java), CSC223- Data Structures and Analysis of Algorithms (C++), CSC208 – Discrete Structures (Discrete Math & Python) and four-credits’ worth of seminars and projects.",
+        "universal_current_csc222_java_binding": false,
+        "resolution_status": "fail_closed",
+        "qualification_gap": "A December 2022 grant-cohort article names CSC222 (Java), but it does not bind the current Fall 2026 section or establish a current universal delivery policy."
+      },
+      "reynolds": {
+        "community_college_id": 9307,
+        "evidence_scope": "course_outline_permits_language_variation",
+        "effective_date": "2022-01-01",
+        "language_policy": "JAVA is the preferred language for this course, institutions may offer using a different language to align with primary 4year partner requirements.",
+        "universal_current_csc222_java_binding": false,
+        "resolution_status": "fail_closed",
+        "qualification_gap": "The official outline calls Java preferred and expressly permits another language; the current section has no language note."
+      }
+    }
+  },
+  "facts_sha256": "0c2b864420dd33cfab3b436e42a446d9d3ef74a505c6b6f09e17e7141777015f",
+  "paper_interpretation": {
+    "figures": [
+      "3",
+      "4"
+    ],
+    "method": "fail_closed_without_current_exact_section_or_universal_college_language_binding",
+    "audited_blocked_community_college_ids": [
+      9301,
+      9302,
+      9303,
+      9306,
+      9307,
+      9308,
+      9311,
+      9314,
+      9315,
+      9319,
+      9320,
+      9321,
+      9322,
+      9323,
+      9324
+    ],
+    "newly_resolved_community_college_ids": [],
+    "still_blocked_community_college_ids": [
+      9301,
+      9302,
+      9303,
+      9306,
+      9307,
+      9308,
+      9311,
+      9314,
+      9315,
+      9319,
+      9320,
+      9321,
+      9322,
+      9323,
+      9324
+    ],
+    "newly_resolved_cells": 0,
+    "still_blocked_cells": 15,
+    "germanna_course_resources_treated_as_delivery_policy": false,
+    "laurel_ridge_2022_cohort_generalized_to_current_sections": false,
+    "reynolds_preferred_language_treated_as_required": false,
+    "wytheville_nova_provider_inferred_from_other_nova_sections": false,
+    "statewide_language_inferred": false
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "requested_url": "https://catalog.vt.edu/robots.txt",
+  "final_url": "https://catalog.vt.edu/robots.txt",
+  "http_status": 202,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 2431,
+  "content_sha256": "dc30d15d6586820bb3b94e94b6d18846549e741eec7515aec3dc2d5c89255f90",
+  "fetched_at": "2026-08-24T21:46:20.893Z"
+}

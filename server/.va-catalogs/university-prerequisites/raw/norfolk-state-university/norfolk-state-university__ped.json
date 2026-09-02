@@ -1,0 +1,21 @@
+{
+  "route_id": "norfolk-state-university__ped",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/ped/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/ped/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 74114,
+  "content_sha256": "bccebc372655a9c750e359adf03267d810102f47d709964fa769d7a601efac62",
+  "fetched_at": "2026-08-24T18:03:02.288Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "PED100"
+  ]
+}

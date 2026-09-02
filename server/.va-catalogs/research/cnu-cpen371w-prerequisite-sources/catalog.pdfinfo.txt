@@ -1,0 +1,19 @@
+Title:           CNU 2026-2027 Undergraduate Catalog
+Creator:         Adobe InDesign 21.4 (Windows)
+Producer:        Adobe PDF Library 18.0
+CreationDate:    Wed Aug  5 08:50:58 2026 PDT
+ModDate:         Wed Aug  5 12:51:07 2026 PDT
+Custom Metadata: no
+Metadata Stream: yes
+Tagged:          yes
+UserProperties:  no
+Suspects:        no
+Form:            AcroForm
+JavaScript:      no
+Pages:           321
+Encrypted:       no
+Page size:       602.503 x 787.5 pts
+Page rot:        0
+File size:       12618538 bytes
+Optimized:       no
+PDF version:     1.7

@@ -1,0 +1,19 @@
+{
+  "route_id": "bridgewater-college__catalog_edition",
+  "requested_url": "https://bridgewater.cleancatalog.io/courses-of-instruction",
+  "final_url": "https://bridgewater.cleancatalog.io/courses-of-instruction",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "byte_length": 15124,
+  "content_sha256": "705fb1cad1dab47b0e3b55537d7b84ec57e438263bff73425c08712cdf770825",
+  "fetched_at": "2026-08-24T19:11:40.587Z",
+  "robots": {
+    "url": "https://bridgewater.cleancatalog.io/robots.txt",
+    "http_status": 200,
+    "content_sha256": "418e112c89979b34678c945b45186d0cff4d829bcdc9d6d8437be76f50ef38f9",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": []
+}

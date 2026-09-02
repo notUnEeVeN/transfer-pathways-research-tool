@@ -1,0 +1,9 @@
+{
+  "requested_url": "https://catalog.vsu.edu/robots.txt",
+  "final_url": "https://catalog.vsu.edu/robots.txt",
+  "http_status": 200,
+  "content_type": "text/plain; charset=UTF-8",
+  "byte_length": 648,
+  "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+  "fetched_at": "2026-08-24T18:03:52.316Z"
+}

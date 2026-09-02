@@ -1,0 +1,24 @@
+{
+  "route_id": "george-mason-university__geol",
+  "requested_url": "https://catalog.gmu.edu/courses/geol/",
+  "final_url": "https://catalog.gmu.edu/courses/geol/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 150216,
+  "content_sha256": "64d7bb9458feb00cc2d0f5e8cd5d45081da70b2c9a3bd2f895db9fa8b8453d93",
+  "fetched_at": "2026-08-24T18:02:31.130Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "GEOL101",
+    "GEOL102",
+    "GEOL103",
+    "GEOL104"
+  ]
+}

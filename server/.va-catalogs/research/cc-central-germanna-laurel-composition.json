@@ -14,8 +14,12 @@
     "current_standalone_cs_as": 3,
     "genuine_no_program_findings": 0,
     "catalog_accepted": 3,
-    "analysis_ready": 0,
-    "analysis_blocker_for_all": "constraint_support",
+    "analysis_ready": 2,
+    "analysis_blockers": {
+      "central-virginia-community-college": [],
+      "germanna-community-college": [],
+      "laurel-ridge-community-college": ["constraint_support"]
+    },
     "findings": [
       "Central Virginia publishes a current 60-61 credit Computer Science A.S. under academic plan 246 and links three concrete UCGS option records.",
       "Germanna publishes a current Computer Science A.S. plan 246 with a 60-credit minimum, an explicit 60-62 completion range, categorical degree requirements, UCGS options, and a separate approved transfer-elective dictionary.",

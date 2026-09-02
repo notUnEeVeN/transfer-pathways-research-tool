@@ -1,0 +1,87 @@
+{
+  "route_id": "virginia-polytechnic-institute-and-state-university__bit_department",
+  "requested_url": "https://catalog.vt.edu/undergraduate/pamplin-college-business/business-information-technology/",
+  "final_url": "https://catalog.vt.edu/undergraduate/pamplin-college-business/business-information-technology/",
+  "capture_status": "official_browser_document_captured",
+  "blocked_reason": null,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 104368,
+  "content_sha256": "2f3257f8f3482845b01345a0c3a70d9597e318d5ec009aac834955eb037de892",
+  "fetched_at": "2026-08-25T02:31:57.581Z",
+  "browser_challenge_receipt": {
+    "contract": "known_courseleaf_host_exact_same_url_document_202_then_200_raw_response_v1",
+    "requested_url": "https://catalog.vt.edu/undergraduate/pamplin-college-business/business-information-technology/",
+    "exact_same_url": true,
+    "document_response_count": 2,
+    "browser_engine": "chromium",
+    "browser_version": "151.0.7922.34",
+    "document_responses": [
+      {
+        "ordinal": 1,
+        "http_status": 202,
+        "url": "https://catalog.vt.edu/undergraduate/pamplin-college-business/business-information-technology/",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 2431,
+        "content_sha256": "2372b89b7d4407bd59f43a6d672dcb0e5866d7f961610346799db82dbcf8d430",
+        "cache_path": "university-prerequisites/raw/virginia-polytechnic-institute-and-state-university/virginia-polytechnic-institute-and-state-university__bit_department.challenge.html"
+      },
+      {
+        "ordinal": 2,
+        "http_status": 200,
+        "url": "https://catalog.vt.edu/undergraduate/pamplin-college-business/business-information-technology/",
+        "content_type": "text/html; charset=UTF-8",
+        "byte_length": 104368,
+        "content_sha256": "2f3257f8f3482845b01345a0c3a70d9597e318d5ec009aac834955eb037de892",
+        "cache_path": "university-prerequisites/raw/virginia-polytechnic-institute-and-state-university/virginia-polytechnic-institute-and-state-university__bit_department.html"
+      }
+    ]
+  },
+  "robots_receipt": {
+    "contract": "known_courseleaf_host_browser_challenge_robots_policy_and_exact_path_allowance_v1",
+    "capture": {
+      "contract": "known_courseleaf_host_exact_same_url_document_202_then_200_raw_response_v1",
+      "requested_url": "https://catalog.vt.edu/robots.txt",
+      "exact_same_url": true,
+      "document_response_count": 2,
+      "browser_engine": "chromium",
+      "browser_version": "151.0.7922.34",
+      "document_responses": [
+        {
+          "ordinal": 1,
+          "http_status": 202,
+          "url": "https://catalog.vt.edu/robots.txt",
+          "content_type": "text/html; charset=UTF-8",
+          "byte_length": 2431,
+          "content_sha256": "c2b01278167bd519c15b604327952bf868778167bb2403a2d1161dad162c1a2a",
+          "cache_path": "university-prerequisites/raw/_robots/catalog.vt.edu__browser.challenge.html"
+        },
+        {
+          "ordinal": 2,
+          "http_status": 200,
+          "url": "https://catalog.vt.edu/robots.txt",
+          "content_type": "text/plain; charset=UTF-8",
+          "byte_length": 739,
+          "content_sha256": "1ff455d3338e249a25649b204d1c4bf56d736869320afac5e219250bf5cc0692",
+          "cache_path": "university-prerequisites/raw/_robots/catalog.vt.edu__browser.txt"
+        }
+      ]
+    },
+    "nonempty_final_body": true,
+    "parsed_policy": {
+      "rule_count": 33,
+      "crawl_delay_seconds": 0,
+      "policy_sha256": "2c04ce7819dae6343b3de23ce69cb667e8313cb1273e43ac620a15c1bfbbc6b1"
+    },
+    "checked_path": "/undergraduate/pamplin-college-business/business-information-technology/",
+    "path_allowed": true
+  },
+  "target_course_codes": [
+    "BIT4424",
+    "BIT4434",
+    "BIT4444",
+    "BIT4544",
+    "BIT4604",
+    "BIT4614",
+    "BIT4624"
+  ]
+}

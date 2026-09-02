@@ -1,0 +1,26 @@
+{
+  "route_id": "william-mary__math",
+  "requested_url": "https://catalog.wm.edu/undergraduate/courses/math/",
+  "final_url": "https://catalog.wm.edu/undergraduate/courses/math/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 104364,
+  "content_sha256": "24fa149a313b93ef85e754286e9aa01ebd2e03a938a7e0b6315a5f620682928f",
+  "fetched_at": "2026-08-24T18:04:32.571Z",
+  "robots": {
+    "url": "https://catalog.wm.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "4eaac51773cf2538bbac642a1926ea98f51c25819252a0094007028fa72d069a",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "MATH109",
+    "MATH111",
+    "MATH112",
+    "MATH131",
+    "MATH132",
+    "MATH214"
+  ]
+}

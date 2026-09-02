@@ -1,0 +1,21 @@
+{
+  "route_id": "shenandoah-university__fys101",
+  "requested_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=54418",
+  "final_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=54418",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 167554,
+  "content_sha256": "9cf43e7d0028a4f03c1b1c4c23068ad996969ffd2ee06e2b3f5a8569eb3ca45d",
+  "fetched_at": "2026-08-25T10:48:07.212Z",
+  "robots": {
+    "url": "https://catalog.su.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "FYS101"
+  ]
+}

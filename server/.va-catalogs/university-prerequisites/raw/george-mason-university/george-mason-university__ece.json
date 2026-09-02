@@ -1,0 +1,30 @@
+{
+  "route_id": "george-mason-university__ece",
+  "requested_url": "https://catalog.gmu.edu/courses/ece/",
+  "final_url": "https://catalog.gmu.edu/courses/ece/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 388340,
+  "content_sha256": "be9819b8dcda2f3f7ccd700e923acd8277396e8a5b0cd4bf2ffae63ed09892a0",
+  "fetched_at": "2026-08-24T18:02:27.959Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ECE231",
+    "ECE232",
+    "ECE301",
+    "ECE340",
+    "ECE350",
+    "ECE445",
+    "ECE446",
+    "ECE447",
+    "ECE455",
+    "ECE511"
+  ]
+}

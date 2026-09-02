@@ -1,0 +1,21 @@
+{
+  "route_id": "the-university-of-virginia-s-college-at-wise__sta2180",
+  "requested_url": "http://catalog.uvawise.edu/preview_course_nopop.php?catoid=9&coid=18772",
+  "final_url": "http://catalog.uvawise.edu/preview_course_nopop.php?catoid=9&coid=18772",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 56733,
+  "content_sha256": "9458221e68680870bff1a23ee0abede6a8850a7b8e2c991b078439db09e96b14",
+  "fetched_at": "2026-08-24T23:00:08.556Z",
+  "robots": {
+    "url": "http://catalog.uvawise.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "STA2180"
+  ]
+}

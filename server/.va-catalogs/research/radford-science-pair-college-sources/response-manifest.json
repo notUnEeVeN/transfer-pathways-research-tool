@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "host": "www.transfervirginia.org",
+  "robots": {
+    "status": 200,
+    "crawlDelay": 10
+  },
+  "discoveryResponses": {
+    "CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "PHY201": {
+      "requestedUrl": "https://www.transfervirginia.org/course/D3A19A611F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/D3A19A611F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "PHY202": {
+      "requestedUrl": "https://www.transfervirginia.org/course/D3A19B281F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/D3A19B281F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    }
+  },
+  "courseResponses": {
+    "brightpoint-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/F227A5F21F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/F227A5F21F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "brightpoint-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/F227A6B71F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/F227A6B71F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "central-virginia-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/D710CF331F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/D710CF331F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "central-virginia-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/D710CF7C1F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/D710CF7C1F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "germanna-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/EA2940431F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/EA2940431F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "germanna-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/EA29411E1F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/EA29411E1F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "laurel-ridge-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/F3FCB9DB1F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/F3FCB9DB1F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "laurel-ridge-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/F3FCBA4B1F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/F3FCBA4B1F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "new-river-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/F836F6AF1F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/F836F6AF1F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "new-river-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/F836F7971F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/F836F7971F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "northern-virginia-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/FB172D3E1F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/FB172D3E1F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "northern-virginia-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/FB172D7B1F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/FB172D7B1F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "piedmont-virginia-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/070AD5131F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/070AD5131F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "piedmont-virginia-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/070AD5501F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/070AD5501F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "rappahannock-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/096041971F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/096041971F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "rappahannock-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/096042631F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/096042631F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "tidewater-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/13165B2D1F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/13165B2D1F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "tidewater-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/13165B6C1F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/13165B6C1F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "virginia-highlands-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/1A40C2921F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/1A40C2921F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "virginia-highlands-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/1A40C4291F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/1A40C4291F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "virginia-peninsula-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/10B711671F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/10B711671F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "virginia-peninsula-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/10B712F81F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/10B712F81F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "virginia-western-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/1E1EE3B31F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/1E1EE3B31F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "virginia-western-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/1E1EE47E1F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/1E1EE47E1F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "wytheville-community-college:PHY201": {
+      "requestedUrl": "https://www.transfervirginia.org/course/2112C61D1F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/2112C61D1F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "wytheville-community-college:PHY202": {
+      "requestedUrl": "https://www.transfervirginia.org/course/2112C6611F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/2112C6611F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "j-sargeant-reynolds-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/EFB2B1001F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/EFB2B1001F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "j-sargeant-reynolds-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/EFB2B1541F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/EFB2B1541F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "mountain-gateway-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/D9F6FD9A1F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/D9F6FD9A1F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "mountain-gateway-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/D9F6FDFD1F9411F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/D9F6FDFD1F9411F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "paul-d-camp-community-college:CHM111": {
+      "requestedUrl": "https://www.transfervirginia.org/course/036278781F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/036278781F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    "paul-d-camp-community-college:CHM112": {
+      "requestedUrl": "https://www.transfervirginia.org/course/036279241F9511F082AC0242AC15010A",
+      "finalUrl": "https://www.transfervirginia.org/course/036279241F9511F082AC0242AC15010A",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    }
+  }
+}

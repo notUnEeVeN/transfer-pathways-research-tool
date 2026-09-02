@@ -1,0 +1,692 @@
+{
+  "schema_version": 1,
+  "artifact": "vmi_2025_2026_open_rule_source_evidence",
+  "catalog_year": "2025-2026",
+  "institution": {
+    "slug": "virginia-military-institute",
+    "name": "Virginia Military Institute",
+    "school_id": 9235
+  },
+  "publication_ready": false,
+  "source_contract": {
+    "catalog_boundary": "Every semantic rule and course witness is from the VMI 2025-2026 catalog edition. The catalog index and official PDF are independent responses bound by their exact response hashes; no same-capture-time claim is made.",
+    "retained_primary_sources": {
+      "verified": true,
+      "issues": [],
+      "receipts": {
+        "program": {
+          "official_url": "https://catalog.vmi.edu/preview_program.php?catoid=39&poid=2815&print=1",
+          "normalized_text_sha256": "87c7981ed376b431a5116bdbed48d5213e3bf476ac7ec5da3f4e3a3571fe2609",
+          "normalized_text_bytes": 7441,
+          "retained_html_sha256": "095efb6560ade865e6a4534bc52f14e56dd32235b0462d4e3b0b827038744351",
+          "retained_html_bytes": 153754,
+          "manifest_classification": "exact_local_byte_match",
+          "captured_at": "2026-08-10T22:35:19.019Z"
+        },
+        "course_catalog": {
+          "official_url": "https://catalog.vmi.edu/content.php?catoid=39&navoid=1548",
+          "normalized_text_sha256": "88a32ceba30aabc76b6a6389de0a52c5d9fde78b1a5634ad6f3bed4b10a02439",
+          "normalized_text_bytes": 11495,
+          "retained_html_sha256": "18460bba408b1b64e4de8fc8fa914ad2c73f78a983ba5abe50dc1a6dc11544a1",
+          "retained_html_bytes": 85702,
+          "manifest_classification": "exact_local_byte_match",
+          "captured_at": "2026-08-10T22:35:19.019Z"
+        },
+        "ge": {
+          "official_url": "https://www.vmi.edu/academics/academic-program/",
+          "normalized_text_sha256": "189939a08a458e988916adbc5fe7ef3bd1f647b005cabe28cff2695c664c738d",
+          "normalized_text_bytes": 6020,
+          "retained_html_sha256": "b68e801f1084a76f391e4ed72766f5f75e120a08a625d0e55a6c01e015f1ca1b",
+          "retained_html_bytes": 230388,
+          "manifest_classification": "exact_local_byte_match",
+          "captured_at": "2026-08-10T22:35:19.019Z"
+        },
+        "graduation": {
+          "official_url": "https://www.vmi.edu/academics/academic-support-services/registrar/registration-enrollment/transfer-activity-after-matriculation/",
+          "normalized_text_sha256": "ba0009fe257230d773537dc2578ebae35c71c4af5639222aa2208ecc23307d7e",
+          "normalized_text_bytes": 2110,
+          "retained_html_sha256": "b2d6efd2119a75c3629fd2373aa7f94d7e6339736fe6c6d6c39a0b41a1de7add",
+          "retained_html_bytes": 224639,
+          "manifest_classification": "exact_local_byte_match",
+          "captured_at": "2026-08-10T22:35:19.019Z"
+        }
+      }
+    },
+    "official_catalog_pdf": {
+      "verified": true,
+      "issues": [],
+      "official_url": "https://www.vmi.edu/wp-content/uploads/2026/06/2025-2026_VMICatalog-SizedforWeb.pdf",
+      "catalog_identity": "VIRGINIA MILITARY INSTITUTE ACADEMIC CATALOG, 2025-2026",
+      "pdf_sha256": "244f93ee26e73f8639512bfa7b5e383af3d196ab5c02f4559d20628066390c32",
+      "pdf_bytes": 10270130,
+      "bounded_page_text_sha256": "a1e0d504f1beed7544e5cd10c75c7382fe60c26e02b524867a722d8fc8b611c9",
+      "bounded_page_text_bytes": 11713,
+      "page_ranges": [
+        [
+          42,
+          42
+        ],
+        [
+          132,
+          134
+        ],
+        [
+          233,
+          233
+        ],
+        [
+          243,
+          243
+        ]
+      ],
+      "acquisition_boundary": "raw PDF bytes are regenerable under the ignored page cache; this durable receipt retains only exact response identity and page-bounded extracted text"
+    }
+  },
+  "published_degree_arithmetic": {
+    "verified": true,
+    "issues": [],
+    "degree_total_credits": 136,
+    "exact_category_credits": {
+      "core": 34,
+      "computer_science_core": 30,
+      "theory_application_track": 18,
+      "cis_electives": 6,
+      "cis_upper_level_elective": 3,
+      "additional_mathematics": 9,
+      "rotc": 12,
+      "free_electives": 24
+    },
+    "category_credit_sum": 136,
+    "science_rule": {
+      "total_credits": 8,
+      "course_count": 2,
+      "each_course_credits": 4,
+      "eligible_subjects": [
+        "BI",
+        "CH",
+        "PY"
+      ],
+      "laboratory_required": true,
+      "source_says_approved_sequence": true,
+      "source_says_sequence_differs_by_major": true
+    },
+    "mathematics_elective": {
+      "credits": 3,
+      "minimum_course_number": 200
+    },
+    "civilizations_and_cultures": {
+      "course_count": 2,
+      "study_abroad_replacement_maximum": 1,
+      "study_abroad_must_be_credit_bearing": true,
+      "study_abroad_must_be_institute_approved": true
+    }
+  },
+  "approved_math_elective_level_floor": {
+    "source_verified": true,
+    "paper_witness_exact": true,
+    "authored_constraint_path": "requirement_groups[5]",
+    "predicate": {
+      "subject": "MA",
+      "minimum_course_number": 200,
+      "credits": 3
+    },
+    "roster_contract": {
+      "verified": true,
+      "issues": [],
+      "structural_section": {
+        "heading": "APPLIED MATHEMATICS",
+        "next_heading": "ARABIC",
+        "heading_row_index": 20,
+        "next_heading_row_index": 60
+      },
+      "published_entry_count": 39,
+      "at_or_above_200_count": 30,
+      "exact_single_identity_count": 28,
+      "selectable_single_identity_excluding_required_MA220_count": 27,
+      "entries": [
+        {
+          "course_code": "MA101",
+          "title": "Math that Matters I",
+          "catalog_id": 39,
+          "course_id": 42296,
+          "structural_row_index": 21
+        },
+        {
+          "course_code": "MA102",
+          "title": "Math that Matters II",
+          "catalog_id": 39,
+          "course_id": 42297,
+          "structural_row_index": 22
+        },
+        {
+          "course_code": "MA103",
+          "title": "Matrix Algebra",
+          "catalog_id": 39,
+          "course_id": 41738,
+          "structural_row_index": 23
+        },
+        {
+          "course_code": "MA106",
+          "title": "Introduction to Probability and Statistics",
+          "catalog_id": 39,
+          "course_id": 41740,
+          "structural_row_index": 24
+        },
+        {
+          "course_code": "MA110",
+          "title": "Mathematical Software",
+          "catalog_id": 39,
+          "course_id": 41741,
+          "structural_row_index": 25
+        },
+        {
+          "course_code": "MA114",
+          "title": "Pre-Calculus Mathematics",
+          "catalog_id": 39,
+          "course_id": 41742,
+          "structural_row_index": 26
+        },
+        {
+          "course_code": "MA123",
+          "title": "Calculus & Analytic Geometry I",
+          "catalog_id": 39,
+          "course_id": 41743,
+          "structural_row_index": 27
+        },
+        {
+          "course_code": "MA124",
+          "title": "Calculus & Analytic Geometry II",
+          "catalog_id": 39,
+          "course_id": 41744,
+          "structural_row_index": 28
+        },
+        {
+          "course_code": "MA126",
+          "title": "Quantitative Methods",
+          "catalog_id": 39,
+          "course_id": 41746,
+          "structural_row_index": 29
+        },
+        {
+          "course_code": "MA215",
+          "title": "Calculus With Analytic Geometry III",
+          "catalog_id": 39,
+          "course_id": 41749,
+          "structural_row_index": 30
+        },
+        {
+          "course_code": "MA220",
+          "title": "Probability & Statistics for Engineers & Scientists",
+          "catalog_id": 39,
+          "course_id": 41750,
+          "structural_row_index": 31
+        },
+        {
+          "course_code": "MA301",
+          "title": "Higher Mathematics for Engineers and Scientists",
+          "catalog_id": 39,
+          "course_id": 41751,
+          "structural_row_index": 32
+        },
+        {
+          "course_code": "MA305",
+          "title": "Elementary Linear Algebra",
+          "catalog_id": 39,
+          "course_id": 41754,
+          "structural_row_index": 33
+        },
+        {
+          "course_code": "MA310",
+          "title": "Matlab Programming",
+          "catalog_id": 39,
+          "course_id": 41755,
+          "structural_row_index": 34
+        },
+        {
+          "course_code": "MA311",
+          "title": "Elementary Differential Equations",
+          "catalog_id": 39,
+          "course_id": 41756,
+          "structural_row_index": 35
+        },
+        {
+          "course_code": "MA319",
+          "title": "Mathematical Methods of Operations Research",
+          "catalog_id": 39,
+          "course_id": 41757,
+          "structural_row_index": 36
+        },
+        {
+          "course_code": "MA320",
+          "title": "Mathematical Modeling",
+          "catalog_id": 39,
+          "course_id": 42199,
+          "structural_row_index": 37
+        },
+        {
+          "course_code": "MA330WX",
+          "title": "History of Mathematics",
+          "catalog_id": 39,
+          "course_id": 41759,
+          "structural_row_index": 38
+        },
+        {
+          "course_code": "MA331X",
+          "title": "History of Mathematics II",
+          "catalog_id": 39,
+          "course_id": 42184,
+          "structural_row_index": 39
+        },
+        {
+          "course_code": "MA339",
+          "title": "Introduction to Python",
+          "catalog_id": 39,
+          "course_id": 42532,
+          "structural_row_index": 40
+        },
+        {
+          "course_code": "MA340",
+          "title": "Introduction to R Programming for Data Science and Statistics",
+          "catalog_id": 39,
+          "course_id": 42533,
+          "structural_row_index": 41
+        },
+        {
+          "course_code": "MA341",
+          "title": "Fractals",
+          "catalog_id": 39,
+          "course_id": 42356,
+          "structural_row_index": 42
+        },
+        {
+          "course_code": "MA342",
+          "title": "Introduction to Mathematica",
+          "catalog_id": 39,
+          "course_id": 42357,
+          "structural_row_index": 43
+        },
+        {
+          "course_code": "MA343",
+          "title": "Introduction to LaTeX",
+          "catalog_id": 39,
+          "course_id": 42358,
+          "structural_row_index": 44
+        },
+        {
+          "course_code": "MA345",
+          "title": "STK for Defense Applications",
+          "catalog_id": 39,
+          "course_id": 42359,
+          "structural_row_index": 45
+        },
+        {
+          "course_code": "MA346",
+          "title": "Operations Research Algorithms and Heuristics",
+          "catalog_id": 39,
+          "course_id": 42427,
+          "structural_row_index": 46
+        },
+        {
+          "course_code": "MA347",
+          "title": "Discrete and Markov Processes",
+          "catalog_id": 39,
+          "course_id": 42479,
+          "structural_row_index": 47
+        },
+        {
+          "course_code": "MA348",
+          "title": "Math and Sports",
+          "catalog_id": 39,
+          "course_id": 42400,
+          "structural_row_index": 48
+        },
+        {
+          "course_code": "MA349",
+          "title": "Introduction to VBA Programming",
+          "catalog_id": 39,
+          "course_id": 42534,
+          "structural_row_index": 49
+        },
+        {
+          "course_code": "MA404",
+          "title": "Introduction to Statistical Learning",
+          "catalog_id": 39,
+          "course_id": 42510,
+          "structural_row_index": 50
+        },
+        {
+          "course_code": "MA405",
+          "title": "Statistics",
+          "catalog_id": 39,
+          "course_id": 41761,
+          "structural_row_index": 51
+        },
+        {
+          "course_code": "MA415",
+          "title": "Chaos and Nonlinear Dynamics",
+          "catalog_id": 39,
+          "course_id": 42200,
+          "structural_row_index": 52
+        },
+        {
+          "course_code": "MA419",
+          "title": "Intro to Non-Linear Optimization",
+          "catalog_id": 39,
+          "course_id": 42078,
+          "structural_row_index": 53
+        },
+        {
+          "course_code": "MA426",
+          "title": "Intro to Stochastic Process",
+          "catalog_id": 39,
+          "course_id": 42079,
+          "structural_row_index": 54
+        },
+        {
+          "course_code": "MA432",
+          "title": "Numerical Analysis",
+          "catalog_id": 39,
+          "course_id": 41763,
+          "structural_row_index": 55
+        },
+        {
+          "course_code": "MA451-459",
+          "title": "Independent Study",
+          "catalog_id": 39,
+          "course_id": 41765,
+          "structural_row_index": 56
+        },
+        {
+          "course_code": "MA471-479",
+          "title": "Topics in Mathematics",
+          "catalog_id": 39,
+          "course_id": 41768,
+          "structural_row_index": 57
+        },
+        {
+          "course_code": "MA490W",
+          "title": "Research Practicum in Applied Mathematics",
+          "catalog_id": 39,
+          "course_id": 41767,
+          "structural_row_index": 58
+        },
+        {
+          "course_code": "MA495",
+          "title": "Advanced Research Projects in Applied Mathematics",
+          "catalog_id": 39,
+          "course_id": 42099,
+          "structural_row_index": 59
+        }
+      ],
+      "selectable_single_identity_codes": [
+        "MA215",
+        "MA301",
+        "MA305",
+        "MA310",
+        "MA311",
+        "MA319",
+        "MA320",
+        "MA330WX",
+        "MA331X",
+        "MA339",
+        "MA340",
+        "MA341",
+        "MA342",
+        "MA343",
+        "MA345",
+        "MA346",
+        "MA347",
+        "MA348",
+        "MA349",
+        "MA404",
+        "MA405",
+        "MA415",
+        "MA419",
+        "MA426",
+        "MA432",
+        "MA490W",
+        "MA495"
+      ]
+    },
+    "deterministic_witness": {
+      "course_code": "MA331X",
+      "allocation": "open mathematics elective",
+      "credits": 3,
+      "satisfies_number_floor": true,
+      "civilizations_and_cultures_designation": true,
+      "prerequisite_formula": {
+        "kind": "course",
+        "code": "MA124"
+      },
+      "prerequisite_course_already_required": true,
+      "prerequisite_course_code": "MA124",
+      "source_entry_sha256": "02c77cbb64ebe04a77a309e2ddd35b063d52f58ffb654f7a39fa89d74234322f"
+    }
+  },
+  "core_overlay_inside_free_electives": {
+    "source_verified": true,
+    "paper_witness_exact": true,
+    "authored_constraint_path": "requirement_groups[7]",
+    "exact_source_rule": {
+      "course_count": 2,
+      "study_abroad_replacement_maximum": 1,
+      "study_abroad_must_be_credit_bearing": true,
+      "study_abroad_must_be_institute_approved": true
+    },
+    "localization_finding": {
+      "authored_kind_literal_both_courses_inside_free_electives_supported": false,
+      "description_inside_published_allocation_supported": true,
+      "reason": "The source requires two C&C courses but does not require both to occupy free-elective slots. A legal zero-increment witness uses one math-elective slot and one free-elective slot."
+    },
+    "deterministic_cross_allocation_witness": {
+      "study_abroad_used": false,
+      "total_designated_courses": 2,
+      "incremental_credits_above_published_degree_total": 0,
+      "free_elective_credits_consumed": 3,
+      "free_elective_credits_remaining": 21,
+      "assignments": [
+        {
+          "course_code": "MA331X",
+          "allocation": "open mathematics elective",
+          "credits": 3,
+          "prerequisite_formula": {
+            "kind": "course",
+            "code": "MA124"
+          },
+          "prerequisite_course_already_required": true,
+          "source_entry_sha256": "02c77cbb64ebe04a77a309e2ddd35b063d52f58ffb654f7a39fa89d74234322f"
+        },
+        {
+          "course_code": "MA330WX",
+          "allocation": "free electives",
+          "credits": 3,
+          "selected_prerequisite_branch": {
+            "kind": "course",
+            "code": "MA123"
+          },
+          "full_prerequisite_formula": {
+            "kind": "any_of",
+            "operands": [
+              {
+                "kind": "course",
+                "code": "MA123"
+              },
+              {
+                "kind": "permission",
+                "authority": "instructor"
+              }
+            ]
+          },
+          "selected_prerequisite_course_already_required": true,
+          "source_entry_sha256": "546cf52e787a1c694212c99dc30a7ac73ae47b84ec31e956d3f70a9290612886"
+        }
+      ]
+    }
+  },
+  "approved_science_sequence": {
+    "source_rule_verified": true,
+    "exact_approved_roster_verified": false,
+    "paper_witness_exact": false,
+    "authored_constraint_path": "requirement_groups[0]",
+    "exact_source_rule": {
+      "total_credits": 8,
+      "course_count": 2,
+      "each_course_credits": 4,
+      "eligible_subjects": [
+        "BI",
+        "CH",
+        "PY"
+      ],
+      "laboratory_required": true,
+      "source_says_approved_sequence": true,
+      "source_says_sequence_differs_by_major": true
+    },
+    "bounded_candidate": {
+      "course_codes": [
+        "BI101",
+        "BI102"
+      ],
+      "total_credits": 8,
+      "same_eligible_subject": true,
+      "each_has_laboratory": true,
+      "continuation_relationship_explicit": true,
+      "entries": [
+        {
+          "credits": 4,
+          "lecture_hours": 3,
+          "lab_hours": 3,
+          "raw_entry_sha256": "74de0c2ed5ad0ec3435016366c23eec67168205fbd40580af2822004d781f4e2"
+        },
+        {
+          "credits": 4,
+          "lecture_hours": 3,
+          "lab_hours": 3,
+          "continuation_of": "BI101",
+          "raw_entry_sha256": "cf15eba9e6487e28288bdc49beab0f46695c1cd8c342643acb870f7f7ab7e8e4"
+        }
+      ]
+    },
+    "unresolved_fact": "No retained source explicitly identifies BI 101 + BI 102 as the approved sequence for the Computer Science Theory and Application track; structural fit is not approval.",
+    "forbidden_inference": "Do not promote a subject/lab/continuation match into an approved program-specific roster.",
+    "figures_blocked": [
+      "1",
+      "3",
+      "4",
+      "6"
+    ]
+  },
+  "conditional_residency_by_advanced_standing": {
+    "source_rule_verified": true,
+    "executable_for_paper_figures": false,
+    "authored_constraint_path": "requirement_groups[8]",
+    "source_rule": {
+      "verified": true,
+      "issues": [],
+      "conditional_branches": [
+        {
+          "advanced_standing_credit": false,
+          "minimum_semesters": 6,
+          "resident_fraction": 0.75
+        },
+        {
+          "advanced_standing_credit": true,
+          "minimum_semesters": 6,
+          "resident_fraction": 0.5
+        }
+      ],
+      "additional_dimensions": {
+        "summer_intersession_and_internet_transfer_maximum_credits": 18,
+        "concurrent_full_time_fall_spring_internet_transfer_allowed": false,
+        "post_final_full_time_semester_transfer_maximum_credits": 10,
+        "post_final_courses_must_be_preapproved": true,
+        "final_grade_deadline_relative_to_commencement_days": 7
+      },
+      "exact_details_sha256": "f131ef10563ccd804c096dce65e6b5c94c6fa71b9a993704c6042e027f17b0e6",
+      "exact_final_completion_details_sha256": "d1034fb85a3059b4c9e84bfbe9d6baa4d47a784a58631bc9229243c30000f649"
+    },
+    "missing_runtime_state": [
+      "advanced_standing_credit_at_matriculation",
+      "qualifying_full_time_semester_count",
+      "resident_academic_activity_denominator_for_the_applicable_branch",
+      "summer_or_intersession_transfer_classification",
+      "concurrent_fall_or_spring_full_time_enrollment",
+      "post_final_semester_preapproval_and_completion_timing"
+    ],
+    "figures_blocked": [
+      "3",
+      "4"
+    ]
+  },
+  "paper_capability_delta": {
+    "central_runtime_integrated": true,
+    "exact_source_capabilities_available_for_integration": [
+      "approved_math_elective_level_floor",
+      "core_overlay_inside_published_allocation_via_cross_group_witness"
+    ],
+    "current_blocking_audit_receipt_count_by_figure": {
+      "1": 3,
+      "3": 5,
+      "4": 5,
+      "6": 3
+    },
+    "integrated_blocker_reduction_by_figure": {
+      "1": {
+        "resolved": 2,
+        "residual_audit_receipt_count": 1,
+        "residual": [
+          "requirement_groups[0].analysis_constraints[0]:approved_science_sequence"
+        ]
+      },
+      "3": {
+        "resolved": 2,
+        "residual_audit_receipt_count": 3,
+        "residual": [
+          "requirement_groups[0].analysis_constraints[0]:approved_science_sequence",
+          "requirement_groups[8].analysis_constraints[0]:conditional_residency_by_advanced_standing",
+          "unit_audit.residency:residency"
+        ]
+      },
+      "4": {
+        "resolved": 2,
+        "residual_audit_receipt_count": 3,
+        "residual": [
+          "requirement_groups[0].analysis_constraints[0]:approved_science_sequence",
+          "requirement_groups[8].analysis_constraints[0]:conditional_residency_by_advanced_standing",
+          "unit_audit.residency:residency"
+        ]
+      },
+      "6": {
+        "resolved": 2,
+        "residual_audit_receipt_count": 1,
+        "residual": [
+          "requirement_groups[0].analysis_constraints[0]:approved_science_sequence"
+        ]
+      }
+    },
+    "residual_semantic_blockers_by_figure": {
+      "1": [
+        "approved_science_sequence"
+      ],
+      "3": [
+        "approved_science_sequence",
+        "conditional_residency_and_transfer_policy"
+      ],
+      "4": [
+        "approved_science_sequence",
+        "conditional_residency_and_transfer_policy"
+      ],
+      "6": [
+        "approved_science_sequence"
+      ]
+    },
+    "residency_is_only_remaining_blocker": false
+  },
+  "canonical_effect": {
+    "verified_requirement_or_composition_mutations": 0,
+    "accepted_source_mutations": 0,
+    "projection_mutations": 0,
+    "central_evaluator_changes": 2,
+    "database_writes": 0,
+    "constraint_carrier_sha256": "52a999880a1c72a4cda9be0805eb28424b79a8f6775f630d04db028bea381a47"
+  }
+}

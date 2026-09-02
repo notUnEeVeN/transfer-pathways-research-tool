@@ -1,0 +1,26 @@
+{
+  "route_id": "norfolk-state-university__mth",
+  "requested_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/mth/",
+  "final_url": "https://catalog.nsu.edu/undergraduate/course-descriptions/mth/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 67851,
+  "content_sha256": "04c03415ecb33f1c04d559199b41b919e273851f021333f30250ee31ca140cbb",
+  "fetched_at": "2026-08-24T18:02:59.427Z",
+  "robots": {
+    "url": "https://catalog.nsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "9ea34488a311795f8883efe1bb0a049a093184e738d9c89d8086b427754ef768",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "MTH151",
+    "MTH153",
+    "MTH184",
+    "MTH251",
+    "MTH351",
+    "MTH371"
+  ]
+}

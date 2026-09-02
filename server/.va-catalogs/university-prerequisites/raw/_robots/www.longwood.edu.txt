@@ -1,0 +1,9 @@
+# Allow Meta preview bots into /dev/, block everyone else
+User-agent: facebookexternalhit
+Allow: /dev/
+
+User-agent: facebookcatalog
+Allow: /dev/
+
+User-agent: *
+Disallow: /dev/

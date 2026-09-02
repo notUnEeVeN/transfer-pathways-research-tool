@@ -1,0 +1,21 @@
+{
+  "route_id": "radford-university__cs322",
+  "requested_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108998",
+  "final_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108998",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 79125,
+  "content_sha256": "d758a62ec2310f5e1a8652d9a9669a518a391afb2ba9589845700d9096ec9b74",
+  "fetched_at": "2026-08-24T21:13:49.762Z",
+  "robots": {
+    "url": "https://catalog.radford.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "CS322"
+  ]
+}

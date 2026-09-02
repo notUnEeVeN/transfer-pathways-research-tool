@@ -271,8 +271,8 @@
   "data_quality_flags": [
     {"code": "catalog_footnote_8_ambiguous", "severity": "block_analysis", "message": "Footnote 8 does not cleanly delimit the additional-science and PHY 201 wording for technical slot A."},
     {"code": "direct_placement_receiver_not_supported", "severity": "block_analysis", "message": "The direct-placement plus category-replacement branch is source-backed but cannot be expressed as a canonical CC course receiver without inventing an identity."},
-    {"code": "distinct_humanities_categories_require_evaluation", "severity": "block_analysis", "message": "The two humanities courses must be drawn from two different published categories."},
-    {"code": "overlapping_options_are_distinct_slots", "severity": "block_analysis", "message": "CSC 205, CSC 215, MTH 265, and other options overlap across distinct requirement slots and cannot be double counted."},
+    {"code": "distinct_humanities_categories_require_evaluation", "severity": "resolved", "message": "The source-backed category dictionary is retained and the exact planner now requires the two humanities courses to come from different published categories."},
+    {"code": "overlapping_options_are_distinct_slots", "severity": "resolved", "message": "The exact planner uses one global selected-course set, so CSC 205, CSC 215, MTH 265, and other repeated options cannot be double counted across slots."},
     {"code": "current_vccs_master_csc221_credit_drift", "severity": "review", "message": "The current VCCS master page shows CSC 221 as four credits effective 2026-08-01, while the current TCC degree's printed term and award totals still count the historical three-credit value. The current local degree's 60-63 published range is retained pending correction."},
     {"code": "marketing_curriculum_link_is_stale", "severity": "review", "message": "The public marketing page's curriculum link targets archived catoid 21/poid 4756 rather than current catoid 23/poid 5235."}
   ],
@@ -346,7 +346,17 @@
       "source_refs": ["major", "general_education"],
       "distinct_course_ids_across_sections": true,
       "analysis_constraints": [
-        {"kind": "distinct_ge_areas", "status": "evaluator_not_implemented", "description": "The two courses must be selected from two different categories: Artistic Expression, Human Culture, or Literature and Creative Writing."}
+        {
+          "kind": "distinct_ge_areas",
+          "status": "supported",
+          "minimum_distinct_categories": 2,
+          "category_subjects": {
+            "artistic_expression": ["ART", "CST", "MUS"],
+            "human_culture": ["ASL", "HUM", "PHI", "REL"],
+            "literature_and_creative_writing": ["ENG"]
+          },
+          "description": "The two courses must be selected from two different categories: Artistic Expression, Human Culture, or Literature and Creative Writing."
+        }
       ],
       "sections": [
         {"select": 1, "units": 3, "label": "First humanities category selection", "receivers": [{"kind": "cc_course", "options": [["ART100"], ["ART101"], ["ART102"], ["CST130"], ["CST151"], ["CST152"], ["MUS121"], ["MUS221"], ["MUS222"], ["ASL125"], ["HUM201"], ["HUM202"], ["HUM220"], ["HUM256"], ["HUM259"], ["HUM260"], ["PHI100"], ["PHI111"], ["PHI220"], ["REL230"], ["ENG125"], ["ENG211"], ["ENG212"], ["ENG225"], ["ENG245"], ["ENG246"], ["ENG250"], ["ENG255"], ["ENG258"], ["ENG275"]]}]},

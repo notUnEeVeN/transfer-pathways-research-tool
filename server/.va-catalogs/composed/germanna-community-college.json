@@ -132,6 +132,11 @@
     "SPA201": "Intermediate Spanish I",
     "SPA202": "Intermediate Spanish II"
   },
+  "course_unit_evidence_artifact": {
+    "path": "research/germanna-language-course-units.json",
+    "sha256": "42cc31e5d6ade89bd7b31c59ae53201338d34a140c840d7be961e86fd74abfc2",
+    "source_refs": ["elective"]
+  },
   "option_sets": {
     "arts_humanities_literature": {
       "source_refs": ["major", "general_education"],
@@ -275,7 +280,13 @@
       "analysis_constraints": [
         {
           "kind": "distinct_ge_areas",
-          "status": "evaluator_not_implemented",
+          "status": "supported",
+          "minimum_distinct_categories": 2,
+          "category_subjects": {
+            "art": ["ART", "CST", "MUS"],
+            "humanities": ["HUM", "PHI", "REL"],
+            "literature": ["ENG"]
+          },
           "description": "The two courses must be selected from two different Art, Humanities, or Literature categories."
         }
       ],

@@ -1,0 +1,22 @@
+{
+  "route_id": "william-mary__data",
+  "requested_url": "https://catalog.wm.edu/undergraduate/courses/data/",
+  "final_url": "https://catalog.wm.edu/undergraduate/courses/data/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 73271,
+  "content_sha256": "569c53bb9950cf8e745207b511408a7f24c04e17a0d82105fa1e6168a9540cad",
+  "fetched_at": "2026-08-24T18:04:31.311Z",
+  "robots": {
+    "url": "https://catalog.wm.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "4eaac51773cf2538bbac642a1926ea98f51c25819252a0094007028fa72d069a",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "DATA140",
+    "DATA141"
+  ]
+}

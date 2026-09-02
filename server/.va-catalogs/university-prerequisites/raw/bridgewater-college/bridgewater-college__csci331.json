@@ -1,0 +1,21 @@
+{
+  "route_id": "bridgewater-college__csci331",
+  "requested_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci331",
+  "final_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/csci331",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "byte_length": 11970,
+  "content_sha256": "2a667e336e93cb5c2775686eca3bf437d7ef658f2196f86b32e1310ba4474001",
+  "fetched_at": "2026-08-25T02:04:12.882Z",
+  "robots": {
+    "url": "https://bridgewater.cleancatalog.io/robots.txt",
+    "http_status": 200,
+    "content_sha256": "418e112c89979b34678c945b45186d0cff4d829bcdc9d6d8437be76f50ef38f9",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CSCI331"
+  ]
+}

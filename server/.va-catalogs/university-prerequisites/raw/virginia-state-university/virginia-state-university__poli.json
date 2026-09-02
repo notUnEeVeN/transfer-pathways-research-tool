@@ -1,0 +1,24 @@
+{
+  "route_id": "virginia-state-university__poli",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/poli/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/poli/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 86150,
+  "content_sha256": "dfd1220bf537343c590f8e0f14e2dd905c1d5cea1b3c60fe89aaa8c68e3e691d",
+  "fetched_at": "2026-08-24T18:04:23.400Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "POLI150",
+    "POLI202",
+    "POLI207",
+    "POLI210"
+  ]
+}

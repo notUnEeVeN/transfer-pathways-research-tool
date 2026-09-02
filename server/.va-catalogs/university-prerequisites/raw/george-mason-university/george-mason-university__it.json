@@ -1,0 +1,21 @@
+{
+  "route_id": "george-mason-university__it",
+  "requested_url": "https://catalog.gmu.edu/courses/it/",
+  "final_url": "https://catalog.gmu.edu/courses/it/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 160376,
+  "content_sha256": "77b1167dd1d57bd9cec15d2061d10ee12a952aa99b121a4ff9036037cac01a70",
+  "fetched_at": "2026-08-24T18:08:49.758Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "IT102"
+  ]
+}

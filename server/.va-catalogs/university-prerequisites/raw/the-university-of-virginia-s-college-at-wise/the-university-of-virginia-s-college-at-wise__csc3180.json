@@ -1,0 +1,21 @@
+{
+  "route_id": "the-university-of-virginia-s-college-at-wise__csc3180",
+  "requested_url": "http://catalog.uvawise.edu/preview_course_nopop.php?catoid=9&coid=17971",
+  "final_url": "http://catalog.uvawise.edu/preview_course_nopop.php?catoid=9&coid=17971",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 56540,
+  "content_sha256": "82dd07ad4ce14c81fccf03e7ddff596c4b81f455689d86a54766127b17d6c321",
+  "fetched_at": "2026-08-24T22:11:56.150Z",
+  "robots": {
+    "url": "http://catalog.uvawise.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "CSC3180"
+  ]
+}

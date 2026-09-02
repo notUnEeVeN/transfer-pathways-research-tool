@@ -1,0 +1,21 @@
+{
+  "route_id": "radford-university__phys221",
+  "requested_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109349",
+  "final_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109349",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 79711,
+  "content_sha256": "a915c7e45000fd0d84339677782528ab13a3f63a40af41f2a5f38e0148eb3c2a",
+  "fetched_at": "2026-08-26T00:00:51.593Z",
+  "robots": {
+    "url": "https://catalog.radford.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "PHYS221"
+  ]
+}

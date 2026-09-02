@@ -1,0 +1,454 @@
+{
+  "schema_version": 1,
+  "artifact": "radford_2026_2027_vccs_science_pair_evidence",
+  "generated_on": "2026-08-24",
+  "institution": {
+    "name": "Radford University",
+    "slug": "radford-university",
+    "school_id": 9219
+  },
+  "catalog_year": "2026-2027",
+  "purpose": "Exact Figure 3/4 pair-level receipts for two distinct 3-4 credit VCCS sciences, at least one laboratory course, and their current Radford course identities. These receipts do not waive the science rule or modify either curriculum tree.",
+  "source_replay_contract": {
+    "contract": "radford-science-pair-stable-source-replay-v1",
+    "retained_raw_receipts": "exact_response_bytes_and_sha256",
+    "live_transport_receipts": "exact_requested_url_final_url_http_status_and_content_type",
+    "live_content_receipts": "full_page_sha256_after_strict_cardinality_normalization",
+    "allowed_volatile_fields": {
+      "transfer_virginia": {
+        "field": "Drupal.settings.ajaxPageState.theme_token",
+        "grammar": "[A-Za-z0-9_-]{43}"
+      },
+      "radford": {
+        "field": "Modern Campus Acalog course-link id",
+        "grammar": "id=(quote)tt[0-9]+(same quote)"
+      }
+    },
+    "fail_closed_on_every_other_byte": true
+  },
+  "verified": true,
+  "issues": [],
+  "courses": [
+    {
+      "sending_code": "CHM111",
+      "sending_course_id": 1109089212,
+      "receiving_code": "CHEM111",
+      "receiving_course_id": 1122077694,
+      "receiving_parent_id": 1122077694,
+      "sending": {
+        "course_code": "CHM111",
+        "title": "General Chemistry I",
+        "credits": 4,
+        "laboratory_hours": 3,
+        "exact_heading": "CHM 111 - General Chemistry I",
+        "exact_contact_hours": "Lecture 3 hours. Laboratory 3 hours. Total 6 hours per week. Prerequisites: ENG 111 Eligible",
+        "source": {
+          "requested_url": "https://courses.vccs.edu/courses/CHM111",
+          "final_url": "https://courses.vccs.edu/courses/CHM111",
+          "http_status": 200,
+          "content_type": "text/html; charset=UTF-8",
+          "response_bytes": 18684,
+          "response_sha256": "32320c44b09023c54d5ec14b36fb1e94d77dcc784a571a1ab25731fcbcc5fc18",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "exact_bytes",
+            "volatile_field_counts": {},
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 18684,
+            "normalized_response_sha256": "32320c44b09023c54d5ec14b36fb1e94d77dcc784a571a1ab25731fcbcc5fc18"
+          }
+        }
+      },
+      "equivalency": {
+        "source_institution": "Blue Ridge Community College",
+        "sending_code": "CHM111",
+        "sending_credits": 4,
+        "receiving_institution": "Radford University",
+        "receiving_code": "CHEM111",
+        "receiving_name": "N/A",
+        "receiving_notes": null,
+        "source": {
+          "requested_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+          "final_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "response_bytes": 48075,
+          "response_sha256": "f3fea434837bceacad1f9b64135d798a4bd8bac9f7437a671a07e8fc651eca06",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "transfer_virginia_drupal_theme_token_v1",
+            "volatile_field_counts": {
+              "drupal_theme_token": 1
+            },
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 48064,
+            "normalized_response_sha256": "f1daec917ee50057d231769ae97363d0b213462fdd13defd55a04a6ef72cead3"
+          }
+        }
+      },
+      "receiving": {
+        "catoid": 62,
+        "coid": 108293,
+        "course_code": "CHEM111",
+        "title": "General Chemistry I (GE)",
+        "credits": 4,
+        "laboratory_hours": 3,
+        "exact_heading": "CHEM 111 - General Chemistry I (GE)",
+        "exact_instructional_method": "Three hours lecture; three hours laboratory.",
+        "source": {
+          "requested_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108293",
+          "final_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108293",
+          "http_status": 200,
+          "content_type": "text/html; charset=UTF-8",
+          "response_bytes": 79301,
+          "response_sha256": "72e984bb97d5222628310fdcbeef6be2317409985dee16a8e89ed8c9c7227866",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "modern_campus_acalog_tooltip_ids_v1",
+            "volatile_field_counts": {
+              "acalog_tooltip_id": 3
+            },
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 79360,
+            "normalized_response_sha256": "79511b2c2211aa9cf7302dea1014cdd2b92043a06a4251b276da59d99c180c25"
+          }
+        }
+      }
+    },
+    {
+      "sending_code": "CHM112",
+      "sending_course_id": 1061880932,
+      "receiving_code": "CHEM112",
+      "receiving_course_id": 929813427,
+      "receiving_parent_id": 929813427,
+      "sending": {
+        "course_code": "CHM112",
+        "title": "General Chemistry II",
+        "credits": 4,
+        "laboratory_hours": 3,
+        "exact_heading": "CHM 112 - General Chemistry II",
+        "exact_contact_hours": "Lecture 3 hours. Laboratory 3 hours. Total 6 hours per week. Prerequisite: CHM 111 with a grade of C or higher",
+        "source": {
+          "requested_url": "https://courses.vccs.edu/courses/CHM112",
+          "final_url": "https://courses.vccs.edu/courses/CHM112",
+          "http_status": 200,
+          "content_type": "text/html; charset=UTF-8",
+          "response_bytes": 18834,
+          "response_sha256": "7478ace2398a18830e6d8663a3945ea4dbefb4d6ec558298c346e44bde051372",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "exact_bytes",
+            "volatile_field_counts": {},
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 18834,
+            "normalized_response_sha256": "7478ace2398a18830e6d8663a3945ea4dbefb4d6ec558298c346e44bde051372"
+          }
+        }
+      },
+      "equivalency": {
+        "source_institution": "Blue Ridge Community College",
+        "sending_code": "CHM112",
+        "sending_credits": 4,
+        "receiving_institution": "Radford University",
+        "receiving_code": "CHEM112",
+        "receiving_name": "N/A",
+        "receiving_notes": null,
+        "source": {
+          "requested_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+          "final_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "response_bytes": 48149,
+          "response_sha256": "3940a5c87ab3349bf5ab3b062fb9e7558be2c1d4788788f58124034192c55e5c",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "transfer_virginia_drupal_theme_token_v1",
+            "volatile_field_counts": {
+              "drupal_theme_token": 1
+            },
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 48138,
+            "normalized_response_sha256": "c050b2213f9e4b53e7676a9fb88674db9d4f624bbd032e5aaa2751bf40618cb4"
+          }
+        }
+      },
+      "receiving": {
+        "catoid": 62,
+        "coid": 108294,
+        "course_code": "CHEM112",
+        "title": "General Chemistry II (GE)",
+        "credits": 4,
+        "laboratory_hours": 3,
+        "exact_heading": "CHEM 112 - General Chemistry II (GE)",
+        "exact_instructional_method": "Three hours lecture, three hours laboratory.",
+        "source": {
+          "requested_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108294",
+          "final_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108294",
+          "http_status": 200,
+          "content_type": "text/html; charset=UTF-8",
+          "response_bytes": 78712,
+          "response_sha256": "38ca21324d8046696665c9a044d12f46b57bcef4eaab6e8327004ef6fc3d534a",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "modern_campus_acalog_tooltip_ids_v1",
+            "volatile_field_counts": {
+              "acalog_tooltip_id": 2
+            },
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 78750,
+            "normalized_response_sha256": "4e30c62dc25067b898192dbf9be70a27bad33b752328f59589417e8a8be0dc58"
+          }
+        }
+      }
+    },
+    {
+      "sending_code": "PHY201",
+      "sending_course_id": 970187914,
+      "receiving_code": "PHYS111",
+      "receiving_course_id": 1050426509,
+      "receiving_parent_id": 1050426509,
+      "sending": {
+        "course_code": "PHY201",
+        "title": "General College Physics I",
+        "credits": 4,
+        "laboratory_hours": 3,
+        "exact_heading": "PHY 201 - General College Physics I",
+        "exact_contact_hours": "Lecture 3 hours. Laboratory 3 hours. Total 6 hours per week. Prerequisite: MTH 161 or MTH 167 with a grade of C or better.",
+        "source": {
+          "requested_url": "https://courses.vccs.edu/courses/PHY201",
+          "final_url": "https://courses.vccs.edu/courses/PHY201",
+          "http_status": 200,
+          "content_type": "text/html; charset=UTF-8",
+          "response_bytes": 18920,
+          "response_sha256": "9c1b598181e2059f23b2a234ab44db7dde00f4d09f256475f9318b596ec70630",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "exact_bytes",
+            "volatile_field_counts": {},
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 18920,
+            "normalized_response_sha256": "9c1b598181e2059f23b2a234ab44db7dde00f4d09f256475f9318b596ec70630"
+          }
+        }
+      },
+      "equivalency": {
+        "source_institution": "Blue Ridge Community College",
+        "sending_code": "PHY201",
+        "sending_credits": 4,
+        "receiving_institution": "Radford University",
+        "receiving_code": "PHYS111",
+        "receiving_name": "General Physics",
+        "receiving_notes": null,
+        "source": {
+          "requested_url": "https://www.transfervirginia.org/course/D3A19A611F9411F082AC0242AC15010A",
+          "final_url": "https://www.transfervirginia.org/course/D3A19A611F9411F082AC0242AC15010A",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "response_bytes": 48068,
+          "response_sha256": "39535a7b42e26e4c6a546c4531be90eda4254171daad7d8a4726fc082f65b6f5",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "transfer_virginia_drupal_theme_token_v1",
+            "volatile_field_counts": {
+              "drupal_theme_token": 1
+            },
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 48057,
+            "normalized_response_sha256": "e21344f4f9922ab5a4437d3a30cafaa3514f40270c072d9c832ce2828cf92884"
+          }
+        }
+      },
+      "receiving": {
+        "catoid": 62,
+        "coid": 109347,
+        "course_code": "PHYS111",
+        "title": "General Physics I",
+        "credits": 4,
+        "laboratory_hours": 2,
+        "exact_heading": "PHYS 111 - General Physics I",
+        "exact_instructional_method": "Three hours lecture; two hours laboratory.",
+        "source": {
+          "requested_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109347",
+          "final_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109347",
+          "http_status": 200,
+          "content_type": "text/html; charset=UTF-8",
+          "response_bytes": 79000,
+          "response_sha256": "28bc3e56ae14dbb914347ada4f7eed132d04935c4a4f30282c020c2a88e7842d",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "modern_campus_acalog_tooltip_ids_v1",
+            "volatile_field_counts": {
+              "acalog_tooltip_id": 3
+            },
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 79057,
+            "normalized_response_sha256": "fb778b6874d7f5fea1d6bbf7b4d5675d8a74f0e6b7ac75882b7c8c8229c04685"
+          }
+        }
+      }
+    },
+    {
+      "sending_code": "PHY202",
+      "sending_course_id": 1034090082,
+      "receiving_code": "PHYS112",
+      "receiving_course_id": 1126173802,
+      "receiving_parent_id": 1126173802,
+      "sending": {
+        "course_code": "PHY202",
+        "title": "General College Physics II",
+        "credits": 4,
+        "laboratory_hours": 3,
+        "exact_heading": "PHY 202 - General College Physics II",
+        "exact_contact_hours": "Lecture 3 hours. Laboratory 3 hours. Total 6 hours per week. Prerequisite: PHY 201 with a grade of C or better and MTH 162 or MTH 167 with a grade of C or better.",
+        "source": {
+          "requested_url": "https://courses.vccs.edu/courses/PHY202",
+          "final_url": "https://courses.vccs.edu/courses/PHY202",
+          "http_status": 200,
+          "content_type": "text/html; charset=UTF-8",
+          "response_bytes": 19198,
+          "response_sha256": "aac5460784dcf0c089a2c4dd0ca46067d5cdc84ee62041894060d3fde43dd72f",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "exact_bytes",
+            "volatile_field_counts": {},
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 19198,
+            "normalized_response_sha256": "aac5460784dcf0c089a2c4dd0ca46067d5cdc84ee62041894060d3fde43dd72f"
+          }
+        }
+      },
+      "equivalency": {
+        "source_institution": "Blue Ridge Community College",
+        "sending_code": "PHY202",
+        "sending_credits": 4,
+        "receiving_institution": "Radford University",
+        "receiving_code": "PHYS112",
+        "receiving_name": "General Physics",
+        "receiving_notes": null,
+        "source": {
+          "requested_url": "https://www.transfervirginia.org/course/D3A19B281F9411F082AC0242AC15010A",
+          "final_url": "https://www.transfervirginia.org/course/D3A19B281F9411F082AC0242AC15010A",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "response_bytes": 48140,
+          "response_sha256": "5702d13a48c3243197115faf2355f053ebe60d67390e3ab6eb9c6d40d76efdff",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "transfer_virginia_drupal_theme_token_v1",
+            "volatile_field_counts": {
+              "drupal_theme_token": 1
+            },
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 48129,
+            "normalized_response_sha256": "d7151fc90bd48a6b9357a3f72337152ee77463fc9346b4489073ec398d434778"
+          }
+        }
+      },
+      "receiving": {
+        "catoid": 62,
+        "coid": 109348,
+        "course_code": "PHYS112",
+        "title": "General Physics II (GE)",
+        "credits": 4,
+        "laboratory_hours": 2,
+        "exact_heading": "PHYS 112 - General Physics II (GE)",
+        "exact_instructional_method": "Three hours lecture; two hours laboratory.",
+        "source": {
+          "requested_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109348",
+          "final_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=109348",
+          "http_status": 200,
+          "content_type": "text/html; charset=UTF-8",
+          "response_bytes": 79397,
+          "response_sha256": "8abe994e592ce8fda1453582fa3f6ee18bfc7951af2ef15bf3d8d1e78090dfb9",
+          "replay": {
+            "contract": "radford-science-pair-stable-source-replay-v1",
+            "normalization": "modern_campus_acalog_tooltip_ids_v1",
+            "volatile_field_counts": {
+              "acalog_tooltip_id": 4
+            },
+            "volatile_field_values_unique": true,
+            "normalized_response_bytes": 79473,
+            "normalized_response_sha256": "22f51ebb2774f314335be7906ea0bcb483a8efd304a4f299ec337ede6397328b"
+          }
+        }
+      }
+    }
+  ],
+  "robots": {
+    "vccs": {
+      "url": "https://courses.vccs.edu/robots.txt",
+      "http_status": 200,
+      "response_bytes": 126,
+      "response_sha256": "23ff21a5ebd4649c2a062308c0a9689bbc2727abe24ebed666cd78553bfc082d",
+      "crawl_delay_seconds": 1,
+      "policy_paths_allowed": true
+    },
+    "transfer_virginia": {
+      "url": "https://www.transfervirginia.org/robots.txt",
+      "http_status": 200,
+      "response_bytes": 2189,
+      "response_sha256": "278e83bcf567badfebcdea4d5d20ca9898e4449fe4eb2e3b5a08227b4ca9b762",
+      "crawl_delay_seconds": 10,
+      "policy_paths_allowed": true
+    },
+    "radford": {
+      "url": "https://catalog.radford.edu/robots.txt",
+      "http_status": 200,
+      "response_bytes": 509,
+      "response_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+      "crawl_delay_seconds": 120,
+      "policy_paths_allowed": true
+    }
+  },
+  "facts": [
+    {
+      "sending_code": "CHM111",
+      "sending_course_id": 1109089212,
+      "sending_credits": 4,
+      "sending_lab_hours": 3,
+      "receiving_code": "CHEM111",
+      "receiving_course_id": 1122077694,
+      "receiving_parent_id": 1122077694,
+      "receiving_credits": 4,
+      "receiving_lab_hours": 3,
+      "articulation_institution": "Radford University"
+    },
+    {
+      "sending_code": "CHM112",
+      "sending_course_id": 1061880932,
+      "sending_credits": 4,
+      "sending_lab_hours": 3,
+      "receiving_code": "CHEM112",
+      "receiving_course_id": 929813427,
+      "receiving_parent_id": 929813427,
+      "receiving_credits": 4,
+      "receiving_lab_hours": 3,
+      "articulation_institution": "Radford University"
+    },
+    {
+      "sending_code": "PHY201",
+      "sending_course_id": 970187914,
+      "sending_credits": 4,
+      "sending_lab_hours": 3,
+      "receiving_code": "PHYS111",
+      "receiving_course_id": 1050426509,
+      "receiving_parent_id": 1050426509,
+      "receiving_credits": 4,
+      "receiving_lab_hours": 2,
+      "articulation_institution": "Radford University"
+    },
+    {
+      "sending_code": "PHY202",
+      "sending_course_id": 1034090082,
+      "sending_credits": 4,
+      "sending_lab_hours": 3,
+      "receiving_code": "PHYS112",
+      "receiving_course_id": 1126173802,
+      "receiving_parent_id": 1126173802,
+      "receiving_credits": 4,
+      "receiving_lab_hours": 2,
+      "articulation_institution": "Radford University"
+    }
+  ],
+  "facts_sha256": "c7d659c91910ca6567d26e6b4c58e4402bfc6a799c76eda92d684e07b40062fc"
+}

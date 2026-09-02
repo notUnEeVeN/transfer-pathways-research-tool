@@ -1,0 +1,28 @@
+{
+  "route_id": "old-dominion-university__chem",
+  "requested_url": "https://catalog.odu.edu/courses/chem/",
+  "final_url": "https://catalog.odu.edu/courses/chem/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 305309,
+  "content_sha256": "f54a23059afda8523958a964fb5f3ecd898534fbbdc5d6c0195d5e631271b8a3",
+  "fetched_at": "2026-08-24T18:03:08.801Z",
+  "robots": {
+    "url": "https://catalog.odu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "04c0328aabd3f05afd6a4ec0382500f973b6457f737639ac2933372331d0e045",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CHEM105N",
+    "CHEM106N",
+    "CHEM107N",
+    "CHEM108N",
+    "CHEM121N",
+    "CHEM122N",
+    "CHEM123N",
+    "CHEM124N"
+  ]
+}

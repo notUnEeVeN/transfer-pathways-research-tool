@@ -1,0 +1,22 @@
+{
+  "route_id": "george-mason-university__hnrs",
+  "requested_url": "https://catalog.gmu.edu/courses/hnrs/",
+  "final_url": "https://catalog.gmu.edu/courses/hnrs/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 36519,
+  "content_sha256": "06275c40a82bb91e84898d7fde77ea997290a83d50983d5f2c4fd37b62abb1f7",
+  "fetched_at": "2026-08-24T18:02:32.444Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "HNRS260",
+    "HNRS261"
+  ]
+}

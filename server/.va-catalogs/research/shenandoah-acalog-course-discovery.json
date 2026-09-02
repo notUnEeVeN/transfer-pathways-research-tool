@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "artifact": "shenandoah_exact_current_acalog_course_discovery",
+  "publication_ready": false,
+  "source_boundary": "The retained 2025-2026 Course Descriptions form is hash-pinned, and each exact prefix/number request is robots-permitted and captured at the published 120-second delay. An AWS-WAF response is usable only with an exact same-URL browser receipt retaining both the HTTP 202 challenge and the resulting HTTP 200 catalog document. Only a usable HTTP 200 exact-filter response may prove one current catoid/coid/title identity or an exact-filter absence; every other response is retained solely as a transport blocker and proves neither course absence nor no prerequisites.",
+  "summary": {
+    "exact_filter_queries": 5,
+    "exact_current_course_identities": 5,
+    "exact_filter_responses_without_current_course_identity": 0,
+    "unusable_official_filter_responses": 0
+  },
+  "discoveries": [
+    {
+      "course_code": "ENG101",
+      "status": "exact_current_course_identity",
+      "title": "Composition",
+      "catalog_year": "2025-2026",
+      "catoid": 33,
+      "coid": 54326,
+      "discovery_contract": "shenandoah_retained_current_course_descriptions_form_and_exact_filtered_link_v1",
+      "retained_filter_form_cache_path": "pages/shenandoah-university__course_catalog.html",
+      "retained_filter_form_sha256": "d082e72e1fb16b8817b888bff80ea394bf795cf6cc2032c21941e4e21ba79a49",
+      "official_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=ENG&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "final_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=ENG&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__eng101_discovery.html",
+      "metadata_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__eng101_discovery.json",
+      "browser_challenge_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__eng101_discovery.challenge.html",
+      "browser_challenge_receipt": {
+        "contract": "shenandoah_acalog_exact_same_url_document_202_then_200_raw_response_v1",
+        "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=ENG&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+        "exact_same_url": true,
+        "document_response_count": 2,
+        "browser_engine": "chromium",
+        "browser_version": "151.0.7922.34",
+        "document_responses": [
+          {
+            "ordinal": 1,
+            "http_status": 202,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=ENG&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 2011,
+            "content_sha256": "d8a5c4d67caee0a6dacded105f0ba33565415f21bb708a7ca4765dd66630dce2",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__eng101_discovery.challenge.html"
+          },
+          {
+            "ordinal": 2,
+            "http_status": 200,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=ENG&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 189207,
+            "content_sha256": "ef907d9ff2317642b50e7c46b1ecd5c0d92f49cd41cf3e4d3ec1d92dabcb22f1",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__eng101_discovery.html"
+          }
+        ]
+      },
+      "source_response_sha256": "ef907d9ff2317642b50e7c46b1ecd5c0d92f49cd41cf3e4d3ec1d92dabcb22f1",
+      "source_response_bytes": 189207,
+      "fetched_at": "2026-08-25T11:00:48.019Z",
+      "robots": {
+        "url": "https://catalog.su.edu/robots.txt",
+        "http_status": 200,
+        "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+        "crawl_delay_seconds": 120
+      },
+      "exact_link_receipt": {
+        "course_code": "ENG101",
+        "title": "Composition",
+        "catoid": 33,
+        "coid": 54326,
+        "link_text": "ENG 101 Composition",
+        "href": "preview_course_nopop.php?catoid=33&coid=54326",
+        "href_sha256": "bf25ab68f2e3f0ab95caa904450b87c9330b271e51127c04618fbcaae01e331c",
+        "onclick_sha256": "df99d662e53c24d3409447c02fcce082f4b5334cb37fe6a19f1646a01ef1aa23"
+      },
+      "absence_boundary": null
+    },
+    {
+      "course_code": "FYS101",
+      "status": "exact_current_course_identity",
+      "title": "Going Global First-Year Seminar",
+      "catalog_year": "2025-2026",
+      "catoid": 33,
+      "coid": 54418,
+      "discovery_contract": "shenandoah_retained_current_course_descriptions_form_and_exact_filtered_link_v1",
+      "retained_filter_form_cache_path": "pages/shenandoah-university__course_catalog.html",
+      "retained_filter_form_sha256": "d082e72e1fb16b8817b888bff80ea394bf795cf6cc2032c21941e4e21ba79a49",
+      "official_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=FYS&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "final_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=FYS&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__fys101_discovery.html",
+      "metadata_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__fys101_discovery.json",
+      "browser_challenge_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__fys101_discovery.challenge.html",
+      "browser_challenge_receipt": {
+        "contract": "shenandoah_acalog_exact_same_url_document_202_then_200_raw_response_v1",
+        "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=FYS&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+        "exact_same_url": true,
+        "document_response_count": 2,
+        "browser_engine": "chromium",
+        "browser_version": "151.0.7922.34",
+        "document_responses": [
+          {
+            "ordinal": 1,
+            "http_status": 202,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=FYS&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 2011,
+            "content_sha256": "3078da1f9966aab1ca9bd6b0425f942b63945ea812ef10243a4ca01cbe9e7eed",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__fys101_discovery.challenge.html"
+          },
+          {
+            "ordinal": 2,
+            "http_status": 200,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=FYS&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 189272,
+            "content_sha256": "a51bf0d5fdbc732da2b5356d19cb22d0ab8e1d39cd79a08f83edcbbae507a1f0",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__fys101_discovery.html"
+          }
+        ]
+      },
+      "source_response_sha256": "a51bf0d5fdbc732da2b5356d19cb22d0ab8e1d39cd79a08f83edcbbae507a1f0",
+      "source_response_bytes": 189272,
+      "fetched_at": "2026-08-25T10:36:14.944Z",
+      "robots": {
+        "url": "https://catalog.su.edu/robots.txt",
+        "http_status": 200,
+        "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+        "crawl_delay_seconds": 120
+      },
+      "exact_link_receipt": {
+        "course_code": "FYS101",
+        "title": "Going Global First-Year Seminar",
+        "catoid": 33,
+        "coid": 54418,
+        "link_text": "FYS 101 Going Global First-Year Seminar",
+        "href": "preview_course_nopop.php?catoid=33&coid=54418",
+        "href_sha256": "ee4f0ad393f2857f2a453a54d8ee4b921ab9f2bb2a60c6ead3f67228c47b664b",
+        "onclick_sha256": "ee0f5242ffe10a3d4041436ca362be53f119adbf178ab8112c5b9bc607b1cf97"
+      },
+      "absence_boundary": null
+    },
+    {
+      "course_code": "INT101",
+      "status": "exact_current_course_identity",
+      "title": "Introduction to Computing Fundamentals",
+      "catalog_year": "2025-2026",
+      "catoid": 33,
+      "coid": 55320,
+      "discovery_contract": "shenandoah_retained_current_course_descriptions_form_and_exact_filtered_link_v1",
+      "retained_filter_form_cache_path": "pages/shenandoah-university__course_catalog.html",
+      "retained_filter_form_sha256": "d082e72e1fb16b8817b888bff80ea394bf795cf6cc2032c21941e4e21ba79a49",
+      "official_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "final_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__int101_discovery.html",
+      "metadata_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__int101_discovery.json",
+      "browser_challenge_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__int101_discovery.challenge.html",
+      "browser_challenge_receipt": {
+        "contract": "shenandoah_acalog_exact_same_url_document_202_then_200_raw_response_v1",
+        "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+        "exact_same_url": true,
+        "document_response_count": 2,
+        "browser_engine": "chromium",
+        "browser_version": "151.0.7922.34",
+        "document_responses": [
+          {
+            "ordinal": 1,
+            "http_status": 202,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 2011,
+            "content_sha256": "be93bcde0e0e59ccce9cd23e0305585c2e6763ebe18251da24effac89a0fead9",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__int101_discovery.challenge.html"
+          },
+          {
+            "ordinal": 2,
+            "http_status": 200,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=INT&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 189276,
+            "content_sha256": "c3722be423c803d43b7db611c980780e643fef2841bbf69d53062bc8633e9748",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__int101_discovery.html"
+          }
+        ]
+      },
+      "source_response_sha256": "c3722be423c803d43b7db611c980780e643fef2841bbf69d53062bc8633e9748",
+      "source_response_bytes": 189276,
+      "fetched_at": "2026-08-25T10:38:18.009Z",
+      "robots": {
+        "url": "https://catalog.su.edu/robots.txt",
+        "http_status": 200,
+        "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+        "crawl_delay_seconds": 120
+      },
+      "exact_link_receipt": {
+        "course_code": "INT101",
+        "title": "Introduction to Computing Fundamentals",
+        "catoid": 33,
+        "coid": 55320,
+        "link_text": "INT 101 Introduction to Computing Fundamentals",
+        "href": "preview_course_nopop.php?catoid=33&coid=55320",
+        "href_sha256": "9ddb2cf6ba4c695848fd792cbf764efa8d660e226da58b14fe8be28b30bf1438",
+        "onclick_sha256": "7dd8e956ee0457cd823ab37c19347640bffb7f29c4176e2f42b8e6fa6c3bf273"
+      },
+      "absence_boundary": null
+    },
+    {
+      "course_code": "MATH101",
+      "status": "exact_current_course_identity",
+      "title": "College Algebra",
+      "catalog_year": "2025-2026",
+      "catoid": 33,
+      "coid": 54576,
+      "discovery_contract": "shenandoah_retained_current_course_descriptions_form_and_exact_filtered_link_v1",
+      "retained_filter_form_cache_path": "pages/shenandoah-university__course_catalog.html",
+      "retained_filter_form_sha256": "d082e72e1fb16b8817b888bff80ea394bf795cf6cc2032c21941e4e21ba79a49",
+      "official_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "final_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math101_discovery.html",
+      "metadata_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math101_discovery.json",
+      "browser_challenge_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math101_discovery.challenge.html",
+      "browser_challenge_receipt": {
+        "contract": "shenandoah_acalog_exact_same_url_document_202_then_200_raw_response_v1",
+        "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+        "exact_same_url": true,
+        "document_response_count": 2,
+        "browser_engine": "chromium",
+        "browser_version": "151.0.7922.34",
+        "document_responses": [
+          {
+            "ordinal": 1,
+            "http_status": 202,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 2011,
+            "content_sha256": "961543f547b3cf298861cc2a741f83e929e9a620971c8f4ce3c8aa999af9d0ab",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math101_discovery.challenge.html"
+          },
+          {
+            "ordinal": 2,
+            "http_status": 200,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=101&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 189226,
+            "content_sha256": "6c2fdb804af9be52273ea0a5691f219c94467c41881abc73f24dbd8b7af7a19a",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math101_discovery.html"
+          }
+        ]
+      },
+      "source_response_sha256": "6c2fdb804af9be52273ea0a5691f219c94467c41881abc73f24dbd8b7af7a19a",
+      "source_response_bytes": 189226,
+      "fetched_at": "2026-08-25T11:02:57.625Z",
+      "robots": {
+        "url": "https://catalog.su.edu/robots.txt",
+        "http_status": 200,
+        "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+        "crawl_delay_seconds": 120
+      },
+      "exact_link_receipt": {
+        "course_code": "MATH101",
+        "title": "College Algebra",
+        "catoid": 33,
+        "coid": 54576,
+        "link_text": "MATH 101 College Algebra",
+        "href": "preview_course_nopop.php?catoid=33&coid=54576",
+        "href_sha256": "53cd585d43bf47c486f4c03cef9641ada65a50e7e79cb6f08a8a5862ff0e85c6",
+        "onclick_sha256": "ed7e237a70d9f6f1d9b4145bd291352dbd27e86d8ce2fb78ae78401b27182c4e"
+      },
+      "absence_boundary": null
+    },
+    {
+      "course_code": "MATH102",
+      "status": "exact_current_course_identity",
+      "title": "Precalculus",
+      "catalog_year": "2025-2026",
+      "catoid": 33,
+      "coid": 54577,
+      "discovery_contract": "shenandoah_retained_current_course_descriptions_form_and_exact_filtered_link_v1",
+      "retained_filter_form_cache_path": "pages/shenandoah-university__course_catalog.html",
+      "retained_filter_form_sha256": "d082e72e1fb16b8817b888bff80ea394bf795cf6cc2032c21941e4e21ba79a49",
+      "official_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=102&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "final_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=102&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+      "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math102_discovery.html",
+      "metadata_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math102_discovery.json",
+      "browser_challenge_cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math102_discovery.challenge.html",
+      "browser_challenge_receipt": {
+        "contract": "shenandoah_acalog_exact_same_url_document_202_then_200_raw_response_v1",
+        "requested_url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=102&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+        "exact_same_url": true,
+        "document_response_count": 2,
+        "browser_engine": "chromium",
+        "browser_version": "151.0.7922.34",
+        "document_responses": [
+          {
+            "ordinal": 1,
+            "http_status": 202,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=102&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 2011,
+            "content_sha256": "1e3aa78f62abef98b93af81b7f55a996bdd98241f38833c920f32c223969a160",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math102_discovery.challenge.html"
+          },
+          {
+            "ordinal": 2,
+            "http_status": 200,
+            "url": "https://catalog.su.edu/content.php?catoid=33&navoid=1985&filter%5Bitem_type%5D=3&filter%5Bonly_active%5D=1&filter%5B27%5D=MATH&filter%5B29%5D=102&filter%5Bcourse_type%5D=-1&filter%5Bkeyword%5D=&filter%5B32%5D=1&filter%5Bcpage%5D=1&cur_cat_oid=33&expand=&filter%5Bexact_match%5D=1&search_database=Filter",
+            "content_type": "text/html; charset=UTF-8",
+            "byte_length": 189218,
+            "content_sha256": "fa31a58085372087d4f1561af89254b6c10eb96765ca63c8ab1f6f0f190ae5a5",
+            "cache_path": "university-prerequisites/raw/shenandoah-university/shenandoah-university__math102_discovery.html"
+          }
+        ]
+      },
+      "source_response_sha256": "fa31a58085372087d4f1561af89254b6c10eb96765ca63c8ab1f6f0f190ae5a5",
+      "source_response_bytes": 189218,
+      "fetched_at": "2026-08-25T10:40:20.595Z",
+      "robots": {
+        "url": "https://catalog.su.edu/robots.txt",
+        "http_status": 200,
+        "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+        "crawl_delay_seconds": 120
+      },
+      "exact_link_receipt": {
+        "course_code": "MATH102",
+        "title": "Precalculus",
+        "catoid": 33,
+        "coid": 54577,
+        "link_text": "MATH 102 Precalculus",
+        "href": "preview_course_nopop.php?catoid=33&coid=54577",
+        "href_sha256": "f312dd718bf6b93fc97abb0f56568adff2866fef94e62de06e3b17f1abc61247",
+        "onclick_sha256": "b16d257891c09df66b45a81acd9172d8c88a67fbb7a758d82277d1037869ad79"
+      },
+      "absence_boundary": null
+    }
+  ]
+}

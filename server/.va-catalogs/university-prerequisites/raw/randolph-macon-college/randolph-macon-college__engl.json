@@ -1,0 +1,21 @@
+{
+  "route_id": "randolph-macon-college__engl",
+  "requested_url": "https://catalog.rmc.edu/courses-az/engl/",
+  "final_url": "https://catalog.rmc.edu/courses-az/engl/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 104884,
+  "content_sha256": "8ab982d3bff834d5d5c06f2eb0c4342d4ea10efe421607326ca7c490cb79c5a9",
+  "fetched_at": "2026-08-24T18:03:29.203Z",
+  "robots": {
+    "url": "https://catalog.rmc.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "f6305026d827feeb54fa3dee76e89fb169b56467844ba340d22366c95ef81349",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ENGL185"
+  ]
+}

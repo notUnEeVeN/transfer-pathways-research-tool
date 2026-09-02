@@ -1,0 +1,17 @@
+User-agent: bingbot
+Allow: /
+Crawl-delay: 10
+
+User-agent: UT-Dorkbot/1.2
+Disallow: /
+
+User-agent: UT-Dorkbot
+Disallow: /
+
+User-agent: SemrushBot
+Allow: /
+Crawl-delay: 10
+
+User-agent: *
+Allow: /
+Crawl-delay: 10

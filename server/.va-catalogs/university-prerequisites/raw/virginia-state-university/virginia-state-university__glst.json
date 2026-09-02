@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-state-university__glst",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/glst/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/glst/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 76194,
+  "content_sha256": "b6f31e982e6db1793717eda99c16e6fb40fc64f15595f1abc9bd2b4dcd9072ee",
+  "fetched_at": "2026-08-24T18:04:12.717Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "GLST202"
+  ]
+}

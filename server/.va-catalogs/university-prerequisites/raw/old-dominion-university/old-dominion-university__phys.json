@@ -1,0 +1,26 @@
+{
+  "route_id": "old-dominion-university__phys",
+  "requested_url": "https://catalog.odu.edu/courses/phys/",
+  "final_url": "https://catalog.odu.edu/courses/phys/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 267218,
+  "content_sha256": "acc5e42b4b80677de2294e2bb5b2514029198e987d8b0faff234726587edf2af",
+  "fetched_at": "2026-08-24T18:03:24.254Z",
+  "robots": {
+    "url": "https://catalog.odu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "04c0328aabd3f05afd6a4ec0382500f973b6457f737639ac2933372331d0e045",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "PHYS111N",
+    "PHYS112N",
+    "PHYS226N",
+    "PHYS227N",
+    "PHYS231N",
+    "PHYS232N"
+  ]
+}

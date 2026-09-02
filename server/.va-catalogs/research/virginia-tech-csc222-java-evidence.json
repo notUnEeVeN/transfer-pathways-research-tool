@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_tech_csc222_java_evidence",
+  "generated_on": "2026-08-24",
+  "verified": true,
+  "issues": [],
+  "purpose": "Bound Virginia Tech CSC 222 Java/advisor resolution only to exact current section-language evidence; retained New River context remains non-resolving because its two sources are not section-language bound.",
+  "sources": {
+    "nova_schedule": {
+      "requested_url": "https://courses.vccs.edu/colleges/nova/courses/CSC222",
+      "final_url": "https://courses.vccs.edu/colleges/nova/courses/CSC222",
+      "content_type": "text/html; charset=UTF-8",
+      "response_bytes": 40235,
+      "response_sha256": "43a788cc0f325ec577c17807922c80b9e915456364c73fcbbeb0d498df56e21e",
+      "fragment_sha256": "46bc6c3684dacab823e6260c53aaae9de487e3edf4148871a8bb1c9a128088b4"
+    },
+    "new_river_schedule": {
+      "requested_url": "https://www.nr.edu/online/courses.php",
+      "final_url": "https://www.nr.edu/online/courses.php",
+      "content_type": "text/html; charset=UTF-8",
+      "response_bytes": 148032,
+      "response_sha256": "73f6ccb38caf5f5d5e9a7fc3f01a65f4631cefc599ba14ebfdacedd76eac141e",
+      "fragment_sha256": "1ae799facf38165915a84d17650a35ad6c26969bc6acb23913152e18888067e7"
+    },
+    "new_river_staffing_posting": {
+      "requested_url": "https://www.nr.edu/jobs/details.php?id_number=4403",
+      "final_url": "https://www.nr.edu/jobs/details.php?id_number=4403",
+      "content_type": "text/html; charset=UTF-8",
+      "response_bytes": 48799,
+      "response_sha256": "0bd15e531cd108d6ab0fb6cfda4a7ce4a61ac9b01d2402790e1cede221134454",
+      "fragment_sha256": "e35221a577ed96559218dbdbc79cbe87817e15ed9beee4b47b3a0ea145f3e760"
+    },
+    "vccs_robots": {
+      "requested_url": "https://courses.vccs.edu/robots.txt",
+      "final_url": "https://courses.vccs.edu/robots.txt",
+      "content_type": "text/plain",
+      "response_bytes": 126,
+      "response_sha256": "23ff21a5ebd4649c2a062308c0a9689bbc2727abe24ebed666cd78553bfc082d",
+      "http_status": 200,
+      "protected_url": "https://courses.vccs.edu/colleges/nova/courses/CSC222",
+      "protected_path_allowed": true
+    },
+    "new_river_robots": {
+      "requested_url": "https://www.nr.edu/robots.txt",
+      "final_url": "https://www.nr.edu/robots.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "response_bytes": 123,
+      "response_sha256": "7a7de63534f3c06b5bfd5a612d56585396bf8734621ed9e7c38db7532abad9fa",
+      "http_status": 200,
+      "protected_url": "https://www.nr.edu/online/courses.php",
+      "protected_path_allowed": true
+    }
+  },
+  "facts": {
+    "catalog_window": "Fall 2026",
+    "receiver_condition": "java_or_advisor_review",
+    "colleges": {
+      "9311": {
+        "community_college_id": 9311,
+        "college_name": "New River Community College",
+        "evidence_scope": "non_resolving_current_context",
+        "resolution_status": "fail_closed",
+        "qualification_gap": "The Fall 2026 schedule identifies CSC 222-35, while the separate open adjunct posting lists CSC 222 (Java); neither source binds Java to section CSC 222-35.",
+        "term": "Fall 2026",
+        "term_code": "2264",
+        "scheduled_sections": [
+          {
+            "section": "CSC 222-35",
+            "title": "Object-Oriented Programming",
+            "session": "14 Week",
+            "testing": "Does not require on-site testing",
+            "term": "Fall 2026",
+            "start_date": "2026-08-24",
+            "end_date": "2026-12-11",
+            "fragment_sha256": "1ae799facf38165915a84d17650a35ad6c26969bc6acb23913152e18888067e7"
+          }
+        ],
+        "separate_staffing_posting": {
+          "course_language_statement": "CSC 222 - Object Oriented Programming (Java)",
+          "posting_scope": "courses_available_to_adjunct_instructors_online_or_in_person",
+          "current_status": "Open",
+          "application_deadline": "Open until filled"
+        }
+      },
+      "9312": {
+        "community_college_id": 9312,
+        "college_name": "Northern Virginia Community College",
+        "evidence_scope": "exact_current_sections",
+        "term": "Fall 2026",
+        "term_code": "2264",
+        "java_sections": [
+          {
+            "class_number": "83026",
+            "section": "CSC 222-001L",
+            "credits": 4,
+            "days": "Tu Th",
+            "time": "12:45 p.m.-2:45 p.m.",
+            "start_date": "2026-08-24",
+            "location": "Loudoun",
+            "mode": "P",
+            "language": "Java",
+            "note": "This class will be taught with Java. Class meets on campus, on the day(s), time, and location listed on the class schedule. OER-no cost textbooks",
+            "fragment_sha256": "ad3755727e2acd405d564e316e0cf7950091cb31d3deb52f34e79685f50a5b39"
+          },
+          {
+            "class_number": "83030",
+            "section": "CSC 222-002L",
+            "credits": 4,
+            "days": "Sa",
+            "time": "9:35 a.m.-1:30 p.m.",
+            "start_date": "2026-08-24",
+            "location": "Virtual and NOL - Real Time",
+            "mode": "CV",
+            "language": "Java",
+            "note": "This class will be taught with Java. Class meets in real-time via Zoom on the days and times listed on your class schedule. Your instructor will facilitate live online lectures and discussions. Reliable internet access and a Zoom-capable device are required.",
+            "fragment_sha256": "3a05326fadc72bd96e01f2491d2738b7f5e59a1367d8095750e8b45a2fcbb201"
+          },
+          {
+            "class_number": "84421",
+            "section": "CSC 222-040L",
+            "credits": 4,
+            "days": "M W",
+            "time": "6:30 p.m.-8:45 p.m.",
+            "start_date": "2026-09-08",
+            "location": "Virtual and NOL - Real Time",
+            "mode": "CV",
+            "language": "Java",
+            "note": "This class will be taught with Java. This class is offered in a condensed 13-week session. Class meets in real-time via Zoom on the days and times listed on your class schedule. Your instructor will facilitate live online lectures and discussions. Reliable internet access and a Zoom-capable device are required. Thirteen Week",
+            "fragment_sha256": "0e2550b9aed2a51ecdad1f26e25066cc42be3be8a9c229afd29b883fe7e0b87e"
+          }
+        ]
+      }
+    }
+  },
+  "facts_sha256": "8a96ba4259e4acf29091730169c432997a2a29e7604fbe15ba84368ffeeb7a93",
+  "paper_interpretation": {
+    "figures": [
+      "3",
+      "4"
+    ],
+    "method": "optimistic_best_case_exact_current_section_language",
+    "resolved_community_college_ids": [
+      9312
+    ],
+    "non_resolving_context_community_college_ids": [
+      9311
+    ],
+    "statewide_language_inferred": false,
+    "unlisted_colleges_resolved": false,
+    "figure_6_resolved": false
+  }
+}

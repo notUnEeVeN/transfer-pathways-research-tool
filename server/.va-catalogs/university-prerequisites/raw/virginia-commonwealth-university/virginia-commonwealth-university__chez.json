@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-commonwealth-university__chez",
+  "requested_url": "https://bulletin.vcu.edu/azcourses/chez/",
+  "final_url": "https://bulletin.vcu.edu/azcourses/chez/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 25411,
+  "content_sha256": "7fef992083d3e2afe85e395357c3b8e5bf39b49c2e201592a880ef6283fb3c02",
+  "fetched_at": "2026-08-24T18:03:38.945Z",
+  "robots": {
+    "url": "https://bulletin.vcu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CHEZ101"
+  ]
+}

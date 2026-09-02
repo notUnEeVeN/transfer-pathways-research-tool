@@ -1,0 +1,21 @@
+{
+  "route_id": "the-university-of-virginia-s-college-at-wise__eng1020",
+  "requested_url": "http://catalog.uvawise.edu/preview_course_nopop.php?catoid=9&coid=18056",
+  "final_url": "http://catalog.uvawise.edu/preview_course_nopop.php?catoid=9&coid=18056",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 56752,
+  "content_sha256": "5803e58597e58fa469d90be3621d8d13aa6bde1b349d9000903acb7566041636",
+  "fetched_at": "2026-08-24T22:30:00.662Z",
+  "robots": {
+    "url": "http://catalog.uvawise.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "ENG1020"
+  ]
+}

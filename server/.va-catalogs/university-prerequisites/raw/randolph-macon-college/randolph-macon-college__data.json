@@ -1,0 +1,21 @@
+{
+  "route_id": "randolph-macon-college__data",
+  "requested_url": "https://catalog.rmc.edu/courses-az/data/",
+  "final_url": "https://catalog.rmc.edu/courses-az/data/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 39580,
+  "content_sha256": "8d5d80e381160ded5a218182c208776f6eecd01bb1c110c4d4ea6dde5b7a5b74",
+  "fetched_at": "2026-08-24T18:34:40.177Z",
+  "robots": {
+    "url": "https://catalog.rmc.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "f6305026d827feeb54fa3dee76e89fb169b56467844ba340d22366c95ef81349",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "DATA210"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "route_id": "shenandoah-university__math201",
+  "requested_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=54578",
+  "final_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=54578",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 167795,
+  "content_sha256": "c407d02e70059442cddf09d34c7cbe1d9c1e4620bdb8a04093da6f5b37a5e184",
+  "fetched_at": "2026-08-25T00:27:29.362Z",
+  "robots": {
+    "url": "https://catalog.su.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "MATH201"
+  ]
+}

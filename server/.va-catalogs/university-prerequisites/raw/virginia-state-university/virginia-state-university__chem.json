@@ -1,0 +1,29 @@
+{
+  "route_id": "virginia-state-university__chem",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/chem/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/chem/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 106251,
+  "content_sha256": "926cd2c61ea948f22f6e2142eaddf15641d13dea4579862fabc0a5766672df21",
+  "fetched_at": "2026-08-24T18:03:58.676Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CHEM100",
+    "CHEM151",
+    "CHEM152",
+    "CHEM153",
+    "CHEM154",
+    "CHEM161",
+    "CHEM162",
+    "CHEM163",
+    "CHEM164"
+  ]
+}

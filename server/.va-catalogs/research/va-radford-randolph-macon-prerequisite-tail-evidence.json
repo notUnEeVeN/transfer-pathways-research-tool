@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "artifact": "va_radford_randolph_macon_prerequisite_tail_evidence",
+  "contract": "va_radford_randolph_macon_exact_zero_course_edge_tail_audit_v1",
+  "snapshot_date": "2026-08-25",
+  "publication_ready": false,
+  "summary": {
+    "target_rows": 6,
+    "exact_current_complete_entry_rows": 6,
+    "source_upgrade_rows": 2,
+    "safe_zero_course_edge_rows": 5,
+    "blocked_required_prior_knowledge_rows": 1,
+    "direct_rows": 4,
+    "closure_rows": 2
+  },
+  "facts_sha256": "b131f86d074d010c3a02c677335525bf309423ab059a309828cb9db72642b6b2",
+  "facts": {
+    "policy": {
+      "graph_measure": "Figure 6 h(G) incoming owner-local course edges",
+      "zero_edge_boundary": "Absolute cohort or first-year timing constraints do not create course edges, but must be retained as source-bound signals. Required prior knowledge, an assessment, an unnamed course, or unresolved enrollment dependency blocks structural-none unless separately modeled.",
+      "missing_result_inference_allowed": false
+    },
+    "target_rows": [
+      {
+        "course_key": "va:uni:9219:ENGL111",
+        "school_id": 9219,
+        "slug": "radford-university",
+        "owner_namespace": "va:uni:9219",
+        "course_code": "ENGL111",
+        "scope_role": "direct_remediation",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "source_upgrade_from_candidate_projection": false,
+        "source": {
+          "official_url": "https://catalog.radford.edu/preview_course_nopop.php?catoid=62&coid=108402",
+          "cache_path": "university-prerequisites/raw/radford-university/radford-university__engl111.html",
+          "source_response_sha256": "bde86b97e4ffa7bbaf8f105efcf954c3ae36a86204d9123060b68f92f04cf5a0",
+          "source_response_bytes": 77909,
+          "raw_entry_sha256": "2817adeb6614181461a140e1b6d90d893d38d0ff8f2a4d88fcf2d81cd508a0a3",
+          "raw_entry_html_sha256": "c3c3c909dae81c8d695679c88063f1d1df1fe5fb81b5760c91fef0da4fabf5f0",
+          "boundary_contract": "radford_acalog_unique_preview_course_record_exact_catoid_coid_h1_and_credits_v1",
+          "catalog_year": "2026-2027",
+          "catoid": 62,
+          "coid": 108402,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "(3)",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          }
+        },
+        "marker_control": {
+          "contract": "radford_exact_current_catoid_population_prerequisite_positive_control_v1",
+          "catalog_year": "2026-2027",
+          "catoid": 62,
+          "exact_complete_entry_count": 15,
+          "exact_entries_with_required_prerequisite_count": 14,
+          "exact_entries_without_required_prerequisite_count": 1,
+          "positive_control_codes": [
+            "CS120",
+            "CS220",
+            "CS230",
+            "CS252",
+            "CS322",
+            "CS340",
+            "CS345",
+            "CS350",
+            "CS370",
+            "CS390",
+            "CS411",
+            "MATH168",
+            "MATH169",
+            "MATH171"
+          ],
+          "population_sha256": "1fc5ad58e022a83eca138f933865c4812d0b18a489af701ba4fea9adb9ac4994",
+          "same_catalog_positive_control": true,
+          "missing_search_result_used": false
+        },
+        "preserved_signals": [
+          {
+            "kind": "mutual_credit_exclusion",
+            "raw": "Students cannot receive credit for both ENGL 111 and CORE 101.",
+            "excluded_course_code": "CORE101",
+            "incoming_course_edge": false,
+            "relative_start": 441,
+            "relative_end": 503,
+            "raw_sha256": "159245afaa5b4925da5f30c748ed3b15c1a21261810430479efe526fc0983097",
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "exact_current_catalog_edition": true,
+          "same_source_or_same_catalog_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "Zero-edge means only that this exact complete current entry contributes no incoming course edge to Figure 6 h(G). Credit exclusions, absolute cohort/timing rules, and descriptive learning outcomes remain retained facts and are not erased or represented as literal no-requirement statements."
+      },
+      {
+        "course_key": "va:uni:9221:CSCI111",
+        "school_id": 9221,
+        "slug": "randolph-macon-college",
+        "owner_namespace": "va:uni:9221",
+        "course_code": "CSCI111",
+        "scope_role": "direct_remediation",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "source_upgrade_from_candidate_projection": true,
+        "source": {
+          "official_url": "https://catalog.rmc.edu/courses-az/csci/",
+          "cache_path": "university-prerequisites/raw/randolph-macon-college/randolph-macon-college__csci.html",
+          "source_response_sha256": "69a52cffc501f52ae561a0febefb8cc74f2c330bcfa5645a9799d97aa29b5885",
+          "source_response_bytes": 75071,
+          "raw_entry_sha256": "8de7f11c61f0fc7a7b88370dcda24d155445df2c602940444b7bc4617e5cc96e",
+          "raw_entry_html_sha256": "325317cc5e20462733d02aead253bc8fe768eb7a13e150e3015e9f06620e9b69",
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "courseblock_index": 1,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "4 Hours",
+            "credit_hours_min": 4,
+            "credit_hours_max": 4,
+            "heading_text_sha256": "ef37a1f59acf7625d41fd9f37fbf688a48892d9079eb730ff65d4391893f6f0b"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 39,
+          "source_complete_entry_count": 39,
+          "source_complete_entries_with_required_requisite_marker_count": 23,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 0,
+          "same_source_positive_control": true,
+          "exact_current_edition_marker_present": true,
+          "missing_search_result_used": false
+        },
+        "preserved_signals": [],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "exact_current_catalog_edition": true,
+          "same_source_or_same_catalog_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "Zero-edge means only that this exact complete current entry contributes no incoming course edge to Figure 6 h(G). Credit exclusions, absolute cohort/timing rules, and descriptive learning outcomes remain retained facts and are not erased or represented as literal no-requirement statements."
+      },
+      {
+        "course_key": "va:uni:9221:CSCI382",
+        "school_id": 9221,
+        "slug": "randolph-macon-college",
+        "owner_namespace": "va:uni:9221",
+        "course_code": "CSCI382",
+        "scope_role": "direct_remediation",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "source_upgrade_from_candidate_projection": true,
+        "source": {
+          "official_url": "https://catalog.rmc.edu/courses-az/csci/",
+          "cache_path": "university-prerequisites/raw/randolph-macon-college/randolph-macon-college__csci.html",
+          "source_response_sha256": "69a52cffc501f52ae561a0febefb8cc74f2c330bcfa5645a9799d97aa29b5885",
+          "source_response_bytes": 75071,
+          "raw_entry_sha256": "449f4a7781f8ec49111bd40442babf1e2384ae963fb36f17ce0711fd47d3e892",
+          "raw_entry_html_sha256": "df2cdef0dd1d46a6ac2e7841f974292791f32cbb15a1452c392baa8e7f0d2f8d",
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "courseblock_index": 27,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3 Hours",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3,
+            "heading_text_sha256": "449f4a7781f8ec49111bd40442babf1e2384ae963fb36f17ce0711fd47d3e892"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 39,
+          "source_complete_entry_count": 39,
+          "source_complete_entries_with_required_requisite_marker_count": 23,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 0,
+          "same_source_positive_control": true,
+          "exact_current_edition_marker_present": true,
+          "missing_search_result_used": false
+        },
+        "preserved_signals": [],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "exact_current_catalog_edition": true,
+          "same_source_or_same_catalog_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "Zero-edge means only that this exact complete current entry contributes no incoming course edge to Figure 6 h(G). Credit exclusions, absolute cohort/timing rules, and descriptive learning outcomes remain retained facts and are not erased or represented as literal no-requirement statements."
+      },
+      {
+        "course_key": "va:uni:9221:CSEC121",
+        "school_id": 9221,
+        "slug": "randolph-macon-college",
+        "owner_namespace": "va:uni:9221",
+        "course_code": "CSEC121",
+        "scope_role": "recursive_closure",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "source_upgrade_from_candidate_projection": false,
+        "source": {
+          "official_url": "https://catalog.rmc.edu/courses-az/csec/",
+          "cache_path": "university-prerequisites/raw/randolph-macon-college/randolph-macon-college__csec.html",
+          "source_response_sha256": "23ac40871230481fa2f7cf996334e46a8af97beb690261d6f9783a85f11e3342",
+          "source_response_bytes": 42600,
+          "raw_entry_sha256": "ea9bbef5d885c3625e5014475b678be431c45cb8c6cba32fb8b55736edf1179c",
+          "raw_entry_html_sha256": "09748c66b8ebbbb6d9e018aa5576502b5d74cd974523c8e458d87dc324ed1252",
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "courseblock_index": 0,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "3 Hours",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3,
+            "heading_text_sha256": "59d82a32480e4031055cd18c0e1411ade4bb61e4bf9bf1ed2dfd7faf595174cb"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 9,
+          "source_complete_entry_count": 9,
+          "source_complete_entries_with_required_requisite_marker_count": 5,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 1,
+          "same_source_positive_control": true,
+          "exact_current_edition_marker_present": true,
+          "missing_search_result_used": false
+        },
+        "preserved_signals": [
+          {
+            "kind": "course_learning_outcome_not_prior_knowledge",
+            "raw": "Students will also develop a working knowledge of the ethical issues related to emerging technologies and social media applications and research issues related to personal privacy, freedom of expression, and respecting and protecting intellectual property.",
+            "incoming_course_edge": false,
+            "knowledge_is_developed_by_course": true,
+            "relative_start": 344,
+            "relative_end": 600,
+            "raw_sha256": "874adb184cbcddb2223c3a9b6441f9fcd072f90afc8f4ea4a586bbdc2912d430",
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "exact_current_catalog_edition": true,
+          "same_source_or_same_catalog_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "Zero-edge means only that this exact complete current entry contributes no incoming course edge to Figure 6 h(G). Credit exclusions, absolute cohort/timing rules, and descriptive learning outcomes remain retained facts and are not erased or represented as literal no-requirement statements."
+      },
+      {
+        "course_key": "va:uni:9221:ENGL185",
+        "school_id": 9221,
+        "slug": "randolph-macon-college",
+        "owner_namespace": "va:uni:9221",
+        "course_code": "ENGL185",
+        "scope_role": "direct_remediation",
+        "disposition": "safe_zero_course_edge",
+        "publication_status_recommendation": "none",
+        "incoming_course_edge_count": 0,
+        "structural_none_safe_for_figure6_course_graph": true,
+        "source_upgrade_from_candidate_projection": false,
+        "source": {
+          "official_url": "https://catalog.rmc.edu/courses-az/engl/",
+          "cache_path": "university-prerequisites/raw/randolph-macon-college/randolph-macon-college__engl.html",
+          "source_response_sha256": "8ab982d3bff834d5d5c06f2eb0c4342d4ea10efe421607326ca7c490cb79c5a9",
+          "source_response_bytes": 104884,
+          "raw_entry_sha256": "742ba5574c81dfc967b1f4306cb30a889aa3575f81c6a19e8323b476a083ea1e",
+          "raw_entry_html_sha256": "36434d66ba57be05bb5f60fe9f2c943a32de1830c5026b006869ea4e3996e528",
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "courseblock_index": 0,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "4 Hours",
+            "credit_hours_min": 4,
+            "credit_hours_max": 4,
+            "heading_text_sha256": "852fa3cd4ed1967ec3a78d904951e955a030009e9439c0bc924f666268ac6673"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 67,
+          "source_complete_entry_count": 67,
+          "source_complete_entries_with_required_requisite_marker_count": 36,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 1,
+          "same_source_positive_control": true,
+          "exact_current_edition_marker_present": true,
+          "missing_search_result_used": false
+        },
+        "preserved_signals": [
+          {
+            "kind": "absolute_first_year_timing_constraint",
+            "raw": "The seminar must be taken during a student's first year at the College.",
+            "student_year_maximum": 1,
+            "incoming_course_edge": false,
+            "figure6_h_g_effect": false,
+            "relative_start": 238,
+            "relative_end": 309,
+            "raw_sha256": "b8758e8222502800a960bfeee6a95bde21b5ecf4405da815ad22300329a3d496",
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "exact_current_catalog_edition": true,
+          "same_source_or_same_catalog_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "Zero-edge means only that this exact complete current entry contributes no incoming course edge to Figure 6 h(G). Credit exclusions, absolute cohort/timing rules, and descriptive learning outcomes remain retained facts and are not erased or represented as literal no-requirement statements."
+      },
+      {
+        "course_key": "va:uni:9221:MATH131",
+        "school_id": 9221,
+        "slug": "randolph-macon-college",
+        "owner_namespace": "va:uni:9221",
+        "course_code": "MATH131",
+        "scope_role": "recursive_closure",
+        "disposition": "blocked_required_prior_knowledge",
+        "publication_status_recommendation": "unparsed",
+        "incoming_course_edge_count": null,
+        "structural_none_safe_for_figure6_course_graph": false,
+        "source_upgrade_from_candidate_projection": false,
+        "source": {
+          "official_url": "https://catalog.rmc.edu/courses-az/math/",
+          "cache_path": "university-prerequisites/raw/randolph-macon-college/randolph-macon-college__math.html",
+          "source_response_sha256": "6fda9e1f512d38460711793372c766f2959dda60cd2201f225fd6b23f0c515a4",
+          "source_response_bytes": 74742,
+          "raw_entry_sha256": "70c285495c5b5c7fbaf17936d67b444ee8fe9a4784f1be69686e399e5ec00aba",
+          "raw_entry_html_sha256": "d8aab18e5cd762f4e64824024cf9557c0148fb53db00603bcde6d38fdecd3b84",
+          "boundary_contract": "unique_courseblock_exact_leading_code_with_published_units",
+          "catalog_year": "2026-2027",
+          "courseblock_index": 6,
+          "published_units": {
+            "kind": "published_fixed_credits",
+            "notation": "4 Hours",
+            "credit_hours_min": 4,
+            "credit_hours_max": 4,
+            "heading_text_sha256": "57d9eb0fdbc6461aaf53f00635751ae4ccb4e224367eaa54201f4c89298d5bc3"
+          }
+        },
+        "marker_control": {
+          "receipt_contract": "courseleaf_complete_entry_response_and_same_source_requisite_marker_control_v1",
+          "source_courseblock_count": 36,
+          "source_complete_entry_count": 36,
+          "source_complete_entries_with_required_requisite_marker_count": 25,
+          "entry_required_requisite_marker_count": 0,
+          "entry_corequisite_marker_count": 0,
+          "entry_requisite_marker_like_count": 0,
+          "entry_constraint_like_signal_count": 2,
+          "same_source_positive_control": true,
+          "exact_current_edition_marker_present": true,
+          "missing_search_result_used": false
+        },
+        "preserved_signals": [
+          {
+            "kind": "required_prior_knowledge_without_runtime_binding",
+            "raw": "A working knowledge of high school algebra, geometry, and trigonometry is required for this course.",
+            "incoming_prerequisite_effect": "unresolved",
+            "named_course_code": null,
+            "named_assessment": null,
+            "relative_start": 251,
+            "relative_end": 350,
+            "raw_sha256": "7f2f729dcb8b9b2ee57deec227e156143304f281c58d9d367310ab6407c5cae2",
+            "source_content_preserved": true
+          }
+        ],
+        "content_accounting": {
+          "exact_complete_present_entry": true,
+          "exact_current_catalog_edition": true,
+          "same_source_or_same_catalog_positive_control": true,
+          "every_constraint_like_signal_span_preserved": true,
+          "source_content_discarded": false
+        },
+        "inference_boundary": "The exact entry requires prior knowledge but names neither an owner-local course nor an assessment/runtime binding. It must remain blocked; structural silence and a zero-edge formula are not inferred."
+      }
+    ]
+  }
+}

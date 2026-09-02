@@ -1,0 +1,437 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+	<title>Virginia Peninsula Community College: Object-Oriented Programming - CSC 222</title>
+	<link rel="icon" href="https://www.vccs.edu/wp-content/uploads/2019/02/cropped-favicon-32x32.png" sizes="32x32" />
+	<link rel="icon" href="https://www.vccs.edu/wp-content/uploads/2019/02/cropped-favicon-192x192.png" sizes="192x192" />
+	<link rel="apple-touch-icon" href="https://www.vccs.edu/wp-content/uploads/2019/02/cropped-favicon-180x180.png" />
+	<meta name="msapplication-TileImage" content="https://www.vccs.edu/wp-content/uploads/2019/02/cropped-favicon-270x270.png" />
+	<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+	<link rel="preconnect" href="//fonts.gstatic.com" />
+	<link rel="preload" id="educatito-google-fonts-css" href="//fonts.googleapis.com/css?family=Roboto%3A100%2C100i%2C300%2C300i%2C400%2C400i%2C500%2C500i%2C700%2C700i%7CMontserrat%3A300%2C400%2C500%2C600%2C700" type="text/css" media="all"  as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<link rel="preload" id="redux-google-fonts-educatito_options-css" href="https://fonts.googleapis.com/css?family=Roboto+Slab%3A100%2C300%2C400%2C700&amp;ver=1588756781" type="text/css" media="all" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous" defer></script>
+	<link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous" defer ></script>
+	<link rel="stylesheet" type="text/css" href="/style.css"  as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<link rel="stylesheet" type="text/css" href="/styles/theme.css"  as="style" onload="this.onload=null;this.rel='stylesheet'" />
+	<!-- link rel="stylesheet" type="text/css" href="/styles/vccs-new.css" />
+	<link rel="preload" type="text/css" href="/styles/vccs-new-style.css"  as="style" onload="this.onload=null;this.rel='stylesheet'" / -->
+	<!-- link rel="stylesheet" type="text/css" media="print" href="/print.css" / -->
+	<script type="text/javascript" src="/common.js?version=2021-02-04" defer></script>
+	<meta name=viewport content="width=device-width, initial-scale=1" />
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6GW2NG3QC0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6GW2NG3QC0');
+</script>
+
+		</head>
+		
+<body>
+
+<!-- VCCS Header -->
+<!-- header -->
+<header role="banner">
+<div class="menu-bg small shadow-sm p-3">
+         <div class="row container">
+                <div id="logo" class="three column columns">
+                   <a class="small" href="/" title="courses home page"><img src="/vccs-logo-258x105.png" alt="VCCS Logo" width="258" height="105"></a>
+                </div>
+<!-- 
+                <div id="top_menu" class="column columns">
+                     <div class="categories-content"><ul id="menu-top_menu" class="menu"><li id="menu-item-78" class="item-1 menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a title="About" href="http://www.vccs.edu/about/" class="small">About</a></li>
+<li id="menu-item-290" class="item-2 menu-item menu-item-type-post_type menu-item-object-page menu-item-290"><a title="Statewide Innovations" href="http://www.vccs.edu/statewide-innovations/" class="small">Statewide<br> Innovations</a></li>
+<li id="menu-item-242" class="item-3 menu-item menu-item-type-post_type menu-item-object-page menu-item-242"><a title="Students" href="http://www.vccs.edu/students/" class="small">Students</a></li>
+<li id="menu-item-367" class="item-4 menu-item menu-item-type-post_type menu-item-object-page menu-item-367"><a title="Workforce" href="http://www.vccs.edu/workforce/" class="small">Workforce</a></li>
+<li id="menu-item-79" class="item-5 menu-item menu-item-type-post_type menu-item-object-page menu-item-79"><a title="Giving" href="http://www.vccs.edu/giving/" class="small">Giving</a></li>
+<li id="menu-item-167" class="item-6 menu-item menu-item-type-post_type menu-item-object-page menu-item-167"><a title="Careers" href="http://www.vccs.edu/careers/" class="small">Careers</a></li>
+<li id="menu-item-745" class="item-7 menu-item menu-item-type-post_type menu-item-object-page menu-item-745"><a title="Contact Us" href="http://www.vccs.edu/contact-us/" class="small">Contact Us</a></li>
+</ul></div>                 </div>
+-->
+          </div>
+     </div>
+</header>
+<!-- End VCCS Header -->
+
+<div id="maincontent" class="m-2">
+
+
+<nav role="navigation"><ul class="breadcrumb">
+	<li class="breadcrumb-item"><a href="/">Home</a></li><li class="breadcrumb-item"><a href="/colleges">Colleges</a></li>
+<li class="breadcrumb-item"><a href="/colleges/vpcc">Virginia Peninsula</a></li>
+<li class="breadcrumb-item"><a href="/colleges/vpcc/courses">Courses</a></li>
+<li class="breadcrumb-item"><a href="/colleges/vpcc/courses/CSC-ComputerScience">Computer Science</a></li>
+<li class="breadcrumb-item active">Object-Oriented Programming - CSC 222</li></ul></nav>
+
+<a name="cont" id="cont"></a>
+<h2 id="mainHeader">Object-Oriented Programming - CSC 222 at Virginia Peninsula Community College</h2>
+			<search><div class="searchForm pb-4" title="Search by keyword or subject (ENG) or specific course (ENG 111)">
+			<form method="get" action="/colleges/vpcc/courses/search"  id="mainsearch">
+						<fieldset>
+						<label for="find">Search courses</label>
+                        <input type="text" placeholder="search words" size="40" name="find" id="find" value=""
+                        />
+	                <input type="submit" value="Search" /><br />
+			<input type="radio" name="scope" id="scope1" value="vccs" onclick="this.form.action='/courses/search';" /><label for="scope1" style="display:inline" title="Search all Virginia's Community Colleges">&nbsp;All colleges</label>&nbsp;&nbsp;
+            <input type="radio" name="scope" id="scope2" value="college" onclick="this.form.action='/colleges/vpcc/courses/search';" checked /><label for="scope2" style="display:inline" title="Search Virginia Peninsula courses only">&nbsp;Virginia Peninsula</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><input type="checkbox" value="scheduled" data-name="dl .notScheduled" id="scheduled">&nbsp;<label for="scheduled" style="display:inline" id="scheduledLabel">Scheduled</label><br />
+				<a href="#AllFiltersDivColl" title="Show/Hide Advanced Options" data-toggle="collapse">Advanced Search</a>
+			</fieldset>
+            </form>
+		   
+			<div id="AllFiltersDivColl" class="collapse">
+			<div id="AllFiltersDiv" class="row">
+			
+			<!-- Distance learning filter -->
+			<div id="filter" class="searchFilter col-sm-3"> 
+			Distance Learning
+<div id="filterFilter" class="collapsible"title="Click the options you are interested in"><form name="filterfakeform" id="filterfakeform" method="get" action="javascript:void();">
+				<fieldset>
+				Restrict search to:<br />
+				<div class="form-check"><input type="checkbox" name="filter" value="HY" id="HY" /> <label for="HY" title="Hybrid is the combination of face-to-face and electronic delivery where 50-99% of the course content is electronically d ... see Distance Learning Types for more information">Hybrid - In Person &amp; Web</label></div>
+<div class="form-check"><input type="checkbox" name="filter" value="CV" id="CV" /> <label for="CV" title="Interactive Classroom Video (CV)&emdash; Interactive classroom video courses are synchronous distance learning and  eith ... see Distance Learning Types for more information">Interactive Classroom Video</label></div>
+<div class="form-check"><input type="checkbox" name="filter" value="IS" id="IS" /> <label for="IS" title="Independent Study is planned study, highly individualized, not addressable through any other course format, accepted for ... see Distance Learning Types for more information">Independent Studies</label></div>
+<div class="form-check"><input type="checkbox" name="filter" value="PB" id="PB" /> <label for="PB" title="Course is presented via a package of printed materials sent to the student.  Student is self-directed with limited instr ... see Distance Learning Types for more information">Print Based</label></div>
+<div class="form-check"><input type="checkbox" name="filter" value="WW" id="WW"  onclick="this.form.ER.checked=this.form.WW.checked?true:this.form.ER.checked;"/> <label for="WW" title="Instruction for these courses is online using the internet.  Most courses are taught using Blackboard, but may also incl ... see Distance Learning Types for more information">WWW Online</label></div>
+<div class="form-check"><input type="checkbox" name="filter" value="ER" id="ER" /> <label for="ER" title="Use of the E-Rate is optional for colleges. E-Rate courses are offered exclusively over the web. The E-rate is the tuiti ... see Distance Learning Types for more information">WWW Online w/E-Rate</label></div>
+<input type="button" value="save" class="btn btn-primary" onclick="fillSub('filter');"/>&nbsp;&nbsp;&nbsp;<a href="/courses/distance" title="Explanations of different distance learning types">Distance Learning Types</a></fieldset>
+			</form>
+			</div>
+			<form method="get" name="filterrealform" id="filterrealform" action="/colleges/vpcc/courses/CSC222">
+
+			<input type="hidden" name="filter" value="" />
+			</form>
+			</div>
+			
+			<!-- Time Of Day filter -->
+			<div id="tfilter" class="searchFilter col-sm-3">
+			Time of Day
+<div id="timeOfDayFilter" class="collapsible">
+	<form name="timeOfDayfakeform" id="timeOfDayfakeform" method="get" action="javascript:void();">
+				<fieldset>
+				Restrict search to:<br />
+				<div class="form-check"><input type="checkbox" name="timeOfDay" value="am" id="am" /> <label for="am"><span title="Starts before 12:00">Morning</span></label></div>
+<div class="form-check"><input type="checkbox" name="timeOfDay" value="pm" id="pm" /> <label for="pm"><span title="Starts after 11:30 a.m. and before 5:00 p.m.">Afternoon</span></label></div>
+<div class="form-check"><input type="checkbox" name="timeOfDay" value="e" id="e" /> <label for="e"><span title="Starts after 4:30 p.m.">Evening</span></label></div>
+<input type="button" value="save" class="btn btn-primary" onclick="fillSub('timeOfDay');"/></fieldset>
+			</form>
+			</div>
+			<form method="get" name="timeOfDayrealform" id="timeOfDayrealform" action="/colleges/vpcc/courses/CSC222">
+
+			<input type="hidden" name="timeOfDay" value="" />
+			</form>
+			</div>
+			<div id="weekendfilter" class="searchFilter col-sm-3"><form style="padding:0;margin:0;" method="get" name="wform" id="wform" action="/colleges/vpcc/courses/CSC222">
+				<fieldset><div class="form-check"><input type="checkbox" name="weekend" id="weekend" onclick="this.form.submit();" /> <label for="weekend" title="Click to show weekend classes only">Weekend classes</label></div>
+			</fieldset>
+			</form>
+			</div>
+			
+			<!-- Term filter -->
+			<div id="termpfilter" class="searchFilter col-sm-3">
+			Term
+<div id="termFilter" class="collapsible">
+	<form name="termfakeform" id="termfakeform" method="get" action="javascript:void();">
+				<fieldset>
+				Restrict search to:<br />
+				<div class="form-check"><input type="checkbox" name="term" value="Fall 2026" id="2264" /> <label for="2264">Fall 2026</label></div>
+<div class="form-check"><input type="checkbox" name="term" value="Spring 2027" id="2272" /> <label for="2272">Spring 2027</label></div>
+<div class="form-check"><input type="checkbox" name="term" value="Summer 2027" id="2273"  DISABLED/> <label for="2273">Summer 2027</label></div>
+<input type="button" value="save" class="btn btn-primary" onclick="fillSub('term');"/></fieldset>
+			</form>
+			</div>
+			<form method="get" name="termrealform" id="termrealform" action="/colleges/vpcc/courses/CSC222">
+
+			<input type="hidden" name="term" value="" />
+			</form>
+			</div>
+			
+			</div>
+			</div>
+			
+	
+        </div>
+        </search>
+		<main role="main"><div class="row justify-content-around shadow p-3 m-3" style="border-radius: 20px;"><div class="col-sm-8"><main role="main">
+<div id="main">
+<dl>
+
+<dt id="CSC-222"><a href="/colleges/vpcc/courses/CSC222-ObjectOrientedProgramming">CSC 222 - Object-Oriented Programming</a></dt>
+<dd id="CSC-222-description">	<div class="coursedesc"> Introduces the concepts and techniques of object-oriented programming to students with a background in procedural programming and problem solving. Uses a high-level computer language to illustrate and implement the topics. Second course in a three-course sequence (CSC 221, <a href="/colleges/vpcc/courses/CSC222">CSC 222</a>, <a href="/colleges/vpcc/courses/CSC223">CSC 223</a>).</div>
+	<div class="endtext">Lecture 4 hours. Total 4 hours per week.<br />
+Prerequisite: <a href="/colleges/vpcc/courses/CSC221">CSC 221</a> or equivalent, or departmental consent.</div>
+	<div class="credits">4 credits</div><!-- 2021-08-01 -->
+<div><a href="/colleges/vpcc/courses/CSC222-ObjectOrientedProgramming/detail">CSC 222 Detailed Outline <img src="/images/16x16.png" width="16" height="16" alt="icon" /></a></div>
+	</dd>
+</dl>
+</div>
+</main><div class="footer" id="courseDisclaimer">
+					<p>The course description above is common to all Virginia's Community Colleges. Virginia Peninsula Community College may add course <abbr title="Courses you have to take before this course">prerequisites</abbr>, <abbr title="Courses you have to take at the same time as this course">co-requisites</abbr> and/or other requirements.</p>
+					</div>
+					
+
+<div id="schedule" class="pt-3">
+<h3>Schedule at Virginia Peninsula Community College</h3>
+<div class="card"><div class="card-header">
+					<a class="card-link" data-toggle="collapse" href="#collapse2264"  title="Click to expand/collapse"><h4 style="margin-bottom: 0 !important">Fall 2026 &#10140;</h4></a><a class="small" href="https://ps-sis.vccs.edu/psc/S92GUEST/EMPLOYEE/SA/c/VX_CUSTOM_SR.VX_SSR_CLSRCH_FL.GBL?COLLEGE=TN293&TERM=2264" target="sis">Live Schedule</a></div>
+
+<div id="collapse2264" class="collapse show" data-parent="#schedule">
+								<div class="card-body table-responsive"><table class="table">
+				<thead class="thead-light">
+				<tr>
+					<th>Class #</th>
+					<th>Section</th>
+					<th>Credits</th>
+					<th>Day</th>
+					<th>Time</th>
+					<th>Start</th>
+					<th>Location</th>
+					<th>Mode</th>
+					</tr>
+					</thead>
+					<tbody>
+					
+
+<tr class="vevent">
+	<td>71041</td>
+	<td class="summary">CSC&nbsp;222-61H</td>
+	<td align="center">4</td>
+	<td><div class="days"><span class="d" title="Sunday">&nbsp;</span><span class="s" title="Monday">M</span><span class="d" title="Tuesday">&nbsp;</span><span class="s" title="Wednesday">W</span><span class="d" title="Thursday">&nbsp;</span><span class="d" title="Friday">&nbsp;</span><span class="d" title="Saturday">&nbsp;</span></div></td>
+	<td><div class="times">2:00&nbsp;p.m.-3:50&nbsp;p.m.</div></td>
+	<td class="dtstart">2026-08-19</td>
+	<td>Hampton Campus</td>
+	<td align="center"><span title="In Person">P</span></td>
+	</tr>
+
+
+<tr class="vevent">
+	<td>71043</td>
+	<td class="summary">CSC&nbsp;222-D61</td>
+	<td align="center">4</td>
+	<td><div class="days"><span class="d" title="Sunday">&nbsp;</span><span class="d" title="Monday">&nbsp;</span><span class="d" title="Tuesday">&nbsp;</span><span class="d" title="Wednesday">&nbsp;</span><span class="d" title="Thursday">&nbsp;</span><span class="d" title="Friday">&nbsp;</span><span class="d" title="Saturday">&nbsp;</span></div></td>
+	<td><div class="times">0:00&nbsp;a.m.-0:00&nbsp;a.m.</div></td>
+	<td class="dtstart">2026-08-19</td>
+	<td>Virtual Location</td>
+	<td align="center"><span title="WWW Online">WW</span></td>
+	</tr>
+	<tr><td colspan="8" class="classnote">This is an ***Asynchronous*** online section. Online courses are 100% online requiring students to have reliable access to a computer and internet service. This class has no scheduled meeting times. Due dates can be found in the syllabus. Students must login to Canvas regularly to check for course announcements, complete assignments, check grades and feedback, and participate in any other course activities required by the instructor. Students must have regular access to a computer and the Internet to successfully complete this course. Some courses require proctored testing. Students can visit  <a href="https://vpcc.edu/distance/students">https://vpcc.edu/distance/students</a> for information and resources for online students.</td></tr>
+
+
+<tr class="vevent">
+	<td>71042</td>
+	<td class="summary">CSC&nbsp;222-DR61</td>
+	<td align="center">4</td>
+	<td><div class="days"><span class="d" title="Sunday">&nbsp;</span><span class="s" title="Monday">M</span><span class="d" title="Tuesday">&nbsp;</span><span class="s" title="Wednesday">W</span><span class="d" title="Thursday">&nbsp;</span><span class="d" title="Friday">&nbsp;</span><span class="d" title="Saturday">&nbsp;</span></div></td>
+	<td><div class="times">2:00&nbsp;p.m.-3:50&nbsp;p.m.</div></td>
+	<td class="dtstart">2026-08-19</td>
+	<td>Virtual-Real Time</td>
+	<td align="center"><span title="WWW Online">WW</span></td>
+	</tr>
+	<tr><td colspan="8" class="classnote">This is a ***SYNCHRONOUS*** online section. Attendance at live online class meetings is required on the days and times listed in the course information. These meetings will be held via Zoom or other application designated by the instructor. Students must login to Canvas regularly to check for course announcements, complete assignments, check grades and feedback, and participate in any other course activities required by the instructor. Students must have regular access to a computer and the Internet to successfully complete this course. Some courses require proctored testing. Students can visit  <a href="https://vpcc.edu/distance/students">https://vpcc.edu/distance/students</a> for information and resources for online students.</td></tr>
+						</tbody>
+						</table>
+						</div>
+						</div>
+						</div>
+						<div class="card"><div class="card-header">
+					<a class="card-link" data-toggle="collapse" href="#collapse2272"  title="Click to expand/collapse"><h4 style="margin-bottom: 0 !important">Spring 2027 &#10140;</h4></a><a class="small" href="https://ps-sis.vccs.edu/psc/S92GUEST/EMPLOYEE/SA/c/VX_CUSTOM_SR.VX_SSR_CLSRCH_FL.GBL?COLLEGE=TN293&TERM=2272" target="sis">Live Schedule</a></div>
+
+<div id="collapse2272" class="collapse" data-parent="#schedule">
+								<div class="card-body table-responsive"><table class="table">
+				<thead class="thead-light">
+				<tr>
+					<th>Class #</th>
+					<th>Section</th>
+					<th>Credits</th>
+					<th>Day</th>
+					<th>Time</th>
+					<th>Start</th>
+					<th>Location</th>
+					<th>Mode</th>
+					</tr>
+					</thead>
+					<tbody>
+					
+
+<tr class="vevent">
+	<td>34653</td>
+	<td class="summary">CSC&nbsp;222-61H</td>
+	<td align="center">4</td>
+	<td><div class="days"><span class="d" title="Sunday">&nbsp;</span><span class="d" title="Monday">&nbsp;</span><span class="s" title="Tuesday">Tu</span><span class="d" title="Wednesday">&nbsp;</span><span class="s" title="Thursday">Th</span><span class="d" title="Friday">&nbsp;</span><span class="d" title="Saturday">&nbsp;</span></div></td>
+	<td><div class="times">9:30&nbsp;a.m.-11:20&nbsp;a.m.</div></td>
+	<td class="dtstart">2027-01-11</td>
+	<td>Hampton Campus</td>
+	<td align="center"><span title="In Person">P</span></td>
+	</tr>
+
+
+<tr class="vevent">
+	<td>35089</td>
+	<td class="summary">CSC&nbsp;222-D01</td>
+	<td align="center">4</td>
+	<td><div class="days"><span class="d" title="Sunday">&nbsp;</span><span class="d" title="Monday">&nbsp;</span><span class="d" title="Tuesday">&nbsp;</span><span class="d" title="Wednesday">&nbsp;</span><span class="d" title="Thursday">&nbsp;</span><span class="d" title="Friday">&nbsp;</span><span class="d" title="Saturday">&nbsp;</span></div></td>
+	<td><div class="times">0:00&nbsp;a.m.-0:00&nbsp;a.m.</div></td>
+	<td class="dtstart">2027-01-11</td>
+	<td>Virtual Location</td>
+	<td align="center"><span title="WWW Online">WW</span></td>
+	</tr>
+
+
+<tr class="vevent">
+	<td>34655</td>
+	<td class="summary">CSC&nbsp;222-D61</td>
+	<td align="center">4</td>
+	<td><div class="days"><span class="d" title="Sunday">&nbsp;</span><span class="d" title="Monday">&nbsp;</span><span class="d" title="Tuesday">&nbsp;</span><span class="d" title="Wednesday">&nbsp;</span><span class="d" title="Thursday">&nbsp;</span><span class="d" title="Friday">&nbsp;</span><span class="d" title="Saturday">&nbsp;</span></div></td>
+	<td><div class="times">0:00&nbsp;a.m.-0:00&nbsp;a.m.</div></td>
+	<td class="dtstart">2027-01-11</td>
+	<td>Virtual Location</td>
+	<td align="center"><span title="WWW Online">WW</span></td>
+	</tr>
+	<tr><td colspan="8" class="classnote">This is a ***HY-FLEX*** class that allows students the flexibility to decide, from one class meeting to the next, whether they want to attend in-person, synchronously online (live-streaming), or asynchronously online (watching recorded lectures at a time that is convenient for them). Students are encouraged to register for their preferred course delivery mode (in-person, synchronous, or asynchronous), but can move freely between these modalities *without* having to swap their enrollment into a different class section. Some courses require proctored testing. Students can visit  <a href="https://vpcc.edu/distance/students">https://vpcc.edu/distance/students</a> for information and resources for online students.<br />
+This is an ***Asynchronous*** online section. Online courses are 100% online requiring students to have reliable access to a computer and internet service. This class has no scheduled meeting times. Due dates can be found in the syllabus. Students must login to Canvas regularly to check for course announcements, complete assignments, check grades and feedback, and participate in any other course activities required by the instructor. Students must have regular access to a computer and the Internet to successfully complete this course. Some courses require proctored testing. Students can visit  <a href="https://vpcc.edu/distance/students">https://vpcc.edu/distance/students</a> for information and resources for online students.</td></tr>
+
+
+<tr class="vevent">
+	<td>34654</td>
+	<td class="summary">CSC&nbsp;222-DR61</td>
+	<td align="center">4</td>
+	<td><div class="days"><span class="d" title="Sunday">&nbsp;</span><span class="d" title="Monday">&nbsp;</span><span class="s" title="Tuesday">Tu</span><span class="d" title="Wednesday">&nbsp;</span><span class="s" title="Thursday">Th</span><span class="d" title="Friday">&nbsp;</span><span class="d" title="Saturday">&nbsp;</span></div></td>
+	<td><div class="times">9:30&nbsp;a.m.-11:20&nbsp;a.m.</div></td>
+	<td class="dtstart">2027-01-11</td>
+	<td>Virtual-Real Time</td>
+	<td align="center"><span title="Hybrid - In Person &amp; Web">HY</span></td>
+	</tr>
+	<tr><td colspan="8" class="classnote">This is a ***SYNCHRONOUS*** online section. Attendance at live online class meetings is required on the days and times listed in the course information. These meetings will be held via Zoom or other application designated by the instructor. Students must login to Canvas regularly to check for course announcements, complete assignments, check grades and feedback, and participate in any other course activities required by the instructor. Students must have regular access to a computer and the Internet to successfully complete this course. Some courses require proctored testing. Students can visit  <a href="https://vpcc.edu/distance/students">https://vpcc.edu/distance/students</a> for information and resources for online students.<br />
+This is a ***HY-FLEX*** class that allows students the flexibility to decide, from one class meeting to the next, whether they want to attend in-person, synchronously online (live-streaming), or asynchronously online (watching recorded lectures at a time that is convenient for them). Students are encouraged to register for their preferred course delivery mode (in-person, synchronous, or asynchronous), but can move freely between these modalities *without* having to swap their enrollment into a different class section. Some courses require proctored testing. Students can visit  <a href="https://vpcc.edu/distance/students">https://vpcc.edu/distance/students</a> for information and resources for online students.</td></tr>
+
+
+<tr class="vevent">
+	<td>35410</td>
+	<td class="summary">CSC&nbsp;222-U01H</td>
+	<td align="center">4</td>
+	<td><div class="days"><span class="d" title="Sunday">&nbsp;</span><span class="s" title="Monday">M</span><span class="s" title="Tuesday">Tu</span><span class="s" title="Wednesday">W</span><span class="s" title="Thursday">Th</span><span class="s" title="Friday">F</span><span class="d" title="Saturday">&nbsp;</span></div></td>
+	<td><div class="times">12:00&nbsp;p.m.-12:50&nbsp;p.m.</div></td>
+	<td class="dtstart">2027-01-11</td>
+	<td>Governor's School/Science/Tech</td>
+	<td align="center"><span title="In Person">P</span></td>
+	</tr>
+
+						</tbody>
+						</table>
+						</div>
+						</div>
+						</div>
+						
+			<div id="collegeRight" class="m-1 p-1">
+			<table class="table" summary="New or current student options">
+			<tr>
+			<th align="center" style="text-align: center;" colspan="2">What Next?<br /><a href="https://online.vccs.edu/request-for-information" class="btn btn-primary">Sign up with your college navigator</a></th>
+			</tr>
+			<tr>
+			<th>Already a student at Virginia Peninsula?</th>	<th>A New Student?</th>
+			</tr>
+			<tr><td valign="top" style="padding:1rem 0 0 0 !important">
+				<ol style="padding-left: 1rem">
+				<li>Register using SIS at <a href="https://vp.my.vccs.edu/">My VCCS</a></li>
+				<li>Purchase books</li>
+				<li>Attend class</li>
+				</ol>
+				</td>
+			<td valign="top" style="padding:1rem 0 0 0 !important">
+				<ol style="padding-left: 1rem">
+				<li>Complete and submit an <a href="https://apply.vccs.edu/">application for admission</a></li>
+				<li>Request transcripts from your high school or other colleges attended</li>
+				<li>Take placement tests</li>
+				<li>File for financial aid</li>
+				<li><a href="https://vp.my.vccs.edu/">Register for classes</a></li>
+				<li>Purchase books</li>
+				<li>Attend class</li>
+				</ol>
+			</td>
+			</tr>
+			</table>
+			</div>
+			
+			<p style="clear:both;">Any questions?  <a href="https://www.vccs.edu/find-your-community-college/">Contact the college</a> and talk to a counselor.</p>
+			<!-- p>Contact information here, plus each colleges "go to" page.</p -->
+	</div>
+
+<!-- 383 --></div>
+<div class="col-sm-2" id="offeredByDiv" title="Linked colleges have the course scheduled"><h3>Scheduled at</h3>
+	<div class="list-group">
+		<a  class="list-group-item scheduled" href="/colleges/brcc/courses/CSC222-ObjectOrientedProgramming">Blue Ridge</a>
+		<a  class="list-group-item scheduled" href="/colleges/brightpoint/courses/CSC222-ObjectOrientedProgramming">Brightpoint</a>
+		<a  class="list-group-item scheduled" href="/colleges/dcc/courses/CSC222-ObjectOrientedProgramming">Danville</a>
+		<a  class="list-group-item scheduled" href="/colleges/gcc/courses/CSC222-ObjectOrientedProgramming">Germanna</a>
+		<a  class="list-group-item scheduled" href="/colleges/laurelridge/courses/CSC222-ObjectOrientedProgramming">Laurel Ridge</a>
+		<a  class="list-group-item scheduled" href="/colleges/mecc/courses/CSC222-ObjectOrientedProgramming">Mountain Empire</a>
+		<a  class="list-group-item scheduled" href="/colleges/nrcc/courses/CSC222-ObjectOrientedProgramming">New River</a>
+		<a  class="list-group-item scheduled" href="/colleges/nova/courses/CSC222-ObjectOrientedProgramming">Northern Virginia</a>
+		<a  class="list-group-item scheduled" href="/colleges/phcc/courses/CSC222-ObjectOrientedProgramming">Patrick & Henry</a>
+		<a  class="list-group-item scheduled" href="/colleges/pvcc/courses/CSC222-ObjectOrientedProgramming">Piedmont Virginia</a>
+		<a  class="list-group-item scheduled" href="/colleges/rcc/courses/CSC222-ObjectOrientedProgramming">Rappahannock</a>
+		<a  class="list-group-item scheduled" href="/colleges/reynolds/courses/CSC222-ObjectOrientedProgramming">Reynolds</a>
+		<a  class="list-group-item scheduled" href="/colleges/tcc/courses/CSC222-ObjectOrientedProgramming">Tidewater</a>
+		<a  class="list-group-item scheduled" href="/colleges/vhcc/courses/CSC222-ObjectOrientedProgramming">Virginia Highlands</a>
+		<a  class="list-group-item list-group-item-dark scheduled" href="/colleges/vpcc/courses/CSC222-ObjectOrientedProgramming">Virginia Peninsula</a>
+		<a  class="list-group-item scheduled" href="/colleges/vwcc/courses/CSC222-ObjectOrientedProgramming">Virginia Western</a>
+		<a  class="list-group-item scheduled" href="/colleges/wcc/courses/CSC222-ObjectOrientedProgramming">Wytheville</a>
+	</div>
+<h3 style="margin-top:1.5rem;">Offered by</h3>
+	<div class="list-group" title="Colleges have offered the course in the past">
+		<a  class="list-group-item notScheduled list-group-item-light" href="/colleges/camp/courses/CSC222-ObjectOrientedProgramming">Camp</a>
+		<a  class="list-group-item notScheduled list-group-item-light" href="/colleges/cvcc/courses/CSC222-ObjectOrientedProgramming">Central Virginia</a>
+		<a  class="list-group-item notScheduled list-group-item-light" href="/colleges/mgcc/courses/CSC222-ObjectOrientedProgramming">Mountain Gateway</a>
+		<a  class="list-group-item notScheduled list-group-item-light" href="/colleges/svcc/courses/CSC222-ObjectOrientedProgramming">Southside Virginia</a>
+		<a  class="list-group-item notScheduled list-group-item-light" href="/colleges/swcc/courses/CSC222-ObjectOrientedProgramming">Southwest Virginia</a>
+	</div>
+							</div>
+</div></main>
+<div id="nav" class="row justify-content-around pt-3">
+	<div class="col-sm-3">
+		<h2><a href="/courses">Courses</a></h2>
+				<p>Search all courses offered across Virginia's Community Colleges and browse subjects and courses across all colleges.  View each individual course description, content summary, and schedule across Virginia.  Find the colleges which offer the course as well as when and where the course is offered, the admission requirements and student services available at those colleges.</p>
+		<ul>
+			<li><a href="/courses">Full Subject listing</a></li>
+			<li><a href="/courses?filter=WW-ER">Distance learning courses</a></li>
+			<li><a href="/courses/outlines">Courses with detailed outlines</a></li>
+		</ul>
+		</div>
+	<div class="col-sm-3">
+		<h2><a href="/programs">Programs</a></h2>
+				<p>Search for key information about Programs and Majors across Virginia's Community Colleges.  Browse all Degree types and curriculums offered by Virginia's Community Colleges.  Focus on a specific Program and all possible majors are presented.  Focus on a Major and see all the community colleges in Virginia that offer that curriculum.</p>
+		<ul>
+			<li><a href="/programs">Full Programs listing</a></li>
+		</ul>
+		</div>
+	<div class="col-sm-3">
+		<h2><a href="/colleges">Colleges</a></h2>
+		<p>Focus on courses and programs offered by specific colleges.  Search for, and browse, specific courses and programs at the college you are interested in.</p>
+		</div>
+		<div class="clearer">&nbsp;</div>
+</div>
+
+<footer role="contentinfo">
+<div class="footer pt-3" id="coursesFooter">
+<p>The courses listed on this VCCS website are updated on a term by term basis and reflect only those courses approved for offering during the most current term. All VCCS colleges must use, as a minimum, the standard course prefix, course number, credit value(s), and descriptions contained in this listing.</p>
+
+<p>When scheduling courses, colleges may use the local rule to assign pre- or co-requisites that are not listed in the Master Course File.</p>
+
+<p>Questions, additional information, and corrections regarding the Master Course File should be <a class="noprint" href="
+mailto:info@vccs.edu">addressed here</a><span class="noscreen">addressed to info@vccs.edu</span>.</p>
+</div>
+</footer>
+	</div>
+	
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "route_id": "virginia-state-university__phys",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/phys/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/phys/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 83082,
+  "content_sha256": "2faf104bd68b8384c9f65dc1d223ec1b1e782a6e73492cfdc03e46aba588f2ce",
+  "fetched_at": "2026-08-24T18:04:21.981Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "PHYS100",
+    "PHYS105",
+    "PHYS106",
+    "PHYS112",
+    "PHYS113"
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "artifact_id": "va:tidewater:figure34-open-rule-evidence:2026-08-25",
+  "researched_at": "2026-08-25",
+  "degree_source_id": "va:as:tidewater-community-college:cs",
+  "catalog_identity": {
+    "institution": "Tidewater Community College",
+    "catalog_year": "2026-2027",
+    "catalog_id": 23,
+    "program_id": 5235,
+    "program_code": "246",
+    "program": "Computer Science, Associate of Science",
+    "published_units_minimum": 60,
+    "published_units_maximum": 63
+  },
+  "source_observations": {
+    "direct_origin": {
+      "status": "blocked_cloudflare_403",
+      "reproducible_current_official_bytes_retained": false,
+      "scope": [
+        "major",
+        "general_education",
+        "approved_transfer_electives",
+        "graduation"
+      ]
+    },
+    "transparent_render": [
+      {
+        "id": "major",
+        "official_origin_url": "https://catalog.tcc.edu/preview_program.php?catoid=23&poid=5235&print=1",
+        "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/preview_program.php?catoid=23%26poid=5235%26print=1",
+        "composition_declared_sha256": "640461df56b1fb0a8d6df67974f5cc8097ea837c56ed150a4110c3a473db04b7",
+        "current_response_sha256_observed_2026_08_25": "ca0223131d5747135def2c85bf468360a73293299ace271b9ef2a7d8ed30e557",
+        "current_response_bytes_retained": false
+      },
+      {
+        "id": "general_education",
+        "official_origin_url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1119&print=1",
+        "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1119%26print=1",
+        "composition_declared_sha256": "fcd1488f7ba18bc352c95afd1b12e5f1641d9a3ba30477c18e8fd22c79cee8ec",
+        "current_response_sha256_observed_2026_08_25": "13f11ff82160abc093a849633b48bdadf5a2fad50bc46ff91fb29c2cd7b08932",
+        "current_response_bytes_retained": false
+      },
+      {
+        "id": "approved_transfer_electives",
+        "official_origin_url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1120&print=1",
+        "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1120%26print=1",
+        "composition_declared_sha256": "7cff878486fe7c2c483fd828bb6d498b95ec9df41b0497ab263ef7c1b5e85e1a",
+        "current_response_sha256_observed_2026_08_25": "390d4a9baf33a268af3c8284f8c21d80f6ec3b4d0f6a2e75c89a02734c3f73cd",
+        "current_response_bytes_retained": false
+      },
+      {
+        "id": "graduation",
+        "official_origin_url": "https://catalog.tcc.edu/content.php?catoid=23&navoid=1105&print=1",
+        "retrieval_url": "https://r.jina.ai/https://catalog.tcc.edu/content.php?catoid=23%26navoid=1105%26print=1",
+        "composition_declared_sha256": "395299d5555ea5431848a6f5404fd64f11d5dfc8101d99bbfdaddb40f405c47e",
+        "current_response_sha256_observed_2026_08_25": "af810f720183af100ce6d9bd83ff93f52336ed45a77d6e99906fa8562479c6f0",
+        "current_response_bytes_retained": false
+      }
+    ],
+    "bounded_first_party_pdf": {
+      "url": "https://www.tcc.edu/wp-content/uploads/2025/10/TCC_Engineering_HANDBOOK25-26_R5.pdf",
+      "title": "TCC Engineering Student Handbook 2025-26",
+      "content_type": "application/pdf",
+      "pages": 38,
+      "relevant_page": 9,
+      "direct_capture_status": "blocked_cloudflare_403",
+      "source_bytes_retained": false,
+      "observed_taxonomy": {
+        "heading": "Foreign Languages/other",
+        "asl_codes": ["ASL101", "ASL102", "ASL201", "ASL202"]
+      },
+      "scope_limit": "This is a prior-year Engineering-program humanities table. It proves Tidewater has classified these ASL courses in a foreign-language/other bucket, but it does not prove that the 2026-2027 Computer Science footnotes admit them."
+    },
+    "current_marketing_page": {
+      "url": "https://www.tcc.edu/programs/computer-science/",
+      "observed_credits": 61,
+      "curriculum_link_catalog_id": 21,
+      "curriculum_link_program_id": 4756,
+      "scope_limit": "The marketing page points to an archived catalog program and cannot override the current catalog's 60-63 range."
+    }
+  },
+  "modeled_world_language_inventory": {
+    "codes": [
+      "FRE101",
+      "FRE102",
+      "FRE203",
+      "FRE204",
+      "GER101",
+      "GER102",
+      "GER201",
+      "RUS101",
+      "RUS102",
+      "RUS201",
+      "RUS202",
+      "SPA101",
+      "SPA102"
+    ],
+    "count": 13,
+    "current_approved_transfer_page_additional_asl_candidates": [
+      "ASL101",
+      "ASL102",
+      "ASL201",
+      "ASL202"
+    ],
+    "candidate_count": 4,
+    "exhaustive_roster_proved": false,
+    "safe_to_add_asl_without_program_adjudication": false,
+    "finding": "The current approved-transfer page exposes four ASL courses absent from the modeled language menu. Tidewater's prior-year Engineering handbook classifies the same four under Foreign Languages/other. Those facts defeat an exhaustive-13 claim but do not authorize adding ASL to this program's open World Languages rule."
+  },
+  "active_blockers": [
+    {
+      "path": "requirement_groups[2].analysis_constraints[0]",
+      "kind": "direct_placement_with_category_replacement",
+      "required_resolution": "Confirm the replacement-credit cardinality and whether one or multiple eligible electives may replace the five-credit MTH 167 route or six-credit MTH 161 plus MTH 162 route."
+    },
+    {
+      "path": "requirement_groups[10].analysis_constraints[0]",
+      "kind": "footnote_8_source_language_ambiguity",
+      "required_resolution": "Obtain an institutional reading of the Boolean connector between additional science and PHY 201, including the exact eligible additional-science roster and credit effect."
+    },
+    {
+      "path": "requirement_groups[10].analysis_constraints[1]",
+      "kind": "world_language_category_open",
+      "required_resolution": "Obtain the complete 2026-2027 World Languages roster for technical slot A."
+    },
+    {
+      "path": "requirement_groups[11].analysis_constraints[1]",
+      "kind": "world_language_category_open",
+      "required_resolution": "Obtain the complete 2026-2027 any-world-language roster for the approved elective."
+    }
+  ],
+  "blocking_quality_flags": [
+    "catalog_footnote_8_ambiguous",
+    "direct_placement_receiver_not_supported"
+  ],
+  "institutional_questions": [
+    {
+      "id": "footnote_8_boolean",
+      "question": "For program 246 footnote 8, is additional science plus PHY 201 one conjunctive route, or are additional science and PHY 201 separate alternatives? What exact courses qualify as additional science, and how many credits does that route contribute to the printed three-credit CSC 215 slot?"
+    },
+    {
+      "id": "world_language_roster",
+      "question": "For 2026-2027 program 246 footnotes 6 and 8, provide the complete finite list of courses that count as World Languages or any world language class. Specifically confirm whether ASL 101, 102, 201, and 202 qualify in each slot."
+    },
+    {
+      "id": "direct_placement_cardinality",
+      "question": "When a student places directly into MTH 263 under footnote 3, must replacement electives total five credits, six credits, or the credits of the preparation branch the student elects to replace? May multiple eligible electives be combined to reach that amount?"
+    },
+    {
+      "id": "published_total_reconciliation",
+      "question": "Which total governs the current 2026-2027 program: the catalog's 60-63 credits or the public program page's 61 credits?"
+    },
+    {
+      "id": "reproducible_source_copy",
+      "question": "Provide an accessible current PDF or signed curriculum guide for 2026-2027 program 246, including footnotes 3, 6, and 8 and the linked eligible-course rosters."
+    }
+  ],
+  "institutional_routes": [
+    {
+      "url": "https://www.tcc.edu/about-tcc/academics/academic-affairs-leadership/",
+      "recipient_role": "Business, Computer Science & IT Pathway dean"
+    },
+    {
+      "url": "https://www.tcc.edu/forms/archived-catalog-request/",
+      "recipient_role": "catalog records request; form supports PDF delivery and accreditation/audit purpose"
+    },
+    {
+      "url": "https://www.tcc.edu/service-support/advising/",
+      "recipient_role": "academic advising"
+    }
+  ],
+  "verdict": {
+    "figure_3_ready": false,
+    "figure_4_ready": false,
+    "safe_public_source_closures": 0,
+    "institutional_adjudication_required": true,
+    "database_writes": 0,
+    "verified_major_core_edits": 0
+  },
+  "facts_sha256": "9e7719cd8f93b4eb3447f0da90d9904e500a00fb7829f6d66bcb805de3c27871"
+}

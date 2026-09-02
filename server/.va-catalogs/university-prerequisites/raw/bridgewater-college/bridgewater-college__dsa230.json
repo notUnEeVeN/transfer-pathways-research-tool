@@ -1,0 +1,21 @@
+{
+  "route_id": "bridgewater-college__dsa230",
+  "requested_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/dsa230",
+  "final_url": "https://bridgewater.cleancatalog.io/mathematics-computer-science/dsa230",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "byte_length": 11933,
+  "content_sha256": "aeedcf6a5331e5b81815bd8df51261688f67acf9eacfd61e9f814785c60d6e97",
+  "fetched_at": "2026-08-25T02:04:20.909Z",
+  "robots": {
+    "url": "https://bridgewater.cleancatalog.io/robots.txt",
+    "http_status": 200,
+    "content_sha256": "418e112c89979b34678c945b45186d0cff4d829bcdc9d6d8437be76f50ef38f9",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "DSA230"
+  ]
+}

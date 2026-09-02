@@ -1,0 +1,23 @@
+{
+  "route_id": "george-mason-university__russ",
+  "requested_url": "https://catalog.gmu.edu/courses/russ/",
+  "final_url": "https://catalog.gmu.edu/courses/russ/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 50630,
+  "content_sha256": "3c22c1fde23a6d0c1a583cc36b8eb725b5f2828dd5a94ded325f4fd49a1f5cb9",
+  "fetched_at": "2026-08-24T20:20:50.743Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "RUSS325",
+    "RUSS326",
+    "RUSS327"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "route_id": "george-mason-university__nclc",
+  "requested_url": "https://catalog.gmu.edu/courses/nclc/",
+  "final_url": "https://catalog.gmu.edu/courses/nclc/",
+  "capture_status": "blocked_fail_closed",
+  "blocked_reason": "response_failed_status_content_type_or_interstitial_check",
+  "http_status": 404,
+  "content_type": "text/html; charset=iso-8859-1",
+  "byte_length": 196,
+  "content_sha256": "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880",
+  "fetched_at": "2026-08-24T20:20:48.136Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "NCLC101",
+    "NCLC203"
+  ]
+}

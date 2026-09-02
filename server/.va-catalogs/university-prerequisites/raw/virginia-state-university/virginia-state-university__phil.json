@@ -1,0 +1,25 @@
+{
+  "route_id": "virginia-state-university__phil",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/phil/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/phil/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 83197,
+  "content_sha256": "63776872a11f5a2c9afc22589d436ddbc3bddf5b86c4fe80d3ec797182785297",
+  "fetched_at": "2026-08-24T18:04:20.586Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "PHIL140",
+    "PHIL180",
+    "PHIL220",
+    "PHIL275",
+    "PHIL290"
+  ]
+}

@@ -1,0 +1,1237 @@
+{
+  "schema_version": 1,
+  "artifact": "william_mary_2026_2027_current_catalog_figure_evidence",
+  "catalog_year": "2026-2027",
+  "institution": {
+    "slug": "william-mary",
+    "school_id": 9233
+  },
+  "publication_ready": false,
+  "source_contract": {
+    "edition_boundary": {
+      "edition": "2026-2027 Edition",
+      "relationship": "program, CSCI, degree-policy, and MATH pages each print the same catalog edition; their independent capture timestamps are retained and no same-request timestamp is claimed"
+    },
+    "retained_primary_source_integrity": {
+      "verified": true,
+      "issues": [],
+      "manifest_artifact": "virginia_primary_outcome_source_integrity_manifest",
+      "manifest_audited_at": "2026-08-10",
+      "sources": {
+        "program": {
+          "official_url": "https://catalog.wm.edu/programs/computer-science-bs-computer-science/index.html",
+          "normalized_text_sha256": "61508bd1e00785b92456b51c694a3cdeb3e187e99cfa4d0ebf7b06e0706c088f",
+          "normalized_text_bytes": 7114,
+          "manifest_classification": "exact_local_byte_match",
+          "captured_at": "2026-08-10T22:22:41.726Z"
+        },
+        "csci_catalog": {
+          "official_url": "https://catalog.wm.edu/undergraduate/courses/csci/",
+          "normalized_text_sha256": "28ea797fb6cdb750e5b5cb7547e5441b7918dbb352611280400b32c9ba92812f",
+          "normalized_text_bytes": 29613,
+          "manifest_classification": "exact_local_byte_match",
+          "captured_at": "2026-08-10T22:22:41.726Z"
+        },
+        "degree_policy": {
+          "official_url": "https://catalog.wm.edu/undergraduate/requirements-degrees/",
+          "normalized_text_sha256": "c4096bde6c76f6c56e6799d02ab0fd979e634c020efa91564ade90e0237ab579",
+          "normalized_text_bytes": 76512,
+          "manifest_classification": "exact_local_byte_match",
+          "captured_at": "2026-08-10T22:22:41.726Z"
+        }
+      }
+    },
+    "program": {
+      "official_url": "https://catalog.wm.edu/programs/computer-science-bs-computer-science/index.html",
+      "normalized_text_sha256": "61508bd1e00785b92456b51c694a3cdeb3e187e99cfa4d0ebf7b06e0706c088f",
+      "normalized_text_bytes": 7114,
+      "manifest_classification": "exact_local_byte_match",
+      "captured_at": "2026-08-10T22:22:41.726Z",
+      "response_sha256": "8f943153b3a8489b2074fc16fbaaec55c8622d6aa7403e9913b668832675bad6"
+    },
+    "csci_catalog": {
+      "official_url": "https://catalog.wm.edu/undergraduate/courses/csci/",
+      "normalized_text_sha256": "28ea797fb6cdb750e5b5cb7547e5441b7918dbb352611280400b32c9ba92812f",
+      "normalized_text_bytes": 29613,
+      "manifest_classification": "exact_local_byte_match",
+      "captured_at": "2026-08-10T22:22:41.726Z",
+      "response_sha256": "54b9e44c308f6205f5d05437c649e4f19ecf9d0d027c7379374e0d84ad844eed"
+    },
+    "math_catalog": {
+      "official_url": "https://catalog.wm.edu/undergraduate/courses/math/",
+      "capture_scope": "complete_official_math_subject_response",
+      "response_sha256": "24fa149a313b93ef85e754286e9aa01ebd2e03a938a7e0b6315a5f620682928f",
+      "response_bytes": 104364,
+      "captured_at": "2026-08-24T18:04:32.571Z",
+      "robots_url": "https://catalog.wm.edu/robots.txt",
+      "robots_response_sha256": "4eaac51773cf2538bbac642a1926ea98f51c25819252a0094007028fa72d069a",
+      "robots_http_status": 200,
+      "robots_crawl_delay_seconds": 0,
+      "original_acquisition_target_course_codes": [
+        "MATH109",
+        "MATH111",
+        "MATH112",
+        "MATH131",
+        "MATH132",
+        "MATH214"
+      ],
+      "original_target_list_included_math_413_414": false,
+      "retained_entry_proof": "MATH 413 and MATH 414 already occur as unique structural course blocks in the complete retained response; no network refetch is needed"
+    },
+    "degree_policy": {
+      "official_url": "https://catalog.wm.edu/undergraduate/requirements-degrees/",
+      "normalized_text_sha256": "c4096bde6c76f6c56e6799d02ab0fd979e634c020efa91564ade90e0237ab579",
+      "normalized_text_bytes": 76512,
+      "manifest_classification": "exact_local_byte_match",
+      "captured_at": "2026-08-10T22:22:41.726Z",
+      "response_sha256": "0fa9acb97573a446ebf90ed18e6a22fbba2c010d776f620e42847452030dfa37"
+    }
+  },
+  "general_concentration": {
+    "source_rule": {
+      "verified": true,
+      "issues": [],
+      "source_response_sha256": "8f943153b3a8489b2074fc16fbaaec55c8622d6aa7403e9913b668832675bad6",
+      "relevant_section_sha256": "7bb8b5bd67f22112ffa1f716d5b4fed47d2d8ee4c915aaf916921a7c69ae7cda",
+      "exact_rule_text": "12 credits chosen from any 300-400 level computer science courses.",
+      "required_credits": 12,
+      "eligible_subject_and_level": "CSCI 300-499",
+      "permitted_math_codes": [
+        "MATH413",
+        "MATH414"
+      ],
+      "excluded_csci_codes": [
+        "CSCI320",
+        "CSCI430",
+        "CSCI498"
+      ],
+      "required_upper_csci_core_codes": [
+        "CSCI301",
+        "CSCI303",
+        "CSCI304",
+        "CSCI312",
+        "CSCI423"
+      ],
+      "exclusion_footnote_text": "1 excluding CSCI 320 Directed Study, CSCI 430 Computer Languages and CSCI 498 Internship."
+    },
+    "roster_contract": {
+      "structural_upper_level_csci_entries": 47,
+      "excluded_csci_entries": [
+        {
+          "course_code": "CSCI320",
+          "title": "Directed Study",
+          "published_credits": {
+            "kind": "published_variable_credits",
+            "notation": "1-3",
+            "credit_hours_min": 1,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 20,
+          "raw_entry_text": "CSCI 320 Directed Study (1-3 Credits) A directed study course to investigate aspects of computer science. Course can be based on readings from the literature, on a project, or on a research topic. Cannot be applied to the requirements for a major or a minor in computer science. Permission of instructor required. P/F option decided by instructor.Prerequisite(s): CSCI 301 or CSCI 303 or CSCI 304 or CSCI 312",
+          "raw_entry_sha256": "b64c67257fca407e251fccdfe0ea79b4ca9cbcd76ac8b5dbf5c5f56d8f8402d4",
+          "raw_entry_html_sha256": "36b604869e909e2e1b79a4c6078586b9a5543a2055261de8d75e9bdf75d10c5a"
+        },
+        {
+          "course_code": "CSCI430",
+          "title": "Computer Languages",
+          "published_credits": {
+            "kind": "published_variable_credits",
+            "notation": "1-3",
+            "credit_hours_min": 1,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 36,
+          "raw_entry_text": "CSCI 430 Computer Languages (1-3 Credits) Topics include syntax, semantics and pragmatics of one computer language as well as the influence of the languages intended areas of applications on its design. The language studied will vary and students may repeat the course for different languages. This course does not count toward satisfying the major requirements or the major GPA. Prerequisite(s): CSCI 241",
+          "raw_entry_sha256": "1ba97b56d5d78d2f90ebf6fc4fb2040487580ba0713a8a4b3a5284b82c6e785a",
+          "raw_entry_html_sha256": "e99824861c9baf922800850d6177fc82d6f006af09af40a63ff816901e82c9e5"
+        },
+        {
+          "course_code": "CSCI498",
+          "title": "Internship",
+          "published_credits": {
+            "kind": "published_variable_credits",
+            "notation": "1-3",
+            "credit_hours_min": 1,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 61,
+          "raw_entry_text": "CSCI 498 Internship (1-3 Credits) Students wishing to receive academic credit for an internship program must request and obtain departmental approval prior to participation in the program. Graded Pass/Fail only.",
+          "raw_entry_sha256": "6bd3adc34b5b2b35ed8e92c1fb9b9915bb1b3dc881b705557d896aefe2e26584",
+          "raw_entry_html_sha256": "f15342817e332e35f5d6a800575299fad60bf81ac42f2269ca15fa51847a87a0"
+        }
+      ],
+      "eligible_csci_entries": 44,
+      "permitted_math_entries": 2,
+      "eligible_entry_count": 46,
+      "witness_pool_avoiding_already_required_core_count": 41,
+      "credit_contributing_witness_pool_count": 37,
+      "selection_constraints": [
+        {
+          "kind": "choose_at_most_one",
+          "course_codes": [
+            "MATH413",
+            "MATH414"
+          ],
+          "source": "the General table stores MATH 414 as the or-row after MATH 413"
+        },
+        {
+          "kind": "required_together",
+          "selected_course_code": "CSCI437X",
+          "required_course_codes": [
+            "CSCI437"
+          ],
+          "timing": "corequisite",
+          "source_entry_sha256": "689c8b3f461ac57c219e973ac57b0b4843683b7c1c6761009a2532f78ef5125e"
+        }
+      ],
+      "unit_shape_counts": {
+        "fixed_zero_credit": 4,
+        "fixed_one_credit": 1,
+        "variable_one_to_three_credits": 2,
+        "fixed_three_credits": 39
+      },
+      "unit_shape_codes": {
+        "fixed_zero_credit": [
+          "CSCI423W",
+          "CSCI440W",
+          "CSCI495W",
+          "CSCI496W"
+        ],
+        "fixed_one_credit": [
+          "CSCI437X"
+        ],
+        "variable_one_to_three_credits": [
+          "CSCI420",
+          "CSCI490"
+        ],
+        "fixed_three_credits": [
+          "CSCI301",
+          "CSCI303",
+          "CSCI304",
+          "CSCI312",
+          "CSCI315",
+          "CSCI321",
+          "CSCI324",
+          "CSCI356",
+          "CSCI412",
+          "CSCI415",
+          "CSCI416",
+          "CSCI417",
+          "CSCI421",
+          "CSCI423",
+          "CSCI424",
+          "CSCI425",
+          "CSCI426",
+          "CSCI427",
+          "CSCI432",
+          "CSCI434",
+          "CSCI435",
+          "CSCI436",
+          "CSCI437",
+          "CSCI440",
+          "CSCI442",
+          "CSCI444",
+          "CSCI445",
+          "CSCI446",
+          "CSCI447",
+          "CSCI449",
+          "CSCI454",
+          "CSCI455",
+          "CSCI464",
+          "CSCI465",
+          "CSCI466",
+          "CSCI495",
+          "CSCI496",
+          "MATH413",
+          "MATH414"
+        ]
+      },
+      "entries": [
+        {
+          "course_code": "CSCI301",
+          "title": "Software Development",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 15,
+          "raw_entry_text": "CSCI 301 Software Development (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. An introduction to principled software development, emphasizing design at the module level as well as tools and techniques. Topics include object-oriented class design and implementation, abstraction techniques, debugging techniques, defensive programming, development and analysis tools, and testing. Emphasizes the role of the individual programmer in large software development projects.Prerequisite(s): CSCI 241",
+          "raw_entry_sha256": "245dc245858772ac76e72bd195f8a9e8e3240149a1af00722d2bfa9b8ef5f9b6",
+          "raw_entry_html_sha256": "1ba6524c80d54b14704c2c4c852365624ddecefc91e8540ebb4b957472200618",
+          "rule_membership": "textually_in_level_pool_but_already_required_in_core"
+        },
+        {
+          "course_code": "CSCI303",
+          "title": "Algorithms",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 16,
+          "raw_entry_text": "CSCI 303 Algorithms (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. A systematic study of algorithms and their complexity, including searching, sorting, selecting, and algorithms for graphs. A survey of algorithm design methods, including greedy algorithms, divide-and-conquer, dynamic programming, and backtracking. An introduction to NP-complete problems.Prerequisite(s): CSCI 241 and (CSCI 243 or MATH 214)",
+          "raw_entry_sha256": "7cb0aebd0980a95c3c791a6272af580b989351a542d18af379a083bd4ec59a9d",
+          "raw_entry_html_sha256": "e62cf1e701d57675187c3e83ffdcf71d012d0922d3b230721907046c93d8de50",
+          "rule_membership": "textually_in_level_pool_but_already_required_in_core"
+        },
+        {
+          "course_code": "CSCI304",
+          "title": "Computer Organization",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 17,
+          "raw_entry_text": "CSCI 304 Computer Organization (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. Organization of computer hardware and software; virtual machines, computer systems organization, machine language, assembler language and microprogramming.Prerequisite(s): CSCI 241 (may be taken concurrently)",
+          "raw_entry_sha256": "96dcc65f651e4beb39aa66d2dbcea3628c762402f44818d3aca30877f28a1018",
+          "raw_entry_html_sha256": "ca0bfe2ff57f46345a42b98df41cab716e7609371a99ccf78a3e2d5784f6e603",
+          "rule_membership": "textually_in_level_pool_but_already_required_in_core"
+        },
+        {
+          "course_code": "CSCI312",
+          "title": "Principles of Programming Languages",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 18,
+          "raw_entry_text": "CSCI 312 Principles of Programming Languages (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. A study of programming language principles and paradigms. Formal syntax, including grammars, and semantics. Paradigms, including: imperative, object oriented, functional, logic, event-driven, and concurrent. Run-time implementation issues, including: memory management, parameter passing, and event handling.Prerequisite(s): CSCI 241 and (CSCI 243 or MATH 214)",
+          "raw_entry_sha256": "f30053b5a488b6fd27bbe2674079bc966ce9889d0a6508128e754156d8dcbca1",
+          "raw_entry_html_sha256": "1c89c85a6af420a265eb8fdb8994897f7a36dd0042fcb0eab63f6dc944fa1da4",
+          "rule_membership": "textually_in_level_pool_but_already_required_in_core"
+        },
+        {
+          "course_code": "CSCI315",
+          "title": "Systems Programming",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 19,
+          "raw_entry_text": "CSCI 315 Systems Programming (3 Credits) Prerequisite(s): CSCI 304",
+          "raw_entry_sha256": "7863151dbd872c51ad6edc84b4d238395a3225cbfb24bf768fa5ae505c82d0aa",
+          "raw_entry_html_sha256": "badf9cbd1e414661bd89da4fae7bf9401d9b67c8ce083314b774becdce2452b3",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI321",
+          "title": "Database Systems",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 21,
+          "raw_entry_text": "CSCI 321 Database Systems (3 Credits) Design, organization and implementation of database management systems: file organization and processing, hierarchical, network, and relational models of database structure, data definition and data manipulation languages, security and integrity of databases, and the study of existing database implementations. Prerequisite(s): CSCI 241 and (CSCI 243 or MATH 214)",
+          "raw_entry_sha256": "03ebe3b0cad3c98eae235929ee5f66e8dfb10defbcf5cc2df5047bfe69dcc306",
+          "raw_entry_html_sha256": "0d5f6130d7eacd18fb0062537cb9f5260e21550187fe678a0a1f614993e574be",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI324",
+          "title": "Cybersecurity Fundamentals",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 22,
+          "raw_entry_text": "CSCI 324 Cybersecurity Fundamentals (3 Credits) This course introduces the fundamentals of cybersecurity and global cybersecurity challenges related to computer networks and international critical infrastructure. The course explores cybersecurity principles, business continuity and incident response, access control, network security, and cybersecurity operations. Key aspects of this course are the exploration of historical and cultural aspects of international cybersecurity considerations and government organizations, as they relate to the cybersecurity of essential services. Academic diversity and team building are essential to this course.College Curriculum: C30C",
+          "raw_entry_sha256": "b6847559a51d1418e700daa8b183082d1b949d2d6e04c8760e8aa83c69d839f0",
+          "raw_entry_html_sha256": "be7fc53a302c5c162501f8e4902e46baa0a21507a970bf112f4c1719b1942570",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI356",
+          "title": "Large Language Models",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 23,
+          "raw_entry_text": "CSCI 356 Large Language Models (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. This course dives into the electrifying realm of large language models (LLMs), the engines driving today’s natural language processing revolution. Students will master the theory, architecture, and real-world applications of LLMs, preparing to harness–or perhaps politely welcome–our future AI overlords. Blending lectures, hands-on coding, and critical analysis, this course equips you with the skills to build, apply, and interrogate these linguistic titans.Prerequisite(s): CSCI 141 Additional fees apply",
+          "raw_entry_sha256": "3d8ccaa75dcd19dd2158bff5968e944afd3633991ddec43ea08ff7fc00bde877",
+          "raw_entry_html_sha256": "e103de82a2947eaa2b0bfefe48b86d89dd654517db5bec500ace643a93cce3be",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI412",
+          "title": "Web Programming",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 24,
+          "raw_entry_text": "CSCI 412 Web Programming (3 Credits) Overview of the Internet. Markup languages: HTML, CSS, XML. Server-side programming languages: Perl/Python, PHP, Java. Other topics include: N-tier programming, security, database access, XML processing. Prerequisite(s): (CSCI 301 or CSCI 312) and CSCI 321",
+          "raw_entry_sha256": "aceb7931910255583e9472c8af9a90b5e6850ef00a3414ca53cdfa8c14c51371",
+          "raw_entry_html_sha256": "4da37c75a8ca42c29fdafb9897d9186c66b32e84923c87a12c892f5718fe4202",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI415",
+          "title": "Systems Programming",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 25,
+          "raw_entry_text": "CSCI 415 Systems Programming (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. The design and implementation of programs which provide robust and efficient services to users of a computer. Macro processors; scripting languages; graphical interfaces; network programming. Unix and X are emphasized.Prerequisite(s): CSCI 303 and CSCI 304",
+          "raw_entry_sha256": "082111e082ddfb5ea313719714a11935cc3c397f8397f7358af5cc551fbd4679",
+          "raw_entry_html_sha256": "1368120a4e7e1094e9d2b02a72cb3e6e1aae6a0038a07a1ace20292664b17eea",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI416",
+          "title": "Fundamentals of Artificial Intelligence/Machine Learning",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 26,
+          "raw_entry_text": "CSCI 416 Fundamentals of Artificial Intelligence/Machine Learning (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. This course will give an overview of important concepts, techniques, and algorithms in artificial intelligence with emphasis on machine learning, beginning with topics such as linear regression and ending up with more recent topics such as boosting, support vector machines, and expectation maximization. The course will give the student the basic ideas and intuition behind modern methods as well as a bit more formal understanding of how, why, and when they work.Prerequisite(s): CSCI 303 and (MATH 112 or MATH 132) and (MATH 211 or MATH 109) College Curriculum: C400",
+          "raw_entry_sha256": "006b49d273fc67a81bb5669819b16c93406fcf854c1839e4c4f7c8ecd1811848",
+          "raw_entry_html_sha256": "75a19678e5d11ac0104e7ad8b5689e850bca2cb866e920815d72e65c39af6e92",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI417",
+          "title": "Computer Animation",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 27,
+          "raw_entry_text": "CSCI 417 Computer Animation (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. Introduction to principles and practice of 3D computer animation within the context of digital production. Primary topics include modeling, keyframe animation, procedural animation, shading, rigging, and effects. Course projects will be time-intensive and completed using production-level software, complemented by Python scripting.Prerequisite(s): CSCI 141 Additional fees apply",
+          "raw_entry_sha256": "c10d38802fb0bd230e1f74c33dee8c4188ee6f00f1f9f5ac2998eed4455dd83a",
+          "raw_entry_html_sha256": "aad8e64feed87fe624ad2576d9270e31fa0330df5de68e1de2e8aa17094276e6",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI420",
+          "title": "Special Topics in Computer Science",
+          "published_credits": {
+            "kind": "published_variable_credits",
+            "notation": "1-3",
+            "credit_hours_min": 1,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 28,
+          "raw_entry_text": "CSCI 420 Special Topics in Computer Science (1-3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. A treatment of topics of interest not routinely covered by existing courses. Material may be chosen from various areas of computer science. A complete course description and a list of prerequisites will appear in appropriate registration bulletins.",
+          "raw_entry_sha256": "2bf57c1d900ed81f43725f35a23aa8ca221173dfd6fabbc3efd70fdd05888502",
+          "raw_entry_html_sha256": "a636fb9b2ce0d48fb8f29092be6df1d160fa7a3570666dca4fb079b6b12cd312",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI421",
+          "title": "Database Systems",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 29,
+          "raw_entry_text": "CSCI 421 Database Systems (3 Credits) Design, organization and implementation of database management systems: file organization and processing, hierarchical, network, and relational models of database structure, data definition and data manipulation languages, security and integrity of databases, and the study of existing database implementations. Prerequisite(s): CSCI 303",
+          "raw_entry_sha256": "6e8e9969f6a2360522b6781e5f3590ef2d7ba4972bb259b995b0640921700cbd",
+          "raw_entry_html_sha256": "d74baff70adc8b02f9c6a9004e525bc004c6f73bcdf482b64e84c6132da08e04",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI423",
+          "title": "Finite Automata and Theory of Computation",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 30,
+          "raw_entry_text": "CSCI 423 Finite Automata and Theory of Computation (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. Theory of sequential machines, finite automata, Turing machines, recursive functions, computability of functions.Prerequisite(s): CSCI 303",
+          "raw_entry_sha256": "0f2873dd84ac0ee0549644a991ad1be776f3dd41bb69b85627e9a2030e9d0206",
+          "raw_entry_html_sha256": "1cf5a09860ff39587e3a394a6917422e718c93f307c447f76a79eb0a99e15866",
+          "rule_membership": "textually_in_level_pool_but_already_required_in_core"
+        },
+        {
+          "course_code": "CSCI423W",
+          "title": "Finite Automata Writing",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "0",
+            "credit_hours_min": 0,
+            "credit_hours_max": 0
+          },
+          "source_courseblock_index": 31,
+          "raw_entry_text": "CSCI 423W Finite Automata Writing (0 Credits)",
+          "raw_entry_sha256": "04c2854bc0a60702add5b666007a0879c01ddb6330e4cb626621241d81560dc8",
+          "raw_entry_html_sha256": "e9c01c3047ee979bc83989575be614f675eb5f137e92573d79a9c6ae606f988f",
+          "rule_membership": "textually_in_level_pool_zero_credit"
+        },
+        {
+          "course_code": "CSCI424",
+          "title": "Computer Architecture",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 32,
+          "raw_entry_text": "CSCI 424 Computer Architecture (3 Credits) An introduction to the principles of computer design. Students will apply their knowledge of digital logic design to understand the high-level interactions between different computer system hardware components. The course will cover various computer architecture aspects related to memory hierarchy and design, CPU design, pipelining, and multiprocessor architecture.Prerequisite(s): CSCI 304 and (CSCI 301 or CSCI 303)",
+          "raw_entry_sha256": "130048c2aecbb2d4612a0b8d3641caf83614633a6969b83dcc2205e9c0efd79d",
+          "raw_entry_html_sha256": "2855d58e497534eaf86b037623ba3eb97ff013b3e36df0b212a34055226fd0f1",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI425",
+          "title": "Entrepreneurship in Computer Science",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 33,
+          "raw_entry_text": "CSCI 425 Entrepreneurship in Computer Science (3 Credits) Develop an innovative solution addressing a demonstrated real need by drawing on the knowledge gained from studies in CS 100-400 level classes and the College Curriculum. General approaches in entrepreneurship towards launching a tech startup company including design thinking, customer development, and agile management are combined with agile software development to develop a minimum viable software product.Prerequisite(s): CSCI 301 and CSCI 303 and CSCI 304 and CSCI 312 College Curriculum: C400",
+          "raw_entry_sha256": "1b0e485beb960188fee095acab0c52283d7df9d9cafc8568a219c95e6b135220",
+          "raw_entry_html_sha256": "74025373291843f74cc2b5016b732a97bcf9e460d43536ae66be70b66031267b",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI426",
+          "title": "Simulation",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 34,
+          "raw_entry_text": "CSCI 426 Simulation (3 Credits) Introduction to simulation. Discrete and continuous stochastic models, random number generation, elementary statistics, simulation of queueing and inventory systems, discrete event simulation, point and interval parameter estimation. Prerequisite(s): CSCI 303 and MATH 112 and CSCI 301",
+          "raw_entry_sha256": "36d3d851167e87d5aabddcf2e0ac21208e19233f5526387d87666e6622bd86e1",
+          "raw_entry_html_sha256": "8e6298fb7b6fea9233c1ebe4ea86ef69238881a07f3ac70d95515255bdb10843",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI427",
+          "title": "Fundamentals of Computer Graphics",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 35,
+          "raw_entry_text": "CSCI 427 Fundamentals of Computer Graphics (3 Credits) Introduction to computer graphics and its applications. Topics include coordinate systems, the relationship between continuous objects and discrete displays, fill and flood algorithms, two-dimensional geometric transformations, clipping, zooming, panning and windowing. Topics from three-dimensional graphics include representations for objects, geometric and projection transformations, geometric modeling and hidden line/surface removal algorithms. Prerequisite(s): CSCI 301 and CSCI 303 and (MATH 211 or MATH 109) College Curriculum: C200 Domain: NQR",
+          "raw_entry_sha256": "da0fb459c46e6d5ad3db9ef4ad3dfa1413d8d54d9e8d304665142b7594c8c45e",
+          "raw_entry_html_sha256": "091629e290e75dd77dac0c17f999d8f17216fe59804c663277019d4fbfb15716",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI432",
+          "title": "Web Programming",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 37,
+          "raw_entry_text": "CSCI 432 Web Programming (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. Overview of the Internet. Markup languages: HTML, CSS, XML. Server side programming languages: Perl/Python, PHP, Java. Other topics include: N tier programming, security, database access, XML processing.",
+          "raw_entry_sha256": "ab7ce31f7b7ad1b350c584e3f88cf143a53b4c1733815bd0e1f2cad57bace681",
+          "raw_entry_html_sha256": "50accc18596da53409f21eeb1fe75af3f79b57ca7a271c45b4dc8c1179dc6c9b",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI434",
+          "title": "Network Systems and Design",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 38,
+          "raw_entry_text": "CSCI 434 Network Systems and Design (3 Credits) This course covers modern computer networking systems and design. We’ll take a top-down approach, starting with the application layer and moving down to the transport, network, and data link layers. We’ll also cover wireless networks. In addition to studying the theories behind computer networking systems and design, we’ll practice these theories through network programming. Students will also conduct a research project on computer network traffic analysis using AI, which satisfies the COLL 400 capstone experience.Prerequisite(s): CSCI 415 or (CSCI 301 and CSCI 303 and CSCI 304) College Curriculum: C400",
+          "raw_entry_sha256": "b9d4f008f5e0ac34090121c7989caa6f4871b735c096236c4a2d290f7a176cd7",
+          "raw_entry_html_sha256": "b1eec518fa0377eea0ff2352d2a665a91a598f4f2eb7267fd62a9a9350fb73a8",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI435",
+          "title": "Software Engineering",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 39,
+          "raw_entry_text": "CSCI 435 Software Engineering (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. The software life cycle. Software design methodologies. Testing and maintenance. Programming teams.Prerequisite(s): CSCI 301 and CSCI 312 College Curriculum: C400",
+          "raw_entry_sha256": "811ab4e67090e5426cca198c41a617739de22a0290df9f1e0d4f03c6fd3750f2",
+          "raw_entry_html_sha256": "a23caa11a19133a7b351c2a12e7efd2708b6af76051d78455ba1947f77165e86",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI436",
+          "title": "Data Mining",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 40,
+          "raw_entry_text": "CSCI 436 Data Mining (3 Credits) Introduction to fundamental concepts and techniques in data mining, specifically, basic data mining concepts, graph mining, traditional clustering and classification methods, as well as recent deep learning techniques. Prerequisite(s): CSCI 303 and (MATH 211 or MATH 109) and (MATH 212 or MATH 213)",
+          "raw_entry_sha256": "ec1aa313d782eaac41153a8f3f4d21a8c4d7addbc6aeb48258df916488a3095b",
+          "raw_entry_html_sha256": "922dbbaafa21236d89bd13758ea55da0425f9efe2fa0ed8a430f546265e8d9ae",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI437",
+          "title": "Introduction to Game Design and Game Development",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 41,
+          "raw_entry_text": "CSCI 437 Introduction to Game Design and Game Development (3 Credits) A comprehensive introduction to the design and development of computer games. Emphasis is placed on the formal process of game design, covering aspects such as the creation of the game proposal and design documents, designing game mechanics, balancing game play, and interest curves. This course also covers a broad range of technical topics in game development, ranging from programming techniques geared towards games, the basics of computer graphics algorithms for games, decision making and tactical AI, path finding, collision detection, visibility, and game physics.Prerequisite(s): CSCI 301 and CSCI 303 College Curriculum: C400",
+          "raw_entry_sha256": "467c22c842ed032c58b1e0e9d29d483cd3c6652328b8a87871792f335577283d",
+          "raw_entry_html_sha256": "6afcb66e5fd1e7de20b7005f7519bb047196108f4b120572a5b3b8bce1ebe13a",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI437X",
+          "title": "Team Management for Game Design and Game Development",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "1",
+            "credit_hours_min": 1,
+            "credit_hours_max": 1
+          },
+          "source_courseblock_index": 42,
+          "raw_entry_text": "CSCI 437X Team Management for Game Design and Game Development (1 Credit) This course is to be taken in together with CSCI-437 Introduction to Game Design and Game Development. The goal of this course is learn, via practice, how to lead a small team of dedicated developers through the process of designing and developing a computer game as part of the co-requisite course CSCI-437. While enrollment in CSCI-437 covers the technical details of game design and game development, the focus of this course is on the actual team management.Corequisite(s): CSCI 437",
+          "raw_entry_sha256": "689c8b3f461ac57c219e973ac57b0b4843683b7c1c6761009a2532f78ef5125e",
+          "raw_entry_html_sha256": "349d9f3b4a8a920c107d61fff3c6bfc46b22528aff1f6c79c2a478d904485967",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI440",
+          "title": "Computing Profession/Society",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 43,
+          "raw_entry_text": "CSCI 440 Computing Profession/Society (3 Credits)",
+          "raw_entry_sha256": "dc3856a4c6d7a6a05e751c0edac2fbb214f37b304d691286141d8461a515ec24",
+          "raw_entry_html_sha256": "8b8aabeeff42a2a9408848768097eee76a3d2bd49295bced363e42657ce14658",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI440W",
+          "title": "Computing Profession/Society",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "0",
+            "credit_hours_min": 0,
+            "credit_hours_max": 0
+          },
+          "source_courseblock_index": 44,
+          "raw_entry_text": "CSCI 440W Computing Profession/Society (0 Credits) Corequisite(s): CSCI 440",
+          "raw_entry_sha256": "d83b4c2575a40ceb5a5498e5656b487196b922532c432b7624d700d8dc59abd2",
+          "raw_entry_html_sha256": "296f6902a0cfb958af3ce38f57fffa334db7d66b0d6fdbb4574258f8ae2517e5",
+          "rule_membership": "textually_in_level_pool_zero_credit"
+        },
+        {
+          "course_code": "CSCI442",
+          "title": "Compiler Construction",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 45,
+          "raw_entry_text": "CSCI 442 Compiler Construction (3 Credits) The emphasis in this course is on the construction of translators for programming languages. Topics include lexical analysis, block structure, grammars, parsing, program representation and run-time organization. Prerequisite(s): CSCI 304 and CSCI 312 and CSCI 301",
+          "raw_entry_sha256": "2787dcb50c0120fb1e33e6710e8a631788fb1b3d21702e9ec152146335ec054b",
+          "raw_entry_html_sha256": "5d337a554a88ad1f2c3ec33076fa7aa9b2aabe03dc0b812297a9f02a96d6e96f",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI444",
+          "title": "Principles of Operating Systems",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 46,
+          "raw_entry_text": "CSCI 444 Principles of Operating Systems (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. The conceptual view of an operating system as a collection of concurrent processes; semaphores, monitors and rendezvous. Real and virtual memory organization and management, processor allocation and management, and external device management.Prerequisite(s): CSCI 301 and CSCI 303 and CSCI 304",
+          "raw_entry_sha256": "f64cd41ad7425deb30eaf6bb2fac4024a24f2785c041772b103322c5faefdedf",
+          "raw_entry_html_sha256": "5b9ef29a25a7e1ba4405c0b8e5f02036df638999e70eb47e58743c7bcbd6e6ae",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI445",
+          "title": "Mobile Application Security",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 47,
+          "raw_entry_text": "CSCI 445 Mobile Application Security (3 Credits) This course is a senior-level introduction to mobile application security and security research. Students successfully completing this class will be able to understand and apply the various security best practices in designing mobile applications, and will also develop a background in the research and practices in performing security analysis of mobile applications. The course will introduce the fundamental concepts in security and privacy (e.g., confidentiality, threat models, crypto basics, SSL/TLS, access control) and demonstrate how these concepts apply to secure mobile application development. Students will also learn the various techniques used in analyzing mobile applications for security vulnerabilities or malware, including static and dynamic program analysis. The Android platform and Android's application model will generally be the prime examples used throughout the class, although iOS application analysis techniques may also be added as the course progresses. Students will have homework (programming and/or questions-based assignments), a semester-long application development/analysis project, and a final exam.Prerequisite(s): CSCI 301 College Curriculum: C400",
+          "raw_entry_sha256": "5bfc409802a89794511a2bd27f3f8719df5192b4c6631229fc67ce644df77c5f",
+          "raw_entry_html_sha256": "f6ea0e0b320cd880903a99b6093aac5267203a6ea29f1db3c5b959c95ff6f2c3",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI446",
+          "title": "Neural Networks for Machine Learning",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 48,
+          "raw_entry_text": "CSCI 446 Neural Networks for Machine Learning (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. Machine learning enables computers to learn from experience. The first part of the course will cover foundational topics in pattern recognition and machine learning such as probability distributions, linear models for regression, and linear models for classification. The second part of the course will examine nonlinear models for regression and classification, focusing on artificial neural networks. Neural networks are being used to achieve state-of-the-art performance at applications in different modalities and domains. Students will be required to analyze and present relevant research papers.Prerequisite(s): (MATH 106 or MATH 351 or MATH 451) and (MATH 211 or MATH 109) and (MATH 212 or MATH 213)",
+          "raw_entry_sha256": "0f6400841b3403ee2f5bae6a4efb11248eeb232729b7bacb074fdfcb8896856b",
+          "raw_entry_html_sha256": "b4f229a0f4cd7bdbdaf4a77e91e4829bed955315253990dbc53b29a1dbb4885e",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI447",
+          "title": "Human-Computer Interaction",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 49,
+          "raw_entry_text": "CSCI 447 Human-Computer Interaction (3 Credits) This course introduces the basics of human-computer interaction design and evaluation methods and techniques, such as examining user tasks, developing scenarios and storyboards, creating prototypes, iterating on prototypes to create a final design project, and evaluating the prototype. Other topics may include computer-supported cooperative work, multimodal and cutting-edge development in human-AI interaction and prompt engineering, etc.",
+          "raw_entry_sha256": "40ee9b2fe96b73ad606eb42d774588fab757457519efc78a1a760c684f03487e",
+          "raw_entry_html_sha256": "0c241ef12813894bd9d1c16e49559937ccc692d7c0d0435c50ad4f495179c1fd",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI449",
+          "title": "Scientific Computing",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 50,
+          "raw_entry_text": "CSCI 449 Scientific Computing (3 Credits) Prerequisite(s): CSCI 303 and (MATH 211 or MATH 109)",
+          "raw_entry_sha256": "a0c82cfa265f172d124a2a92d1eb81ac648ec5e9e8a4853c111daecc6bfff455",
+          "raw_entry_html_sha256": "c05251d0e8c8b5628dbcb506f4cbad4fe3fd30f647074cebec82d59c80cbcc72",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI454",
+          "title": "Computer and Network Security",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 51,
+          "raw_entry_text": "CSCI 454 Computer and Network Security (3 Credits) An introduction to the principles and practices of cryptography, network security, and secure software. Cryptography topics includes: basic methods, key distribution, and protocols for authenticated and confidential communications. The practice of network security includes: Kerberos, PGP, public key infrastructures, SSL/TLS. IP security, intrusion detection, password management, firewalls, viruses and worms, and Denial of Service (DoS) attacks. Prerequisite(s): CSCI 303 and CSCI 304",
+          "raw_entry_sha256": "2213c1415645293fa5db6332235826acd82a273440006866ee5cfef2d08543f0",
+          "raw_entry_html_sha256": "616aeeb5f77437112e0c43fb16a460b2306c286e008cd7774c5b4678448b7f10",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI455",
+          "title": "Generative Artificial Intelligence for Software Development",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 52,
+          "raw_entry_text": "CSCI 455 Generative Artificial Intelligence for Software Development (3 Credits) GenAI for Software Development provides students with a strong foundation in the principles and technical expertise needed to develop and apply Deep Learning (DL)-based systems, with a particular emphasis on Generative AI methods. The course focuses on leveraging advanced techniques to enhance software development processes, addressing practices such as source code generation, automated documentation, and other key aspects of modern software engineering. By the end of the course, students will possess a comprehensive understanding of Generative AI methods for software development. This includes the ability to design and implement new DL-based approaches to address challenges in the software engineering domain, critically analyze the latest advancements in the field, and propose innovative solutions to refine Generative AI techniques. These skills will equip students with the essential knowledge to thrive and excel in a highly competitive professional environment where every decision and contribution matters.Prerequisite(s): CSCI 301 and CSCI 416",
+          "raw_entry_sha256": "1e48809d4eee7df3d711deaec9b75d4de9241d9fd53eeb78e9b31f88563f0d1c",
+          "raw_entry_html_sha256": "b0e5521f11859495573db6a2796b14ad05efd2e533161f123c269466a33db8b1",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI464",
+          "title": "Penetration Testing",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 53,
+          "raw_entry_text": "CSCI 464 Penetration Testing (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. This course introduces computer network vulnerability assessments and penetration testing. The course explores how malicious actors and hackers attack computers and networks and how to protect against these threats. This is a hands-on learning course where students will be exposed to and perform various types of vulnerability assessments and explore penetration testing techniques in order to understand how to defend against cyber-attacks. Legal implications and ethical issues will also be addressed.Prerequisite(s): CSCI 224 or CSCI 304 Additional fees apply",
+          "raw_entry_sha256": "d777b817fddb1cc4e1f072301eaa0bde414f7ffae2bbcbc4891609137d31e27a",
+          "raw_entry_html_sha256": "7b3e3c2a94fa8c14c3551c403a5ca5aaf738fe9f4775c33e9dbb3d67c51adac1",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI465",
+          "title": "Edge Computing",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 54,
+          "raw_entry_text": "CSCI 465 Edge Computing (3 Credits) This course provides an in-depth exploration of edge computing, a transformative paradigm that brings computation closer to the data source, enabling faster processing, reduced latency, and better privacy preservation. Students will delve into its real-world applications, enabling technologies, available tools, public datasets, and emerging challenges across various industries. Through hands-on experience, students will work with edge devices such as smartphones, IoT sensors, autonomous vehicles, robotics, and industrial controllers, which power cutting-edge innovations in smart cities, smart homes, smart manufacturing, augmented and virtual reality (AR/VR), and intelligent transportation systems. A key component of the course is a semester-long, student-driven project, allowing students to design, deploy, and evaluate their own edge computing solutions with instructor guidance. By the end of the course, students will not only gain practical skills in implementing edge computing systems but also develop a critical understanding of their capabilities, limitations, and real-world impact.Prerequisite(s): CSCI 303 or CSCI 312",
+          "raw_entry_sha256": "c9e8337c62a83ea6e236ce3d740ff556b295ba805d70c8333f58a8ce1706e631",
+          "raw_entry_html_sha256": "32cb7f351aeb030124816869a99ce33652cf06555fefd8428ce8003885f83a13",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI466",
+          "title": "Applied Topology Data Science",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 55,
+          "raw_entry_text": "CSCI 466 Applied Topology Data Science (3 Credits) A $250 per credit fee will apply for students for whom initial enrollment at W&M begins in Fall 2025 or later. This course introduces applied topology—new algorithms for probing the shape and structure of complex data arising in computing, data science, and physics. We begin with foundational concepts of topology such as topological spaces, continuous maps, and connectedness. Then we examine tools of topological data analysis, including simplicial complexes, persistent homology, persistence diagrams, and stability. The course emphasizes the idea that data are not only points to be fit or classified but also objects with multiscale structure that can reveal loops, voids, and connectivity patterns. These patterns elude traditional machine learning approaches, particularly in noisy, high-dimensional settings. Students will work with real datasets, compute topological invariants, and use these features in artificial intelligence and machine learning models, while also learning where topological methods succeed and where they break down.Prerequisite(s): (MATH 106 or MATH 351 or MATH 451) and (MATH 109 or MATH 211 ) Additional fees apply",
+          "raw_entry_sha256": "9d7edf266896807ce7b712b9df54628e54b37c88b92e8d108eedc46c0d40d3c7",
+          "raw_entry_html_sha256": "4edfa7a5a149cafbcdf33e78fb170e56b3b962eac22e0a3bc46f105979859858",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI490",
+          "title": "Research in Computer Science",
+          "published_credits": {
+            "kind": "published_variable_credits",
+            "notation": "1-3",
+            "credit_hours_min": 1,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 56,
+          "raw_entry_text": "CSCI 490 Research in Computer Science (1-3 Credits) Independent research under the supervision of a faculty member. A written report is required. Permission of the Undergraduate Director required.",
+          "raw_entry_sha256": "aa69dc40d3e2c6097dc867269a3fe148b2670b324abeb46bbad5a4d4915d1f5b",
+          "raw_entry_html_sha256": "f542f0aebac13cf3a3f6aff2e42a925d3d9d2366ca4a728e1e41ba919ed7679a",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI495",
+          "title": "Honors",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 57,
+          "raw_entry_text": "CSCI 495 Honors (3 Credits) Students admitted to Honors study in computer science will be enrolled in this course during both semesters of their senior year. The course comprises: (a) supervised research in the student’s area of interest; (b) presentation by April 15 of an Honors thesis; and (c) satisfactory performance in a comprehensive oral examination in the field of the student’s major interest.",
+          "raw_entry_sha256": "c97ca6be099f7371e1d3c594061dbed4f166478ca9a97e9dca514b18834f1b04",
+          "raw_entry_html_sha256": "eb142f4a06d331faea47d6414f686777f2a4fe6ca67b80eb007029e5ceb0142a",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI495W",
+          "title": "Honors",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "0",
+            "credit_hours_min": 0,
+            "credit_hours_max": 0
+          },
+          "source_courseblock_index": 58,
+          "raw_entry_text": "CSCI 495W Honors (0 Credits) Corequisite(s): CSCI 495",
+          "raw_entry_sha256": "ba128adafb79d960da963d55c4fe496850c5d173d720649b6864ab943e5498a6",
+          "raw_entry_html_sha256": "078f0951e05b49e1e59b737f89c97f9174788afa57e22c417c1136bcd434865b",
+          "rule_membership": "textually_in_level_pool_zero_credit"
+        },
+        {
+          "course_code": "CSCI496",
+          "title": "Honors",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 59,
+          "raw_entry_text": "CSCI 496 Honors (3 Credits) Students admitted to Honors study in computer science will be enrolled in this course during both semesters of their senior year. The course comprises: (a) supervised research in the student’s area of interest; (b) presentation by April 15 of an Honors thesis; and (c) satisfactory performance in a comprehensive oral examination in the field of the student’s major interest. College Curriculum: C400",
+          "raw_entry_sha256": "77e73d462185f9f906508d09c47076c9f2be1a3e037c2c43d98625e2675c141e",
+          "raw_entry_html_sha256": "3207921efd87d804789893451efb862ee0546906d0ef35338cc9a599bc716219",
+          "rule_membership": "general_concentration_candidate"
+        },
+        {
+          "course_code": "CSCI496W",
+          "title": "Honors",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "0",
+            "credit_hours_min": 0,
+            "credit_hours_max": 0
+          },
+          "source_courseblock_index": 60,
+          "raw_entry_text": "CSCI 496W Honors (0 Credits) Corequisite(s): CSCI 496",
+          "raw_entry_sha256": "5bd55b2fc8ad4571c5b57866eecbf3f1cc08c0ec74215df3c670b3b95016d9b7",
+          "raw_entry_html_sha256": "191f205c19a2480fcfb0cd3b48e15e7b73edea9bd3fd0e01684e7bda8faf612c",
+          "rule_membership": "textually_in_level_pool_zero_credit"
+        },
+        {
+          "course_code": "MATH413",
+          "title": "Introduction to Numerical Analysis I",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 42,
+          "raw_entry_text": "MATH 413 Introduction to Numerical Analysis I (3 Credits) A discussion of the mathematical theory underlying selected numerical methods and the application of those methods to problems of practical importance. Computer programs are used to facilitate calculations and illustrate analytical results. The topics covered are: linear systems of equations, sensitivity analysis, least-squares problems, the singular value decomposition, and eigenvalue problems. Students planning to take 414 are encouraged to take 413 first. Prerequisite(s): (MATH 212 or MATH 213) and (CSCI 141 or CSCI 140 or DATA 141 or DATA 140) and (MATH 214 ) and (MATH 211 or MATH 109 or MATH 210)",
+          "raw_entry_sha256": "21b7136499e6264aa2bdf9086c1d37145d220508a99c4cfbd980bed2f527dd2c",
+          "raw_entry_html_sha256": "aad0d0bf2060e08d93acc10e0a75ae763229420a05d2c5f701d30411fef7ddf8",
+          "rule_membership": "permitted_math_choose_at_most_one"
+        },
+        {
+          "course_code": "MATH414",
+          "title": "Introduction to Numerical Analysis II",
+          "published_credits": {
+            "kind": "published_fixed_credits",
+            "notation": "3",
+            "credit_hours_min": 3,
+            "credit_hours_max": 3
+          },
+          "source_courseblock_index": 43,
+          "raw_entry_text": "MATH 414 Introduction to Numerical Analysis II (3 Credits) A discussion of the mathematical theory underlying selected numerical methods and the application of those methods to problems of practical importance. Computer programs are used to facilitate calculations and illustrate analytical results. The topics covered are: nonlinear equations, interpolation and approximation, numerical integration, and numerical methods for the solution of ordinary and partial differential equations. Students planning to take 414 are encouraged to take 413 first. Prerequisite(s): (MATH 212 or MATH 213) and (CSCI 141 or CSCI 140) and (MATH 214 ) and (MATH 211 or MATH 109 or MATH 210)",
+          "raw_entry_sha256": "2f66c8066af6b7f220025de5704684369ae2b6d4f52b214d2a4f2f40e252258c",
+          "raw_entry_html_sha256": "70c3626079405acfbd4693334d4f9f7284072c016559ae6a0f09e21f6293c12e",
+          "rule_membership": "permitted_math_choose_at_most_one"
+        }
+      ]
+    },
+    "paper_interpretation": {
+      "unique": false,
+      "exact_feasible_credit_contributing_course_counts": [
+        4,
+        5,
+        6
+      ],
+      "cardinality_bound_proof": {
+        "lower_bound": "every positive-credit eligible entry has a three-credit ceiling, so 12 credits require at least four credit-contributing courses",
+        "upper_bound": "only CSCI 420, CSCI 437X, and CSCI 490 carry fewer than three positive credits; any seven positive-credit courses therefore total at least 1 + 1 + 1 + 3 + 3 + 3 + 3 = 15 credits",
+        "existence": "the retained roster supplies exact source-valid witnesses at four, five, and six courses; the six-course witness includes CSCI 437 alongside its one-credit CSCI 437X corequisite"
+      },
+      "witnesses": [
+        {
+          "course_count": 4,
+          "credits": 12,
+          "assignments": [
+            {
+              "course_code": "CSCI315",
+              "credits": 3
+            },
+            {
+              "course_code": "CSCI321",
+              "credits": 3
+            },
+            {
+              "course_code": "CSCI324",
+              "credits": 3
+            },
+            {
+              "course_code": "CSCI356",
+              "credits": 3
+            }
+          ]
+        },
+        {
+          "course_count": 5,
+          "credits": 12,
+          "assignments": [
+            {
+              "course_code": "CSCI315",
+              "credits": 3
+            },
+            {
+              "course_code": "CSCI321",
+              "credits": 3
+            },
+            {
+              "course_code": "CSCI324",
+              "credits": 3
+            },
+            {
+              "course_code": "CSCI420",
+              "credits": 1
+            },
+            {
+              "course_code": "CSCI490",
+              "credits": 2
+            }
+          ]
+        },
+        {
+          "course_count": 6,
+          "credits": 12,
+          "assignments": [
+            {
+              "course_code": "CSCI315",
+              "credits": 3
+            },
+            {
+              "course_code": "CSCI321",
+              "credits": 3
+            },
+            {
+              "course_code": "CSCI420",
+              "credits": 1
+            },
+            {
+              "course_code": "CSCI437",
+              "credits": 3
+            },
+            {
+              "course_code": "CSCI437X",
+              "credits": 1
+            },
+            {
+              "course_code": "CSCI490",
+              "credits": 1
+            }
+          ]
+        }
+      ],
+      "figure_1": {
+        "ready": false,
+        "reason": "the source fixes 12 credits but permits source-valid four-, five-, and six-course realizations because CSCI 420/490 carry 1-3 credits and the one-credit CSCI 437X may be selected together with its three-credit CSCI 437 corequisite"
+      },
+      "figure_6": {
+        "ready": false,
+        "reason": "the source fixes neither one course combination nor one prerequisite graph; selecting a convenient four-course route would be an analyst choice, not a catalog fact"
+      },
+      "zero_credit_entries_do_not_reduce_the_twelve_credit_floor": true,
+      "required_upper_core_reuse_not_assumed": true
+    }
+  },
+  "foreign_language_proficiency": {
+    "source_rule": {
+      "verified": true,
+      "issues": [],
+      "source_response_sha256": "0fa9acb97573a446ebf90ed18e6a22fbba2c010d776f620e42847452030dfa37",
+      "relevant_section_sha256": "223f13121b412d31a65778131ec591c18126700000a8763b86086ef753f901e3",
+      "proficiency_level": "202/203 level or above",
+      "routes": [
+        {
+          "option": 1,
+          "timing": "prior_to_enrollment",
+          "raw": "completion of Level IV in high school of an ancient or modern foreign language;",
+          "college_course_increment": 0,
+          "college_credit_increment": 0,
+          "evidence_class": "exact_zero_increment_high_school_proficiency"
+        },
+        {
+          "option": 2,
+          "timing": "prior_to_enrollment",
+          "raw": "graduation from a high school where the main language of instruction was not English (official High School transcript must be in language of instruction; English translation must be provided);",
+          "college_course_increment": 0,
+          "college_credit_increment": 0,
+          "evidence_class": "exact_zero_increment_high_school_language_of_instruction"
+        },
+        {
+          "option": 3,
+          "timing": "prior_to_enrollment",
+          "raw": "transfer credit for a language course taught in the target language at a level equivalent to or above the 202/203 level at William & Mary;",
+          "college_course_increment": {
+            "min": 1,
+            "max": null
+          },
+          "college_credit_increment": {
+            "min": null,
+            "max": null
+          },
+          "evidence_class": "qualifying_transfer_course_identity_and_credits_open"
+        },
+        {
+          "option": 4,
+          "timing": "prior_to_enrollment",
+          "raw": "transfer credit obtained via internationally accredited exams such as Advanced Placement, International Baccalaureate, A-levels, etc., in some specific languages (for those languages, please check the section on “Credit for Pre-Matriculation Examinations” ;",
+          "college_course_increment": {
+            "min": null,
+            "max": null
+          },
+          "college_credit_increment": {
+            "min": null,
+            "max": null
+          },
+          "evidence_class": "exam_transfer_credit_equivalency_and_credits_open"
+        },
+        {
+          "option": 5,
+          "timing": "after_enrollment",
+          "raw": "completion of a language course at William & Mary, taught in the target language, at a level equivalent to or above the 202/203 level;",
+          "college_course_increment": {
+            "min": 1,
+            "max": null
+          },
+          "college_credit_increment": {
+            "min": null,
+            "max": null
+          },
+          "evidence_class": "william_mary_course_and_possible_placement_sequence_open",
+          "reason": "the required 202/203-or-above course and any prerequisite sequence depend on language and placement"
+        },
+        {
+          "option": 6,
+          "timing": "after_enrollment",
+          "raw": "obtaining a score of “intermediate” or higher on both the Oral and Writing Proficiency ACTFL standardized tests for a language other than English (not administered by William & Mary).",
+          "college_course_increment": 0,
+          "college_credit_increment": 0,
+          "evidence_class": "exact_zero_increment_external_proficiency_tests"
+        },
+        {
+          "option": 7,
+          "timing": "after_enrollment",
+          "raw": "through study abroad, only if: prior approval for the course has been obtained from the Department of Modern Languages & Literatures, and the course is taken in a country where the language is the official language.",
+          "college_course_increment": {
+            "min": 1,
+            "max": null
+          },
+          "college_credit_increment": {
+            "min": null,
+            "max": null
+          },
+          "evidence_class": "approved_study_abroad_course_identity_and_credits_open",
+          "reason": "the approved study-abroad course identity and credits are not fixed by this catalog rule"
+        }
+      ],
+      "placement_evidence": {
+        "placement_selects_enrollment_not_completion": true,
+        "zero_increment_inference_from_placement_forbidden": true
+      },
+      "exception_evidence": {
+        "committee_may_substitute_other_courses": true,
+        "substituted_course_identity_and_credits_open": true
+      }
+    },
+    "paper_interpretation": {
+      "unique": false,
+      "zero_increment_route_exists": true,
+      "zero_increment_is_universal": false,
+      "exact_zero_increment_options": [
+        1,
+        2,
+        6
+      ],
+      "open_course_or_credit_options": [
+        3,
+        4,
+        5,
+        7
+      ],
+      "college_course_increment_min": 0,
+      "college_course_increment_max": null,
+      "college_credit_increment_min": 0,
+      "college_credit_increment_max": null,
+      "figure_3": {
+        "ready": true,
+        "method": "optimistic_best_case_source_valid_zero_increment_route",
+        "selected_options": [
+          1,
+          2,
+          6
+        ],
+        "assumption": "the modeled successful transfer student satisfies foreign-language proficiency through one of the catalog-published zero-course routes",
+        "reason": "Figure 3 is an optimistic best-case credit-utilization model, and the official catalog publishes three exact routes that add zero college courses and zero college credits"
+      },
+      "figure_4": {
+        "ready": true,
+        "method": "optimistic_best_case_source_valid_zero_increment_route",
+        "selected_options": [
+          1,
+          2,
+          6
+        ],
+        "assumption": "the modeled successful transfer student satisfies foreign-language proficiency through one of the catalog-published zero-course routes",
+        "reason": "Figure 4 is the lower-bound consequence of the same optimistic transfer plan, so a published zero-increment route is the exact minimizing witness"
+      },
+      "figure_6": {
+        "ready": false,
+        "reason": "course identity, number of prerequisites, and even whether a course node exists are student-specific"
+      }
+    }
+  },
+  "transfer_and_residency_policy": {
+    "verified": true,
+    "issues": [],
+    "source_receipts": {
+      "program_response_sha256": "8f943153b3a8489b2074fc16fbaaec55c8622d6aa7403e9913b668832675bad6",
+      "program_relevant_html_sha256": "2f9d6a4778e2f6796005fe79b766d6de1ec81db375dec66eda2382794955bc26",
+      "degree_policy_response_sha256": "0fa9acb97573a446ebf90ed18e6a22fbba2c010d776f620e42847452030dfa37",
+      "degree_policy_relevant_html_sha256": "53a31733a24fa0ad9514c5bf83dc6ec58cfae7aca622539f3f94cbc1cdd089d6"
+    },
+    "transfer_grade_threshold": {
+      "exact_rule_text": "A grade of “C” (2.0) or higher is required (“C-” is not acceptable). In the case of a course taken on a Pass/Fail basis, a grade of “P” is acceptable only when the student provides a letter from the faculty member who taught the course certifying that the student’s work was at the level of C or above.",
+      "minimum_letter_grade": "C",
+      "minimum_grade_points": 2,
+      "c_minus_acceptable": false,
+      "pass_fail_requires_instructor_certification_at_or_above_threshold": true,
+      "paper_method": {
+        "figures": [
+          "3",
+          "4"
+        ],
+        "conditioned_input": "hypothetical_grade_eligible_successful_pathway",
+        "pure_grade_threshold_changes_course_identity": false,
+        "pure_grade_threshold_changes_applied_units": false,
+        "separately_blocks_paper_figures": false
+      }
+    },
+    "computer_science_residency": {
+      "exact_program_rule_text": "At least half of the required minimum number of courses for the CS major must be taken at W&M and for all classes at the 300 and 400 level taken elsewhere, a total of at most two courses can count towards the CS major.",
+      "exact_degree_rule_text": "No degree will be granted by the university until the applicant has completed a minimum of 60 credit hours in residence at William & Mary. A minimum of 15 credit hours in the major and 9 credit hours in the minor must be taken in residence at William & Mary.",
+      "overall_resident_credits_minimum": 60,
+      "major_resident_credits_minimum": 15,
+      "resident_fraction_of_minimum_major_course_count": 0.5,
+      "external_300_400_major_courses_maximum": 2
+    }
+  },
+  "canonical_effect": {
+    "verified_requirement_or_composition_mutation_required": false,
+    "projection_mutation_required": false,
+    "runtime_gate_change_supported": true,
+    "residual_blockers": [
+      "general_concentration_course_cardinality_and_selection_are_not_unique",
+      "foreign_language_course_and_credit_increment_are_not_unique_for_figure_6"
+    ]
+  }
+}

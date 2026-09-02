@@ -1,0 +1,21 @@
+{
+  "route_id": "george-mason-university__bus",
+  "requested_url": "https://catalog.gmu.edu/courses/bus/",
+  "final_url": "https://catalog.gmu.edu/courses/bus/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 63273,
+  "content_sha256": "a0df6d377b29220062693deb5d803c8cc571497316903083b8f85954841da3d2",
+  "fetched_at": "2026-08-24T18:34:37.258Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "BUS310"
+  ]
+}

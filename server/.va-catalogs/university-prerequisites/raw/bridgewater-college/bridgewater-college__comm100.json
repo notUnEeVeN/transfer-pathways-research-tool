@@ -1,0 +1,21 @@
+{
+  "route_id": "bridgewater-college__comm100",
+  "requested_url": "https://bridgewater.cleancatalog.io/communication-studies-theatre/comm100",
+  "final_url": "https://bridgewater.cleancatalog.io/communication-studies-theatre/comm100",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "byte_length": 11850,
+  "content_sha256": "73e74b97a585dc58a33b6443f1a9999d1fec2c2c9778ab5079591d5cbe962d71",
+  "fetched_at": "2026-08-24T19:11:47.872Z",
+  "robots": {
+    "url": "https://bridgewater.cleancatalog.io/robots.txt",
+    "http_status": 200,
+    "content_sha256": "418e112c89979b34678c945b45186d0cff4d829bcdc9d6d8437be76f50ef38f9",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "COMM100"
+  ]
+}

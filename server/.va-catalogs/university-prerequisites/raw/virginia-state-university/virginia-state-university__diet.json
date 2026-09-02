@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-state-university__diet",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/diet/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/diet/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 85686,
+  "content_sha256": "70eb8b30427b3a276cc4408cc9b86ce2b41150152a5c766c84af866b1bee777b",
+  "fetched_at": "2026-08-24T18:04:02.750Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "DIET101"
+  ]
+}

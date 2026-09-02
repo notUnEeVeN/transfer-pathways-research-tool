@@ -1,0 +1,21 @@
+{
+  "route_id": "bridgewater-college__cl100",
+  "requested_url": "https://bridgewater.cleancatalog.io/connected-learning-curriculum/cl100",
+  "final_url": "https://bridgewater.cleancatalog.io/connected-learning-curriculum/cl100",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "byte_length": 11962,
+  "content_sha256": "739d5c92f1b9601f5b3f7126a4c3282bba18e32b11a7bcd16855393327f1b529",
+  "fetched_at": "2026-08-24T19:11:43.688Z",
+  "robots": {
+    "url": "https://bridgewater.cleancatalog.io/robots.txt",
+    "http_status": 200,
+    "content_sha256": "418e112c89979b34678c945b45186d0cff4d829bcdc9d6d8437be76f50ef38f9",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CL100"
+  ]
+}

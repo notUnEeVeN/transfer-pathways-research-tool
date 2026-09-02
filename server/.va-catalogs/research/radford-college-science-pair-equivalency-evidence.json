@@ -1,0 +1,1512 @@
+{
+  "schema_version": 1,
+  "artifact": "radford_college_specific_science_pair_equivalency_evidence",
+  "generated_on": "2026-08-24",
+  "institution": {
+    "name": "Radford University",
+    "slug": "radford-university",
+    "school_id": 9219
+  },
+  "catalog_year": "2026-2027",
+  "purpose": "College-specific Transfer Virginia receipts for exact science pairs present in accepted A.S. trees or admitted by a separately proved source-bound destination/open-category carrier. Statewide common-course identity and offered_by membership are discovery evidence only; they cannot make a receipt positive or create curriculum capacity.",
+  "verified": true,
+  "issues": [],
+  "target_count": 34,
+  "positive_receipts": 34,
+  "negative_receipts": 0,
+  "discoveries": {
+    "CHM111": {
+      "sending_code": "CHM111",
+      "root_source_institution": "Blue Ridge Community College",
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48075,
+        "response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976"
+      },
+      "discovered_two_year_renderings": 22
+    },
+    "CHM112": {
+      "sending_code": "CHM112",
+      "root_source_institution": "Blue Ridge Community College",
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48149,
+        "response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5"
+      },
+      "discovered_two_year_renderings": 22
+    },
+    "PHY201": {
+      "sending_code": "PHY201",
+      "root_source_institution": "Blue Ridge Community College",
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D3A19A611F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D3A19A611F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48068,
+        "response_sha256": "b1eef4e2eeec372ab7148eafa132db306d278b9a000980b8a1c84b4a5a3d0b22"
+      },
+      "discovered_two_year_renderings": 22
+    },
+    "PHY202": {
+      "sending_code": "PHY202",
+      "root_source_institution": "Blue Ridge Community College",
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D3A19B281F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D3A19B281F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48140,
+        "response_sha256": "69b5240c6e7f2e0678d059244d1e51809ef4ee5d9ffc6ffef66ddac64e90e005"
+      },
+      "discovered_two_year_renderings": 22
+    }
+  },
+  "robots": {
+    "url": "https://www.transfervirginia.org/robots.txt",
+    "http_status": 200,
+    "response_bytes": 2189,
+    "response_sha256": "278e83bcf567badfebcdea4d5d20ca9898e4449fe4eb2e3b5a08227b4ca9b762",
+    "crawl_delay_seconds": 10,
+    "policy_paths_allowed": true
+  },
+  "receipts": [
+    {
+      "college_slug": "blue-ridge-community-college",
+      "source_institution": "Blue Ridge Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "kind": "root_page",
+          "source_institution": "Blue Ridge Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "source",
+          "guid": "D37A4B681F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48075,
+        "response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976"
+      }
+    },
+    {
+      "college_slug": "blue-ridge-community-college",
+      "source_institution": "Blue Ridge Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "kind": "root_page",
+          "source_institution": "Blue Ridge Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "source",
+          "guid": "D37A4BA11F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48149,
+        "response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5"
+      }
+    },
+    {
+      "college_slug": "brightpoint-community-college",
+      "source_institution": "Brightpoint Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Brightpoint Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "F227A5F21F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/F227A5F21F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/F227A5F21F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/F227A5F21F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48076,
+        "response_sha256": "a3b59fad3c3f3dd05bf3d48b2bb466e21b7212f5dcf12b6986fbdf9378694994"
+      }
+    },
+    {
+      "college_slug": "brightpoint-community-college",
+      "source_institution": "Brightpoint Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Brightpoint Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "F227A6B71F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/F227A6B71F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/F227A6B71F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/F227A6B71F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48161,
+        "response_sha256": "304b9e32111a99990e92011ac80bfd90ca78ffde0ca6e91d591427a1b35d68eb"
+      }
+    },
+    {
+      "college_slug": "central-virginia-community-college",
+      "source_institution": "Central Virginia Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Central Virginia Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "D710CF331F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/D710CF331F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D710CF331F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D710CF331F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48081,
+        "response_sha256": "0ca877b0061bcb34d786b44787e31a58b75f5653092c58b42c515c84d913d3c9"
+      }
+    },
+    {
+      "college_slug": "central-virginia-community-college",
+      "source_institution": "Central Virginia Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Central Virginia Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "D710CF7C1F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/D710CF7C1F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D710CF7C1F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D710CF7C1F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48166,
+        "response_sha256": "e369d708094dfbd5ffa86e8966ffe84b878f6f3700b939141e1bb37be4ecc1ab"
+      }
+    },
+    {
+      "college_slug": "germanna-community-college",
+      "source_institution": "Germanna Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Germanna Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "EA2940431F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/EA2940431F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/EA2940431F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/EA2940431F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 53897,
+        "response_sha256": "e0c9853818e7b99cb0bd7a71fadd01057a76c23ac7966074f677e48ac6a26e25"
+      }
+    },
+    {
+      "college_slug": "germanna-community-college",
+      "source_institution": "Germanna Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Germanna Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "EA29411E1F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/EA29411E1F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/EA29411E1F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/EA29411E1F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 53785,
+        "response_sha256": "75a7944ad3f2e0c1c1ce94ae9d6d9e35f6683a84f7dc56378dda40f658b60c17"
+      }
+    },
+    {
+      "college_slug": "j-sargeant-reynolds-community-college",
+      "source_institution": "J Sargeant Reynolds Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "J Sargeant Reynolds Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "EFB2B1001F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/EFB2B1001F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/EFB2B1001F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/EFB2B1001F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52646,
+        "response_sha256": "ca3301a1b3295280c72e665e2bd6e72ff1484b969529055a6977330d1e4b2b25"
+      }
+    },
+    {
+      "college_slug": "j-sargeant-reynolds-community-college",
+      "source_institution": "J Sargeant Reynolds Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "J Sargeant Reynolds Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "EFB2B1541F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/EFB2B1541F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/EFB2B1541F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/EFB2B1541F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48169,
+        "response_sha256": "93a19a37ed699b9a7d608bdaf82d311275999e495f15e08fa9c91b86c82e2ef9"
+      }
+    },
+    {
+      "college_slug": "laurel-ridge-community-college",
+      "source_institution": "Laurel Ridge Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Laurel Ridge Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "F3FCB9DB1F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/F3FCB9DB1F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/F3FCB9DB1F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/F3FCB9DB1F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52628,
+        "response_sha256": "1bde0a2ab10fbac0d1c1946f558b2e55c1ac58414d97a430c8cd1f0bf257d582"
+      }
+    },
+    {
+      "college_slug": "laurel-ridge-community-college",
+      "source_institution": "Laurel Ridge Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Laurel Ridge Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "F3FCBA4B1F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/F3FCBA4B1F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/F3FCBA4B1F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/F3FCBA4B1F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52713,
+        "response_sha256": "80eb4275bc0705ec0bf068137ec7b0ac536f1938c07116386587fc4155520866"
+      }
+    },
+    {
+      "college_slug": "mountain-gateway-community-college",
+      "source_institution": "Mountain Gateway Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Mountain Gateway Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "D9F6FD9A1F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/D9F6FD9A1F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D9F6FD9A1F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D9F6FD9A1F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 53365,
+        "response_sha256": "ddf595ef0160524a50ed9b44342961a148a8afc3c16e7a48207557f183f53e3f"
+      }
+    },
+    {
+      "college_slug": "mountain-gateway-community-college",
+      "source_institution": "Mountain Gateway Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Mountain Gateway Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "D9F6FDFD1F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/D9F6FDFD1F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/D9F6FDFD1F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/D9F6FDFD1F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 53450,
+        "response_sha256": "e4a1ae547a3a54148679c46508ec5972cccfe014e362a7c512b639337b756350"
+      }
+    },
+    {
+      "college_slug": "new-river-community-college",
+      "source_institution": "New River Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "New River Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "F836F6AF1F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/F836F6AF1F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/F836F6AF1F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/F836F6AF1F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52636,
+        "response_sha256": "c9a5df2e96ba2991b9902498957de16ffe758c31286b72ff934833850b2406f0"
+      }
+    },
+    {
+      "college_slug": "new-river-community-college",
+      "source_institution": "New River Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "New River Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "F836F7971F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/F836F7971F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/F836F7971F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/F836F7971F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52721,
+        "response_sha256": "8db6800b548ce89988677146e1275ad065d9966cf590e16055b16ced845b4bcc"
+      }
+    },
+    {
+      "college_slug": "northern-virginia-community-college",
+      "source_institution": "Northern Virginia Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Northern Virginia Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "FB172D3E1F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/FB172D3E1F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/FB172D3E1F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/FB172D3E1F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48242,
+        "response_sha256": "d7a6c990c3128f214b0a4d2295c7d89d3c9286829e88566802758cf49a5d42d8"
+      }
+    },
+    {
+      "college_slug": "northern-virginia-community-college",
+      "source_institution": "Northern Virginia Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Northern Virginia Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "FB172D7B1F9411F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/FB172D7B1F9411F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/FB172D7B1F9411F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/FB172D7B1F9411F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48328,
+        "response_sha256": "8aab063cfc06fb8baf2b0881c3173da99a9d7cda3491ccfa59ed2b8ae0cb792e"
+      }
+    },
+    {
+      "college_slug": "paul-d-camp-community-college",
+      "source_institution": "Paul D. Camp Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Paul D. Camp Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": "Courses which are determined to have outdated information and whose acceptance would not assure the student of having current skills may not be granted equivalency credit.",
+          "level": "2-Year",
+          "guid": "036278781F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/036278781F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/036278781F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/036278781F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52477,
+        "response_sha256": "99862a5c6e629856b753eefc1613e66ffda7c60dcb88ad0df0c8895872ae30dd"
+      }
+    },
+    {
+      "college_slug": "paul-d-camp-community-college",
+      "source_institution": "Paul D. Camp Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Paul D. Camp Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": "Courses which are determined to have outdated information and whose acceptance would not assure the student of having current skills may not be granted equivalency credit.",
+          "level": "2-Year",
+          "guid": "036279241F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/036279241F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/036279241F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/036279241F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48000,
+        "response_sha256": "9c9f64c0c6e71808e0d157ef33fa46f855f831d1c08baa4e9e18e4f0126d0dc0"
+      }
+    },
+    {
+      "college_slug": "piedmont-virginia-community-college",
+      "source_institution": "Piedmont Virginia Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Piedmont Virginia Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "070AD5131F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/070AD5131F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/070AD5131F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/070AD5131F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 53372,
+        "response_sha256": "cad0a1cd08e09305a022f7a7e2e0a1588baa411c731549ee21ab57356b2962c7"
+      }
+    },
+    {
+      "college_slug": "piedmont-virginia-community-college",
+      "source_institution": "Piedmont Virginia Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Piedmont Virginia Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "070AD5501F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/070AD5501F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/070AD5501F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/070AD5501F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 53472,
+        "response_sha256": "9b3782f7be4fb40e14b7be106a54067564a5b4e7bec6658d233d628772462808"
+      }
+    },
+    {
+      "college_slug": "rappahannock-community-college",
+      "source_institution": "Rappahannock Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Rappahannock Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "096041971F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/096041971F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/096041971F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/096041971F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52628,
+        "response_sha256": "34b833daf0c2b8bc5240175c16d9b7192492f122cff864ede138fc017fa26ee3"
+      }
+    },
+    {
+      "college_slug": "rappahannock-community-college",
+      "source_institution": "Rappahannock Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Rappahannock Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "096042631F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/096042631F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/096042631F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/096042631F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52713,
+        "response_sha256": "3b23855a62c3b5899a6332f1d51db7b384ee23e8d0175450d51980e1dc9c8af0"
+      }
+    },
+    {
+      "college_slug": "tidewater-community-college",
+      "source_institution": "Tidewater Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Tidewater Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "13165B2D1F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/13165B2D1F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/13165B2D1F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/13165B2D1F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52592,
+        "response_sha256": "8f483235c6351f84733c80eca4113b566b0086143509af5283234489b0ebb2d3"
+      }
+    },
+    {
+      "college_slug": "tidewater-community-college",
+      "source_institution": "Tidewater Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Tidewater Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "13165B6C1F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/13165B6C1F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/13165B6C1F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/13165B6C1F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52677,
+        "response_sha256": "d9bfc6a84cb269987412babcb039743570341da0e03d0b8e02e98b66b1af604d"
+      }
+    },
+    {
+      "college_slug": "virginia-highlands-community-college",
+      "source_institution": "Virginia Highlands Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Virginia Highlands Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "1A40C2921F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/1A40C2921F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/1A40C2921F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/1A40C2921F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52645,
+        "response_sha256": "6d94b249e529d9f611b51d0fc735bef06acc69b47870d690941e853a90789af9"
+      }
+    },
+    {
+      "college_slug": "virginia-highlands-community-college",
+      "source_institution": "Virginia Highlands Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Virginia Highlands Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "1A40C4291F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/1A40C4291F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/1A40C4291F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/1A40C4291F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52719,
+        "response_sha256": "e2cf6b4e58212647e169cf3d0b831ffadd3b89888c4dd9544d42e1b89956084e"
+      }
+    },
+    {
+      "college_slug": "virginia-peninsula-community-college",
+      "source_institution": "Virginia Peninsula Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Virginia Peninsula Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "10B711671F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/10B711671F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/10B711671F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/10B711671F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52645,
+        "response_sha256": "a416a7578fe768482a24b6532ddf9d1917c8f107b2d4e99cf6f0159d9d97db5e"
+      }
+    },
+    {
+      "college_slug": "virginia-peninsula-community-college",
+      "source_institution": "Virginia Peninsula Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Virginia Peninsula Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "10B712F81F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/10B712F81F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/10B712F81F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/10B712F81F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52730,
+        "response_sha256": "64bd5a21982403c7024f684a31e35036aa93db451c173efecda7c62b26cd4c76"
+      }
+    },
+    {
+      "college_slug": "virginia-western-community-college",
+      "source_institution": "Virginia Western Community College",
+      "sending_code": "CHM111",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4B681F9411F082AC0242AC15010A",
+        "source_response_sha256": "5e42f0283b9be3f5348f8ca8fa503e01c79ef0c33d37c10fbb49b045bccde976",
+        "route": {
+          "source_institution": "Virginia Western Community College",
+          "sending_code": "CHM111",
+          "sending_title": "General Chemistry I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "1E1EE3B31F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/1E1EE3B31F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM111",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM111",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/1E1EE3B31F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/1E1EE3B31F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52632,
+        "response_sha256": "0b8fd05ee67c3f35d89dae81cf430e4cf3511b32b1634eec82160635d9131969"
+      }
+    },
+    {
+      "college_slug": "virginia-western-community-college",
+      "source_institution": "Virginia Western Community College",
+      "sending_code": "CHM112",
+      "sending_credits": 4,
+      "expected_receiving_code": "CHEM112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D37A4BA11F9411F082AC0242AC15010A",
+        "source_response_sha256": "a2d1628420c4843f263b910b9dfdd19f9cfa9d86a15af6709704b0faa2eeeef5",
+        "route": {
+          "source_institution": "Virginia Western Community College",
+          "sending_code": "CHM112",
+          "sending_title": "General Chemistry II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "1E1EE47E1F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/1E1EE47E1F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "CHEM112",
+      "receiving_name": "N/A",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "CHEM112",
+          "receiving_name": "N/A",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/1E1EE47E1F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/1E1EE47E1F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 52728,
+        "response_sha256": "eb36181e9d07a1066050985d6fcf9b8c1dfdec3db0490cc233285ce759840999"
+      }
+    },
+    {
+      "college_slug": "wytheville-community-college",
+      "source_institution": "Wytheville Community College",
+      "sending_code": "PHY201",
+      "sending_credits": 4,
+      "expected_receiving_code": "PHYS111",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D3A19A611F9411F082AC0242AC15010A",
+        "source_response_sha256": "b1eef4e2eeec372ab7148eafa132db306d278b9a000980b8a1c84b4a5a3d0b22",
+        "route": {
+          "source_institution": "Wytheville Community College",
+          "sending_code": "PHY201",
+          "sending_title": "General College Physics I",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "2112C61D1F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/2112C61D1F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "PHYS111",
+      "receiving_name": "General Physics",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "PHYS111",
+          "receiving_name": "General Physics",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/2112C61D1F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/2112C61D1F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48092,
+        "response_sha256": "39edac6885a9f5a4d5c5e47cd7c0095f5ad59fb138ff69443cd3c06ec431e3f9"
+      }
+    },
+    {
+      "college_slug": "wytheville-community-college",
+      "source_institution": "Wytheville Community College",
+      "sending_code": "PHY202",
+      "sending_credits": 4,
+      "expected_receiving_code": "PHYS112",
+      "discovery": {
+        "source_url": "https://www.transfervirginia.org/course/D3A19B281F9411F082AC0242AC15010A",
+        "source_response_sha256": "69b5240c6e7f2e0678d059244d1e51809ef4ee5d9ffc6ffef66ddac64e90e005",
+        "route": {
+          "source_institution": "Wytheville Community College",
+          "sending_code": "PHY202",
+          "sending_title": "General College Physics II",
+          "notes": null,
+          "level": "2-Year",
+          "guid": "2112C6611F9511F082AC0242AC15010A",
+          "url": "https://www.transfervirginia.org/course/2112C6611F9511F082AC0242AC15010A"
+        }
+      },
+      "status": "positive",
+      "reason": null,
+      "receiving_institution": "Radford University",
+      "receiving_code": "PHYS112",
+      "receiving_name": "General Physics",
+      "receiving_notes": null,
+      "observed_radford_edges": [
+        {
+          "receiving_institution": "Radford University",
+          "receiving_code": "PHYS112",
+          "receiving_name": "General Physics",
+          "receiving_notes": null
+        }
+      ],
+      "source": {
+        "requested_url": "https://www.transfervirginia.org/course/2112C6611F9511F082AC0242AC15010A",
+        "final_url": "https://www.transfervirginia.org/course/2112C6611F9511F082AC0242AC15010A",
+        "http_status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "response_bytes": 48164,
+        "response_sha256": "a437eac0410d2060b8253a72021670a6a3e66bd90c9c5714ccfbdf6df99c6702"
+      }
+    }
+  ],
+  "receipts_sha256": "459414663149698f76c29e695c17e34cafc3ccbb533bae3f2054809c43fea27a"
+}

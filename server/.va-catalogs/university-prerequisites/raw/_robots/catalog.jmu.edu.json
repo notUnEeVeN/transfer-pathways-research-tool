@@ -1,0 +1,9 @@
+{
+  "requested_url": "https://catalog.jmu.edu/robots.txt",
+  "final_url": "https://catalog.jmu.edu/robots.txt",
+  "http_status": 202,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 2431,
+  "content_sha256": "91120a84c3e6750ca23d253d3c77d5df1faef36e781c3ea6884bdbdce51cde74",
+  "fetched_at": "2026-08-24T21:44:49.666Z"
+}

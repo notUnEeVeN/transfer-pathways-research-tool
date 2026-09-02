@@ -1,0 +1,21 @@
+{
+  "route_id": "randolph-macon-college__csci",
+  "requested_url": "https://catalog.rmc.edu/courses-az/csci/",
+  "final_url": "https://catalog.rmc.edu/courses-az/csci/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 75071,
+  "content_sha256": "69a52cffc501f52ae561a0febefb8cc74f2c330bcfa5645a9799d97aa29b5885",
+  "fetched_at": "2026-08-24T18:03:26.637Z",
+  "robots": {
+    "url": "https://catalog.rmc.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "f6305026d827feeb54fa3dee76e89fb169b56467844ba340d22366c95ef81349",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CSCI330"
+  ]
+}

@@ -1,0 +1,10 @@
+
+    User-agent: *
+    Disallow: /virtualorientation
+    Disallow: /lifeasacaptain
+        Disallow: /news/widgets
+    Disallow: /open-house-online
+    Disallow: /admission/niche
+            User-agent: *
+    Allow: /bookstore
+    

@@ -16,6 +16,11 @@
     "policy",
     "course_catalog"
   ],
+  "course_unit_evidence_artifact": {
+    "path": "research/vccs-missing-course-units.json",
+    "sha256": "bfdb38f32b48b05c088a0a7704e1d34bb19aa286ce764659d9d166ce7bcff732",
+    "source_refs": ["course_catalog"]
+  },
   "option_sets": {
     "history": {
       "source_refs": [

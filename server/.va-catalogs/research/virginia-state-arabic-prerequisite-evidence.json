@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "artifact": "virginia_state_arabic_prerequisite_evidence",
+  "generated_on": "2026-08-24",
+  "institution": {
+    "name": "Virginia State University",
+    "slug": "virginia-state-university",
+    "school_id": 9231,
+    "owner_namespace": "va:uni:9231"
+  },
+  "purpose": "Resolve the four direct-missing Arabic prerequisite targets from the complete current Languages and Literature catalog page without treating an omitted marker as no prerequisite.",
+  "verified": true,
+  "issues": [],
+  "source": {
+    "requested_url": "https://catalog.vsu.edu/undergraduate/college-humanities-social-sciences/department-languages-literature/",
+    "final_url": "https://catalog.vsu.edu/undergraduate/college-humanities-social-sciences/department-languages-literature/",
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "response_bytes": 200845,
+    "response_sha256": "f935d7746101b1fd4bdff0aac5518da394b3381ade71b2790e9bd8dd8a17ce4e",
+    "document_title": "Department of Languages and Literature | Virginia State University Catalog",
+    "catalog_label": "2026-2027 Academic Catalog Homepage",
+    "arabic_section_courseblock_count": 4,
+    "arabic_section_html_sha256": "7c28df9d42a5c485ec92b190399f81f02fbf475b3ae35cd9229c1c25f7c0d255"
+  },
+  "robots": {
+    "requested_url": "https://catalog.vsu.edu/robots.txt",
+    "final_url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_type": "text/plain; charset=UTF-8",
+    "response_bytes": 648,
+    "response_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "department_path_allowed": true
+  },
+  "facts": {
+    "catalog_year": "2026-2027",
+    "boundary_contract": "vsu_2026_2027_languages_department_unique_arabic_section_courseblock_v1",
+    "target_course_codes": [
+      "ARAB110",
+      "ARAB111",
+      "ARAB212",
+      "ARAB213"
+    ],
+    "entries": [
+      {
+        "course_code": "ARAB110",
+        "owner_namespace": "va:uni:9231",
+        "heading_text": "ARAB 110. Elementary Arabic I. (3 Credits)",
+        "title": "Elementary Arabic I",
+        "published_units": {
+          "kind": "published_fixed_credits",
+          "notation": "3 Credits",
+          "credit_hours_min": 3,
+          "credit_hours_max": 3
+        },
+        "raw_entry_text": "ARAB 110. Elementary Arabic I. (3 Credits)\nPronunciation, explanations, and drill in basic structures, easy readings, dictations and daily oral practice; open to those students presenting no admission credit in Arabic. .",
+        "raw_entry_sha256": "2735b63b627e9f8c858c052654bcbe4f22878f8fcf453f16f52e9e6939063e25",
+        "raw_entry_html_sha256": "eaf15f841b76aac90fa2d33adf8f5ec682ffab50c7287069e5203ed9d2610250",
+        "formal_prerequisite_marker_count": 0,
+        "required_requisite_clause": null,
+        "enrollment_restriction": {
+          "receipt_contract": "vsu_exact_complete_description_admission_credit_restriction_v1",
+          "raw": "open to those students presenting no admission credit in Arabic",
+          "raw_sha256": "5032bde1746cae8621a89b35986c659f64f708f24a95ae71c3088205b7fb0fe4",
+          "relative_start": 154,
+          "relative_end": 217,
+          "kind": "enrollment_restriction",
+          "restriction_type": "prior_admission_credit",
+          "subject": "Arabic",
+          "admission_credit_allowed": false
+        },
+        "catalog_silence_inferred_as_no_prerequisite": false,
+        "semantic_prerequisite": {
+          "status": "parsed_non_course_enrollment_restriction",
+          "formula": "paths_or__conditions_and",
+          "paths": [
+            {
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "no_admission_credit_in_arabic",
+                  "admission_credit_subject": "Arabic",
+                  "admission_credit_allowed": false,
+                  "raw": "open to those students presenting no admission credit in Arabic"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "course_code": "ARAB111",
+        "owner_namespace": "va:uni:9231",
+        "heading_text": "ARAB 111. Elementary Arabic II. (3 Credits)",
+        "title": "Elementary Arabic II",
+        "published_units": {
+          "kind": "published_fixed_credits",
+          "notation": "3 Credits",
+          "credit_hours_min": 3,
+          "credit_hours_max": 3
+        },
+        "raw_entry_text": "ARAB 111. Elementary Arabic II. (3 Credits)\nSupplementary course to Arabic 110; continued pronunciation, explanations, and drill in basic structures, dictations and oral practice. Prerequisite: ARAB 110 or its equivalent.",
+        "raw_entry_sha256": "c6529a6a1bbfaf94877b8d974977009f257adae0010d43521c069676ad0a55af",
+        "raw_entry_html_sha256": "f482fa93fd8f5a97fc52a8d536bb75429b25ce352eb166f18fe73e6fa362076f",
+        "formal_prerequisite_marker_count": 1,
+        "required_requisite_clause": {
+          "receipt_contract": "vsu_exact_complete_description_formal_prerequisite_suffix_v1",
+          "raw": "ARAB 110 or its equivalent",
+          "raw_sha256": "7f52022bf75b1bfb54c9326f467596bc2c7933c0167cb31c2134086a785226cd",
+          "relative_start": 194,
+          "relative_end": 220,
+          "kind": "prerequisite",
+          "label": "Prerequisite",
+          "statement_relative_start": 180,
+          "statement_relative_end": 221
+        },
+        "enrollment_restriction": null,
+        "catalog_silence_inferred_as_no_prerequisite": false,
+        "semantic_prerequisite": {
+          "status": "parsed",
+          "formula": "paths_or__conditions_and",
+          "paths": [
+            {
+              "all_of": [
+                {
+                  "type": "course",
+                  "code": "ARAB110",
+                  "course_key": "va:uni:9231:ARAB110",
+                  "raw": "ARAB 110"
+                }
+              ]
+            },
+            {
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "equivalent_to_arab110",
+                  "equivalent_to_course_code": "ARAB110",
+                  "raw": "its equivalent"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "course_code": "ARAB212",
+        "owner_namespace": "va:uni:9231",
+        "heading_text": "ARAB 212. Intermediate Arabic I. (3 Credits)",
+        "title": "Intermediate Arabic I",
+        "published_units": {
+          "kind": "published_fixed_credits",
+          "notation": "3 Credits",
+          "credit_hours_min": 3,
+          "credit_hours_max": 3
+        },
+        "raw_entry_text": "ARAB 212. Intermediate Arabic I. (3 Credits)\nReview of grammar, reading of moderately difficult prose, practice in oral Arabic, and work in written composition. Prerequisite: ARAB 111 or its equivalent.",
+        "raw_entry_sha256": "1c9dd1f299311685c0624a22d42cbd2df2b101b5bdbe66d11a7443191d94d6ac",
+        "raw_entry_html_sha256": "02310ca11c0a2336b3e39e155cf791a67251739bb3cdd4025f1146f2a0b0f788",
+        "formal_prerequisite_marker_count": 1,
+        "required_requisite_clause": {
+          "receipt_contract": "vsu_exact_complete_description_formal_prerequisite_suffix_v1",
+          "raw": "ARAB 111 or its equivalent",
+          "raw_sha256": "1f02bc36e74e7e9f97c8942b909744f3fbd364944b5b779f5b2b083ade899df3",
+          "relative_start": 175,
+          "relative_end": 201,
+          "kind": "prerequisite",
+          "label": "Prerequisite",
+          "statement_relative_start": 161,
+          "statement_relative_end": 202
+        },
+        "enrollment_restriction": null,
+        "catalog_silence_inferred_as_no_prerequisite": false,
+        "semantic_prerequisite": {
+          "status": "parsed",
+          "formula": "paths_or__conditions_and",
+          "paths": [
+            {
+              "all_of": [
+                {
+                  "type": "course",
+                  "code": "ARAB111",
+                  "course_key": "va:uni:9231:ARAB111",
+                  "raw": "ARAB 111"
+                }
+              ]
+            },
+            {
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "equivalent_to_arab111",
+                  "equivalent_to_course_code": "ARAB111",
+                  "raw": "its equivalent"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "course_code": "ARAB213",
+        "owner_namespace": "va:uni:9231",
+        "heading_text": "ARAB 213. Intermediate Arabic II. (3 Credits)",
+        "title": "Intermediate Arabic II",
+        "published_units": {
+          "kind": "published_fixed_credits",
+          "notation": "3 Credits",
+          "credit_hours_min": 3,
+          "credit_hours_max": 3
+        },
+        "raw_entry_text": "ARAB 213. Intermediate Arabic II. (3 Credits)\nReview of grammar, continued practiced in pronunciation and conversation, and reading of moderately difficult prose. Prerequisite: ARAB 212 or its equivalent.",
+        "raw_entry_sha256": "13a614ea581ef56903bcf541ab610f0db9ca88da4f64bec9d86debb90d1f0609",
+        "raw_entry_html_sha256": "30a527ff1232ce43c2997b4b773707205b47a2152901d397bc7d98637096952d",
+        "formal_prerequisite_marker_count": 1,
+        "required_requisite_clause": {
+          "receipt_contract": "vsu_exact_complete_description_formal_prerequisite_suffix_v1",
+          "raw": "ARAB 212 or its equivalent",
+          "raw_sha256": "3562046d0231e69a63792959ce33670fc25bf79d3724f7ab62de33d0611e2ba2",
+          "relative_start": 177,
+          "relative_end": 203,
+          "kind": "prerequisite",
+          "label": "Prerequisite",
+          "statement_relative_start": 163,
+          "statement_relative_end": 204
+        },
+        "enrollment_restriction": null,
+        "catalog_silence_inferred_as_no_prerequisite": false,
+        "semantic_prerequisite": {
+          "status": "parsed",
+          "formula": "paths_or__conditions_and",
+          "paths": [
+            {
+              "all_of": [
+                {
+                  "type": "course",
+                  "code": "ARAB212",
+                  "course_key": "va:uni:9231:ARAB212",
+                  "raw": "ARAB 212"
+                }
+              ]
+            },
+            {
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "equivalent_to_arab212",
+                  "equivalent_to_course_code": "ARAB212",
+                  "raw": "its equivalent"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "facts_sha256": "ac2eb81ada0407d06481d3b77941dd766077ac38d2fc95e9e5a4342d5930ecea",
+  "disposition": {
+    "resolved_course_codes": [
+      "ARAB110",
+      "ARAB111",
+      "ARAB212",
+      "ARAB213"
+    ],
+    "unresolved_course_codes": [],
+    "formal_course_prerequisite_codes": [
+      "ARAB111",
+      "ARAB212",
+      "ARAB213"
+    ],
+    "preserved_non_course_restriction_codes": [
+      "ARAB110"
+    ],
+    "equivalent_alternatives_preserved": true
+  }
+}

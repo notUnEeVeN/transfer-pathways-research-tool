@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-24T23:52:46.736Z",
+  "user_agent": "pmt-research-import/0.1 (+transfer pathways research; contact via repo owner)",
+  "robots_url": "https://www.vmi.edu/robots.txt",
+  "robots_sha256": "2b9c5c3e93c371d87ce6f3f695f72362326a0896b6fc4f87fe1e0221cf200f11",
+  "robots_status": 200,
+  "registrar_url": "https://www.vmi.edu/academics/academic-support-services/registrar/",
+  "registrar_final_url": "https://www.vmi.edu/academics/academic-support-services/registrar/",
+  "registrar_sha256": "64f82bc4b52a4b840995f09449f07438804b367b58f51c59d793cc4ba35fe152",
+  "registrar_bytes": 187719,
+  "registrar_status": 200,
+  "pdf_url": "https://www.vmi.edu/wp-content/uploads/2026/06/2025-2026_VMICatalog-SizedforWeb.pdf",
+  "pdf_final_url": "https://www.vmi.edu/wp-content/uploads/2026/06/2025-2026_VMICatalog-SizedforWeb.pdf",
+  "pdf_sha256": "244f93ee26e73f8639512bfa7b5e383af3d196ab5c02f4559d20628066390c32",
+  "pdf_bytes": 10270130,
+  "pdf_status": 200,
+  "pdf_content_type": "application/pdf",
+  "page_ranges": [
+    [
+      42,
+      42
+    ],
+    [
+      132,
+      134
+    ],
+    [
+      233,
+      233
+    ],
+    [
+      243,
+      243
+    ]
+  ],
+  "extractor": "pdftotext version 26.04.0",
+  "bounded_page_text_sha256": "a1e0d504f1beed7544e5cd10c75c7382fe60c26e02b524867a722d8fc8b611c9",
+  "bounded_page_text_bytes": 11713
+}

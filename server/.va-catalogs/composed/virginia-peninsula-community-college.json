@@ -22,6 +22,11 @@
     "graduation",
     "course_catalog"
   ],
+  "course_unit_evidence_artifact": {
+    "path": "research/vccs-missing-course-units.json",
+    "sha256": "bfdb38f32b48b05c088a0a7704e1d34bb19aa286ce764659d9d166ce7bcff732",
+    "source_refs": ["course_catalog"]
+  },
   "course_titles": {
     "SDV100": "College Success Skills",
     "ENG111": "College Composition I",
@@ -213,7 +218,13 @@
       "analysis_constraints": [
         {
           "kind": "distinct_categories_across_sections",
-          "status": "evaluator_not_implemented",
+          "status": "supported",
+          "minimum_distinct_categories": 2,
+          "category_subjects": {
+            "arts": ["ART", "CST", "MUS"],
+            "humanities": ["HUM", "PHI", "REL"],
+            "literature": ["ENG"]
+          },
           "description": "The two selections must come from different UCGS categories, not merely be different course numbers."
         }
       ],

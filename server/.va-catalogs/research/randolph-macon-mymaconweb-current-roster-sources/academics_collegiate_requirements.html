@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta http-equiv="X-UA-Compatible" content="IE=EDGE" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" /><title>
+	Collegiate Requirements - Main View | Home | MyMaconWeb | MyMaconWeb
+</title><base href="https://mymaconweb.rmc.edu/ICS/">
+<script type="text/javascript">
+    window.jenzabar = {};
+    jenzabar.userSettings = {
+        culture:    'en-US',
+        language:   'en',
+        dateFormat: 'm/d/yy'
+    };
+    window.userSettings = jenzabar.userSettings;
+
+    jenzabar.jicsVersion = {
+        text: {
+	        version: '?v=' + '2026.1.0.2'
+        }
+    }
+    jenzabar.siteSettings = {
+        textEditorSettings: {
+            customAudioMinutesLimit: 5,
+            customVideoMinutesLimit: 5
+        },
+        text: {
+            more: 'More'
+        }
+    };
+</script>
+
+<!-- BEGIN Html Head Elements -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.3.0"></script>
+<link rel="stylesheet" type="text/css" href="/ICS/UI/Common/Styles/jQuery/jquery-ui.custom.css" />
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<script type="text/javascript" src="portlets/cus/ics/BCProxyLogin/Scripts/ProxyLogin.js"></script>
+			<link type="text/css" rel="stylesheet" href="portlets/cus/ics/BCProxyLogin/Styles/ProxyLoginStyles.css" />
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/signalr.js/2.4.3/jquery.signalR.min.js?v=2026.1.0.2"></script>
+<script type="text/javascript" src="/ICS/signalr/hubs?v=2026.1.0.2"></script>
+<!-- END Html Head Elements -->
+
+<link href="/ICS/UI/Common/Styles/css/site-bundle.css?v=zA8oHtllLoc6lqHHLvtXlVnTaGp6Itc4Y33WyvJvx241" rel="stylesheet"/>
+
+
+
+<link rel="stylesheet" type="text/css" media="print" href="/ICS/UI/Common/Styles/print.css" />
+
+
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/jcsfl.js"></script>
+<script src="/ICS/UI/Common/Scripts/site-bundle.js?v=zFL0EX8MV2e-edYNRN2i8pJQVZB2x25fvSfp_-2ACvE1"></script>
+
+
+<!-- BEGIN Html Head Elements After JICS JS Framework -->
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/SignalRManager.js?v=2026.1.0.2"></script>
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/LayoutManager.js?v=2026.1.0.2"></script>
+<!-- END Html Head Elements After JICS JS Framework -->
+
+<script type="text/javascript" src="/ICS/UI/Common/Scripts/Globalization.js.aspx?id=4bdd8481e55346f288b569748db29904-600fdc0e94ee4254876793ad6e7c0888-8659790fcae44454aaf16f2d28a1f36b"></script>
+<!--[if IE]>
+<style type="text/css" media="all">@import url( UI/Common/Styles/IEOnly.css );</style>
+<script type="text/javascript" language="JavaScript" src="UI/Common/Scripts/IEOnly.js"></SCRIPT>
+<![endif]-->
+<script type="text/javascript">
+    window.Portal =
+    {
+        url: 'https://mymaconweb.rmc.edu/ICS/',
+        uid: null,
+    };
+</script>
+
+
+<script type="text/javascript">
+    $.extend(window.Portal,{
+        timeout: 30,
+        SessionMonitor: JCSL.JICS.get_session_monitor()
+        
+    });
+</script>
+
+<script type="text/javascript">
+    jQuery(function () {
+        jenzabar.framework.timeoutWarning.create(true);
+    });
+</script>
+<script type="text/javascript" language="javascript">
+
+    $.connection.portalHub.client.sendLoginWarning = function (userId) {
+        let id = "b0b00000-c542-4d2a-86e6-55ebbbcd85da";
+        if (id === userId) {
+            alert("Your username has been used to authenticate in another browser.  If you are not responsible for this login, your account may be compromised!  Contact an administrator for assistance.");
+        }
+    }
+
+</script><link rel="stylesheet" type="text/css" href="/ICS/UI/Themes/Indio/style.css?v=1&u=08%2f25%2f2026+09%3a00%3a07" />
+<script type="text/javascript" src="/ICS/UI/Themes/Indio/js/javascript.js?v=1"></script>
+
+<style id="customCssImport_custom" type="text/css" media="all">
+	@import url( /ICS/StaticPages/GetFile.aspx?target=be7884da-8f42-4016-b362-9c70b7f95a83);
+</style>
+<link rel="Shortcut Icon" href="favicon.ico" type="image/x-icon">
+<style id="customHead_custom" type="text/css" media="all">
+                @import url( /ICS/ClientConfig/HtmlContent/custom-bundle.css?v=);
+</style>
+<script type="text/javascript">
+ //<![CDATA[
+  jQuery(document).ready(function($){
+ 	$("div#header-tabs li").filter(function() {
+		return ($.trim($(this).text()) === "My Pages");
+		}).remove();
+  });
+ //]]>
+</script></head>
+<body onload="doLoad();" >
+	<div id="siteWrapper" class="custom-grid">
+		<form name="MAINFORM" method="post" action="/ICS/Academics/Home.jnz?portlet=Curriculum" id="MAINFORM" enctype="multipart/form-data" autocomplete="off">
+<input type="hidden" name="_scriptManager_HiddenField" id="_scriptManager_HiddenField" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+
+
+<script type="text/javascript">
+//<![CDATA[
+$(function() {jenzabar.framework.login.initializeForPossibleRedirect({continueButton: $('#siteNavBar_welcomeBackBarLoggedOut_JicsLoginRedirectContinue'),userNameSection: $('.init-user-username-section'),standardLoginFields: $('.init-user-password-section, .forgot-password-link, .init-user-login-btn'),userNameField: $('#userName'),passwordField: $('#password'),userLoginSection: $('#user-login-section'),simpleLoginButton: $('#jics-login-redirect-simple-button'),showStandardFieldsSection: $('#jics-login-show-standard-fields-section'),showStandardFieldsButton: $('#jics-login-show-standard-fields-button'),simpleLogin: $('.js-simple-login') },{"pleaseWaitForRedirect":"Please wait...","redirectModalTitle":"Login","checkingUserNameAccessibility":"Please wait for the login process to continue.","errorOccurred":"An unexpected error occurred during login. Try again, or contact an administrator for assistance."},null);});(function( pi, $) {pi.PageID = '';pi.DisplayName = '';pi.PageURL = '';pi.IsCustomizing ='';pi.IsShowingPortlet = '';}(window.PageInfo = window.PageInfo || {}, PageInfo));try {window.PageInfo.PageID = '5c9a5bd9-fd87-40b3-b61e-6f1de485836a';window.PageInfo.DisplayName = 'Home';window.PageInfo.PageURL = '/ICS/Academics/Home.jnz';window.PageInfo.IsCustomizing ='False';window.PageInfo.IsShowingPortlet = 'True';window.PageInfo.IsReadOnly = 'False';}catch(ex){ console.error(ex);}//]]>
+</script>
+
+<script src="/ICS/ScriptResource.axd?d=x6wALODbMJK5e0eRC_p1Ldpv0AHIroiAfbVUf8vzJ5UnYVHAteq0Jjl82oavguXEA2qedvKo8-k8iz2jbwEX-pj_z0wW-EMqp3h_iRNz48joALmMoqQCX7fVyhNEwxHV0&amp;t=245582f9" type="text/javascript"></script>
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="38ABEAAB" />
+			
+			<input name="___BrowserRefresh" type="hidden" id="___BrowserRefresh" value="fe7ada00-638f-49b3-aae0-70246088a39a" />
+			
+			<header>
+				<a href="#content" class="skip-navigation sr-only-focusable">Skip to content</a>
+				
+
+<div class="site-header-container">
+    <div class="mobile-fixed-container"></div>
+    <div id="sitemasthead">
+        <div>
+            
+                <button id="main-nav-btn" class="btn btn-no-bg-hover-color-content-one glyphicons glyphicons-menu-hamburger main-nav-btn" type="button" data-toggle="collapse" data-target="#hamburger-menu-section" aria-expanded="false" aria-controls="hamburger-menu-section"><span class="sr-only">main navigation</span></button>
+                <h1 id="logo-heading">
+<a class="site-logo-link" href=".">
+	<img class="site-logo" src="/ICS/icsfs/RMC_MyMaconWeb_Profile_wordmark.png?target=875f0947-a626-4e6d-b7c1-60d19ffa93b9" alt="MyMaconWeb logo, Go to home page"/>
+</a>
+</h1>
+<div id="welcomeBackBar" class="main-nav-submenu-container">
+	<div id="siteNavBar_welcomeBackBarLoggedOut_welcomeBackBarLoggedOut">
+		<button id="siteNavBar_welcomeBackBarLoggedOut_loginToggle" class="btn login-btn" type="button" data-toggle="collapse" data-target="#user-login-section" aria-expanded="false" aria-controls="user-login-section"><span>Login</span></button>
+		<div id="user-login-section" aria-label="Login" class="collapse user-login form-inline">
+			<div class="input-group init-user-username-section">
+				<span class="input-group-addon glyphicons glyphicons-user"></span>
+				<label id="siteNavBar_welcomeBackBarLoggedOut_UserNameLabel" for="userName" class="sr-only">Username</label>
+				<input type="text" name="userName" id="userName" placeholder="Username" class="form-control user-name" autocomplete="username" value="" />
+			</div>
+			<div class="input-group init-user-password-section">
+				<span class="input-group-addon glyphicons glyphicons-asterisk"></span>
+				<label id="siteNavBar_welcomeBackBarLoggedOut_PasswordLabel" for="password" class="sr-only">Password</label>
+				<input type="password" name="password" id="password" placeholder="Password" class="form-control user-password" autocomplete="off" />
+			</div>
+			<input type="submit" name="siteNavBar$welcomeBackBarLoggedOut$ButtonLogin" value="Login" id="siteNavBar_welcomeBackBarLoggedOut_ButtonLogin" class="btn btn-sm btn-block btn-primary init-user-login-btn" />
+			<button id="siteNavBar_welcomeBackBarLoggedOut_JicsLoginRedirectContinue" type="button" class="btn btn-sm btn-block btn-primary init-user-login-continue-btn">Continue</button>
+			<div id="siteNavBar_welcomeBackBarLoggedOut_JicsSimpleLogin" class="js-simple-login">
+				
+			</div>
+            
+			<a onclick="preventDefaultEvent(event, ValidateLoginUserName());" id="siteNavBar_welcomeBackBarLoggedOut_ForgotPasswordLink" class="forgot-password-link margin-t-md" tabindex="0" href="javascript:__doPostBack(&#39;siteNavBar$welcomeBackBarLoggedOut$ForgotPasswordLink&#39;,&#39;&#39;)">I forgot my password</a>
+		</div>
+	</div>
+</div>
+<iframe id="siteNavBar_welcomeBackBarLoggedOut_AutoLoginFrame" style="display:none" width="1" height="1"></iframe>
+<script>
+	$(function () {
+		$('#top-nav-bar').attr("aria-label", "Site tabs");
+	});
+</script>
+<nav id="top-nav-bar" class="top-nav-bar navbar navbar-default navbar-fixed-top">
+	<div class="nav-container">
+		<div id="header-tabs" class="link-scroll horizontal-slide">
+			<div class="collapse h-menu" id="hamburger-menu-section">
+				
+						<ul id="main-nav" class="nav navbar-nav no-margin">
+					
+						<li class="tabs tab_Home firstTab">
+							<a href="/ICS/">
+								Home
+							</a>
+						</li>
+					
+						<li class="tabs tab_Academics selected">
+							<a href="/ICS/Academics/">
+								Academics
+							</a>
+						</li>
+					
+						<li class="tabs tab_Campus_Life">
+							<a href="/ICS/Campus_Life/">
+								Campus Life
+							</a>
+						</li>
+					
+						<li class="tabs tab_Resources">
+							<a href="/ICS/Resources/">
+								Resources
+							</a>
+						</li>
+					
+						<li class="tabs tab_Help lastTab">
+							<a href="/ICS/Help/">
+								Help
+							</a>
+						</li>
+					
+						</ul>
+					
+			</div>
+		</div>
+	</div>
+</nav>
+
+        </div>
+    </div>
+</div>
+			</header>
+			
+<div id="mainCrumbs" class="main-crumbs" role="navigation" aria-label="Site breadcrumb">
+	<span class="breadcrumbs-title text-bold">You are here:</span>
+	<span class="crumbs">
+		<ul id="youAreHere" class="breadcrumbs-container">
+			 <li><a href="/ICS/Academics/">Academics</a></li>  <li><a href="/ICS/Academics/Home.jnz">Home</a></li>  <li><a href="/ICS/Academics/Home.jnz?portlet=Curriculum">Collegiate Requirements</a></li> 
+			
+		</ul>
+	</span>
+</div>
+
+			
+			
+			<div id="mainLayout" class="main-layout">
+				<div class="container-fluid">
+					<div class="row">
+						
+						<nav aria-label="Site pages">
+							<div id="sideBar" aria-label="Sidebar links" class="col-md-2 mobile-padding-horizontal-none sidebar">
+								<div id="sidebar-slide-menu-container" class="slide-menu-right">
+									
+									<div id="thisContext" class="side-section"><span class="sidebar-link-title"><a href="/ICS/Academics/"  accesskey="">Academics</a></span><div class="navbar navbar-default"><ul id="contextPages" class="nav nav-pills nav-stacked"><li class="slide-menu-toggle-btns-wrapper"><ul id="slide-menu-toggle-btns" class="nav nav-pills nav-stacked slide-menu-toggle-btns"><li class="active"><a id="menu-links-tab" data-toggle="tab" href="#menu-links" aria-expanded="true" aria-controls="menu-links">Menu</a></li><li><a id="quick-links-tab" data-toggle="tab" href="#quick-links" aria-expanded="false" aria-controls="quick-links">Quick Links</a></li></ul></li><li id="menu-links" class="menu-links tab-pane fade in active"><ul id="this-context-pages" class="nav nav-pills nav-stacked" aria-label="Page menu "><li class="current-page"><button id="page-portlets-label" type="button" class="page-portlets sub-nav" data-toggle="collapse" data-target="#pagePortlets" aria-expanded="false" aria-controls="pagePortlets">Home<span class="glyphicons glyphicons-chevron-down"></span></button><ul id="pagePortlets" class="nav nav-pills nav-stacked sub-nav collapse" aria-labelledby="page-portlets-label"><li><a href="/ICS/Academics/Home.jnz?portlet=Course_Schedules" >Course Schedules</a></li><li><a href="/ICS/Academics/Home.jnz?portlet=Registration_Information" >Registration</a></li><li><a href="/ICS/Academics/Home.jnz?portlet=Simple_Query" >First-Year Appropriate Courses</a></li><li><a href="/ICS/Academics/Home.jnz?portlet=Free-form_Content" >IMPORTANT INFORMATION!!!</a></li><li><a href="/ICS/Academics/Home.jnz?portlet=Curriculum" >Collegiate Requirements</a></li></ul></li><li><a href="/ICS/Academics/Curriculum21.jnz" >Curriculum21</a></li><li><a href="/ICS/Academics/Registrar%27s_Office.jnz" >Registrar's Office</a></li><li class="sub-context-parent"><ul class="nav nav-pills nav-stacked sub-contexts" id="subContexts"><li><a href="/ICS/Academics/Registrar/" class="sub-context anchor-contains-icon">Registrar<span  class="glyphicons glyphicons-folder-closed sidebar-icon-link"></span></a></li></ul></li></ul></li><li id="quick-links" class="quick-links tab-pane fade"><span class="sidebar-link-title">Quick Links</span><ul id="quick-links-menu" class="nav nav-pills nav-stacked"><li class="sidebar-quick-link"><a class="anchor-contains-icon" target="_blank" href="https://outlook.office.com/mail/inbox" title="Outlook">Outlook<span class="glyphicons glyphicons-link sidebar-icon-link"></span></a></li><li class="sidebar-quick-link"><a class="anchor-contains-icon" target="_blank" href="https://www.rmc.edu/contact-rmc/" title="Contact RMC">Contact RMC<span class="glyphicons glyphicons-link sidebar-icon-link"></span></a></li><li class="sidebar-quick-link"><a class="anchor-contains-icon" href="https://mymaconweb.rmc.edu/ICS/Academics/Home.jnz?portlet=Course_Schedules&screen=Advanced+Course+Search&screenType=next" title="Course Search">Course Search<span class="glyphicons glyphicons-link sidebar-icon-link"></span></a></li><li class="sidebar-quick-link"><a class="anchor-contains-icon" target="_blank" href="https://catalog.rmc.edu" title="Academic Catalog">Academic Catalog<span class="glyphicons glyphicons-link sidebar-icon-link"></span></a></li></ul></li></ul></div></div>
+									
+
+
+
+									
+									<div class="sideBarFoot containerFoot"></div>
+								</div>
+								<button id="sidebar-slide-menu-button" class="slide-menu-btn mobile-hide nsn is-closed" type="button" aria-expanded="false">
+									<span class="sidebar-slide-btn-icon glyphicons glyphicons-chevron-right">
+										<span class="sr-only">Sidebar</span>
+									</span>
+								</button>
+							</div>
+						</nav>
+						
+						<div id="portlets" role="main" class="col-md-10 mobile-padding-horizontal-none">
+							
+							
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $(`[id*="pageOpenMoxieManager"]`).click(function () {
+            // Below we check every 200ms if the MoxieManager dialog is opened yet, then move keyboard focus if it is.
+            // We have to do this check because MoxieManager removed the 'onopen' option from the moxman.browse() function...
+            let intervalIndex = 0;
+            let interval = setInterval(function () {
+                let createButton = $($(`.moxman-reset .moxman-i-create`)[0].parentElement.parentElement);
+                if (createButton.length === 1) {
+                    createButton.focus();
+                    clearInterval(interval);
+                } else if (createButton.length === 0 && intervalIndex === 20000) { // We will stop trying to shift focus after 20 seconds.
+                    console.log("Error: Keyboard focus could not be shifted to the MoxieManager window");
+                    clearInterval(interval);
+                }
+                intervalIndex = intervalIndex + 200;
+            }, 200);
+        });
+    });
+</script>
+
+<div id="PageBar_pageTitle" class="page-title page-title-bar">
+    <h2><a href="/ICS/Academics/" id="contextName">Academics</a></h2>
+</div>
+<div id="PageBar_pageTitleButtons" class="page-title-btn">
+    
+    
+    <button id="PageBar_btnPrintView" class="btn btn-no-bg-hover-color-content-one glyphicons glyphicons-print" type="button" onclick="window.print(); return false;">
+        <span class="sr-only">Send to Printer</span>
+    </button>
+    
+</div>
+
+
+							
+							<span id="content" tabindex="-1"></span>
+							<div id="portlet-grid" class="portlet-grid one_column"><div class="row"><div class="portlet-column col-md-12"><div id="pg0_CustomContentPortlet" class="portlet pt_CustomContentPortlet pi_Curriculum" style="z-index:0;"><div class="portlet-header-bar"><h3><a href="/ICS/Academics/Home.jnz?portlet=Curriculum" title="Go to main Collegiate Requirements screen">Collegiate Requirements</a></h3><div class="portlet-help-wrapper"> <a class="btn btn-no-bg-hover-color-content-one help" target="blank" href="https://jenzabarhelp.jenzabar.com/ews/help/JICS/Base/released/en/free-form-content.html" title="Get help using 'Collegiate Requirements'"><span aria-hidden="true" class="glyphicons glyphicons-question-sign"></span><span class="sr-only">Get help using 'Collegiate Requirements'</span></a></div></div><div class="portlet-padding">
+<SCRIPT language="javascript">
+<!--
+    function ConfirmDelete(msg) {
+        return confirm(msg);
+    }
+//-->
+</SCRIPT>
+
+
+<link rel="stylesheet" type="text/css" property="stylesheet" href="/ICS/UI/Common/Styles/lightbox.css" />
+<script src="/ICS/UI/Common/Scripts/jquery.lightbox.js"></script>
+<script>
+    $(document).ready(function() { LoadLightboxValues();});    
+	function LoadLightboxValues() 
+	{
+	    $(".lightbox").lightbox(
+	        {
+	            fileLoadingImage: '/ICS/UI/Common/Images/PortletImages/Lightbox/loading.gif',
+	            fileBottomNavCloseImage: '/ICS/UI/Common/Images/PortletImages/Lightbox/closelabel.gif'
+	        });
+	}
+ 
+</script>
+
+
+
+
+        <div class="pSection ccSection text-word-wrap-break-word"><div align="left"><div class="wysiwygtext"><p align="left"><span style="font-family: helvetica, arial, sans-serif; font-size: 10pt;">The collegiate requirements are those courses all students must successfully complete in order to receive a degree from Randolph-Macon College. Students are governed by the curriculum in effect when they entered the college. </span></p>
+<p align="left"><span style="font-size: 10pt; font-family: helvetica, arial, sans-serif;">Students who entered the college <strong>prior to fall 2021</strong> are governed by the collegiate requirements linked below:</span></p>
+<p align="left"><span style="font-family: helvetica, arial, sans-serif; font-size: 10pt;"><strong><a href="https://www.rmc.edu/about-rmc/college-leadership/offices-departments/registrar/curriculum/" target="_blank" rel="noopener">Collegiate Requirements</a></strong></span></p>
+<p align="left"><strong><span style="text-decoration: underline;"><span style="font-family: helvetica; font-size: 10pt;"><a href="https://mymaconweb.rmc.edu/ICS/Academics/Curriculum21.jnz" target="_blank" rel="noopener">Courses Approved for Curriculum21</a></span></span></strong></p></div></div></div>
+        
+        <div style="clear:both"></div>
+    
+        <div class="pSection ccSection text-word-wrap-break-word"><div align="left"><div class="wysiwygtext"><p style="text-align: left;"> </p>
+<p style="text-align: left;">   <em class="fa fa-search">   <strong><a href="https://mymaconweb.rmc.edu/ICS/Academics/Curriculum21.jnz?portlet=Simple_Query_2022-09-23T08-47-29-459"><button type="button">Curriculum21 Course Search Tool</button></a></strong></em></p>
+<p style="text-align: left;"> </p></div></div></div>
+        
+        <div style="clear:both"></div>
+    
+</div></div>
+</div></div></div>
+							<div class="portletsFoot containerFoot"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container-fluid footer-wrapper primary">
+				<div class="row no-margin-r no-margin-l">
+					<div class="col-md-12"><footer><div id="foot" class="footer-links"><a target="_blank" href="https://www.rmc.edu/about-rmc/college-leadership/offices-departments/marketing-communications/terms-of-service-and-privacy-policy/" >Terms of Use and Privacy Policy</a><a target="_blank" href="https://www.rmc.edu/about-rmc/" >About RMC</a><a target="_blank" href="https://www.rmc.edu/contact-rmc/" >Contact Us</a><a target="_blank" href="https://www.rmc.edu/about-rmc/college-leadership/offices-departments/title-ix/title-ix-policy/" >Title IX</a><a target="_blank" href="https://www.rmc.edu/about-rmc/college-leadership/offices-departments/dean-of-students-student-affairs/student-conduct/adams-law-report/" >Adam's Law</a><span id="copyright">  Powered by Jenzabar. v2026.1</span></div></footer></div>
+				</div>
+			</div>
+			
+<div id="newfoot">
+<rmcfooter>
+<div class="wrapper">
+	    <div class="social-icons">
+		<ul>
+			<li class="facebook"><a href="https://www.facebook.com/RandolphMacon" target="_blank"></a></li>
+			<li class="youtube"><a href="https://www.youtube.com/user/RMCWebMaster" target="_blank"></a></li>
+			<li class="linkedin"><a href="http://www.linkedin.com/groups?gid=138646" target="_blank"></a></li>
+			<li class="twitter"><a href="https://twitter.com/RandolphMacon" target="_blank"></a></li>
+			<li class="instagram"><a href="https://www.instagram.com/randolphmacon/" target="_blank"></a></li>
+		</ul>
+	    </div>
+   
+</div>
+</rmcfooter>
+</div>
+		
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {var fn = function() {$get("_scriptManager_HiddenField").value = '';Sys.Application.remove_init(fn);};Sys.Application.add_init(fn);})();//]]>
+</script>
+</form>
+	</div>
+<script type="text/javascript">
+	$(function() {
+		$("#youAreHere a:last").attr("aria-current", "page");
+
+		jenzabar.framework.accessibleSidebarMenu.init();
+		jenzabar.framework.accessibleSearchMenu.init();
+		jenzabar.framework.accessibleLoginMenu.init();
+		jenzabar.framework.accessibleHamburgerMenu.init();
+
+		jenzabar.framework.enableKeyboardDatePickerSupport();
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "requested_url": "https://bulletin.vcu.edu/robots.txt",
+  "final_url": "https://bulletin.vcu.edu/robots.txt",
+  "http_status": 200,
+  "content_type": "text/plain; charset=UTF-8",
+  "byte_length": 736,
+  "content_sha256": "7cb68a0d3fc3b70b5e94820ae1d9671871111601361a38fab7024e2b97f667ea",
+  "fetched_at": "2026-08-24T18:03:34.241Z"
+}

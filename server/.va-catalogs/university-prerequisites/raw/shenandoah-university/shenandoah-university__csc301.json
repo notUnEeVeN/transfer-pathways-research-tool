@@ -1,0 +1,21 @@
+{
+  "route_id": "shenandoah-university__csc301",
+  "requested_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=55188",
+  "final_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=55188",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 167618,
+  "content_sha256": "7a5c18d397022bc6d5154a05ef9b6b817b3d1821d3e7ea0680fc524131096eb8",
+  "fetched_at": "2026-08-25T00:13:24.057Z",
+  "robots": {
+    "url": "https://catalog.su.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "CSC301"
+  ]
+}

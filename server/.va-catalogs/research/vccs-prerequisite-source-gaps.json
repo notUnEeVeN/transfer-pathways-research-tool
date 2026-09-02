@@ -1,0 +1,712 @@
+{
+  "meta": {
+    "version": "va-vccs-prerequisite-source-gaps-v4",
+    "audited_at": "2026-08-24",
+    "purpose": "Fail-closed evidence ledger and resolution receipts for required VCCS Figure 6 prerequisite status.",
+    "authority_rule": "A row resolves only through an exact official formula, a literal official none statement, an exact current VCCS Master Course File record whose complete dt/dd record boundary has zero recognized requisite clauses, or an exact owner CourseLeaf record with a pinned single-record boundary and same-catalog requisite-marker control. Unbounded or uncontrolled omission never resolves none.",
+    "live_probe": {
+      "observed_at": "2026-08-24",
+      "user_agent": "pmt-research-import/0.1 (+transfer pathways research; contact via repo owner)",
+      "result": "No residual VCCS rows remain. PHI102 has no current master record, but its exact archived owner record is a bounded CourseLeaf entry with zero requisite clauses and a same-catalog marker control; EGR126 is an exact complete current master record with zero requisite clauses."
+    },
+    "counts": {
+      "required_vccs_courses": 184,
+      "exact_formula_or_validated_none": 184,
+      "prerequisite_closure_courses": 5,
+      "parser_engineering_resolved": 2,
+      "owner_source_resolved": 6,
+      "current_master_closure_resolved": 1,
+      "missing_source_rows": 0,
+      "missing_direct_source_rows": 0,
+      "missing_closure_source_rows": 0,
+      "resolved_by_this_research": 7,
+      "remaining_unresolved": 0
+    },
+    "owner_course_entry_research": [
+      {
+        "code": "ENG249",
+        "institution": "Southwest Virginia Community College",
+        "official_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=13&coid=13128",
+        "catalog_year": "2026-2027",
+        "raw_entry_sha256": "811cd3b1bc297df2d431ed7222940081fa2645fa2a05e9d4f4e34dcfcebecbb1",
+        "raw_requisites": "Prerequisite(s): ENG 112 or divisional approval",
+        "accepted_explicit_none": false,
+        "disposition": "accepted_exact_owner_complete_formula",
+        "source_capture": {
+          "kind": "official_http_response_and_single_course_fragment",
+          "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-13__coid-13128.html",
+          "source_response_sha256": "d191460ec575408ba34dfc6000d0373aae654fa73ee54cbd1340f9dfeddacc09",
+          "source_response_bytes": 71015,
+          "course_fragment_html_sha256": "b1eb5513e31eaebd5dae500d3770ac0c8e228b296cf0b480292815067a2bf19e",
+          "course_fragment_html_bytes": 936,
+          "extracted_entry_sha256": "811cd3b1bc297df2d431ed7222940081fa2645fa2a05e9d4f4e34dcfcebecbb1",
+          "course_heading_seen": "ENG 249: Survey of Asian American Literature",
+          "catalog_name_seen": "2026-2027 Catalog",
+          "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+        }
+      },
+      {
+        "code": "ENG268",
+        "institution": "Southwest Virginia Community College",
+        "official_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=2&coid=1161",
+        "catalog_year": "2020-2021",
+        "raw_entry_sha256": "a6ca92ff47cfdf94e039a69f7edb0dd1ee1a5edbccc5a143302d02efb218d00d",
+        "raw_requisites": "Prerequisite(s): ENG 112 or divisional approval.",
+        "accepted_explicit_none": false,
+        "disposition": "accepted_exact_owner_complete_formula",
+        "source_capture": {
+          "kind": "official_http_response_and_single_course_fragment",
+          "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-2__coid-1161.html",
+          "source_response_sha256": "070f7a8bc42fd4e991284dcf708dd9df15c637b1b745764ebbab73e9bed643a1",
+          "source_response_bytes": 70684,
+          "course_fragment_html_sha256": "bb3e4ed9b4f432127cff149b4069a126cd31a95767c6b025f2ba4026aff1fc99",
+          "course_fragment_html_bytes": 748,
+          "extracted_entry_sha256": "a6ca92ff47cfdf94e039a69f7edb0dd1ee1a5edbccc5a143302d02efb218d00d",
+          "course_heading_seen": "ENG 268: The Modern Drama",
+          "catalog_name_seen": "2020-2021 Catalog",
+          "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+        }
+      },
+      {
+        "code": "PHI102",
+        "institution": "Southwest Virginia Community College",
+        "official_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=2&coid=1504",
+        "catalog_year": "2020-2021",
+        "raw_entry_sha256": "abe25a096233bd14ee2d20935d2b456f1ae740c924c4c658870296da7e682a6e",
+        "raw_requisites": null,
+        "accepted_explicit_none": false,
+        "disposition": "accepted_owner_complete_record_no_stated_requisite",
+        "source_capture": {
+          "kind": "official_http_response_and_single_course_fragment",
+          "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-2__coid-1504.html",
+          "source_response_sha256": "e84ae9af17aa950e1430e746212f14c6f7e2338042bb3ebf04df492c15ef3a0f",
+          "source_response_bytes": 70310,
+          "course_fragment_html_sha256": "9106c24d941673e0f0c3e90314010a57c7b61bd541cd9e7a0bddd3a53242afe2",
+          "course_fragment_html_bytes": 361,
+          "extracted_entry_sha256": "abe25a096233bd14ee2d20935d2b456f1ae740c924c4c658870296da7e682a6e",
+          "course_heading_seen": "PHI 102: Introduction to Philosophy II",
+          "catalog_name_seen": "2020-2021 Catalog",
+          "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+        }
+      },
+      {
+        "code": "CSC200",
+        "institution": "Laurel Ridge Community College",
+        "official_url": "https://laurelridge.edu/files/documents/current-students/college-catalog/2019-20/2019-20%20CATALOG.pdf",
+        "catalog_year": "2019-2020",
+        "raw_entry_sha256": "2fdea8e048f063733f4473ecc67793fd34b595056f4cb4c51708d908a93fbbf6",
+        "raw_requisites": "Prerequisite(s): Readiness to enroll in ENG 111.",
+        "accepted_explicit_none": false,
+        "disposition": "accepted_exact_owner_complete_formula",
+        "required_by": [
+          "CSC201"
+        ],
+        "source_document_sha256": "eaf380a923383e2c59c41df590ca6d6e6c3306f1d4d8249dc4446e4aaaac9273"
+      },
+      {
+        "code": "CSC201",
+        "institution": "Laurel Ridge Community College",
+        "official_url": "https://laurelridge.edu/files/documents/current-students/college-catalog/2019-20/2019-20%20CATALOG.pdf",
+        "catalog_year": "2019-2020",
+        "raw_entry_sha256": "fa346011855950529e4e852120174e3e600fb0f420f969e816c1bf77f138019c",
+        "raw_requisites": "Prerequisite(s): CSC 200 or EGR 126.",
+        "accepted_explicit_none": false,
+        "disposition": "accepted_exact_owner_complete_formula",
+        "required_by": [
+          "CSC210"
+        ],
+        "source_document_sha256": "eaf380a923383e2c59c41df590ca6d6e6c3306f1d4d8249dc4446e4aaaac9273"
+      },
+      {
+        "code": "CSC202",
+        "institution": "Laurel Ridge Community College",
+        "official_url": "https://laurelridge.edu/files/documents/current-students/college-catalog/2019-20/2019-20%20CATALOG.pdf",
+        "catalog_year": "2019-2020",
+        "raw_entry_sha256": "142e429585c112c55cb5f9e6d541e295c64afb1788c863a82699edec834a5a9a",
+        "raw_requisites": "Prerequisite(s): CSC 201.",
+        "accepted_explicit_none": false,
+        "disposition": "accepted_exact_owner_complete_formula",
+        "required_by": [
+          "CSC210"
+        ],
+        "source_document_sha256": "eaf380a923383e2c59c41df590ca6d6e6c3306f1d4d8249dc4446e4aaaac9273"
+      },
+      {
+        "code": "EGR126",
+        "institution": "Laurel Ridge Community College",
+        "official_url": "https://laurelridge.edu/files/documents/current-students/college-catalog/2019-20/2019-20%20CATALOG.pdf",
+        "catalog_year": "2019-2020",
+        "raw_entry_sha256": "2202137c22de656724f14704dd5252d2d06ff03f279508ce8a52ea7c37d7565c",
+        "raw_requisites": null,
+        "accepted_explicit_none": false,
+        "disposition": "unresolved_no_explicit_none_statement",
+        "required_by": [
+          "CSC201"
+        ],
+        "source_document_sha256": "eaf380a923383e2c59c41df590ca6d6e6c3306f1d4d8249dc4446e4aaaac9273"
+      }
+    ],
+    "parser_engineering_resolutions": [
+      {
+        "code": "BIO141",
+        "former_blocker": "unsupported_semicolon_grammar",
+        "resolution": "whole_clause_alternatives",
+        "expected_timing": "corequisite_or_prerequisite",
+        "source_url": "https://courses.vccs.edu/courses/BIO141",
+        "effective": "2023-01-01",
+        "raw_requisites": "Corequisite or Prerequisite: Demonstration of NAS 2 concepts of Chemical Concepts, Cytology, and Inheritance through NAS 2 completion; or assessment; or module completion; or equivalent.",
+        "raw_course_endtext": "Lecture 3 hours. Laboratory 3 hours. Total 6 hours per week. Corequisite or Prerequisite: Demonstration of NAS 2 concepts of Chemical Concepts, Cytology, and Inheritance through NAS 2 completion; or assessment; or module completion; or equivalent.",
+        "status": "parsed",
+        "cached_content_bytes": 18948,
+        "cached_content_sha256": "a50afea487bd139944154deca98633379f6cb613aa39ebae855c274f24a49ffa",
+        "parsed_group": {
+          "kind": "corequisite",
+          "raw": "Demonstration of NAS 2 concepts of Chemical Concepts, Cytology, and Inheritance through NAS 2 completion; or assessment; or module completion; or equivalent",
+          "formula": "paths_or__conditions_and",
+          "paths": [
+            {
+              "raw": "Demonstration of NAS 2 concepts of Chemical Concepts, Cytology, and Inheritance through NAS 2 completion",
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "other",
+                  "raw": "Demonstration of NAS 2 concepts of Chemical Concepts Cytology Inheritance through NAS 2 completion"
+                }
+              ]
+            },
+            {
+              "raw": "assessment",
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "placement",
+                  "raw": "assessment"
+                }
+              ]
+            },
+            {
+              "raw": "module completion",
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "other",
+                  "raw": "module completion"
+                }
+              ]
+            },
+            {
+              "raw": "equivalent",
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "equivalent",
+                  "raw": "equivalent"
+                }
+              ]
+            }
+          ],
+          "semicolon_topology": "whole_clause_alternatives",
+          "source_label": "Corequisite or Prerequisite",
+          "timing": "corequisite_or_prerequisite",
+          "flags": [
+            "non_course_condition"
+          ]
+        }
+      },
+      {
+        "code": "EGR121",
+        "former_blocker": "unsupported_semicolon_grammar",
+        "resolution": "conjunctive_groups_then_whole_clause_alternatives",
+        "expected_timing": "prerequisite",
+        "source_url": "https://courses.vccs.edu/courses/EGR121",
+        "effective": "2020-08-01",
+        "raw_requisites": "Prerequisites: ENG 111 eligible; MTH 162 or MTH 167, or equivalent; or departmental approval.",
+        "raw_course_endtext": "Lecture 2 hours. Total 2 hour per week. Prerequisites: ENG 111 eligible; MTH 162 or MTH 167, or equivalent; or departmental approval.",
+        "status": "parsed",
+        "cached_content_bytes": 18325,
+        "cached_content_sha256": "fc0bfa1f7f65feb4ef017390bb303adacf7627b15a47b1c1b1cb5de7094e499e",
+        "parsed_group": {
+          "kind": "prerequisite",
+          "raw": "ENG 111 eligible; MTH 162 or MTH 167, or equivalent; or departmental approval",
+          "formula": "paths_or__conditions_and",
+          "paths": [
+            {
+              "raw": "ENG 111 eligible and MTH 162",
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "course_eligibility",
+                  "course_key": "va:ENG111",
+                  "course_ref": "va:crs:ENG111",
+                  "code": "ENG111",
+                  "raw": "ENG 111 eligible and"
+                },
+                {
+                  "type": "course",
+                  "course_key": "va:MTH162",
+                  "course_ref": "va:crs:MTH162",
+                  "code": "MTH162",
+                  "equivalent_allowed": true
+                }
+              ]
+            },
+            {
+              "raw": "ENG 111 eligible and MTH 167, or equivalent",
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "course_eligibility",
+                  "course_key": "va:ENG111",
+                  "course_ref": "va:crs:ENG111",
+                  "code": "ENG111",
+                  "raw": "ENG 111 eligible and"
+                },
+                {
+                  "type": "course",
+                  "course_key": "va:MTH167",
+                  "course_ref": "va:crs:MTH167",
+                  "code": "MTH167",
+                  "equivalent_allowed": true
+                }
+              ]
+            },
+            {
+              "raw": "departmental approval",
+              "all_of": [
+                {
+                  "type": "non_course",
+                  "condition": "consent",
+                  "raw": "departmental approval"
+                }
+              ]
+            }
+          ],
+          "semicolon_topology": "conjunctive_groups_then_whole_clause_alternatives",
+          "source_label": "Prerequisites",
+          "flags": [
+            "compound_path",
+            "non_course_condition"
+          ]
+        }
+      }
+    ],
+    "owner_source_resolutions": [
+      {
+        "code": "ENG249",
+        "resolution": "exact_owner_complete_formula",
+        "institution": "Southwest Virginia Community College",
+        "owning_colleges": [
+          "Southwest Virginia Community College"
+        ],
+        "source_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=13&coid=13128",
+        "catalog_year": "2026-2027",
+        "raw_requisites": "Prerequisite(s): ENG 112 or divisional approval",
+        "source_content_sha256": "811cd3b1bc297df2d431ed7222940081fa2645fa2a05e9d4f4e34dcfcebecbb1",
+        "status": "parsed",
+        "groups": [
+          {
+            "kind": "prerequisite",
+            "raw": "ENG 112 or divisional approval",
+            "formula": "paths_or__conditions_and",
+            "paths": [
+              {
+                "raw": "ENG 112",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "course_key": "va:ENG112",
+                    "course_ref": "va:crs:ENG112",
+                    "code": "ENG112"
+                  }
+                ]
+              },
+              {
+                "raw": "divisional approval",
+                "all_of": [
+                  {
+                    "type": "non_course",
+                    "condition": "consent",
+                    "raw": "divisional approval"
+                  }
+                ]
+              }
+            ],
+            "source_label": "Prerequisite(s)",
+            "flags": [
+              "non_course_condition"
+            ]
+          }
+        ],
+        "source_evidence": {
+          "kind": "official_course_entry",
+          "raw_text": "ENG 249: Survey of Asian American Literature\n3 Credits\nLecture hours per week: 3\nCovers major works by Asian American writers from 1900 to the present. Examines the formation of Asian American subjectivities across the axes of ethnicity, gender, sexuality, and class. Develops student critical reading, writing and thinking skills via texts, films and cultural studies theories.\nPrerequisite(s): ENG 112 or divisional approval",
+          "content_sha256": "811cd3b1bc297df2d431ed7222940081fa2645fa2a05e9d4f4e34dcfcebecbb1",
+          "source_capture": {
+            "kind": "official_http_response_and_single_course_fragment",
+            "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-13__coid-13128.html",
+            "source_response_sha256": "d191460ec575408ba34dfc6000d0373aae654fa73ee54cbd1340f9dfeddacc09",
+            "source_response_bytes": 71015,
+            "course_fragment_html_sha256": "b1eb5513e31eaebd5dae500d3770ac0c8e228b296cf0b480292815067a2bf19e",
+            "course_fragment_html_bytes": 936,
+            "extracted_entry_sha256": "811cd3b1bc297df2d431ed7222940081fa2645fa2a05e9d4f4e34dcfcebecbb1",
+            "course_heading_seen": "ENG 249: Survey of Asian American Literature",
+            "catalog_name_seen": "2026-2027 Catalog",
+            "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+          }
+        }
+      },
+      {
+        "code": "ENG268",
+        "resolution": "exact_owner_complete_formula",
+        "institution": "Southwest Virginia Community College",
+        "owning_colleges": [
+          "Southwest Virginia Community College"
+        ],
+        "source_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=2&coid=1161",
+        "catalog_year": "2020-2021",
+        "raw_requisites": "Prerequisite(s): ENG 112 or divisional approval.",
+        "source_content_sha256": "a6ca92ff47cfdf94e039a69f7edb0dd1ee1a5edbccc5a143302d02efb218d00d",
+        "status": "parsed",
+        "groups": [
+          {
+            "kind": "prerequisite",
+            "raw": "ENG 112 or divisional approval",
+            "formula": "paths_or__conditions_and",
+            "paths": [
+              {
+                "raw": "ENG 112",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "course_key": "va:ENG112",
+                    "course_ref": "va:crs:ENG112",
+                    "code": "ENG112"
+                  }
+                ]
+              },
+              {
+                "raw": "divisional approval",
+                "all_of": [
+                  {
+                    "type": "non_course",
+                    "condition": "consent",
+                    "raw": "divisional approval"
+                  }
+                ]
+              }
+            ],
+            "source_label": "Prerequisite(s)",
+            "flags": [
+              "non_course_condition"
+            ]
+          }
+        ],
+        "source_evidence": {
+          "kind": "official_course_entry",
+          "raw_text": "ENG 268: The Modern Drama\n3 credit\nLecture 3 hours per week.\nStudies the modern drama. Emphasizes the understanding and enjoyment of dramatic literature. Requires critical reading and writing.\nPrerequisite(s): ENG 112 or divisional approval.",
+          "content_sha256": "a6ca92ff47cfdf94e039a69f7edb0dd1ee1a5edbccc5a143302d02efb218d00d",
+          "source_capture": {
+            "kind": "official_http_response_and_single_course_fragment",
+            "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-2__coid-1161.html",
+            "source_response_sha256": "070f7a8bc42fd4e991284dcf708dd9df15c637b1b745764ebbab73e9bed643a1",
+            "source_response_bytes": 70684,
+            "course_fragment_html_sha256": "bb3e4ed9b4f432127cff149b4069a126cd31a95767c6b025f2ba4026aff1fc99",
+            "course_fragment_html_bytes": 748,
+            "extracted_entry_sha256": "a6ca92ff47cfdf94e039a69f7edb0dd1ee1a5edbccc5a143302d02efb218d00d",
+            "course_heading_seen": "ENG 268: The Modern Drama",
+            "catalog_name_seen": "2020-2021 Catalog",
+            "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+          }
+        }
+      },
+      {
+        "code": "PHI102",
+        "resolution": "structured_owner_complete_record_none",
+        "institution": "Southwest Virginia Community College",
+        "owning_colleges": [
+          "Southwest Virginia Community College"
+        ],
+        "source_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=2&coid=1504",
+        "catalog_year": "2020-2021",
+        "raw_requisites": null,
+        "source_content_sha256": "abe25a096233bd14ee2d20935d2b456f1ae740c924c4c658870296da7e682a6e",
+        "status": "none",
+        "groups": [],
+        "source_evidence": {
+          "kind": "official_course_entry",
+          "raw_text": "PHI 102: Introduction to Philosophy II\n3 credit\nLecture 3 hours per week.\nIntroduces a broad spectrum of philosophical problems and perspectives with an emphasis on the systematic questioning of basic assumptions about meaning, knowledge, reality, and values.",
+          "content_sha256": "abe25a096233bd14ee2d20935d2b456f1ae740c924c4c658870296da7e682a6e",
+          "record_boundary": "single CourseLeaf preview_course_nopop course record",
+          "parser_contract": "southwest-courseleaf-single-course-record-v1",
+          "source_capture": {
+            "kind": "official_http_response_and_single_course_fragment",
+            "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-2__coid-1504.html",
+            "source_response_sha256": "e84ae9af17aa950e1430e746212f14c6f7e2338042bb3ebf04df492c15ef3a0f",
+            "source_response_bytes": 70310,
+            "course_fragment_html_sha256": "9106c24d941673e0f0c3e90314010a57c7b61bd541cd9e7a0bddd3a53242afe2",
+            "course_fragment_html_bytes": 361,
+            "extracted_entry_sha256": "abe25a096233bd14ee2d20935d2b456f1ae740c924c4c658870296da7e682a6e",
+            "course_heading_seen": "PHI 102: Introduction to Philosophy II",
+            "catalog_name_seen": "2020-2021 Catalog",
+            "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+          }
+        },
+        "explicit_none_evidence": {
+          "kind": "structured_owner_catalog_record_boundary",
+          "course_entry_status": "published_exact_owner_course_record",
+          "finding": "no_prerequisite_or_corequisite_published_in_complete_owner_record",
+          "literal_none_statement": false,
+          "source_content_sha256": "abe25a096233bd14ee2d20935d2b456f1ae740c924c4c658870296da7e682a6e",
+          "parser_contract": "southwest-courseleaf-single-course-record-v1",
+          "record_boundary": "single CourseLeaf preview_course_nopop course record",
+          "requisite_clause_count": 0,
+          "source_response_sha256": "e84ae9af17aa950e1430e746212f14c6f7e2338042bb3ebf04df492c15ef3a0f",
+          "course_fragment_html_sha256": "9106c24d941673e0f0c3e90314010a57c7b61bd541cd9e7a0bddd3a53242afe2",
+          "response_parser_contract": "southwest-courseleaf-preview-course-fragment-v1",
+          "same_catalog_marker_control": {
+            "code": "ENG268",
+            "source_url": "https://catalog.sw.edu/preview_course_nopop.php?catoid=2&coid=1161",
+            "catalog_year": "2020-2021",
+            "raw_entry_sha256": "a6ca92ff47cfdf94e039a69f7edb0dd1ee1a5edbccc5a143302d02efb218d00d",
+            "raw_requisites": "Prerequisite(s): ENG 112 or divisional approval.",
+            "source_capture": {
+              "kind": "official_http_response_and_single_course_fragment",
+              "cache_path": ".va-catalogs/vccs-prerequisites/raw/southwest-virginia-community-college/catoid-2__coid-1161.html",
+              "source_response_sha256": "070f7a8bc42fd4e991284dcf708dd9df15c637b1b745764ebbab73e9bed643a1",
+              "source_response_bytes": 70684,
+              "course_fragment_html_sha256": "bb3e4ed9b4f432127cff149b4069a126cd31a95767c6b025f2ba4026aff1fc99",
+              "course_fragment_html_bytes": 748,
+              "extracted_entry_sha256": "a6ca92ff47cfdf94e039a69f7edb0dd1ee1a5edbccc5a143302d02efb218d00d",
+              "course_heading_seen": "ENG 268: The Modern Drama",
+              "catalog_name_seen": "2020-2021 Catalog",
+              "parser_contract": "southwest-courseleaf-preview-course-fragment-v1"
+            }
+          }
+        }
+      },
+      {
+        "code": "CSC200",
+        "resolution": "exact_owner_complete_formula",
+        "institution": "Laurel Ridge Community College",
+        "owning_colleges": [
+          "Laurel Ridge Community College"
+        ],
+        "required_by": [
+          "CSC201"
+        ],
+        "source_url": "https://laurelridge.edu/files/documents/current-students/college-catalog/2019-20/2019-20%20CATALOG.pdf",
+        "catalog_year": "2019-2020",
+        "raw_requisites": "Prerequisite(s): Readiness to enroll in ENG 111.",
+        "source_content_sha256": "2fdea8e048f063733f4473ecc67793fd34b595056f4cb4c51708d908a93fbbf6",
+        "status": "parsed",
+        "groups": [
+          {
+            "kind": "prerequisite",
+            "raw": "Readiness to enroll in ENG 111",
+            "formula": "paths_or__conditions_and",
+            "paths": [
+              {
+                "raw": "Readiness to enroll in ENG 111",
+                "all_of": [
+                  {
+                    "type": "non_course",
+                    "condition": "course_eligibility",
+                    "course_key": "va:ENG111",
+                    "course_ref": "va:crs:ENG111",
+                    "code": "ENG111",
+                    "raw": "Readiness to enroll in ENG 111"
+                  }
+                ]
+              }
+            ],
+            "source_label": "Prerequisite(s)",
+            "flags": [
+              "non_course_condition"
+            ]
+          }
+        ],
+        "source_evidence": {
+          "kind": "official_course_entry",
+          "raw_text": "CSC 200 Introduction to Computer Science (3 Cr.)\nProvides broad introduction to computer science. Discusses architecture and function of computer hardware, including networks and operating systems, data and instruction representation and data organization. Covers software, algorithms, programming languages and software engineering. Discusses artificial intelligence and theory of computation. Includes a hands-on component. Prerequisite(s): Readiness to enroll in ENG 111. Lecture 3 hours per week.",
+          "content_sha256": "2fdea8e048f063733f4473ecc67793fd34b595056f4cb4c51708d908a93fbbf6",
+          "document_content_sha256": "eaf380a923383e2c59c41df590ca6d6e6c3306f1d4d8249dc4446e4aaaac9273",
+          "catalog_page": 158,
+          "pdf_page": 168
+        }
+      },
+      {
+        "code": "CSC201",
+        "resolution": "exact_owner_complete_formula",
+        "institution": "Laurel Ridge Community College",
+        "owning_colleges": [
+          "Laurel Ridge Community College"
+        ],
+        "required_by": [
+          "CSC210"
+        ],
+        "source_url": "https://laurelridge.edu/files/documents/current-students/college-catalog/2019-20/2019-20%20CATALOG.pdf",
+        "catalog_year": "2019-2020",
+        "raw_requisites": "Prerequisite(s): CSC 200 or EGR 126.",
+        "source_content_sha256": "fa346011855950529e4e852120174e3e600fb0f420f969e816c1bf77f138019c",
+        "status": "parsed",
+        "groups": [
+          {
+            "kind": "prerequisite",
+            "raw": "CSC 200 or EGR 126",
+            "formula": "paths_or__conditions_and",
+            "paths": [
+              {
+                "raw": "CSC 200",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "course_key": "va:CSC200",
+                    "course_ref": "va:crs:CSC200",
+                    "code": "CSC200"
+                  }
+                ]
+              },
+              {
+                "raw": "EGR 126",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "course_key": "va:EGR126",
+                    "course_ref": "va:crs:EGR126",
+                    "code": "EGR126"
+                  }
+                ]
+              }
+            ],
+            "source_label": "Prerequisite(s)",
+            "any_of": [
+              {
+                "type": "course",
+                "course_key": "va:CSC200",
+                "course_ref": "va:crs:CSC200",
+                "code": "CSC200"
+              },
+              {
+                "type": "course",
+                "course_key": "va:EGR126",
+                "course_ref": "va:crs:EGR126",
+                "code": "EGR126"
+              }
+            ],
+            "flags": []
+          }
+        ],
+        "source_evidence": {
+          "kind": "official_course_entry",
+          "raw_text": "CSC 201 Computer Science I (4 Cr.)\nIntroduces algorithm and problem solving methods. Emphasizes structured programming concepts, elementary data structures and the study and use of a high level programming language. Prerequisite(s): CSC 200 or EGR 126. Lecture 4 hours per week.",
+          "content_sha256": "fa346011855950529e4e852120174e3e600fb0f420f969e816c1bf77f138019c",
+          "document_content_sha256": "eaf380a923383e2c59c41df590ca6d6e6c3306f1d4d8249dc4446e4aaaac9273",
+          "catalog_page": 158,
+          "pdf_page": 168
+        }
+      },
+      {
+        "code": "CSC202",
+        "resolution": "exact_owner_complete_formula",
+        "institution": "Laurel Ridge Community College",
+        "owning_colleges": [
+          "Laurel Ridge Community College"
+        ],
+        "required_by": [
+          "CSC210"
+        ],
+        "source_url": "https://laurelridge.edu/files/documents/current-students/college-catalog/2019-20/2019-20%20CATALOG.pdf",
+        "catalog_year": "2019-2020",
+        "raw_requisites": "Prerequisite(s): CSC 201.",
+        "source_content_sha256": "142e429585c112c55cb5f9e6d541e295c64afb1788c863a82699edec834a5a9a",
+        "status": "parsed",
+        "groups": [
+          {
+            "kind": "prerequisite",
+            "raw": "CSC 201",
+            "formula": "paths_or__conditions_and",
+            "paths": [
+              {
+                "raw": "CSC 201",
+                "all_of": [
+                  {
+                    "type": "course",
+                    "course_key": "va:CSC201",
+                    "course_ref": "va:crs:CSC201",
+                    "code": "CSC201"
+                  }
+                ]
+              }
+            ],
+            "source_label": "Prerequisite(s)",
+            "any_of": [
+              {
+                "type": "course",
+                "course_key": "va:CSC201",
+                "course_ref": "va:crs:CSC201",
+                "code": "CSC201"
+              }
+            ],
+            "flags": []
+          }
+        ],
+        "source_evidence": {
+          "kind": "official_course_entry",
+          "raw_text": "CSC 202 Computer Science II (4 Cr.)\nExamines data structures and analyzes algorithms. Covers data structures (including sets, strings, stacks, queues, arrays, records, files, linked lists, and trees), abstract data types, algorithm analysis (including searching and sorting methods), and objects. Prerequisite(s): CSC 201. Lecture 4 hours per week.",
+          "content_sha256": "142e429585c112c55cb5f9e6d541e295c64afb1788c863a82699edec834a5a9a",
+          "document_content_sha256": "eaf380a923383e2c59c41df590ca6d6e6c3306f1d4d8249dc4446e4aaaac9273",
+          "catalog_page": 159,
+          "pdf_page": 169
+        }
+      }
+    ],
+    "current_master_closure_resolutions": [
+      {
+        "code": "EGR126",
+        "required_by": [
+          "CSC201"
+        ],
+        "resolution": "structured_current_vccs_master_record_none",
+        "source_url": "https://courses.vccs.edu/courses/EGR126",
+        "title": "Computer Programming for Engineers",
+        "effective": "1997-08-01",
+        "raw_course_endtext": "Lecture 2-3 hours. Laboratory 1-2 hours. Total 3-4 hours per week.",
+        "cached_content_bytes": 17776,
+        "cached_content_sha256": "90a6656dfc1bcdb302f3fe1187c1e05b6e834d12c05745c100d10f75ea478876",
+        "source_evidence": {
+          "kind": "official_course_entry",
+          "raw_text": "EGR 126 - Computer Programming for Engineers Introduces computers, their architecture and software. Teaches program development using flowcharts. Solves engineering problems involving programming in languages such as FORTRAN, PASCAL, or C++. Lecture 2-3 hours. Laboratory 1-2 hours. Total 3-4 hours per week. 3 credits",
+          "content_sha256": "6117a39b5284d733c6f86fff28638018623733c0b68c065a72ab0f78469ae4d1",
+          "source_page_content_sha256": "90a6656dfc1bcdb302f3fe1187c1e05b6e834d12c05745c100d10f75ea478876",
+          "source_page_content_bytes": 17776,
+          "record_html_sha256": "e0d23a6cb4a247e3073491d120cbdd6563d2ab8322b9d20bb2226b2dd939fe31",
+          "record_boundary": "dl > dt + dd",
+          "requisite_text_boundary": ".endtext",
+          "parser_contract": "vccs-master-dt-dd-endtext-v1"
+        },
+        "explicit_none_evidence": {
+          "kind": "structured_vccs_master_record_boundary",
+          "course_entry_status": "published_exact_vccs_master_course_record",
+          "finding": "no_prerequisite_or_corequisite_published_in_complete_master_record",
+          "literal_none_statement": false,
+          "source_content_sha256": "6117a39b5284d733c6f86fff28638018623733c0b68c065a72ab0f78469ae4d1",
+          "source_page_content_sha256": "90a6656dfc1bcdb302f3fe1187c1e05b6e834d12c05745c100d10f75ea478876",
+          "record_html_sha256": "e0d23a6cb4a247e3073491d120cbdd6563d2ab8322b9d20bb2226b2dd939fe31",
+          "parser_contract": "vccs-master-dt-dd-endtext-v1",
+          "record_boundary": "dl > dt + dd",
+          "requisite_text_boundary": ".endtext",
+          "requisite_clause_count": 0
+        },
+        "archived_owner_entry": {
+          "institution": "Laurel Ridge Community College",
+          "source_url": "https://laurelridge.edu/files/documents/current-students/college-catalog/2019-20/2019-20%20CATALOG.pdf",
+          "raw_entry_sha256": "2202137c22de656724f14704dd5252d2d06ff03f279508ce8a52ea7c37d7565c",
+          "disposition": "unresolved_no_explicit_none_statement",
+          "accepted_explicit_none": false,
+          "role": "corroborating_identity_only_not_none_authority"
+        }
+      }
+    ]
+  },
+  "rows": []
+}

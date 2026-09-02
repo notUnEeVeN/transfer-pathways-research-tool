@@ -1,0 +1,21 @@
+{
+  "route_id": "virginia-state-university__geog",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/geog/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/geog/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 76644,
+  "content_sha256": "15bc24c3dd718acd1b5810ba8fb7c24aa7a833a943c582c202d86b4133c882a3",
+  "fetched_at": "2026-08-24T18:04:11.480Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "GEOG210"
+  ]
+}

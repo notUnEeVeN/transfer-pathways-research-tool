@@ -1,0 +1,21 @@
+{
+  "route_id": "shenandoah-university__int101",
+  "requested_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=55320",
+  "final_url": "https://catalog.su.edu/preview_course_nopop.php?catoid=33&coid=55320",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 167797,
+  "content_sha256": "f5dc1f4d64c433ba6745ec53a05ce6c30ae7493a3c70039b09e6c2faa341e301",
+  "fetched_at": "2026-08-25T10:50:08.007Z",
+  "robots": {
+    "url": "https://catalog.su.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "1dfe956a6b5e20dc3c081043faf71e746170ae4dfefa0f00c2bacc8dc8c8a0c3",
+    "crawl_delay_seconds": 120
+  },
+  "target_course_codes": [
+    "INT101"
+  ]
+}

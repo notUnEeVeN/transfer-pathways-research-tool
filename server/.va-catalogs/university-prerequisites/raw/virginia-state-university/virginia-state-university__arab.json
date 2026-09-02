@@ -1,0 +1,24 @@
+{
+  "route_id": "virginia-state-university__arab",
+  "requested_url": "https://catalog.vsu.edu/undergraduate/courses/arab/",
+  "final_url": "https://catalog.vsu.edu/undergraduate/courses/arab/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 73987,
+  "content_sha256": "1b4c19ad94c773f2a3600d71c722f365a06f3066bb144411a3de0cbca20c70a5",
+  "fetched_at": "2026-08-24T18:03:54.108Z",
+  "robots": {
+    "url": "https://catalog.vsu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "8ba3a5e25335b7e343ff1331a044873101011acdafde82726af28c9a9a02b365",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "ARAB110",
+    "ARAB111",
+    "ARAB212",
+    "ARAB213"
+  ]
+}

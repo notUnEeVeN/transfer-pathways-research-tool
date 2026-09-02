@@ -1,0 +1,28 @@
+{
+  "route_id": "longwood-university__courses_from_banner",
+  "requested_url": "https://www.longwood.edu/site-assets/courses-from-banner/",
+  "final_url": "https://www.longwood.edu/site-assets/courses-from-banner/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 973047,
+  "content_sha256": "2f4fc77307b8b4f045ed0f3809a6c57e534fbe7145ad8d5142fb1ca7adb37841",
+  "fetched_at": "2026-08-24T20:36:46.451Z",
+  "robots": {
+    "url": "https://www.longwood.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "3ef24d5ab75409ff6f13455c9d69fa3548b35f43c136f25d5c6f140e9f8de4d7",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "CTZN110",
+    "CTZN410",
+    "ENGL165",
+    "ENGL319",
+    "MATH171",
+    "MATH175",
+    "MATH250",
+    "MATH261"
+  ]
+}

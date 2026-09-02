@@ -1,0 +1,24 @@
+{
+  "route_id": "george-mason-university__swe",
+  "requested_url": "https://catalog.gmu.edu/courses/swe/",
+  "final_url": "https://catalog.gmu.edu/courses/swe/",
+  "capture_status": "official_html_captured",
+  "blocked_reason": null,
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "byte_length": 69333,
+  "content_sha256": "45080cfa88f9f8cace66be06e358f2c2e28fa23b1fe6821a761c97fc2985548a",
+  "fetched_at": "2026-08-24T18:02:40.923Z",
+  "robots": {
+    "url": "https://catalog.gmu.edu/robots.txt",
+    "http_status": 200,
+    "content_sha256": "b408e2ae04430336b90ff3e5a03a59bb46b746cdcaa4158e14f0b3aeb5436131",
+    "crawl_delay_seconds": 0
+  },
+  "target_course_codes": [
+    "SWE419",
+    "SWE432",
+    "SWE437",
+    "SWE443"
+  ]
+}
