@@ -17,7 +17,14 @@ vi.mock('../../hooks/useAuth', () => ({
 
 import apiClient from '../../api/apiClient'
 import {
-  useCoverage, usePathwayComplexity, usePrereqGraph, useTransferCreditRate,
+  FIGURE_PUBLICATION_POLL_MS,
+  isVirginiaPublishedFigure,
+  omitVirginiaPublishedFigures,
+  useCoverage,
+  useFigures,
+  usePathwayComplexity,
+  usePrereqGraph,
+  useTransferCreditRate,
 } from './useData'
 
 describe('useCoverage', () => {
@@ -148,5 +155,60 @@ describe('usePrereqGraph', () => {
     expect(apiClient.get).toHaveBeenCalledWith('/curated/prerequisite-graph', {
       params: { majorSlug: 'cs' },
     })
+  })
+})
+
+describe('useFigures publication revocation', () => {
+  const ca = { slug: 'ca-figure', state: 'ca', major_slug: 'cs' }
+  const ma = { slug: 'ma-figure', state: 'ma', major_slug: 'ma-cs' }
+  const va = { slug: 'va-figure', state: 'va', major_slug: 'va-cs' }
+
+  beforeEach(() => {
+    mocks.useQuery.mockReset()
+  })
+
+  it('polls the receipt-filtered gallery every 15 seconds, including in background tabs', () => {
+    mocks.useQuery.mockReturnValue({ data: { figures: [] } })
+    useFigures()
+
+    expect(mocks.useQuery).toHaveBeenCalledWith(expect.objectContaining({
+      queryKey: ['figures', 'user-1'],
+      refetchInterval: FIGURE_PUBLICATION_POLL_MS,
+      refetchIntervalInBackground: true,
+      refetchOnWindowFocus: true,
+    }))
+  })
+
+  it('drops only cached Virginia artifacts after a gallery recheck fails', () => {
+    mocks.useQuery.mockReturnValue({
+      data: { figures: [ca, va, ma] },
+      isError: false,
+      isRefetchError: true,
+      failureCount: 1,
+    })
+
+    expect(useFigures().data.figures).toEqual([ca, ma])
+    expect(omitVirginiaPublishedFigures({ figures: [ca, va, ma] }).figures).toEqual([ca, ma])
+  })
+
+  it('recognizes scoped and legacy interactive VA artifacts without matching CA or MA', () => {
+    expect(isVirginiaPublishedFigure(va)).toBe(true)
+    expect(isVirginiaPublishedFigure({
+      slug: 'legacy-va', visual: { options: { majorSlug: 'va-cs' } },
+    })).toBe(true)
+    expect(isVirginiaPublishedFigure(ca)).toBe(false)
+    expect(isVirginiaPublishedFigure(ma)).toBe(false)
+  })
+
+  it('retains the successful server-filtered gallery unchanged', () => {
+    const payload = { figures: [ca, va, ma] }
+    mocks.useQuery.mockReturnValue({
+      data: payload,
+      isError: false,
+      isRefetchError: false,
+      failureCount: 0,
+    })
+
+    expect(useFigures().data).toBe(payload)
   })
 })

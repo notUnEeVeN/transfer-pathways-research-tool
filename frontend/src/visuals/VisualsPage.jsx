@@ -574,6 +574,15 @@ export function BuiltInAnalysisCard({
         <Alert type='error'>This visual renderer is not available in the current application.</Alert>
       ) : (
         <>
+          {/* A corpus can be published from sound documents while its paper
+              figures carry no release certification. It renders, but it must
+              never render silently as though it were certified. */}
+          {availability.certified === false && !!availability.uncertifiedNotice && (
+            <Alert type='warning' className='mb-4'>
+              <span className='font-[650] text-ink'>Not release-certified.</span>
+              {' '}{availability.uncertifiedNotice}
+            </Alert>
+          )}
           <Component key={`${analysis.id}:${availability.effectiveMajorSlug}`}
             majorSlug={availability.effectiveMajorSlug}
             majorLabel={selectedMajor?.label || ''}

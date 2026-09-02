@@ -49,7 +49,7 @@
  *     because a knob the figure does not read would silently render the wrong
  *     state under a caption claiming it was pinned.
  *
- *   comparable: { grain, unit, tolerance, useData(view), cells(data, view) }
+ *   comparable: { grain, unit, tolerance, useData(view, major, queryOptions), cells(data, view) }
  *     How two panes of this figure are differenced. `useData` is the figure's
  *     OWN hook (react-query dedupes, so the panes and the delta overlay share
  *     one request), and `cells` may only call functions the figure's module
@@ -273,7 +273,9 @@ export const ANALYSES = [
       grain: 'university-campus×course-type',
       unit: 'percentage-points',
       tolerance: 0.05,
-      useData: (view) => useCoverage(courseTypeCoverageParams(view.major)),
+      useData: (view, _major, queryOptions = {}) => (
+        useCoverage(courseTypeCoverageParams(view.major), queryOptions)
+      ),
       cells: courseTypeComparisonCells,
     },
   },
@@ -354,11 +356,12 @@ export const ANALYSES = [
       // receipt honor ordinary display rounding (42/61 cells reproduce)
       // instead of treating hidden decimals as disagreements.
       tolerance: 0.5,
-      useData: (view, major) => {
+      useData: (view, major, queryOptions = {}) => {
         const resolved = transferCreditViewForPane(view, major)
         return useTransferCreditRate(resolved.degreeType, {
           majorSlug: view.major,
           verifiedOnly: resolved.verifiedOnly,
+          ...queryOptions,
         })
       },
       cells: transferCreditComparisonCells,
@@ -439,11 +442,12 @@ export const ANALYSES = [
       grain: 'college×campus',
       unit: 'semester-hours-above-120',
       tolerance: 0.1,
-      useData: (view, major) => useTransferCreditRate(
+      useData: (view, major, queryOptions = {}) => useTransferCreditRate(
         comparisonDegree(view, major),
         {
           majorSlug: view.major,
           verifiedOnly: comparisonVerified(view, major),
+          ...queryOptions,
         },
       ),
       cells: (data, view, major) => extraUnitEntries(
@@ -547,11 +551,12 @@ export const ANALYSES = [
       grain: 'college×campus',
       unit: 'usd',
       tolerance: 1,
-      useData: (view, major) => useTransferCreditRate(
+      useData: (view, major, queryOptions = {}) => useTransferCreditRate(
         comparisonDegree(view, major),
         {
           majorSlug: view.major,
           verifiedOnly: comparisonVerified(view, major),
+          ...queryOptions,
         },
       ),
       cells: (data, view, major) => extraCostEntries(
@@ -671,10 +676,11 @@ export const ANALYSES = [
       grain: 'college×campus',
       unit: 'score-delta',
       tolerance: 0,
-      useData: (view, major) => usePathwayComplexity({
+      useData: (view, major, queryOptions = {}) => usePathwayComplexity({
         majorSlug: view.major,
         degreeType: comparisonDegree(view, major),
         verifiedOnly: comparisonVerified(view, major),
+        ...queryOptions,
       }),
       // paperEntries reads the complete final-PDF matrix or the separately
       // recomputed archive. Re-deriving either from a third source here would
@@ -774,7 +780,9 @@ export const ANALYSES = [
       // ordinary display rounding as agreement and leaves the one material
       // Cape Cod→UMass Dartmouth difference exposed.
       tolerance: 0.5,
-      useData: (view, major) => useCoverage(coverageViewForPane(view, major)),
+      useData: (view, major, queryOptions = {}) => (
+        useCoverage(coverageViewForPane(view, major), queryOptions)
+      ),
       cells: coverageComparisonCells,
     },
   },

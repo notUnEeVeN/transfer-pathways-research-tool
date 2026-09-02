@@ -5,6 +5,7 @@ import CoverageHeatmap, {
   buildHeatmap, coverageComparisonCells, createCoverageColorScale, makeCellColor,
 } from './CoverageHeatmap'
 import { paperRedCellColor } from './maHeatmapColors'
+import { VA_COVERAGE_ROWS } from './vaCoverageRows'
 import { useCoverage } from '../shared/query/hooks/useData'
 
 vi.mock('../shared/query/hooks/useData', () => ({ useCoverage: vi.fn() }))
@@ -341,5 +342,100 @@ describe('CoverageHeatmap adaptive color scale', () => {
     expect(high).toEqual(paperRedCellColor(scale.max, scale))
     expect(low.backgroundColor).toBe('rgb(255 255 255)')
     expect(high.backgroundColor).toBe('rgb(103 0 13)')
+  })
+
+  it('renders Virginia from the committed guide baseline with its own lenses', () => {
+    // No endpoint rows at all: the Virginia measure comes from the published
+    // transfer guides, not the corpus this endpoint evaluates.
+    useCoverage.mockReturnValue({ data: null, isLoading: false, isError: false })
+    render(<CoverageHeatmap majorSlug='va-cs'
+      major={{ slug: 'va-cs', state: 'va', label: 'Computer Science (VA)' }}
+      majorCapabilities={{ unitCoverage: false }} />)
+
+    // Supply basis, college scope, and the general-education lens. The last is
+    // normally hidden when unitCoverage is false, which is why Virginia carries
+    // its own control for it.
+    expect(screen.getByRole('button', { name: 'In the catalogue' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Currently scheduled' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'With a CS degree' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'All 23' })).toBeInTheDocument()
+    // Every option is visible and the selected one is pressed, so the control
+    // states which view is active rather than what a click would do.
+    expect(screen.getByRole('button', { name: 'In the catalogue' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'Currently scheduled' })).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByRole('button', { name: 'Degree units' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'MA paper' })).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByRole('button', { name: 'With a CS degree' })).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  // The figure recomputes every cell as articulated ÷ total (cellCoverageValue)
+  // and never reads the percentage field. Emitting a percentage its own counts
+  // did not reproduce drew 44.2% where the data said 50.4%, and no amount of
+  // reading the data could find it because the wrong number was never stored.
+  it('reproduces every Virginia percentage from its own numerator and denominator', () => {
+    for (const [variant, bundle] of Object.entries(VA_COVERAGE_ROWS)) {
+      if (variant === 'built_at' || variant === 'census') continue
+      for (const row of bundle.rows) {
+        for (const [p, a, t] of [
+          ['pct_named_requirement_courses_with_ge',
+            'named_requirement_courses_with_ge_articulated', 'named_requirement_courses_with_ge_total'],
+          ['pct_named_requirement_courses',
+            'named_requirement_courses_articulated', 'named_requirement_courses_total'],
+          ['va_units_no_ge_pct', 'va_units_no_ge_articulated', 'va_units_no_ge_total'],
+        ]) {
+          // pct() rounds to one decimal, so half a step is the whole budget.
+          expect(Math.abs((row[a] / row[t]) * 100 - row[p])).toBeLessThanOrEqual(0.051)
+        }
+      }
+    }
+  })
+
+  it('switches Virginia to the paper\'s own course counting on the MA paper preset', () => {
+    useCoverage.mockReturnValue({ data: null, isLoading: false, isError: false })
+    render(<CoverageHeatmap majorSlug='va-cs'
+      major={{ slug: 'va-cs', state: 'va', label: 'Computer Science (VA)' }}
+      majorCapabilities={{ unitCoverage: false }} />)
+    const paper = screen.getByRole('button', { name: 'MA paper' })
+    fireEvent.click(paper)
+    expect(paper).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'Degree units' })).toHaveAttribute('aria-pressed', 'false')
+    // The preset is the same guides read the paper's way, not a different
+    // corpus: binary counting and the GE exclusion together move it a few
+    // points, and a bigger gap than that has always meant a conversion bug.
+    const rows = VA_COVERAGE_ROWS.catalog.rows
+    const mean = (f) => rows.reduce((n, r) => n + r[f], 0) / rows.length
+    const gap = mean('pct_named_requirement_courses_with_ge') - mean('pct_named_requirement_courses')
+    expect(gap).toBeGreaterThan(0)
+    expect(gap).toBeLessThan(10)
+  })
+
+  it('moves the Virginia selection when another option is chosen', () => {
+    useCoverage.mockReturnValue({ data: null, isLoading: false, isError: false })
+    render(<CoverageHeatmap majorSlug='va-cs'
+      major={{ slug: 'va-cs', state: 'va', label: 'Computer Science (VA)' }}
+      majorCapabilities={{ unitCoverage: false }} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Currently scheduled' }))
+    expect(screen.getByRole('button', { name: 'Currently scheduled' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'In the catalogue' })).toHaveAttribute('aria-pressed', 'false')
+  })
+
+  it('keeps every Virginia cell at or below the degree structural ceiling', () => {
+    // A Virginia degree is 120-127 units of which at most 60-67 transfer, so no
+    // cell can exceed about 52%. This is the guard that caught the
+    // general-education exclusion producing 61.9%.
+    for (const key of ['catalog', 'scheduled', 'catalog_all', 'scheduled_all']) {
+      for (const row of VA_COVERAGE_ROWS[key].rows) {
+        expect(row.pct_named_requirement_courses_with_ge).toBeLessThanOrEqual(row.va_ceiling_pct + 1e-9)
+        expect(row.va_ceiling_pct).toBeLessThanOrEqual(53)
+        // The paper lens removes the same units from both sides, so it has its
+        // own ceiling and must respect it too.
+        expect(row.va_units_no_ge_pct).toBeLessThanOrEqual(row.va_ceiling_paper_pct + 1e-9)
+        expect(row.va_ceiling_paper_pct).toBeLessThanOrEqual(53)
+        // The MA-paper lens counts courses, not credit, but sits on the same
+        // population, so the same structural ceiling binds it.
+        expect(row.pct_named_requirement_courses).toBeLessThanOrEqual(row.va_ceiling_courses_pct + 1e-9)
+        expect(row.va_ceiling_courses_pct).toBeLessThanOrEqual(53)
+      }
+    }
   })
 })

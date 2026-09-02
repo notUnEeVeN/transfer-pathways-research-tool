@@ -45,6 +45,30 @@ export function resolveAnalysisAvailability(analysis, selectedMajor) {
   const selectedLabel = text(selectedMajor?.label) || selectedSlug
   const datasets = Array.isArray(scope.datasets) ? [...scope.datasets] : []
 
+  // Renderer release is global, but publication readiness is major-scoped.
+  // A configured corpus may therefore require an exact server-issued receipt
+  // in addition to ordinary schema capabilities. Missing/stale receipt state
+  // never falls through to those permissive static flags.
+  const publicationGate = selectedMajor?.publicationGate
+  if (publicationGate != null) {
+    const requiredContract = text(publicationGate?.contract)
+    const publication = selectedMajor?.analysisPublication
+    if (!requiredContract || publication?.ready !== true
+        || text(publication?.contract) !== requiredContract
+        || text(publication?.major_slug) !== selectedSlug) {
+      return {
+        available: false,
+        status: 'publication_pending',
+        effectiveMajorSlug: null,
+        fixed: scope.mode === 'fixed',
+        label: `Publication pending for ${selectedLabel}`,
+        reason: `The current ${selectedLabel} projection has not passed its exact publication receipt gate.`,
+        datasets,
+        missingCapabilities: ['analysisPublicationReceipt'],
+      }
+    }
+  }
+
   if (scope.mode === 'fixed') {
     const fixedSlug = text(scope.slug)
     if (!fixedSlug) {
@@ -120,6 +144,12 @@ export function resolveAnalysisAvailability(analysis, selectedMajor) {
     }
   }
 
+  // A corpus can be published from structurally sound documents while its
+  // paper figures carry no release certification. That renders, but it must
+  // never render silently: carry the state out so the visual can say so.
+  const publication = selectedMajor?.analysisPublication
+  const uncertified = publication?.ready === true && publication?.certified === false
+
   return {
     available: true,
     status: 'available',
@@ -129,5 +159,9 @@ export function resolveAnalysisAvailability(analysis, selectedMajor) {
     reason: '',
     datasets,
     missingCapabilities: [],
+    certified: !uncertified,
+    uncertifiedNotice: uncertified
+      ? `${selectedLabel} figures are computed from verified source documents but have not passed institutional release certification. Pairs without complete evidence are excluded rather than estimated.`
+      : '',
   }
 }

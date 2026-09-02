@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { resolveAnalysisAvailability } from '../visuals/analysisAvailability'
 
 /**
  * Renders nothing. Calls the figure's OWN hook (`comparable.useData`) so the
@@ -12,8 +13,9 @@ import { useEffect } from 'react'
  */
 export default function CellSource({ pane, analysis, major, onCells }) {
   const comparable = analysis?.comparable || null
+  const availability = resolveAnalysisAvailability(analysis, major)
   const query = comparable
-    ? comparable.useData(pane, major)
+    ? comparable.useData(pane, major, { enabled: availability.available })
     : { data: null, isLoading: false, isError: false }
 
   // Knobs are read by `comparable.cells`, so a pinned control changing has to
@@ -23,10 +25,26 @@ export default function CellSource({ pane, analysis, major, onCells }) {
 
   useEffect(() => {
     if (!comparable) return onCells(pane.id, { status: 'no_adapter', cells: [] })
+    // A query disabled after receipt revocation can still expose its previous
+    // React Query data during the transition. Never turn that cached payload
+    // into comparison cells unless the current major receipt is available.
+    if (!availability.available) {
+      return onCells(pane.id, { status: 'unavailable', cells: [] })
+    }
     if (query.isLoading) return onCells(pane.id, { status: 'loading', cells: [] })
     if (query.isError) return onCells(pane.id, { status: 'error', cells: [] })
     return onCells(pane.id, { status: 'ready', cells: comparable.cells(query.data, pane, major) || [] })
-  }, [comparable, query.data, query.isLoading, query.isError, pane.id, major, knobKey, onCells])
+  }, [
+    availability.available,
+    comparable,
+    query.data,
+    query.isLoading,
+    query.isError,
+    pane.id,
+    major,
+    knobKey,
+    onCells,
+  ])
 
   return null
 }

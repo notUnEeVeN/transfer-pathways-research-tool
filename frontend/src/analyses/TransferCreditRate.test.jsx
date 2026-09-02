@@ -185,7 +185,32 @@ describe('TransferCreditRate', () => {
     expect(screen.queryByText(/Paper-source associate degrees/)).toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: 'Verified programs only' }))
-    expect(mockRate).toHaveBeenLastCalledWith('local_as', { majorSlug: 'va-cs', verifiedOnly: true })
+    // The request is still formed the same way, and still disabled: Virginia
+    // renders a committed baseline built from its published transfer guides, so
+    // the endpoint is not the source here. The cohort control stays because it
+    // describes the corpus, not because it drives a fetch.
+    expect(mockRate).toHaveBeenLastCalledWith('local_as', {
+      majorSlug: 'va-cs', verifiedOnly: true, enabled: false,
+    })
+  })
+
+  it('renders Virginia from the committed guide baseline, with its own supply controls', () => {
+    // No rows from the endpoint at all: the figure must still draw, because the
+    // Virginia measure comes from the transfer guides rather than the corpus
+    // this endpoint evaluates.
+    mockRate.mockReturnValue({ data: null, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
+    render(<TransferCreditRate majorSlug='va-cs' degreeAnalysisSlots={['local_as']}
+      major={{ slug: 'va-cs', state: 'va', label: 'Computer Science (VA)',
+        capabilities: { paperBaselines: false } }} />)
+
+    expect(screen.getByRole('button', { name: 'In the catalogue' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Currently scheduled' })).toBeInTheDocument()
+    // Every option visible, the selected one pressed.
+    expect(screen.getByRole('button', { name: 'In the catalogue' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'With a CS degree' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'All 23' })).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(screen.getByRole('button', { name: 'All 23' }))
+    expect(screen.getByRole('button', { name: 'All 23' })).toHaveAttribute('aria-pressed', 'true')
   })
 
   it('shows a paper corpus only as the final paper or our direct recalculation', () => {

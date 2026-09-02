@@ -732,20 +732,48 @@ export function useRawAssist(agreementId, { enabled = true } = {}) {
 
 // ── published figures (the shared stats gallery) ──
 
+export const FIGURE_PUBLICATION_POLL_MS = 15 * 1000
+
+export function isVirginiaPublishedFigure(figure) {
+  const state = String(figure?.state || '').trim().toLowerCase()
+  const majorSlug = String(
+    figure?.major_slug || figure?.visual?.options?.majorSlug || ''
+  ).trim().toLowerCase()
+  return state === 'va' || majorSlug === 'va-cs' || majorSlug.startsWith('va-')
+}
+
+export function omitVirginiaPublishedFigures(payload) {
+  if (!Array.isArray(payload?.figures)) return payload
+  return {
+    ...payload,
+    figures: payload.figures.filter((figure) => !isVirginiaPublishedFigure(figure)),
+  }
+}
+
 export function useFigures() {
   const { user } = useAuth()
-  return useQuery({
+  const query = useQuery({
     queryKey: ['figures', user?.uid],
     queryFn: () => apiClient.get('/gallery').then((r) => r.data),
     enabled: !!user?.uid,
-    // Teammates publish from their notebooks while the tab is open.
-    // The poll pauses in a background tab, so this is also one of the two
-    // queries that still refetch on focus (see client.js): coming back to a
-    // gallery that is up to 30s behind a colleague's publish is the one case
-    // where waiting for the next tick is worse than one small request.
-    refetchInterval: 30 * 1000,
+    // Teammates publish from their notebooks while the tab is open, and a VA
+    // receipt may be revoked while it is in the background. Keep that bounded
+    // check running there; focus still asks immediately rather than waiting
+    // for the next tick.
+    refetchInterval: FIGURE_PUBLICATION_POLL_MS,
+    refetchIntervalInBackground: true,
     refetchOnWindowFocus: true,
   })
+
+  // The server omits VA artifacts unless their stored receipt binding is
+  // current. If that recheck fails, a cached response is no longer authority:
+  // retain unrelated CA/MA gallery entries, but fail the VA subset closed.
+  const publicationCheckFailed = Boolean(
+    query.isError || query.isRefetchError || Number(query.failureCount) > 0
+  )
+  return publicationCheckFailed && query.data
+    ? { ...query, data: omitVirginiaPublishedFigures(query.data) }
+    : query
 }
 
 export function useDeleteFigure() {

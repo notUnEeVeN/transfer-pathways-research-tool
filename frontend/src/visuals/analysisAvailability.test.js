@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { capabilityReady, resolveAnalysisAvailability } from './analysisAvailability'
 import { ANALYSES } from '../analyses/registry'
+import { filterBuiltInAnalyses } from './analysisVisibility'
 
 const major = (overrides = {}) => ({
   slug: 'bio',
@@ -28,6 +29,67 @@ describe('capabilityReady', () => {
 })
 
 describe('resolveAnalysisAvailability', () => {
+  it('keeps a globally released visual unavailable for Virginia without its exact major receipt', () => {
+    const analysis = ANALYSES.find((entry) => entry.id === 'coverage-heatmap')
+    const visible = filterBuiltInAnalyses([analysis], {
+      isAdmin: false,
+      releasedIds: ['coverage-heatmap'],
+      disabledIds: [],
+    })
+    expect(visible).toHaveLength(1)
+
+    const virginia = major({
+      slug: 'va-cs',
+      label: 'Computer Science (VA)',
+      state: 'va',
+      publicationGate: { contract: 'va-analysis-publication-receipt-v1' },
+      capabilities: {
+        assistAgreements: true,
+        degreeTemplates: true,
+        courseTypeFigures: true,
+        asDegrees: true,
+        prerequisites: true,
+      },
+    })
+    expect(resolveAnalysisAvailability(visible[0], virginia)).toEqual({
+      available: false,
+      status: 'publication_pending',
+      effectiveMajorSlug: null,
+      fixed: false,
+      label: 'Publication pending for Computer Science (VA)',
+      reason: 'The current Computer Science (VA) projection has not passed its exact publication receipt gate.',
+      datasets: analysis.majorScope.datasets,
+      missingCapabilities: ['analysisPublicationReceipt'],
+    })
+  })
+
+  it('accepts a gated major only when the server receipt contract and slug match exactly', () => {
+    const analysis = ANALYSES.find((entry) => entry.id === 'coverage-heatmap')
+    const virginia = major({
+      slug: 'va-cs',
+      label: 'Computer Science (VA)',
+      publicationGate: { contract: 'va-analysis-publication-receipt-v1' },
+      analysisPublication: {
+        ready: true,
+        contract: 'va-analysis-publication-receipt-v1',
+        major_slug: 'va-cs',
+      },
+      capabilities: { assistAgreements: true, degreeTemplates: true },
+    })
+    expect(resolveAnalysisAvailability(analysis, virginia)).toMatchObject({
+      available: true,
+      effectiveMajorSlug: 'va-cs',
+    })
+    expect(resolveAnalysisAvailability(analysis, {
+      ...virginia,
+      analysisPublication: { ...virginia.analysisPublication, major_slug: 'cs' },
+    })).toMatchObject({
+      available: false,
+      status: 'publication_pending',
+      effectiveMajorSlug: null,
+    })
+  })
+
   it('runs a selected-major visual under the selected slug when every capability is ready', () => {
     const result = resolveAnalysisAvailability({
       majorScope: {
@@ -46,7 +108,39 @@ describe('resolveAnalysisAvailability', () => {
       reason: '',
       datasets: ['degree templates'],
       missingCapabilities: [],
+      // A corpus with no publication gate is certified by default; only a
+      // publication that explicitly reports `certified: false` is flagged.
+      certified: true,
+      uncertifiedNotice: '',
     })
+  })
+
+  it('flags an available corpus whose publication is not release-certified', () => {
+    const scope = {
+      mode: 'selected',
+      requiredCapabilities: ['degreeTemplates'],
+      datasets: ['degree templates'],
+    }
+    const gated = (certified) => ({
+      ...major(),
+      publicationGate: { contract: 'va-analysis-publication-v1' },
+      analysisPublication: {
+        ready: true,
+        certified,
+        contract: 'va-analysis-publication-v1',
+        major_slug: 'bio',
+      },
+    })
+
+    const uncertified = resolveAnalysisAvailability({ majorScope: scope }, gated(false))
+    expect(uncertified.available).toBe(true)
+    expect(uncertified.certified).toBe(false)
+    expect(uncertified.uncertifiedNotice).toMatch(/release certification/i)
+
+    const certified = resolveAnalysisAvailability({ majorScope: scope }, gated(true))
+    expect(certified.available).toBe(true)
+    expect(certified.certified).toBe(true)
+    expect(certified.uncertifiedNotice).toBe('')
   })
 
   it('reports data pending and does not provide a fallback slug when a capability is absent', () => {

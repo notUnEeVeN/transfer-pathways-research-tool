@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Select, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
+import { VA_COVERAGE_ROWS } from './vaCoverageRows'
 import { COVERAGE_HEATMAP_MEASURES } from './measures'
 import {
   PAPER_RED_LOW_TO_HIGH_GRADIENT,
@@ -20,6 +21,12 @@ const ROW_MODES = [
 // for direct comparison.
 const REQ_MODES = [
   { value: 'degree', label: '4-year graduation plan (by units)' },
+  // The same unit lens with general education taken off BOTH sides of the
+  // ratio — the Massachusetts paper's exclusion, applied to credit rather than
+  // to a course count. Virginia's guides are written in credit and its course
+  // count has to be modelled, so this is the reading the two states can be
+  // compared on without either of them being converted.
+  { value: 'degree-no-ge', label: '4-year graduation plan (units, no GE)' },
   { value: 'assist', label: 'ASSIST minimums' },
   { value: 'paper', label: 'Hand-curated minimums' },
 ]
@@ -39,7 +46,49 @@ const MA_FIG1_SOURCES = [
   { value: 'archive', label: 'Our recalculation' },
 ]
 const normalizeMaFigure1Source = (source) => (source === 'archive' ? 'archive' : 'pdf')
-const requirementsParam = (mode) => (MA_MODES.has(mode) ? 'degree' : mode)
+/**
+ * Virginia's three readings of one guide, in the order the differences apply.
+ *
+ * `paper` is the Massachusetts convention: required courses, binary per course,
+ * general education excluded. Virginia's guides do not print one row per
+ * course — the university half collapses blocks, and Norfolk State's "Required
+ * Core Courses" is a single row worth 30 credits — so every row on both sides
+ * is converted to courses at the credits-per-course that guide's own single
+ * courses exhibit, which makes that row ten and not one. The middle reading
+ * exists so the two steps are separable on screen: 50.0% counting credit,
+ * 46.3% once general education comes off both sides of the ratio, 43.0% once
+ * courses are counted binary rather than weighted by credit.
+ */
+export const VA_MEASURES = [
+  {
+    value: 'units_ge',
+    label: 'Degree units',
+    hint: 'Credit of the whole degree, general education counted where the guide puts it',
+    reqMode: 'ma-courses-ge',
+    ceiling: 'va_ceiling_pct',
+  },
+  {
+    value: 'units',
+    label: 'Units, no GE',
+    hint: 'The same credits removed from both the numerator and the denominator',
+    reqMode: 'ma-courses',
+    ceiling: 'va_ceiling_paper_pct',
+    remap: {
+      pct_named_requirement_courses: 'va_units_no_ge_pct',
+      named_requirement_courses_total: 'va_units_no_ge_total',
+      named_requirement_courses_articulated: 'va_units_no_ge_articulated',
+    },
+  },
+  {
+    value: 'paper',
+    label: 'MA paper',
+    hint: "The paper's convention: required courses counted binary, general education excluded",
+    reqMode: 'ma-courses',
+    ceiling: 'va_ceiling_courses_pct',
+  },
+]
+
+const requirementsParam = (mode) => (MA_MODES.has(mode) || mode === 'degree-no-ge' ? 'degree' : mode)
 
 /**
  * The coverage request this figure makes, in one place. A delta adapter
@@ -146,6 +195,14 @@ export function cellCoverageValue(cell, reqMode, maSource = 'archive') {
   if (reqMode === MA_GE_MODE) {
     return cell.maGeTotal > 0 ? (cell.maGeArticulated / cell.maGeTotal) * 100 : null
   }
+  if (reqMode === 'degree-no-ge') {
+    // The requirement rollup, not the unit budget — the same population the
+    // course lens counts, weighted by credit instead of counted binary, so the
+    // only difference between the two readings is the weighting.
+    const total = cell.namedUnitsTotal - cell.degreeUnitsGeTotal
+    const covered = Math.max(0, cell.namedUnitsCovered - cell.degreeUnitsGeCovered)
+    return total > 0 ? Math.min(100, (covered / total) * 100) : null
+  }
   if (reqMode === 'degree' && cell.hasDegreeUnits && cell.degreeUnitsModeled > 0) {
     return (cell.degreeUnitsCovered / cell.degreeUnitsModeled) * 100
   }
@@ -189,6 +246,10 @@ export function buildHeatmap(rows, reqMode, { maSource = 'archive' } = {}) {
         receiversArticulated: 0,
         degreeUnitsModeled: 0,
         degreeUnitsCovered: 0,
+        degreeUnitsGeTotal: 0,
+        degreeUnitsGeCovered: 0,
+        namedUnitsTotal: 0,
+        namedUnitsCovered: 0,
         hasDegreeUnits: false,
         degreeUnitSystem: null,
         maSlotsTotal: 0,
@@ -205,6 +266,10 @@ export function buildHeatmap(rows, reqMode, { maSource = 'archive' } = {}) {
       if (modeledUnits != null && coveredUnits != null) {
         cell.degreeUnitsModeled += modeledUnits
         cell.degreeUnitsCovered += coveredUnits
+        cell.degreeUnitsGeTotal += numberOrNull(r.degree_units_ge_total) || 0
+        cell.degreeUnitsGeCovered += numberOrNull(r.degree_units_ge_with_equivalent) || 0
+        cell.namedUnitsTotal += numberOrNull(r.degree_units_named_total) || 0
+        cell.namedUnitsCovered += numberOrNull(r.degree_units_named_covered) || 0
         cell.hasDegreeUnits = true
       }
       cell.maSlotsTotal += numberOrNull(r.named_requirement_courses_total) || 0
@@ -296,6 +361,7 @@ export function coverageComparisonContract(pane, major) {
   const includeGe = view.reqMode === MA_GE_MODE
   const sources = {
     degree: 'curated bachelor requirements + published equivalencies',
+    'degree-no-ge': 'curated bachelor requirements + published equivalencies, general education excluded',
     assist: 'ASSIST transfer-minimum agreements',
     paper: 'hand-curated transfer minimums',
     [MA_MODE]: 'curated whole-degree course requirements + published equivalencies',
@@ -364,6 +430,42 @@ function cellTitle(row, col, cell, value, reqMode, maSource = 'archive') {
     }
   }
   return bits.join('\n')
+}
+
+/**
+ * A choice control where the SELECTED option is the highlighted one. A single
+ * button whose label flips between states cannot say whether it is showing what
+ * is selected or what clicking would do, so every corpus control here is a
+ * segmented list instead.
+ */
+function SegmentedChoice({ label, value, options, onChange }) {
+  return (
+    <div className='flex flex-col'>
+      <span className='field-label'>{label}</span>
+      <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'
+        role='group' aria-label={label}>
+        {options.map((option) => {
+          const selected = value === option.value
+          return (
+            <button
+              key={option.value}
+              type='button'
+              aria-pressed={selected}
+              title={option.hint || undefined}
+              onClick={() => onChange(option.value)}
+              className={`px-3 text-button border-r border-border last:border-r-0 transition-colors ${
+                selected
+                  ? 'bg-primary text-on-primary font-medium'
+                  : 'text-ink-muted hover:bg-surface-hover'
+              }`}
+            >
+              {option.label}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 function HeatmapTable({ model, rowMode, reqMode, maSource = 'archive' }) {
@@ -508,6 +610,16 @@ export default function CoverageHeatmap({
   const [maToggle, setMaEquivalent] = useState(defaultMaEquivalent)
   const maEquivalent = unitLensAvailable ? maToggle : true
   const [maIncludeGe, setMaIncludeGe] = useState(defaultMaIncludeGe)
+  // Virginia opens on the unit reading its guides are written in; the MA-paper
+  // preset is one click away and is the reading the other two states are drawn
+  // in, so a cross-state comparison should be made there.
+  const [vaMeasureValue, setVaMeasureValue] = useState('units_ge')
+  const vaMeasure = majorSlug === 'va-cs'
+    ? (VA_MEASURES.find((m) => m.value === vaMeasureValue) || VA_MEASURES[0])
+    : null
+  const includeGeForCorpus = vaMeasure
+    ? vaMeasure.reqMode === MA_GE_MODE
+    : maIncludeGe
   const [maSource, setMaSource] = useState(() => normalizeMaFigure1Source(defaultMaSource))
   const rowMode = isPaperCorpus
     ? ROW_MODES[0]
@@ -533,7 +645,7 @@ export default function CoverageHeatmap({
     ? 'degree'
     : reqModes.some((m) => m.value === reqMode) ? reqMode : 'degree'
   const activeReqMode = !presentation && maEquivalent
-    ? (maIncludeGe ? MA_GE_MODE : MA_MODE)
+    ? (includeGeForCorpus ? MA_GE_MODE : MA_MODE)
     : basisMode
   const activeMaSource = isPaperCorpus && activeReqMode === MA_MODE ? maSource : 'archive'
 
@@ -541,8 +653,9 @@ export default function CoverageHeatmap({
   // measured" panel beside it must follow. The definitions live in
   // measures.js; the figure only reports which one is active.
   useEffect(() => {
-    onMeasureChange?.(COVERAGE_HEATMAP_MEASURES[activeReqMode] || COVERAGE_HEATMAP_MEASURES.degree)
-  }, [activeReqMode, onMeasureChange])
+    const key = vaMeasure ? `va-${vaMeasure.value.replace('_', '-')}` : activeReqMode
+    onMeasureChange?.(COVERAGE_HEATMAP_MEASURES[key] || COVERAGE_HEATMAP_MEASURES.degree)
+  }, [activeReqMode, vaMeasure, onMeasureChange])
 
   // A pinned comparison must reopen on the controls the reader actually
   // selected, so the figure reports its own settings rather than the state its
@@ -554,16 +667,53 @@ export default function CoverageHeatmap({
       defaultRowMode: rowMode.value,
       defaultReqMode: reqMode,
       defaultMaEquivalent: maToggle,
-      defaultMaIncludeGe: maIncludeGe,
+      defaultMaIncludeGe: includeGeForCorpus,
       defaultMaSource: maSource,
     })
-  }, [rowMode.value, reqMode, maToggle, maIncludeGe, maSource, onViewChange])
+  }, [rowMode.value, reqMode, maToggle, includeGeForCorpus, maSource, onViewChange])
 
+  // Virginia is measured from published transfer guides rather than from the
+  // corpus this endpoint evaluates. The state agreed one associate degree and
+  // lets each university choose which of its options it wants, so a guide
+  // already states the pathway in VCCS common course numbers — the measurement
+  // is just whether a college teaches those courses. The rows are pre-shaped
+  // exactly like the endpoint's, so everything below this line is identical for
+  // all three states and the scales stay comparable.
+  const vaRows = majorSlug === 'va-cs' ? VA_COVERAGE_ROWS : null
+  // Catalogue membership is what a college publishes; scheduled is what it is
+  // currently running. The guides are identical for every college, so supply is
+  // the only thing that separates two rows — and on the catalogue basis almost
+  // every college carries almost everything, which is why that view is nearly
+  // flat and this toggle is where the variation lives.
+  const [vaBasis, setVaBasis] = useState('catalog')
+  // The seven VCCS colleges without a computer-science associate degree. They
+  // can still teach the courses a guide names, so the wider view is offered —
+  // off by default, because the pathway does not formally exist there.
+  const [vaAllColleges, setVaAllColleges] = useState(false)
   const coverage = useCoverage(
     coverageQueryArgs({ majorSlug, rowMode: rowMode.value, reqMode: activeReqMode }),
-    { staleTime: 0, refetchOnWindowFocus: false, refetchInterval: false }
+    {
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      enabled: !vaRows,
+    }
   )
-  const rows = coverage.data?.rows || []
+  const vaKey = `${vaBasis}${vaAllColleges ? '_all' : ''}`
+  // Two of the three Virginia measures ride the same request mode, so the one
+  // that is not the mode's own field is moved onto it here rather than by
+  // teaching the shared reader a Virginia-only field name.
+  const rows = useMemo(() => {
+    if (!vaRows) return coverage.data?.rows || []
+    const base = vaRows[vaKey].rows
+    const remap = vaMeasure?.remap
+    if (!remap) return base
+    return base.map((row) => {
+      const next = { ...row }
+      for (const [target, source] of Object.entries(remap)) next[target] = row[source]
+      return next
+    })
+  }, [vaRows, vaKey, vaMeasure, coverage.data])
   const localModel = useMemo(
     () => buildHeatmap(rows, activeReqMode, { maSource: activeMaSource }),
     [rows, activeReqMode, activeMaSource]
@@ -576,11 +726,11 @@ export default function CoverageHeatmap({
   const datasetVersion = coverage.data?.dataset_version || 'unversioned'
   const templateEvidence = degreeTemplateEvidenceLabel(majorProp)
 
-  if (coverage.isLoading) {
+  if (!vaRows && coverage.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
   }
 
-  if (coverage.isError) {
+  if (!vaRows && coverage.isError) {
     return <Alert type='error'>Could not load the coverage data.</Alert>
   }
 
@@ -658,6 +808,36 @@ export default function CoverageHeatmap({
   return (
     <Stack gap='section'>
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+          {vaRows && (
+            <SegmentedChoice
+              label='Course supply'
+              value={vaBasis}
+              onChange={setVaBasis}
+              options={[
+                { value: 'catalog', label: 'In the catalogue', hint: 'Courses the college publishes' },
+                { value: 'scheduled', label: 'Currently scheduled', hint: 'Courses the college is running now' },
+              ]}
+            />
+          )}
+          {vaRows && (
+            <SegmentedChoice
+              label='Measure'
+              value={vaMeasure.value}
+              onChange={setVaMeasureValue}
+              options={VA_MEASURES}
+            />
+          )}
+          {vaRows && (
+            <SegmentedChoice
+              label='Colleges'
+              value={vaAllColleges ? 'all' : 'cs'}
+              onChange={(v) => setVaAllColleges(v === 'all')}
+              options={[
+                { value: 'cs', label: 'With a CS degree', hint: 'The 16 publishing a computer-science associate degree' },
+                { value: 'all', label: 'All 23', hint: 'Every VCCS college' },
+              ]}
+            />
+          )}
         {!isPaperCorpus && <div className='flex flex-col'>
           <span className='field-label'>Rows</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
@@ -725,8 +905,24 @@ export default function CoverageHeatmap({
           Refresh
         </Button>
         <div className='ml-auto flex h-9 flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
-          <span className='font-mono tabular-nums'>{datasetVersion}</span>
-          <span>{coverage.isFetching ? 'Updating' : 'Live endpoint'}</span>
+          {/* Virginia is drawn from a committed module, not the endpoint, so
+              "Live endpoint" was actively misleading there — and a stale build
+              is otherwise indistinguishable from a disagreement about the
+              numbers. Stamping the build the cells came from makes the two
+              tellable apart at a glance. */}
+          {vaRows ? (
+            <>
+              <span className='font-mono tabular-nums' title={vaRows.built_at}>
+                {String(vaRows.built_at).slice(0, 16).replace('T', ' ')}
+              </span>
+              <span>Committed rows</span>
+            </>
+          ) : (
+            <>
+              <span className='font-mono tabular-nums'>{datasetVersion}</span>
+              <span>{coverage.isFetching ? 'Updating' : 'Live endpoint'}</span>
+            </>
+          )}
         </div>
       </div>
 

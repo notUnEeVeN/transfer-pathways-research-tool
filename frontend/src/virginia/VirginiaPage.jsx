@@ -6,20 +6,20 @@ import {
 } from '../components/ui'
 import SubNav from '../components/SubNav'
 import { InstitutionRail, CourseTable, courseSearch, TieredDegreeLedger } from '../DataPage'
-// The same progress bar California's validation dashboard uses, so the two
-// consoles report the same job the same way.
-import { ProgressBar } from '../asdegrees/validation/ValidationDashboard'
 import Textarea from '../components/ui/forms/Textarea'
 import JsonDocumentPanel from '../shared/JsonDocumentPanel'
-import VerifiedBanner from '../shared/components/VerifiedBanner'
 import { BuiltInAnalysisCard, VisualThumbnailCard, itemDetails } from '../visuals/VisualsPage'
 import { getAnalysisById } from '../analyses/registry'
 import { useMajors } from '../shared/majors/useMajors'
 import {
-  useVaSummary, useVaInstitutions, useVaCourses, useVaCourse, useVaMatrix,
+  useVaSummary, useVaInstitutions, useVaCourses, useVaCourse,
   useVaDegrees, useVaCoverage, useSaveVaDegree, useVaDegreeRevisions,
 } from './useVirginia'
 import VirginiaPrerequisitesTab, { VirginiaPrerequisiteView } from './VirginiaPrerequisites'
+// The guides themselves, as the university pages read them — the same
+// documents the coverage figure measures, so a reader moving between a
+// university page and the heatmap column is looking at one source.
+import { VA_TRANSFER_GUIDES } from '../analyses/vaTransferGuides'
 
 /**
  * Transfer Virginia explorer.
@@ -27,7 +27,6 @@ import VirginiaPrerequisitesTab, { VirginiaPrerequisiteView } from './VirginiaPr
  * Deliberately shaped like the California Data page so a reader familiar with
  * one console finds the same information in the same place in the other:
  *
- *   Overview            — corpus counts and reach (California's dataset summary)
  *   Community Colleges  — college rail → per-college courses and associate
  *                          degrees (California's college-first browser)
  *   Universities        — university rail → per-university courses and
@@ -38,6 +37,13 @@ import VirginiaPrerequisitesTab, { VirginiaPrerequisiteView } from './VirginiaPr
  * independent districts. Prerequisites come from the separate VCCS master
  * course source, not from Transfer Virginia's equivalency records; the two
  * authorities remain visibly distinct in the prerequisite views.
+ *
+ * There is no Overview. It reported the per-course equivalency corpus and the
+ * verification progress of catalog-composed degree documents, and neither is
+ * what this state now measures: Figures 1 and 3 are computed from the published
+ * Transfer Guides joined against the VCCS course catalogues, and a guide is
+ * read on its own university page. A landing tab restating stale provenance is
+ * worse than no landing tab, so the console opens on the colleges.
  *
  * The last tab exists because of a fact peculiar to this state: the 23 VCCS
  * colleges share one course numbering system, so `CSC221` is the same course
@@ -56,27 +62,27 @@ import VirginiaPrerequisitesTab, { VirginiaPrerequisiteView } from './VirginiaPr
  * the deliverable there.
  */
 
-// The Virginia figures compute, but the corpus behind them is not ready to be
-// read as findings: the agreements are DERIVED (Transfer Virginia never joins
-// its equivalencies to its degree requirements — we do), and none of it has
-// been through the verification pass California's and Massachusetts's numbers
-// have had. Until it has, the tab is withheld rather than shown with caveats,
-// because a figure on screen gets quoted. `VisualsTab` below is left intact:
-// restoring the tab is this one flag.
+// Virginia's agreements are DERIVED — Transfer Virginia never joins its
+// equivalencies to its degree requirements, so scripts/va/buildVaDocuments.js
+// performs that join — and the corpus has not been through the verification
+// pass California's and Massachusetts's numbers have had. The tab was withheld
+// entirely on that basis, because a figure on screen gets quoted.
 //
-// 2026-08-21: turned ON for internal review after the schema-standardization
-// pass (Virginia now reads through the same functions California does, and its
-// Figure 3/4 cells went from 124 to 288 of 304). The reason above has NOT gone
-// away — the agreements are still derived and still unverified — so this is a
-// switch for looking at our own work, not a decision that the numbers are
-// publishable. Set it back to false before anything Virginia is shared.
-// Exported so the guard test asserts the tab and this switch agree, rather
-// than hard-coding one direction: flipping the flag alone can never silently
-// change what the page exposes.
+// It is shown now because the caveat is carried on the figures themselves
+// rather than by hiding them: the server issues an explicitly uncertified
+// publication receipt (`certified: false`), and every visual renders beneath a
+// "Not release-certified" notice. Pairs without complete evidence exclude
+// themselves with a stated reason instead of being estimated into an average,
+// so what remains on screen is exactly what the sources support.
+//
+// This local switch is still only half the gate. The tab also requires the
+// server-issued, major-scoped publication receipt used by every shared
+// analysis surface; flipping this flag alone cannot expose an unpublished
+// projection. Exported so the guard test asserts the tab and this switch agree,
+// rather than hard-coding one direction.
 export const VA_VISUALS_READY = true
 
 const TABS = [
-  { value: 'overview', label: 'Overview' },
   { value: 'colleges', label: 'Community Colleges' },
   { value: 'universities', label: 'Universities' },
   { value: 'courses', label: 'Courses' },
@@ -85,7 +91,6 @@ const TABS = [
 ]
 
 const TAB_ROUTES = {
-  overview: { path: '/api/va/summary' },
   colleges: { path: '/api/va/institutions?level=community_college' },
   universities: { path: '/api/va/institutions?level=four_year&cohort=schev_public_four_year' },
   courses: { path: '/api/va/courses' },
@@ -95,14 +100,18 @@ const TAB_ROUTES = {
 
 const num = (v) => (v == null ? '—' : Number(v).toLocaleString())
 
-// The same five figures the California and Massachusetts libraries render, in
-// the same thumbnail-gallery + full-screen detail shell, so all three states
-// read identically. Virginia's agreements are derived rather than published —
-// Transfer Virginia issues course equivalencies and degree requirements
-// separately, and scripts/va/buildVaDocuments.js performs the join.
+// The figures Virginia can currently answer, in the same thumbnail-gallery +
+// full-screen detail shell California and Massachusetts use, so all three
+// states read identically.
+//
+// Figure 2 (course-type-coverage) is deliberately absent: classifying a
+// requirement by course type has not been done for the Transfer Guides, and a
+// figure that panes an empty or half-classified grid reads as a finding about
+// Virginia rather than as work not yet started. Figure 5 (transfer-extra-cost)
+// prices Figure 4's hours, which needs a per-credit tuition figure Virginia's
+// guides do not carry.
 const VA_FIGURE_IDS = [
-  'coverage-heatmap', 'course-type-coverage', 'transfer-credit-rate',
-  'transfer-extra-units', 'transfer-extra-cost',
+  'coverage-heatmap', 'transfer-credit-rate', 'transfer-extra-units',
 ]
 const NO_RELEASES = new Set()
 
@@ -170,8 +179,8 @@ const PRIMARY_VA_COHORT = 'schev_public_four_year'
 const OTHER_VA_COHORT = 'other_four_year'
 
 export default function VirginiaPage() {
-  const [tab, setTab] = useState('overview')
-  const [route, setRoute] = useState(TAB_ROUTES.overview)
+  const [tab, setTab] = useState('colleges')
+  const [route, setRoute] = useState(TAB_ROUTES.colleges)
 
   const changeTab = (next) => {
     setTab(next)
@@ -195,7 +204,6 @@ export default function VirginiaPage() {
             : imported === false ? <NotImported />
             : (
               <>
-                {tab === 'overview' && <OverviewTab summary={summary.data} />}
                 {tab === 'colleges' && <CollegesPane onRoute={setRoute} />}
                 {tab === 'universities' && <UniversitiesPane onRoute={setRoute} />}
                 {tab === 'courses' && <CoursesTab />}
@@ -229,48 +237,26 @@ function NotImported() {
 
 /* ── Overview ────────────────────────────────────────────────────────────── */
 
-/**
- * The landing view leads with what is left to do.
- *
- * Everything here was scraped and none of it has been read by a person yet, so
- * the question a reader arrives with is not how large the corpus is — it is
- * which degrees still need verifying and which are worth distrusting first.
- * The corpus counts stay, below, because they are context rather than the task.
- */
-function OverviewTab({ summary }) {
-  return (
-    <Stack gap='section'>
-      <VerificationPanel />
-      <StatStrip tiles={[
-        { label: 'Courses', value: num(summary.courses) },
-        { label: 'Equivalencies', value: num(summary.equivalencies) },
-        { label: 'Community colleges', value: num(summary.community_colleges) },
-        { label: 'Public universities', value: num(summary.public_four_year ?? summary.four_year) },
-        { label: 'Departments', value: num(summary.departments) },
-        { label: 'With notes', value: num(summary.with_notes) },
-      ]} />
-      <ReachPanel />
-    </Stack>
-  )
-}
+
+
+
+
 
 /**
- * Verification state for one institution, in California's status vocabulary.
+ * Collection state for one institution.
  *
- * A document is verified or it is not. `URL only` and `No CS-specific degree`
- * are settled facts about what an institution publishes, not stages of review
- * — they will never carry a tick, and counting them as outstanding would leave
- * the job looking permanently unfinished. The latter wording is deliberate:
- * some colleges publish a broad Science A.S. but no source-prescribed CS path.
+ * These say what a document IS, not how far along a review of it is. Virginia
+ * carried a verified/unverified axis for a while, and it is gone: the figures
+ * are computed from the published Transfer Guides, so whether anyone has signed
+ * off a catalog-composed degree document decides nothing about any number on
+ * this site, and showing it beside the data implied that it did.
  *
- * There is deliberately no "flagged by the parser" state. Whether an extraction
- * tripped a validation rule is the machine's opinion of its own work, and
- * showing it as a category invited reading it as a verdict; a person checking
- * the document against its source page is the only verdict that counts.
+ * `URL only` and `No CS-specific degree` are settled facts about what an
+ * institution publishes. The latter wording is deliberate: some colleges
+ * publish a broad Science A.S. but no source-prescribed CS path.
  */
 const VA_STATE = {
-  verified: { label: 'Verified', variant: 'success' },
-  in_review: { label: 'Unverified', variant: 'accent' },
+  collected: { label: 'Collected', variant: 'success' },
   needs_collection: { label: 'Needs collecting', variant: 'conservative' },
   needs_composition: { label: 'Needs composing', variant: 'conservative' },
   url_only: { label: 'URL only', variant: 'conservative' },
@@ -279,19 +265,6 @@ const VA_STATE = {
 
 /** The two outcomes that will never carry a tick, however long anyone waits. */
 const SETTLED_STATES = new Set(['url_only', 'no_program'])
-
-/**
- * Whether one document counts as verified.
- *
- * The signed verdict, and only the verdict — the server's rule, not
- * California's. A note here is not evidence of verification: Virginia's note
- * field was used as a working scratchpad during collection, and most live
- * documents carrying one hold the source URLs they were built from. Counting
- * those would have reported the four-year job as 14 of 18 done when two
- * documents had been signed. `has_notes` is still surfaced separately, because
- * "somebody wrote something here" is useful — it just is not a sign-off.
- */
-const docVerified = (doc) => doc?.verified === true
 
 /**
  * Whether a person is allowed to sign one document off.
@@ -336,12 +309,11 @@ function buildVerificationIndex(coverage = []) {
             ? 'needs_collection'
             : !live.length
               ? (docs.some((d) => d.status === 'no_program') ? 'no_program' : 'url_only')
-              : live.every(docVerified) ? 'verified' : 'in_review'
+              : 'collected'
     index.set(slug, {
       state,
       documents: docs.length,
       live: live.length,
-      verified: live.filter(docVerified).length,
     })
   }
   return index
@@ -356,137 +328,13 @@ function coverageForInstitution(coverage, institution) {
   return (coverage?.coverage ?? []).find((row) => coverageSlugOf(row) === wanted) ?? null
 }
 
-/**
- * The overview answers three questions and stops there: how much is verified,
- * how much is left, and what is standing in the way.
- *
- * The last two used to read as a single number, which hid the fact that they
- * are different jobs belonging to different people. A degree nobody has
- * collected needs a researcher at a catalog page; a collected one needs a
- * verifier at a source page; an institution that publishes no CS degree needs
- * nobody at all. The card names all three so a reader can tell which pile they
- * are looking at, and so "no progress" can never be mistaken for "no work
- * possible". Working through the degrees still happens in the rails, where the
- * document itself is one click away.
- */
-function VerificationPanel() {
-  const { data, isLoading, isError } = useVaCoverage()
 
-  const levels = useMemo(() => {
-    const rows = data?.coverage ?? []
-    const index = buildVerificationIndex(rows)
-    const totals = data?.verification ?? {}
-    return ['community_college', 'four_year'].map((level) => {
-      const cc = level === 'community_college'
-      // Two populations, deliberately kept apart. The bar counts documents
-      // across the whole level, which is what the endpoint's totals count; the
-      // institution lines below are scoped to the cohort its rail opens on —
-      // the public four-year cohort is the Virginia analogue of the UC
-      // receiving side, and private partners must not inflate that job. Each
-      // line states its own denominator so the two cannot be read as one.
-      const levelStates = rows.filter((r) => r.level === level)
-        .map((r) => index.get(coverageSlugOf(r))).filter(Boolean)
-      const scoped = rows
-        .filter((r) => r.level === level && (level !== 'four_year' || r.cohort === PRIMARY_VA_COHORT))
-        .map((r) => index.get(coverageSlugOf(r))).filter(Boolean)
-      const expecting = scoped.filter((s) => !SETTLED_STATES.has(s.state))
-      // `*_live` is the count of documents a person is allowed to sign;
-      // `*_verifiable` is the older name for the same per-level figure.
-      const live = reported(
-        cc ? [totals.as_live, totals.as_verifiable] : [totals.bs_live, totals.bs_verifiable],
-        levelStates.reduce((n, s) => n + s.live, 0),
-      )
-      const verified = reported(
-        [cc ? totals.as_verified : totals.bs_verified],
-        levelStates.reduce((n, s) => n + s.verified, 0),
-      )
-      return {
-        level,
-        label: cc ? 'A.S. degrees' : 'B.S. degrees',
-        live,
-        verified,
-        // Clamped: two figures that arrived from different places must never
-        // subtract into a negative count of outstanding work on screen.
-        waiting: Math.max(0, live - verified),
-        // A school with nothing collected holds no document, so it is absent
-        // from the bar entirely. Counting it here is what keeps the bar from
-        // reading as the whole job.
-        cohort: expecting.length,
-        awaiting: expecting.filter((s) => !s.live).length,
-        settled: scoped.length - expecting.length,
-      }
-    })
-  }, [data])
-
-  if (isLoading) return <div className='flex justify-center py-8'><Spinner /></div>
-  if (isError || !data?.coverage?.length) return null
-
-  const live = levels.reduce((n, l) => n + l.live, 0)
-  const verified = levels.reduce((n, l) => n + l.verified, 0)
-
-  return (
-    <Panel title='Verification progress'
-      action={live > 0
-        ? <Badge variant={verified === live ? 'success' : 'accent'}>{verified} of {live} verified</Badge>
-        : null}>
-      <p className='text-caption ink-subtle mb-4'>
-        A degree counts as verified when a person has checked it against its cited sources and
-        signed it off. Notes are welcome but they are not a signature — the note box here has been
-        used for source links and working remarks, so it records what someone was thinking, not
-        that the document was approved. Every live document can be signed; a parser's verdict on
-        its own parse decides nothing about who may read a page. Work through them in the Community
-        Colleges and Universities tabs, where the status pills filter the list.
-      </p>
-      <div className='grid gap-4 sm:grid-cols-2'>
-        {levels.map((l) => (
-          <div key={l.level} className='surface-sunken rounded-[10px] p-4'>
-            {l.live > 0 ? (
-              <ProgressBar label={`${l.label} verified`} value={l.verified} total={l.live} tone='success' />
-            ) : (
-              // Never a 0-of-0 bar. An empty track reads as "nobody has done
-              // any of this" when the truth is that there is nothing here yet
-              // to do, and the two send a reader to entirely different work.
-              <>
-                <p className='text-tag text-ink-subtle'>{l.label} verified</p>
-                <p className='text-caption ink-subtle mt-1'>
-                  Nothing collected at this level yet, so there is nothing to verify.
-                </p>
-              </>
-            )}
-            <ul className='mt-3 space-y-1'>
-              <JobLine name='Waiting for a person'
-                detail={`${l.waiting} collected documents`} />
-              {l.cohort > 0 && (
-                <JobLine name='Not collected yet'
-                  detail={`${l.awaiting} of ${l.cohort} institutions`} />
-              )}
-              {l.settled > 0 && (
-                <JobLine name='Nothing to sign'
-                  detail={`${l.settled} institutions — URL only, or no CS-specific degree`} />
-              )}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </Panel>
-  )
-}
-
-/** One named job and its own count, so no two lines share a denominator. */
-function JobLine({ name, detail }) {
-  return (
-    <li className='flex flex-wrap items-baseline justify-between gap-x-3 text-tag'>
-      <span className='text-ink-muted'>{name}</span>
-      <span className='text-ink-subtle'>{detail}</span>
-    </li>
-  )
-}
 
 /**
  * The status pills above a rail, as filters.
  *
  * They already stated the breakdown; making them clickable turns a caption into
- * the way through the work — pick "Unverified" and the rail below holds
+ * the way through the work — pick "Needs collecting" and the rail below holds
  * exactly the institutions still to do, in order.
  */
 function RailFilters({ counts, value, onChange, total }) {
@@ -494,14 +342,13 @@ function RailFilters({ counts, value, onChange, total }) {
     { key: 'all', label: 'All', count: total, variant: 'neutral' },
     { key: 'needs_collection', label: VA_STATE.needs_collection.label, count: counts.needs_collection, variant: VA_STATE.needs_collection.variant },
     { key: 'needs_composition', label: VA_STATE.needs_composition.label, count: counts.needs_composition, variant: VA_STATE.needs_composition.variant },
-    { key: 'in_review', label: VA_STATE.in_review.label, count: counts.in_review, variant: VA_STATE.in_review.variant },
-    { key: 'verified', label: VA_STATE.verified.label, count: counts.verified, variant: VA_STATE.verified.variant },
+    { key: 'collected', label: VA_STATE.collected.label, count: counts.collected, variant: VA_STATE.collected.variant },
     { key: 'url_only', label: VA_STATE.url_only.label, count: counts.url_only, variant: VA_STATE.url_only.variant },
     { key: 'no_program', label: VA_STATE.no_program.label, count: counts.no_program, variant: VA_STATE.no_program.variant },
   ].filter((o) => o.key === 'all' || o.count > 0)
 
   return (
-    <div role='group' aria-label='Filter by verification state'
+    <div role='group' aria-label='Filter by collection state'
       className='surface-card px-3 py-2.5 flex flex-wrap items-center gap-1.5'>
       {options.map((o) => {
         const active = value === o.key
@@ -517,57 +364,7 @@ function RailFilters({ counts, value, onChange, total }) {
   )
 }
 
-function ReachPanel() {
-  const { data, isLoading, isError } = useVaMatrix(PRIMARY_VA_COHORT)
-  if (isLoading) return <div className='py-10 flex justify-center'><Spinner /></div>
-  if (isError) return <Alert type='error'>Could not load reach.</Alert>
-  if (!data?.colleges?.length) return null
 
-  const { colleges, receivers, cells } = data
-  const max = Math.max(1, ...cells.flat())
-
-  return (
-    <Panel title='Reach — shared courses by college and public university'>
-      <p className='text-caption ink-subtle mb-3'>
-        Each cell counts courses the college teaches that the university publishes an equivalency
-        for, out of {num(data.courses)}. It is a count of accepted courses, not a claim that any
-        degree is satisfied. The receiving columns are SCHEV's 15 public four-year institutions;
-        schools with no captured equivalencies remain visible as zero columns.
-      </p>
-      <div className='overflow-auto max-h-[68vh]'>
-        <table className='text-[11px] border-collapse'>
-          <thead>
-            <tr>
-              <th className='sticky left-0 top-0 z-20 bg-canvas p-1.5' />
-              {receivers.map((r) => (
-                <th key={r} className='sticky top-0 z-10 bg-canvas p-1 align-bottom'>
-                  <div className='whitespace-nowrap [writing-mode:vertical-rl] rotate-180 h-[128px] ink-subtle'>{r}</div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {colleges.map((c, ri) => (
-              <tr key={c}>
-                <th className='sticky left-0 z-10 bg-canvas text-left font-normal p-1.5 whitespace-nowrap'>{c}</th>
-                {cells[ri].map((v, ci) => (
-                  <td key={ci} title={`${c} → ${receivers[ci]}: ${v}`}
-                    className='p-0 text-center tabular-nums'
-                    style={{
-                      background: v ? `rgba(103,178,73,${0.10 + 0.62 * (v / max)})` : 'transparent',
-                      minWidth: 26, height: 22,
-                    }}>
-                    {v || ''}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </Panel>
-  )
-}
 
 /**
  * Rail items carrying their verification state, plus the counts behind the
@@ -598,8 +395,7 @@ function useRailItems(institutions, coverage, filter) {
     const counts = {
       needs_collection: rows.filter((r) => r.state === 'needs_collection').length,
       needs_composition: rows.filter((r) => r.state === 'needs_composition').length,
-      in_review: rows.filter((r) => r.state === 'in_review').length,
-      verified: rows.filter((r) => r.state === 'verified').length,
+      collected: rows.filter((r) => r.state === 'collected').length,
       url_only: rows.filter((r) => r.state === 'url_only').length,
       no_program: rows.filter((r) => r.state === 'no_program').length,
     }
@@ -774,7 +570,7 @@ function UniversitiesPane({ onRoute }) {
   const [cohort, setCohort] = useState(PRIMARY_VA_COHORT)
   const { data, isLoading, isError } = useVaInstitutions('four_year', cohort)
   const [selected, setSelected] = useState(null)
-  const [subTab, setSubTab] = useState('courses')
+  const [subTab, setSubTab] = useState('guide')
   const [filter, setFilter] = useState('all')
 
   const coverage = useVaCoverage()
@@ -786,6 +582,13 @@ function UniversitiesPane({ onRoute }) {
   const { items, counts, total } = useRailItems(unis, coverage.data, filter)
   const current = unis.find((i) => i.name === selected) || null
   const currentCoverage = coverageForInstitution(coverage.data, current)
+  const guide = current ? VA_TRANSFER_GUIDES.universities[current.name] ?? null : null
+
+  // Six of the twenty-one institutions publish no computer-science guide, so
+  // the tab that leads for the other fifteen is absent there rather than empty.
+  useEffect(() => {
+    if (subTab === 'guide' && current && !guide) setSubTab('courses')
+  }, [current, guide, subTab])
 
   const changeCohort = (next) => {
     setCohort(next)
@@ -795,6 +598,7 @@ function UniversitiesPane({ onRoute }) {
 
   useEffect(() => {
     if (!selected) return onRoute({ path: `/api/va/institutions?level=four_year&cohort=${cohort}` })
+    if (subTab === 'guide') return onRoute(null)
     onRoute({
       path: subTab === 'courses'
         ? `/api/va/courses?receiver=${encodeURIComponent(selected)}`
@@ -829,20 +633,124 @@ function UniversitiesPane({ onRoute }) {
       ) : (
         <Stack gap='cozy'>
           <Tabs value={subTab} onChange={setSubTab} options={[
+            // The Transfer Guide leads, because it is the document every
+            // Virginia figure is computed from. The catalog composition that
+            // used to hold this position is retained one tab further right and
+            // labelled superseded — it describes the same degree from a
+            // different source and no figure reads it.
+            ...(guide ? [{ value: 'guide', label: 'Transfer Guide' }] : []),
             { value: 'courses', label: 'Courses' },
-            { value: 'requirements', label: 'Graduation Requirements' },
             // The tab says what the content IS; that it is VCCS preparation
             // rather than this university's own policy is a qualifier, and the
             // view carries it as a standing banner.
             { value: 'prerequisites', label: 'Prerequisites' },
+            { value: 'requirements', label: 'Catalog composition (superseded)' },
           ]} />
+          {subTab === 'guide' && guide && <TransferGuidePanel guide={guide} />}
           {subTab === 'courses' && <UniversityCourses university={current.name} />}
-          {subTab === 'requirements' && <DegreesPane kind='bachelor' institution={current.name}
-            coverageRow={currentCoverage} />}
+          {subTab === 'requirements' && (
+            <Stack gap='cozy'>
+              <Alert type='warning'>
+                Superseded. These requirements were composed from{' '}
+                {current.name}&rsquo;s own catalog before the state&rsquo;s Transfer Guides were
+                parsed. No figure on this site reads them — coverage and credit utilization are
+                computed from the guide on the first tab. Kept for comparison and because the
+                catalog remains the better source for what this university requires overall,
+                rather than for what a transfer student is told to take.
+              </Alert>
+              <DegreesPane kind='bachelor' institution={current.name} coverageRow={currentCoverage} />
+            </Stack>
+          )}
           {subTab === 'prerequisites' && <VirginiaPrerequisiteView university={current.name} />}
         </Stack>
       )}
     </div>
+  )
+}
+
+/**
+ * One published Transfer Guide, as the state wrote it.
+ *
+ * Both halves are shown in the order the guide prints them, because the split
+ * IS the finding: a guide states roughly sixty credits of community-college
+ * preparation and roughly sixty that follow, so coverage is capped near half
+ * whatever a college teaches. The tiles above the table are what the figure
+ * derives from this document, so a reader can see the number and the source of
+ * the number on one screen.
+ */
+function TransferGuidePanel({ guide }) {
+  const d = guide.derived
+  return (
+    <Stack gap='cozy'>
+      <Panel title={guide.title}
+        action={guide.source_url
+          ? <Button as='a' href={guide.source_url} target='_blank' rel='noreferrer' variant='ghost'>
+              Open on Transfer Virginia <ArrowTopRightOnSquareIcon className='w-4 h-4 ml-1' />
+            </Button>
+          : null}>
+        <p className='text-caption ink-subtle'>
+          Virginia agreed one associate degree statewide and lets each university choose which of
+          its options it wants, then publishes the result as this table. All 23 VCCS colleges share
+          one course numbering, so the measurement is whether a college teaches the courses named
+          below. This is the document Figures 1 and 3 are computed from.
+        </p>
+        {d && (
+          <div className='mt-4'>
+            <StatStrip tiles={[
+              { label: 'Before transfer', value: `${num(d.stated_pre_units)} cr` },
+              { label: 'After transfer', value: `${num(d.university_only_units)} cr` },
+              { label: 'Stated total', value: `${num(d.stated_total_units)} cr` },
+              { label: 'General education', value: `${num(d.ge_units)} cr` },
+              { label: 'Coverage ceiling', value: d.ceiling_pct == null ? '—' : `${d.ceiling_pct}%` },
+            ]} />
+          </div>
+        )}
+      </Panel>
+
+      <GuideHalf title='Before transfer — at a VCCS college'
+        note='Course codes here are VCCS common numbering, identical at all 23 colleges. A row naming no course is a general-education or elective slot, satisfiable anywhere.'
+        rows={guide.before_transfer} showEquivalent />
+      <GuideHalf title='After transfer — at this university'
+        note='Coursework the guide places after the transfer point. No community college can supply it, which is what caps coverage near half.'
+        rows={guide.after_transfer} />
+    </Stack>
+  )
+}
+
+function GuideHalf({ title, note, rows, showEquivalent = false }) {
+  if (!rows?.length) {
+    return (
+      <Panel title={title}>
+        <p className='text-caption ink-subtle'>This guide states no rows for this half.</p>
+      </Panel>
+    )
+  }
+  return (
+    <Panel title={`${title} · ${rows.length} rows`}>
+      <p className='text-caption ink-subtle mb-3'>{note}</p>
+      <div className='overflow-x-auto'>
+        <table className='w-full text-caption border-collapse'>
+          <thead>
+            <tr className='text-left'>
+              <th className='py-2 pr-3 font-normal ink-subtle w-16'>Credits</th>
+              <th className='py-2 pr-3 font-normal ink-subtle'>Requirement</th>
+              {showEquivalent && <th className='py-2 font-normal ink-subtle'>Transfers as</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r, i) => (
+              <tr key={i} className='border-t border-border align-top'>
+                <td className='py-1.5 pr-3 tabular-nums text-ink-muted whitespace-nowrap'>{r.credits ?? '—'}</td>
+                <td className='py-1.5 pr-3 text-ink'>{r.requirement || '—'}</td>
+                {showEquivalent && (
+                  <td className='py-1.5 ink-subtle'>{r.equivalent || '—'}</td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Panel>
   )
 }
 
@@ -1022,7 +930,7 @@ function DegreesPane({ institution, kind, coverageRow = null }) {
 
 /**
  * One degree document, with the same hand-edit affordances as a California
- * requirement: edit the stored JSON, mark verified / reopen, and free-text notes.
+ * requirement: edit the stored JSON, and the researcher's own free-text notes.
  *
  * The JSON panel is the point of the page. Everything above it is a rendering of
  * the document, and until the document itself could be corrected there was no
@@ -1055,21 +963,23 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
   const groups = Array.isArray(editDoc.requirement_groups) ? editDoc.requirement_groups : []
   const url = doc.catalog_url || doc.source_url
   const fromCatalog = doc.source === 'institution_catalog'
-  const verified = !!doc.verification?.verified
   const dirty = notes !== (doc.verification?.notes ?? '')
-  // There is no client-side gate on the verdict. A document that reached this
-  // pane is one the server served for this institution, and the server owns
-  // which of those may be signed; re-deriving that rule here is how eleven A.S.
-  // degrees with no `acceptance` block became unverifiable for everyone. The
-  // parse verdict is not shown at all, for the same reason the rails have no
-  // "flagged by the parser" state — on screen it gets read as a verdict.
+  // Signing a document off is gone from this console. The figures are computed
+  // from the published Transfer Guides, so whether anyone has verified a
+  // catalog-composed degree decides nothing about any number on this site, and
+  // a verdict shown beside the data implied that it did. Any stored
+  // `verification.verified` is left untouched rather than cleared — the record
+  // of who checked what is still true, it is simply no longer a control here.
+  //
+  // Notes stay: they are the researcher's own, and the only thing written here
+  // by a person.
 
-  const commit = (nextVerified) => save.mutate({
+  const commit = () => save.mutate({
     ...editDoc,
-    verification: { ...(editDoc.verification || {}), verified: nextVerified, notes: notes || null },
+    verification: { ...(editDoc.verification || {}), notes: notes || null },
   })
 
-  /** Save the edited document without touching the verdict. */
+  /** Save the edited document. */
   const saveEdits = async () => {
     setError(null)
     setSaved(null)
@@ -1093,24 +1003,7 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
         </Badge>
         {doc.total_units != null && <Badge>{doc.total_units} credits</Badge>}
         {doc.status === 'url_only' && <Badge variant='conservative'>URL only</Badge>}
-        <Badge variant={verified ? 'success' : 'conservative'}>
-          {verified ? 'Verified' : 'Unverified'}
-        </Badge>
       </div>
-
-      {/* The same banner the California templates and the associate-degree
-          review show, rather than a compact badge. A hand-verified Virginia
-          degree is the same kind of claim and now carries the same weight. */}
-      {verified && (
-        <div className='mb-3'>
-          <VerifiedBanner
-            verifiers={doc.verification?.verified_by_label}
-            verifiedAt={doc.verification?.verified_at}
-            subject='This degree has'
-            checkedAgainst='the source catalog page'
-            reopenLabel='Reopen' />
-        </div>
-      )}
 
       {url && (
         <a href={url} target='_blank' rel='noreferrer'
@@ -1159,23 +1052,15 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
       {saved && <Alert type='success'>{saved}</Alert>}
 
       <div className='mt-4 pt-3 border-t border-border'>
-        <p className='text-label mb-1.5'>Verification notes</p>
+        <p className='text-label mb-1.5'>Notes</p>
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3}
           placeholder='Your own notes on this document…' />
         <div className='flex flex-wrap items-center gap-2 mt-2'>
           <Button onClick={saveEdits} disabled={save.isPending || (!draft && !dirty)}>
             {save.isPending ? 'Saving…' : 'Save changes'}
           </Button>
-          <Button onClick={() => commit(true)} disabled={save.isPending}>
-            {verified ? 'Re-verify' : 'Mark verified'}
-          </Button>
-          {verified && (
-            <Button variant='secondary' onClick={() => commit(false)} disabled={save.isPending}>
-              Reopen
-            </Button>
-          )}
           {dirty && !save.isPending && (
-            <Button variant='ghost' onClick={() => commit(verified)}>Save notes</Button>
+            <Button variant='ghost' onClick={commit}>Save notes</Button>
           )}
           <Button variant='ghost' onClick={() => setShowHistory((v) => !v)}>
             {showHistory ? 'Hide history' : 'History'}
@@ -1194,7 +1079,6 @@ function DegreeCard({ doc, institution, universityCoursesById = null, courses = 
                     <li key={r.id}>
                       {new Date(r.at).toLocaleString()} · {r.by || 'unknown'} ·{' '}
                       {r.created ? 'created' : r.deleted ? 'deleted' : `${r.changes.length} field(s)`}
-                      {r.verified ? ' · verified' : ''}
                     </li>
                   ))}
                 </ul>

@@ -94,6 +94,11 @@ export const MEASURES = {
 // the static default.
 export const COVERAGE_HEATMAP_MEASURES = {
   degree: MEASURES['coverage-heatmap'],
+  'degree-no-ge': {
+    expression: 'coverage = units of named requirements articulated ÷ units of all named requirements, general education removed from both sides',
+    grain: 'One value per community college × UC program.',
+    watchFor: 'The Massachusetts paper’s exclusion applied to credit rather than to a course count, over EXACTLY the population its course lens counts — so the only difference between this and the paper lens is credit-weighting versus binary counting, and the two run about three points apart (35.2% against 31.9%). It is deliberately not the graduation-unit lens, whose numerator is the unit BUDGET: credit the student carries, capped at what the campus accepts. Carried credit and discharged requirements are different questions, and differencing one against a course count measures that difference rather than the effect of the lens. General education here is the evaluator’s own role classification, the same one the course lens excludes, not a title match. This is the reading that compares most directly with Virginia, whose guides are written in credit.',
+  },
   'ma-courses': {
     expression: 'coverage = required courses with an articulated equivalent ÷ all required courses, at every level',
     grain: 'One value per community college × UC program.',
@@ -103,6 +108,25 @@ export const COVERAGE_HEATMAP_MEASURES = {
     expression: 'coverage = required courses with an articulated equivalent ÷ all required courses, general education included',
     grain: 'One value per community college × UC program.',
     watchFor: 'Our extension of the paper’s measure, not a figure they published — for general-education-heavy majors such as Economics, whose GE-excluded reading is dominated by the unarticulable upper division. Lower-division GE counts as articulable at every college (IGETC or Cal-GETC certification clears it, so the reading does not depend on how each template encodes its GE blocks); upper-division GE still counts against. Free-elective padding remains excluded, and the paper’s 38.2% benchmark applies only to the GE-excluded state.',
+  },
+  // Virginia is measured against published Transfer Guides rather than a
+  // curated requirement corpus, so it needs its own three descriptions; the
+  // Massachusetts entries above speak of UC programs and IGETC certification
+  // and would be simply false here.
+  'va-units-ge': {
+    expression: 'coverage = credits of the guide this college can supply ÷ the guide’s stated total credits',
+    grain: 'One value per VCCS college × Virginia university program.',
+    watchFor: 'The reading a Virginia Transfer Guide is written in. A guide states both halves of the degree — roughly 60 transferable credits in VCCS common course numbers and the 60 upper-division credits that follow — so coverage is structurally capped near 50%, and the distance below that cap is supply: whether this college teaches the courses the guide names. General education counts where the guide puts it. Elective and general-education slots count as satisfiable; the guide has already done the capacity accounting by writing “n of m”.',
+  },
+  'va-units': {
+    expression: 'coverage = credits supplied ÷ stated total credits, general education removed from both sides',
+    grain: 'One value per VCCS college × Virginia university program.',
+    watchFor: 'The middle step between the credit reading and the paper’s. General education comes off the numerator and the denominator alike — the same number of credits from each — so the ratio moves only where GE was a different share of what this college could supply. About four points below the GE-counted reading.',
+  },
+  'va-paper': {
+    expression: 'coverage = required courses supplied ÷ all required courses, counted binary, general education excluded',
+    grain: 'One value per VCCS college × Virginia university program.',
+    watchFor: 'The Massachusetts paper’s own convention, and the only Virginia lens comparable with the California and Massachusetts cells on this scale — their statewide averages were 31.9% and 38.2%. Virginia’s guides do not print one row per course: the university half collapses blocks, and a single row can be worth 30 credits, so every row on both sides is converted to courses at the credits-per-course that guide’s own single courses exhibit (about 3.1) rather than at an assumed constant. It reads roughly three points below the credit reading because binary counting pays one for a four-credit science-with-lab course and one for a three-credit course, and Virginia’s community-college half carries many of the former.',
   },
   assist: {
     expression: 'coverage = listed ASSIST receivers satisfied ÷ receivers listed as required, following each requirement’s choose-N rule',

@@ -1,4 +1,5 @@
 import React from 'react'
+import { VA_CREDIT_RATE_ROWS } from './vaCreditRateRows'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import TransferExtraUnits, { extraUnitEntries, extraUnitValue } from './TransferExtraUnits'
@@ -144,5 +145,31 @@ describe('TransferExtraUnits', () => {
     expect(extraUnitEntries({ rows: [{
       ...data.rows[0], published_pdf_extra_hours: null,
     }] }, 'archive-detail')).toEqual([])
+  })
+})
+
+describe('Virginia', () => {
+  // The bug this guards: Figure 4 summed unused credit with the pathway's own
+  // length above 120, so UVA's 134-credit guide reported +14 lost hours while
+  // Figure 3 reported the very same cell at 100% utilization. The two figures
+  // must be exact complements.
+  it('is the exact complement of Figure 3', () => {
+    for (const [variant, bundle] of Object.entries(VA_CREDIT_RATE_ROWS)) {
+      if (variant === 'built_at' || variant === 'census') continue
+      for (const row of bundle.rows) {
+        if (row.as_unit_utilization_pct === 100) {
+          expect(row.modeled_hours_above_120, `${row.college_name} / ${row.school}`).toBe(0)
+        }
+        expect(row.modeled_hours_above_120).toBe(row.va_wasted_units)
+      }
+    }
+  })
+
+  it('keeps the pathway length above 120 as a separate fact', () => {
+    // Real and worth reporting, just not inside the loss measure.
+    const rows = VA_CREDIT_RATE_ROWS.catalog.rows
+    const uva = rows.filter((r) => r.school.startsWith('UVA Computer'))
+    expect(uva.length).toBeGreaterThan(0)
+    for (const r of uva) expect(r.va_degree_units_over_benchmark).toBe(14)
   })
 })

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
+import { VA_CREDIT_RATE_ROWS } from './vaCreditRateRows'
 import { AS_DEGREE_SLOTS, slotLabel } from '../asdegrees/asDegreeSlots'
 import { majorShortLabelFor } from '../shared/majors/majorLabel'
 import { createCoverageColorScale } from './CoverageHeatmap'
@@ -283,6 +284,41 @@ export function TransferEvidenceCaveats({ rows = [], majorSlug = null }) {
 
 // Shared by the Fig. 3 (rate) and Fig. 4 (extra units) cards — `getValue`
 // picks the measure; `makeScale` its color domain.
+/**
+ * A choice control where the SELECTED option is the highlighted one. A single
+ * button whose label flips between states cannot say whether it is showing what
+ * is selected or what clicking would do.
+ */
+export function SegmentedChoice({ label, value, options, onChange }) {
+  return (
+    <div className='flex flex-col'>
+      <span className='field-label'>{label}</span>
+      <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'
+        role='group' aria-label={label}>
+        {options.map((option) => {
+          const selected = value === option.value
+          return (
+            <button
+              key={option.value}
+              type='button'
+              aria-pressed={selected}
+              title={option.hint || undefined}
+              onClick={() => onChange(option.value)}
+              className={`px-3 text-button border-r border-border last:border-r-0 transition-colors ${
+                selected
+                  ? 'bg-primary text-on-primary font-medium'
+                  : 'text-ink-muted hover:bg-surface-hover'
+              }`}
+            >
+              {option.label}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export function buildRateMatrix(rows, getValue = (r) => r.full_degree_completion_pct, makeScale = createCoverageColorScale) {
   const colMap = new Map()
   const rowMap = new Map()
@@ -627,11 +663,31 @@ export default function TransferCreditRate({
     })
   }, [degreeType, scope, verifiedOnly, maToggle, maSource, maGeOn, maLens, onViewChange])
   const effectiveMaSource = normalizeMaSource(maSource)
+  // Catalogue membership is what a college publishes; scheduled is what it is
+  // currently running. The guides are identical for every college, so supply is
+  // the only thing that separates two rows.
+  const [vaBasis, setVaBasis] = useState('catalog')
+  // The seven VCCS colleges with no computer-science associate degree can still
+  // teach the courses a guide names; off by default because the pathway does
+  // not formally exist there.
+  const [vaAllColleges, setVaAllColleges] = useState(false)
+
+  // Virginia is measured from published transfer guides rather than from the
+  // corpus this endpoint evaluates: a college that cannot teach a course its
+  // guide names sends the student to a substitute, and that substitute arrives
+  // as credit the bachelor's applies to nothing. The rows are pre-shaped
+  // exactly like the endpoint's, so everything below is identical for all three
+  // states and the scales stay comparable.
+  const vaRateRows = majorSlug === 'va-cs' ? VA_CREDIT_RATE_ROWS : null
+  const vaRateKey = `${vaBasis}${vaAllColleges ? '_all' : ''}`
   const query = useTransferCreditRate(degreeType, {
     majorSlug,
     verifiedOnly: paperCorpus ? false : verifiedOnly,
+    // Only Virginia short-circuits the request; adding `enabled` unconditionally
+    // would change the call every other corpus makes.
+    ...(vaRateRows ? { enabled: false } : {}),
   })
-  const rows = query.data?.rows || []
+  const rows = vaRateRows ? vaRateRows[vaRateKey].rows : (query.data?.rows || [])
   const localModel = useMemo(
     () => buildRateMatrix(rows, (row) => rateForScope(row, activeScope, paperCorpus ? effectiveMaSource : 'auto')),
     [rows, activeScope, paperCorpus, effectiveMaSource]
@@ -642,15 +698,37 @@ export default function TransferCreditRate({
       : localModel
   ), [localModel, comparisonColorScale])
 
-  if (query.isLoading) {
+  if (!vaRateRows && query.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
   }
-  if (query.isError) {
+  if (!vaRateRows && query.isError) {
     return <Alert type='error'>Could not load bachelor’s requirement completion.</Alert>
   }
 
   const controls = (
     <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
+      {vaRateRows && (
+        <SegmentedChoice
+          label='Course supply'
+          value={vaBasis}
+          onChange={setVaBasis}
+          options={[
+            { value: 'catalog', label: 'In the catalogue', hint: 'Courses the college publishes' },
+            { value: 'scheduled', label: 'Currently scheduled', hint: 'Courses the college is running now' },
+          ]}
+        />
+      )}
+      {vaRateRows && (
+        <SegmentedChoice
+          label='Colleges'
+          value={vaAllColleges ? 'all' : 'cs'}
+          onChange={(v) => setVaAllColleges(v === 'all')}
+          options={[
+            { value: 'cs', label: 'With a CS degree', hint: 'The 16 publishing a computer-science associate degree' },
+            { value: 'all', label: 'All 23', hint: 'Every VCCS college' },
+          ]}
+        />
+      )}
       {!paperCorpus && <div className='flex flex-col'>
         <span className='field-label'>Associate degree</span>
         <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>

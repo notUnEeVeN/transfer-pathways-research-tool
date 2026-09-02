@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
+import { VA_CREDIT_RATE_ROWS } from './vaCreditRateRows'
 import {
-  EvidenceCohortControl, EvidenceSummary, TransferEvidenceCaveats, buildRateMatrix,
+  EvidenceCohortControl, EvidenceSummary, SegmentedChoice, TransferEvidenceCaveats, buildRateMatrix,
   defaultDegreeMode, degreeModesForMajor, methodDetail, paperRedCellColor,
   shortenSchool, unitSystemName,
 } from './TransferCreditRate'
@@ -60,7 +61,7 @@ export function extraUnitEntries(data, source = 'ours') {
 // always the palest cell, and let the observed maximum set the dark end.
 const extraScale = (values) => ({ min: 0, max: Math.max(1, ...values.filter(Number.isFinite)) })
 
-function cellTitle(row, col, cell, source, value) {
+function cellTitle(row, col, cell, source, value, lostOnly = false) {
   if (!cell) return `${row.name}\n${col.school}\nNo agreement to verify against`
   if (!Number.isFinite(value)) {
     return [
@@ -103,7 +104,9 @@ function cellTitle(row, col, cell, source, value) {
   return [
     row.name,
     col.school,
-    `Modeled pathway: ${plus(value)} semester hours above 120`,
+    lostOnly
+      ? `${plus(value)} credits that meet no requirement`
+      : `Modeled pathway: ${plus(value)} semester hours above 120`,
     Number.isFinite(cell.modeled_pathway_units_semester)
       ? `${unitFmt.format(cell.modeled_pathway_units_semester)} total modeled semester hours`
       : null,
@@ -115,7 +118,7 @@ function cellTitle(row, col, cell, source, value) {
   ].filter(Boolean).join('\n')
 }
 
-function ExtraTable({ model, source }) {
+function ExtraTable({ model, source, lostOnly = false }) {
   return (
     <div className='surface-card overflow-auto max-h-[72vh]'>
       <table className='border-separate border-spacing-0 min-w-full'>
@@ -131,7 +134,7 @@ function ExtraTable({ model, source }) {
               </th>
             ))}
             <th className='sticky top-0 right-0 z-30 bg-surface border-b border-l border-border px-3 py-2 text-right text-label min-w-32'>
-              Average hours above 120
+              {lostOnly ? 'Average hours lost' : 'Average hours above 120'}
             </th>
           </tr>
         </thead>
@@ -146,8 +149,8 @@ function ExtraTable({ model, source }) {
                 const value = model.cellValue(row.key, col.key)
                 return (
                   <td key={col.key}
-                    title={cellTitle(row, col, cell, source, value)}
-                    aria-label={cellTitle(row, col, cell, source, value)}
+                    title={cellTitle(row, col, cell, source, value, lostOnly)}
+                    aria-label={cellTitle(row, col, cell, source, value, lostOnly)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
                     style={paperRedCellColor(value, model.colorScale)}>
                     {plus(value)}
@@ -215,9 +218,25 @@ export default function TransferExtraUnits({
       defaultSource: paperCorpus ? effectiveSource : source,
     })
   }, [degreeType, verifiedOnly, source, paperCorpus, effectiveSource, onViewChange])
+  // Virginia reads the same committed rows Figure 3 does, for the same reason:
+  // this measure is the loss that figure reports, carried onto the benchmark. A
+  // guide states a degree at 120 to 134 credits, and a requirement the college
+  // cannot supply is completed with a substitute that does no requirement work,
+  // so those credits are taken twice.
+  const vaRateRows = majorSlug === 'va-cs' ? VA_CREDIT_RATE_ROWS : null
+  const [vaBasis, setVaBasis] = useState('catalog')
+  const [vaAllColleges, setVaAllColleges] = useState(false)
   const queryVerifiedOnly = paperCorpus ? false : verifiedOnly
-  const query = useTransferCreditRate(degreeType, { majorSlug, verifiedOnly: queryVerifiedOnly })
-  const rows = query.data?.rows || []
+  const query = useTransferCreditRate(degreeType, {
+    majorSlug,
+    verifiedOnly: queryVerifiedOnly,
+    // Only Virginia short-circuits the request; adding `enabled` unconditionally
+    // would change the call every other corpus makes.
+    ...(vaRateRows ? { enabled: false } : {}),
+  })
+  const rows = vaRateRows
+    ? vaRateRows[`${vaBasis}${vaAllColleges ? '_all' : ''}`].rows
+    : (query.data?.rows || [])
   const localModel = useMemo(
     () => buildRateMatrix(rows, (row) => extraUnitValue(row, effectiveSource), extraScale),
     [rows, effectiveSource]
@@ -228,10 +247,10 @@ export default function TransferExtraUnits({
       : localModel
   ), [localModel, comparisonColorScale])
 
-  if (query.isLoading) {
+  if (!vaRateRows && query.isLoading) {
     return <div className='surface-card p-10 flex justify-center'><Spinner /></div>
   }
-  if (query.isError) {
+  if (!vaRateRows && query.isError) {
     return <Alert type='error'>Could not load the transfer credit data.</Alert>
   }
 
@@ -266,7 +285,30 @@ export default function TransferExtraUnits({
           </div>
         </div>
       )}
-      {!paperCorpus && <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />}
+      {vaRateRows && (
+        <SegmentedChoice
+          label='Course supply'
+          value={vaBasis}
+          onChange={setVaBasis}
+          options={[
+            { value: 'catalog', label: 'In the catalogue', hint: 'Courses the college publishes' },
+            { value: 'scheduled', label: 'Currently scheduled', hint: 'Courses the college is running now' },
+          ]}
+        />
+      )}
+      {vaRateRows && (
+        <SegmentedChoice
+          label='Colleges'
+          value={vaAllColleges ? 'all' : 'cs'}
+          onChange={(v) => setVaAllColleges(v === 'all')}
+          options={[
+            { value: 'cs', label: 'With a CS degree', hint: 'The 16 publishing a computer-science associate degree' },
+            { value: 'all', label: 'All 23', hint: 'Every VCCS college' },
+          ]}
+        />
+      )}
+      {!paperCorpus && !vaRateRows
+        && <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />}
       <Button variant='secondary' leadingIcon={ArrowPathIcon}
         loading={query.isFetching && !query.isLoading} onClick={() => query.refetch()}>
         Refresh
@@ -308,11 +350,24 @@ export default function TransferExtraUnits({
                 : 'modeled'}
               collegeCount={model.rows.length} cellCount={model.valueCount} />
           </p>
-          {!paperCorpus && <TransferEvidenceCaveats rows={rows} majorSlug={majorSlug} />}
+          {vaRateRows && (
+            <Alert type='info'>
+              Virginia reads this figure as unused credit alone — the exact complement of Figure 3.
+              A requirement a college cannot teach is still completed for the associate degree with
+              a substitute, and the substitute arrives as elective credit doing no requirement work,
+              so those credits are taken twice. A cell at 100% in Figure 3 is zero here by
+              construction. This is <em>not</em> the Massachusetts &ldquo;hours above 120&rdquo;
+              measure, which also carries curriculum length above the benchmark: Virginia&rsquo;s
+              guides state degrees from 120 to 134 credits, so that term would dominate — UVA&rsquo;s
+              134-credit guide showed +14 hours while Figure 3 reported the same cell at 100%.
+            </Alert>
+          )}
+          {!paperCorpus && !vaRateRows
+            && <TransferEvidenceCaveats rows={rows} majorSlug={majorSlug} />}
         </div>
         <ColorDomainLegend scale={model.colorScale} formatValue={plus}
           suffix='semester hours above 120' />
-        <ExtraTable model={model} source={effectiveSource} />
+        <ExtraTable model={model} source={effectiveSource} lostOnly={Boolean(vaRateRows)} />
       </div>
     </Stack>
   )

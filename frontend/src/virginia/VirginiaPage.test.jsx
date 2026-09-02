@@ -55,6 +55,8 @@ vi.mock('./useVirginia', () => ({
 }))
 
 import VirginiaPage, { VA_VISUALS_READY } from './VirginiaPage'
+import { VA_COVERAGE_ROWS } from '../analyses/vaCoverageRows'
+import { VA_TRANSFER_GUIDES } from '../analyses/vaTransferGuides'
 
 const ok = (data) => ({ data, isLoading: false, error: null })
 
@@ -275,16 +277,20 @@ beforeEach(() => {
 })
 
 describe('VirginiaPage', () => {
-  it('renders without crashing and shows the corpus counts', () => {
+  it('renders without crashing and opens on the community colleges', () => {
     render(<VirginiaPage />)
-    expect(screen.getByText('4,668')).toBeTruthy()
-    const publicTile = screen.getByText('Public universities').parentElement
-    expect(within(publicTile).getByText('15')).toBeTruthy()
+    // The corpus-count tiles went with the Overview tab. The console opens on
+    // the colleges instead, which is where the work is.
+    expect(screen.getByRole('tab', { name: 'Community Colleges' }))
+      .toHaveAttribute('aria-selected', 'true')
+    expect(screen.queryByRole('tab', { name: 'Overview' })).toBeNull()
   })
 
   it('shows the corpus tabs, including Virginia prerequisites but no Districts', () => {
     render(<VirginiaPage />)
-    for (const t of ['Overview', 'Community Colleges', 'Universities', 'Courses', 'Prerequisites']) {
+    // No Overview: it reported the equivalency scrape and the verification of
+    // catalog-composed documents, neither of which this state now measures.
+    for (const t of ['Community Colleges', 'Universities', 'Courses', 'Prerequisites']) {
       expect(screen.getAllByText(t).length).toBeGreaterThan(0)
     }
     expect(screen.queryByText('Districts')).toBeNull()
@@ -300,6 +306,14 @@ describe('VirginiaPage', () => {
     const tab = screen.queryByRole('tab', { name: 'Visuals' })
     if (VA_VISUALS_READY) {
       expect(tab).not.toBeNull()
+      // Shown means shown: opening the tab reaches the VA major and renders the
+      // five-figure gallery. Figure 6 (pathway complexity) is deliberately not
+      // among them — Virginia's university prerequisite corpus is empty.
+      fireEvent.click(tab)
+      expect(mockMajors).toHaveBeenCalledWith({ state: 'va' })
+      expect(screen.queryByTestId('thumb-coverage-heatmap')).not.toBeNull()
+      expect(screen.queryByTestId('thumb-transfer-credit-rate')).not.toBeNull()
+      expect(screen.queryByTestId('thumb-pathway-complexity')).toBeNull()
       return
     }
     expect(tab).toBeNull()
@@ -358,8 +372,16 @@ describe('rails and drill-in', () => {
     await clickTab('Universities')
     const { fireEvent } = await import('@testing-library/react')
     fireEvent.click(screen.getByText('George Mason University'))
+    // A university with a parsed guide opens on it — that is the document every
+    // Virginia figure is computed from. The equivalency view is one click away,
+    // and the catalog composition it used to open on is now labelled superseded.
+    expect(screen.getAllByText('Transfer Guide').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Catalog composition (superseded)').length).toBeGreaterThan(0)
+    // The page has its own top-level Courses tab; this is the sub-tab, which
+    // renders after it.
+    const courseTabs = screen.getAllByRole('tab', { name: 'Courses' })
+    fireEvent.click(courseTabs[courseTabs.length - 1])
     expect(screen.getByText('CS108')).toBeTruthy()
-    expect(screen.getAllByText('Graduation Requirements').length).toBeGreaterThan(0)
   })
 })
 
@@ -368,7 +390,7 @@ describe('rails and drill-in', () => {
 // unvisited tab can ship broken — which is exactly what happened to the
 // Courses tab when its search input was swapped out.
 describe('every tab renders', () => {
-  const tabs = ['Overview', 'Community Colleges', 'Universities', 'Courses', 'Prerequisites']
+  const tabs = ['Community Colleges', 'Universities', 'Courses', 'Prerequisites']
   for (const label of tabs) {
     it(`renders the ${label} tab without throwing`, async () => {
       const { fireEvent } = await import('@testing-library/react')
@@ -381,7 +403,10 @@ describe('every tab renders', () => {
   it('shows the shared catalog and opens a course from it', async () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
-    fireEvent.click(screen.getAllByText('Courses')[0])
+    // The page has its own top-level Courses tab; this is the sub-tab, which
+    // renders after it.
+    const courseTabs = screen.getAllByRole('tab', { name: 'Courses' })
+    fireEvent.click(courseTabs[courseTabs.length - 1])
     expect(screen.getByText(/shared VCCS catalog/i)).toBeTruthy()
     fireEvent.click(screen.getByText('CSC221'))
     expect(screen.getAllByText(/Introduction to Problem Solving/i).length).toBeGreaterThan(0)
@@ -423,98 +448,49 @@ describe('Virginia prerequisite drill-ins', () => {
 })
 
 
-describe('verification progress', () => {
-  const bar = (label) => screen.getByLabelText(label).getAttribute('aria-valuetext')
-
-  it('runs each bar through the live documents the server reports', () => {
+describe('university transfer guides', () => {
+  it('opens a university on the guide the figures are computed from', async () => {
+    const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
-    expect(screen.getByText('Verification progress')).toBeTruthy()
-    // One live A.S. document, unsigned; one live B.S. document, signed.
-    // Wytheville publishes nothing readable, so it holds no live document and
-    // cannot appear in either denominator.
-    expect(bar('A.S. degrees verified')).toBe('0 of 1')
-    expect(bar('B.S. degrees verified')).toBe('1 of 1')
-    expect(screen.getByText('1 of 2 verified')).toBeTruthy()
+    fireEvent.click(screen.getAllByText('Universities')[0])
+    fireEvent.click(screen.getByText('George Mason University'))
+    // Both halves of the pathway, and the split that caps coverage near half.
+    expect(screen.getAllByText(/Before transfer/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/After transfer/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Stated total').length).toBeGreaterThan(0)
   })
 
-  // The endpoint reported these counts as `*_verifiable` before the acceptance
-  // gate came out of it. Same figure, older name — the page must not blank out
-  // against an API that has not been redeployed yet.
-  it('accepts the older per-level field name for the same figure', () => {
-    state.coverage.data.verification = {
-      documents: 4, verifiable: 2, verified: 1,
-      as_verifiable: 1, as_verified: 0, bs_verifiable: 1, bs_verified: 1,
+  it('carries the same guide the coverage figure measures', () => {
+    // The university page and the heatmap column must be the same document, or
+    // a reader checking one against the other is comparing two sources.
+    const titles = new Set(VA_COVERAGE_ROWS.catalog.rows.map((r) => r.school))
+    const guides = Object.values(VA_TRANSFER_GUIDES.universities)
+    expect(guides.length).toBe(titles.size)
+    for (const g of guides) expect(titles.has(g.title)).toBe(true)
+  })
+
+  it('states both halves in credits for every guide', () => {
+    for (const [name, g] of Object.entries(VA_TRANSFER_GUIDES.universities)) {
+      expect(g.before_transfer.length, name).toBeGreaterThan(0)
+      expect(g.after_transfer.length, name).toBeGreaterThan(0)
+      expect(g.source_url, name).toMatch(/^https?:/)
+      expect(g.derived.stated_total_units, name).toBeGreaterThan(90)
     }
-    render(<VirginiaPage />)
-    expect(bar('A.S. degrees verified')).toBe('0 of 1')
-    expect(bar('B.S. degrees verified')).toBe('1 of 1')
-  })
-
-  // The whole bug in one test. Blue Ridge's A.S. document is live and carries
-  // `catalog_accepted: false` — the parser never signed off on its own parse.
-  // A person is still allowed to verify it, so it must be inside the bar.
-  it('counts a live document that never passed catalog acceptance', () => {
-    delete state.coverage.data.verification
-    render(<VirginiaPage />)
-    expect(bar('A.S. degrees verified')).toBe('0 of 1')
-    expect(bar('B.S. degrees verified')).toBe('1 of 1')
-  })
-
-  // Virginia's note field is not California's. There a note is created BY the
-  // act of verifying; here it is a working box that mostly holds the source
-  // URLs a document was built from, and one live document's note reads "lots of
-  // missing classes". Counting notes reported the four-year job as 14 of 18
-  // done when two documents had been signed.
-  it('does not count a working note as a verification', () => {
-    delete state.coverage.data.verification
-    state.coverage.data.coverage[0].documents.as_degree[0].has_notes = true
-    render(<VirginiaPage />)
-    expect(bar('A.S. degrees verified')).toBe('0 of 1')
-  })
-
-  it('never draws a 0-of-0 bar, and says in words why there is none', () => {
-    delete state.coverage.data.verification
-    // Strip the only live B.S. document, leaving that level with nothing that
-    // can be signed.
-    state.coverage.data.coverage.find((r) => r._id === 'va:cov:uni:gmu').documents.degree = []
-    render(<VirginiaPage />)
-    expect(screen.queryByLabelText('B.S. degrees verified')).toBeNull()
-    // ProgressBar prints its own "0/0" counter above the track, so its absence
-    // is the proof no empty bar was drawn anywhere on the panel.
-    expect(screen.queryByText('0/0')).toBeNull()
-    expect(screen.getByText(/Nothing collected at this level yet/)).toBeTruthy()
-    // The other level is untouched and still shows real progress.
-    expect(bar('A.S. degrees verified')).toBe('0 of 1')
-  })
-
-  // Three different jobs, three different people. Collapsing them into one
-  // "outstanding" number was what made the page unreadable.
-  it('separates work waiting on a person from work waiting on collection', () => {
-    render(<VirginiaPage />)
-    expect(screen.getAllByText('Waiting for a person').length).toBe(2)
-    expect(screen.getAllByText('1 collected documents').length).toBe(1)
-    // Community colleges: Blue Ridge is collected, so nothing is outstanding.
-    // Public four-years: three of the four hold no live document at all.
-    expect(screen.getByText('0 of 1 institutions')).toBeTruthy()
-    expect(screen.getByText('3 of 4 institutions')).toBeTruthy()
-    // Settled outcomes are named as their own pile so they never read as
-    // unfinished work: Wytheville is URL-only, Danville publishes no CS degree.
-    expect(screen.getByText(/2 institutions — URL only, or no CS-specific degree/)).toBeTruthy()
   })
 })
 
 describe('the rail status filters', () => {
   const rail = () => within(screen.getByText(/Community colleges ·/).closest('div'))
-  const filters = () => within(screen.getByRole('group', { name: 'Filter by verification state' }))
+  const filters = () => within(screen.getByRole('group', { name: 'Filter by collection state' }))
 
-  it('filters the rail to the institutions still needing verification', async () => {
+  it('filters the rail to the institutions still needing collection', async () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
     // Every settled outcome remains reachable; only Blue Ridge is outstanding work.
     expect(rail().getByText('Blue Ridge Community College')).toBeTruthy()
     expect(rail().getByText('Wytheville Community College')).toBeTruthy()
-    fireEvent.click(filters().getByRole('button', { name: /Unverified/ }))
+    fireEvent.click(filters().getByRole('button', { name: /Collected/ }))
     expect(rail().getByText('Blue Ridge Community College')).toBeTruthy()
     expect(rail().queryByText('Wytheville Community College')).toBeNull()
   })
@@ -532,27 +508,27 @@ describe('the rail status filters', () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getByRole('tab', { name: 'Community Colleges' }))
-    const pill = filters().getByRole('button', { name: /Unverified/ })
+    const pill = filters().getByRole('button', { name: /Collected/ })
     fireEvent.click(pill)
     expect(rail().queryByText('Wytheville Community College')).toBeNull()
-    fireEvent.click(filters().getByRole('button', { name: /Unverified/ }))
+    fireEvent.click(filters().getByRole('button', { name: /Collected/ }))
     expect(rail().getByText('Wytheville Community College')).toBeTruthy()
   })
 })
 
 describe('degree editing', () => {
-  it('sends a verify intent without the client stamping who or when', async () => {
+  // Signing off is gone from this console: no figure reads a verification
+  // record, so a verdict beside the data claimed a provenance it did not have.
+  it('offers no way to sign a document off', async () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Community Colleges')[0])
     fireEvent.click(screen.getByText('Blue Ridge Community College'))
     fireEvent.click(screen.getAllByText('Associate Degrees')[0])
-    fireEvent.click(screen.getByText('Mark verified'))
-    expect(state.saved).toHaveLength(1)
-    expect(state.saved[0].verification.verified).toBe(true)
-    // The server is the authority on these — the client must not send them.
-    expect(state.saved[0].verification.verified_by_label).toBeUndefined()
-    expect(state.saved[0].verification.verified_at).toBeUndefined()
+    for (const label of ['Mark verified', 'Re-verify', 'Reopen']) {
+      expect(screen.queryByRole('button', { name: label })).toBeNull()
+    }
+    expect(screen.queryByText('Unverified')).toBeNull()
   })
 
   it('sends notes exactly as typed, never pre-filled', async () => {
@@ -564,8 +540,12 @@ describe('degree editing', () => {
     const box = screen.getByPlaceholderText(/your own notes/i)
     expect(box.value).toBe('')
     fireEvent.change(box, { target: { value: 'checked against catalog' } })
-    fireEvent.click(screen.getByText('Mark verified'))
+    fireEvent.click(screen.getByText('Save notes'))
     expect(state.saved[0].verification.notes).toBe('checked against catalog')
+    // Any stored verdict is carried through untouched, never rewritten: the
+    // record of who checked what is still true, it is just not a control here.
+    const stored = state.degrees.data.degrees[0].verification?.verified
+    expect(state.saved[0].verification.verified).toBe(stored)
   })
 })
 
@@ -573,94 +553,6 @@ describe('degree editing', () => {
 // institution is one a person may sign; the parser's opinion of its own parse
 // is not a permission system, and treating it as one is what stopped partners
 // verifying eleven A.S. degrees that had no `acceptance` block at all.
-describe('nothing on the client gates the verdict', () => {
-  const openAssociateDegree = async () => {
-    const { fireEvent } = await import('@testing-library/react')
-    render(<VirginiaPage />)
-    fireEvent.click(screen.getAllByText('Community Colleges')[0])
-    fireEvent.click(screen.getByText('Blue Ridge Community College'))
-    fireEvent.click(screen.getAllByText('Associate Degrees')[0])
-    return fireEvent
-  }
-
-  it.each([
-    ['captured_only'],
-    ['major_only'],
-    ['catalog_accepted'],
-    ['analysis_ready'],
-  ])('lets a person verify a %s document', async (status) => {
-    const doc = state.degrees.data.degrees[0]
-    doc.collection_status = status
-    delete doc.acceptance
-    await openAssociateDegree()
-
-    expect(screen.getByText('Unverified')).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(false)
-    expect(screen.queryByText(/Verification unavailable/i)).toBeNull()
-  })
-
-  it('lets a person verify a document carrying no acceptance metadata at all', async () => {
-    const doc = state.degrees.data.degrees[0]
-    delete doc.collection_status
-    delete doc.acceptance
-    const fireEvent = await openAssociateDegree()
-
-    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(false)
-    fireEvent.click(screen.getByRole('button', { name: 'Mark verified' }))
-    expect(state.saved[0].verification.verified).toBe(true)
-  })
-
-  it('lets a person verify a document the parser explicitly failed', async () => {
-    const doc = state.degrees.data.degrees[0]
-    doc.collection_status = 'captured_only'
-    doc.acceptance = { accepted: false, catalog: { failed: ['no_total_credits'] } }
-    await openAssociateDegree()
-
-    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(false)
-    // The failure is readable in the JSON panel, which shows the whole stored
-    // document by design, but it is never promoted to a status of its own —
-    // shown as a category it gets read as a verdict, and only a person at the
-    // source page is one.
-    expect(screen.queryByText(/Verification unavailable/i)).toBeNull()
-    expect(screen.getAllByText('Unverified').length).toBe(1)
-  })
-
-  it('keeps a corroborating major-only document editable and signable', async () => {
-    const doc = state.degrees.data.degrees[0]
-    doc.source = 'transfer_virginia'
-    doc.collection_status = 'major_only'
-    doc.acceptance = { accepted: false, ready_for_analysis: false }
-    const fireEvent = await openAssociateDegree()
-
-    expect(screen.getByText('Transfer Virginia map')).toBeTruthy()
-    expect(screen.getByText('Unverified')).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Mark verified' }).disabled).toBe(false)
-    const notes = screen.getByPlaceholderText(/your own notes/i)
-    expect(notes.disabled).toBe(false)
-    fireEvent.change(notes, { target: { value: 'major layer checked; GE still missing' } })
-    fireEvent.click(screen.getByRole('button', { name: 'Save notes' }))
-    expect(state.saved[0].verification).toMatchObject({
-      verified: false,
-      notes: 'major layer checked; GE still missing',
-    })
-  })
-
-  it('lets a verified legacy document be reopened and signed again', async () => {
-    const doc = state.degrees.data.degrees[0]
-    delete doc.collection_status
-    delete doc.acceptance
-    doc.verification = { verified: true, verified_by_label: 'Legacy researcher' }
-    const fireEvent = await openAssociateDegree()
-
-    expect(screen.getAllByText('Verified').length).toBeGreaterThanOrEqual(1)
-    expect(screen.getByRole('button', { name: 'Re-verify' }).disabled).toBe(false)
-    const reopen = screen.getByRole('button', { name: 'Reopen' })
-    expect(reopen.disabled).toBe(false)
-    fireEvent.click(reopen)
-    expect(state.saved[0].verification.verified).toBe(false)
-  })
-})
-
 describe('degree panes', () => {
   it('shows a catalog-sourced degree with its source link and courses', async () => {
     const { fireEvent } = await import('@testing-library/react')
@@ -687,7 +579,7 @@ describe('degree panes', () => {
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Universities')[0])
     fireEvent.click(screen.getByText('George Mason University'))
-    fireEvent.click(screen.getAllByText('Graduation Requirements')[0])
+    fireEvent.click(screen.getAllByText('Catalog composition (superseded)')[0])
     expect(screen.getByText('URL only')).toBeTruthy()
     expect(screen.getByText(/no machine-readable course list/i)).toBeTruthy()
   })
@@ -719,7 +611,7 @@ describe('degree panes', () => {
     render(<VirginiaPage />)
     fireEvent.click(screen.getByRole('tab', { name: 'Universities' }))
     fireEvent.click(screen.getByText('George Mason University'))
-    fireEvent.click(screen.getAllByRole('tab', { name: 'Graduation Requirements' }).at(-1))
+    fireEvent.click(screen.getAllByRole('tab', { name: 'Catalog composition (superseded)' }).at(-1))
 
     expect(screen.getByRole('button', {
       name: 'GET /api/va/degrees?institution=George%20Mason%20University',
@@ -776,7 +668,7 @@ describe('both course lookups resolve', () => {
 // The rails must show degree status before a click, and must not flatten the
 // three outcomes into one tick — "URL only" and "none" mean different things.
 describe('degree status in the rails', () => {
-  const filters = () => within(screen.getByRole('group', { name: 'Filter by verification state' }))
+  const filters = () => within(screen.getByRole('group', { name: 'Filter by collection state' }))
 
   it('does not repeat the reach or the degree status under every name', async () => {
     const { fireEvent } = await import('@testing-library/react')
@@ -796,7 +688,7 @@ describe('degree status in the rails', () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Universities')[0])
-    expect(filters().getByText('Verified 1')).toBeTruthy()
+    expect(filters().getByText('Collected 1')).toBeTruthy()
     expect(filters().getByText('Needs collecting 2')).toBeTruthy()
     expect(filters().getByText('Needs composing 1')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: /Other Virginia partners 18/ }))
