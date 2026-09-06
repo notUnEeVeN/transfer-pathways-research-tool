@@ -674,7 +674,7 @@ describe('degree status in the rails', () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Universities')[0])
-    const uniRail = within(screen.getByText(/Public universities ·/).closest('div'))
+    const uniRail = within(screen.getByText(/Measured universities ·/).closest('div'))
     // The pills above state which bucket the list is showing; repeating it on
     // every row was the noise that made the rail hard to read.
     expect(uniRail.queryByText(/accepted/)).toBeNull()
@@ -688,6 +688,8 @@ describe('degree status in the rails', () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Universities')[0])
+    // Counted over the SCHEV public cohort, which is what this fixture models.
+    fireEvent.click(screen.getByRole('button', { name: /Public universities/ }))
     expect(filters().getByText('Collected 1')).toBeTruthy()
     expect(filters().getByText('Needs collecting 2')).toBeTruthy()
     expect(filters().getByText('Needs composing 1')).toBeTruthy()
@@ -696,19 +698,33 @@ describe('degree status in the rails', () => {
     expect(filters().getByText('No CS-specific degree 1')).toBeTruthy()
   })
 
-  it('opens on the public cohort and keeps other Virginia partners one click away', async () => {
+  // The rail opens on the population the figures are computed over, which spans
+  // both SCHEV cohorts — three of the fifteen guide universities are private.
+  it('opens on the universities we measure, not on a SCHEV cohort', async () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Universities')[0])
 
+    const rail = within(screen.getByText(/Measured universities ·/).closest('div'))
+    expect(rail.getByText('George Mason University')).toBeTruthy()
+    expect(rail.getByText('University of Virginia')).toBeTruthy()
+    // Private, and in the measured set precisely because it publishes a guide.
+    expect(rail.getByText('University of Lynchburg')).toBeTruthy()
+    // Public, but publishes no computer-science guide, so it is not measured.
+    expect(rail.queryByText('Virginia Military Institute')).toBeNull()
+  })
+
+  it('keeps both SCHEV cohorts one click away', async () => {
+    const { fireEvent } = await import('@testing-library/react')
+    render(<VirginiaPage />)
+    fireEvent.click(screen.getAllByText('Universities')[0])
+
+    fireEvent.click(screen.getByRole('button', { name: /Public universities/ }))
     const publicRail = within(screen.getByText(/Public universities ·/).closest('div'))
-    expect(publicRail.getByText('George Mason University')).toBeTruthy()
-    expect(publicRail.getByText('University of Virginia')).toBeTruthy()
     expect(publicRail.getByText('Virginia Military Institute')).toBeTruthy()
     expect(publicRail.queryByText('University of Lynchburg')).toBeNull()
-    expect(screen.queryByText('George Washington University')).toBeNull()
 
-    fireEvent.click(screen.getByRole('button', { name: /Other Virginia partners 18/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Other Virginia partners/ }))
     const otherRail = within(screen.getByText(/Other Virginia partners ·/).closest('div'))
     expect(otherRail.getByText('University of Lynchburg')).toBeTruthy()
     expect(otherRail.getByText('Hollins University')).toBeTruthy()
@@ -719,6 +735,7 @@ describe('degree status in the rails', () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Universities')[0])
+    fireEvent.click(screen.getByRole('button', { name: /Public universities/ }))
     fireEvent.click(screen.getByRole('button', { name: /Needs collecting 2/ }))
     const publicRail = within(screen.getByText(/Public universities ·/).closest('div'))
     expect(publicRail.getByText('University of Virginia')).toBeTruthy()
@@ -729,6 +746,7 @@ describe('degree status in the rails', () => {
     const { fireEvent } = await import('@testing-library/react')
     render(<VirginiaPage />)
     fireEvent.click(screen.getAllByText('Universities')[0])
+    fireEvent.click(screen.getByRole('button', { name: /Public universities/ }))
     fireEvent.click(screen.getByRole('button', { name: /Needs composing 1/ }))
     const publicRail = within(screen.getByText(/Public universities ·/).closest('div'))
     expect(publicRail.getByText('Christopher Newport University')).toBeTruthy()

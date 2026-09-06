@@ -364,17 +364,17 @@ function build({ scheduledOnly, includeNonCs = false }) {
         claimed != null && itemised > claimed && itemised > 0
           ? courses * (claimed / itemised)
           : courses);
-      const postCourses = held(
+      // Courses are counted, so every term is rounded to a whole course. A
+      // denominator reading 37.4552 courses is not a quantity anyone holds.
+      const postCourses = Math.round(held(
         postItems.reduce((n, p) => n + courseCount(maxCredits(p.credits) ?? 0, rate), 0),
-        postUnits, statedPost);
-      const preScale = statedPre != null && itemisedPre > statedPre && itemisedPre > 0
-        ? statedPre / itemisedPre : 1;
+        postUnits, statedPost));
       // Credit each half states but never itemises, converted at the rate the
       // guide's own single courses exhibit.
-      const sparePre = Math.max(0, (statedPre ?? itemisedPre) - itemisedPre) / rate;
-      const sparePost = Math.max(0, (statedPost ?? postUnits) - postUnits) / rate;
-      const coveredCourses = count.supplied * preScale + sparePre;
-      const preCourses = (count.supplied + count.missing) * preScale + sparePre;
+      const sparePre = Math.round(Math.max(0, (statedPre ?? itemisedPre) - itemisedPre) / rate);
+      const sparePost = Math.round(Math.max(0, (statedPost ?? postUnits) - postUnits) / rate);
+      const coveredCourses = count.supplied + sparePre;
+      const preCourses = count.supplied + count.missing + sparePre;
       const courseTotal = preCourses + postCourses + sparePost;
       // What this college can actually put on the degree, counted the way
       // California counts it: the itemised requirements it can supply, not the
@@ -387,24 +387,20 @@ function build({ scheduledOnly, includeNonCs = false }) {
       // however many heavy options the rows offer.
       const transferable = statedPre ?? (tally.supplied + tally.missing + tally.assumed);
       const ceilingPre = statedPreMax ?? transferable;
-      // Held to the guide's stated half, at the rate this college supplies the
-      // rows we DID parse.
+      // The guide's stated half, less the credit this college cannot teach.
       //
-      // Counting only parsed rows punishes a guide for our own gaps: eleven of
-      // the fifteen itemise their community-college half to within a credit or
-      // two of the ceiling they state, but William & Mary itemises 53 against a
-      // stated 63 and VCU 53 against 62, and those two read four points low for
-      // that reason alone. Substituting the stated half outright is the other
-      // error — it credits unparsed rows to every college for free, whatever
-      // its catalogue holds. Scaling does neither: the unparsed remainder is
-      // assumed available exactly as often as the parsed remainder is, so a
-      // college missing a fifth of what we read is credited with four fifths of
-      // what we did not. Where the rows overshoot the stated ceiling, this is
-      // the ceiling.
-      const itemisedPreUnits = tally.supplied + tally.missing + tally.assumed;
-      const covered = itemisedPreUnits > 0
-        ? ceilingPre * ((tally.supplied + tally.assumed) / itemisedPreUnits)
-        : 0;
+      // This used to SCALE: stated x (supplied / itemised), crediting the
+      // unparsed remainder at the rate the parsed rows were supplied. It agreed
+      // with subtraction to two decimal places on every basis — 50.09% either
+      // way — but it returned a RATE applied to a total rather than a count of
+      // credits, so numerators came out fractional. Paul D. Camp reached CNU
+      // with 56.25 credits, which is not a quantity anyone can enrol in.
+      //
+      // Subtracting is also the more literal reading: a four-credit course this
+      // college does not teach costs four credits, not 3.75. A row only counts
+      // missing after `alternatives()` has failed to find any satisfiable
+      // option group, so there is no substitute left to fall back on.
+      const covered = Math.max(0, ceilingPre - tally.missing);
       cells.push({
         college: college.slug,
         collegeName: college.name,

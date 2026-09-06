@@ -372,6 +372,24 @@ describe('CoverageHeatmap adaptive color scale', () => {
   // and never reads the percentage field. Emitting a percentage its own counts
   // did not reproduce drew 44.2% where the data said 50.4%, and no amount of
   // reading the data could find it because the wrong number was never stored.
+  // Units and courses are both counted things. A numerator of 56.25 credits is
+  // not a quantity anyone can enrol in, and it was the visible symptom of the
+  // numerator being a RATE applied to a total rather than a count.
+  it('states every Virginia numerator and denominator as a whole number', () => {
+    for (const [variant, bundle] of Object.entries(VA_COVERAGE_ROWS)) {
+      if (variant === 'built_at' || variant === 'census') continue
+      for (const row of bundle.rows) {
+        for (const field of [
+          'named_requirement_courses_with_ge_articulated', 'named_requirement_courses_with_ge_total',
+          'named_requirement_courses_articulated', 'named_requirement_courses_total',
+          'va_units_no_ge_articulated', 'va_units_no_ge_total',
+        ]) {
+          expect(Number.isInteger(row[field]), `${variant} ${row.community_college} ${field}=${row[field]}`).toBe(true)
+        }
+      }
+    }
+  })
+
   it('reproduces every Virginia percentage from its own numerator and denominator', () => {
     for (const [variant, bundle] of Object.entries(VA_COVERAGE_ROWS)) {
       if (variant === 'built_at' || variant === 'census') continue

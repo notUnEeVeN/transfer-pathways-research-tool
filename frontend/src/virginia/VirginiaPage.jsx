@@ -531,8 +531,26 @@ function CollegeCourses({ college }) {
 
 /* ── Universities ────────────────────────────────────────────────────────── */
 
-function UniversityCohortFilters({ value, onChange, publicCount, otherCount }) {
+/**
+ * Which universities the rail lists.
+ *
+ * Opens on the ones we actually measure — the fifteen publishing a
+ * computer-science Transfer Guide — because that is the population every
+ * Virginia figure is computed over, and three of them (Bridgewater,
+ * Randolph-Macon, Lynchburg) are private, so the SCHEV public cohort is not it.
+ * The cohort views stay, one click away, for the questions that are about
+ * Virginia's sector rather than about our study.
+ */
+const MEASURED_VIEW = 'measured'
+
+function UniversityCohortFilters({ value, onChange, measuredCount, publicCount, otherCount }) {
   const options = [
+    {
+      key: MEASURED_VIEW,
+      label: 'With a CS transfer guide',
+      count: measuredCount,
+      variant: 'success',
+    },
     {
       key: PRIMARY_VA_COHORT,
       label: 'Public universities',
@@ -567,18 +585,31 @@ function UniversityCohortFilters({ value, onChange, publicCount, otherCount }) {
 }
 
 function UniversitiesPane({ onRoute }) {
-  const [cohort, setCohort] = useState(PRIMARY_VA_COHORT)
-  const { data, isLoading, isError } = useVaInstitutions('four_year', cohort)
+  const [cohort, setCohort] = useState(MEASURED_VIEW)
+  // Every four-year institution is fetched once and the view narrows it here.
+  // The measured set spans two SCHEV cohorts, so it cannot be a server filter.
+  const { data, isLoading, isError } = useVaInstitutions('four_year', '')
   const [selected, setSelected] = useState(null)
   const [subTab, setSubTab] = useState('guide')
   const [filter, setFilter] = useState('all')
 
   const coverage = useVaCoverage()
-  const unis = data?.institutions ?? []
+  const all = data?.institutions ?? []
+  const measured = useMemo(
+    () => all.filter((i) => VA_TRANSFER_GUIDES.universities[i.name]),
+    [all]
+  )
+  const unis = useMemo(() => (
+    cohort === MEASURED_VIEW ? measured : all.filter((i) => i.cohort === cohort)
+  ), [all, measured, cohort])
+  const measuredCount = measured.length
+  // The endpoint's own cohort census is authoritative for the two SCHEV
+  // cohorts; counting the returned rows would silently under-report if the
+  // response were ever paged. The measured count has no server analogue.
   const publicCount = data?.cohorts?.[PRIMARY_VA_COHORT]?.institution_count
-    ?? (cohort === PRIMARY_VA_COHORT ? unis.length : 0)
+    ?? all.filter((i) => i.cohort === PRIMARY_VA_COHORT).length
   const otherCount = data?.cohorts?.[OTHER_VA_COHORT]?.institution_count
-    ?? (cohort === OTHER_VA_COHORT ? unis.length : 0)
+    ?? all.filter((i) => i.cohort === OTHER_VA_COHORT).length
   const { items, counts, total } = useRailItems(unis, coverage.data, filter)
   const current = unis.find((i) => i.name === selected) || null
   const currentCoverage = coverageForInstitution(coverage.data, current)
@@ -597,7 +628,11 @@ function UniversitiesPane({ onRoute }) {
   }
 
   useEffect(() => {
-    if (!selected) return onRoute({ path: `/api/va/institutions?level=four_year&cohort=${cohort}` })
+    if (!selected) {
+      return onRoute({ path: cohort === MEASURED_VIEW
+        ? '/api/va/institutions?level=four_year'
+        : `/api/va/institutions?level=four_year&cohort=${cohort}` })
+    }
     if (subTab === 'guide') return onRoute(null)
     onRoute({
       path: subTab === 'courses'
@@ -615,15 +650,18 @@ function UniversitiesPane({ onRoute }) {
     <div className='grid grid-cols-1 lg:grid-cols-[300px_minmax(0,1fr)] gap-5 items-start'>
       <Stack gap='tight'>
         <UniversityCohortFilters value={cohort} onChange={changeCohort}
-          publicCount={publicCount} otherCount={otherCount} />
+          measuredCount={measuredCount} publicCount={publicCount} otherCount={otherCount} />
         <p className='px-1 text-tag text-ink-subtle'>
-          {cohort === PRIMARY_VA_COHORT
-            ? 'Primary comparison cohort: all 15 SCHEV public four-year institutions.'
-            : 'Secondary research retained for private and other Virginia transfer partners.'}
+          {cohort === MEASURED_VIEW
+            ? 'The universities every Virginia figure is computed over: those publishing a computer-science Transfer Guide. Three are private, so this is not the SCHEV public cohort.'
+            : cohort === PRIMARY_VA_COHORT
+              ? 'SCHEV public four-year institutions. Not all publish a computer-science guide.'
+              : 'Private and other Virginia transfer partners retained from the equivalency corpus.'}
         </p>
         <RailFilters counts={counts} total={total} value={filter} onChange={setFilter} />
         <InstitutionRail items={items} selectedId={selected}
-          title={cohort === PRIMARY_VA_COHORT ? 'Public universities' : 'Other Virginia partners'}
+          title={cohort === MEASURED_VIEW ? 'Measured universities'
+            : cohort === PRIMARY_VA_COHORT ? 'Public universities' : 'Other Virginia partners'}
         onSelect={setSelected} itemSubtitle={(i) => i.subtitle} />
       </Stack>
 
