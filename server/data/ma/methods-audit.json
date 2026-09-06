@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-19T04:17:42.991Z",
+ "generated_at": "2026-09-02T16:52:48.748Z",
  "artifact_scope": "Version-aware comparison of our engine, the repository snapshot last committed 2024-12-12, and literal transcriptions of the final PDF created 2026-06-26. Unless a field says final_pdf, a recovered notebook/tab value is archival.",
  "source_warning": "Archive↔PDF disagreement establishes version divergence, not a final-paper error. A final-paper error requires an internal arithmetic, population, or scope contradiction in the final artifact.",
  "source_vintages": {

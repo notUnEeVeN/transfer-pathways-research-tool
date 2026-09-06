@@ -59,3 +59,72 @@ Computing 22 and Science 93 points are obscured by their mean diamonds and
 explicitly marked as inferences; Math 63 is partly occluded. Figure 7's
 61/61/49/61 cohort reconciliation is recorded in `pdf-figures.json` and in the
 paper-audit documents.
+
+## Final paper repository (added 2026-09-02) — `final/`
+
+`final/Pathways Master.xlsx` and `final/Four Year Heatmap.xlsx` come from the
+paper's own repository (`CIC-CC-Paper`), together with the four notebooks that
+generate every figure, kept in `final/notebooks/` for reference.
+
+    Four Year Heatmap.xlsx  d72d82489d4f0f6809602a5afaca65b3e47896d4ddb8eb576dd6a0f009cae3ff
+    Pathways Master.xlsx    06cb9a546ccc0bb2c9095573e517b7ae288227f819142c64c157240806daa85f
+
+**These are the workbooks the published PDF was generated from.** Tested cell by
+cell against our own transcription of the final PDF, which is the neutral
+referee — whichever workbook reproduces the printed numbers is the one the paper
+used:
+
+| figure | `recovered/` (older) | `final/` |
+|---|---|---|
+| Fig 1 course articulation | 164/165 | **165/165** |
+| Fig 3 % of AS applied     |  50/61  | **61/61**  |
+| Fig 4 extra credit hours  |  39/49  | **49/49**  |
+| Fig 5 extra cost          |  39/49  | **49/49**  |
+| Fig 6 complexity delta    |  48/49  | **49/49**  |
+
+The note above about the PDF being "generated from a NEWER revision of the tally
+than the repo workbook" is now resolved: this IS that revision. The
+`printed_cell_overrides` entry for Cape Cod x UMass Dartmouth (PDF 45, archive
+35.5) is produced natively by the final heatmap and no longer needs overriding.
+
+What changed between the two vintages: resident curricula were normalised to
+exactly 120 hours (Framingham 122, Salem/Amherst/Lowell 121), ten transfer
+pathways with excess hours were revised to 120 with $0 added cost, and the
+`Tallys` sheet was revised for Fitchburg (Comp/Math counts 90/75 -> 75/90) and
+Framingham (75/30 -> 60/45).
+
+`recovered/` is NOT superseded and is not edited. It remains the only source for
+`All CC AS.xlsx` and the eleven `All Pathways/*.xlsx` workbooks, which the final
+repository does not carry and which exist only in upstream git history.
+`convert_recovered.py` therefore reads the heatmap and the figure baselines from
+`final/` and everything else from `recovered/`.
+
+### Consequences of the update, recorded rather than smoothed over
+
+- **No per-credit rate for UMass Amherst or UMass Dartmouth.** The rate is
+  back-derived as cost / hours-above-120, and in the final workbook every
+  studied pathway at those two campuses lands at exactly 120. The paper prints
+  nine rates for the same reason. Nine are derived; two are absent by fact.
+- **Cape Cod x UMass Dartmouth now disagrees the other way.** The final heatmap
+  says 45.2% and our reconstruction from the (unchanged, older) pathway workbook
+  says 35.5%. The paper updated its heatmap without updating that pathway
+  workbook, or our git-history copy predates the fix.
+
+### An error in the paper's own Figure 2 notebook, NOT reproduced
+
+`course_distribution.ipynb` hard-codes its per-university percentages rather
+than reading `Tallys`, and the list is misaligned. `Tallys` orders the campuses
+Boston, Dartmouth, Lowell; the notebook's `UNI_LIST` says Boston, Lowell,
+Dartmouth, and its `SCI` array is the Tallys column shifted by one from index 6:
+
+    campus            notebook   Tallys
+    UMass Boston        1.00      0.53
+    UMass Lowell        0.53      0.97
+    UMass Dartmouth     0.78      0.78
+    Westfield           0.97      1.00
+
+Its `COMP` array does not reconcile with either vintage of `Tallys` at all
+(Bridgewater 0.30 against 43/60 = 0.72). Figure 2 is therefore not reproduced
+from the notebook's constants; `methodsAudit.js` reports the deviations. This is
+the one place the final repository is followed as evidence rather than as
+method.

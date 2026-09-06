@@ -38,6 +38,7 @@ import openpyxl
 
 ROOT = Path(__file__).resolve().parents[2]
 RECOVERED = ROOT / 'data' / 'ma' / 'recovered'
+FINAL = ROOT / 'data' / 'ma' / 'final'
 OUT = ROOT / 'data' / 'ma' / 'their-math.json'
 
 UNI_LIST = ['Bridgewater', 'Fitchburg', 'Framingham', 'MCLA', 'Salem',
@@ -101,8 +102,8 @@ def course_type(header):
 
 
 def fig1_and_matrix():
-    formulas = openpyxl.load_workbook(RECOVERED / 'Mass Heatmap.xlsx', data_only=False)
-    values = openpyxl.load_workbook(RECOVERED / 'Mass Heatmap.xlsx', data_only=True)
+    formulas = openpyxl.load_workbook(FINAL / 'Four Year Heatmap.xlsx', data_only=False)
+    values = openpyxl.load_workbook(FINAL / 'Four Year Heatmap.xlsx', data_only=True)
     universities = []
     for uni in UNI_LIST:
         wsf, wsv = formulas[uni], values[uni]
@@ -152,7 +153,7 @@ def fig1_and_matrix():
 
 
 def fig2_recompute(fig1_universities):
-    values = openpyxl.load_workbook(RECOVERED / 'Mass Heatmap.xlsx', data_only=True)
+    values = openpyxl.load_workbook(FINAL / 'Four Year Heatmap.xlsx', data_only=True)
     lower_hi = {u['name']: u['lower_formula_range'][1] for u in fig1_universities}
     result = {'typing_rule': 'keyword prefix rule in theirMath.py (their repo has none)', 'universities': []}
     for uni in UNI_LIST:
@@ -197,7 +198,7 @@ def fig2_recompute(fig1_universities):
 
 
 def currcomp_tabs():
-    wb = openpyxl.load_workbook(RECOVERED / 'CurrComp Master.xlsx', data_only=True)
+    wb = openpyxl.load_workbook(FINAL / 'Pathways Master.xlsx', data_only=True)
     tabs = {'% Credit Hours': 'pct_as', 'Credit Hours': 'credit_hours',
             'Curricular Complexity': 'complexity', 'Cost': 'cost'}
     out = {}

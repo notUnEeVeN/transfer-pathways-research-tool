@@ -52,23 +52,32 @@ describe('runMaImport', () => {
     expect(await db.collection('assist_agreements').countDocuments({ state: 'ma' })).toBe(165);
   });
 
-  it('stamps every university with the per-credit tuition its own cost tab implies', async () => {
+  // The rate is BACK-DERIVED as cost divided by hours above 120, so a campus
+  // whose studied pathways all land at exactly 120 divides by zero and gets no
+  // rate. That is not a gap in the import: in the final workbook UMass Amherst
+  // (3 pathways) and UMass Dartmouth (2) carry no excess hours at all, and the
+  // paper prints no per-credit rate for either — its Figure 5 legend lists
+  // nine. The older workbook showed excess for both, which is why this once
+  // read as eleven.
+  it('derives a per-credit rate wherever the cost tab divides, and nowhere else', async () => {
     await runMaImport(db, raw, { apply: true });
     const universities = await db.collection('assist_institutions')
       .find({ kind: 'university', state: 'ma' }).toArray();
     expect(universities).toHaveLength(11);
-    for (const university of universities) {
+    const priced = universities.filter((u) => u.tuition_per_credit_usd != null);
+    const unpriced = universities.filter((u) => u.tuition_per_credit_usd == null);
+    expect(priced).toHaveLength(9);
+    expect(unpriced.map((u) => u.name).sort()).toEqual(['UMass Amherst', 'UMass Dartmouth']);
+    for (const university of priced) {
       expect(university.tuition_per_credit_usd).toBeGreaterThan(300);
       // The credit-rate pricer divides annual by 24 semester units; the
       // stamped annual is the derived rate re-expressed on that convention.
       expect(university.tuition_annual_resident_usd)
         .toBeCloseTo(university.tuition_per_credit_usd * 24, 5);
-      expect(university.tuition_source).toMatch(/CurrComp Master\.xlsx Cost tab/i);
+      expect(university.tuition_source).toMatch(/Cost tab/i);
     }
     const bridgewater = universities.find((row) => row.name === 'Bridgewater');
-    expect(bridgewater.tuition_per_credit_usd).toBeCloseTo(488.92, 1);
-    const amherst = universities.find((row) => row.name === 'UMass Amherst');
-    expect(amherst.tuition_per_credit_usd).toBeCloseTo(740.5, 1);
+    expect(bridgewater.tuition_per_credit_usd).toBeCloseTo(489, 0);
   });
 
   it('imports the final PDF Figures 4 and 5 as an exact, shared 49-pair baseline', async () => {

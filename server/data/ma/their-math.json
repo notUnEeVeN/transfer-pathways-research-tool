@@ -38,8 +38,8 @@
      {
       "cc": "Berkshire",
       "blanks": 0,
-      "stored_lower": 0.5454545454545454,
-      "stored_all": 0.2727272727272727,
+      "stored_lower": 0.5454545455,
+      "stored_all": 0.2727272727,
       "mt": null,
       "n_bools": 22,
       "recomputed_lower": 0.5454545454545454,
@@ -48,8 +48,8 @@
      {
       "cc": "Bristol",
       "blanks": 0,
-      "stored_lower": 0.9090909090909091,
-      "stored_all": 0.5454545454545454,
+      "stored_lower": 0.9090909091,
+      "stored_all": 0.5454545455,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.9090909090909091,
@@ -58,8 +58,8 @@
      {
       "cc": "Bunker Hill",
       "blanks": 0,
-      "stored_lower": 0.36363636363636365,
-      "stored_all": 0.18181818181818182,
+      "stored_lower": 0.3636363636,
+      "stored_all": 0.1818181818,
       "mt": null,
       "n_bools": 22,
       "recomputed_lower": 0.36363636363636365,
@@ -68,7 +68,7 @@
      {
       "cc": "Cape Cod",
       "blanks": 0,
-      "stored_lower": 0.8181818181818182,
+      "stored_lower": 0.8181818182,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -78,8 +78,8 @@
      {
       "cc": "Greenfield",
       "blanks": 0,
-      "stored_lower": 0.9090909090909091,
-      "stored_all": 0.5454545454545454,
+      "stored_lower": 0.9090909091,
+      "stored_all": 0.5454545455,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.9090909090909091,
@@ -88,8 +88,8 @@
      {
       "cc": "Holyoke",
       "blanks": 0,
-      "stored_lower": 0.5454545454545454,
-      "stored_all": 0.2727272727272727,
+      "stored_lower": 0.5454545455,
+      "stored_all": 0.2727272727,
       "mt": null,
       "n_bools": 22,
       "recomputed_lower": 0.5454545454545454,
@@ -98,8 +98,8 @@
      {
       "cc": "Massasoit",
       "blanks": 0,
-      "stored_lower": 0.9090909090909091,
-      "stored_all": 0.5454545454545454,
+      "stored_lower": 0.9090909091,
+      "stored_all": 0.5454545455,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.9090909090909091,
@@ -108,8 +108,8 @@
      {
       "cc": "MassBay",
       "blanks": 0,
-      "stored_lower": 0.9090909090909091,
-      "stored_all": 0.5454545454545454,
+      "stored_lower": 0.9090909091,
+      "stored_all": 0.5454545455,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.9090909090909091,
@@ -118,8 +118,8 @@
      {
       "cc": "Middlesex",
       "blanks": 0,
-      "stored_lower": 0.9090909090909091,
-      "stored_all": 0.5454545454545454,
+      "stored_lower": 0.9090909091,
+      "stored_all": 0.5454545455,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.9090909090909091,
@@ -128,8 +128,8 @@
      {
       "cc": "Mount Wachusett",
       "blanks": 0,
-      "stored_lower": 0.2727272727272727,
-      "stored_all": 0.13636363636363635,
+      "stored_lower": 0.2727272727,
+      "stored_all": 0.1363636364,
       "mt": null,
       "n_bools": 22,
       "recomputed_lower": 0.2727272727272727,
@@ -138,7 +138,7 @@
      {
       "cc": "North Shore",
       "blanks": 0,
-      "stored_lower": 0.8181818181818182,
+      "stored_lower": 0.8181818182,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -148,8 +148,8 @@
      {
       "cc": "Northern Essex",
       "blanks": 0,
-      "stored_lower": 0.9090909090909091,
-      "stored_all": 0.5454545454545454,
+      "stored_lower": 0.9090909091,
+      "stored_all": 0.5454545455,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.9090909090909091,
@@ -158,8 +158,8 @@
      {
       "cc": "Quinsigamond",
       "blanks": 0,
-      "stored_lower": 0.9090909090909091,
-      "stored_all": 0.5454545454545454,
+      "stored_lower": 0.9090909091,
+      "stored_all": 0.5454545455,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.9090909090909091,
@@ -168,8 +168,8 @@
      {
       "cc": "Roxbury",
       "blanks": 0,
-      "stored_lower": 0.45454545454545453,
-      "stored_all": 0.22727272727272727,
+      "stored_lower": 0.4545454545,
+      "stored_all": 0.2272727273,
       "mt": null,
       "n_bools": 22,
       "recomputed_lower": 0.45454545454545453,
@@ -178,8 +178,8 @@
      {
       "cc": "Springfield Technical",
       "blanks": 0,
-      "stored_lower": 0.9090909090909091,
-      "stored_all": 0.5454545454545454,
+      "stored_lower": 0.9090909091,
+      "stored_all": 0.5454545455,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.9090909090909091,
@@ -225,7 +225,7 @@
       "cc": "Berkshire",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.6956521739130435,
+      "stored_all": 0.6956521739,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -234,8 +234,8 @@
      {
       "cc": "Bristol",
       "blanks": 0,
-      "stored_lower": 0.9166666666666666,
-      "stored_all": 0.6521739130434783,
+      "stored_lower": 0.9166666667,
+      "stored_all": 0.652173913,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 0.9166666666666666,
@@ -245,7 +245,7 @@
       "cc": "Bunker Hill",
       "blanks": 0,
       "stored_lower": 0.75,
-      "stored_all": 0.6521739130434783,
+      "stored_all": 0.652173913,
       "mt": null,
       "n_bools": 23,
       "recomputed_lower": 0.75,
@@ -255,7 +255,7 @@
       "cc": "Cape Cod",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.7391304347826086,
+      "stored_all": 0.7391304348,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -265,7 +265,7 @@
       "cc": "Greenfield",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.6521739130434783,
+      "stored_all": 0.652173913,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -275,7 +275,7 @@
       "cc": "Holyoke",
       "blanks": 0,
       "stored_lower": 0.75,
-      "stored_all": 0.4782608695652174,
+      "stored_all": 0.4782608696,
       "mt": null,
       "n_bools": 23,
       "recomputed_lower": 0.75,
@@ -285,7 +285,7 @@
       "cc": "Massasoit",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.782608695652174,
+      "stored_all": 0.7826086957,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -295,7 +295,7 @@
       "cc": "MassBay",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.8260869565217391,
+      "stored_all": 0.8260869565,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -305,7 +305,7 @@
       "cc": "Middlesex",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.8260869565217391,
+      "stored_all": 0.8260869565,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -314,8 +314,8 @@
      {
       "cc": "Mount Wachusett",
       "blanks": 0,
-      "stored_lower": 0.8333333333333334,
-      "stored_all": 0.7391304347826086,
+      "stored_lower": 0.8333333333,
+      "stored_all": 0.7391304348,
       "mt": null,
       "n_bools": 23,
       "recomputed_lower": 0.8333333333333334,
@@ -325,7 +325,7 @@
       "cc": "North Shore",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.7391304347826086,
+      "stored_all": 0.7391304348,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -335,7 +335,7 @@
       "cc": "Northern Essex",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.6956521739130435,
+      "stored_all": 0.6956521739,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -345,7 +345,7 @@
       "cc": "Quinsigamond",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.8260869565217391,
+      "stored_all": 0.8260869565,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -354,8 +354,8 @@
      {
       "cc": "Roxbury",
       "blanks": 0,
-      "stored_lower": 0.6666666666666666,
-      "stored_all": 0.4782608695652174,
+      "stored_lower": 0.6666666667,
+      "stored_all": 0.4782608696,
       "mt": null,
       "n_bools": 23,
       "recomputed_lower": 0.6666666666666666,
@@ -365,7 +365,7 @@
       "cc": "Springfield Technical",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.7391304347826086,
+      "stored_all": 0.7391304348,
       "mt": "MT",
       "n_bools": 23,
       "recomputed_lower": 1.0,
@@ -407,7 +407,7 @@
      {
       "cc": "Berkshire",
       "blanks": 0,
-      "stored_lower": 0.2222222222222222,
+      "stored_lower": 0.2222222222,
       "stored_all": 0.1,
       "mt": null,
       "n_bools": 20,
@@ -417,7 +417,7 @@
      {
       "cc": "Bristol",
       "blanks": 0,
-      "stored_lower": 0.1111111111111111,
+      "stored_lower": 0.1111111111,
       "stored_all": 0.05,
       "mt": null,
       "n_bools": 20,
@@ -427,7 +427,7 @@
      {
       "cc": "Bunker Hill",
       "blanks": 0,
-      "stored_lower": 0.3333333333333333,
+      "stored_lower": 0.3333333333,
       "stored_all": 0.2,
       "mt": null,
       "n_bools": 20,
@@ -437,7 +437,7 @@
      {
       "cc": "Cape Cod",
       "blanks": 0,
-      "stored_lower": 0.2222222222222222,
+      "stored_lower": 0.2222222222,
       "stored_all": 0.1,
       "mt": null,
       "n_bools": 20,
@@ -447,7 +447,7 @@
      {
       "cc": "Greenfield",
       "blanks": 0,
-      "stored_lower": 0.1111111111111111,
+      "stored_lower": 0.1111111111,
       "stored_all": 0.1,
       "mt": null,
       "n_bools": 20,
@@ -457,7 +457,7 @@
      {
       "cc": "Holyoke",
       "blanks": 0,
-      "stored_lower": 0.4444444444444444,
+      "stored_lower": 0.4444444444,
       "stored_all": 0.2,
       "mt": null,
       "n_bools": 20,
@@ -467,7 +467,7 @@
      {
       "cc": "Massasoit",
       "blanks": 0,
-      "stored_lower": 0.2222222222222222,
+      "stored_lower": 0.2222222222,
       "stored_all": 0.1,
       "mt": null,
       "n_bools": 20,
@@ -477,7 +477,7 @@
      {
       "cc": "MassBay",
       "blanks": 0,
-      "stored_lower": 0.2222222222222222,
+      "stored_lower": 0.2222222222,
       "stored_all": 0.15,
       "mt": null,
       "n_bools": 20,
@@ -487,7 +487,7 @@
      {
       "cc": "Middlesex",
       "blanks": 0,
-      "stored_lower": 0.1111111111111111,
+      "stored_lower": 0.1111111111,
       "stored_all": 0.05,
       "mt": null,
       "n_bools": 20,
@@ -497,7 +497,7 @@
      {
       "cc": "Mount Wachusett",
       "blanks": 0,
-      "stored_lower": 0.1111111111111111,
+      "stored_lower": 0.1111111111,
       "stored_all": 0.05,
       "mt": null,
       "n_bools": 20,
@@ -507,7 +507,7 @@
      {
       "cc": "North Shore",
       "blanks": 0,
-      "stored_lower": 0.3333333333333333,
+      "stored_lower": 0.3333333333,
       "stored_all": 0.2,
       "mt": null,
       "n_bools": 20,
@@ -517,7 +517,7 @@
      {
       "cc": "Northern Essex",
       "blanks": 0,
-      "stored_lower": 0.2222222222222222,
+      "stored_lower": 0.2222222222,
       "stored_all": 0.1,
       "mt": null,
       "n_bools": 20,
@@ -527,7 +527,7 @@
      {
       "cc": "Quinsigamond",
       "blanks": 0,
-      "stored_lower": 0.3333333333333333,
+      "stored_lower": 0.3333333333,
       "stored_all": 0.15,
       "mt": null,
       "n_bools": 20,
@@ -537,7 +537,7 @@
      {
       "cc": "Roxbury",
       "blanks": 0,
-      "stored_lower": 0.2222222222222222,
+      "stored_lower": 0.2222222222,
       "stored_all": 0.1,
       "mt": null,
       "n_bools": 20,
@@ -547,7 +547,7 @@
      {
       "cc": "Springfield Technical",
       "blanks": 0,
-      "stored_lower": 0.2222222222222222,
+      "stored_lower": 0.2222222222,
       "stored_all": 0.1,
       "mt": null,
       "n_bools": 20,
@@ -595,7 +595,7 @@
      {
       "cc": "Berkshire",
       "blanks": 0,
-      "stored_lower": 0.23076923076923078,
+      "stored_lower": 0.2307692308,
       "stored_all": 0.16,
       "mt": null,
       "n_bools": 25,
@@ -605,7 +605,7 @@
      {
       "cc": "Bristol",
       "blanks": 0,
-      "stored_lower": 0.3076923076923077,
+      "stored_lower": 0.3076923077,
       "stored_all": 0.2,
       "mt": null,
       "n_bools": 25,
@@ -615,7 +615,7 @@
      {
       "cc": "Bunker Hill",
       "blanks": 0,
-      "stored_lower": 0.3076923076923077,
+      "stored_lower": 0.3076923077,
       "stored_all": 0.2,
       "mt": null,
       "n_bools": 25,
@@ -625,7 +625,7 @@
      {
       "cc": "Cape Cod",
       "blanks": 0,
-      "stored_lower": 0.3076923076923077,
+      "stored_lower": 0.3076923077,
       "stored_all": 0.2,
       "mt": null,
       "n_bools": 25,
@@ -635,7 +635,7 @@
      {
       "cc": "Greenfield",
       "blanks": 0,
-      "stored_lower": 0.15384615384615385,
+      "stored_lower": 0.1538461538,
       "stored_all": 0.12,
       "mt": null,
       "n_bools": 25,
@@ -645,7 +645,7 @@
      {
       "cc": "Holyoke",
       "blanks": 0,
-      "stored_lower": 0.38461538461538464,
+      "stored_lower": 0.3846153846,
       "stored_all": 0.2,
       "mt": null,
       "n_bools": 25,
@@ -655,7 +655,7 @@
      {
       "cc": "Massasoit",
       "blanks": 0,
-      "stored_lower": 0.38461538461538464,
+      "stored_lower": 0.3846153846,
       "stored_all": 0.24,
       "mt": null,
       "n_bools": 25,
@@ -665,7 +665,7 @@
      {
       "cc": "MassBay",
       "blanks": 0,
-      "stored_lower": 0.23076923076923078,
+      "stored_lower": 0.2307692308,
       "stored_all": 0.12,
       "mt": null,
       "n_bools": 25,
@@ -675,7 +675,7 @@
      {
       "cc": "Middlesex",
       "blanks": 0,
-      "stored_lower": 0.23076923076923078,
+      "stored_lower": 0.2307692308,
       "stored_all": 0.12,
       "mt": null,
       "n_bools": 25,
@@ -685,7 +685,7 @@
      {
       "cc": "Mount Wachusett",
       "blanks": 0,
-      "stored_lower": 0.15384615384615385,
+      "stored_lower": 0.1538461538,
       "stored_all": 0.08,
       "mt": null,
       "n_bools": 25,
@@ -695,7 +695,7 @@
      {
       "cc": "North Shore",
       "blanks": 0,
-      "stored_lower": 0.5384615384615384,
+      "stored_lower": 0.5384615385,
       "stored_all": 0.32,
       "mt": null,
       "n_bools": 25,
@@ -705,7 +705,7 @@
      {
       "cc": "Northern Essex",
       "blanks": 0,
-      "stored_lower": 0.07692307692307693,
+      "stored_lower": 0.07692307692,
       "stored_all": 0.04,
       "mt": null,
       "n_bools": 25,
@@ -715,7 +715,7 @@
      {
       "cc": "Quinsigamond",
       "blanks": 0,
-      "stored_lower": 0.46153846153846156,
+      "stored_lower": 0.4615384615,
       "stored_all": 0.28,
       "mt": null,
       "n_bools": 25,
@@ -725,7 +725,7 @@
      {
       "cc": "Roxbury",
       "blanks": 0,
-      "stored_lower": 0.38461538461538464,
+      "stored_lower": 0.3846153846,
       "stored_all": 0.2,
       "mt": null,
       "n_bools": 25,
@@ -735,7 +735,7 @@
      {
       "cc": "Springfield Technical",
       "blanks": 0,
-      "stored_lower": 0.3076923076923077,
+      "stored_lower": 0.3076923077,
       "stored_all": 0.16,
       "mt": null,
       "n_bools": 25,
@@ -782,8 +782,8 @@
      {
       "cc": "Berkshire",
       "blanks": 0,
-      "stored_lower": 0.5294117647058824,
-      "stored_all": 0.4166666666666667,
+      "stored_lower": 0.5294117647,
+      "stored_all": 0.4166666667,
       "mt": null,
       "n_bools": 24,
       "recomputed_lower": 0.5294117647058824,
@@ -792,7 +792,7 @@
      {
       "cc": "Bristol",
       "blanks": 0,
-      "stored_lower": 0.47058823529411764,
+      "stored_lower": 0.4705882353,
       "stored_all": 0.375,
       "mt": null,
       "n_bools": 24,
@@ -802,7 +802,7 @@
      {
       "cc": "Bunker Hill",
       "blanks": 0,
-      "stored_lower": 0.7647058823529411,
+      "stored_lower": 0.7647058824,
       "stored_all": 0.625,
       "mt": null,
       "n_bools": 24,
@@ -812,8 +812,8 @@
      {
       "cc": "Cape Cod",
       "blanks": 0,
-      "stored_lower": 0.7647058823529411,
-      "stored_all": 0.5833333333333334,
+      "stored_lower": 0.7647058824,
+      "stored_all": 0.5833333333,
       "mt": null,
       "n_bools": 24,
       "recomputed_lower": 0.7647058823529411,
@@ -822,8 +822,8 @@
      {
       "cc": "Greenfield",
       "blanks": 0,
-      "stored_lower": 0.4117647058823529,
-      "stored_all": 0.3333333333333333,
+      "stored_lower": 0.4117647059,
+      "stored_all": 0.3333333333,
       "mt": null,
       "n_bools": 24,
       "recomputed_lower": 0.4117647058823529,
@@ -832,8 +832,8 @@
      {
       "cc": "Holyoke",
       "blanks": 0,
-      "stored_lower": 0.4117647058823529,
-      "stored_all": 0.3333333333333333,
+      "stored_lower": 0.4117647059,
+      "stored_all": 0.3333333333,
       "mt": null,
       "n_bools": 24,
       "recomputed_lower": 0.4117647058823529,
@@ -842,8 +842,8 @@
      {
       "cc": "Massasoit",
       "blanks": 0,
-      "stored_lower": 0.4117647058823529,
-      "stored_all": 0.2916666666666667,
+      "stored_lower": 0.4117647059,
+      "stored_all": 0.2916666667,
       "mt": null,
       "n_bools": 24,
       "recomputed_lower": 0.4117647058823529,
@@ -852,8 +852,8 @@
      {
       "cc": "MassBay",
       "blanks": 0,
-      "stored_lower": 0.7647058823529411,
-      "stored_all": 0.5833333333333334,
+      "stored_lower": 0.7647058824,
+      "stored_all": 0.5833333333,
       "mt": null,
       "n_bools": 24,
       "recomputed_lower": 0.7647058823529411,
@@ -862,7 +862,7 @@
      {
       "cc": "Middlesex",
       "blanks": 0,
-      "stored_lower": 0.6470588235294118,
+      "stored_lower": 0.6470588235,
       "stored_all": 0.5,
       "mt": null,
       "n_bools": 24,
@@ -872,7 +872,7 @@
      {
       "cc": "Mount Wachusett",
       "blanks": 0,
-      "stored_lower": 0.47058823529411764,
+      "stored_lower": 0.4705882353,
       "stored_all": 0.375,
       "mt": null,
       "n_bools": 24,
@@ -882,8 +882,8 @@
      {
       "cc": "North Shore",
       "blanks": 0,
-      "stored_lower": 0.8235294117647058,
-      "stored_all": 0.7083333333333334,
+      "stored_lower": 0.8235294118,
+      "stored_all": 0.7083333333,
       "mt": null,
       "n_bools": 24,
       "recomputed_lower": 0.8235294117647058,
@@ -892,8 +892,8 @@
      {
       "cc": "Northern Essex",
       "blanks": 0,
-      "stored_lower": 0.7647058823529411,
-      "stored_all": 0.6666666666666666,
+      "stored_lower": 0.7647058824,
+      "stored_all": 0.6666666667,
       "mt": null,
       "n_bools": 24,
       "recomputed_lower": 0.7647058823529411,
@@ -902,7 +902,7 @@
      {
       "cc": "Quinsigamond",
       "blanks": 0,
-      "stored_lower": 0.5294117647058824,
+      "stored_lower": 0.5294117647,
       "stored_all": 0.375,
       "mt": null,
       "n_bools": 24,
@@ -912,8 +912,8 @@
      {
       "cc": "Roxbury",
       "blanks": 0,
-      "stored_lower": 0.5294117647058824,
-      "stored_all": 0.4166666666666667,
+      "stored_lower": 0.5294117647,
+      "stored_all": 0.4166666667,
       "mt": null,
       "n_bools": 24,
       "recomputed_lower": 0.5294117647058824,
@@ -922,7 +922,7 @@
      {
       "cc": "Springfield Technical",
       "blanks": 0,
-      "stored_lower": 0.47058823529411764,
+      "stored_lower": 0.4705882353,
       "stored_all": 0.375,
       "mt": null,
       "n_bools": 24,
@@ -967,7 +967,7 @@
      {
       "cc": "Berkshire",
       "blanks": 0,
-      "stored_lower": 0.6428571428571429,
+      "stored_lower": 0.6428571429,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -977,8 +977,8 @@
      {
       "cc": "Bristol",
       "blanks": 0,
-      "stored_lower": 0.5714285714285714,
-      "stored_all": 0.45454545454545453,
+      "stored_lower": 0.5714285714,
+      "stored_all": 0.4545454545,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.5714285714285714,
@@ -988,7 +988,7 @@
       "cc": "Bunker Hill",
       "blanks": 0,
       "stored_lower": 0.5,
-      "stored_all": 0.3181818181818182,
+      "stored_all": 0.3181818182,
       "mt": null,
       "n_bools": 22,
       "recomputed_lower": 0.5,
@@ -997,7 +997,7 @@
      {
       "cc": "Cape Cod",
       "blanks": 0,
-      "stored_lower": 0.6428571428571429,
+      "stored_lower": 0.6428571429,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -1007,7 +1007,7 @@
      {
       "cc": "Greenfield",
       "blanks": 0,
-      "stored_lower": 0.6428571428571429,
+      "stored_lower": 0.6428571429,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -1017,8 +1017,8 @@
      {
       "cc": "Holyoke",
       "blanks": 0,
-      "stored_lower": 0.5714285714285714,
-      "stored_all": 0.36363636363636365,
+      "stored_lower": 0.5714285714,
+      "stored_all": 0.3636363636,
       "mt": null,
       "n_bools": 22,
       "recomputed_lower": 0.5714285714285714,
@@ -1027,7 +1027,7 @@
      {
       "cc": "Massasoit",
       "blanks": 0,
-      "stored_lower": 0.6428571428571429,
+      "stored_lower": 0.6428571429,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -1037,7 +1037,7 @@
      {
       "cc": "MassBay",
       "blanks": 0,
-      "stored_lower": 0.6428571428571429,
+      "stored_lower": 0.6428571429,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -1047,7 +1047,7 @@
      {
       "cc": "Middlesex",
       "blanks": 0,
-      "stored_lower": 0.6428571428571429,
+      "stored_lower": 0.6428571429,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -1058,7 +1058,7 @@
       "cc": "Mount Wachusett",
       "blanks": 0,
       "stored_lower": 0.5,
-      "stored_all": 0.3181818181818182,
+      "stored_all": 0.3181818182,
       "mt": null,
       "n_bools": 22,
       "recomputed_lower": 0.5,
@@ -1067,7 +1067,7 @@
      {
       "cc": "North Shore",
       "blanks": 0,
-      "stored_lower": 0.6428571428571429,
+      "stored_lower": 0.6428571429,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -1077,8 +1077,8 @@
      {
       "cc": "Northern Essex",
       "blanks": 0,
-      "stored_lower": 0.5714285714285714,
-      "stored_all": 0.45454545454545453,
+      "stored_lower": 0.5714285714,
+      "stored_all": 0.4545454545,
       "mt": "MT",
       "n_bools": 22,
       "recomputed_lower": 0.5714285714285714,
@@ -1087,7 +1087,7 @@
      {
       "cc": "Quinsigamond",
       "blanks": 0,
-      "stored_lower": 0.6428571428571429,
+      "stored_lower": 0.6428571429,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -1097,8 +1097,8 @@
      {
       "cc": "Roxbury",
       "blanks": 0,
-      "stored_lower": 0.35714285714285715,
-      "stored_all": 0.22727272727272727,
+      "stored_lower": 0.3571428571,
+      "stored_all": 0.2272727273,
       "mt": null,
       "n_bools": 22,
       "recomputed_lower": 0.35714285714285715,
@@ -1107,7 +1107,7 @@
      {
       "cc": "Springfield Technical",
       "blanks": 0,
-      "stored_lower": 0.6428571428571429,
+      "stored_lower": 0.6428571429,
       "stored_all": 0.5,
       "mt": "MT",
       "n_bools": 22,
@@ -1152,7 +1152,7 @@
       "cc": "Berkshire",
       "blanks": 0,
       "stored_lower": 0.2,
-      "stored_all": 0.09523809523809523,
+      "stored_all": 0.09523809524,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.2,
@@ -1162,7 +1162,7 @@
       "cc": "Bristol",
       "blanks": 0,
       "stored_lower": 0.5,
-      "stored_all": 0.23809523809523808,
+      "stored_all": 0.2380952381,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.5,
@@ -1172,7 +1172,7 @@
       "cc": "Bunker Hill",
       "blanks": 0,
       "stored_lower": 0.6,
-      "stored_all": 0.2857142857142857,
+      "stored_all": 0.2857142857,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.6,
@@ -1182,7 +1182,7 @@
       "cc": "Cape Cod",
       "blanks": 0,
       "stored_lower": 0.6,
-      "stored_all": 0.2857142857142857,
+      "stored_all": 0.2857142857,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.6,
@@ -1192,7 +1192,7 @@
       "cc": "Greenfield",
       "blanks": 0,
       "stored_lower": 0.3,
-      "stored_all": 0.14285714285714285,
+      "stored_all": 0.1428571429,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.3,
@@ -1202,7 +1202,7 @@
       "cc": "Holyoke",
       "blanks": 0,
       "stored_lower": 0.2,
-      "stored_all": 0.09523809523809523,
+      "stored_all": 0.09523809524,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.2,
@@ -1212,7 +1212,7 @@
       "cc": "Massasoit",
       "blanks": 0,
       "stored_lower": 0.6,
-      "stored_all": 0.2857142857142857,
+      "stored_all": 0.2857142857,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.6,
@@ -1222,7 +1222,7 @@
       "cc": "MassBay",
       "blanks": 0,
       "stored_lower": 0.6,
-      "stored_all": 0.2857142857142857,
+      "stored_all": 0.2857142857,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.6,
@@ -1232,7 +1232,7 @@
       "cc": "Middlesex",
       "blanks": 0,
       "stored_lower": 0.7,
-      "stored_all": 0.3333333333333333,
+      "stored_all": 0.3333333333,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.7,
@@ -1242,7 +1242,7 @@
       "cc": "Mount Wachusett",
       "blanks": 0,
       "stored_lower": 0.2,
-      "stored_all": 0.09523809523809523,
+      "stored_all": 0.09523809524,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.2,
@@ -1252,7 +1252,7 @@
       "cc": "North Shore",
       "blanks": 0,
       "stored_lower": 0.5,
-      "stored_all": 0.23809523809523808,
+      "stored_all": 0.2380952381,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.5,
@@ -1262,7 +1262,7 @@
       "cc": "Northern Essex",
       "blanks": 0,
       "stored_lower": 0.6,
-      "stored_all": 0.2857142857142857,
+      "stored_all": 0.2857142857,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.6,
@@ -1272,7 +1272,7 @@
       "cc": "Quinsigamond",
       "blanks": 0,
       "stored_lower": 0.6,
-      "stored_all": 0.2857142857142857,
+      "stored_all": 0.2857142857,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.6,
@@ -1282,7 +1282,7 @@
       "cc": "Roxbury",
       "blanks": 0,
       "stored_lower": 0.4,
-      "stored_all": 0.19047619047619047,
+      "stored_all": 0.1904761905,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.4,
@@ -1292,7 +1292,7 @@
       "cc": "Springfield Technical",
       "blanks": 0,
       "stored_lower": 0.4,
-      "stored_all": 0.19047619047619047,
+      "stored_all": 0.1904761905,
       "mt": null,
       "n_bools": 21,
       "recomputed_lower": 0.4,
@@ -1345,8 +1345,8 @@
      {
       "cc": "Berkshire",
       "blanks": 0,
-      "stored_lower": 0.8181818181818182,
-      "stored_all": 0.5806451612903226,
+      "stored_lower": 0.8181818182,
+      "stored_all": 0.5806451613,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.8181818181818182,
@@ -1355,8 +1355,8 @@
      {
       "cc": "Bristol",
       "blanks": 0,
-      "stored_lower": 0.8636363636363636,
-      "stored_all": 0.6129032258064516,
+      "stored_lower": 0.8636363636,
+      "stored_all": 0.6129032258,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.8636363636363636,
@@ -1365,8 +1365,8 @@
      {
       "cc": "Bunker Hill",
       "blanks": 0,
-      "stored_lower": 0.9090909090909091,
-      "stored_all": 0.6774193548387096,
+      "stored_lower": 0.9090909091,
+      "stored_all": 0.6774193548,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.9090909090909091,
@@ -1375,8 +1375,8 @@
      {
       "cc": "Cape Cod",
       "blanks": 0,
-      "stored_lower": 0.8181818181818182,
-      "stored_all": 0.5806451612903226,
+      "stored_lower": 0.8181818182,
+      "stored_all": 0.5806451613,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.8181818181818182,
@@ -1385,8 +1385,8 @@
      {
       "cc": "Greenfield",
       "blanks": 0,
-      "stored_lower": 0.8181818181818182,
-      "stored_all": 0.5806451612903226,
+      "stored_lower": 0.8181818182,
+      "stored_all": 0.5806451613,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.8181818181818182,
@@ -1395,8 +1395,8 @@
      {
       "cc": "Holyoke",
       "blanks": 0,
-      "stored_lower": 0.7272727272727273,
-      "stored_all": 0.5161290322580645,
+      "stored_lower": 0.7272727273,
+      "stored_all": 0.5161290323,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.7272727272727273,
@@ -1405,8 +1405,8 @@
      {
       "cc": "Massasoit",
       "blanks": 0,
-      "stored_lower": 0.8636363636363636,
-      "stored_all": 0.6129032258064516,
+      "stored_lower": 0.8636363636,
+      "stored_all": 0.6129032258,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.8636363636363636,
@@ -1416,7 +1416,7 @@
       "cc": "MassBay",
       "blanks": 0,
       "stored_lower": 1,
-      "stored_all": 0.7096774193548387,
+      "stored_all": 0.7096774194,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 1.0,
@@ -1425,8 +1425,8 @@
      {
       "cc": "Middlesex",
       "blanks": 0,
-      "stored_lower": 0.9545454545454546,
-      "stored_all": 0.6774193548387096,
+      "stored_lower": 0.9545454545,
+      "stored_all": 0.6774193548,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.9545454545454546,
@@ -1435,8 +1435,8 @@
      {
       "cc": "Mount Wachusett",
       "blanks": 0,
-      "stored_lower": 0.7727272727272727,
-      "stored_all": 0.5483870967741935,
+      "stored_lower": 0.7727272727,
+      "stored_all": 0.5483870968,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.7727272727272727,
@@ -1445,8 +1445,8 @@
      {
       "cc": "North Shore",
       "blanks": 0,
-      "stored_lower": 0.9545454545454546,
-      "stored_all": 0.6774193548387096,
+      "stored_lower": 0.9545454545,
+      "stored_all": 0.6774193548,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.9545454545454546,
@@ -1455,8 +1455,8 @@
      {
       "cc": "Northern Essex",
       "blanks": 0,
-      "stored_lower": 0.9545454545454546,
-      "stored_all": 0.6774193548387096,
+      "stored_lower": 0.9545454545,
+      "stored_all": 0.6774193548,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.9545454545454546,
@@ -1465,8 +1465,8 @@
      {
       "cc": "Quinsigamond",
       "blanks": 0,
-      "stored_lower": 0.9545454545454546,
-      "stored_all": 0.6774193548387096,
+      "stored_lower": 0.9545454545,
+      "stored_all": 0.6774193548,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.9545454545454546,
@@ -1475,8 +1475,8 @@
      {
       "cc": "Roxbury",
       "blanks": 0,
-      "stored_lower": 0.7272727272727273,
-      "stored_all": 0.5161290322580645,
+      "stored_lower": 0.7272727273,
+      "stored_all": 0.5161290323,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.7272727272727273,
@@ -1485,8 +1485,8 @@
      {
       "cc": "Springfield Technical",
       "blanks": 0,
-      "stored_lower": 0.8636363636363636,
-      "stored_all": 0.6129032258064516,
+      "stored_lower": 0.8636363636,
+      "stored_all": 0.6129032258,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.8636363636363636,
@@ -1540,7 +1540,7 @@
       "cc": "Berkshire",
       "blanks": 0,
       "stored_lower": 0.8125,
-      "stored_all": 0.41935483870967744,
+      "stored_all": 0.4193548387,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.8125,
@@ -1550,7 +1550,7 @@
       "cc": "Bristol",
       "blanks": 0,
       "stored_lower": 0.9375,
-      "stored_all": 0.4838709677419355,
+      "stored_all": 0.4838709677,
       "mt": "MT",
       "n_bools": 31,
       "recomputed_lower": 0.9375,
@@ -1560,7 +1560,7 @@
       "cc": "Bunker Hill",
       "blanks": 0,
       "stored_lower": 0.625,
-      "stored_all": 0.3870967741935484,
+      "stored_all": 0.3870967742,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.625,
@@ -1569,18 +1569,18 @@
      {
       "cc": "Cape Cod",
       "blanks": 0,
-      "stored_lower": 0.6875,
-      "stored_all": 0.3548387096774194,
+      "stored_lower": 0.875,
+      "stored_all": 0.4516129032,
       "mt": "MT",
       "n_bools": 31,
-      "recomputed_lower": 0.6875,
-      "recomputed_all": 0.3548387096774194
+      "recomputed_lower": 0.875,
+      "recomputed_all": 0.45161290322580644
      },
      {
       "cc": "Greenfield",
       "blanks": 0,
       "stored_lower": 0.8125,
-      "stored_all": 0.41935483870967744,
+      "stored_all": 0.4193548387,
       "mt": "MT",
       "n_bools": 31,
       "recomputed_lower": 0.8125,
@@ -1590,7 +1590,7 @@
       "cc": "Holyoke",
       "blanks": 0,
       "stored_lower": 0.625,
-      "stored_all": 0.3225806451612903,
+      "stored_all": 0.3225806452,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.625,
@@ -1600,7 +1600,7 @@
       "cc": "Massasoit",
       "blanks": 0,
       "stored_lower": 0.875,
-      "stored_all": 0.45161290322580644,
+      "stored_all": 0.4516129032,
       "mt": "MT",
       "n_bools": 31,
       "recomputed_lower": 0.875,
@@ -1610,7 +1610,7 @@
       "cc": "MassBay",
       "blanks": 0,
       "stored_lower": 0.625,
-      "stored_all": 0.3548387096774194,
+      "stored_all": 0.3548387097,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.625,
@@ -1620,7 +1620,7 @@
       "cc": "Middlesex",
       "blanks": 0,
       "stored_lower": 0.6875,
-      "stored_all": 0.3870967741935484,
+      "stored_all": 0.3870967742,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.6875,
@@ -1630,7 +1630,7 @@
       "cc": "Mount Wachusett",
       "blanks": 0,
       "stored_lower": 0.375,
-      "stored_all": 0.1935483870967742,
+      "stored_all": 0.1935483871,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.375,
@@ -1640,7 +1640,7 @@
       "cc": "North Shore",
       "blanks": 0,
       "stored_lower": 0.5625,
-      "stored_all": 0.3225806451612903,
+      "stored_all": 0.3225806452,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.5625,
@@ -1650,7 +1650,7 @@
       "cc": "Northern Essex",
       "blanks": 0,
       "stored_lower": 0.5,
-      "stored_all": 0.25806451612903225,
+      "stored_all": 0.2580645161,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.5,
@@ -1660,7 +1660,7 @@
       "cc": "Quinsigamond",
       "blanks": 0,
       "stored_lower": 0.875,
-      "stored_all": 0.4838709677419355,
+      "stored_all": 0.4838709677,
       "mt": "MT",
       "n_bools": 31,
       "recomputed_lower": 0.875,
@@ -1670,7 +1670,7 @@
       "cc": "Roxbury",
       "blanks": 0,
       "stored_lower": 0.4375,
-      "stored_all": 0.22580645161290322,
+      "stored_all": 0.2258064516,
       "mt": null,
       "n_bools": 31,
       "recomputed_lower": 0.4375,
@@ -1680,7 +1680,7 @@
       "cc": "Springfield Technical",
       "blanks": 0,
       "stored_lower": 0.5625,
-      "stored_all": 0.3870967741935484,
+      "stored_all": 0.3870967742,
       "mt": "MT",
       "n_bools": 31,
       "recomputed_lower": 0.5625,
@@ -1728,8 +1728,8 @@
      {
       "cc": "Berkshire",
       "blanks": 0,
-      "stored_lower": 0.38461538461538464,
-      "stored_all": 0.23076923076923078,
+      "stored_lower": 0.3846153846,
+      "stored_all": 0.2307692308,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.38461538461538464,
@@ -1738,8 +1738,8 @@
      {
       "cc": "Bristol",
       "blanks": 0,
-      "stored_lower": 0.46153846153846156,
-      "stored_all": 0.34615384615384615,
+      "stored_lower": 0.4615384615,
+      "stored_all": 0.3461538462,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.46153846153846156,
@@ -1748,8 +1748,8 @@
      {
       "cc": "Bunker Hill",
       "blanks": 0,
-      "stored_lower": 0.3076923076923077,
-      "stored_all": 0.15384615384615385,
+      "stored_lower": 0.3076923077,
+      "stored_all": 0.1538461538,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.3076923076923077,
@@ -1758,8 +1758,8 @@
      {
       "cc": "Cape Cod",
       "blanks": 0,
-      "stored_lower": 0.3076923076923077,
-      "stored_all": 0.19230769230769232,
+      "stored_lower": 0.3076923077,
+      "stored_all": 0.1923076923,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.3076923076923077,
@@ -1768,8 +1768,8 @@
      {
       "cc": "Greenfield",
       "blanks": 0,
-      "stored_lower": 0.5384615384615384,
-      "stored_all": 0.2692307692307692,
+      "stored_lower": 0.5384615385,
+      "stored_all": 0.2692307692,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.5384615384615384,
@@ -1778,8 +1778,8 @@
      {
       "cc": "Holyoke",
       "blanks": 0,
-      "stored_lower": 0.6153846153846154,
-      "stored_all": 0.4230769230769231,
+      "stored_lower": 0.6153846154,
+      "stored_all": 0.4230769231,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.6153846153846154,
@@ -1788,8 +1788,8 @@
      {
       "cc": "Massasoit",
       "blanks": 0,
-      "stored_lower": 0.38461538461538464,
-      "stored_all": 0.19230769230769232,
+      "stored_lower": 0.3846153846,
+      "stored_all": 0.1923076923,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.38461538461538464,
@@ -1798,8 +1798,8 @@
      {
       "cc": "MassBay",
       "blanks": 0,
-      "stored_lower": 0.46153846153846156,
-      "stored_all": 0.2692307692307692,
+      "stored_lower": 0.4615384615,
+      "stored_all": 0.2692307692,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.46153846153846156,
@@ -1808,8 +1808,8 @@
      {
       "cc": "Middlesex",
       "blanks": 0,
-      "stored_lower": 0.6153846153846154,
-      "stored_all": 0.34615384615384615,
+      "stored_lower": 0.6153846154,
+      "stored_all": 0.3461538462,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.6153846153846154,
@@ -1818,8 +1818,8 @@
      {
       "cc": "Mount Wachusett",
       "blanks": 0,
-      "stored_lower": 0.3076923076923077,
-      "stored_all": 0.19230769230769232,
+      "stored_lower": 0.3076923077,
+      "stored_all": 0.1923076923,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.3076923076923077,
@@ -1828,8 +1828,8 @@
      {
       "cc": "North Shore",
       "blanks": 0,
-      "stored_lower": 0.38461538461538464,
-      "stored_all": 0.23076923076923078,
+      "stored_lower": 0.3846153846,
+      "stored_all": 0.2307692308,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.38461538461538464,
@@ -1838,8 +1838,8 @@
      {
       "cc": "Northern Essex",
       "blanks": 0,
-      "stored_lower": 0.46153846153846156,
-      "stored_all": 0.2692307692307692,
+      "stored_lower": 0.4615384615,
+      "stored_all": 0.2692307692,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.46153846153846156,
@@ -1848,8 +1848,8 @@
      {
       "cc": "Quinsigamond",
       "blanks": 0,
-      "stored_lower": 0.6153846153846154,
-      "stored_all": 0.38461538461538464,
+      "stored_lower": 0.6153846154,
+      "stored_all": 0.3846153846,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.6153846153846154,
@@ -1858,8 +1858,8 @@
      {
       "cc": "Roxbury",
       "blanks": 0,
-      "stored_lower": 0.3076923076923077,
-      "stored_all": 0.19230769230769232,
+      "stored_lower": 0.3076923077,
+      "stored_all": 0.1923076923,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.3076923076923077,
@@ -1868,8 +1868,8 @@
      {
       "cc": "Springfield Technical",
       "blanks": 0,
-      "stored_lower": 0.5384615384615384,
-      "stored_all": 0.3076923076923077,
+      "stored_lower": 0.5384615385,
+      "stored_all": 0.3076923077,
       "mt": null,
       "n_bools": 26,
       "recomputed_lower": 0.5384615384615384,
@@ -1926,7 +1926,7 @@
      {
       "cc": "Bristol",
       "blanks": 0,
-      "stored_lower": 0.4444444444444444,
+      "stored_lower": 0.4444444444,
       "stored_all": 0.36,
       "mt": null,
       "n_bools": 25,
@@ -1936,7 +1936,7 @@
      {
       "cc": "Bunker Hill",
       "blanks": 0,
-      "stored_lower": 0.3888888888888889,
+      "stored_lower": 0.3888888889,
       "stored_all": 0.36,
       "mt": null,
       "n_bools": 25,
@@ -1946,7 +1946,7 @@
      {
       "cc": "Cape Cod",
       "blanks": 0,
-      "stored_lower": 0.3888888888888889,
+      "stored_lower": 0.3888888889,
       "stored_all": 0.32,
       "mt": null,
       "n_bools": 25,
@@ -1956,7 +1956,7 @@
      {
       "cc": "Greenfield",
       "blanks": 0,
-      "stored_lower": 0.3333333333333333,
+      "stored_lower": 0.3333333333,
       "stored_all": 0.28,
       "mt": null,
       "n_bools": 25,
@@ -1966,7 +1966,7 @@
      {
       "cc": "Holyoke",
       "blanks": 0,
-      "stored_lower": 0.6111111111111112,
+      "stored_lower": 0.6111111111,
       "stored_all": 0.48,
       "mt": null,
       "n_bools": 25,
@@ -1976,7 +1976,7 @@
      {
       "cc": "Massasoit",
       "blanks": 0,
-      "stored_lower": 0.6111111111111112,
+      "stored_lower": 0.6111111111,
       "stored_all": 0.48,
       "mt": null,
       "n_bools": 25,
@@ -1986,7 +1986,7 @@
      {
       "cc": "MassBay",
       "blanks": 0,
-      "stored_lower": 0.6111111111111112,
+      "stored_lower": 0.6111111111,
       "stored_all": 0.48,
       "mt": null,
       "n_bools": 25,
@@ -2006,7 +2006,7 @@
      {
       "cc": "Mount Wachusett",
       "blanks": 0,
-      "stored_lower": 0.3888888888888889,
+      "stored_lower": 0.3888888889,
       "stored_all": 0.32,
       "mt": null,
       "n_bools": 25,
@@ -2016,7 +2016,7 @@
      {
       "cc": "North Shore",
       "blanks": 0,
-      "stored_lower": 0.3333333333333333,
+      "stored_lower": 0.3333333333,
       "stored_all": 0.32,
       "mt": null,
       "n_bools": 25,
@@ -2036,7 +2036,7 @@
      {
       "cc": "Quinsigamond",
       "blanks": 0,
-      "stored_lower": 0.8333333333333334,
+      "stored_lower": 0.8333333333,
       "stored_all": 0.68,
       "mt": null,
       "n_bools": 25,
@@ -2046,7 +2046,7 @@
      {
       "cc": "Roxbury",
       "blanks": 0,
-      "stored_lower": 0.4444444444444444,
+      "stored_lower": 0.4444444444,
       "stored_all": 0.32,
       "mt": null,
       "n_bools": 25,
@@ -2069,8 +2069,8 @@
   "summary": {
    "cells": 165,
    "recomputed_exactly": 165,
-   "mean_stored_all": 0.3821,
-   "mean_recomputed_all": 0.3821
+   "mean_stored_all": 0.3827,
+   "mean_recomputed_all": 0.3827
   }
  },
  "fig2": {
@@ -2287,13 +2287,13 @@
      "Humanities": 1
     },
     "share_of_cells_articulating": {
-     "Computing": 0.2159,
+     "Computing": 0.2254,
      "Math": 0.52,
      "Science": 0.7833,
      "Humanities": 1.0
     },
     "share_of_lower_cells_articulating": {
-     "Computing": 0.6556,
+     "Computing": 0.6889,
      "Math": 0.52,
      "Science": 0.7833,
      "Humanities": 1.0
@@ -2421,13 +2421,13 @@
      "Springfield Technical": 0.6666666667
     },
     "Bridgewater": {
-     "Bristol": 0.7391304348,
+     "Bristol": 0.8985507246,
      "Bunker Hill": 0.5081967213,
-     "Cape Cod": 0.7536231884,
+     "Cape Cod": 0.8695652174,
      "Massasoit": 1,
-     "MassBay": 0.8529411765,
-     "North Shore": 0.890625,
-     "Roxbury": 0.421875
+     "MassBay": 0.9117647059,
+     "North Shore": 0.96875,
+     "Roxbury": 0.390625
     },
     "UMass Boston": {
      "Bristol": 0.5797101449,
@@ -2440,14 +2440,14 @@
      "Roxbury": 0.421875
     },
     "UMass Dartmouth": {
-     "Bristol": 0.7826086957,
-     "Cape Cod": 0.6811594203,
-     "Massasoit": 0.5384615385
+     "Bristol": 0.8985507246,
+     "Cape Cod": 0.8985507246,
+     "Massasoit": 0.9538461538
     },
     "Fitchburg": {
      "Bunker Hill": 0.8196721311,
      "MassBay": 1,
-     "Middlesex": 0.95,
+     "Middlesex": 1,
      "Mount Wachusett": 0.9047619048,
      "Quinsigamond": 1,
      "Roxbury": 0.40625
@@ -2481,9 +2481,9 @@
      "Roxbury": 0.515625
     },
     "UMass Amherst": {
-     "Greenfield": 0.9516129032,
+     "Greenfield": 0.9677419355,
      "Holyoke": 0.484375,
-     "Springfield Technical": 0.5555555556
+     "Springfield Technical": 0.9523809524
     },
     "Worcester": {
      "MassBay": 0.75,
@@ -2509,13 +2509,13 @@
    },
    "stats": {
     "n_cells": 61,
-    "mean_cells": 0.6515,
-    "median_cells": 0.6333,
-    "mean_with_resident": 0.7047,
-    "mean_of_university_means": 0.6415,
-    "median_of_university_means": 0.6638,
-    "mean_delta_vs_resident": -0.3485,
-    "median_delta_vs_resident": -0.3667
+    "mean_cells": 0.6776,
+    "median_cells": 0.6875,
+    "mean_with_resident": 0.7268,
+    "mean_of_university_means": 0.6824,
+    "median_of_university_means": 0.7385,
+    "mean_delta_vs_resident": -0.3224,
+    "median_delta_vs_resident": -0.3125
    }
   },
   "credit_hours": {
@@ -2531,12 +2531,12 @@
      "Springfield Technical": 134.0
     },
     "Bridgewater": {
-     "Bristol": 130.0,
+     "Bristol": 120.0,
      "Bunker Hill": 149.0,
-     "Cape Cod": 131.0,
-     "Massasoit": 125.0,
-     "MassBay": 132.0,
-     "North Shore": 133.0,
+     "Cape Cod": 120.0,
+     "Massasoit": 120.0,
+     "MassBay": 120.0,
+     "North Shore": 120.0,
      "Roxbury": 155.0
     },
     "UMass Boston": {
@@ -2550,15 +2550,15 @@
      "Roxbury": 159.0
     },
     "UMass Dartmouth": {
-     "Bristol": 132.0,
-     "Cape Cod": 136.0,
-     "Massasoit": 151.0
+     "Bristol": 120.0,
+     "Cape Cod": 120.0,
+     "Massasoit": 120.0
     },
     "Fitchburg": {
      "Bunker Hill": 126.0,
      "MassBay": 120.0,
      "Middlesex": 120.0,
-     "Mount Wachusett": 125.0,
+     "Mount Wachusett": 120.0,
      "Quinsigamond": 120.0,
      "Roxbury": 150.0
     },
@@ -2591,9 +2591,9 @@
      "Roxbury": 152.0
     },
     "UMass Amherst": {
-     "Greenfield": 122.0,
-     "Holyoke": 125.0,
-     "Springfield Technical": 131.0
+     "Greenfield": 120.0,
+     "Holyoke": 120.0,
+     "Springfield Technical": 120.0
     },
     "Worcester": {
      "MassBay": 128.0,
@@ -2607,25 +2607,25 @@
    "resident": {
     "Bridgewater": 120.0,
     "Fitchburg": 120.0,
-    "Framingham": 122.0,
+    "Framingham": 120.0,
     "MCLA": 120.0,
-    "Salem": 121.0,
-    "UMass Amherst": 121.0,
+    "Salem": 120.0,
+    "UMass Amherst": 120.0,
     "UMass Boston": 120.0,
     "UMass Dartmouth": 120.0,
-    "UMass Lowell": 121.0,
+    "UMass Lowell": 120.0,
     "Westfield": 120.0,
     "Worcester": 120.0
    },
    "stats": {
     "n_cells": 61,
-    "mean_cells": 137.1967,
-    "median_cells": 133.0,
-    "mean_with_resident": 134.6389,
-    "mean_of_university_means": 136.9811,
-    "median_of_university_means": 136.4286,
-    "mean_delta_vs_resident": 16.6557,
-    "median_delta_vs_resident": 13.0
+    "mean_cells": 135.0164,
+    "median_cells": 131.0,
+    "mean_with_resident": 132.7222,
+    "mean_of_university_means": 133.9096,
+    "median_of_university_means": 130.6667,
+    "mean_delta_vs_resident": 15.0164,
+    "median_delta_vs_resident": 11.0
    }
   },
   "complexity": {
@@ -2692,7 +2692,7 @@
     "UMass Amherst": {
      "Greenfield": 191.0,
      "Holyoke": 210.0,
-     "Springfield Technical": 219.0
+     "Springfield Technical": 157.0
     },
     "Worcester": {
      "MassBay": 104.0,
@@ -2717,13 +2717,13 @@
    },
    "stats": {
     "n_cells": 49,
-    "mean_cells": 166.5714,
-    "median_cells": 177.0,
-    "mean_with_resident": 164.5,
-    "mean_of_university_means": 170.4424,
+    "mean_cells": 165.3061,
+    "median_cells": 174.0,
+    "mean_with_resident": 163.4667,
+    "mean_of_university_means": 168.5636,
     "median_of_university_means": 176.5,
-    "mean_delta_vs_resident": 15.8571,
-    "median_delta_vs_resident": 23.0
+    "mean_delta_vs_resident": 14.5918,
+    "median_delta_vs_resident": 20.0
    }
   },
   "cost": {
@@ -2739,12 +2739,12 @@
      "Springfield Technical": 7212.333333
     },
     "Bridgewater": {
-     "Bristol": 4889.166667,
+     "Bristol": 0,
      "Bunker Hill": 14178.58333,
-     "Cape Cod": 5378.083333,
-     "Massasoit": 2444.583333,
-     "MassBay": 5867,
-     "North Shore": 6355.916667,
+     "Cape Cod": 0,
+     "Massasoit": 0,
+     "MassBay": 0,
+     "North Shore": 0,
      "Roxbury": 17112.08333
     },
     "UMass Boston": {
@@ -2758,15 +2758,15 @@
      "Roxbury": 27127.75
     },
     "UMass Dartmouth": {
-     "Bristol": 7806,
-     "Cape Cod": 10408,
-     "Massasoit": 20165.5
+     "Bristol": 0,
+     "Cape Cod": 0,
+     "Massasoit": 0
     },
     "Fitchburg": {
      "Bunker Hill": 2836.5,
      "MassBay": 0,
      "Middlesex": 0,
-     "Mount Wachusett": 2363.75,
+     "Mount Wachusett": 0,
      "Quinsigamond": 0,
      "Roxbury": 14182.5
     },
@@ -2799,9 +2799,9 @@
      "Roxbury": 22621.33333
     },
     "UMass Amherst": {
-     "Greenfield": 1481,
-     "Holyoke": 3702.5,
-     "Springfield Technical": 8145.5
+     "Greenfield": 0,
+     "Holyoke": 0,
+     "Springfield Technical": 0
     },
     "Worcester": {
      "MassBay": 3928.666667,
@@ -2815,25 +2815,25 @@
    "resident": {
     "Bridgewater": 0,
     "Fitchburg": 0,
-    "Framingham": 993.3333333,
+    "Framingham": 0,
     "MCLA": 0,
-    "Salem": 514.1,
-    "UMass Amherst": 740.5,
+    "Salem": 0,
+    "UMass Amherst": 0,
     "UMass Boston": 0,
     "UMass Dartmouth": 0,
-    "UMass Lowell": 706.9166667,
+    "UMass Lowell": 0,
     "Westfield": 0,
     "Worcester": 0
    },
    "stats": {
     "n_cells": 61,
-    "mean_cells": 9624.9077,
-    "median_cells": 7212.3333,
-    "mean_with_resident": 8195.4752,
-    "mean_of_university_means": 9498.7468,
-    "median_of_university_means": 8032.2024,
-    "mean_delta_vs_resident": 9318.0997,
-    "median_delta_vs_resident": 7212.3333
+    "mean_cells": 8329.7109,
+    "median_cells": 5655.1,
+    "mean_with_resident": 7057.1162,
+    "mean_of_university_means": 7572.1803,
+    "median_of_university_means": 6756.7429,
+    "mean_delta_vs_resident": 8329.7109,
+    "median_delta_vs_resident": 5655.1
    }
   }
  }

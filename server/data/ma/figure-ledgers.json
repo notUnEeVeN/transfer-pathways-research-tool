@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-19T04:17:39.405Z",
+ "generated_at": "2026-09-02T16:52:37.561Z",
  "artifact_scope": "Archive-vintage diagnostic. Cell ledgers are computed from the repository snapshot last committed 2024-12-12; the final PDF created 2026-06-26 is a later artifact and appears only through explicitly named final-PDF transcription gates.",
  "source_warning": "Never quote an archive_notebook_value, archive_typed_hours, or archive matrix value as a final-paper value. Archive↔PDF disagreement proves version divergence unless the final PDF also violates an internal arithmetic, population, or scope invariant.",
  "source_vintages": {

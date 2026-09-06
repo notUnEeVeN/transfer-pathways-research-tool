@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-08-14T23:56:04.779Z",
+ "generated_at": "2026-09-02T16:52:44.378Z",
  "fig1_requirements_heatmap": {
   "cells": 165,
-  "exact": 165,
-  "worst": 0.04761904761904745,
-  "verdict": "EXACT: every cell reproduces the published ratio"
+  "exact": 164,
+  "worst": 9.661290320000006,
+  "verdict": "164/165 exact; worst |Δ| 9.66pp"
  },
  "fig3_transfer_credit_rate": {
   "pairs": 61,
@@ -13,8 +13,8 @@
   "buckets": {
    "exact": 6,
    "close": 16,
-   "published-sum-drift": 6,
-   "tally-vs-overlay": 33
+   "published-sum-drift": 12,
+   "tally-vs-overlay": 27
   },
   "note": "Aggregate means nearly coincide while individual cells spread: the published tallies and the recovered pathway overlays are two hand artifacts of one study, and they disagree with each other per pair. Our recomputation follows the overlays (the course-level record).",
   "cells": [
@@ -30,7 +30,7 @@
     "ours": 90.6,
     "theirs": 48.4,
     "delta": 42.2,
-    "bucket": "tally-vs-overlay"
+    "bucket": "published-sum-drift"
    },
    {
     "pair": "UMass Lowell/Roxbury",
@@ -51,7 +51,7 @@
     "ours": 83.6,
     "theirs": 55.6,
     "delta": 28,
-    "bucket": "tally-vs-overlay"
+    "bucket": "published-sum-drift"
    },
    {
     "pair": "MCLA/Berkshire",
@@ -107,7 +107,7 @@
     "ours": 90.3,
     "theirs": 73.9,
     "delta": 16.4,
-    "bucket": "tally-vs-overlay"
+    "bucket": "published-sum-drift"
    },
    {
     "pair": "Westfield/Berkshire",
@@ -191,7 +191,7 @@
     "ours": 65.2,
     "theirs": 75.4,
     "delta": -10.2,
-    "bucket": "tally-vs-overlay"
+    "bucket": "published-sum-drift"
    },
    {
     "pair": "Framingham/Middlesex",
@@ -233,7 +233,7 @@
     "ours": 87.1,
     "theirs": 95.2,
     "delta": -8.1,
-    "bucket": "tally-vs-overlay"
+    "bucket": "published-sum-drift"
    },
    {
     "pair": "Salem/Roxbury",
@@ -289,7 +289,7 @@
     "ours": 91.2,
     "theirs": 85.3,
     "delta": 5.9,
-    "bucket": "tally-vs-overlay"
+    "bucket": "published-sum-drift"
    },
    {
     "pair": "Fitchburg/Middlesex",
@@ -451,11 +451,16 @@
   "Bridgewater/Massasoit: COMP 430 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "Bridgewater/Roxbury: COMP 151 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "Bridgewater: resident plan sums 123 against the published 120",
-  "Bridgewater/Massasoit: pathway sums 120 against the published 125",
+  "Bridgewater/Bristol: pathway sums 130 against the published 120",
+  "Bridgewater/Cape Cod: pathway sums 131 against the published 120",
+  "Bridgewater/MassBay: pathway sums 132 against the published 120",
+  "Bridgewater/North Shore: pathway sums 133 against the published 120",
   "Bridgewater/Roxbury: pathway sums 182 against the published 155",
   "Fitchburg/Quinsigamond: CSC 4400 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "Fitchburg/Roxbury: MATH 2300 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Fitchburg/Mount Wachusett: pathway sums 125 against the published 120",
   "Fitchburg/Quinsigamond: pathway sums 121 against the published 120",
+  "Framingham: resident plan sums 122 against the published 120",
   "Salem/MassBay: CSC 260 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "Salem/MassBay: SLOT 16 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "Salem/Massasoit: SLOT 14 left the pathway but the heatmap says not articulated (overlay vs boolean)",
@@ -463,14 +468,21 @@
   "Salem/Massasoit: SLOT 16 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "Salem/North Shore: CSC 295 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "Salem/Roxbury: SLOT 16 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "Salem: resident plan sums 121 against the published 120",
   "UMass Amherst/Springfield Technical: COMPSCI 250 left the pathway but the heatmap says not articulated (overlay vs boolean)",
+  "UMass Amherst: resident plan sums 121 against the published 120",
+  "UMass Amherst/Greenfield: pathway sums 122 against the published 120",
+  "UMass Amherst/Holyoke: pathway sums 125 against the published 120",
+  "UMass Amherst/Springfield Technical: pathway sums 131 against the published 120",
   "UMass Boston/MassBay: MATH 260 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "UMass Boston/Massasoit: MATH 260 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "UMass Boston/Roxbury: PHYSIC 113 left the pathway but the heatmap says not articulated (overlay vs boolean)",
   "UMass Boston/Bunker Hill: pathway sums 119 against the published 126",
   "UMass Boston/MassBay: pathway sums 151 against the published 127",
-  "UMass Dartmouth/Cape Cod: pathway sums 138 against the published 136",
-  "UMass Dartmouth/Massasoit: pathway sums 148 against the published 151",
+  "UMass Dartmouth/Bristol: pathway sums 132 against the published 120",
+  "UMass Dartmouth/Cape Cod: pathway sums 138 against the published 120",
+  "UMass Dartmouth/Massasoit: pathway sums 148 against the published 120",
+  "UMass Lowell: resident plan sums 121 against the published 120",
   "UMass Lowell/Roxbury: pathway sums 185 against the published 152",
   "Westfield: resident plan sums 121 against the published 120",
   "Worcester/Quinsigamond: CS 225 left the pathway but the heatmap says not articulated (overlay vs boolean)"

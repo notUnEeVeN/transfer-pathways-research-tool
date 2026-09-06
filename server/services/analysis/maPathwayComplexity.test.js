@@ -31,7 +31,15 @@ describe('maPathwayComplexity', () => {
     expect(maPathwayComplexity(rows).complexity).toBe(theirMath.currcomp.complexity.resident.Bridgewater);
   });
 
-  it('matches 59 of the 60 archived score-tab values, missing only Dartmouth x Bristol', () => {
+  // Two of sixty diverge, and both are hand edits we cannot reproduce from the
+  // pathway graph. The Curricular Complexity tab is sixty PLAIN TYPED VALUES —
+  // no formulas, nothing referencing a pathway sheet — so a score changes only
+  // when someone retypes it. The final workbook retyped UMass Amherst x
+  // Springfield Technical from 219 to 157; our recomputation still yields 219,
+  // which is what the older workbook said, because the pathway workbook that
+  // feeds the graph is unchanged between the two vintages. Same class as the
+  // Figure 3 cells whose printed value exceeds what their own workbook yields.
+  it('matches 58 of the 60 archived score-tab values, missing two hand edits', () => {
     const cells = theirMath.currcomp.complexity.cells || {};
     const resident = theirMath.currcomp.complexity.resident || {};
     const misses = [];
@@ -48,7 +56,10 @@ describe('maPathwayComplexity', () => {
       }
     }
     expect(compared).toBe(60);
-    expect(misses).toEqual(['UMass Dartmouth x Bristol: 174 vs 170']);
+    expect(misses).toEqual([
+      'UMass Amherst x Springfield Technical: 219 vs 157',
+      'UMass Dartmouth x Bristol: 174 vs 170',
+    ]);
   });
 
   it('keeps the final PDF, archived tab, and recomputation as separate artifacts', () => {
@@ -106,7 +117,9 @@ describe('maPathwayComplexity', () => {
       }
       return exact;
     };
-    expect(exactCount(true)).toBe(59);
+    // 58 against fewer than 20: the corequisite edges are still what carries
+    // the metric, whichever of the two workbook vintages it is scored against.
+    expect(exactCount(true)).toBe(58);
     expect(exactCount(false)).toBeLessThan(20);
   });
 });

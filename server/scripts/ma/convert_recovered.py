@@ -1,7 +1,18 @@
 #!/usr/bin/env python
 """Convert the vendored Massachusetts workbooks into deterministic raw JSON.
 
-Reads only server/data/ma/recovered/; writes server/data/ma/raw/. Every
+Reads server/data/ma/final/ and server/data/ma/recovered/; writes
+server/data/ma/raw/.
+
+TWO source vintages, deliberately. `final/` holds the two workbooks the
+published paper was actually generated from — they reproduce every printed cell
+of Figures 3, 4, 5 and 6 exactly, where the older `recovered/` copies miss 31 of
+208. `recovered/` is still the ONLY source for the associate-degree workbook and
+the eleven per-university pathway workbooks, which the final repository does not
+carry; those come from git history and are unchanged.
+
+So the heatmap and the figure baselines are read from `final/`, everything else
+from `recovered/`, and neither directory is edited to look like the other. Every
 judgment a later stage depends on is made loudly here: the lower/upper column
 boundary is solved against the tab's own ratio columns, community-college name
 variants are mapped to one canonical spelling, and the counts the recon
@@ -18,6 +29,7 @@ import pandas as pd
 
 BASE = Path(__file__).resolve().parents[2] / "data" / "ma"
 RECOVERED = BASE / "recovered"
+FINAL = BASE / "final"
 RAW = BASE / "raw"
 
 UNIVERSITIES = [
@@ -72,7 +84,7 @@ def parse_code(header, column_index):
 def parse_heatmap():
     out = []
     for uni in UNIVERSITIES:
-        df = pd.read_excel(RECOVERED / "Mass Heatmap.xlsx", uni, header=None)
+        df = pd.read_excel(FINAL / "Four Year Heatmap.xlsx", uni, header=None)
         headers = df.iloc[0].tolist()
         assert headers[1] == "Lower" and headers[2] == "Upper" and headers[3] == "MT", uni
         course_cols = []
@@ -231,7 +243,7 @@ def parse_baselines():
     }
     out = {}
     for sheet, key in measures.items():
-        df = pd.read_excel(RECOVERED / "CurrComp Master.xlsx", sheet, header=None)
+        df = pd.read_excel(FINAL / "Pathways Master.xlsx", sheet, header=None)
         unis = []
         for ci in range(1, df.shape[1]):
             name = df.iat[0, ci]
