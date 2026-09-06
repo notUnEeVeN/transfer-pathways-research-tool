@@ -5,9 +5,16 @@ import VerifiedBanner from './VerifiedBanner'
 
 describe('VerifiedBanner', () => {
   it('names the verifier and dates the verdict', () => {
-    render(<VerifiedBanner verifiers={['Tybalt Mallet']} verifiedAt='2026-08-03T15:26:00Z' />)
+    // The banner renders a UTC instant in the reader's own timezone, so the
+    // calendar day it prints depends on where the reader is: 15:26Z on the 3rd
+    // is already the 4th in Tokyo. Hard-coding "8/3/2026" made this test pass
+    // in the Americas and fail across the dateline. Expect what the component's
+    // own formatter yields for that instant instead.
+    const at = '2026-08-03T15:26:00Z'
+    const expected = new Date(at).toLocaleDateString()
+    render(<VerifiedBanner verifiers={['Tybalt Mallet']} verifiedAt={at} />)
     expect(screen.getByText('Verified by Tybalt Mallet')).toBeTruthy()
-    expect(screen.getByText(/Aug|8\/3\/2026/)).toBeTruthy()
+    expect(screen.getByText(new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))).toBeTruthy()
   })
 
   it('accepts a bare string as well as a list, so every caller can pass what it holds', () => {
