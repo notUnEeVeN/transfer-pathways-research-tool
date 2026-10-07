@@ -132,8 +132,6 @@ describe('built-in visual registry', () => {
       'income-access',
       'multi-campus-pathways',
       'credit-loss',
-      'price-of-place',
-      'paper-gate',
     ])
   })
 
@@ -184,8 +182,6 @@ describe('built-in visual registry', () => {
       'Transfer access and local income',
       'Preparation as campus options expand',
       'Minimum transfer coursework',
-      'The Income Gate',
-      'The Computing Bottleneck',
     ])
     for (const analysis of ANALYSES) {
       expect(`${analysis.title} ${analysis.description}`).not.toMatch(

@@ -22,6 +22,7 @@ require('dotenv').config({ path: require('node:path').join(__dirname, '..', '.en
 const { MongoClient } = require('mongodb');
 const { computeTransferBudget } = require('../services/degreeTransferBudget');
 const { computeUnitBudget, resolveSectionTier } = require('../services/degreeSlots');
+const { stateClause } = require('../config/stateScope');
 
 const CAMPUS = Object.freeze({
   79: 'Berkeley', 89: 'Davis', 120: 'Irvine', 117: 'UCLA', 144: 'Merced',
@@ -32,6 +33,17 @@ const arg = (name) => {
   return i >= 0 ? process.argv[i + 1] : null;
 };
 const sum = (g) => (g.sections || []).reduce((a, s) => a + Number(s.unit_advisement || 0), 0);
+
+function degreeAuditQuery(major = null) {
+  if (major && !['cs', 'bio', 'econ'].includes(major)) {
+    throw new Error('This audit applies UC modelling rules only; --major must be cs, bio, or econ.');
+  }
+  return {
+    kind: 'degree', ...stateClause('ca'),
+    school_id: { $in: Object.keys(CAMPUS).map(Number) },
+    ...(major ? { major_slug: major } : {}),
+  };
+}
 
 function checks(doc, budget) {
   const out = [];
@@ -163,38 +175,45 @@ function checks(doc, budget) {
 }
 
 async function main() {
+  const query = degreeAuditQuery(arg('major'));
   const client = new MongoClient(process.env.MONGO_URI);
-  await client.connect();
-  const db = client.db(process.env.DB_NAME);
-  const wanted = arg('major');
-  const docs = (await db.collection('curated_requirements').find({ kind: 'degree' }).toArray())
-    .filter((d) => !wanted || d.major_slug === wanted)
-    .sort((a, b) => String(a.major_slug).localeCompare(String(b.major_slug))
-      || String(CAMPUS[a.school_id]).localeCompare(String(CAMPUS[b.school_id])));
+  try {
+    await client.connect();
+    const db = client.db(process.env.DB_NAME);
+    const docs = (await db.collection('curated_requirements').find(query).toArray())
+      .sort((a, b) => String(a.major_slug).localeCompare(String(b.major_slug))
+        || String(CAMPUS[a.school_id]).localeCompare(String(CAMPUS[b.school_id])));
 
-  const shapes = new Map();
-  let fails = 0;
-  let warns = 0;
+    const shapes = new Map();
+    let fails = 0;
+    let warns = 0;
 
-  console.log('doc                campus      shape    total  transf  atUC   binding');
-  for (const doc of docs) {
-    const budget = computeTransferBudget(doc);
-    const unitBearing = (doc.requirement_groups || []).filter((g) => sum(g) > 0).length;
-    const shape = unitBearing >= (doc.requirement_groups || []).length * 0.6 ? 'units' : 'courses';
-    shapes.set(shape, (shapes.get(shape) || 0) + 1);
-    console.log(`${String(doc._id).padEnd(19)}${String(CAMPUS[doc.school_id] || '?').padEnd(12)}`
-      + `${shape.padEnd(9)}${String(`${budget.requirements.stated}/${budget.total}`).padEnd(7)}`
-      + `${String(budget.transferred).padEnd(8)}${String(budget.university.total).padEnd(7)}`
-      + `${budget.binding}`);
-    for (const c of checks(doc, budget)) {
-      if (c.level === 'fail') fails += 1; else warns += 1;
-      console.log(`      ${c.level === 'fail' ? 'FAIL' : 'warn'}  ${c.code}: ${c.detail}`);
+    console.log('doc                campus      shape    total  transf  atUC   binding');
+    for (const doc of docs) {
+      const budget = computeTransferBudget(doc);
+      const unitBearing = (doc.requirement_groups || []).filter((g) => sum(g) > 0).length;
+      const shape = unitBearing >= (doc.requirement_groups || []).length * 0.6 ? 'units' : 'courses';
+      shapes.set(shape, (shapes.get(shape) || 0) + 1);
+      console.log(`${String(doc._id).padEnd(19)}${String(CAMPUS[doc.school_id] || '?').padEnd(12)}`
+        + `${shape.padEnd(9)}${String(`${budget.requirements.stated}/${budget.total}`).padEnd(7)}`
+        + `${String(budget.transferred).padEnd(8)}${String(budget.university.total).padEnd(7)}`
+        + `${budget.binding}`);
+      for (const c of checks(doc, budget)) {
+        if (c.level === 'fail') fails += 1; else warns += 1;
+        console.log(`      ${c.level === 'fail' ? 'FAIL' : 'warn'}  ${c.code}: ${c.detail}`);
+      }
     }
-  }
 
-  console.log(`\n${docs.length} documents — shapes: ${[...shapes].map(([k, v]) => `${v} ${k}`).join(', ')}`);
-  console.log(`${fails} failing check(s), ${warns} warning(s)`);
-  await client.close();
+    console.log(`\n${docs.length} documents — shapes: ${[...shapes].map(([k, v]) => `${v} ${k}`).join(', ')}`);
+    console.log(`${fails} failing check(s), ${warns} warning(s)`);
+    if (fails) process.exitCode = 1;
+  } finally {
+    await client.close();
+  }
 }
 
-main().catch((error) => { console.error(error); process.exit(1); });
+if (require.main === module) {
+  main().catch((error) => { console.error(error); process.exitCode = 1; });
+}
+
+module.exports = { checks, degreeAuditQuery };

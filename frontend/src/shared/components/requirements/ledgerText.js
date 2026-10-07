@@ -54,10 +54,7 @@ export function sectionRule(section, group, receivers, soleStat, pooled) {
   // — and it hides that the alternatives differ in length. Series phrasing wins
   // over the units branch; everything else is unchanged.
   const allSeries = receivers.length > 0 && receivers.every((r) => r.receiving?.kind === 'series')
-  if (allSeries) {
-    return receivers.length === 1 ? 'Complete this series:' : `Complete all ${receivers.length} series:`
-  }
-  if (section.unit_advisement) return `Complete ${section.unit_advisement} units of:`
+  if (section.unit_advisement && !allSeries) return `Complete ${section.unit_advisement} units of:`
 
   // A GE category receiver is one placeholder for many catalog courses. Its
   // section_advisement is the real number of courses required, even though the
@@ -83,8 +80,14 @@ export function sectionRule(section, group, receivers, soleStat, pooled) {
     // original ask — `total` is reachability-capped and collapses to 0 when
     // every receiver is non-articulated, which would read as "Complete 0 of:".
     const ask = soleStat.originalTotal != null ? soleStat.originalTotal : soleStat.total
-    if (/unit/.test(soleStat.label)) return `Complete ${ask} units of:`
-    if (ask < receivers.length) choice = ask
+    if (/unit/.test(soleStat.label)) {
+      if (!allSeries) return `Complete ${ask} units of:`
+    } else if (ask < receivers.length) choice = ask
+  }
+
+  if (allSeries) {
+    if (choice != null) return `Complete ${choice} of these ${receivers.length} series:`
+    return receivers.length === 1 ? 'Complete this series:' : `Complete all ${receivers.length} series:`
   }
 
   // Under a group-level pooled advisement ("Complete N courses across the

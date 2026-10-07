@@ -3478,7 +3478,7 @@ async function transferCreditRateData(db, _auditDb, {
     || String(a.school).localeCompare(String(b.school)));
 
   // A paper corpus carries the study's published per-pair values alongside our
-  // recomputation. Figure 3 has both the repo tally and final-PDF revision;
+  // recomputation. Figure 3 has both the final workbook and PDF transcription;
   // Figures 4 and 5 use the final PDF's printed matrices. Which one a visual
   // displays is an explicit source choice, never an accident of pipeline.
   if (configuredMajor?.capabilities?.paperBaselines && configuredMajor?.state) {
@@ -3494,18 +3494,18 @@ async function transferCreditRateData(db, _auditDb, {
       byPair.set(`${row.measure}|${row.school_id}|${row.community_college_id}`, row.value);
     }
 
-    // Preserve two archived-sheet reconstructions as diagnostic lenses: the
+    // Preserve two mixed-vintage reconstructions as diagnostic lenses: the
     // numerator restricted to receivers in the university's analyzed course
     // list ("CS-only") and the full GE-inclusive rate. The final PDF is a
     // later source and is served independently above; disagreement with these
-    // older inputs is version/reconstruction evidence, not proof of a paper
-    // error. GE here is the university-side complement of the archived
+    // older pathway inputs is version/reconstruction evidence, not proof of a paper
+    // error. GE here is the university-side complement of the final
     // Figure-1 course list — that artifact's partition, not a label of ours;
     // AS courses are never classified.
     const [maDegrees, maAgreements, maSending] = await Promise.all([
       db.collection('curated_requirements')
         .find({ kind: 'degree', state: configuredMajor.state },
-          { projection: { school_id: 1, requirement_groups: 1 } }).toArray(),
+          { projection: { school_id: 1, requirement_groups: 1, total_units: 1, modeling_notes: 1, source_method: 1 } }).toArray(),
       db.collection('assist_agreements')
         .find({ state: configuredMajor.state, pairing: 'order-approximate' },
           { projection: { uc_school_id: 1, community_college_id: 1, requirement_groups: 1 } }).toArray(),
@@ -3519,6 +3519,9 @@ async function transferCreditRateData(db, _auditDb, {
         .flatMap((group) => group.sections.flatMap((section) => section.receivers.map((r) => r.receiving.parent_id)))
     )]));
     const maUnitsById = new Map(maSending.map((course) => [course.course_id, course.units || 0]));
+    const maDegreesBySchool = new Map(maDegrees.map((degree) => [Number(degree.school_id), degree]));
+    const approximatePairs = new Set(maAgreements.map((agreement) =>
+      `${agreement.uc_school_id}|${agreement.community_college_id}`));
     const csOnlyByPair = new Map();
     for (const agreement of maAgreements) {
       const ge = geParentIdsBySchool.get(Number(agreement.uc_school_id)) || new Set();
@@ -3533,6 +3536,31 @@ async function transferCreditRateData(db, _auditDb, {
     }
 
     for (const row of rows) {
+      const maDegree = maDegreesBySchool.get(Number(row.school_id));
+      const notes = maDegree?.modeling_notes || [];
+      const assumedCourses = notes.filter((note) => /4-credit assumption used/.test(note)).length;
+      const approximatePairing = approximatePairs.has(`${row.school_id}|${row.community_college_id}`);
+      row.ma_model_evidence = {
+        source: maDegree?.source_method || 'Final heatmap articulation with recovered 2024 resident/pathway courses',
+        course_pairing: approximatePairing ? 'order-approximate' : null,
+        assumed_four_credit_requirements: assumedCourses,
+        declared_resident_units: maDegree?.total_units ?? null,
+        template_requirement_units: (maDegree?.requirement_groups || []).reduce((sum, group) =>
+          sum + (group.sections || []).reduce((total, section) =>
+            total + (Number(section.unit_advisement) || 0), 0), 0),
+        notes,
+      };
+      if (Number.isFinite(row.full_degree_completion_pct) && (approximatePairing || assumedCourses)) {
+        const modelWarnings = [row.method_warning];
+        if (approximatePairing) {
+          modelWarnings.push('Massachusetts modeled credit uses inferred course matches, including an order fallback; it combines final heatmap articulation with older resident/pathway records. It does not measure exact resident-course removals.');
+        }
+        if (assumedCourses) {
+          modelWarnings.push(`${assumedCourses} heatmap requirements have no matched resident course and assume 4 credits each; the modeled requirement-unit sum is ${row.ma_model_evidence.template_requirement_units}, versus ${row.ma_model_evidence.declared_resident_units} declared resident units.`);
+        }
+        row.method_status = 'estimated';
+        row.method_warning = modelWarnings.filter(Boolean).join(' ');
+      }
       const repo = byPair.get(`pct_as|${row.school_id}|${row.community_college_id}`);
       const pdf = byPair.get(`pct_as_pdf|${row.school_id}|${row.community_college_id}`);
       const pdfExtraHours = byPair.get(`extra_hours_pdf|${row.school_id}|${row.community_college_id}`);

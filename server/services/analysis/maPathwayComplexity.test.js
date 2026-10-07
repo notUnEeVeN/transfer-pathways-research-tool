@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { maPathwayComplexity } from './maPathwayComplexity';
 
 const raw = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../data/ma/raw/pathways.json'), 'utf8'));
@@ -39,7 +40,7 @@ describe('maPathwayComplexity', () => {
   // which is what the older workbook said, because the pathway workbook that
   // feeds the graph is unchanged between the two vintages. Same class as the
   // Figure 3 cells whose printed value exceeds what their own workbook yields.
-  it('matches 58 of the 60 archived score-tab values, missing two hand edits', () => {
+  it('matches 58 of the 60 final-workbook score-tab values, missing two hand edits', () => {
     const cells = theirMath.currcomp.complexity.cells || {};
     const resident = theirMath.currcomp.complexity.resident || {};
     const misses = [];
@@ -60,6 +61,17 @@ describe('maPathwayComplexity', () => {
       'UMass Amherst x Springfield Technical: 219 vs 157',
       'UMass Dartmouth x Bristol: 174 vs 170',
     ]);
+  });
+
+  it('regenerates the archived reconciliation without substituting the final workbook', () => {
+    expect(theirMath.sources.currcomp).toBe('final/Pathways Master.xlsx');
+    expect(theirMath.sources.currcomp_archived).toBe('recovered/CurrComp Master.xlsx');
+    expect(theirMath.currcomp.complexity.cells['UMass Amherst']['Springfield Technical']).toBe(157);
+    expect(theirMath.currcomp_archived.complexity.cells['UMass Amherst']['Springfield Technical']).toBe(219);
+    const check = spawnSync(process.execPath,
+      [path.resolve(__dirname, '../../scripts/ma/complexityCheck.js'), '--check'],
+      { encoding: 'utf8' });
+    expect(check.status, `${check.stdout}\n${check.stderr}`).toBe(0);
   });
 
   it('keeps the final PDF, archived tab, and recomputation as separate artifacts', () => {

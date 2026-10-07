@@ -12,10 +12,13 @@ const METRICS = [
 
 const intFmt = new Intl.NumberFormat()
 const numFmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 })
+const numberOrNull = (value) => (value == null || value === '' ? null
+  : Number.isFinite(Number(value)) ? Number(value) : null)
+const displayNumber = (value) => Number.isFinite(value) ? numFmt.format(value) : '—'
 
 export const majorDisplayName = majorLabelFor
 
-function buildModel(rows, metric) {
+export function buildModel(rows, metric) {
   const bySchool = new Map()
   let maxSlot = 0
   for (const r of rows) {
@@ -24,13 +27,14 @@ function buildModel(rows, metric) {
       bySchool.set(key, { key, school: r.school, values: [], courses: [], units: [], manyToOne: [], blocked: 0 })
     }
     const g = bySchool.get(key)
-    const value = Number(r[metric.field])
+    const value = numberOrNull(r[metric.field])
     if (Number.isFinite(value)) g.values.push(value)
-    g.courses.push(Number(r.min_cc_courses) || 0)
-    g.units.push(Number(r.min_cc_units) || 0)
-    g.manyToOne.push(Number(r.many_to_one) || 0)
+    for (const [target, source] of [['courses', 'min_cc_courses'], ['units', 'min_cc_units'], ['manyToOne', 'many_to_one']]) {
+      const measured = numberOrNull(r[source])
+      if (measured != null) g[target].push(measured)
+    }
     if (r.receivers_blocked > 0) g.blocked += 1
-    maxSlot = Math.max(maxSlot, Math.round(value / metric.binStep))
+    if (value != null) maxSlot = Math.max(maxSlot, Math.round(value / metric.binStep))
   }
 
   const mean = (xs) => (xs.length ? xs.reduce((s, v) => s + v, 0) / xs.length : null)
@@ -41,7 +45,9 @@ function buildModel(rows, metric) {
       const colleges = new Map() // slot → college names, for tooltips
       for (const r of rows) {
         if (String(r.school_id) !== g.key) continue
-        const slot = Math.round(Number(r[metric.field]) / metric.binStep)
+        const value = numberOrNull(r[metric.field])
+        if (value == null) continue
+        const slot = Math.round(value / metric.binStep)
         if (!Number.isFinite(slot)) continue
         if (!colleges.has(slot)) colleges.set(slot, [])
         colleges.get(slot).push(r.community_college)
@@ -51,7 +57,9 @@ function buildModel(rows, metric) {
         const shown = unique.slice(0, 5).join(', ') + (unique.length > 5 ? ` +${unique.length - 5} more` : '')
         bins[slot] = {
           count: names.length,
-          title: `${g.school}\n${slot * metric.binStep} ${metric.unit} (cheapest path): ${names.length} agreement${names.length === 1 ? '' : 's'}\n${shown}`,
+          title: `${g.school}\n${metric.value === 'units'
+            ? `${Math.max(0, (slot - 0.5) * metric.binStep)}–<${(slot + 0.5) * metric.binStep} native units`
+            : `${slot * metric.binStep} ${metric.unit}`} (cheapest path): ${names.length} agreement${names.length === 1 ? '' : 's'}\n${shown}`,
         }
       }
       return {
@@ -94,6 +102,8 @@ export default function CreditLoss({ majorSlug = 'cs', majorLabel: configuredMaj
     return vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : null
   }
   const blockedCount = rows.filter((r) => r.receivers_blocked > 0).length
+  const missingUnits = rows.filter((r) => numberOrNull(r.min_cc_units) == null).length
+  const estimatedCounts = rows.filter((r) => r.method_status === 'estimated').length
 
   if (query.isLoading) return <AnalysisLoading />
   if (query.isError) return <Alert type='error'>Could not load the credit-loss data.</Alert>
@@ -149,8 +159,8 @@ export default function CreditLoss({ majorSlug = 'cs', majorLabel: configuredMaj
         <StatStrip
           tiles={[
             { label: 'Agreements', value: intFmt.format(rows.length), sub: 'from /analysis/credit-loss' },
-            { label: 'Mean cheapest path', value: `${numFmt.format(meanOf((r) => r.min_cc_courses))} courses`, accent: true },
-            { label: 'Mean units', value: numFmt.format(meanOf((r) => r.min_cc_units)) },
+            { label: 'Mean cheapest path', value: `${displayNumber(meanOf((r) => r.min_cc_courses))} courses`, accent: true },
+            { label: 'Mean units', value: displayNumber(meanOf((r) => r.min_cc_units)) },
             { label: 'With blocked receivers', value: intFmt.format(blockedCount), sub: 'agreements missing ≥1 articulation' },
           ]}
         />
@@ -161,6 +171,15 @@ export default function CreditLoss({ majorSlug = 'cs', majorLabel: configuredMaj
         <p className='text-caption text-ink-subtle mb-3'>
           Agreements by cheapest-path {metric.unit} required, per campus
         </p>
+        {missingUnits > 0 && <p className='text-caption text-ink-muted mb-3'>
+          {missingUnits} of {rows.length} agreements lack complete course-unit evidence; their unit totals are omitted from means and histograms.
+        </p>}
+        {estimatedCounts > 0 && <p className='text-caption text-ink-muted mb-3'>
+          {estimatedCounts} of {rows.length} course-count results remain estimates because course identities or the minimum-course search are unresolved.
+        </p>}
+        {metric.value === 'units' && <p className='text-caption text-ink-muted mb-3'>
+          Units use each sending college’s native calendar. Semester and quarter units are pooled without conversion; use course counts for a comparison independent of calendar. Each bar groups a two-unit interval.
+        </p>}
         <HistogramRows
           rows={model.groups}
           slots={model.slots}
@@ -183,9 +202,9 @@ export default function CreditLoss({ majorSlug = 'cs', majorLabel: configuredMaj
               <tr key={g.key} className='hover:bg-surface-hover'>
                 <td className='border-b border-border px-3 py-1.5 text-caption text-ink'>{g.label}</td>
                 <td className='border-b border-border px-3 py-1.5 text-right text-caption font-mono tabular-nums'>{intFmt.format(g.n)}</td>
-                <td className='border-b border-border px-3 py-1.5 text-right text-caption font-mono tabular-nums'>{numFmt.format(g.meanCourses)}</td>
-                <td className='border-b border-border px-3 py-1.5 text-right text-caption font-mono tabular-nums'>{numFmt.format(g.meanUnits)}</td>
-                <td className='border-b border-border px-3 py-1.5 text-right text-caption font-mono tabular-nums'>{numFmt.format(g.meanManyToOne)}</td>
+                <td className='border-b border-border px-3 py-1.5 text-right text-caption font-mono tabular-nums'>{displayNumber(g.meanCourses)}</td>
+                <td className='border-b border-border px-3 py-1.5 text-right text-caption font-mono tabular-nums'>{displayNumber(g.meanUnits)}</td>
+                <td className='border-b border-border px-3 py-1.5 text-right text-caption font-mono tabular-nums'>{displayNumber(g.meanManyToOne)}</td>
                 <td className='border-b border-border px-3 py-1.5 text-right text-caption font-mono tabular-nums'>{intFmt.format(g.blocked)}</td>
               </tr>
             ))}

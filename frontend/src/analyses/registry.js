@@ -76,11 +76,10 @@ import CourseTypeCoverage, {
   courseTypeComparisonCells, courseTypeComparisonContract, courseTypeCoverageParams,
 } from './CourseTypeCoverage'
 import IncomeAccess from './IncomeAccess'
-import PriceOfPlace, { PriceOfPlacePreview } from './PriceOfPlace'
-import PaperGate, { PaperGatePreview } from './PaperGate'
 import CreditLoss from './CreditLoss'
 import { degreeTemplateEvidenceLabel } from './templateEvidence'
 import { useCoverage, usePathwayComplexity, useTransferCreditRate } from '../shared/query/hooks/useData'
+import { frozenFigureQuery, isVaGuideCorpus, VA_FIGURE_KNOBS, vaCoverageData, vaCreditRateData, vaFigureView } from './vaFigureData'
 
 // The built-in analyses render as first-class figures in the Visuals gallery,
 // credited to the console owner and dated alongside locally published
@@ -119,6 +118,16 @@ const comparisonSource = (view, major) => (
 const comparisonVerified = (view, major) => (
   paperCorpus(major) ? false : view?.knobs?.verified !== false
 )
+
+function useFigureCreditData(view, major, queryOptions = {}) {
+  const resolved = transferCreditViewForPane(view, major)
+  const query = useTransferCreditRate(resolved.degreeType, {
+    majorSlug: view.major, verifiedOnly: resolved.verifiedOnly, ...queryOptions,
+    ...(view.major === 'va-cs' ? { enabled: false } : {}),
+  })
+  return view.major === 'va-cs'
+    ? frozenFigureQuery(query, vaCreditRateData(vaFigureView(view))) : query
+}
 
 // For the California-paper ports, "selected" also carries a state policy:
 // Computer Science keeps its audited paper/hand-curated/ASSIST comparisons,
@@ -284,11 +293,12 @@ export const ANALYSES = [
     // The controls a saved comparison pins, so it reopens on the reading it
     // was saved with. Each `prop` seeds the figure's own useState.
     viewKnobs: [
+      ...VA_FIGURE_KNOBS,
       {
         key: 'degree', label: 'Associate degree', type: 'select',
         prop: 'defaultDegreeType', default: 'ast',
         options: [{ value: 'ast', label: 'A.S.-T' }, { value: 'local_as', label: 'Local A.S.' }, { value: 'local_other', label: 'Other local' }],
-        appliesWhen: (major) => !paperCorpus(major),
+        appliesWhen: (major) => !paperCorpus(major) && !isVaGuideCorpus(major),
       },
       {
         key: 'scope', label: 'Scope', type: 'select',
@@ -304,7 +314,7 @@ export const ANALYSES = [
       {
         key: 'verified', label: 'Verified sources only', type: 'toggle',
         prop: 'defaultVerifiedOnly', default: true,
-        appliesWhen: (major) => !paperCorpus(major),
+        appliesWhen: (major) => !paperCorpus(major) && !isVaGuideCorpus(major),
       },
       {
         // Which direction the paper corpus measures in. The bachelor-side
@@ -340,7 +350,7 @@ export const ANALYSES = [
     stateTitles: { ma: 'Transfer credit rate', va: 'Transfer credit rate' },
     stateDescriptions: {
       ma: 'The share of each associate degree’s credits that apply on transfer, per studied pair. Switch between the final paper and our recalculation of the same formula from the authors’ source files; unstudied pairs stay blank.',
-      va: 'The share of each VCCS associate degree’s credits that apply toward the bachelor’s on transfer. Computed from Transfer Virginia’s published course equivalencies; the verified cohort filters to associate degrees a reviewer has confirmed.',
+      va: 'The share of the university guide’s pre-transfer credits that apply to bachelor requirements, given the VCCS college’s course supply and explicit no-credit outcomes. This uses the guide’s plan rather than a separately solved associate degree.',
     },
     provenance: 'ma',
     figureNo: 3,
@@ -356,14 +366,7 @@ export const ANALYSES = [
       // receipt honor ordinary display rounding (42/61 cells reproduce)
       // instead of treating hidden decimals as disagreements.
       tolerance: 0.5,
-      useData: (view, major, queryOptions = {}) => {
-        const resolved = transferCreditViewForPane(view, major)
-        return useTransferCreditRate(resolved.degreeType, {
-          majorSlug: view.major,
-          verifiedOnly: resolved.verifiedOnly,
-          ...queryOptions,
-        })
-      },
+      useData: useFigureCreditData,
       cells: transferCreditComparisonCells,
     },
   },
@@ -372,16 +375,17 @@ export const ANALYSES = [
     // The controls a saved comparison pins, so it reopens on the reading it
     // was saved with. Each `prop` seeds the figure's own useState.
     viewKnobs: [
+      ...VA_FIGURE_KNOBS,
       {
         key: 'degree', label: 'Associate degree', type: 'select',
         prop: 'defaultDegreeType', default: 'ast',
         options: [{ value: 'ast', label: 'A.S.-T' }, { value: 'local_as', label: 'Local A.S.' }, { value: 'local_other', label: 'Other local' }],
-        appliesWhen: (major) => !paperCorpus(major),
+        appliesWhen: (major) => !paperCorpus(major) && !isVaGuideCorpus(major),
       },
       {
         key: 'verified', label: 'Verified sources only', type: 'toggle',
         prop: 'defaultVerifiedOnly', default: true,
-        appliesWhen: (major) => !paperCorpus(major),
+        appliesWhen: (major) => !paperCorpus(major) && !isVaGuideCorpus(major),
       },
       {
         key: 'source', label: 'Source', type: 'select',
@@ -405,9 +409,23 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-18T09:05:00',
     Component: TransferExtraUnits,
+    stateTitles: { va: 'Unused transfer-guide credit' },
+    stateDescriptions: { va: 'Credits in the guide’s pre-transfer plan that meet no bachelor requirement, given the college’s course supply.' },
     comparisonContract: (view, major) => {
       const source = comparisonSource(view, major)
       const degree = comparisonDegree(view, major)
+      if (view.major === 'va-cs') {
+        const vaView = vaFigureView(view)
+        return {
+          measure: 'unused-transfer-guide-credit', unit: 'semester hours',
+          grain: 'community college × university campus',
+          keys: { rows: 'community college', columns: 'university campus' },
+          semantics: { formula: 'pre-transfer guide credits minus credits applying to bachelor requirements',
+            weighting: 'each finite college×campus cell weighted equally' },
+          context: { source: 'committed Transfer Virginia guide and course-supply snapshot',
+            supply: vaView.basis, cohort: vaView.allColleges ? 'all VCCS colleges' : 'colleges with a CS associate degree' },
+        }
+      }
       return {
         measure: 'pathway-hours-above-120',
         unit: 'semester hours',
@@ -442,16 +460,10 @@ export const ANALYSES = [
       grain: 'college×campus',
       unit: 'semester-hours-above-120',
       tolerance: 0.1,
-      useData: (view, major, queryOptions = {}) => useTransferCreditRate(
-        comparisonDegree(view, major),
-        {
-          majorSlug: view.major,
-          verifiedOnly: comparisonVerified(view, major),
-          ...queryOptions,
-        },
-      ),
+      useData: useFigureCreditData,
       cells: (data, view, major) => extraUnitEntries(
-        data, comparisonSource(view, major),
+        view.major === 'va-cs' ? vaCreditRateData(vaFigureView(view)) : data,
+        comparisonSource(view, major),
       ),
     },
   },
@@ -711,29 +723,70 @@ export const ANALYSES = [
     // The controls a saved comparison pins, so it reopens on the reading it
     // was saved with. Each `prop` seeds the figure's own useState.
     viewKnobs: [
+      ...VA_FIGURE_KNOBS,
+      {
+        key: 'va-measure', label: 'Measure', type: 'select',
+        prop: 'defaultVaMeasure', default: 'units_ge',
+        options: [{ value: 'units_ge', label: 'Degree units' }, { value: 'units', label: 'Units, no GE' },
+          { value: 'paper', label: 'Estimated courses' }], appliesWhen: isVaGuideCorpus,
+      },
       {
         key: 'rows', label: 'Row grouping', type: 'select',
         prop: 'defaultRowMode', default: 'college',
         options: [{ value: 'college', label: 'Colleges' }, { value: 'district', label: 'Districts' }, { value: 'county', label: 'Counties' }],
-        appliesWhen: (major) => !paperCorpus(major),
+        appliesWhen: (major) => !paperCorpus(major) && !isVaGuideCorpus(major),
       },
       {
         key: 'basis', label: 'Requirement basis', type: 'select',
         prop: 'defaultReqMode', default: 'degree',
-        options: [{ value: 'degree', label: 'Graduation model' }, { value: 'assist', label: 'ASSIST agreements' }, { value: 'paper', label: 'Curated minimums' }],
+        options: [{ value: 'degree', label: 'Graduation model' }, { value: 'degree-no-ge', label: 'Graduation units, no GE' }, { value: 'assist', label: 'ASSIST agreements' }, { value: 'paper', label: 'Curated minimums' }],
         // The whole basis control lives inside the unit-lens block; a corpus
         // without it is forced onto the paper's course lens.
-        appliesWhen: (major) => major?.capabilities?.unitCoverage !== false,
+        appliesWhen: (major) => major?.capabilities?.unitCoverage !== false && !isVaGuideCorpus(major),
       },
       {
         key: 'ma-equivalent', label: 'MA-paper-equivalent lens', type: 'toggle',
         prop: 'defaultMaEquivalent', default: true,
-        appliesWhen: (major) => major?.capabilities?.unitCoverage !== false,
+        appliesWhen: (major) => major?.capabilities?.unitCoverage !== false && !isVaGuideCorpus(major),
       },
+      // How the lens READS its population, as opposed to which population it
+      // draws. Both describe the same required courses, so both apply wherever
+      // the lens does — including a corpus the California unit budget cannot
+      // model. Virginia states the equivalent choice through its own measure
+      // select, so it is excluded here rather than offered twice.
+      {
+        key: 'ma-weight', label: 'Weight by', type: 'select',
+        prop: 'defaultMaWeight', default: 'courses',
+        options: [
+          { value: 'courses', label: 'Courses' },
+          { value: 'units', label: 'Units' },
+        ],
+        appliesWhen: (major) => !isVaGuideCorpus(major),
+      },
+      // Not offered where the unit budget is unmodelled. That flag marks a
+      // corpus imported from a published study rather than curated from
+      // catalogs, and Massachusetts — the case — classifies no general
+      // education anywhere in its artifacts. Its GE block is only the residue
+      // Figure 1's columns did not consume, which a GE-included reading then
+      // grants in full: 75 credits against the 68 the authors' own Figure 3
+      // shows as the most any pair ever applied. See the note in
+      // CoverageHeatmap's `includeGeForCorpus`.
       {
         key: 'ma-include-ge', label: 'Include general education', type: 'toggle',
         prop: 'defaultMaIncludeGe', default: false,
-        appliesWhen: (major) => major?.capabilities?.unitCoverage !== false,
+        appliesWhen: (major) => major?.capabilities?.unitCoverage !== false
+          && !isVaGuideCorpus(major),
+      },
+      // One measure in all three states, so its two controls apply on every
+      // corpus and outrank the lens controls above while lower division is set.
+      {
+        key: 'division', label: 'Degree scope', type: 'select',
+        prop: 'defaultDivision', default: 'whole',
+        options: [{ value: 'whole', label: 'Whole degree' }, { value: 'lower', label: 'Lower division' }],
+      },
+      {
+        key: 'ld-include-ge', label: 'Lower division: include general education', type: 'toggle',
+        prop: 'defaultLdIncludeGe', default: false,
       },
       {
         key: 'ma-source', label: 'Massachusetts source', type: 'select',
@@ -763,7 +816,7 @@ export const ANALYSES = [
       // that requirements no community college can satisfy sit outside the
       // population. They do not, in any of the three states — 35% of
       // Virginia's denominator is exactly those requirements.
-      va: 'Shows the share of each four-year’s required courses — every level, GE excluded — with an equivalent published by a community college. Requirements no community college can satisfy (senior residency, capstones, upper-division work) remain in the denominator, as they do for California and Massachusetts, so the three measures stay comparable.',
+      va: 'Shows the share of the transfer guide’s stated degree credits this college can supply. Alternate views remove general education or estimate course counts from credits; the latter is an estimate rather than a named-course census.',
     },
     provenance: 'ma',
     figureNo: 1,
@@ -780,9 +833,13 @@ export const ANALYSES = [
       // ordinary display rounding as agreement and leaves the one material
       // Cape Cod→UMass Dartmouth difference exposed.
       tolerance: 0.5,
-      useData: (view, major, queryOptions = {}) => (
-        useCoverage(coverageViewForPane(view, major), queryOptions)
-      ),
+      useData: (view, major, queryOptions = {}) => {
+        const query = useCoverage(coverageViewForPane(view, major), {
+          ...queryOptions, ...(view.major === 'va-cs' ? { enabled: false } : {}),
+        })
+        return view.major === 'va-cs'
+          ? frozenFigureQuery(query, vaCoverageData(vaFigureView(view))) : query
+      },
       cells: coverageComparisonCells,
     },
   },
@@ -826,34 +883,6 @@ export const ANALYSES = [
     author_label: ANALYSIS_AUTHOR,
     published_at: '2026-07-04T09:00:00',
     Component: CreditLoss,
-  },
-  {
-    id: 'price-of-place',
-    ...fixedComputerScience({
-      reason: 'This sequence is backed by a committed snapshot computed for the nine Computer Science programs against every other major in the full agreement corpus.',
-      datasets: ['committed full-corpus articulation snapshot', 'district income and geography'],
-    }),
-    title: 'The Income Gate',
-    description: 'Income, distance, and transfer access: five connected figures from a committed snapshot of the complete agreement corpus, showing how district income relates to whether a complete Computer Science transfer path formally exists — measured against a field of about nine hundred other majors.',
-    provenance: 'new',
-    author_label: ANALYSIS_AUTHOR,
-    published_at: '2026-07-24T18:00:00',
-    Component: PriceOfPlace,
-    PreviewComponent: PriceOfPlacePreview,
-  },
-  {
-    id: 'paper-gate',
-    ...fixedComputerScience({
-      reason: 'This sequence is backed by a committed course-repair simulation over the nine Computer Science programs, with the full agreement corpus as evidence.',
-      datasets: ['committed course-repair simulation artifact'],
-    }),
-    title: 'The Computing Bottleneck',
-    description: 'Missing articulation, evidence, and the income gap: five connected figures from a committed course-repair simulation of the nine Computer Science programs — which required courses bind the remaining transfer paths, the same-class evidence behind each missing entry, and how far the income-quartile access gap closes under simulated repairs.',
-    provenance: 'new',
-    author_label: ANALYSIS_AUTHOR,
-    published_at: '2026-07-25T15:00:00',
-    Component: PaperGate,
-    PreviewComponent: PaperGatePreview,
   },
 ]
 

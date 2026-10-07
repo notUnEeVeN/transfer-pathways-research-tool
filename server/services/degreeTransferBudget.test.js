@@ -11,6 +11,18 @@ const group = (units, over = {}) => ({
 });
 
 describe('degree transfer budget', () => {
+  it('treats explicitly empty optional policy fields as missing, while retaining an authored zero', () => {
+    for (const empty of [null, '', { units: null }]) {
+      const budget = computeTransferBudget({
+        total_units: 120, transfer_unit_cap: empty, upper_division_minimum: empty,
+        requirement_groups: [group(60), group(60, { tier: 'nontransferable' })],
+      });
+      expect(budget.cap).toBe(70);
+      expect(budget.transferred).toBe(60);
+      expect(budget.upper_division_minimum).toBeNull();
+    }
+    expect(computeTransferBudget({ total_units: 120, transfer_unit_cap: 0 }).transferred).toBe(0);
+  });
   it('lets the cap bind when the university side fits inside the gap', () => {
     // UCLA Biology: 73 preparation + 36 GE transferable, 60 upper division,
     // 180 total, 105 cap. 180 - 105 = 75 of room against 60 required.

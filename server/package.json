@@ -17,6 +17,7 @@
     "slots:audit": "node scripts/migrateAsDegreeSlots.js",
     "slots:apply": "node scripts/migrateAsDegreeSlots.js --apply",
     "snapshot:multi-campus": "node scripts/generateMultiCampusPathwaysSnapshot.js",
+    "snapshot:district-portfolios": "node scripts/generateDistrictPortfolioSubsets.js",
     "va:catalog:plan": "DOTENV_CONFIG_PATH=.env node -r dotenv/config scripts/importVirginiaCatalogDegrees.js --accepted-compositions-only --source-plan --dry-run",
     "va:prerequisites:vccs-scope:check": "node scripts/va/buildCanonicalVccsCourseScope.js",
     "va:prerequisites:vccs-corpus:check": "node scripts/buildVirginiaPrerequisites.js --check",

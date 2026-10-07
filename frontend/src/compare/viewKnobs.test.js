@@ -258,6 +258,33 @@ describe('Figures 4 and 5 comparison contracts', () => {
     }, MA_MAJOR))).toBe(13202)
   })
 
+  it('declares the credit weighting so two readings of Figure 1 cannot be differenced silently', () => {
+    const coverage = getAnalysisById('coverage-heatmap')
+    const contractFor = (major, knobs) => coverage.comparisonContract(
+      { figure: 'coverage-heatmap', major: major.slug, knobs }, major,
+    )
+    const maCourses = contractFor(MA_MAJOR, { rows: 'college', 'ma-source': 'archive' })
+    const maUnits = contractFor(MA_MAJOR, { rows: 'college', 'ma-source': 'archive', 'ma-weight': 'units' })
+    const maUnitsGe = contractFor(MA_MAJOR, {
+      rows: 'college', 'ma-source': 'archive', 'ma-weight': 'units', 'ma-include-ge': true,
+    })
+
+    // Counting and weighting the same requirements are different measures; a
+    // delta between them would read as articulation changing when only the
+    // arithmetic did.
+    expect(maCourses.measure).not.toBe(maUnits.measure)
+    expect(maUnits.semantics.denominator).toMatch(/credit/i)
+    expect(maUnits.semantics.ge).toBe(false)
+    // The GE choice has to survive the weighting, or a GE-included credit
+    // reading would be reported as excluding it.
+    expect(maUnitsGe.semantics.ge).toBe(true)
+
+    // Same lens, two states: comparable, which is the point of the control.
+    const caUnits = contractFor(CA_MAJOR, { rows: 'college', 'ma-weight': 'units' })
+    expect(caUnits.measure).toBe(maUnits.measure)
+    expect(caUnits.semantics).toEqual(maUnits.semantics)
+  })
+
   it('permits the cross-state hours distribution but refuses an unproved cost price basis', () => {
     const units = getAnalysisById('transfer-extra-units')
     const cost = getAnalysisById('transfer-extra-cost')

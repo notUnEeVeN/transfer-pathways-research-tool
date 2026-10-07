@@ -25,6 +25,7 @@ const {
   CANONICAL_REQUIREMENT_ROLES,
   canonicalRequirementRole,
 } = require('./analysis/canonicalRequirementRole');
+const { transferCap } = require('./degreeTransferBudget');
 const {
   usesCanonicalSourceContract,
 } = require('./analysis/canonicalSourceContract');
@@ -302,7 +303,7 @@ const namedGeFlavored = (g, s) => {
 // model, but it cannot redefine the paper-equivalent course-count population.
 function namedRequirementCourses(requirementGroups, {
   articulated = null, articulatedRequirements = null, categoryOf = null,
-  sourceDocument = null,
+  sourceDocument = null, universityCoursesById = {},
 } = {}) {
   const evaluated = articulated != null;
   const exactSource = usesCanonicalSourceContract(sourceDocument);
@@ -354,23 +355,47 @@ function namedRequirementCourses(requirementGroups, {
         || fallback;
     });
   };
+  // Credit for each expanded course of a receiver, positionally parallel to
+  // `receiverCategories`, so the same population Figure 1 counts can also be
+  // weighted by credit. A receiver may price itself; a template that prices
+  // nothing on the receiver still points at a university course the catalogue
+  // prices. What neither states stays null and takes the section's own
+  // residual share below — the documented proportional estimate, not a second
+  // independent assumption about what a course is worth.
+  const receiverUnitList = (r) => {
+    const receiving = r?.receiving || {};
+    const stated = receiving.units == null ? null : Number(receiving.units);
+    const pids = receiverPids(receiving);
+    const priced = (pid) => {
+      const units = universityCoursesById?.[pid]?.min_units;
+      return units == null || !Number.isFinite(Number(units)) ? null : Number(units);
+    };
+    if (pids.length <= 1) return [stated ?? (pids.length ? priced(pids[0]) : null)];
+    // A series states one credit value for the whole sequence, which says
+    // nothing about how it divides; price its courses individually or not
+    // at all.
+    return pids.map(priced);
+  };
   const observationsForReceiver = (
     r, g, s, covered = false, lowerDivisionOverride = null,
-  ) => (
-    receiverCategories(r, g, s).map((category) => ({
+  ) => {
+    const units = receiverUnitList(r);
+    return receiverCategories(r, g, s).map((category, index) => ({
       category,
+      units: units[index] ?? null,
       covered: Boolean(covered),
       lowerDivision: typeof lowerDivisionOverride === 'boolean'
         ? lowerDivisionOverride
         : resolveSectionTier(g, s, sourceDocument) !== 'nontransferable',
-    }))
-  );
+    }));
+  };
   const genericObservations = (
     g, s, total, covered, lowerDivisionOverride = null,
   ) => Array.from(
     { length: Math.max(0, Number(total) || 0) },
     () => ({
       category: sectionCategory(g, s),
+      units: null,
       covered: Boolean(covered),
       lowerDivision: typeof lowerDivisionOverride === 'boolean'
         ? lowerDivisionOverride
@@ -402,7 +427,28 @@ function namedRequirementCourses(requirementGroups, {
     return names.length > 0 && names.every((name) => articulatedRequirements?.has(name));
   };
 
-  const sectionCourses = (g, s, groupIndex = null) => {
+  // Whatever the section could not price, the section itself prices: its
+  // stated credit total less what its own courses account for, divided evenly.
+  // With nothing stated, the documented four-credit assumption stands in — the
+  // same one the course count uses to read a unit-only block.
+  const priceUnpriced = (result, s) => {
+    const observations = result.observations || [];
+    const unpriced = observations.filter((observation) => observation.units == null);
+    if (!unpriced.length) return result;
+    const accounted = observations.reduce(
+      (sum, observation) => sum + (Number(observation.units) || 0), 0,
+    );
+    const stated = s?.unit_advisement == null ? null : Number(s.unit_advisement);
+    const share = stated == null || !Number.isFinite(stated)
+      ? ASSUMED_UNITS_PER_COURSE
+      : Math.max(0, stated - accounted) / unpriced.length;
+    for (const observation of unpriced) observation.units = share;
+    return result;
+  };
+  const sectionCourses = (g, s, groupIndex = null) => priceUnpriced(
+    unpricedSectionCourses(g, s, groupIndex), s,
+  );
+  const unpricedSectionCourses = (g, s, groupIndex = null) => {
     const recvs = s.receivers || [];
     const ask = s.section_advisement;
     const groupBlock = evaluated && blockSatisfied(g.assist_requirement);
@@ -495,13 +541,40 @@ function namedRequirementCourses(requirementGroups, {
     const units = s.unit_advisement != null
       ? Number(s.unit_advisement)
       : (ask != null ? Number(ask) : (recvs.length || 1)) * ASSUMED_UNITS_PER_COURSE;
-    return { total, covered, units, unitsCovered: covered > 0 ? units : 0 };
+    const lowerDivision = resolveSectionTier(g, s, sourceDocument) !== 'nontransferable';
+    // The lower-division general education this section contributes. A
+    // curated GE section sits wholly on one side of the division. The
+    // Massachusetts corpus has no GE classification: its one "GE" section is
+    // every resident-plan row the paper's Figure 1 columns did not use, so it
+    // is read row by row (see maResidueRole).
+    const residueUnits = (role) => recvs.filter((r) => maResidueRole(r.receiving) === role)
+      .reduce((sum, r) => sum + receiverUnitList(r)
+        .reduce((n, value) => n + (Number(value) || 0), 0), 0);
+    const residue = lowerDivision && sourceDocument?.state === 'ma';
+    const lowerUnits = !lowerDivision ? 0 : (residue ? residueUnits('ge') : units);
+    // Its free-elective and minor rows are elective credit: part of the
+    // bachelor's degree, satisfied by any transferable course.
+    const lowerElectiveUnits = residue ? residueUnits('elective') : 0;
+    return {
+      total, covered, units, unitsCovered: covered > 0 ? units : 0, lowerDivision, lowerUnits,
+      lowerElectiveUnits,
+    };
   };
 
   const out = {
     total: 0,
     covered: 0,
     with_ge: { total: 0, covered: 0 },
+    // The same two populations weighted by credit rather than counted binary.
+    // Accumulated in this walk and no other, so a unit reading of Figure 1 can
+    // never describe a different set of requirements than the figure does.
+    units: { total: 0, covered: 0 },
+    units_with_ge: { total: 0, covered: 0 },
+    units_lower: { total: 0, covered: 0 },
+    units_lower_with_ge: { total: 0, covered: 0 },
+    // Lower-division elective credit, before any transfer cap is applied; the
+    // caller holds it to the cap (see buildDegreeGroups).
+    elective_units_lower: 0,
     ge_units: { total: 0, covered: 0 },
     by_category: categoryOf ? {} : null,
     requirement_role_issues: [],
@@ -513,27 +586,67 @@ function namedRequirementCourses(requirementGroups, {
       if (!out.by_category[observation.category]) {
         out.by_category[observation.category] = {
           total: 0, covered: 0, lower_division_total: 0, lower_division_covered: 0,
+          // The same four counts weighted by credit. Accumulated in THIS loop
+          // rather than a parallel one, over the identical observations, so a
+          // credit-weighted reading can never describe a different population
+          // than the counted one it is derived from.
+          units: 0, units_covered: 0,
+          lower_division_units: 0, lower_division_units_covered: 0,
         };
       }
       const bucket = out.by_category[observation.category];
+      const observationUnitValue = Number(observation.units) || 0;
       bucket.total += 1;
-      if (observation.covered) bucket.covered += 1;
+      bucket.units += observationUnitValue;
+      if (observation.covered) {
+        bucket.covered += 1;
+        bucket.units_covered += observationUnitValue;
+      }
       if (observation.lowerDivision) {
         bucket.lower_division_total += 1;
-        if (observation.covered) bucket.lower_division_covered += 1;
+        bucket.lower_division_units += observationUnitValue;
+        if (observation.covered) {
+          bucket.lower_division_covered += 1;
+          bucket.lower_division_units_covered += observationUnitValue;
+        }
       }
     }
   };
+  const observationUnits = (observations = []) => observations.reduce(
+    (acc, observation) => {
+      const units = Number(observation.units) || 0;
+      return {
+        total: acc.total + units,
+        covered: acc.covered + (observation.covered ? units : 0),
+      };
+    },
+    { total: 0, covered: 0 },
+  );
   const addBase = (c) => {
     out.total += c.total;
     out.covered += c.covered;
     out.with_ge.total += c.total;
     out.with_ge.covered += c.covered;
+    const units = observationUnits(c.observations);
+    out.units.total += units.total;
+    out.units.covered += units.covered;
+    out.units_with_ge.total += units.total;
+    out.units_with_ge.covered += units.covered;
+    const lower = observationUnits((c.observations || []).filter((o) => o.lowerDivision));
+    out.units_lower.total += lower.total;
+    out.units_lower.covered += lower.covered;
+    out.units_lower_with_ge.total += lower.total;
+    out.units_lower_with_ge.covered += lower.covered;
     addObservations(c.observations);
   };
   const addGe = (c) => {
     out.with_ge.total += c.total;
     out.with_ge.covered += c.covered;
+    out.units_with_ge.total += c.units || 0;
+    out.units_with_ge.covered += c.unitsCovered || 0;
+    out.units_lower_with_ge.total += c.lowerUnits || 0;
+    out.units_lower_with_ge.covered += c.covered > 0 ? (c.lowerUnits || 0) : 0;
+    out.elective_units_lower += c.lowerElectiveUnits || 0;
     out.ge_units.total += c.units || 0;
     out.ge_units.covered += c.unitsCovered || 0;
   };
@@ -601,7 +714,20 @@ function namedRequirementCourses(requirementGroups, {
     // byte.  In a canonical document, authored role fields outrank prose: a
     // major requirement cannot disappear merely because its title says
     // "elective", and explicit capacity is excluded without title matching.
-    if (classified.every((entry) => entry.legacy) && namedPadding(g)) continue;
+    if (classified.every((entry) => entry.legacy) && namedPadding(g)) {
+      // Free-elective padding names no requirement, so it stays out of every
+      // named population — but it is credit toward the bachelor's degree, and
+      // the lower-division lens counts the part the template places on the
+      // community-college side. Units the template puts at the university
+      // ("transfer cap reached") are not lower-division credit a college can
+      // be measured on.
+      for (const s of sections) {
+        if (resolveSectionTier(g, s, sourceDocument) !== 'nontransferable') {
+          out.elective_units_lower += sectionUnits(s);
+        }
+      }
+      continue;
+    }
     const isOr = String(g.group_conjunction || '').toLowerCase() === 'or' && sections.length > 1;
     if (!isOr) {
       for (const { section: s, role } of classified) {
@@ -874,6 +1000,17 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       gTotal += ask;
       const sectionCoveredBefore = gCovered;
       const sectionUnits = s.unit_advisement != null ? Number(s.unit_advisement) : ask * 4;
+      // A take-all section can contain courses (or whole series) with unequal
+      // credit values. When the authored receiver credits reconcile to its
+      // budget, sum the credits actually covered: four 4-unit courses out of
+      // UCSB's 21-unit, five-course block are 16 units, not 21 * 4/5 = 16.8.
+      // Retain the documented proportional estimate for unpriced blocks.
+      const receiverUnits = recvs.map((r) => r.receiving?.units == null
+        ? null : Number(r.receiving.units));
+      const exactReceiverUnits = recvs.length === ask
+        && receiverUnits.every((value) => value != null && Number.isFinite(value) && value >= 0)
+        && Math.abs(receiverUnits.reduce((a, b) => a + b, 0) - sectionUnits) < 1e-8;
+      let exactCoveredUnits = 0;
       unitsTotal += sectionUnits;
 
       // The group's named ASSIST block is articulated here, so every slot it
@@ -928,7 +1065,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
 
       if (recvs.length === ask) {
         // Distinct required courses (or non-transferable slots) — one line each.
-        for (const r of recvs) {
+        for (const [receiverPosition, r] of recvs.entries()) {
           if (r.receiving?.kind === 'course' || r.receiving?.kind === 'series') {
             const pids = receiverPids(r.receiving);
             let isCovered = evaluated && transferEligible
@@ -943,6 +1080,7 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
               if (geHits.length) { isCovered = true; cc = geHits.slice(0, 3).map(codeOf); }
             }
             if (isCovered) gCovered += 1;
+            if (isCovered && exactReceiverUnits) exactCoveredUnits += receiverUnits[receiverPosition];
             bump(categoryOf && categoryOf({ receiver: r, section: s, group: g }), 1, isCovered ? 1 : 0);
             const codes = pids.map((pid) => {
               const uc = universityCoursesById[pid];
@@ -997,7 +1135,9 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
       }
       // Unit credit for the two fall-through branches (distinct / choose-N);
       // the assume/ge_area branches accumulate before their `continue`.
-      if (evaluated) unitsCovered += sectionUnits * ((gCovered - sectionCoveredBefore) / ask);
+      if (evaluated) unitsCovered += exactReceiverUnits
+        ? exactCoveredUnits
+        : (ask > 0 ? sectionUnits * ((gCovered - sectionCoveredBefore) / ask) : 0);
     }
 
     if (isOr) {
@@ -1034,6 +1174,20 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
 
   const named = namedRequirementCourses(requirementGroups, {
     articulated, articulatedRequirements, categoryOf, sourceDocument,
+    universityCoursesById,
+  });
+  // Elective credit joins both lower-division readings, covered wherever the
+  // degree is evaluated: any transferable course fills an elective. A
+  // California template is held to the UC transfer cap (70 semester / 105
+  // quarter units), as the modelling rules require of every template —
+  // several list more transferable elective capacity than the cap allows.
+  // Massachusetts and Virginia have no modelled cap.
+  const cap = sourceDocument && !sourceDocument.state ? transferCap(sourceDocument) : null;
+  const lowerElectives = cap == null ? named.elective_units_lower
+    : Math.max(0, Math.min(named.elective_units_lower, cap - named.units_lower_with_ge.total));
+  const withElectives = (tally) => ({
+    total: +(tally.total + lowerElectives).toFixed(1),
+    covered: evaluated ? +(tally.covered + lowerElectives).toFixed(1) : null,
   });
   return {
     total,
@@ -1073,6 +1227,41 @@ function buildDegreeGroups(requirementGroups, ctx = {}) {
         total: named.with_ge.total,
         covered: evaluated ? named.with_ge.covered : null,
       },
+      // Those same two populations in credit. One decimal, for the reason the
+      // group rollup keeps one: a choose-N block can divide a section's credit
+      // unevenly, and whole-unit rounding would move the percentage.
+      units: {
+        total: +named.units.total.toFixed(1),
+        covered: evaluated ? +named.units.covered.toFixed(1) : null,
+      },
+      units_with_ge: {
+        total: +named.units_with_ge.total.toFixed(1),
+        covered: evaluated ? +named.units_with_ge.covered.toFixed(1) : null,
+      },
+      // The lower-division lens: lower-division named requirements, then
+      // lower-division general education, each with lower-division elective
+      // credit added.
+      units_lower: withElectives(named.units_lower),
+      units_lower_with_ge: withElectives(named.units_lower_with_ge),
+      elective_units_lower: +lowerElectives.toFixed(1),
+      // The same two tallies BEFORE free-elective capacity joins them.
+      // `units_lower` answers "how much lower-division credit could a transfer
+      // arrive with, electives included" — a ceiling, and the right question
+      // for a unit budget. Figure 1's lower-division reading asks a different
+      // one: of the credit this degree actually names below the division line,
+      // how much articulates. Only the required pair can answer it; adding
+      // elective room to both sides lets a campus score above its own named
+      // total, which is how an earlier lower-division reading came out over
+      // 100%. Virginia's builder already excludes free electives, so this is
+      // also what keeps the three states on one definition.
+      units_lower_required: {
+        total: +named.units_lower.total.toFixed(1),
+        covered: evaluated ? +named.units_lower.covered.toFixed(1) : null,
+      },
+      units_lower_with_ge_required: {
+        total: +named.units_lower_with_ge.total.toFixed(1),
+        covered: evaluated ? +named.units_lower_with_ge.covered.toFixed(1) : null,
+      },
     },
     requirement_role_issues: named.requirement_role_issues,
     groups,
@@ -1107,7 +1296,7 @@ async function loadCollegeGeAreas(db, communityCollegeId) {
 // GE receivers keep a null articulation_status (the ledger leaves their sending
 // side blank), while at-the-university slots still carry their reason.
 function buildLedgerGroups(requirementGroups, ctx = {}) {
-  const { articulated = new Set(), optionsByParent = new Map(), coursesById = new Map(), ccGeAreas = null, template = false } = ctx;
+  const { articulated = new Set(), articulatedRequirements = new Set(), optionsByParent = new Map(), coursesById = new Map(), ccGeAreas = null, template = false } = ctx;
   const usedCourses = new Map();
   const addOptCourses = (opts) => {
     for (const o of opts) for (const cid of o.course_ids || []) {
@@ -1121,7 +1310,12 @@ function buildLedgerGroups(requirementGroups, ctx = {}) {
     return hits.map((h) => ({ course_ids: [h.course_id], course_conjunction: 'and' }));
   };
 
-  const stamp = (r, s) => {
+  const blocksSatisfied = (declared) => {
+    const names = (Array.isArray(declared) ? declared : [declared])
+      .map(normalizeRequirementName).filter(Boolean);
+    return names.length > 0 && names.every((name) => articulatedRequirements.has(name));
+  };
+  const stamp = (r, s, g) => {
     const rec = r.receiving || {};
     if (template) {
       if (rec.kind === 'ge_area') {
@@ -1143,6 +1337,19 @@ function buildLedgerGroups(requirementGroups, ctx = {}) {
         return { ...r, articulation_status: null, not_articulated_reason: null, options: [] };
       }
       return { ...r, articulation_status: 'not_articulated', not_articulated_reason: 'must_take_at_university', options: [] };
+    }
+    // The headline evaluator accepts source-declared named ASSIST blocks.
+    // Keep the receipt on the rendered row so an empty parent-id join does
+    // not contradict that result or invent a course-to-course equivalence.
+    const hasDirectOptions = receiverArticulated(rec, articulated)
+      && (receiverPids(rec).some((pid) => optionsByParent.get(pid)?.length)
+        || (r.options || []).length > 0);
+    if (!hasDirectOptions
+        && (blocksSatisfied(g.assist_requirement) || blocksSatisfied(r.assist_requirement))) {
+      return {
+        ...r, articulation_status: 'articulated', not_articulated_reason: null,
+        options: [], assist_requirement: r.assist_requirement || g.assist_requirement,
+      };
     }
     if (rec.kind === 'course' || rec.kind === 'series') {
       // A series articulates only when every course in it does.
@@ -1186,16 +1393,17 @@ function buildLedgerGroups(requirementGroups, ctx = {}) {
     // science elective) and non-course sections stay separate.
     const takeAll = [];
     const others = [];
+    const isChoice = String(g.group_conjunction || '').toLowerCase() === 'or';
     for (const s of g.sections || []) {
       const recvs = s.receivers || [];
       const ask = s.section_advisement ?? 1;
       const allCourses = recvs.length > 0 && recvs.every((r) => r.receiving?.kind === 'course');
-      if (allCourses && ask === recvs.length) takeAll.push(...recvs);
+      if (!isChoice && allCourses && ask === recvs.length) takeAll.push(...recvs);
       else others.push(s);
     }
     const sections = [];
-    if (takeAll.length) sections.push({ section_advisement: takeAll.length, unit_advisement: null, receivers: takeAll.map((r) => stamp(r, {})) });
-    for (const s of others) sections.push({ ...s, receivers: (s.receivers || []).map((r) => stamp(r, s)) });
+    if (takeAll.length) sections.push({ section_advisement: takeAll.length, unit_advisement: null, receivers: takeAll.map((r) => stamp(r, {}, g)) });
+    for (const s of others) sections.push({ ...s, receivers: (s.receivers || []).map((r) => stamp(r, s, g)) });
     return { ...g, is_required: true, sections };
   });
   return { requirement_groups: groups, courses: [...usedCourses.values()] };
@@ -1258,6 +1466,33 @@ function resolveSectionTier(group, section, sourceDocument = null) {
   return TIERS.includes(tier) ? tier : 'transferable';
 }
 
+/**
+ * What one row of the Massachusetts "GE" residue is, for the lower-division
+ * lens. The residue is every resident-plan row the paper's Figure 1 columns
+ * did not use, so by the paper's own split it is the degree's non-major work;
+ * it is not all general education and not all lower division.
+ *
+ *   'elective'  free-elective and minor slots: they name no requirement, so
+ *               they are excluded as free electives are in California.
+ *   'upper'     a numbered course at the 300 (four-digit: 3000) level or above
+ *               — CICS 305 at Amherst, CIS 381 at Dartmouth, COMP 4010/4020 at
+ *               Lowell. A conventional boundary rather than one learned from
+ *               the paper's flags, because those flags are hand judgments (MCLA
+ *               marks courses up to 361 lower division) and the residue has
+ *               none of its own. Leading zeros do not count as a digit
+ *               (Westfield's CHEM 0109 is a 100-level course).
+ *   'ge'        everything else: distribution placeholders ("Humanities",
+ *               "Writing I") and lower-division courses the major does not
+ *               name (composition, a science sequence).
+ */
+function maResidueRole(receiving = {}) {
+  if (/\bfree\s*elec|\bminor\b/i.test(String(receiving.name || ''))) return 'elective';
+  const digits = /\b0*(\d{3,4})[A-Z]*\b/i
+    .exec(String(receiving.code || '').split(/\s+/).slice(1).join(' '))?.[1];
+  if (digits && Number(digits) >= (digits.length === 4 ? 3000 : 300)) return 'upper';
+  return 'ge';
+}
+
 function sectionUnits(section) {
   const slots = Number(section.section_advisement) || (section.receivers || []).length || 0;
   return section.unit_advisement != null
@@ -1313,6 +1548,7 @@ module.exports = {
   loadCollegeGeAreas,
   computeUnitBudget,
   resolveSectionTier,
+  maResidueRole,
   degreeUnitSystem,
   // The classification predicates the figure readers apply, exported so the
   // display taxonomy (normalizeDegreeCategories.js) derives from EXACTLY the

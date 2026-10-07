@@ -89,7 +89,7 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId, major
       .toArray();
     for (const c of rows) coursesById.set(Number(c.course_id), c);
   }
-  const universityCoursesById = await loadUniversityCourses(db, degree.requirement_groups);
+  const universityCoursesById = await loadUniversityCourses(db, degree.requirement_groups, degree.course_unit_overrides);
   // The college's own course GE-area tags satisfy the R&C / H/SS breadth slots
   // that ASSIST's major-prep agreements never carry.
   const ccGeAreas = await loadCollegeGeAreas(db, community_college_id);
@@ -104,7 +104,7 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId, major
   });
   // Merged agreement-shaped groups so the frontend renders this tab through the
   // shared RequirementsLedger, matching the Rendered tab.
-  const ledger = buildLedgerGroups(degree.requirement_groups, { articulated, optionsByParent, coursesById, ccGeAreas });
+  const ledger = buildLedgerGroups(degree.requirement_groups, { articulated, articulatedRequirements, optionsByParent, coursesById, ccGeAreas });
   const unitSystem = degreeUnitSystem(degree, university?.academic_calendar);
 
   // What the college satisfies is not what the student carries. The transfer
@@ -140,9 +140,8 @@ async function evaluateDegreeAtCollege(db, { schoolId, communityCollegeId, major
     n_agreements: agreements.length,
     completion: {
       total, covered, pct: total ? Math.round((100 * covered) / total) : null, by_tier,
-      // Unit-weighted coverage is primary. The denominator is the sum of the
-      // hand-authored requirement groups, which can legitimately exceed the
-      // university-wide minimum for a particular program.
+      // Unit-weighted coverage uses the stated graduation minimum; the modeled
+      // requirement sum remains available separately for audit.
       units: {
         total: unitTotal,
         covered: unitCovered,

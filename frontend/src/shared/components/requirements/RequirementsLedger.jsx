@@ -411,6 +411,19 @@ function ReceiverRow({ receiver, ctx, rowKey, category = null }) {
     )
   }
 
+  if (receiver.assist_requirement && receiver.articulation_status === 'articulated' && !hasOptions) {
+    return (
+      <div {...rowProps}>
+        {leftCell(false)}
+        <div className='flex justify-center'><ArrowNarrowLeft className='w-5 h-5 text-ink-subtle' /></div>
+        <span className='text-sm text-ink-muted'>
+          Articulated through the ASSIST requirement block: {receiver.assist_requirement}.
+          {' '}See that agreement block for its complete course choices.
+        </span>
+      </div>
+    )
+  }
+
   if (unstamped) {
     return (
       <div {...rowProps}>

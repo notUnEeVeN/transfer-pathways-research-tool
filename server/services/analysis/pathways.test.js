@@ -4,6 +4,7 @@ import {
   coverageData, requirementComparisonData, creditLossData, choiceCostData,
   categoryGapsData, complexityData, timeToDegreeData, agreementsExportData,
   receiversExportData, _maFigure1PdfValue, _roundHalfEven, _settingsMajors, _canonicalCsPrograms,
+  _agreementMinSetExact,
 } from './pathways';
 import { getMajor, programPairs } from '../../config/majors';
 import { canonicalSourceContract } from './canonicalSourceContract';
@@ -902,6 +903,57 @@ describe('creditLossData', () => {
     const beta = rows.find((r) => r.community_college_id === 20);
     expect(beta.receivers_blocked).toBe(1);
   });
+
+  it('withholds missing catalog units instead of publishing a zero-credit course', async () => {
+    const scratch = mongo.client.db('credit_loss_missing_catalog');
+    await scratch.collection('assist_agreements').insertMany([1, 2].map((id) => ({
+      uc_school_id: id, uc_school: `UC Missing ${id}`, community_college_id: 1,
+      community_college: 'CC Missing', major: 'Computer Science B.S.',
+      requirement_groups: [{ is_required: true, sections: [{
+        section_advisement: 1, receivers: [recv([opt(['unknown-course'])])],
+      }] }],
+    })));
+    const rows = await creditLossData(scratch, scratch, P);
+    expect(rows).toHaveLength(2);
+    for (const row of rows) {
+      expect(row.min_cc_courses).toBe(1);
+      expect(row.min_cc_units).toBeNull();
+      expect(row.missing_catalog_course_ids).toEqual(['unknown-course']);
+      expect(row.missing_unit_course_ids).toEqual(['unknown-course']);
+      expect(row.method_status).toBe('estimated');
+      expect(row.optimality_proven).toBe(false);
+    }
+  });
+
+  it('preserves real cross-list aliases when legacy derived keys are malformed', async () => {
+    const scratch = mongo.client.db('credit_loss_alias_catalog');
+    await scratch.collection('assist_agreements').insertOne({
+      uc_school_id: 1, uc_school: 'UC Aliases', community_college_id: 1,
+      community_college: 'CC Aliases', major: 'Computer Science B.S.',
+      requirement_groups: [{ is_required: true, sections: [{
+        section_advisement: 2,
+        receivers: [recv([opt(['cross-a'])]), recv([opt(['cross-b'])])],
+      }] }],
+    });
+    await scratch.collection('assist_courses').insertMany([
+      { side: 'sending', course_id: 'cross-a', units: 3,
+        same_as: [{ course_id: 'cross-b' }], same_as_keys: ['cc:[object Object]'] },
+      { side: 'sending', course_id: 'cross-b', units: 3,
+        same_as: [{ course_id: 'cross-a' }], same_as_keys: ['cc:[object Object]'] },
+    ]);
+    const [row] = await creditLossData(scratch, scratch, P);
+    expect(row.min_cc_courses).toBe(1);
+    expect(row.min_cc_units).toBe(3);
+  });
+
+  it('does not inject hypothetical courses into the catalog shared by later solves', () => {
+    const catalog = new Map();
+    const doc = { requirement_groups: [{ is_required: true, sections: [{
+      section_advisement: 1, receivers: [recv([opt(['unknown-course'])])],
+    }] }] };
+    expect(_agreementMinSetExact(doc, () => false, catalog).missingCatalogIds).toEqual(['unknown-course']);
+    expect(catalog.size).toBe(0);
+  });
 });
 
 describe('choiceCostData', () => {
@@ -966,6 +1018,29 @@ describe('receiversExportData', () => {
 });
 
 describe('timeToDegreeData', () => {
+  it('does not turn unknown transferred units into a fully lost course and tuition charge', async () => {
+    const scratch = mongo.client.db('time_degree_missing_units');
+    await scratch.collection('assist_institutions').insertOne({
+      kind: 'university', source_id: 1, tuition_per_credit_usd: 100,
+    });
+    await scratch.collection('curated_requirements').insertOne({
+      kind: 'associate_degree', community_college_id: 1, units: 3,
+      name: 'Incomplete catalog ADT', course_ids: ['unknown-course'],
+    });
+    await scratch.collection('assist_agreements').insertOne({
+      uc_school_id: 1, community_college_id: 1, major: 'Computer Science B.S.',
+      requirement_groups: [{ is_required: true, sections: [{
+        section_advisement: 1, receivers: [recv([opt(['unknown-course'])])],
+      }] }],
+    });
+    const [row] = await timeToDegreeData(scratch, scratch, P);
+    expect(row.assoc_degree_units).toBe(3);
+    expect(row.transferable_units).toBeNull();
+    expect(row.transfer_credit_rate_pct).toBeNull();
+    expect(row.lost_units).toBeNull();
+    expect(row.est_lost_cost_usd).toBeNull();
+  });
+
   it('computes the transfer credit rate + costed lost units for curated ADTs', async () => {
     const rows = await timeToDegreeData(db, db, P);
     const adt = rows.find((r) => r.community_college_id === 10 && r.school_id === 1);
@@ -1094,7 +1169,7 @@ describe('exact configured major isolation', () => {
   it('choice cost deterministically uses the configured canonical program', async () => {
     const rows = await choiceCostData(db, db, { majorSlug: 'cs', schoolIds: [79] });
     const scopeCollege = rows.find((row) => row.community_college_id === 70);
-    expect(scopeCollege.steps).toEqual([{
+    expect(scopeCollege.steps).toMatchObject([{
       school_id: 79,
       school: 'UC Berkeley',
       has_agreement: true,
@@ -1233,6 +1308,84 @@ describe('unit-lens gating for corpora the unit model does not describe', () => 
     } finally {
       await db.collection('curated_requirements').deleteOne({ _id: added.degree._id });
       await db.collection('assist_agreements').deleteOne({ _id: added.agreement._id });
+    }
+  });
+
+  it('serves the credit-weighted Figure 1 reading on a corpus the unit budget cannot model', async () => {
+    // The same shape as the gating fixture above, with the university courses
+    // priced: two named requirements worth 4 and 3 credits, the 4-credit one
+    // articulated. Counted binary that is one of two; weighted by credit it is
+    // 4 of 7 — so the two lenses cannot be confused for one another here.
+    const added = {
+      degree: {
+        _id: 'degree:9002:ma-cs', kind: 'degree', school_id: 9002, school: 'Testbridge',
+        program: 'Computer Science, B.S.', major_slug: 'ma-cs', state: 'ma',
+        total_units: 120, unit_system: 'semester',
+        requirement_groups: [{
+          title: 'Lower-division major requirements', tier: 'transferable',
+          group_conjunction: 'And',
+          sections: [{
+            section_advisement: 2,
+            unit_advisement: 7,
+            tier: 'transferable',
+            receivers: [
+              { receiving: { kind: 'course', parent_id: 9002000, code: 'COMP 151', name: 'Computer Science I' } },
+              { receiving: { kind: 'course', parent_id: 9002001, code: 'COMP 152', name: 'Computer Science II' } },
+            ],
+          }],
+        }],
+      },
+      agreement: {
+        _id: 'ma:agreement:9002:9101', university_id: 'ma:uni:9002', college_id: 'ma:cc:9101',
+        uc_school_id: 9002, community_college_id: 9101,
+        major: 'Computer Science, B.S.', state: 'ma', pairing: 'booleans-only',
+        requirement_groups: [{
+          sections: [{
+            receivers: [
+              { receiving: { kind: 'course', parent_id: 9002000, code: 'COMP 151', name: 'Computer Science I' }, articulation_status: 'articulated', options: [] },
+              { receiving: { kind: 'course', parent_id: 9002001, code: 'COMP 152', name: 'Computer Science II' }, articulation_status: 'not_articulated', options: [] },
+            ],
+          }],
+        }],
+      },
+      courses: [
+        { _id: 'ma:receiving:9002000', side: 'receiving', parent_id: 9002000,
+          institution_id: 'ma:uni:9002', prefix: 'COMP', number: '151',
+          title: 'Computer Science I', min_units: 4, max_units: 4, state: 'ma' },
+        { _id: 'ma:receiving:9002001', side: 'receiving', parent_id: 9002001,
+          institution_id: 'ma:uni:9002', prefix: 'COMP', number: '152',
+          title: 'Computer Science II', min_units: 3, max_units: 3, state: 'ma' },
+      ],
+    };
+    await db.collection('curated_requirements').insertOne(added.degree);
+    await db.collection('assist_agreements').insertOne(added.agreement);
+    await db.collection('assist_courses').insertMany(added.courses);
+    try {
+      const rows = await coverageData(db, db, { requirements: 'degree', majorSlug: 'ma-cs' });
+      const cell = rows.find((row) => (
+        row.school_id === 9002 && row.community_college_id === 9101
+      ));
+      expect(cell).toMatchObject({
+        named_requirement_courses_total: 2,
+        named_requirement_courses_articulated: 1,
+        pct_named_requirement_courses: 50,
+        named_requirement_units_total: 7,
+        named_requirement_units_articulated: 4,
+        pct_named_requirement_units: 57.1,
+        // No general-education group in this fixture, so the GE-included
+        // reading has nothing extra to credit and matches.
+        named_requirement_units_with_ge_total: 7,
+        named_requirement_units_with_ge_articulated: 4,
+        pct_named_requirement_units_with_ge: 57.1,
+      });
+      // The requirement rollup is not the California unit budget, which this
+      // corpus still cannot model.
+      expect(cell.pct_degree_units).toBeNull();
+    } finally {
+      await db.collection('curated_requirements').deleteOne({ _id: added.degree._id });
+      await db.collection('assist_agreements').deleteOne({ _id: added.agreement._id });
+      await db.collection('assist_courses')
+        .deleteMany({ _id: { $in: added.courses.map((course) => course._id) } });
     }
   });
 });

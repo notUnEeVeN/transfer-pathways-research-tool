@@ -2,8 +2,29 @@ import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
 import RequirementsLedger from './RequirementsLedger'
 import evl from './_degree_eval.fixture.json'
+import { sectionRule } from './ledgerText'
 
 describe('RequirementsLedger — merged degree doc (ledger style)', () => {
+  it('preserves choose-one logic for alternative laboratory series', () => {
+    const receivers = [{ receiving: { kind: 'series' } }, { receiving: { kind: 'series' } }]
+    expect(sectionRule({ section_advisement: 1 }, {}, receivers, null, false))
+      .toBe('Complete 1 of these 2 series:')
+    expect(sectionRule({}, {}, receivers, { originalTotal: 1, label: 'courses' }, false))
+      .toBe('Complete 1 of these 2 series:')
+    expect(sectionRule({ section_advisement: 2 }, {}, receivers, null, false))
+      .toBe('Complete all 2 series:')
+  })
+
+  it('shows a satisfied named ASSIST block without falsely claiming no articulation', () => {
+    const major = { requirement_groups: [{ title: 'Mathematics', is_required: true, sections: [{
+      receivers: [{ receiving: { kind: 'course', course_id: 'math' },
+        articulation_status: 'articulated', assist_requirement: 'Mathematics Requirement', options: [] }],
+    }] }] }
+    const { container } = render(<RequirementsLedger major={major} preserveOrder showCompletion={false} />)
+    expect(container.textContent).toContain('Articulated through the ASSIST requirement block: Mathematics Requirement')
+    expect(container.textContent).not.toContain('No course articulates')
+    expect(container.textContent).not.toContain('Take at the university')
+  })
   it('renders the evaluated 4-year degree with group titles + CC options', () => {
     const { container } = render(
       <RequirementsLedger major={{ requirement_groups: evl.requirement_groups }}

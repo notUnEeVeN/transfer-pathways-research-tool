@@ -1477,7 +1477,9 @@ describe('non-Virginia serialized payload contract', () => {
     });
 
     expect(payloadHash(caRows)).toBe('1c1afe10cc846dcabae2779589991c08cddcc0df5595bb8953b09b2d1d62210e');
-    expect(payloadHash(maRows)).toBe('496064396f89211935c6724bff8e20544a841b94fa158f022f8e5de12b44b4ce');
+    // MA adds explicit model provenance; the CA payload remains unchanged.
+    expect(maRows[0].ma_model_evidence).toBeTruthy();
+    expect(payloadHash(maRows)).toBe('018635be8da104b9447ea0700c87f42f17d77512d3851b25dd09faa4b61e126c');
   });
 });
 
@@ -2721,6 +2723,7 @@ describe('transferCreditRateData standardized denominators and vocabulary', () =
         _id: 'degree:9001:ma-cs', kind: 'degree', school_id: 9001, school: 'MCLA',
         program: 'Computer Science, B.S.', major_slug: 'ma-cs', state: 'ma',
         total_units: 120, unit_system: 'semester',
+        modeling_notes: ['No resident-plan row for "Synthetic requirement"; 4-credit assumption used.'],
         requirement_groups: [{
           title: 'Lower-division major requirements', tier: 'transferable',
           sections: [{
@@ -2807,6 +2810,15 @@ describe('transferCreditRateData standardized denominators and vocabulary', () =
     expect(cell.archive_gray_detail_source).toMatch(/gray replacement-row Column H credits/i);
     expect(cell.archive_gray_detail_source).toMatch(/blue unrestricted-elective-only rows excluded/i);
     expect(cell.as_unit_utilization_pct).toBe(100);
+    expect(cell.method_status).toBe('estimated');
+    expect(cell.method_warning).toMatch(/inferred course matches/);
+    expect(cell.method_warning).toMatch(/1 heatmap requirements.*assume 4 credits/);
+    expect(cell.ma_model_evidence).toMatchObject({
+      course_pairing: 'order-approximate',
+      assumed_four_credit_requirements: 1,
+      declared_resident_units: 120,
+      template_requirement_units: 7,
+    });
     // The CS-only flavor drops the GE-group receiver's 3 units: 4 of 7.
     expect(cell.as_cs_only_utilization_pct).toBe(57.1);
 

@@ -87,13 +87,23 @@ export const MEASURES = {
   },
 }
 
+export const VA_UNUSED_CREDIT_MEASURE = {
+  expression: 'unused credit = credits in the guide’s pre-transfer plan − credits applying to bachelor requirements',
+  grain: 'One value per VCCS college × Virginia university transfer guide.',
+  watchFor: 'The denominator comes from the guide’s pre-transfer plan, rather than a separately solved associate-degree curriculum. Course supply and guide outcomes determine which credits apply. This is the complement of the Virginia credit-utilization figure; it does not add the bachelor curriculum’s credits above 120.',
+}
+
 // The coverage heatmap changes its statistic with its controls, so its panel
 // must change too — a definition of a lens the reader is not looking at is
 // worse than none. One entry per figure state; the figure reports the active
 // one upward through `onMeasureChange` and the gallery shows it in place of
 // the static default.
 export const COVERAGE_HEATMAP_MEASURES = {
-  degree: MEASURES['coverage-heatmap'],
+  degree: {
+    expression: 'coverage = modeled bachelor graduation units covered ÷ total modeled graduation units',
+    grain: 'One value per community college × UC program.',
+    watchFor: 'This lens measures accepted credit within the modeled graduation budget. Named requirements use documented course credits where available; unpriced requirement blocks retain estimated credit allocations. It is distinct from the named-course count and the GE-excluded named-requirement unit lens.',
+  },
   'degree-no-ge': {
     expression: 'coverage = units of named requirements articulated ÷ units of all named requirements, general education removed from both sides',
     grain: 'One value per community college × UC program.',
@@ -102,12 +112,22 @@ export const COVERAGE_HEATMAP_MEASURES = {
   'ma-courses': {
     expression: 'coverage = required courses with an articulated equivalent ÷ all required courses, at every level',
     grain: 'One value per community college × UC program.',
-    watchFor: 'The Massachusetts paper’s published Figure 1 measure, for direct comparison — their statewide average was 38.2%. Every required course counts once, articulated or not, whether departmental, college, or campus and at any division: a complete-series requirement counts each of its courses (an articulated series covers all of them), a choose-N pool counts its N cheapest alternatives, and the two unit-only blocks in the corpus use the four-unit assumption. General education and free-elective padding are excluded. Upper-division requirements rarely articulate, which is what pulls this measure far below lower-division-only coverage.',
+    watchFor: 'The Massachusetts paper’s published Figure 1 measure, for direct comparison — their statewide average was 38.2%. Every required course counts once, articulated or not, whether departmental, college, or campus and at any division: a complete-series requirement counts each of its courses (an articulated series covers all of them), a choose-N pool contributes its stated course ask. Unit-only blocks require an explicit course-size assumption and remain estimates; documented fractional credit values are preserved as credit, not interpreted as fractional class attendance. General education and free-elective padding are excluded. Upper-division requirements rarely articulate, which is what pulls this measure far below lower-division-only coverage.',
   },
   'ma-courses-ge': {
     expression: 'coverage = required courses with an articulated equivalent ÷ all required courses, general education included',
     grain: 'One value per community college × UC program.',
     watchFor: 'Our extension of the paper’s measure, not a figure they published — for general-education-heavy majors such as Economics, whose GE-excluded reading is dominated by the unarticulable upper division. Lower-division GE counts as articulable at every college (IGETC or Cal-GETC certification clears it, so the reading does not depend on how each template encodes its GE blocks); upper-division GE still counts against. Free-elective padding remains excluded, and the paper’s 38.2% benchmark applies only to the GE-excluded state.',
+  },
+  'ma-units': {
+    expression: 'coverage = credits of required courses with an articulated equivalent ÷ credits of all required courses, at every level',
+    grain: 'One value per community college × UC program.',
+    watchFor: 'The published Figure 1 population weighted by credit instead of counted binary — the same required courses, the same general-education exclusion, the same every-level scope. Only the weighting differs, which is what makes it comparable with Virginia’s guides and with California’s GE-excluded unit lens; the published 38.2% benchmark belongs to the course count, and this reading of the Massachusetts corpus runs about a point above it. Each requirement is priced from the receiving university’s own catalogue where it states a credit value; where it does not, the requirement takes its section’s stated credits divided evenly, which is an estimate rather than a documented course size. In the Massachusetts corpus 263 of 270 required-course columns are priced from the campus’s own resident plan and 7 carry the estimate; the reading moves less than a point across every plausible value for those seven, so it does not rest on them.',
+  },
+  'ma-units-ge': {
+    expression: 'coverage = credits of required courses with an articulated equivalent ÷ credits of all required courses, general education included',
+    grain: 'One value per community college × UC program.',
+    watchFor: 'The credit weighting of our GE-included extension, not a figure any paper published. Lower-division general education counts as articulable at every college by the same modelling standard the course variant uses — certification clears it — and upper-division GE still counts against, so this reading is a policy scenario rather than observed articulation. Available only where general education is classified by a curated template or a published guide. It is withdrawn on corpora imported from a study that classifies none — Massachusetts, where the “GE” block is only the residue Figure 1’s columns did not consume, and granting it produced more transferable credit than the authors’ own Figure 3 records for any pair.',
   },
   // Virginia is measured against published Transfer Guides rather than a
   // curated requirement corpus, so it needs its own three descriptions; the
@@ -124,9 +144,21 @@ export const COVERAGE_HEATMAP_MEASURES = {
     watchFor: 'The middle step between the credit reading and the paper’s. General education comes off the numerator and the denominator alike — the same number of credits from each — so the ratio moves only where GE was a different share of what this college could supply. About four points below the GE-counted reading.',
   },
   'va-paper': {
-    expression: 'coverage = required courses supplied ÷ all required courses, counted binary, general education excluded',
+    expression: 'estimated course coverage = estimated courses supplied ÷ estimated whole-degree courses, general education excluded',
     grain: 'One value per VCCS college × Virginia university program.',
-    watchFor: 'The Massachusetts paper’s own convention, and the only Virginia lens comparable with the California and Massachusetts cells on this scale — their statewide averages were 31.9% and 38.2%. Virginia’s guides do not print one row per course: the university half collapses blocks, and a single row can be worth 30 credits, so every row on both sides is converted to courses at the credits-per-course that guide’s own single courses exhibit (about 3.1) rather than at an assumed constant. It reads roughly three points below the credit reading because binary counting pays one for a four-credit science-with-lab course and one for a three-credit course, and Virginia’s community-college half carries many of the former.',
+    watchFor: 'Virginia’s guides contain credit blocks rather than a complete enumerated course list. Course counts are estimated from each guide’s average course size, rounded to integers, adjusted to the stated totals, and supplemented for unitemized credit. Integer outputs do not make these exact class counts. Treat this as a modeled sensitivity; California and Massachusetts count named course observations and cannot be compared as an identical measure.',
+  },
+  // The lower-division lens is one measure in all three states, so each entry
+  // states every state's source rather than leaving the reader to infer it.
+  'ld-units': {
+    expression: 'coverage = lower-division credit a college can satisfy ÷ all of the bachelor’s lower-division credit, general education excluded',
+    grain: 'One value per community college × university program.',
+    watchFor: 'Upper division comes off both sides; lower-division requirements a college cannot reach stay in the denominator uncovered. Elective credit is part of the bachelor’s degree and counts as satisfied, since any transferable course fills it. Lower division is the template’s own tier in California, with its community-college elective units held to the UC transfer cap (70 semester / 105 quarter units); the paper’s own lower-division flag plus its free-elective and minor slots in Massachusetts; and in Virginia the guide’s stated pre-transfer credit, less courses the university grants no credit for, plus the 100- and 200-level courses the guide schedules after transfer. Virginia is measured on catalogue supply, like the other two states. Credits are each state’s own unit, so the ratio is comparable while the totals are not.',
+  },
+  'ld-units-ge': {
+    expression: 'coverage = lower-division credit a college can satisfy ÷ all of the bachelor’s lower-division credit, general education included',
+    grain: 'One value per community college × university program.',
+    watchFor: 'The same lower-division credit with general education added to both sides. GE is granted where policy grants it — IGETC or Cal-GETC in California, MassTransfer in Massachusetts — and earned in Virginia, where a college must teach the courses the guide names (open categories are taught everywhere). Massachusetts classifies no general education: its GE is the residue of the resident plan that the paper’s Figure 1 columns did not use, less free-elective and minor slots and courses numbered at the 300 level or above, so it is the paper’s own major/non-major split rather than a published GE list. Upper-division GE counts on neither side.',
   },
   assist: {
     expression: 'coverage = listed ASSIST receivers satisfied ÷ receivers listed as required, following each requirement’s choose-N rule',
@@ -146,9 +178,9 @@ export const COVERAGE_HEATMAP_MEASURES = {
 export const TRANSFER_CREDIT_RATE_MEASURES = {
   default: MEASURES['transfer-credit-rate'],
   'ma-bachelor-side': {
-    expression: 'completion = bachelor’s requirement credits the associate degree removes ÷ the bachelor’s degree total',
+    expression: 'completion = modeled associate-degree credits applied ÷ the resident bachelor’s degree total',
     grain: 'One value per community college × university campus.',
-    watchFor: 'The other direction on the same pathways: not how much of the associate degree gets used, but how much of the bachelor’s it finishes. The paper published no such figure — this is ours, and it is the same statistic California shows, which is why the two states can be compared on it. Computed from the authors’ source pathway sheets: 35.8% over their 61 studied pathways, against 36.1% through our import pipeline. Individual cells carry course-name matching noise; read the distribution rather than a single pair.',
+    watchFor: 'Approximate model combining the final articulation table with older resident and pathway courses. Unmatched courses use assumed credits, and associate-degree matches may be inferred. This is not a direct reproduction of the final paper or a fully source-resolved bachelor-completion measure; inspect each cell’s method warning before interpretation.',
   },
   'ma-as-side': {
     expression: 'transfer credit rate = associate-degree units replacing named or GE/breadth bachelor requirements ÷ the associate degree’s own units',

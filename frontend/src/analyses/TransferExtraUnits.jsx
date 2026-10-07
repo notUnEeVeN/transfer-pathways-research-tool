@@ -3,6 +3,9 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import { VA_CREDIT_RATE_ROWS } from './vaCreditRateRows'
+import { vaCreditRateData } from './vaFigureData'
+import { VA_UNUSED_CREDIT_MEASURE } from './measures'
+import VaGuideSourceNotice from './VaGuideSourceNotice'
 import {
   EvidenceCohortControl, EvidenceSummary, SegmentedChoice, TransferEvidenceCaveats, buildRateMatrix,
   defaultDegreeMode, degreeModesForMajor, methodDetail, paperRedCellColor,
@@ -110,7 +113,7 @@ function cellTitle(row, col, cell, source, value, lostOnly = false) {
     Number.isFinite(cell.modeled_pathway_units_semester)
       ? `${unitFmt.format(cell.modeled_pathway_units_semester)} total modeled semester hours`
       : null,
-    `${nativeExtra} ${nativeUnits} do not apply after ${applied} of ${total} ${nativeUnits} apply`,
+    `${lostOnly ? unitFmt.format(cell.va_wasted_units) : nativeExtra} ${nativeUnits} do not apply after ${applied} of ${total} ${nativeUnits} apply`,
     Number.isFinite(cell.published_pdf_extra_hours)
       ? `Final paper Figure 4: ${plus(cell.published_pdf_extra_hours)} hours above 120`
       : null,
@@ -190,6 +193,7 @@ export default function TransferExtraUnits({
   degreeSlotLabels = null, major = null,
   defaultDegreeType = null, defaultVerifiedOnly = true,
   defaultSource = 'pdf', onViewChange, comparisonColorScale = null,
+  defaultVaBasis = 'catalog', defaultVaAllColleges = false, onMeasureChange,
 }) {
   const degreeModes = useMemo(() => degreeModesForMajor({
     majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
@@ -205,6 +209,8 @@ export default function TransferExtraUnits({
   const paperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
   const [verifiedOnly, setVerifiedOnly] = useState(defaultVerifiedOnly)
   const [source, setSource] = useState(defaultSource)
+  const [vaBasis, setVaBasis] = useState(defaultVaBasis)
+  const [vaAllColleges, setVaAllColleges] = useState(defaultVaAllColleges)
   const effectiveSource = paperCorpus ? normalizeMaExtraUnitSource(source) : 'ours'
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
@@ -216,16 +222,19 @@ export default function TransferExtraUnits({
       defaultDegreeType: degreeType,
       defaultVerifiedOnly: verifiedOnly,
       defaultSource: paperCorpus ? effectiveSource : source,
+      defaultVaBasis: vaBasis,
+      defaultVaAllColleges: vaAllColleges,
     })
-  }, [degreeType, verifiedOnly, source, paperCorpus, effectiveSource, onViewChange])
+  }, [degreeType, verifiedOnly, source, paperCorpus, effectiveSource, vaBasis, vaAllColleges, onViewChange])
   // Virginia reads the same committed rows Figure 3 does, for the same reason:
   // this measure is the loss that figure reports, carried onto the benchmark. A
   // guide states a degree at 120 to 134 credits, and a requirement the college
   // cannot supply is completed with a substitute that does no requirement work,
   // so those credits are taken twice.
   const vaRateRows = majorSlug === 'va-cs' ? VA_CREDIT_RATE_ROWS : null
-  const [vaBasis, setVaBasis] = useState('catalog')
-  const [vaAllColleges, setVaAllColleges] = useState(false)
+  useEffect(() => {
+    onMeasureChange?.(vaRateRows ? VA_UNUSED_CREDIT_MEASURE : null)
+  }, [vaRateRows, onMeasureChange])
   const queryVerifiedOnly = paperCorpus ? false : verifiedOnly
   const query = useTransferCreditRate(degreeType, {
     majorSlug,
@@ -235,7 +244,7 @@ export default function TransferExtraUnits({
     ...(vaRateRows ? { enabled: false } : {}),
   })
   const rows = vaRateRows
-    ? vaRateRows[`${vaBasis}${vaAllColleges ? '_all' : ''}`].rows
+    ? vaCreditRateData({ basis: vaBasis, allColleges: vaAllColleges }).rows
     : (query.data?.rows || [])
   const localModel = useMemo(
     () => buildRateMatrix(rows, (row) => extraUnitValue(row, effectiveSource), extraScale),
@@ -309,12 +318,12 @@ export default function TransferExtraUnits({
       )}
       {!paperCorpus && !vaRateRows
         && <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />}
-      <Button variant='secondary' leadingIcon={ArrowPathIcon}
+      {!vaRateRows && <Button variant='secondary' leadingIcon={ArrowPathIcon}
         loading={query.isFetching && !query.isLoading} onClick={() => query.refetch()}>
         Refresh
-      </Button>
+      </Button>}
       <div className='ml-auto flex h-9 items-center text-caption text-ink-subtle'>
-        {query.isFetching ? 'Updating' : 'Live endpoint'}
+        {vaRateRows ? `Committed rows · ${String(vaRateRows.built_at).slice(0, 10)}` : query.isFetching ? 'Updating' : 'Live endpoint'}
       </div>
     </div>
   )
@@ -338,7 +347,9 @@ export default function TransferExtraUnits({
         <div className='surface-card px-4 py-3'>
           <p className='text-label'>
             <EvidenceSummary verifiedOnly={verifiedOnly}
-              sourceLabel={paperCorpus
+              sourceLabel={vaRateRows
+                ? `Transfer-guide plans · ${vaAllColleges ? 'all VCCS colleges' : 'colleges with a CS degree'}`
+                : paperCorpus
                 ? (effectiveSource === 'pdf'
                   ? 'Final PDF Figure 4 (reported pairs only)'
                   : effectiveSource === 'archive-detail'
@@ -362,11 +373,12 @@ export default function TransferExtraUnits({
               134-credit guide showed +14 hours while Figure 3 reported the same cell at 100%.
             </Alert>
           )}
+          {vaRateRows && <VaGuideSourceNotice rows={rows} />}
           {!paperCorpus && !vaRateRows
             && <TransferEvidenceCaveats rows={rows} majorSlug={majorSlug} />}
         </div>
         <ColorDomainLegend scale={model.colorScale} formatValue={plus}
-          suffix='semester hours above 120' />
+          suffix={vaRateRows ? 'unused semester credits' : 'semester hours above 120'} />
         <ExtraTable model={model} source={effectiveSource} lostOnly={Boolean(vaRateRows)} />
       </div>
     </Stack>
@@ -375,4 +387,5 @@ export default function TransferExtraUnits({
 
 // The props a pinned view may seed. Every `viewKnobs` entry on the registry
 // must name one of these; the contract test fails the build otherwise.
-TransferExtraUnits.viewProps = ['defaultDegreeType', 'defaultVerifiedOnly', 'defaultSource']
+TransferExtraUnits.viewProps = ['defaultDegreeType', 'defaultVerifiedOnly', 'defaultSource',
+  'defaultVaBasis', 'defaultVaAllColleges']

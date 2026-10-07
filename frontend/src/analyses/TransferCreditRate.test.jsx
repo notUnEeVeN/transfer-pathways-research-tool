@@ -170,25 +170,17 @@ describe('TransferCreditRate', () => {
     expect(mockRate).toHaveBeenLastCalledWith('local_as', { majorSlug: 'ma-cs', verifiedOnly: false })
   })
 
-  it('keeps the curation-cohort control for a state corpus we gathered ourselves', () => {
-    // Virginia is state-scoped like Massachusetts but the data is ours and the
-    // associate degrees carry verification, so the verified/unverified cohort
-    // applies and the paper-source selector must not appear. Being a state
-    // corpus is not what makes a corpus a paper corpus.
+  it('offers only the cohorts that change the committed Virginia guide rows', () => {
     mockRate.mockReturnValue({ data: { rows }, isLoading: false, isError: false, isFetching: false, refetch: vi.fn() })
     render(<TransferCreditRate majorSlug='va-cs' degreeAnalysisSlots={['local_as']}
       major={{ slug: 'va-cs', state: 'va', label: 'Computer Science (VA)',
         capabilities: { paperBaselines: false } }} />)
 
-    expect(screen.getByRole('button', { name: 'Verified programs only' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Verified programs only' })).toBeNull()
     expect(screen.queryByRole('button', { name: 'Final paper' })).toBeNull()
-    expect(screen.queryByText(/Paper-source associate degrees/)).toBeNull()
-
-    fireEvent.click(screen.getByRole('button', { name: 'Verified programs only' }))
-    // The request is still formed the same way, and still disabled: Virginia
-    // renders a committed baseline built from its published transfer guides, so
-    // the endpoint is not the source here. The cohort control stays because it
-    // describes the corpus, not because it drives a fetch.
+    expect(screen.queryByRole('button', { name: 'Refresh' })).toBeNull()
+    expect(screen.getByRole('button', { name: 'All 23' })).toBeInTheDocument()
+    expect(screen.queryByText('Live endpoint')).toBeNull()
     expect(mockRate).toHaveBeenLastCalledWith('local_as', {
       majorSlug: 'va-cs', verifiedOnly: true, enabled: false,
     })

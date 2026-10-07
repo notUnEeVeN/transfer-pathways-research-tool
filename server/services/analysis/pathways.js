@@ -71,6 +71,10 @@ function maFigure1PdfValue({ majorSlug, rowKind, school, college }) {
 
 const EMPTY_CATEGORY_SLOTS = {
   total: 0, covered: 0, lower_division_total: 0, lower_division_covered: 0,
+  // The credit-weighted counts carry the same explicit zeroes, so a figure
+  // reading a category this campus does not require gets a number rather than
+  // `undefined` on the unit lens but a 0 on the counted one.
+  units: 0, units_covered: 0, lower_division_units: 0, lower_division_units_covered: 0,
 };
 
 /**
@@ -256,7 +260,7 @@ async function loadRefs(db, state = null, majorSlug = null) {
 async function loadCcCourseUnits(db) {
   const rows = await db.collection('assist_courses')
     .find({ side: 'sending' }, { projection: { course_id: 1, units: 1 } }).toArray();
-  return new Map(rows.map((r) => [String(r.course_id), Number(r.units) || 0]));
+  return new Map(rows.map((r) => [String(r.course_id), r.units == null ? null : Number(r.units)]));
 }
 
 // CC-course catalog (units + same_as) keyed by stringified course_id — the
@@ -269,9 +273,12 @@ async function loadCoursesById(db) {
     m.set(String(r.course_id), {
       course_id: String(r.course_id),
       units: r.units,
-      same_as: (r.same_as_keys || r.same_as || []).map((p) => ({
-        course_id: String(p?.course_id ?? p).replace(/^cc:/, ''),
-      })),
+      // The stored same_as_keys arrays contain "cc:[object Object]" in
+      // legacy imports. The actual same_as objects retain the real aliases.
+      same_as: [...new Set([...(r.same_as || []), ...(r.same_as_keys || [])]
+        .map((peer) => String(peer?.course_id ?? peer).replace(/^cc:/, ''))
+        .filter((id) => id && id !== '[object Object]'))]
+        .map((course_id) => ({ course_id })),
     });
   }
   return m;
@@ -323,20 +330,32 @@ function chooseNMinimum(groups) {
 // still count, exactly as the older figures counted them by name).
 function agreementMinSetExact(doc, isExcluded, coursesById) {
   const groups = prepRequirementGroups(doc, isExcluded);
+  const missingCatalogIds = new Set();
   for (const g of groups) {
     for (const s of g.sections || []) {
       for (const r of s.receivers || []) {
         for (const o of r.options || []) {
           for (const id of o.course_ids || []) {
-            if (!coursesById.has(id)) coursesById.set(id, { course_id: id, units: null, same_as: [] });
+            if (!coursesById.has(id)) missingCatalogIds.add(id);
           }
         }
       }
     }
   }
+  // Keep placeholders local to this solve; mutating the shared catalog hid
+  // the same missing reference in later agreements and treated it as sourced.
+  const solverCatalog = missingCatalogIds.size ? new Map(coursesById) : coursesById;
+  for (const id of missingCatalogIds) {
+    solverCatalog.set(id, { course_id: id, units: null, same_as: [] });
+  }
   const major = { requirement_groups: groups };
+  const telemetry = {};
   const courses = selectMissingAcrossMajorsOptimal([major], {
-    userCourses: [], coursesById, includeRecommended: false, crossCc: [],
+    userCourses: [], coursesById: solverCatalog, includeRecommended: false, crossCc: [], telemetry,
+  });
+  const missingUnitIds = courses.filter((id) => {
+    const units = coursesById.get(id)?.units;
+    return units == null || !Number.isFinite(Number(units));
   });
   const counts = chooseNMinimum(groups);
   return {
@@ -345,6 +364,29 @@ function agreementMinSetExact(doc, isExcluded, coursesById) {
     receiversSatisfiable: counts.satisfiable,
     receiversBlocked: counts.blocked,
     fullyArticulated: isMajorArticulable(major, true),
+    missingCatalogIds: [...missingCatalogIds].sort(),
+    missingUnitIds,
+    optimalityProven: Boolean(telemetry.optimalityProven) && missingCatalogIds.size === 0,
+  };
+}
+
+function pathwaySourceEvidence(solved) {
+  const warnings = [];
+  if (solved.missingCatalogIds.length) {
+    warnings.push(`${solved.missingCatalogIds.length} agreement course references are absent from the sending catalog; their unresolved identities make course-count minima estimates.`);
+  }
+  if (solved.missingUnitIds.length) {
+    warnings.push(`${solved.missingUnitIds.length} selected courses lack sourced unit values; unit totals are unavailable.`);
+  }
+  if (!solved.optimalityProven && !solved.missingCatalogIds.length) {
+    warnings.push('The course search did not prove the global minimum.');
+  }
+  return {
+    missing_catalog_course_ids: solved.missingCatalogIds,
+    missing_unit_course_ids: solved.missingUnitIds,
+    optimality_proven: solved.optimalityProven,
+    method_status: warnings.length ? 'estimated' : 'ok',
+    method_warning: warnings.length ? warnings.join(' ') : null,
   };
 }
 
@@ -782,7 +824,13 @@ const VA_COVERAGE_METRICS = Object.freeze([
   'named_requirement_courses_articulated', 'pct_named_requirement_courses',
   'named_requirement_courses_with_ge_total',
   'named_requirement_courses_with_ge_articulated',
-  'pct_named_requirement_courses_with_ge', 'degree_requirements_total',
+  'pct_named_requirement_courses_with_ge',
+  'named_requirement_units_total', 'named_requirement_units_articulated',
+  'pct_named_requirement_units', 'named_requirement_units_with_ge_total',
+  'named_requirement_units_with_ge_articulated',
+  'pct_named_requirement_units_with_ge', 'named_requirement_units_lower_total',
+  'named_requirement_units_lower_articulated', 'named_requirement_units_lower_ge_total',
+  'named_requirement_units_lower_ge_articulated', 'degree_requirements_total',
   'degree_requirements_with_equivalent', 'degree_requirements_by_tier',
   'degree_requirements_by_course_type', 'degree_requirements_by_course_category',
   'pct_degree_requirements', 'degree_requirement_slots_total',
@@ -941,7 +989,10 @@ async function degreeRequirementCoverageData(db, {
   // paper types each requirement by the four-year's own course code.
   const universityCoursePipeline = [
     { $match: { side: 'receiving', parent_id: { $in: parentIds } } },
-    { $project: { _id: 0, parent_id: 1, prefix: 1, number: 1, title: 1 } },
+    // `min_units` prices each named requirement for the credit-weighted
+    // reading of Figure 1; without it every course falls back to its
+    // section's proportional share and the weighting does nothing.
+    { $project: { _id: 0, parent_id: 1, prefix: 1, number: 1, title: 1, min_units: 1 } },
   ];
 
   const [articulationRows, geRows, universityCourseRows, namedRequirementRows] = await Promise.all([
@@ -1192,6 +1243,18 @@ async function degreeRequirementCoverageData(db, {
           majorSlug === 'ma-cs' && rowGroup.kind === 'college'
             ? 'final PDF Figure 1 (printed whole-percentage transcription)'
             : null,
+        // The SAME population, weighted by credit instead of counted binary —
+        // the reading Virginia's guides are written in and California's
+        // GE-excluded unit lens already offers, so the three states' Figure 1
+        // can be compared on one basis. Deliberately not gated on
+        // `unitCoverage`: this is the requirement rollup, not the California
+        // unit BUDGET, and it needs neither a transfer cap nor GE netting.
+        named_requirement_units_total: evaluated.named_requirements.units.total,
+        named_requirement_units_articulated: evaluated.named_requirements.units.covered,
+        pct_named_requirement_units: evaluated.named_requirements.units.total
+          ? +((evaluated.named_requirements.units.covered
+            / evaluated.named_requirements.units.total) * 100).toFixed(1)
+          : null,
         // The GE-included variant — our extension for GE-heavy majors, where
         // lower-division general education counts as articulable everywhere
         // (certification clears it) and upper-division GE counts against.
@@ -1200,6 +1263,29 @@ async function degreeRequirementCoverageData(db, {
         pct_named_requirement_courses_with_ge: evaluated.named_requirements.courses_with_ge.total
           ? +((evaluated.named_requirements.courses_with_ge.covered
             / evaluated.named_requirements.courses_with_ge.total) * 100).toFixed(1)
+          : null,
+        // Lower-division credit, required population only. The elective-
+        // inclusive `units_lower` is a transfer-unit ceiling and belongs to the
+        // budget measures; dividing it would let a campus with elective room
+        // report more articulated lower-division credit than the degree names.
+        // Virginia emits these same four fields from its own builder with free
+        // electives likewise excluded, which is what puts the three states'
+        // lower-division readings on one definition.
+        named_requirement_units_lower_total:
+          evaluated.named_requirements.units_lower_required.total,
+        named_requirement_units_lower_articulated:
+          evaluated.named_requirements.units_lower_required.covered,
+        named_requirement_units_lower_ge_total:
+          evaluated.named_requirements.units_lower_with_ge_required.total,
+        named_requirement_units_lower_ge_articulated:
+          evaluated.named_requirements.units_lower_with_ge_required.covered,
+        named_requirement_units_with_ge_total:
+          evaluated.named_requirements.units_with_ge.total,
+        named_requirement_units_with_ge_articulated:
+          evaluated.named_requirements.units_with_ge.covered,
+        pct_named_requirement_units_with_ge: evaluated.named_requirements.units_with_ge.total
+          ? +((evaluated.named_requirements.units_with_ge.covered
+            / evaluated.named_requirements.units_with_ge.total) * 100).toFixed(1)
           : null,
         // Slot coverage remains available as a secondary description of the
         // requirement structure. The legacy names are kept for compatibility.
@@ -1685,9 +1771,9 @@ async function creditLossData(db, auditDb, {
         receivers_satisfiable: solved.receiversSatisfiable,
         receivers_blocked: solved.receiversBlocked,
         min_cc_courses: solved.courses.length,
-        min_cc_units: +solved.courses
-          .reduce((sum, id) => sum + (units.get(id) || 0), 0)
-          .toFixed(1),
+        min_cc_units: solved.missingUnitIds.length ? null : +solved.courses
+          .reduce((sum, id) => sum + units.get(id), 0).toFixed(1),
+        ...pathwaySourceEvidence(solved),
         many_to_one: manyToOneCount(doc, { isExcluded }),
         campus_calendar: calendar,
         semester_equiv_required: calendar === 'quarter'
@@ -1760,6 +1846,7 @@ async function choiceCostData(db, auditDb, {
         has_agreement: true,
         additional_courses: additional.length,
         blocked_receivers: solved.receiversBlocked,
+        ...pathwaySourceEvidence(solved),
       });
     }
     rows.push({
@@ -1886,6 +1973,7 @@ async function complexityData(db, auditDb, {
         complexity,
         max_delay: maxDelay,
         per_course: perCourse,
+        ...pathwaySourceEvidence(solved),
       });
     }
   }
@@ -1930,13 +2018,12 @@ async function timeToDegreeData(db, auditDb, {
       const needed = new Set(solved.courses);
       for (const deg of ccDegrees) {
         const degCourses = (deg.course_ids || []).map((id) => String(id).replace(/^cc:/, ''));
-        const degUnits = deg.units ?? +degCourses
-          .reduce((s, id) => s + (units.get(id) || 0), 0).toFixed(1);
-        const transferable = +degCourses
-          .filter((id) => needed.has(id))
-          .reduce((s, id) => s + (units.get(id) || 0), 0)
-          .toFixed(1);
-        const lost = Math.max(0, +(degUnits - transferable).toFixed(1));
+        const sumKnownUnits = (ids) => ids.some((id) => !Number.isFinite(units.get(id)))
+          ? null : +ids.reduce((sum, id) => sum + units.get(id), 0).toFixed(1);
+        const degUnits = deg.units ?? sumKnownUnits(degCourses);
+        const transferable = sumKnownUnits(degCourses.filter((id) => needed.has(id)));
+        const lost = Number.isFinite(degUnits) && Number.isFinite(transferable)
+          ? Math.max(0, +(degUnits - transferable).toFixed(1)) : null;
         const perCredit = refs.tuitionByUniversity.get(Number(doc[sys.idField])) ?? null;
         rows.push({
           system: sys.key,
@@ -1948,9 +2035,12 @@ async function timeToDegreeData(db, auditDb, {
           assoc_degree: deg.name,
           assoc_degree_units: degUnits,
           transferable_units: transferable,
-          transfer_credit_rate_pct: degUnits ? +((transferable / degUnits) * 100).toFixed(1) : null,
+          transfer_credit_rate_pct: degUnits && Number.isFinite(transferable)
+            ? +((transferable / degUnits) * 100).toFixed(1) : null,
           lost_units: lost,
-          est_lost_cost_usd: perCredit != null ? +(lost * perCredit).toFixed(0) : null,
+          est_lost_cost_usd: perCredit != null && Number.isFinite(lost)
+            ? +(lost * perCredit).toFixed(0) : null,
+          ...pathwaySourceEvidence(solved),
         });
       }
     }

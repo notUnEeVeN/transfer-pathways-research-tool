@@ -159,5 +159,17 @@ describe('degree coverage major isolation', () => {
       schoolId: 79, communityCollegeId: 101, majorSlug: 'cs',
     });
     expect(result.completion.covered).toBe(1);
+    expect(result.requirement_groups[0].sections[0].receivers[0]).toMatchObject({
+      articulation_status: 'articulated', assist_requirement: 'Mathematics Requirement',
+    });
+  });
+
+  it('uses the same catalog-unit overrides in the evaluated and template views', async () => {
+    const doc = degree({ slug: 'bio', program: 'Molecular and Cell Biology, B.A.', parentId: 20 });
+    doc.course_unit_overrides = { 20: 4 };
+    await db.collection('curated_requirements').insertOne(doc);
+    await db.collection('assist_courses').insertOne({ side: 'receiving', parent_id: 20, min_units: 3, max_units: 3 });
+    const result = await evaluateDegreeAtCollege(db, { schoolId: 79, communityCollegeId: 101, majorSlug: 'bio' });
+    expect(result.university_courses_by_id[20]).toMatchObject({ min_units: 4, max_units: 4, units_overridden: true });
   });
 });

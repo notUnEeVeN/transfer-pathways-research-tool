@@ -3,6 +3,8 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Spinner, Stack } from '../components/ui'
 import { useTransferCreditRate } from '../shared/query/hooks/useData'
 import { VA_CREDIT_RATE_ROWS } from './vaCreditRateRows'
+import { vaCreditRateData, vaFigureView } from './vaFigureData'
+import VaGuideSourceNotice from './VaGuideSourceNotice'
 import { AS_DEGREE_SLOTS, slotLabel } from '../asdegrees/asDegreeSlots'
 import { majorShortLabelFor } from '../shared/majors/majorLabel'
 import { createCoverageColorScale } from './CoverageHeatmap'
@@ -183,7 +185,7 @@ function scopeLabel(scope) {
 
 function scopeDescription(scope, maSource = 'auto') {
   if (scope === MA_BACHELOR_SIDE_SCOPE) {
-    return 'Share of the bachelor’s degree the associate degree completes: resident requirement credits the transfer pathway removes, over the resident degree total. Ours, not a measure the paper published — the same statistic California shows.'
+    return 'Approximate bachelor-completion model combining the final articulation table with older resident and pathway courses. Unmatched courses use assumed credits and associate-degree matches may be inferred; this is not a direct final-paper reproduction.'
   }
   if (scope === MA_AS_SIDE_SCOPE) {
     const sources = {
@@ -371,7 +373,7 @@ export function methodDetail(cell) {
 }
 
 export function methodWarningCount(rows) {
-  const warningStatuses = new Set(['warning', 'excluded', 'unavailable', 'unsupported'])
+  const warningStatuses = new Set(['warning', 'estimated', 'excluded', 'unavailable', 'unsupported'])
   return rows.filter((row) => row.method_warning
     || warningStatuses.has(String(row.method_status || '').toLowerCase())).length
 }
@@ -401,6 +403,14 @@ function paperEquivalentApplicationNote(cell) {
 function cellTitle(row, col, cell, scope, maSource = 'auto') {
   if (!cell) return `${row.name}\n${col.school}\nNo agreement to verify against`
   const rate = rateForScope(cell, scope, maSource)
+  if (cell.major_slug === 'va-cs') {
+    return [row.name, col.school,
+      `${scope === MA_AS_SIDE_SCOPE ? 'Guide credit used' : scopeLabel(scope)}: ${pct(rate)}`,
+      `${units(cell.transferred_units)} of ${units(cell.as_total_units)} semester credits in the guide’s pre-transfer plan apply`,
+      `${units(cell.va_wasted_units)} credits meet no bachelor requirement`,
+      methodDetail(cell),
+    ].filter(Boolean).join('\n')
+  }
   if (!Number.isFinite(rate)) {
     return [
       row.name,
@@ -419,7 +429,7 @@ function cellTitle(row, col, cell, scope, maSource = 'auto') {
         ? `Final paper ${pct(cell.published_pdf_as_transfer_pct)} · our recalculation ${pct(cell.archive_gray_detail_as_transfer_pct)} (${units(cell.archive_gray_detail_numerator_units)} applicable of ${units(cell.archive_gray_detail_denominator_units)} associate-degree units; ${units(cell.archive_gray_detail_blue_units_excluded)} unrestricted-elective-only units excluded; no cap)`
         : `${units(cell.paper_equivalent_transferred_units)} of ${units(cell.as_total_units)} ${unitSystemName(cell.as_unit_system)} of the associate degree replace named or GE/breadth requirements`,
       hasPublished ? null : paperEquivalentApplicationNote(cell),
-      methodDetail(cell),
+      maSource === 'auto' ? methodDetail(cell) : null,
     ].filter(Boolean).join('\n')
   }
   return [
@@ -472,7 +482,8 @@ export function transferCreditViewForPane(pane = {}, major = null) {
 export function transferCreditComparisonCells(data, pane, major) {
   const view = transferCreditViewForPane(pane, major)
   const source = view.paperCorpus ? view.effectiveSource : 'auto'
-  const model = buildRateMatrix(data?.rows || [], (row) => rateForScope(row, view.scope, source))
+  const dataset = pane.major === 'va-cs' ? vaCreditRateData(vaFigureView(pane)) : data
+  const model = buildRateMatrix(dataset?.rows || [], (row) => rateForScope(row, view.scope, source))
   return model.rows.flatMap((row) => model.columns.map((column) => ({
     rowKey: row.key,
     rowLabel: row.name,
@@ -485,6 +496,20 @@ export function transferCreditComparisonCells(data, pane, major) {
 export function transferCreditComparisonContract(pane, major) {
   const view = transferCreditViewForPane(pane, major)
   const asSide = view.scope === MA_AS_SIDE_SCOPE
+  if (pane.major === 'va-cs') {
+    const vaView = vaFigureView(pane)
+    return {
+      measure: asSide ? 'transfer-guide-credit-utilization' : 'transfer-guide-unit-supply',
+      unit: 'percentage points', grain: 'community college × university campus',
+      keys: { rows: 'community college', columns: 'university campus' },
+      semantics: { numerator: 'guide pre-transfer credits applying to bachelor requirements',
+        denominator: asSide || view.scope === 'lower-division'
+          ? 'guide pre-transfer credits' : 'guide stated degree credits',
+        weighting: 'each college × guide pathway equally' },
+      context: { source: 'committed Transfer Virginia guide and course-supply snapshot',
+        supply: vaView.basis, cohort: vaView.allColleges ? 'all VCCS colleges' : 'colleges with a CS associate degree' },
+    }
+  }
   const sourceLabels = {
     pdf: 'final MA PDF transcription',
     'archive-gray-detail': 'our direct recalculation from the authors’ course-plan data',
@@ -509,6 +534,7 @@ export function transferCreditComparisonContract(pane, major) {
         ? 'lower-division bachelor requirement units' : 'all bachelor requirement units',
       ge: true,
       weighting: 'each modeled college × campus pathway equally',
+      ...(view.paperCorpus ? { evidence: 'approximate model combining final articulation table and older resident/pathway courses; assumed credits and inferred AS course matches' } : {}),
     },
     context: {
       source: sourceLabels[view.source] || view.source,
@@ -594,6 +620,7 @@ export default function TransferCreditRate({
   defaultMaEquivalent = true, defaultMaSource = 'pdf', defaultMaGeOn = true,
   defaultMaLens = MA_AS_SIDE_SCOPE,
   defaultVerifiedOnly = true, comparisonColorScale = null,
+  defaultVaBasis = 'catalog', defaultVaAllColleges = false,
 }) {
   const degreeModes = useMemo(() => degreeModesForMajor({
     majorSlug, majorLabel, degreeAnalysisSlots, degreeSlotLabels,
@@ -632,6 +659,8 @@ export default function TransferCreditRate({
   // direct gray-row source has one fixed rule and no longer exposes a GE knob.
   const [maGeOn] = useState(defaultMaGeOn)
   const [verifiedOnly, setVerifiedOnly] = useState(defaultVerifiedOnly)
+  const [vaBasis, setVaBasis] = useState(defaultVaBasis)
+  const [vaAllColleges, setVaAllColleges] = useState(defaultVaAllColleges)
   useEffect(() => {
     if (!degreeModes.some((mode) => mode.value === degreeType)) {
       setDegreeType(defaultDegreeMode(degreeModes))
@@ -642,10 +671,14 @@ export default function TransferCreditRate({
   // when the toggle releases.
   const activeScope = maEquivalent ? (paperCorpus ? maLens : MA_AS_SIDE_SCOPE) : scope
   useEffect(() => {
-    onMeasureChange?.(maEquivalent
+    onMeasureChange?.(majorSlug === 'va-cs' ? {
+      expression: `guide credit coverage = pre-transfer guide credits applying to bachelor requirements ÷ ${activeScope === 'full-degree' ? 'the stated degree total' : 'the guide’s pre-transfer credit total'}`,
+      grain: 'One value per VCCS college × university transfer guide.',
+      watchFor: 'The guide’s pre-transfer plan supplies the denominator. This is not a separately solved associate-degree curriculum. Explicit no-credit outcomes and missing course supply reduce applied credit; unresolved guide conditions remain labeled estimates.',
+    } : maEquivalent
       ? TRANSFER_CREDIT_RATE_MEASURES[activeScope] || TRANSFER_CREDIT_RATE_MEASURES[MA_AS_SIDE_SCOPE]
       : TRANSFER_CREDIT_RATE_MEASURES.default)
-  }, [maEquivalent, activeScope, onMeasureChange])
+  }, [majorSlug, maEquivalent, activeScope, onMeasureChange])
   // What a pinned view saves is the reader's own selection: `maToggle`, not
   // `maEquivalent`, because the latter is forced on for a paper corpus and
   // reopening on a forced value would credit the reader with a choice the
@@ -660,17 +693,17 @@ export default function TransferCreditRate({
       defaultMaSource: maSource,
       defaultMaGeOn: maGeOn,
       defaultMaLens: maLens,
+      defaultVaBasis: vaBasis,
+      defaultVaAllColleges: vaAllColleges,
     })
-  }, [degreeType, scope, verifiedOnly, maToggle, maSource, maGeOn, maLens, onViewChange])
+  }, [degreeType, scope, verifiedOnly, maToggle, maSource, maGeOn, maLens, vaBasis, vaAllColleges, onViewChange])
   const effectiveMaSource = normalizeMaSource(maSource)
   // Catalogue membership is what a college publishes; scheduled is what it is
   // currently running. The guides are identical for every college, so supply is
   // the only thing that separates two rows.
-  const [vaBasis, setVaBasis] = useState('catalog')
   // The seven VCCS colleges with no computer-science associate degree can still
   // teach the courses a guide names; off by default because the pathway does
   // not formally exist there.
-  const [vaAllColleges, setVaAllColleges] = useState(false)
 
   // Virginia is measured from published transfer guides rather than from the
   // corpus this endpoint evaluates: a college that cannot teach a course its
@@ -679,7 +712,6 @@ export default function TransferCreditRate({
   // exactly like the endpoint's, so everything below is identical for all three
   // states and the scales stay comparable.
   const vaRateRows = majorSlug === 'va-cs' ? VA_CREDIT_RATE_ROWS : null
-  const vaRateKey = `${vaBasis}${vaAllColleges ? '_all' : ''}`
   const query = useTransferCreditRate(degreeType, {
     majorSlug,
     verifiedOnly: paperCorpus ? false : verifiedOnly,
@@ -687,7 +719,7 @@ export default function TransferCreditRate({
     // would change the call every other corpus makes.
     ...(vaRateRows ? { enabled: false } : {}),
   })
-  const rows = vaRateRows ? vaRateRows[vaRateKey].rows : (query.data?.rows || [])
+  const rows = vaRateRows ? vaCreditRateData({ basis: vaBasis, allColleges: vaAllColleges }).rows : (query.data?.rows || [])
   const localModel = useMemo(
     () => buildRateMatrix(rows, (row) => rateForScope(row, activeScope, paperCorpus ? effectiveMaSource : 'auto')),
     [rows, activeScope, paperCorpus, effectiveMaSource]
@@ -814,13 +846,13 @@ export default function TransferCreditRate({
           </div>
         </div>
       )}
-      {!paperCorpus && <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />}
-      <Button variant='secondary' leadingIcon={ArrowPathIcon}
+      {!paperCorpus && !vaRateRows && <EvidenceCohortControl verifiedOnly={verifiedOnly} onChange={setVerifiedOnly} />}
+      {!vaRateRows && <Button variant='secondary' leadingIcon={ArrowPathIcon}
         loading={query.isFetching && !query.isLoading} onClick={() => query.refetch()}>
         Refresh
-      </Button>
+      </Button>}
       <div className='ml-auto flex h-9 items-center text-caption text-ink-subtle'>
-        {query.isFetching ? 'Updating' : 'Live endpoint'}
+        {vaRateRows ? `Committed rows · ${String(vaRateRows.built_at).slice(0, 10)}` : query.isFetching ? 'Updating' : 'Live endpoint'}
       </div>
     </div>
   )
@@ -844,7 +876,9 @@ export default function TransferCreditRate({
         <div className='surface-card px-4 py-3'>
           <p className='text-label'>
             <EvidenceSummary verifiedOnly={verifiedOnly}
-              sourceLabel={paperCorpus
+              sourceLabel={vaRateRows
+                ? `Transfer-guide plans · ${vaAllColleges ? 'all VCCS colleges' : 'colleges with a CS degree'}`
+                : paperCorpus
                 ? (effectiveMaSource === 'pdf'
                   ? 'Final PDF Figure 3 (reported pairs only)'
                   : 'Our recalculation from the authors’ course-plan data')
@@ -854,7 +888,8 @@ export default function TransferCreditRate({
                 : 'modeled'}
               collegeCount={model.rows.length} cellCount={model.valueCount} />
           </p>
-          {!paperCorpus && <TransferEvidenceCaveats rows={rows} majorSlug={majorSlug} />}
+          {vaRateRows && <VaGuideSourceNotice rows={rows} />}
+          {!paperCorpus && !vaRateRows && <TransferEvidenceCaveats rows={rows} majorSlug={majorSlug} />}
         </div>
         <ColorDomainLegend scale={model.colorScale} formatValue={pct} />
         <RateTable model={model} scope={activeScope} maSource={paperCorpus ? effectiveMaSource : 'auto'} />
@@ -868,4 +903,5 @@ export default function TransferCreditRate({
 TransferCreditRate.viewProps = [
   'defaultDegreeType', 'defaultScope', 'defaultVerifiedOnly',
   'defaultMaEquivalent', 'defaultMaSource', 'defaultMaGeOn', 'defaultMaLens',
+  'defaultVaBasis', 'defaultVaAllColleges',
 ]

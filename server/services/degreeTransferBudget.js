@@ -90,7 +90,8 @@ function groupUnits(group) {
 /** The campus rule, preferring what the document states over what the calendar implies. */
 function transferCap(degree) {
   const stored = degree.transfer_unit_cap;
-  const units = typeof stored === 'object' && stored !== null ? Number(stored.units) : Number(stored);
+  const value = typeof stored === 'object' && stored !== null ? stored.units : stored;
+  const units = value == null || value === '' ? NaN : Number(value);
   if (Number.isFinite(units)) return units;
   let system = String(degree.unit_system || '').toLowerCase();
   if (system !== 'quarter' && system !== 'semester') {
@@ -107,7 +108,8 @@ function transferCap(degree) {
 
 function upperDivisionMinimum(degree) {
   const stored = degree.upper_division_minimum;
-  const units = typeof stored === 'object' && stored !== null ? Number(stored.units) : Number(stored);
+  const value = typeof stored === 'object' && stored !== null ? stored.units : stored;
+  const units = value == null || value === '' ? NaN : Number(value);
   return Number.isFinite(units) ? units : null;
 }
 

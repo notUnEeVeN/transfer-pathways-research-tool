@@ -3,6 +3,8 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Alert, Button, EmptyState, Select, Spinner, Stack } from '../components/ui'
 import { useCoverage } from '../shared/query/hooks/useData'
 import { VA_COVERAGE_ROWS } from './vaCoverageRows'
+import { vaCoverageData, vaFigureView } from './vaFigureData'
+import VaGuideSourceNotice from './VaGuideSourceNotice'
 import { COVERAGE_HEATMAP_MEASURES } from './measures'
 import {
   PAPER_RED_LOW_TO_HIGH_GRADIENT,
@@ -40,7 +42,24 @@ const REQ_MODES = [
 // division.
 export const MA_MODE = 'ma-courses'
 export const MA_GE_MODE = 'ma-courses-ge'
-const MA_MODES = new Set([MA_MODE, MA_GE_MODE])
+// The same two populations weighted by credit instead of counted binary.
+// Figure 1's published statistic is a course count, but Virginia's guides and
+// California's GE-excluded unit lens are both written in credit — so this is
+// the weighting that lets the three states' Figure 1 be read on one basis.
+// It is a weighting, not a different requirement basis: the population is
+// identical, which is why it lives beside the GE control rather than in the
+// basis dropdown.
+export const MA_UNITS_MODE = 'ma-units'
+export const MA_UNITS_GE_MODE = 'ma-units-ge'
+const MA_MODES = new Set([MA_MODE, MA_GE_MODE, MA_UNITS_MODE, MA_UNITS_GE_MODE])
+const MA_UNIT_MODES = new Set([MA_UNITS_MODE, MA_UNITS_GE_MODE])
+const MA_WEIGHTS = [
+  { value: 'courses', label: 'Courses' },
+  { value: 'units', label: 'Units' },
+]
+const maLensFor = (weighted, includeGe) => (weighted
+  ? (includeGe ? MA_UNITS_GE_MODE : MA_UNITS_MODE)
+  : (includeGe ? MA_GE_MODE : MA_MODE))
 const MA_FIG1_SOURCES = [
   { value: 'pdf', label: 'Final paper' },
   { value: 'archive', label: 'Our recalculation' },
@@ -81,14 +100,45 @@ export const VA_MEASURES = [
   },
   {
     value: 'paper',
-    label: 'MA paper',
-    hint: "The paper's convention: required courses counted binary, general education excluded",
+    label: 'Estimated courses',
+    hint: 'Estimated course counts from guide credits, general education excluded',
     reqMode: 'ma-courses',
     ceiling: 'va_ceiling_courses_pct',
   },
 ]
 
-const requirementsParam = (mode) => (MA_MODES.has(mode) || mode === 'degree-no-ge' ? 'degree' : mode)
+/**
+ * The lower-division lens: the bachelor's lower-division requirements only,
+ * weighted by credit. Upper division comes off both sides, so a community
+ * college is measured on work it could plausibly teach; lower-division work it
+ * cannot reach stays in the denominator uncovered; free electives are excluded
+ * in every state; general education is either excluded or included.
+ *
+ * It is one measure in all three states and reads one field set — the endpoint
+ * fills it for California and Massachusetts, the committed guide rows for
+ * Virginia — so it sits outside both the Massachusetts lens controls and the
+ * Virginia measure select, and outranks them while it is selected.
+ */
+export const LD_MODE = 'ld-units'
+export const LD_GE_MODE = 'ld-units-ge'
+const LD_MODES = new Set([LD_MODE, LD_GE_MODE])
+const DIVISIONS = [
+  { value: 'whole', label: 'Whole degree', hint: 'Every level of the degree, as the figure has always read' },
+  { value: 'lower', label: 'Lower division', hint: 'Lower-division requirements only, weighted by credit' },
+]
+const LD_GE_CHOICES = [
+  { value: 'excluded', label: 'Excluded', hint: 'General education off both sides of the ratio' },
+  { value: 'included', label: 'Included', hint: 'Lower-division general education on both sides of the ratio' },
+]
+export const ldLensFor = (includeGe) => (includeGe ? LD_GE_MODE : LD_MODE)
+// Catalogue supply only: California and Massachusetts are measured on what a
+// college publishes, so Virginia is too, whatever its supply toggle says.
+const vaViewFor = (pane) => (pane.knobs?.division === 'lower'
+  ? { ...vaFigureView(pane), basis: 'catalog' } : vaFigureView(pane))
+
+const requirementsParam = (mode) => (
+  MA_MODES.has(mode) || LD_MODES.has(mode) || mode === 'degree-no-ge' ? 'degree' : mode
+)
 
 /**
  * The coverage request this figure makes, in one place. A delta adapter
@@ -179,6 +229,16 @@ export function rowCoverageValue(row, reqMode, maSource = 'archive') {
   }
   if (reqMode === MA_MODE) return numberOrNull(row.pct_named_requirement_courses)
   if (reqMode === MA_GE_MODE) return numberOrNull(row.pct_named_requirement_courses_with_ge)
+  if (reqMode === MA_UNITS_MODE) return numberOrNull(row.pct_named_requirement_units)
+  if (reqMode === MA_UNITS_GE_MODE) {
+    return numberOrNull(row.pct_named_requirement_units_with_ge)
+  }
+  if (LD_MODES.has(reqMode)) {
+    const suffix = reqMode === LD_GE_MODE ? '_ge' : ''
+    const total = numberOrNull(row[`named_requirement_units_lower${suffix}_total`])
+    const covered = numberOrNull(row[`named_requirement_units_lower${suffix}_articulated`])
+    return total > 0 && covered != null ? (covered / total) * 100 : null
+  }
   return reqMode === 'degree'
     ? numberOrNull(row.pct_degree_units ?? row.pct_articulated)
     : numberOrNull(row.pct_articulated)
@@ -194,6 +254,23 @@ export function cellCoverageValue(cell, reqMode, maSource = 'archive') {
   }
   if (reqMode === MA_GE_MODE) {
     return cell.maGeTotal > 0 ? (cell.maGeArticulated / cell.maGeTotal) * 100 : null
+  }
+  // Deliberately independent of the unit-budget fields: this is the
+  // requirement rollup, which a corpus without a transfer cap or GE netting
+  // still has. Gating it on the budget would blank the reading exactly where
+  // it is wanted.
+  if (reqMode === MA_UNITS_MODE) {
+    return cell.maUnitsTotal > 0 ? (cell.maUnitsArticulated / cell.maUnitsTotal) * 100 : null
+  }
+  if (reqMode === MA_UNITS_GE_MODE) {
+    return cell.maUnitsGeTotal > 0
+      ? (cell.maUnitsGeArticulated / cell.maUnitsGeTotal) * 100 : null
+  }
+  if (reqMode === LD_MODE) {
+    return cell.ldTotal > 0 ? (cell.ldArticulated / cell.ldTotal) * 100 : null
+  }
+  if (reqMode === LD_GE_MODE) {
+    return cell.ldGeTotal > 0 ? (cell.ldGeArticulated / cell.ldGeTotal) * 100 : null
   }
   if (reqMode === 'degree-no-ge') {
     // The requirement rollup, not the unit budget — the same population the
@@ -256,6 +333,15 @@ export function buildHeatmap(rows, reqMode, { maSource = 'archive' } = {}) {
         maSlotsArticulated: 0,
         maGeTotal: 0,
         maGeArticulated: 0,
+        maUnitsTotal: 0,
+        maUnitsArticulated: 0,
+        maUnitsGeTotal: 0,
+        maUnitsGeArticulated: 0,
+        ldTotal: 0,
+        ldArticulated: 0,
+        ldGeTotal: 0,
+        ldGeArticulated: 0,
+        sourceWarnings: [],
       }
       cell.sum += value
       cell.n += 1
@@ -276,6 +362,16 @@ export function buildHeatmap(rows, reqMode, { maSource = 'archive' } = {}) {
       cell.maSlotsArticulated += numberOrNull(r.named_requirement_courses_articulated) || 0
       cell.maGeTotal += numberOrNull(r.named_requirement_courses_with_ge_total) || 0
       cell.maGeArticulated += numberOrNull(r.named_requirement_courses_with_ge_articulated) || 0
+      cell.maUnitsTotal += numberOrNull(r.named_requirement_units_total) || 0
+      cell.maUnitsArticulated += numberOrNull(r.named_requirement_units_articulated) || 0
+      cell.maUnitsGeTotal += numberOrNull(r.named_requirement_units_with_ge_total) || 0
+      cell.maUnitsGeArticulated
+        += numberOrNull(r.named_requirement_units_with_ge_articulated) || 0
+      cell.ldTotal += numberOrNull(r.named_requirement_units_lower_total) || 0
+      cell.ldArticulated += numberOrNull(r.named_requirement_units_lower_articulated) || 0
+      cell.ldGeTotal += numberOrNull(r.named_requirement_units_lower_ge_total) || 0
+      cell.ldGeArticulated += numberOrNull(r.named_requirement_units_lower_ge_articulated) || 0
+      cell.sourceWarnings = [...new Set([...cell.sourceWarnings, ...(r.va_source_warnings || [])])]
       if (r.degree_unit_system) cell.degreeUnitSystem = r.degree_unit_system
       cellMap.set(cellKey, cell)
     }
@@ -323,6 +419,16 @@ export function buildHeatmap(rows, reqMode, { maSource = 'archive' } = {}) {
 
 /** Resolve a saved comparison pane exactly as the mounted figure resolves it. */
 export function coverageViewForPane(pane = {}, major = null) {
+  const lowerDivision = pane.knobs?.division === 'lower'
+  const ldMode = ldLensFor(Boolean(pane.knobs?.['ld-include-ge']))
+  if (pane.major === 'va-cs') {
+    const vaView = vaFigureView(pane)
+    const reqMode = lowerDivision ? ldMode
+      : vaView.measure === 'units_ge' ? MA_GE_MODE : MA_MODE
+    return { rowMode: 'college', reqMode, maSource: 'archive', ...coverageQueryArgs({
+      majorSlug: pane.major, rowMode: 'college', reqMode,
+    }) }
+  }
   const knobs = pane.knobs || {}
   const isPaperCorpus = Boolean(major?.state && major?.capabilities?.paperBaselines)
   // The final PDF publishes the 15-college matrix only. District/county
@@ -333,19 +439,23 @@ export function coverageViewForPane(pane = {}, major = null) {
     : 'archive'
   const unitLensAvailable = major?.capabilities?.unitCoverage !== false
   const maEquivalent = unitLensAvailable ? knobs['ma-equivalent'] !== false : true
-  const includeGe = Boolean(knobs['ma-include-ge'])
+  // Exhibits saved before the GE reading was withdrawn must not reopen it.
+  const includeGe = unitLensAvailable && Boolean(knobs['ma-include-ge'])
+  const maWeighted = knobs['ma-weight'] === 'units'
   let reqMode = knobs.basis || 'degree'
   const supportsPaper = major?.capabilities?.transferMinimums
     ?? String(pane.major || '').trim().toLowerCase() === 'cs'
   if (!supportsPaper && reqMode === 'paper') reqMode = 'degree'
-  if (maEquivalent) reqMode = includeGe ? MA_GE_MODE : MA_MODE
+  if (maEquivalent) reqMode = maLensFor(maWeighted, includeGe)
+  if (lowerDivision) reqMode = ldMode
   return { rowMode, reqMode, maSource, ...coverageQueryArgs({ majorSlug: pane.major, rowMode, reqMode }) }
 }
 
 /** Cells consumed by Compare, taken from the same model the table renders. */
 export function coverageComparisonCells(data, pane, major) {
   const { reqMode, maSource } = coverageViewForPane(pane, major)
-  const model = buildHeatmap(data?.rows || [], reqMode, { maSource })
+  const source = pane.major === 'va-cs' ? vaCoverageData(vaViewFor(pane)) : data
+  const model = buildHeatmap(source?.rows || [], reqMode, { maSource })
   return model.rows.flatMap((row) => model.columns.map((column, index) => ({
     rowKey: row.key,
     rowLabel: row.name,
@@ -357,8 +467,50 @@ export function coverageComparisonCells(data, pane, major) {
 
 export function coverageComparisonContract(pane, major) {
   const view = coverageViewForPane(pane, major)
-  const maCourseLens = MA_MODES.has(view.reqMode)
-  const includeGe = view.reqMode === MA_GE_MODE
+  if (LD_MODES.has(view.reqMode)) {
+    return {
+      measure: 'lower-division-requirement-credit-coverage',
+      unit: 'percentage points',
+      grain: `${view.rowMode} × university program`,
+      keys: { rows: view.rowMode, columns: 'university program' },
+      semantics: {
+        denominator: 'credits of the bachelor’s lower-division requirements, free electives excluded',
+        scope: 'lower division',
+        ge: view.reqMode === LD_GE_MODE,
+        weighting: 'each institution × program cell equally',
+      },
+      context: {
+        source: pane.major === 'va-cs'
+          ? 'committed Transfer Virginia guide and course-supply snapshot'
+          : 'curated bachelor requirements + published equivalencies',
+        cohort: major?.label || pane.major,
+        ...(pane.major === 'va-cs' ? { supply: 'catalog' } : {}),
+        display_scale: 'adaptive per pane in gallery; fixed 0–100 and shared across panes in Comparison',
+      },
+    }
+  }
+  if (pane.major === 'va-cs') {
+    const vaView = vaFigureView(pane)
+    const estimated = vaView.measure === 'paper'
+    const ge = vaView.measure === 'units_ge'
+    return {
+      measure: estimated ? 'estimated-required-course-supply' : 'transfer-guide-unit-supply',
+      unit: 'percentage points', grain: 'college × university program',
+      keys: { rows: 'college', columns: 'university program' },
+      semantics: {
+        numerator: estimated ? 'estimated supplied non-GE courses' : 'supplied guide credits',
+        denominator: estimated ? 'estimated whole-degree non-GE courses' : 'guide stated degree credits',
+        ge, weighting: 'each institution × program cell equally',
+      },
+      context: { source: 'committed Transfer Virginia guide and course-supply snapshot',
+        supply: vaView.basis, cohort: vaView.allColleges ? 'all VCCS colleges' : 'colleges with a CS associate degree' },
+    }
+  }
+  const maLens = MA_MODES.has(view.reqMode)
+  const maWeighted = MA_UNIT_MODES.has(view.reqMode)
+  const maCourseLens = maLens && !maWeighted
+  const namedUnits = view.reqMode === 'degree-no-ge'
+  const includeGe = view.reqMode === MA_GE_MODE || view.reqMode === MA_UNITS_GE_MODE
   const sources = {
     degree: 'curated bachelor requirements + published equivalencies',
     'degree-no-ge': 'curated bachelor requirements + published equivalencies, general education excluded',
@@ -366,11 +518,19 @@ export function coverageComparisonContract(pane, major) {
     paper: 'hand-curated transfer minimums',
     [MA_MODE]: 'curated whole-degree course requirements + published equivalencies',
     [MA_GE_MODE]: 'curated whole-degree course requirements + GE certification + published equivalencies',
+    [MA_UNITS_MODE]: 'curated whole-degree course requirements, weighted by credit, + published equivalencies',
+    [MA_UNITS_GE_MODE]: 'curated whole-degree course requirements, weighted by credit, + GE certification + published equivalencies',
   }
   return {
+    // Counting the population and weighting it are different measures even
+    // though the population is the same. Naming them alike would let Compare
+    // difference one against the other and present the arithmetic as a
+    // finding.
     measure: maCourseLens
       ? 'required-course-articulation'
-      : view.reqMode === 'degree' ? 'graduation-unit-coverage' : 'transfer-minimum-coverage',
+      : maWeighted ? 'required-course-credit-articulation'
+        : namedUnits ? 'named-requirement-unit-coverage'
+          : view.reqMode === 'degree' ? 'graduation-unit-coverage' : 'transfer-minimum-coverage',
     unit: 'percentage points',
     grain: `${view.rowMode} × university program`,
     keys: { rows: view.rowMode, columns: 'university program' },
@@ -378,6 +538,15 @@ export function coverageComparisonContract(pane, major) {
       denominator: 'named required courses, series expanded',
       scope: 'whole degree',
       ge: includeGe,
+      weighting: 'each institution × program cell equally',
+    } : maWeighted ? {
+      denominator: 'credits of named required courses, series expanded',
+      scope: 'whole degree',
+      ge: includeGe,
+      weighting: 'each institution × program cell equally',
+    } : namedUnits ? {
+      denominator: 'named bachelor requirement units, general education excluded',
+      scope: 'whole degree', ge: false,
       weighting: 'each institution × program cell equally',
     } : view.reqMode === 'degree' ? {
       denominator: 'modeled graduation units',
@@ -401,7 +570,29 @@ export function coverageComparisonContract(pane, major) {
   }
 }
 
-function cellTitle(row, col, cell, value, reqMode, maSource = 'archive') {
+function cellTitle(row, col, cell, value, reqMode, maSource = 'archive', vaMeasure = null) {
+  if (LD_MODES.has(reqMode)) {
+    const ge = reqMode === LD_GE_MODE
+    const total = ge ? cell?.ldGeTotal : cell?.ldTotal
+    const covered = ge ? cell?.ldGeArticulated : cell?.ldArticulated
+    return [row.name, col.school, col.major,
+      `Lower-division coverage: ${pct(value)}`,
+      cell ? `${unitFmt.format(covered)} of ${unitFmt.format(total)} lower-division requirement credits; GE ${ge ? 'included' : 'excluded'}` : 'No computable coverage',
+      ...(cell?.sourceWarnings || []),
+    ].filter(Boolean).join('\n')
+  }
+  if (vaMeasure) {
+    const estimated = vaMeasure.value === 'paper'
+    const ge = vaMeasure.value === 'units_ge'
+    const total = ge ? cell?.maGeTotal : cell?.maSlotsTotal
+    const covered = ge ? cell?.maGeArticulated : cell?.maSlotsArticulated
+    return [row.name, col.school, col.major,
+      `${estimated ? 'Estimated course coverage' : 'Guide credit coverage'}: ${pct(value)}`,
+      cell ? `${unitFmt.format(covered)} of ${unitFmt.format(total)} ${estimated ? 'estimated courses' : 'semester credits'} supplied; GE ${ge ? 'included' : 'excluded'}` : 'No computable coverage',
+      estimated ? 'Course counts are modeled from guide credits and rounded; they are not a count of enumerated courses.' : null,
+      ...(cell?.sourceWarnings || []),
+    ].filter(Boolean).join('\n')
+  }
   const bits = [
     row.name,
     col.school,
@@ -419,6 +610,12 @@ function cellTitle(row, col, cell, value, reqMode, maSource = 'archive') {
       bits.push(`${intFmt.format(cell.maSlotsArticulated)} of ${intFmt.format(cell.maSlotsTotal)} required courses articulate (every level, series expanded, GE excluded — the paper's binary counting)`)
     } else if (reqMode === MA_GE_MODE) {
       bits.push(`${intFmt.format(cell.maGeArticulated)} of ${intFmt.format(cell.maGeTotal)} required courses articulate (every level, GE included — lower-division GE cleared by certification)`)
+    } else if (reqMode === MA_UNITS_MODE) {
+      bits.push(`${unitFmt.format(cell.maUnitsArticulated)} of ${unitFmt.format(cell.maUnitsTotal)} required-course credits articulate (the same population, weighted by credit; every level, GE excluded)`)
+    } else if (reqMode === MA_UNITS_GE_MODE) {
+      bits.push(`${unitFmt.format(cell.maUnitsGeArticulated)} of ${unitFmt.format(cell.maUnitsGeTotal)} required-course credits articulate (every level, GE included — lower-division GE cleared by certification)`)
+    } else if (reqMode === 'degree-no-ge') {
+      bits.push(`${unitFmt.format(Math.max(0, cell.namedUnitsCovered - cell.degreeUnitsGeCovered))} of ${unitFmt.format(cell.namedUnitsTotal - cell.degreeUnitsGeTotal)} named requirement units articulate, GE excluded`)
     } else if (reqMode === 'degree') {
       if (cell.hasDegreeUnits) {
         const unitSystem = cell.degreeUnitSystem === 'quarter' ? 'quarter' : 'semester'
@@ -468,7 +665,7 @@ function SegmentedChoice({ label, value, options, onChange }) {
   )
 }
 
-function HeatmapTable({ model, rowMode, reqMode, maSource = 'archive' }) {
+function HeatmapTable({ model, rowMode, reqMode, maSource = 'archive', vaMeasure = null }) {
   return (
     <div className='surface-card overflow-auto max-h-[72vh]'>
       <table className='border-separate border-spacing-0 min-w-full'>
@@ -510,8 +707,8 @@ function HeatmapTable({ model, rowMode, reqMode, maSource = 'archive' }) {
                 return (
                   <td
                     key={col.key}
-                    title={cellTitle(row, col, cell, value, reqMode, maSource)}
-                    aria-label={cellTitle(row, col, cell, value, reqMode, maSource)}
+                    title={cellTitle(row, col, cell, value, reqMode, maSource, vaMeasure)}
+                    aria-label={cellTitle(row, col, cell, value, reqMode, maSource, vaMeasure)}
                     className='border-b border-r border-white/50 px-1 text-center text-tag font-mono tabular-nums h-8 min-w-14'
                     style={makeCellColor(value, model.colorScale)}
                   >
@@ -554,9 +751,11 @@ function Legend({ reqMode, scale }) {
   return (
     <div className='flex flex-wrap items-center gap-3 text-caption text-ink-subtle'>
       <span className='text-label'>
-        {MA_MODES.has(reqMode)
-          ? 'MA-equivalent requirement articulation'
-          : reqMode === 'degree' ? 'Potential graduation-unit coverage' : 'Coverage'}
+        {LD_MODES.has(reqMode)
+          ? 'Lower-division requirement coverage'
+          : MA_MODES.has(reqMode)
+            ? 'MA-equivalent requirement articulation'
+            : reqMode === 'degree' ? 'Potential graduation-unit coverage' : 'Coverage'}
       </span>
       <span data-color-domain={scale.comparisonShared ? 'shared' : 'local'}>{domainLabel}</span>
       <div className='w-64 max-w-full' aria-label={`Coverage color scale from ${pct(scale.min)} to ${pct(scale.max)}`}>
@@ -594,7 +793,12 @@ export default function CoverageHeatmap({
   // explicit alternate view.
   defaultMaEquivalent = true,
   defaultMaIncludeGe = false,
+  // The published Figure 1 statistic is a course count, so that is what every
+  // corpus opens on; credit weighting is the reader's to select.
+  defaultMaWeight = 'courses',
   defaultMaSource = 'pdf',
+  defaultVaBasis = 'catalog', defaultVaAllColleges = false, defaultVaMeasure = 'units_ge',
+  defaultDivision = 'whole', defaultLdIncludeGe = false,
 }) {
   const [rowModeValue, setRowModeValue] = useState(defaultRowMode)
   const [reqMode, setReqMode] = useState(defaultReqMode)
@@ -610,18 +814,34 @@ export default function CoverageHeatmap({
   const [maToggle, setMaEquivalent] = useState(defaultMaEquivalent)
   const maEquivalent = unitLensAvailable ? maToggle : true
   const [maIncludeGe, setMaIncludeGe] = useState(defaultMaIncludeGe)
+  const [maWeight, setMaWeight] = useState(
+    defaultMaWeight === 'units' ? 'units' : 'courses',
+  )
   // Virginia opens on the unit reading its guides are written in; the MA-paper
   // preset is one click away and is the reading the other two states are drawn
   // in, so a cross-state comparison should be made there.
-  const [vaMeasureValue, setVaMeasureValue] = useState('units_ge')
+  const [vaMeasureValue, setVaMeasureValue] = useState(defaultVaMeasure)
+  const [vaBasis, setVaBasis] = useState(defaultVaBasis)
+  const [vaAllColleges, setVaAllColleges] = useState(defaultVaAllColleges)
+  const [division, setDivision] = useState(defaultDivision === 'lower' ? 'lower' : 'whole')
+  const [ldIncludeGe, setLdIncludeGe] = useState(Boolean(defaultLdIncludeGe))
+  const lowerDivision = !presentation && division === 'lower'
   const vaMeasure = majorSlug === 'va-cs'
     ? (VA_MEASURES.find((m) => m.value === vaMeasureValue) || VA_MEASURES[0])
     : null
+  // A corpus without the unit-budget model is also a corpus with no general
+  // education to speak of. Massachusetts is the case: no artifact in the study
+  // classifies GE, so its "GE" block is only what Figure 1's columns did not
+  // consume — a residue that a GE-included reading then grants in full. The
+  // authors' own Figure 3 shows no pair applying more than 68 credits toward a
+  // bachelor's; the GE-included lens read 75. Withdrawn rather than qualified.
+  // See docs/ma-ge-unit-feasibility.md. The credit WEIGHTING is unaffected:
+  // it re-weights the paper's own population and is validated against it.
   const includeGeForCorpus = vaMeasure
     ? vaMeasure.reqMode === MA_GE_MODE
-    : maIncludeGe
+    : (unitLensAvailable ? maIncludeGe : false)
   const [maSource, setMaSource] = useState(() => normalizeMaFigure1Source(defaultMaSource))
-  const rowMode = isPaperCorpus
+  const rowMode = isPaperCorpus || vaMeasure
     ? ROW_MODES[0]
     : (ROW_MODES.find((m) => m.value === rowModeValue) || ROW_MODES[0])
   // Hand-curated website minimums only exist for CS. Prefer the registry's
@@ -644,18 +864,19 @@ export default function CoverageHeatmap({
   const basisMode = presentation
     ? 'degree'
     : reqModes.some((m) => m.value === reqMode) ? reqMode : 'degree'
-  const activeReqMode = !presentation && maEquivalent
-    ? (includeGeForCorpus ? MA_GE_MODE : MA_MODE)
-    : basisMode
+  const activeReqMode = lowerDivision ? ldLensFor(ldIncludeGe)
+    : vaMeasure ? vaMeasure.reqMode : !presentation && maEquivalent
+      ? maLensFor(maWeight === 'units', includeGeForCorpus)
+      : basisMode
   const activeMaSource = isPaperCorpus && activeReqMode === MA_MODE ? maSource : 'archive'
 
   // The figure's statistic changes with its controls, so the "How this is
   // measured" panel beside it must follow. The definitions live in
   // measures.js; the figure only reports which one is active.
   useEffect(() => {
-    const key = vaMeasure ? `va-${vaMeasure.value.replace('_', '-')}` : activeReqMode
+    const key = vaMeasure && !lowerDivision ? `va-${vaMeasure.value.replace('_', '-')}` : activeReqMode
     onMeasureChange?.(COVERAGE_HEATMAP_MEASURES[key] || COVERAGE_HEATMAP_MEASURES.degree)
-  }, [activeReqMode, vaMeasure, onMeasureChange])
+  }, [activeReqMode, vaMeasure, lowerDivision, onMeasureChange])
 
   // A pinned comparison must reopen on the controls the reader actually
   // selected, so the figure reports its own settings rather than the state its
@@ -668,9 +889,15 @@ export default function CoverageHeatmap({
       defaultReqMode: reqMode,
       defaultMaEquivalent: maToggle,
       defaultMaIncludeGe: includeGeForCorpus,
+      defaultMaWeight: maWeight,
       defaultMaSource: maSource,
+      defaultVaBasis: vaBasis,
+      defaultVaAllColleges: vaAllColleges,
+      defaultVaMeasure: vaMeasure?.value || vaMeasureValue,
+      defaultDivision: division,
+      defaultLdIncludeGe: ldIncludeGe,
     })
-  }, [rowMode.value, reqMode, maToggle, includeGeForCorpus, maSource, onViewChange])
+  }, [rowMode.value, reqMode, maToggle, includeGeForCorpus, maWeight, maSource, vaBasis, vaAllColleges, vaMeasure, vaMeasureValue, division, ldIncludeGe, onViewChange])
 
   // Virginia is measured from published transfer guides rather than from the
   // corpus this endpoint evaluates. The state agreed one associate degree and
@@ -685,11 +912,9 @@ export default function CoverageHeatmap({
   // the only thing that separates two rows — and on the catalogue basis almost
   // every college carries almost everything, which is why that view is nearly
   // flat and this toggle is where the variation lives.
-  const [vaBasis, setVaBasis] = useState('catalog')
   // The seven VCCS colleges without a computer-science associate degree. They
   // can still teach the courses a guide names, so the wider view is offered —
   // off by default, because the pathway does not formally exist there.
-  const [vaAllColleges, setVaAllColleges] = useState(false)
   const coverage = useCoverage(
     coverageQueryArgs({ majorSlug, rowMode: rowMode.value, reqMode: activeReqMode }),
     {
@@ -699,21 +924,15 @@ export default function CoverageHeatmap({
       enabled: !vaRows,
     }
   )
-  const vaKey = `${vaBasis}${vaAllColleges ? '_all' : ''}`
   // Two of the three Virginia measures ride the same request mode, so the one
   // that is not the mode's own field is moved onto it here rather than by
   // teaching the shared reader a Virginia-only field name.
   const rows = useMemo(() => {
     if (!vaRows) return coverage.data?.rows || []
-    const base = vaRows[vaKey].rows
-    const remap = vaMeasure?.remap
-    if (!remap) return base
-    return base.map((row) => {
-      const next = { ...row }
-      for (const [target, source] of Object.entries(remap)) next[target] = row[source]
-      return next
-    })
-  }, [vaRows, vaKey, vaMeasure, coverage.data])
+    return vaCoverageData({
+      basis: lowerDivision ? 'catalog' : vaBasis, allColleges: vaAllColleges, measure: vaMeasure.value,
+    }).rows
+  }, [vaRows, vaBasis, vaAllColleges, vaMeasure, lowerDivision, coverage.data])
   const localModel = useMemo(
     () => buildHeatmap(rows, activeReqMode, { maSource: activeMaSource }),
     [rows, activeReqMode, activeMaSource]
@@ -738,7 +957,10 @@ export default function CoverageHeatmap({
     return (
       <Stack gap='section'>
         <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-          {!isPaperCorpus && <div className='flex flex-col'>
+          {!presentation && (
+            <SegmentedChoice label='Degree scope' value={division} onChange={setDivision} options={DIVISIONS} />
+          )}
+          {!isPaperCorpus && !vaRows && <div className='flex flex-col'>
             <span className='field-label'>Rows</span>
             <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
               {ROW_MODES.map((mode) => (
@@ -755,27 +977,40 @@ export default function CoverageHeatmap({
               ))}
             </div>
           </div>}
-          {!presentation && unitLensAvailable && (
+          {!presentation && unitLensAvailable && !vaRows && (
             <div className='flex flex-col min-w-64'>
               <span className='field-label'>Requirement basis</span>
               <Select value={basisMode} onChange={setReqMode} options={reqModes} disabled={maEquivalent} />
             </div>
           )}
-          {!presentation && unitLensAvailable && (
+          {!presentation && !vaRows && (
             <div className='flex flex-col'>
-              <span className='field-label'>Massachusetts comparison</span>
+              {/* On a corpus the California unit budget cannot model, the MA lens is
+                  not a comparison state — it IS the figure — so the group says so and
+                  the equivalence toggle that would turn it off is absent. The
+                  weighting and GE controls below belong to the lens either way. */}
+              <span className='field-label'>
+                {unitLensAvailable ? 'Massachusetts comparison' : 'Figure 1 lens'}
+              </span>
               <div className='flex gap-2'>
-                <button
-                  type='button'
-                  aria-pressed={maEquivalent}
-                  onClick={() => setMaEquivalent((v) => !v)}
-                  className={`h-9 px-3 rounded-lg border text-button transition-colors ${maEquivalent
-                    ? 'border-primary bg-primary-soft text-primary'
-                    : 'border-border-strong bg-surface text-ink-muted hover:bg-surface-hover'}`}
-                >
-                  MA-paper equivalent
-                </button>
+                {unitLensAvailable && (
+                  <button
+                    type='button'
+                    aria-pressed={maEquivalent}
+                    onClick={() => setMaEquivalent((v) => !v)}
+                    className={`h-9 px-3 rounded-lg border text-button transition-colors ${maEquivalent
+                      ? 'border-primary bg-primary-soft text-primary'
+                      : 'border-border-strong bg-surface text-ink-muted hover:bg-surface-hover'}`}
+                  >
+                    MA-paper equivalent
+                  </button>
+                )}
                 {maEquivalent && (
+                  <div className='min-w-32'>
+                    <Select value={maWeight} onChange={setMaWeight} options={MA_WEIGHTS} />
+                  </div>
+                )}
+                {maEquivalent && unitLensAvailable && (
                   <button
                     type='button'
                     aria-pressed={maIncludeGe}
@@ -793,7 +1028,12 @@ export default function CoverageHeatmap({
           {isPaperCorpus && (
             <div className='flex flex-col min-w-64'>
               <span className='field-label'>Massachusetts source</span>
-              <Select value={maSource} onChange={setMaSource} options={MA_FIG1_SOURCES} />
+              {/* Only the published course reading was ever printed. Under any
+                  other lens the figure is necessarily our recalculation, so the
+                  control says so rather than naming a paper source it is not
+                  drawing. */}
+              <Select value={activeMaSource} onChange={setMaSource} options={MA_FIG1_SOURCES}
+                disabled={activeReqMode !== MA_MODE} />
             </div>
           )}
           <Button variant='secondary' leadingIcon={ArrowPathIcon} onClick={() => coverage.refetch()}>
@@ -808,7 +1048,23 @@ export default function CoverageHeatmap({
   return (
     <Stack gap='section'>
       <div className='surface-card p-4 flex flex-wrap items-end gap-3' data-export-exclude>
-          {vaRows && (
+          {!presentation && (
+            <SegmentedChoice
+              label='Degree scope'
+              value={division}
+              onChange={setDivision}
+              options={DIVISIONS}
+            />
+          )}
+          {lowerDivision && (
+            <SegmentedChoice
+              label='General education'
+              value={ldIncludeGe ? 'included' : 'excluded'}
+              onChange={(v) => setLdIncludeGe(v === 'included')}
+              options={LD_GE_CHOICES}
+            />
+          )}
+          {vaRows && !lowerDivision && (
             <SegmentedChoice
               label='Course supply'
               value={vaBasis}
@@ -819,7 +1075,7 @@ export default function CoverageHeatmap({
               ]}
             />
           )}
-          {vaRows && (
+          {vaRows && !lowerDivision && (
             <SegmentedChoice
               label='Measure'
               value={vaMeasure.value}
@@ -838,7 +1094,7 @@ export default function CoverageHeatmap({
               ]}
             />
           )}
-        {!isPaperCorpus && <div className='flex flex-col'>
+        {!isPaperCorpus && !vaRows && <div className='flex flex-col'>
           <span className='field-label'>Rows</span>
           <div className='inline-flex h-9 rounded-lg border border-border-strong bg-surface overflow-hidden'>
             {ROW_MODES.map((mode) => (
@@ -855,33 +1111,51 @@ export default function CoverageHeatmap({
             ))}
           </div>
         </div>}
-        {!presentation && unitLensAvailable && (
+        {!presentation && unitLensAvailable && !vaRows && !lowerDivision && (
           <div className='flex flex-col min-w-64'>
             <span className='field-label'>Requirement basis</span>
             <Select value={basisMode} onChange={setReqMode} options={reqModes} disabled={maEquivalent} />
           </div>
         )}
-        {isPaperCorpus && (
+        {isPaperCorpus && !lowerDivision && (
           <div className='flex flex-col min-w-64'>
             <span className='field-label'>Massachusetts source</span>
-            <Select value={maSource} onChange={setMaSource} options={MA_FIG1_SOURCES} />
+            {/* Only the published course reading was ever printed. Under any
+                other lens the figure is necessarily our recalculation, so the
+                control says so rather than naming a paper source it is not
+                drawing. */}
+            <Select value={activeMaSource} onChange={setMaSource} options={MA_FIG1_SOURCES}
+              disabled={activeReqMode !== MA_MODE} />
           </div>
         )}
-        {!presentation && unitLensAvailable && (
+        {!presentation && !vaRows && !lowerDivision && (
           <div className='flex flex-col'>
-            <span className='field-label'>Massachusetts comparison</span>
+            {/* On a corpus the California unit budget cannot model, the MA lens is
+                not a comparison state — it IS the figure — so the group says so and
+                the equivalence toggle that would turn it off is absent. The
+                weighting and GE controls below belong to the lens either way. */}
+            <span className='field-label'>
+              {unitLensAvailable ? 'Massachusetts comparison' : 'Figure 1 lens'}
+            </span>
             <div className='flex gap-2'>
-              <button
-                type='button'
-                aria-pressed={maEquivalent}
-                onClick={() => setMaEquivalent((v) => !v)}
-                className={`h-9 px-3 rounded-lg border text-button transition-colors ${maEquivalent
-                  ? 'border-primary bg-primary-soft text-primary'
-                  : 'border-border-strong bg-surface text-ink-muted hover:bg-surface-hover'}`}
-              >
-                MA-paper equivalent
-              </button>
+              {unitLensAvailable && (
+                <button
+                  type='button'
+                  aria-pressed={maEquivalent}
+                  onClick={() => setMaEquivalent((v) => !v)}
+                  className={`h-9 px-3 rounded-lg border text-button transition-colors ${maEquivalent
+                    ? 'border-primary bg-primary-soft text-primary'
+                    : 'border-border-strong bg-surface text-ink-muted hover:bg-surface-hover'}`}
+                >
+                  MA-paper equivalent
+                </button>
+              )}
               {maEquivalent && (
+                <div className='min-w-32'>
+                  <Select value={maWeight} onChange={setMaWeight} options={MA_WEIGHTS} />
+                </div>
+              )}
+              {maEquivalent && unitLensAvailable && (
                 <button
                   type='button'
                   aria-pressed={maIncludeGe}
@@ -896,14 +1170,14 @@ export default function CoverageHeatmap({
             </div>
           </div>
         )}
-        <Button
+        {!vaRows && <Button
           variant='secondary'
           leadingIcon={ArrowPathIcon}
           loading={coverage.isFetching && !coverage.isLoading}
           onClick={() => coverage.refetch()}
         >
           Refresh
-        </Button>
+        </Button>}
         <div className='ml-auto flex h-9 flex-wrap items-center gap-2 text-caption text-ink-subtle text-right'>
           {/* Virginia is drawn from a committed module, not the endpoint, so
               "Live endpoint" was actively misleading there — and a stale build
@@ -929,7 +1203,9 @@ export default function CoverageHeatmap({
       {/* The definition of the active statistic lives in the measure panel
           beside the figure (measures.js), not in figure footnotes. */}
       <div data-export-root className='flex flex-col gap-6'>
-        {(activeReqMode === 'degree' || MA_MODES.has(activeReqMode)) && templateEvidence && (
+        {vaRows && <VaGuideSourceNotice rows={rows} estimatedCourses={!lowerDivision && vaMeasure.value === 'paper'} />}
+        {(activeReqMode === 'degree' || MA_MODES.has(activeReqMode) || (LD_MODES.has(activeReqMode) && !vaRows))
+          && templateEvidence && (
           <div className='surface-card px-4 py-3 text-caption text-ink-muted'>
             Bachelor-template evidence: {templateEvidence}.
           </div>
@@ -938,9 +1214,8 @@ export default function CoverageHeatmap({
           <div className='surface-card px-4 py-3 text-caption text-ink-muted'>
             Final paper: Figure 1 as printed. The paper reports {pct(model.paperProseMean)};
             the 165 printed whole-number cells average {pct(model.overallMean)}.
-            Cape Cod → UMass Dartmouth is 45% here versus 35% in our 11/31
-            recalculation. The released data do not contain the final hidden ratio,
-            so this remains a potential paper error or an unexplained final-data revision.
+            Our recalculation uses the recovered final articulation workbook;
+            compare the two sources to inspect differences at printed precision.
           </div>
         )}
         {isPaperCorpus && activeMaSource === 'archive' && (
@@ -949,7 +1224,7 @@ export default function CoverageHeatmap({
             with the paper’s required-course counting rule.
           </div>
         )}
-        <HeatmapTable model={model} rowMode={rowMode} reqMode={activeReqMode} maSource={activeMaSource} />
+        <HeatmapTable model={model} rowMode={rowMode} reqMode={activeReqMode} maSource={activeMaSource} vaMeasure={vaMeasure} />
         <Legend reqMode={activeReqMode} scale={model.colorScale} />
       </div>
     </Stack>
@@ -963,5 +1238,8 @@ CoverageHeatmap.viewProps = [
   'defaultReqMode',
   'defaultMaEquivalent',
   'defaultMaIncludeGe',
+  'defaultMaWeight',
   'defaultMaSource',
+  'defaultVaBasis', 'defaultVaAllColleges', 'defaultVaMeasure',
+  'defaultDivision', 'defaultLdIncludeGe',
 ]

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  buildDegreeGroups, buildLedgerGroups, computeUnitBudget, degreeUnitSystem,
+  buildDegreeGroups, buildLedgerGroups, computeUnitBudget, degreeUnitSystem, maResidueRole,
 } from './degreeSlots';
 import { getMajor } from '../config/majors';
 import { compileDegreeComposition } from './virginia/degreeComposition';
@@ -73,6 +73,37 @@ describe('buildLedgerGroups GE categories', () => {
 });
 
 describe('unit-weighted degree coverage', () => {
+  it('sums authored credits of covered courses instead of spreading a block evenly', () => {
+    const groups = [{
+      title: 'UCSB lower-division computer science', tier: 'transferable',
+      sections: [{
+        section_advisement: 5, unit_advisement: 21,
+        receivers: [4, 4, 4, 5, 4].map((units, index) => ({
+          receiving: { kind: 'course', parent_id: index + 1, units },
+        })),
+      }],
+    }];
+    const result = buildDegreeGroups(groups, { articulated: new Set([1, 2, 3, 5]) });
+    expect(result.units).toMatchObject({ total: 21, covered: 16 });
+    expect(result.covered).toBe(4);
+  });
+
+  it('prices an articulated series at its stated credits and preserves real fractional credits', () => {
+    const groups = [{
+      title: 'Biology and lab', tier: 'transferable',
+      sections: [{
+        section_advisement: 2, unit_advisement: 6.5,
+        receivers: [
+          { receiving: { kind: 'series', parent_ids: [1, 2], units: 5 } },
+          { receiving: { kind: 'course', parent_id: 3, units: 1.5 } },
+        ],
+      }],
+    }];
+    expect(buildDegreeGroups(groups, { articulated: new Set([1, 2]) }).units.covered).toBe(5);
+    expect(buildDegreeGroups(groups, { articulated: new Set([3]) }).units.covered).toBe(1.5);
+    expect(buildDegreeGroups(groups, { articulated: new Set([1]) }).units.covered).toBe(0);
+  });
+
   it('weights covered slots by the section unit budget and preserves fractional units', () => {
     const groups = [{
       title: 'Ten-unit sequence', tier: 'transferable',
@@ -127,6 +158,174 @@ const namedRequirementGroups = [{
     },
   ],
 }];
+
+describe('lower-division named-requirement units', () => {
+  const groups = [
+    {
+      title: 'Lower-division major', tier: 'transferable',
+      sections: [{
+        section_advisement: 3,
+        receivers: [4, 4, 5].map((units, index) => ({
+          receiving: { kind: 'course', parent_id: index + 1, units },
+        })),
+      }],
+    },
+    {
+      title: 'Upper-division major', tier: 'nontransferable',
+      sections: [{
+        section_advisement: 2,
+        receivers: [4, 4].map((units, index) => ({
+          receiving: { kind: 'course', parent_id: index + 10, units },
+        })),
+      }],
+    },
+    {
+      title: 'General education', tier: 'breadth',
+      sections: [{
+        section_advisement: 3, unit_advisement: 12,
+        receivers: [{ receiving: { kind: 'ge_area', code: 'H/SS', name: 'Breadth' } }],
+      }],
+    },
+    {
+      title: 'Upper-division GE', tier: 'nontransferable',
+      sections: [{
+        section_advisement: 1, unit_advisement: 4,
+        receivers: [{ receiving: { kind: 'ge_area', code: 'UD', name: 'Upper-division GE' } }],
+      }],
+    },
+    {
+      title: 'Free electives', tier: 'transferable',
+      sections: [{ section_advisement: 2, unit_advisement: 8, receivers: [] }],
+    },
+    {
+      title: 'Further units earned at UC Test — transfer cap reached', tier: 'nontransferable',
+      cc_articulable: false,
+      sections: [{ section_advisement: 3, unit_advisement: 12, receivers: [] }],
+    },
+  ];
+
+  it('keeps upper division off both sides and counts lower-division elective credit as covered', () => {
+    const { named_requirements: named } = buildDegreeGroups(groups, {
+      articulated: new Set([1, 3, 10]),
+    });
+    // 4 + 5 of the 13 lower-division major credits, plus the 8 free-elective
+    // credits any transferable course fills. The articulated upper-division
+    // course and the cap-reached block, earned at the university, do not count.
+    expect(named.units_lower).toEqual({ total: 21, covered: 17 });
+    // Lower-division GE is cleared by certification and joins both sides; the
+    // upper-division GE block does not.
+    expect(named.units_lower_with_ge).toEqual({ total: 33, covered: 29 });
+    expect(named.elective_units_lower).toBe(8);
+    // The required population on its own, free-elective capacity left out:
+    // 13 lower-division major credits with 9 articulated, and the same plus
+    // certified lower-division GE. This is the pair Figure 1's lower-division
+    // reading divides, so it can never exceed the campus's own named total the
+    // way an elective-inclusive ceiling can.
+    expect(named.units_lower_required).toEqual({ total: 13, covered: 9 });
+    expect(named.units_lower_with_ge_required).toEqual({ total: 25, covered: 21 });
+  });
+
+  it('holds a California template’s elective credit to the transfer cap', () => {
+    const padded = groups.map((g) => (g.title === 'Free electives'
+      ? { ...g, sections: [{ section_advisement: 25, unit_advisement: 100, receivers: [] }] }
+      : g));
+    const { named_requirements: named } = buildDegreeGroups(padded, {
+      articulated: new Set([1, 3]), sourceDocument: { total_units: 180, unit_system: 'quarter' },
+    });
+    // 13 major + 12 GE leave 80 of the 105-unit cap for electives, not 100.
+    expect(named.elective_units_lower).toBe(80);
+    expect(named.units_lower_with_ge.total).toBe(105);
+  });
+
+  it('reads the Massachusetts residue row by row', () => {
+    const maGroups = [
+      groups[0],
+      {
+        title: "GE: general education and electives (excluded from the paper's articulation analysis)",
+        tier: 'transferable',
+        sections: [{
+          section_advisement: 5, unit_advisement: 16,
+          receivers: [
+            { receiving: { kind: 'course', parent_id: 20, code: 'ELEC XXX', name: 'Humanities', units: 3 } },
+            { receiving: { kind: 'course', parent_id: 21, code: 'ENGL 0101', name: 'Composition I', units: 4 } },
+            { receiving: { kind: 'course', parent_id: 22, code: 'ELEC XXX', name: 'Free Elective', units: 3 } },
+            { receiving: { kind: 'course', parent_id: 23, code: 'ELEC XXXX', name: 'Minor', units: 3 } },
+            { receiving: { kind: 'course', parent_id: 24, code: 'CICS 305', name: 'Social Issues in Computing', units: 3 } },
+          ],
+        }],
+      },
+    ];
+    const ma = buildDegreeGroups(maGroups, {
+      articulated: new Set([1]), sourceDocument: { state: 'ma' },
+    }).named_requirements;
+    // The free-elective and minor rows are elective credit on both readings; the
+    // 300-level course is upper division and counts on neither.
+    expect(ma.units_lower).toEqual({ total: 19, covered: 10 });
+    expect(ma.units_lower_with_ge).toEqual({ total: 26, covered: 17 });
+    // The residue's elective rows drop out of the required reading; its GE
+    // rows stay, because certification clears them.
+    expect(ma.units_lower_required).toEqual({ total: 13, covered: 4 });
+    expect(ma.units_lower_with_ge_required).toEqual({ total: 20, covered: 11 });
+    // Any other corpus keeps a GE section whole: the row reading is the
+    // Massachusetts source's, not a general rule.
+    const whole = buildDegreeGroups(maGroups, { articulated: new Set([1]) }).named_requirements;
+    expect(whole.units_lower_with_ge).toEqual({ total: 29, covered: 20 });
+  });
+
+  it('classifies residue rows by name and conventional course level', () => {
+    expect(maResidueRole({ code: 'ELEC XXX', name: 'free elective' })).toBe('elective');
+    expect(maResidueRole({ code: 'ELEC XXX', name: 'Free elec' })).toBe('elective');
+    expect(maResidueRole({ code: 'ELEC XXXX', name: 'Minor' })).toBe('elective');
+    expect(maResidueRole({ code: 'COMP 4010', name: 'Software Project I' })).toBe('upper');
+    expect(maResidueRole({ code: 'CIS 381', name: 'Social and Ethical Aspects' })).toBe('upper');
+    // A letter suffix is part of the course number, not the end of it.
+    expect(maResidueRole({ code: 'COMPSCI 396A', name: 'Independent Study' })).toBe('upper');
+    expect(maResidueRole({ code: 'COMPSCI 198C', name: 'Introduction to C' })).toBe('ge');
+    expect(maResidueRole({ code: 'CHEM 0109', name: 'General Chemistry I' })).toBe('ge');
+    expect(maResidueRole({ code: 'XXXX 299', name: 'Second Year Seminar' })).toBe('ge');
+    expect(maResidueRole({ code: '', name: 'First Year Seminar' })).toBe('ge');
+  });
+});
+
+describe('degree ledger preserves the evaluated requirement', () => {
+  it('keeps the two Davis statistics alternatives as choose-one paths', () => {
+    const groups = [{
+      title: 'Lower-division statistics — complete one course', group_conjunction: 'Or',
+      sections: [354134, 219073].map((parent_id) => ({
+        section_advisement: 1, unit_advisement: 4,
+        receivers: [{ receiving: { kind: 'course', parent_id } }],
+      })),
+    }];
+    const ledger = buildLedgerGroups(groups, { template: true });
+    expect(ledger.requirement_groups[0].sections).toHaveLength(2);
+    expect(ledger.requirement_groups[0].sections.map((s) => s.section_advisement)).toEqual([1, 1]);
+    expect(buildDegreeGroups(ledger.requirement_groups).total).toBe(1);
+  });
+
+  it('carries named ASSIST coverage through to the ledger', () => {
+    const ledger = buildLedgerGroups(namedRequirementGroups, {
+      articulatedRequirements: new Set(['mathematics requirement']),
+    });
+    const receivers = ledger.requirement_groups.flatMap((g) => g.sections.flatMap((s) => s.receivers));
+    expect(receivers.every((r) => r.articulation_status === 'articulated')).toBe(true);
+    expect(receivers.every((r) => r.assist_requirement === 'Mathematics Requirement')).toBe(true);
+    expect(receivers.every((r) => r.options.length === 0)).toBe(true);
+  });
+
+  it('preserves concrete sending options when named-block and course evidence both exist', () => {
+    const option = { course_ids: [7], course_conjunction: 'and' };
+    const ledger = buildLedgerGroups(namedRequirementGroups, {
+      articulated: new Set([905]),
+      articulatedRequirements: new Set(['mathematics requirement']),
+      optionsByParent: new Map([[905, [option]]]),
+      coursesById: new Map([[7, { course_id: 7, prefix: 'STAT', number: '1', units: 4 }]]),
+    });
+    const receiver = ledger.requirement_groups[0].sections.flatMap((s) => s.receivers)
+      .find((r) => r.receiving.parent_id === 905);
+    expect(receiver.options).toEqual([option]);
+    expect(ledger.courses).toHaveLength(1);
+  });
+});
 
 describe('buildDegreeGroups named ASSIST requirements', () => {
   it('counts a group as covered when the ASSIST block it names is articulated', () => {
@@ -976,5 +1175,97 @@ describe('computeUnitBudget', () => {
     }]);
     // Two unpriced slots take the documented four-unit assumption.
     expect(budget.modeled_units).toBe(18);
+  });
+});
+
+// The Massachusetts Figure 1 population, weighted by credit instead of counted
+// binary. It has to be the SAME walk that produces `courses` — a second
+// derivation would be free to drift from the figure it claims to re-weight —
+// so these assertions pin the two rollups to one another as well as to their
+// own arithmetic.
+describe('named requirement units', () => {
+  // An MA template's shape: one take-all section per group, receivers priced
+  // by the university course catalogue rather than by a `units` field on the
+  // receiver itself.
+  const maUniversityCourses = {
+    1001: { parent_id: 1001, min_units: 4 },
+    1002: { parent_id: 1002, min_units: 3 },
+    1003: { parent_id: 1003, min_units: 4 },
+    2001: { parent_id: 2001, min_units: 3 },
+    3001: { parent_id: 3001, min_units: 3 },
+    3002: { parent_id: 3002, min_units: 4 },
+  };
+  const course = (parentId) => ({ receiving: { kind: 'course', parent_id: parentId } });
+  const maGroups = [
+    {
+      title: 'Lower-division major requirements',
+      tier: 'transferable',
+      sections: [{
+        section_advisement: 3,
+        unit_advisement: 11,
+        receivers: [course(1001), course(1002), course(1003)],
+      }],
+    },
+    {
+      title: 'Upper-division major requirements',
+      tier: 'nontransferable',
+      sections: [{ section_advisement: 1, unit_advisement: 3, receivers: [course(2001)] }],
+    },
+    {
+      title: "GE: general education and electives (excluded from the paper's articulation analysis)",
+      tier: 'transferable',
+      sections: [{
+        section_advisement: 2,
+        unit_advisement: 7,
+        receivers: [course(3001), course(3002)],
+      }],
+    },
+  ];
+
+  it('weights the figure-1 course population by each requirement’s own credits', () => {
+    const result = buildDegreeGroups(maGroups, {
+      articulated: new Set([1001, 1002]),
+      universityCoursesById: maUniversityCourses,
+    });
+    // Two of four named courses articulate, but they are a 4-credit and a
+    // 3-credit course out of 14 non-GE credits — not half of them.
+    expect(result.named_requirements.courses).toEqual({ total: 4, covered: 2 });
+    expect(result.named_requirements.units).toEqual({ total: 14, covered: 7 });
+  });
+
+  it('credits the whole general-education block under the GE-included variant', () => {
+    const result = buildDegreeGroups(maGroups, {
+      articulated: new Set([1001]),
+      universityCoursesById: maUniversityCourses,
+    });
+    // GE clears below the upper division by the modelling standard, exactly as
+    // the course variant already assumes, so all 7 GE credits count covered.
+    expect(result.named_requirements.courses_with_ge).toEqual({ total: 6, covered: 3 });
+    expect(result.named_requirements.units_with_ge).toEqual({ total: 21, covered: 11 });
+  });
+
+  it('falls back to the section’s own credit share for an unpriced requirement', () => {
+    const groups = [{
+      title: 'Lower-division major requirements',
+      tier: 'transferable',
+      sections: [{
+        section_advisement: 2,
+        unit_advisement: 9,
+        receivers: [course(9001), course(9002)],
+      }],
+    }];
+    const result = buildDegreeGroups(groups, {
+      articulated: new Set([9001]),
+      universityCoursesById: {},
+    });
+    // Nothing prices either course, so the section's own 9 credits divide
+    // evenly — the documented proportional estimate, not a 4-credit guess.
+    expect(result.named_requirements.units).toEqual({ total: 9, covered: 4.5 });
+  });
+
+  it('reports no units rather than zero when the template is unevaluated', () => {
+    const result = buildDegreeGroups(maGroups, { universityCoursesById: maUniversityCourses });
+    expect(result.named_requirements.units).toEqual({ total: 14, covered: null });
+    expect(result.named_requirements.units_with_ge).toEqual({ total: 21, covered: null });
   });
 });
