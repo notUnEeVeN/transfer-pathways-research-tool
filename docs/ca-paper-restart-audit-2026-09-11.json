@@ -1,0 +1,770 @@
+{
+  "checked_date_japan": "2026-09-11",
+  "comparison_as_of_utc": "2026-09-10T20:11:14.091Z",
+  "audit_counts_as_of_utc": "2026-09-10T20:12:07.401Z",
+  "method": "Direct MongoDB reads only. Join UC agreements by community_college_id, uc_school_id, exact major; compare non-ID contents after canonical normalization. Compare original catalog fields ignoring source _id and target-only enrichments. Partition reviews with current staleness logic; count distinct campus-major-raw_template_hash clusters.",
+  "scope": "Stored CC-to-UC source corpus and configured remote research database; no source-to-ASSIST completeness certification; CSU excluded.",
+  "git_head": "d679f0f41ce532e790c0776ba7a8feaf250a23f3",
+  "working_tree_note": "Pre-existing uncommitted changes were present. File hashes identify the inspected versions; this receipt and its Markdown companion are the only new repository files from this investigation.",
+  "counts": {
+    "source_uc_agreements": 120293,
+    "source_uc_campus_program_title_pairs": 1050,
+    "source_uc_nonempty_agreements": 113871,
+    "source_uc_empty_agreements": 6422,
+    "source_uc_nonempty_template_clusters": 3830,
+    "source_csu_agreements_outside_scope": 245422,
+    "app_uc_agreements": 3105,
+    "app_uc_campus_program_pairs": 27,
+    "app_all_agreements": 3494,
+    "app_all_courses": 140701,
+    "app_all_institutions": 195
+  },
+  "agreement_comparison": {
+    "matching_business_keys": 3105,
+    "missing_business_keys": [],
+    "extra_business_keys": [],
+    "id_drift_count": 1035,
+    "id_drift_by_major": {
+      "UC Berkeley|Electrical Engineering & Computer Sciences, B.S.": 115,
+      "UC Davis|Computer Science B.S.": 115,
+      "UC Merced|COMPUTER SCIENCE AND ENGINEERING, B.S. ": 115,
+      "UC San Diego|CSE: Computer Science B.S.": 115,
+      "UC Irvine|Computer Science, B.S.": 115,
+      "UC Santa Cruz|Computer Science B.S.": 115,
+      "UC Santa Barbara|Computer Science, B.S.": 115,
+      "UC Riverside|Computer Science, B.S.": 115,
+      "UC Los Angeles|Computer Science/B.S.": 115
+    },
+    "id_drift_examples": [
+      {
+        "source_id": "6a1ef1b7ed1b5b526b49da33",
+        "app_id": "6a20ba57ab5af349b0a82350",
+        "school": "UC Berkeley",
+        "major": "Electrical Engineering & Computer Sciences, B.S.",
+        "college": "Los Angeles City College"
+      },
+      {
+        "source_id": "6a1ef1b6ed1b5b526b49b39f",
+        "app_id": "6a20ba54ab5af349b0a7fcbd",
+        "school": "UC Davis",
+        "major": "Computer Science B.S.",
+        "college": "Evergreen Valley College"
+      },
+      {
+        "source_id": "6a1ef1b9ed1b5b526b49e7a3",
+        "app_id": "6a20ba59ab5af349b0a830c1",
+        "school": "UC Merced",
+        "major": "COMPUTER SCIENCE AND ENGINEERING, B.S. ",
+        "college": "Los Angeles City College"
+      },
+      {
+        "source_id": "6a1ef1b7ed1b5b526b49cdfa",
+        "app_id": "6a20ba56ab5af349b0a81718",
+        "school": "UC San Diego",
+        "major": "CSE: Computer Science B.S.",
+        "college": "Los Angeles City College"
+      },
+      {
+        "source_id": "6a1ef1baed1b5b526b49f503",
+        "app_id": "6a20ba5aab5af349b0a83e1c",
+        "school": "UC Berkeley",
+        "major": "Electrical Engineering & Computer Sciences, B.S.",
+        "college": "College of Marin"
+      }
+    ],
+    "non_id_changed_count": 0,
+    "non_id_changed_fields": {},
+    "receiver_hash_comparisons": 45905,
+    "receiver_hash_different_agreements": 0
+  },
+  "catalog_comparison": {
+    "cc": {
+      "source": 100461,
+      "present": 100461,
+      "missing_count": 0,
+      "missing_ids": [],
+      "changed_count": 0,
+      "changed_field_counts": {},
+      "changed_examples": []
+    },
+    "uc": {
+      "source": 3903,
+      "present": 3903,
+      "missing_count": 0,
+      "missing_ids": [],
+      "changed_count": 0,
+      "changed_field_counts": {},
+      "changed_examples": []
+    },
+    "target_ca_total": 138606,
+    "extra_beyond_source": 34242,
+    "extras_by_institution": {
+      "uc:120": 793,
+      "uc:128": 11279,
+      "uc:132": 1050,
+      "uc:144": 2091,
+      "uc:46": 1554,
+      "uc:7": 1678,
+      "uc:79": 15028,
+      "uc:89": 769
+    },
+    "extra_keys_examples": [
+      {
+        "id": "university:catalog:120:BIO SCI 101",
+        "keys": [
+          "_id",
+          "parent_id",
+          "canonical_id",
+          "source_id",
+          "institution_id",
+          "university_id",
+          "university_type",
+          "side",
+          "prefix",
+          "number",
+          "title",
+          "min_units",
+          "max_units",
+          "source",
+          "source_url",
+          "updated_at"
+        ]
+      },
+      {
+        "id": "university:catalog:120:BIO SCI 105",
+        "keys": [
+          "_id",
+          "parent_id",
+          "canonical_id",
+          "source_id",
+          "institution_id",
+          "university_id",
+          "university_type",
+          "side",
+          "prefix",
+          "number",
+          "title",
+          "min_units",
+          "max_units",
+          "source",
+          "source_url",
+          "updated_at"
+        ]
+      },
+      {
+        "id": "university:catalog:120:BIO SCI 108",
+        "keys": [
+          "_id",
+          "parent_id",
+          "canonical_id",
+          "source_id",
+          "institution_id",
+          "university_id",
+          "university_type",
+          "side",
+          "prefix",
+          "number",
+          "title",
+          "min_units",
+          "max_units",
+          "source",
+          "source_url",
+          "updated_at"
+        ]
+      }
+    ]
+  },
+  "institution_comparison": {
+    "source_cc": 115,
+    "source_uc": 9,
+    "target_ca": 124,
+    "missing_cc": [],
+    "missing_uc": []
+  },
+  "source_structural_checks": {
+    "asOf": "2026-09-10T20:10:52.474Z",
+    "duplicates": [],
+    "missingHashes": [
+      {
+        "_id": null,
+        "total": 120293,
+        "missing_raw": 0,
+        "missing_parser": 0,
+        "missing_template_fp": 0,
+        "empty_requirements": 6422
+      }
+    ],
+    "academicYears": [
+      {
+        "_id": {},
+        "n": 120293
+      }
+    ],
+    "schools": [
+      {
+        "_id": {
+          "school": 117,
+          "name": "UC Los Angeles"
+        },
+        "n": 15410,
+        "colleges": 115,
+        "majors": 134
+      },
+      {
+        "_id": {
+          "school": 79,
+          "name": "UC Berkeley"
+        },
+        "n": 10925,
+        "colleges": 115,
+        "majors": 95
+      },
+      {
+        "_id": {
+          "school": 144,
+          "name": "UC Merced"
+        },
+        "n": 14145,
+        "colleges": 115,
+        "majors": 125
+      },
+      {
+        "_id": {
+          "school": 89,
+          "name": "UC Davis"
+        },
+        "n": 13685,
+        "colleges": 115,
+        "majors": 119
+      },
+      {
+        "_id": {
+          "school": 128,
+          "name": "UC Santa Barbara"
+        },
+        "n": 11730,
+        "colleges": 115,
+        "majors": 102
+      },
+      {
+        "_id": {
+          "school": 132,
+          "name": "UC Santa Cruz"
+        },
+        "n": 14950,
+        "colleges": 115,
+        "majors": 130
+      },
+      {
+        "_id": {
+          "school": 46,
+          "name": "UC Riverside"
+        },
+        "n": 9775,
+        "colleges": 115,
+        "majors": 85
+      },
+      {
+        "_id": {
+          "school": 7,
+          "name": "UC San Diego"
+        },
+        "n": 19322,
+        "colleges": 115,
+        "majors": 169
+      },
+      {
+        "_id": {
+          "school": 120,
+          "name": "UC Irvine"
+        },
+        "n": 10351,
+        "colleges": 115,
+        "majors": 91
+      }
+    ],
+    "sparse_pairs": [
+      {
+        "_id": {
+          "uc": 120,
+          "school": "UC Irvine",
+          "major": "test comp sci"
+        },
+        "n": 1,
+        "colleges": [
+          "Santiago Canyon College"
+        ]
+      },
+      {
+        "_id": {
+          "uc": 7,
+          "school": "UC San Diego",
+          "major": "Public Health with Concentration in Health Policy and Management Sciences B.S."
+        },
+        "n": 2,
+        "colleges": [
+          "Coalinga College",
+          "College of the Redwoods"
+        ]
+      },
+      {
+        "_id": {
+          "uc": 144,
+          "school": "UC Merced",
+          "major": "BUSINESS ADMINISTRATION, Management Emphasis, B.A. (Transfer Starting Fall 2027)"
+        },
+        "n": 2,
+        "colleges": [
+          "Los Angeles Mission College",
+          "Mt. San Jacinto College"
+        ]
+      },
+      {
+        "_id": {
+          "uc": 144,
+          "school": "UC Merced",
+          "major": "BUSINESS ADMINISTRATION, Financial Economics Emphasis, B.A. (Transfer Starting Fall 2027)"
+        },
+        "n": 6,
+        "colleges": [
+          "Pasadena City College",
+          "Santa Rosa Junior College",
+          "Ohlone College",
+          "Golden West College",
+          "Modesto Junior College",
+          "Foothill College"
+        ]
+      },
+      {
+        "_id": {
+          "uc": 144,
+          "school": "UC Merced",
+          "major": "BUSINESS ADMINISTRATION, Financial Economics Emphasis, B.A. (*Updated* - Transfer Starting Spring 2027)"
+        },
+        "n": 109,
+        "colleges": [
+          "Butte College",
+          "Southwestern College",
+          "Riverside City College",
+          "American River College",
+          "Columbia College",
+          "Shasta College",
+          "San Diego Miramar College",
+          "San Joaquin Delta College",
+          "Cuesta College",
+          "Las Positas College",
+          "Monterey Peninsula College",
+          "Fresno City College",
+          "Palomar College",
+          "Grossmont College",
+          "Chaffey College",
+          "West Valley College",
+          "Antelope Valley College",
+          "Folsom Lake College",
+          "Madera Community College",
+          "Glendale Community College",
+          "College of the Canyons",
+          "San Bernardino Valley College",
+          "Moreno Valley College",
+          "Cabrillo College",
+          "Saddleback College",
+          "City College of San Francisco",
+          "Mt. San Jacinto College",
+          "Yuba College",
+          "MiraCosta College",
+          "De Anza College",
+          "Santa Ana College",
+          "Sierra College",
+          "Norco College",
+          "Crafton Hills College",
+          "Barstow Community College",
+          "Lassen Community College",
+          "San Diego City College",
+          "Compton College",
+          "Clovis Community College",
+          "Contra Costa College",
+          "Imperial Valley College",
+          "Cosumnes River College",
+          "College of the Desert",
+          "Porterville College",
+          "Moorpark College",
+          "Victor Valley College",
+          "Fullerton College",
+          "Los Angeles City College",
+          "Los Medanos College",
+          "Los Angeles Trade Technical College",
+          "Oxnard College",
+          "Solano Community College",
+          "Coastline Community College",
+          "Lemoore College",
+          "Los Angeles Mission College",
+          "Gavilan College",
+          "College of the Redwoods",
+          "Citrus College",
+          "Rio Hondo College",
+          "Coalinga College",
+          "Napa Valley College",
+          "El Camino College",
+          "Santa Barbara City College",
+          "Diablo Valley College",
+          "College of the Siskiyous",
+          "Hartnell College",
+          "Cerro Coso Community College",
+          "Woodland Community College",
+          "Allan Hancock College",
+          "Merced College",
+          "Evergreen Valley College",
+          "Berkeley City College",
+          "Mount San Antonio College",
+          "Palo Verde College",
+          "Santiago Canyon College",
+          "Bakersfield College",
+          "College of San Mateo",
+          "Orange Coast College",
+          "Ventura College",
+          "Canada College",
+          "West Los Angeles College",
+          "San Diego Mesa College",
+          "Merritt College",
+          "Taft College",
+          "Feather River College",
+          "Irvine Valley College",
+          "Skyline College",
+          "San Jose City College",
+          "Los Angeles Pierce College",
+          "East Los Angeles College",
+          "Cypress College",
+          "Los Angeles Valley College",
+          "Mendocino College",
+          "Cuyamaca College",
+          "Laney College",
+          "College of Alameda",
+          "Los Angeles Southwest College",
+          "Lake Tahoe Community College",
+          "Long Beach City College",
+          "Santa Monica College",
+          "Reedley College",
+          "Mission College",
+          "College of Marin",
+          "Chabot College",
+          "Cerritos College",
+          "College of the Sequoias",
+          "Los Angeles Harbor College",
+          "Copper Mountain College",
+          "Sacramento City College"
+        ]
+      },
+      {
+        "_id": {
+          "uc": 144,
+          "school": "UC Merced",
+          "major": "BUSINESS ADMINISTRATION, Management Emphasis, B.A. (*Updated* - Transfer Starting Spring 2027)"
+        },
+        "n": 113,
+        "colleges": [
+          "Sierra College",
+          "Lassen Community College",
+          "Crafton Hills College",
+          "San Diego City College",
+          "Contra Costa College",
+          "Compton College",
+          "Moorpark College",
+          "Foothill College",
+          "Imperial Valley College",
+          "Los Angeles City College",
+          "Los Medanos College",
+          "Oxnard College",
+          "San Joaquin Delta College",
+          "Grossmont College",
+          "Monterey Peninsula College",
+          "Las Positas College",
+          "Cuesta College",
+          "Palomar College",
+          "Pasadena City College",
+          "West Valley College",
+          "Chaffey College",
+          "College of the Canyons",
+          "Glendale Community College",
+          "Folsom Lake College",
+          "City College of San Francisco",
+          "Cuyamaca College",
+          "College of Alameda",
+          "Cypress College",
+          "Los Angeles Pierce College",
+          "East Los Angeles College",
+          "Long Beach City College",
+          "Laney College",
+          "Santa Monica College",
+          "Chabot College",
+          "Mission College",
+          "Sacramento City College",
+          "Cerritos College",
+          "Modesto Junior College",
+          "Copper Mountain College",
+          "Lemoore College",
+          "College of the Redwoods",
+          "Napa Valley College",
+          "Rio Hondo College",
+          "Santa Barbara City College",
+          "Allan Hancock College",
+          "Cerro Coso Community College",
+          "Los Angeles Southwest College",
+          "Palo Verde College",
+          "Berkeley City College",
+          "Mount San Antonio College",
+          "Bakersfield College",
+          "Merritt College",
+          "Feather River College",
+          "College of San Mateo",
+          "Canada College",
+          "Irvine Valley College",
+          "Orange Coast College",
+          "Ventura College",
+          "San Jose City College",
+          "De Anza College",
+          "MiraCosta College",
+          "Santa Ana College",
+          "Norco College",
+          "Barstow Community College",
+          "Clovis Community College",
+          "College of the Desert",
+          "Cosumnes River College",
+          "Porterville College",
+          "Victor Valley College",
+          "Fullerton College",
+          "Los Angeles Trade Technical College",
+          "Solano Community College",
+          "Santa Rosa Junior College",
+          "Riverside City College",
+          "Southwestern College",
+          "San Diego Miramar College",
+          "Columbia College",
+          "American River College",
+          "Shasta College",
+          "Ohlone College",
+          "Fresno City College",
+          "Antelope Valley College",
+          "San Bernardino Valley College",
+          "Madera Community College",
+          "Cabrillo College",
+          "Moreno Valley College",
+          "Yuba College",
+          "Saddleback College",
+          "Los Angeles Valley College",
+          "Mendocino College",
+          "Reedley College",
+          "Lake Tahoe Community College",
+          "College of Marin",
+          "Los Angeles Harbor College",
+          "College of the Sequoias",
+          "Butte College",
+          "Golden West College",
+          "Coastline Community College",
+          "Citrus College",
+          "Gavilan College",
+          "Woodland Community College",
+          "El Camino College",
+          "Coalinga College",
+          "College of the Siskiyous",
+          "Hartnell College",
+          "Diablo Valley College",
+          "Evergreen Valley College",
+          "Merced College",
+          "Santiago Canyon College",
+          "San Diego Mesa College",
+          "Taft College",
+          "Skyline College",
+          "West Los Angeles College"
+        ]
+      }
+    ],
+    "empty_hash_values": [
+      {
+        "_id": null,
+        "empty_raw": 0,
+        "empty_parser": 0,
+        "empty_template_fp": 0
+      }
+    ]
+  },
+  "outside_roster_source_uc_courses": [
+    {
+      "id": 100,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 100"
+    },
+    {
+      "id": 101,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 101"
+    },
+    {
+      "id": 102,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 102"
+    },
+    {
+      "id": 103,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 103"
+    },
+    {
+      "id": 104,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 104"
+    },
+    {
+      "id": 105,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 105"
+    },
+    {
+      "id": 200,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 200"
+    },
+    {
+      "id": 201,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 201"
+    },
+    {
+      "id": 300,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 300"
+    },
+    {
+      "id": 301,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 301"
+    },
+    {
+      "id": 400,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 400"
+    },
+    {
+      "id": 401,
+      "school": 77,
+      "school_type": "number",
+      "title": "Course 401"
+    }
+  ],
+  "review_counts": {
+    "stored_uc_reviews": 50,
+    "live_uc_reviews": 49,
+    "stale_uc_reviews": 1,
+    "live_template_clusters": 48,
+    "configured_ca_template_clusters": 131,
+    "template_coverage_pct": 36.6,
+    "stale_scope": "Berkeley Computer Science, B.A. removed pin",
+    "all_reviews_have_source_method_scope_and_parser_hash": true,
+    "by_major": [
+      {
+        "major": "cs",
+        "agreements": 1035,
+        "templates": 47,
+        "live_reviews": 48,
+        "audited_templates": 47,
+        "correct": 47,
+        "conservative": 1
+      },
+      {
+        "major": "bio",
+        "agreements": 1035,
+        "templates": 71,
+        "live_reviews": 0,
+        "audited_templates": 0
+      },
+      {
+        "major": "econ",
+        "agreements": 1035,
+        "templates": 13,
+        "live_reviews": 1,
+        "audited_templates": 1,
+        "correct": 1
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generated_at": "2026-07-29T03:01:09.496Z",
+    "corpus": "2025-26 ASSIST agreement corpus (pmt_data.uc_agreements)",
+    "counts": {
+      "agreements": 120293,
+      "subjectPrograms": 9,
+      "fieldPrograms": 897,
+      "districts": 72,
+      "districtsPerQuartile": [
+        18,
+        18,
+        18,
+        18
+      ]
+    }
+  },
+  "bottleneck_validation": {
+    "case_count": 95,
+    "coded_count": 0,
+    "artifact_validation": {
+      "sampleSize": 95,
+      "poolSize": 1269,
+      "design": "stratified by tier and course class (up to 3 per stratum, both bases, deduplicated by college-campus-title), then consequential instances (introductory programming, keystones) to 90; single-coder codes committed in analysis/data/course_match_codes.v1.json",
+      "codedCount": 0,
+      "codeCounts": [
+        {
+          "code": "equivalent",
+          "n": 0
+        },
+        {
+          "code": "same_field_insufficient",
+          "n": 0
+        },
+        {
+          "code": "mismatched",
+          "n": 0
+        },
+        {
+          "code": "indeterminate",
+          "n": 0
+        }
+      ],
+      "ppv": null
+    }
+  },
+  "fpc_counterexample": {
+    "errors": 98,
+    "sample": 99,
+    "population": 100,
+    "implementation_upper_pct": 97.42740198341289,
+    "known_population_minimum_pct": 98
+  },
+  "sha256": {
+    "frontend/src/analyses/priceOfPlaceSnapshot.json": "28c290839921a520e21c18700ef33d00718f712ab39ee78fd9873a1b01532c05",
+    "analysis/data/course_repairs.v2.json": "a37cba4271f404fa3be068876f9ce8f8f0f347bc806739b9541c4720d81926ee",
+    "analysis/data/course_match_codes.v1.json": "8abb9bf2abe3570b67b5e9d3325902ae171bd1b214d1b0f3548bc7f9fb51362e",
+    "server/scripts/generatePriceOfPlaceSnapshot.js": "18647ed5a5abb790ad6da89ba079bb1d36e7e7dbc60755692e00966fa3848cbf",
+    "server/scripts/simulateCourseRepairs.js": "4d27a7bff9b5656d8cad3d88e68fdd9c690bcde5f072d63d0ddbd5ca7d739de1",
+    "server/scripts/migrateCanonicalSchema.js": "edb5c3a31e55b9990d9bc9184728661ef383aeb0f96ed7415fb4c47aa7de8046",
+    "scripts/port.py": "f90aadce41f89fc883750899936a19317335dc88e43207c2167085f2e1fbb79d",
+    "server/services/audit/stats.js": "c2134751e6729ca2e5fc5e5d18bc1dc8721a2c207ba47f2792c62c13b5b3104a",
+    "server/services/audit/filters.js": "61e058272c05d755a0b50a6acebbe24f18c46652dcd1d30e655162287773a32e",
+    "server/services/majorVisibility.js": "f4a914794249b07ba5f1d72083edab40202fdbe8ff4331312f3108482888cce3",
+    "server/config/majors.js": "74fb486921adccbc924d23b99ca28497033d2cc224d73275e2fc7c855cf86b3f"
+  },
+  "statistical_references": [
+    "https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch6/5214809-eng.htm",
+    "https://www.itl.nist.gov/div898/handbook/prc/section2/prc241.htm"
+  ]
+}

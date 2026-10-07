@@ -8,6 +8,19 @@ reconstruction from archived course-level pathway sheets.
 Presentation summary: [`ma-meeting-notes.md`](ma-meeting-notes.md).
 Source provenance: `server/data/ma/PROVENANCE.md`.
 
+**Current-source update (2026-09-07):** The final paper repository was recovered
+on September 2. Its `final/Four Year Heatmap.xlsx` and `final/Pathways Master.xlsx`
+now drive the live heatmap and workbook baselines, and reproduce every printed
+Figure 1/3/4/5/6 cell. The historical discussion below of unavailable final
+heatmap ratios and tally inputs is superseded by the
+[provenance update](../server/data/ma/PROVENANCE.md). The current Figure 1 exact
+mean is 38.2671312% and Cape Cod → Dartmouth is 14/31; the older 38.2085% and
+11/31 remain archive values. The final per-course pathway inputs still have
+not been recovered, so the archive/detail and generic-model limitations remain.
+Generic Massachusetts bachelor-side results now carry explicit approximation
+warnings; Bristol's imported AS total is corrected from the duplicate-inflated
+72 to 69 credits. The final-PDF and direct gray-row views are unaffected.
+
 ## Evidence rule
 
 The project contains three distinct evidence layers:

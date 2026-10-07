@@ -1,5 +1,12 @@
 # Modelling a UC four-year degree
 
+For the current database check and September 2026 calculation corrections, see
+[`analysis-audit-2026-09-07.md`](analysis-audit-2026-09-07.md). The dated status
+tables below are historical; several Biology/Economics model issues have since
+been resolved. Exact authored receiver credits now price partially covered
+take-all sections where those credits reconcile to the section total;
+unpriced blocks retain the documented proportional estimate.
+
 What a `kind: degree` document must satisfy, and why. These rules were settled
 one campus at a time — Berkeley (MCB, Economics), Davis (Biological Sciences,
 Economics), Irvine (Biological Sciences) — and each one exists because breaking

@@ -4,6 +4,12 @@ Methodology and verification notes for the research console.
 
 ## Start here
 
+- **[`paper-analysis-plan.md`](paper-analysis-plan.md)** — MA-family paper
+  selection: state comparisons, CA major findings, GE/unit feasibility,
+  proposed figures, and focused source investigations before publication.
+- **[`analysis-audit-2026-09-07.md`](analysis-audit-2026-09-07.md)** — final
+  data-to-figure audit: corrected calculations, source/model limits that still
+  affect the write-up, and verification receipts.
 - **[`visualizations.md`](visualizations.md)** — every figure explained in plain
   English: what it asks, how it's computed, what it shows, what it must not be
   read as. Start here for meetings or for anyone new to the project.
@@ -69,6 +75,9 @@ implemented — recover any of them from git history.
 | [state-expansion-feasibility.md](state-expansion-feasibility.md) | The nine-state survey, what each publishes, and the (since-reversed) Maryland recommendation |
 
 ## Paper methods notes
+
+The Income Gate and Computing Bottleneck have moved to a dedicated private
+paper workspace. See the [migration handoff](ca-paper-migration.md).
 
 | Doc | Use it for |
 | --- | --- |
