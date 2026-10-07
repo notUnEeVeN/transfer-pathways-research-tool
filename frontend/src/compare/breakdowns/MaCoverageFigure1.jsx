@@ -2,12 +2,11 @@ import React, { useState } from 'react'
 import { Badge } from '../../components/ui'
 
 /**
- * Reconciles the final Figure 1 matrix with the older deposited workbook.
+ * Reconciles the final Figure 1 matrix with the recovered final articulation workbook.
  *
  * Cell counts and values come only from ComparisonWorkspace's live join. The
  * prose headline (38.2%) is the paper's stated value; it is deliberately kept
- * separate from both means calculated below because the hidden final ratios
- * were never deposited.
+ * separate from both means calculated below to avoid confusing the printed prose with the recalculated cell population.
  */
 
 const sourceOf = (pane) => pane?.knobs?.['ma-source'] ?? 'pdf'
@@ -35,16 +34,6 @@ const mean = (values) => {
 const pct = (value, digits = 2) => (Number.isFinite(value)
   ? `${value.toLocaleString(undefined, { maximumFractionDigits: digits })}%`
   : '—')
-
-const includes = (value, pattern) => pattern.test(String(value || ''))
-
-const isDartmouth = (cell) => includes(cell?.colLabel, /UMass Dartmouth/i)
-  || includes(cell?.colKey, /UMass Dartmouth/i)
-
-const isPair = (cell, college) => (
-  (includes(cell?.rowLabel, college) || includes(cell?.rowKey, college))
-  && isDartmouth(cell)
-)
 
 function Block({ title, children }) {
   return (
@@ -78,11 +67,6 @@ export default function MaCoverageFigure1({
   const displayMatches = cells.length - displayDifferences.length
   const archiveMean = mean(cells.map(archiveValue))
   const printedPdfMean = mean(cells.map(pdfValue))
-  const capeCodCandidate = displayDifferences.find((cell) => isPair(cell, /Cape Cod/i)) || null
-  const massasoitDartmouth = cells.find((cell) => isPair(cell, /Massasoit/i)) || null
-  const copiedPrint = roundHalfEven(archiveValue(massasoitDartmouth))
-  const candidatePrint = roundHalfEven(pdfValue(capeCodCandidate))
-  const copySignature = capeCodCandidate && massasoitDartmouth && copiedPrint === candidatePrint
 
   const activeKey = selectedCell ?? openKey
   const toggle = (cell) => {
@@ -103,9 +87,9 @@ export default function MaCoverageFigure1({
       </div>
 
       <p className='text-caption text-ink-muted max-w-[82ch]'>
-        This compares the final PDF&rsquo;s printed whole percentages with the unrounded 2024
-        archive ratios, using the paper&rsquo;s half-even display rounding. Archive-to-PDF difference
-        establishes a revision; it does not by itself prove which source is wrong.
+        This compares the final PDF&rsquo;s printed whole percentages with our recalculation
+        from the recovered final articulation workbook, using the paper&rsquo;s half-even
+        display rounding. A difference requires checking the underlying source rows.
       </p>
 
       <Block title={displayDifferences.length === 1 ? 'Sole visible cell revision' : 'Visible cell revisions'}>
@@ -121,14 +105,14 @@ export default function MaCoverageFigure1({
                     className='flex flex-wrap items-baseline gap-x-3 gap-y-1 text-left px-2 py-1.5 rounded-lg hover:bg-surface-hover'>
                     <span className='text-caption text-ink'>{cell.rowLabel} × {cell.colLabel}</span>
                     <span className='text-tag text-ink-subtle ml-auto tabular-nums'>
-                      Final PDF {pct(pdfValue(cell), 1)} · archive {pct(archiveValue(cell), 4)}
+                      Final PDF {pct(pdfValue(cell), 1)} · recalculation {pct(archiveValue(cell), 4)}
                       {' '}→ {pct(roundHalfEven(archiveValue(cell)), 0)}
                     </span>
                   </button>
                   {open && (
                     <div className='bg-surface-sunken rounded-lg px-3 py-2 text-caption text-ink-muted'>
-                      This is a final-PDF/archive revision candidate. The final course-level
-                      numerator and denominator needed to decide its cause were not deposited.
+                      The printed value and recalculated final-workbook ratio differ at
+                      displayed precision. Check the source requirement and articulation rows.
                     </div>
                   )}
                 </li>
@@ -144,25 +128,14 @@ export default function MaCoverageFigure1({
         )}
       </Block>
 
-      {copySignature && (
-        <Block title='Plausible copy mechanism'>
-          <p className='text-caption text-ink-muted max-w-[82ch]'>
-            The final Cape Cod × UMass Dartmouth value prints as {pct(candidatePrint, 0)}.
-            The separate archived Massasoit × UMass Dartmouth ratio is{' '}
-            {pct(archiveValue(massasoitDartmouth), 4)}, which also prints as{' '}
-            {pct(copiedPrint, 0)}. That makes manual substitution plausible, but does not prove it.
-          </p>
-        </Block>
-      )}
-
       {Number.isFinite(archiveMean) && Number.isFinite(printedPdfMean) && (
         <Block title='38.2% headline caveat'>
           <p className='text-caption text-ink-muted max-w-[82ch]'>
-            The matched archived ratios average {pct(archiveMean, 4)}, which rounds to 38.2% at
-            one decimal. The final printed cells average {pct(printedPdfMean, 4)}. The paper still
-            says 38.2%, a strong stale-headline signature. It remains a candidate, not an
-            unconditional error: the final hidden ratios were not deposited, and same-rounded
-            revisions elsewhere could offset the visible change.
+            The matched recalculated ratios average {pct(archiveMean, 4)}
+            {' '}(one decimal: {pct(archiveMean, 1)}); the final printed cells average
+            {' '}{pct(printedPdfMean, 4)}. The paper’s prose reports 38.2%.
+            These are separate summaries: cell rounding can change a mean, and the prose
+            should be checked against the complete source population.
           </p>
         </Block>
       )}

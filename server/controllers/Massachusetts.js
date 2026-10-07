@@ -1,7 +1,7 @@
 /**
  * Massachusetts evidence baselines from two distinct vintages: literal
- * final-PDF transcriptions and the older `CurrComp Master.xlsx` repository
- * artifact. They ride beside reconstructions from recovered course-level data;
+ * final-PDF transcriptions and the final `Pathways Master.xlsx` repository
+ * artifact. They ride beside reconstructions from older recovered course-level data;
  * callers must choose a measure/source explicitly rather than calling the
  * archived workbook "published".
  */
@@ -54,14 +54,16 @@ async function baselinesData(db) {
       community_college_id: row.community_college_id,
       college_name: row.college_name ?? null,
       value: row.value,
+      source: row.source ?? null,
     });
   }
   return {
     measures,
-    source: 'Final-PDF figure transcriptions plus archived CurrComp Master.xlsx; see server/data/ma/PROVENANCE.md',
+    source: 'Final-PDF figure transcriptions plus final/Pathways Master.xlsx; each row retains its stored source, including any older import. See server/data/ma/PROVENANCE.md',
     sources: {
       final_pdf: 'server/data/ma/pdf-figures.json (literal final-PDF transcription)',
-      archived_repo: 'CurrComp Master.xlsx (older repository artifact)',
+      final_workbook: 'server/data/ma/final/Pathways Master.xlsx (final paper repository; converter source since 2026-09-02)',
+      archived_repo: 'CurrComp Master.xlsx (older diagnostic artifact; not the current converter baseline source)',
     },
   };
 }

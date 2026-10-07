@@ -18,6 +18,8 @@
  * named articulation (their Fig 3 includes GE by construction).
  */
 
+const { typeOfCourseCode } = require('../../services/courseTypes');
+
 const MA_UNIVERSITIES = [
   'Bridgewater', 'Fitchburg', 'Framingham', 'MCLA', 'Salem',
   'UMass Amherst', 'UMass Boston', 'UMass Dartmouth', 'UMass Lowell',
@@ -71,13 +73,60 @@ function baselineSource(measure) {
   };
   return pdfFigures[measure]
     ? `final PDF Figure ${pdfFigures[measure]} (see data/ma/pdf-figures.json)`
-    : 'CurrComp Master.xlsx';
+    : 'final/Pathways Master.xlsx (final paper repository)';
+}
+
+/**
+ * Preserve the literal archive in raw/, but exclude its one proven AS copy
+ * error from modeled degrees. All CC AS.xlsx, Bristol!28 is a no-ID copy of
+ * Bristol!20; convert_recovered.py assigned that trailing row synthetic id 64.
+ * The coordinate and duplicate proof also live in figure3-gray-detail.json.
+ * Do not deduplicate general elective slots: repeated rows may be required.
+ */
+function associateCourses(raw, cc) {
+  const courses = raw.as_degrees?.[cc]?.courses || [];
+  if (cc !== 'Bristol') return courses;
+  return courses.filter((course) => !(course.id === 64
+    && course.name === 'Human Expression'
+    && codeKey(course.prefix, course.number) === 'ELEC XXX'
+    && course.credits === 3
+    && courses.some((earlier) => earlier.id === 55
+      && earlier.name === course.name
+      && codeKey(earlier.prefix, earlier.number) === codeKey(course.prefix, course.number)
+      && earlier.credits === course.credits)));
 }
 
 // Codes whose number is a stand-in ("ELEC xxx", "XXXX 199", "SLOT n"): the
 // category lives in the NAME, so the bare code identifies nothing and must
 // never satisfy a claim by itself.
 const PLACEHOLDER_CODE = /^(ELEC|XXXX|SLOT)\b/;
+
+const courseNumber = (value) => {
+  const digits = String(value ?? '').replace(/[^0-9]/g, '');
+  return digits ? Number(digits) : NaN;
+};
+const withoutParenthetical = (value) => String(value || '').replace(/\([^)]*\)/g, ' ');
+const orAlternatives = (value) => String(value || '').split(/\s+OR\s+/i);
+
+/**
+ * What a Figure 1 slot column is asking for, read from its printed name.
+ *
+ * The heatmap writes requirements it does not name as courses — "Natural
+ * Science Elective", "CSC Elective", "Upper Level Elective (3000)". The
+ * category is in the text and nowhere else, which is also how the pathway
+ * overlays' placeholder rows carry theirs. `any` means the column constrains
+ * only division, so any leftover real course of the right level may stand for
+ * it.
+ */
+function slotCategory(header) {
+  const text = String(header || '').toLowerCase();
+  if (!/\belective\b|\bslot\b/.test(text)) return null;
+  if (/natural science|\bscience\b|physic|biolog|chem/.test(text)) return 'science';
+  if (/\bmath|calculus|statistic/.test(text)) return 'math';
+  if (/\bcs\b|\bcsc\b|\bcomp\b|comput|software/.test(text)) return 'computing';
+  if (/upper[\s-]?level|upper[\s-]?division/.test(text)) return 'any';
+  return null;
+}
 
 /**
  * The overlay's removal credits as a consumable multiset. Each removed
@@ -245,6 +294,7 @@ function buildMaDocuments(raw) {
 
   // ── Community colleges and their AS degrees ─────────────────────────────
   for (const [cc, as] of Object.entries(raw.as_degrees || {})) {
+    const asCourses = associateCourses(raw, cc);
     const ccId = idFor(ccIds, 9100, cc);
     institutions.push({
       _id: `ma:cc:${ccId}`,
@@ -256,7 +306,7 @@ function buildMaDocuments(raw) {
       academic_calendar: 'semester',
     });
     const receivers = [];
-    for (const course of as.courses) {
+    for (const course of asCourses) {
       const courseId = ccId * 1000 + course.id;
       courses.push({
         _id: `ma:sending:${courseId}`,
@@ -289,7 +339,10 @@ function buildMaDocuments(raw) {
       college_id: `ma:cc:${ccId}`,
       community_college_id: ccId,
       college_name: `${cc} Community College`,
-      total_units: as.courses.reduce((sum, course) => sum + (course.credits || 0), 0),
+      total_units: asCourses.reduce((sum, course) => sum + (course.credits || 0), 0),
+      ...(asCourses.length !== as.courses.length ? {
+        modeling_notes: ['Excluded the proven no-ID duplicate Human Expression row at All CC AS.xlsx, Bristol!28 (copy of row 20); 20 courses / 69 semester credits. See figure3-gray-detail.json.'],
+      } : {}),
       unit_system: 'semester',
       catalog_year: '2024-25',
       verification: { verified: true, verified_by: 'paper source (recovered workbook)' },
@@ -330,7 +383,7 @@ function buildMaDocuments(raw) {
         // This is not an independently sourced annual sticker price. It is the
         // campus-constant rate recoverable from the paper repository's own Cost
         // tab, re-expressed on the shared pricer's annual/24 convention.
-        tuition_source: 'CurrComp Master.xlsx Cost tab (cost divided by pathway hours above 120)',
+        tuition_source: 'final/Pathways Master.xlsx Cost tab (cost divided by pathway hours above 120)',
       } : {}),
     });
 
@@ -347,15 +400,66 @@ function buildMaDocuments(raw) {
       name: normName(row.name),
       used: false,
     }));
+    // This campus's own lower/upper boundary, read off the paper's own `upper`
+    // flag rather than assumed: Massachusetts campuses do not share a numbering
+    // scheme (Fitchburg and Lowell run four digits, so a flat 300 would call
+    // their freshman courses upper-division).
+    const upperBoundary = (() => {
+      const numbered = university.courses
+        .filter((course) => !PLACEHOLDER_CODE.test(String(course.prefix || '')))
+        .map((course) => ({ upper: course.upper, n: courseNumber(course.number) }))
+        .filter((course) => Number.isFinite(course.n));
+      const upper = numbered.filter((course) => course.upper).map((course) => course.n);
+      return upper.length ? Math.min(...upper) : Infinity;
+    })();
+
     const consumeResident = (course) => {
+      const take = (predicate) => {
+        const entry = residentPool.find((item) => !item.used && predicate(item));
+        if (!entry) return null;
+        entry.used = true;
+        return entry.row;
+      };
       const code = codeKey(course.prefix, course.number);
-      const name = normName(course.header || course.name);
-      const entry = residentPool.find((item) => !item.used && item.code === code)
-        || residentPool.find((item) => !item.used && item.name === name);
-      if (!entry) return null;
-      entry.used = true;
-      return entry.row;
+      const header = String(course.header || course.name || '');
+      const name = normName(header);
+      return take((item) => item.code === code)
+        || take((item) => item.name === name)
+        // The heatmap prints "Data Structures (COMP 250)" where the plan holds
+        // "Data Structures"; the parenthetical is the code, not the title.
+        || take((item) => item.name === normName(withoutParenthetical(header)))
+        // "Multivariate Calculus (MATH 233) OR Statistics I (STATISTIC 515)":
+        // the plan carries one alternative, under its own code.
+        || orAlternatives(header)
+          .reduce((found, alt) => found
+            || take((item) => item.name === normName(withoutParenthetical(alt))), null)
+        // A slot column names a CATEGORY, and the resident plan represents that
+        // same requirement by a concrete example course. Without this the one
+        // requirement is counted twice — the slot at an assumed four credits
+        // and its example as general education, which is how upper-division
+        // major courses ended up inside the GE block.
+        || claimSlotExample(course, header, take);
     };
+
+    // Which leftover resident row may stand in for a slot column. A slot says
+    // what it wants in its NAME; the row answers with its code's discipline and
+    // its division. Nothing is claimed when the plan holds no plausible
+    // example, so the documented assumption still applies where it must.
+    function claimSlotExample(course, header, take) {
+      const wanted = slotCategory(header);
+      if (!wanted) return null;
+      const divisionOk = (row) => {
+        const n = courseNumber(row.number);
+        if (!Number.isFinite(n) || !Number.isFinite(upperBoundary)) return !course.upper;
+        return course.upper ? n >= upperBoundary : n < upperBoundary;
+      };
+      if (wanted === 'any') {
+        return take((item) => divisionOk(item.row)
+          && !PLACEHOLDER_CODE.test(String(item.row.prefix || '')));
+      }
+      return take((item) => divisionOk(item.row)
+        && typeOfCourseCode(item.row.prefix, item.row.number, item.row.name) === wanted);
+    }
 
     const modelingNotes = [];
     // Template courses: heatmap courses first (their analysis population),
@@ -444,7 +548,7 @@ function buildMaDocuments(raw) {
       unit_system: 'semester',
       catalog_year: '2024-25',
       research_status: 'paper_source',
-      source_method: 'Imported from the recovered Massachusetts paper workbooks; see server/data/ma/PROVENANCE.md',
+      source_method: 'Final Four Year Heatmap.xlsx course articulation with recovered 2024 resident/pathway courses; see server/data/ma/PROVENANCE.md',
       modeling_notes: modelingNotes,
       requirement_groups: [
         groupOf(lower, 'Lower-division major requirements', 'transferable'),
@@ -457,7 +561,7 @@ function buildMaDocuments(raw) {
     const pairs = raw.pathways?.[university.name]?.pairs || {};
     for (const [cc, verdicts] of Object.entries(university.matrix || {})) {
       const ccId = idFor(ccIds, 9100, cc);
-      const asCourses = raw.as_degrees?.[cc]?.courses || [];
+      const asCourses = associateCourses(raw, cc);
       const pathway = pairs[cc] || null;
 
       // The overlay: courses on either side that the pathway no longer
@@ -649,7 +753,7 @@ function validateMaDocuments(raw, built) {
       const pathway = raw.pathways?.[university.name]?.pairs?.[cc];
       if (pathway) {
         const resident = raw.pathways[university.name].resident || [];
-        const asCourses = raw.as_degrees?.[cc]?.courses || [];
+        const asCourses = associateCourses(raw, cc);
         const removed = courseKeySet(removedResidentByMatching(resident, asCourses, pathway));
         university.courses.forEach((course, index) => {
           const receiver = receivers[index];

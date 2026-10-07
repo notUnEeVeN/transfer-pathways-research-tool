@@ -44,9 +44,17 @@ const figurePairs = (cells = {}) => Object.entries(cells)
 function validatePrintedAverages(label, cells, printedAverages, tolerance, failures) {
   const columns = {};
   for (const { uni, value } of figurePairs(cells)) {
+    if (!Number.isFinite(value) || value < 0) {
+      failures.push(`${label}: ${uni} contains a nonnumeric or negative printed value`);
+      continue;
+    }
     (columns[uni] = columns[uni] || []).push(value);
   }
   for (const [uni, printed] of Object.entries(printedAverages || {})) {
+    if (!Number.isFinite(printed)) {
+      failures.push(`${label}: ${uni} printed average must be numeric`);
+      continue;
+    }
     const values = columns[uni] || [];
     const mean = values.reduce((sum, value) => sum + value, 0) / (values.length || 1);
     if (Math.abs(mean - printed) > tolerance) {
@@ -178,6 +186,17 @@ async function runMaImport(db, raw, { apply = false } = {}) {
   await upsertAll(db.collection('assist_agreements'), built.agreements);
   await upsertAll(db.collection('assist_courses'), built.courses);
   await upsertAll(db.collection('ma_paper_baselines'), built.baselines);
+  // An earlier import materialized Bristol's proven duplicate AS row. A
+  // replacement degree no longer references it, but upserts alone would leave
+  // the phantom course in dataset counts. Remove only that exact old record
+  // after this build has explicitly applied the documented correction.
+  if (built.asDegrees.some((degree) => (degree.modeling_notes || [])
+    .some((note) => note.includes('All CC AS.xlsx, Bristol!28')))) {
+    await db.collection('assist_courses').deleteOne({
+      _id: 'ma:sending:9102064', state: 'ma', side: 'sending',
+      prefix: 'ELEC', number: 'xxx', title: 'Human Expression', units: 3,
+    });
+  }
   return { ...report, built };
 }
 

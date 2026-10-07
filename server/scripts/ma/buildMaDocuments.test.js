@@ -367,3 +367,130 @@ describe('deriveTuitionRates', () => {
     expect(university).not.toHaveProperty('tuition_annual_resident_usd');
   });
 });
+
+describe('documented archive AS duplicate', () => {
+  it('keeps Bristol at 20 courses / 69 credits in the degree and sending-course pool', () => {
+    const archive = cjs('../../data/ma/raw/as_degrees.json');
+    const built = buildMaDocuments({ as_degrees: archive });
+    const degree = built.asDegrees.find((row) => row.community_college_id === MA_CC_IDS.Bristol);
+    expect(degree.total_units).toBe(69);
+    const section = degree.requirement_groups[0].sections[0];
+    expect(section.section_advisement).toBe(20);
+    expect(section.receivers).toHaveLength(20);
+    const sending = built.courses.filter((row) => row.community_college_id === MA_CC_IDS.Bristol);
+    expect(sending).toHaveLength(20);
+    expect(sending.filter((row) => row.title === 'Human Expression')).toHaveLength(1);
+    expect(sending.reduce((sum, row) => sum + row.units, 0)).toBe(69);
+    expect(degree.modeling_notes.join(' ')).toMatch(/Bristol!28/);
+    // The literal archive remains available to reproduce older diagnostics.
+    expect(archive.Bristol.courses).toHaveLength(21);
+  });
+
+  it('does not drop repeated elective requirements at other colleges', () => {
+    const built = buildMaDocuments({ as_degrees: { Berkshire: {
+      courses: [
+        { id: 55, name: 'Human Expression', prefix: 'ELEC', number: 'xxx', credits: 3 },
+        { id: 64, name: 'Human Expression', prefix: 'ELEC', number: 'xxx', credits: 3 },
+      ],
+    } } });
+    expect(built.asDegrees[0].total_units).toBe(6);
+    expect(built.courses).toHaveLength(2);
+  });
+
+  it('attributes workbook baseline and rate fields to the final repository', () => {
+    const withTuition = structuredClone(raw);
+    withTuition.baselines.credit_hours.resident.Testfield = 123;
+    withTuition.baselines.cost = { resident: { Testfield: 900 }, cells: {} };
+    const built = buildMaDocuments(withTuition);
+    expect(built.baselines.every((row) => /final\/Pathways Master.xlsx/.test(row.source))).toBe(true);
+    expect(built.institutions.find((row) => row.kind === 'university').tuition_source)
+      .toMatch(/final\/Pathways Master.xlsx/);
+  });
+});
+
+// Figure 1 names some requirements as slots rather than courses — "Natural
+// Science Elective", "Upper Level Elective (3000)", "Math Elective", or an
+// "A (X) OR B (Y)" alternation. The resident plan represents those same
+// requirements by a concrete example course. Treating the two as unrelated
+// counted one requirement twice: the slot took a four-credit assumption while
+// its example stayed in the GE residue, inflating the degree and putting major
+// coursework inside "general education".
+describe('Figure 1 slot columns claim their resident example row', () => {
+  const withCourses = (courses, resident) => ({
+    ...raw,
+    heatmap: {
+      universities: [{
+        ...raw.heatmap.universities[0],
+        courses,
+        matrix: { Berkshire: courses.map(() => false) },
+        lower_ratio: { Berkshire: 0 },
+        all_ratio: { Berkshire: 0 },
+      }],
+    },
+    pathways: { Testfield: { resident, pairs: {} } },
+  });
+  const geGroup = (degree) => degree.requirement_groups.find((g) => /^GE:/.test(g.title));
+  const geNames = (degree) => (geGroup(degree).sections[0].receivers || [])
+    .map((r) => r.receiving.name);
+  const receiverUnits = (built, parentId) => built.courses
+    .find((c) => c.side === 'receiving' && c.parent_id === parentId)?.min_units;
+
+  it('prices a science slot from the science example rather than the assumption', () => {
+    const built = buildMaDocuments(withCourses(
+      [{ header: 'Natural Science Elective', prefix: 'SLOT', number: '9', upper: false }],
+      [
+        { id: 1, name: 'General Physics I', prefix: 'PHYS', number: '243', prereqs: [], coreqs: [], credits: 4 },
+        { id: 2, name: 'Writing Rhetorically', prefix: 'ENGL', number: '101', prereqs: [], coreqs: [], credits: 3 },
+      ],
+    ));
+    const degree = built.degrees[0];
+    // The slot is priced by its example, not by the four-credit default…
+    expect(receiverUnits(built, degree.requirement_groups[0].sections[0].receivers[0].receiving.parent_id))
+      .toBe(4);
+    // …and the physics course is no longer general education.
+    expect(geNames(degree)).toEqual(['Writing Rhetorically']);
+  });
+
+  it('gives an upper-level slot an upper-division example, using the campus’s own boundary', () => {
+    const built = buildMaDocuments(withCourses(
+      [
+        { header: 'Operating Systems (COMP 350)', prefix: 'COMP', number: '350', upper: true },
+        { header: 'Upper Level Elective (3000)', prefix: 'SLOT', number: '9', upper: true },
+      ],
+      [
+        { id: 1, name: 'Operating Systems', prefix: 'COMP', number: '350', prereqs: [], coreqs: [], credits: 3 },
+        { id: 2, name: 'Internship', prefix: 'COMP', number: '498', prereqs: [], coreqs: [], credits: 3 },
+        { id: 3, name: 'Writing Rhetorically', prefix: 'ENGL', number: '101', prereqs: [], coreqs: [], credits: 3 },
+      ],
+    ));
+    const degree = built.degrees[0];
+    // COMP 350 is this campus's lowest upper-division number, so COMP 498
+    // qualifies for the slot and the lower-division writing course does not.
+    expect(geNames(degree)).toEqual(['Writing Rhetorically']);
+  });
+
+  it('matches either side of an OR column against the resident plan', () => {
+    const built = buildMaDocuments(withCourses(
+      [{ header: 'Multivariate Calculus (MATH 233) OR Statistics I (STAT 515)', prefix: 'MATH', number: '233', upper: false }],
+      [
+        { id: 1, name: 'Multivariate Calculus', prefix: 'MATH', number: '223', prereqs: [], coreqs: [], credits: 4 },
+        { id: 2, name: 'Writing Rhetorically', prefix: 'ENGL', number: '101', prereqs: [], coreqs: [], credits: 3 },
+      ],
+    ));
+    // The column's printed code (233) is not the resident code (223); the
+    // alternation's first name is.
+    expect(geNames(built.degrees[0])).toEqual(['Writing Rhetorically']);
+  });
+
+  it('leaves a slot with no plausible example on the stated assumption', () => {
+    const built = buildMaDocuments(withCourses(
+      [{ header: 'Natural Science Elective', prefix: 'SLOT', number: '9', upper: false }],
+      [{ id: 1, name: 'Writing Rhetorically', prefix: 'ENGL', number: '101', prereqs: [], coreqs: [], credits: 3 }],
+    ));
+    const degree = built.degrees[0];
+    // Nothing in the plan is a science course, so the writing course must NOT
+    // be dragged in to fill the slot.
+    expect(geNames(degree)).toEqual(['Writing Rhetorically']);
+    expect(degree.modeling_notes.some((n) => /4-credit assumption/.test(n))).toBe(true);
+  });
+});

@@ -19,7 +19,7 @@ beforeEach(async () => { await db.dropDatabase(); });
 describe('baselinesData', () => {
   it('groups published values by measure with resident rows separated', async () => {
     await db.collection('ma_paper_baselines').insertMany([
-      { _id: 'b1', measure: 'pct_as', school_id: 9001, school: 'Bridgewater', community_college_id: 9103, college_name: 'Bunker Hill Community College', value: 0.508, state: 'ma' },
+      { _id: 'b1', measure: 'pct_as', school_id: 9001, school: 'Bridgewater', community_college_id: 9103, college_name: 'Bunker Hill Community College', value: 0.508, state: 'ma', source: 'final/Pathways Master.xlsx (final paper repository)' },
       { _id: 'b2', measure: 'credit_hours', school_id: 9001, school: 'Bridgewater', community_college_id: null, value: 120, state: 'ma' },
       { _id: 'b3', measure: 'credit_hours', school_id: 9001, school: 'Bridgewater', community_college_id: 9103, college_name: 'Bunker Hill Community College', value: 149, state: 'ma' },
     ]);
@@ -31,7 +31,11 @@ describe('baselinesData', () => {
       expect.objectContaining({ school_id: 9001, value: 120 }),
     ]);
     expect(payload.measures.credit_hours.cells).toHaveLength(1);
-    expect(payload.source).toMatch(/CurrComp Master/);
+    expect(payload.source).toMatch(/final\/Pathways Master/);
+    expect(payload.measures.pct_as.cells[0].source).toMatch(/final\/Pathways Master/);
+    expect(payload.measures.credit_hours.resident[0].source).toBeNull();
+    expect(payload.sources.final_workbook).toMatch(/final\/Pathways Master/);
+    expect(payload.sources.archived_repo).toMatch(/not the current converter baseline source/);
   });
 });
 

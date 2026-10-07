@@ -110,6 +110,41 @@ repository does not carry and which exist only in upstream git history.
   says 35.5%. The paper updated its heatmap without updating that pathway
   workbook, or our git-history copy predates the fix.
 
+### Final audit corrections (2026-09-07)
+
+The current converter was rerun in memory against all four committed raw JSON
+files with exact agreement. The final workbook reproduces every printed cell
+of Figures 3–6 (61/49/49/49); the full imported Figure 1 API reproduces all 165
+final-workbook ratios. Its exact statewide mean is 38.2671312%, and Cape Cod →
+UMass Dartmouth is 14/31 = 45.1612903%. Historical 38.2085% and 11/31 claims
+describe the older heatmap, not the current import.
+
+`raw/as_degrees.json` remains a literal archive conversion. The document builder
+excludes the one proven trailing Bristol `Human Expression` duplicate
+(`All CC AS.xlsx`, row 28 copies row 20; synthetic raw ID 64 copies ID 55).
+Bristol now builds 20 courses totaling 69 credits, matching the direct Figure 3
+ledger, instead of 21 courses totaling 72. Reapplying the importer also removes
+that exact obsolete sending-course record. No general elective deduplication
+is performed.
+
+The generic Massachusetts credit model remains an approximation. All 11
+templates contain heatmap courses without a matched older resident row, assigned
+four credits each. Its requirement groups therefore sum above resident totals
+(for example, Dartmouth 172 versus 120 and Bridgewater 151 versus 123). The
+inferred AS-course pairings include an order fallback. The API now marks numeric
+model results `estimated` and exposes these assumptions as `ma_model_evidence`
+and `method_warning`. The bachelor-side value is modeled applied AS credit
+divided by resident degree credits; it is not an exact sum of removed resident
+courses. Final-PDF and direct archive-ledger values retain their own sources.
+
+`their-math.json` now identifies `currcomp` as the final workbook and keeps a
+separate `currcomp_archived` from `recovered/CurrComp Master.xlsx`.
+`complexityCheck.js` explicitly reads the latter; `--check` verifies that the
+committed three-source reconciliation regenerates without substituting the final
+715 total for the archived 777 total. Nine campus tuition rates still derive
+from the final Cost tab; Amherst and Dartmouth remain unpriced because their
+final cells provide no nonzero excess-hour ratio.
+
 ### An error in the paper's own Figure 2 notebook, NOT reproduced
 
 `course_distribution.ipynb` hard-codes its per-university percentages rather

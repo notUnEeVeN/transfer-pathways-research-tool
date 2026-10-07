@@ -197,8 +197,8 @@ def fig2_recompute(fig1_universities):
     return result
 
 
-def currcomp_tabs():
-    wb = openpyxl.load_workbook(FINAL / 'Pathways Master.xlsx', data_only=True)
+def currcomp_tabs(workbook_path=None):
+    wb = openpyxl.load_workbook(workbook_path or FINAL / 'Pathways Master.xlsx', data_only=True)
     tabs = {'% Credit Hours': 'pct_as', 'Credit Hours': 'credit_hours',
             'Curricular Complexity': 'complexity', 'Cost': 'cost'}
     out = {}
@@ -254,6 +254,11 @@ def main():
         and abs(r['stored_all'] - r['recomputed_all']) < 1e-9
     )
     report = {
+        'sources': {
+            'fig1': 'final/Four Year Heatmap.xlsx',
+            'currcomp': 'final/Pathways Master.xlsx',
+            'currcomp_archived': 'recovered/CurrComp Master.xlsx',
+        },
         'fig1': {
             'formula': 'Lower =COUNTIF(<lower cols>,TRUE)/COUNTA(<lower cols>); Upper (=ALL levels) over every course column',
             'universities': universities,
@@ -266,6 +271,7 @@ def main():
         },
         'fig2': fig2,
         'currcomp': currcomp_tabs(),
+        'currcomp_archived': currcomp_tabs(RECOVERED / 'CurrComp Master.xlsx'),
     }
     OUT.write_text(json.dumps(report, indent=1))
     s = report['fig1']['summary']

@@ -1,4 +1,9 @@
 {
+ "sources": {
+  "fig1": "final/Four Year Heatmap.xlsx",
+  "currcomp": "final/Pathways Master.xlsx",
+  "currcomp_archived": "recovered/CurrComp Master.xlsx"
+ },
  "fig1": {
   "formula": "Lower =COUNTIF(<lower cols>,TRUE)/COUNTA(<lower cols>); Upper (=ALL levels) over every course column",
   "universities": [
@@ -2834,6 +2839,436 @@
     "median_of_university_means": 6756.7429,
     "mean_delta_vs_resident": 8329.7109,
     "median_delta_vs_resident": 5655.1
+   }
+  }
+ },
+ "currcomp_archived": {
+  "pct_as": {
+   "cells": {
+    "MCLA": {
+     "Berkshire": 0.3846153846,
+     "Greenfield": 0.3709677419
+    },
+    "Westfield": {
+     "Berkshire": 0.4307692308,
+     "Greenfield": 0.6935483871,
+     "Holyoke": 0.546875,
+     "Springfield Technical": 0.6666666667
+    },
+    "Bridgewater": {
+     "Bristol": 0.7391304348,
+     "Bunker Hill": 0.5081967213,
+     "Cape Cod": 0.7536231884,
+     "Massasoit": 1,
+     "MassBay": 0.8529411765,
+     "North Shore": 0.890625,
+     "Roxbury": 0.421875
+    },
+    "UMass Boston": {
+     "Bristol": 0.5797101449,
+     "Bunker Hill": 0.5081967213,
+     "Massasoit": 0.6153846154,
+     "MassBay": 0.5147058824,
+     "Middlesex": 0.6333333333,
+     "North Shore": 0.515625,
+     "Northern Essex": 0.484375,
+     "Roxbury": 0.421875
+    },
+    "UMass Dartmouth": {
+     "Bristol": 0.7826086957,
+     "Cape Cod": 0.6811594203,
+     "Massasoit": 0.5384615385
+    },
+    "Fitchburg": {
+     "Bunker Hill": 0.8196721311,
+     "MassBay": 1,
+     "Middlesex": 0.95,
+     "Mount Wachusett": 0.9047619048,
+     "Quinsigamond": 1,
+     "Roxbury": 0.40625
+    },
+    "Framingham": {
+     "Bunker Hill": 0.2786885246,
+     "Massasoit": 0.5538461538,
+     "MassBay": 0.3382352941,
+     "Middlesex": 0.3333333333,
+     "Mount Wachusett": 0.4126984127,
+     "North Shore": 0.34375,
+     "Quinsigamond": 0.3833333333,
+     "Roxbury": 0.265625
+    },
+    "Salem": {
+     "Bunker Hill": 0.7049180328,
+     "Massasoit": 0.7076923077,
+     "MassBay": 0.7058823529,
+     "Middlesex": 0.5333333333,
+     "North Shore": 0.828125,
+     "Northern Essex": 0.6875,
+     "Roxbury": 0.375
+    },
+    "UMass Lowell": {
+     "Bunker Hill": 1,
+     "MassBay": 1,
+     "Middlesex": 1,
+     "North Shore": 1,
+     "Northern Essex": 0.734375,
+     "Quinsigamond": 1,
+     "Roxbury": 0.515625
+    },
+    "UMass Amherst": {
+     "Greenfield": 0.9516129032,
+     "Holyoke": 0.484375,
+     "Springfield Technical": 0.5555555556
+    },
+    "Worcester": {
+     "MassBay": 0.75,
+     "Middlesex": 0.8166666667,
+     "Mount Wachusett": 0.6984126984,
+     "Quinsigamond": 1,
+     "Roxbury": 0.5625,
+     "Springfield Technical": 0.6031746032
+    }
+   },
+   "resident": {
+    "Bridgewater": 1.0,
+    "Fitchburg": 1.0,
+    "Framingham": 1.0,
+    "MCLA": 1.0,
+    "Salem": 1.0,
+    "UMass Amherst": 1.0,
+    "UMass Boston": 1.0,
+    "UMass Dartmouth": 1.0,
+    "UMass Lowell": 1.0,
+    "Westfield": 1.0,
+    "Worcester": 1.0
+   },
+   "stats": {
+    "n_cells": 61,
+    "mean_cells": 0.6515,
+    "median_cells": 0.6333,
+    "mean_with_resident": 0.7047,
+    "mean_of_university_means": 0.6415,
+    "median_of_university_means": 0.6638,
+    "mean_delta_vs_resident": -0.3485,
+    "median_delta_vs_resident": -0.3667
+   }
+  },
+  "credit_hours": {
+   "cells": {
+    "MCLA": {
+     "Berkshire": 146.0,
+     "Greenfield": 147.0
+    },
+    "Westfield": {
+     "Berkshire": 151.0,
+     "Greenfield": 134.0,
+     "Holyoke": 144.0,
+     "Springfield Technical": 134.0
+    },
+    "Bridgewater": {
+     "Bristol": 130.0,
+     "Bunker Hill": 149.0,
+     "Cape Cod": 131.0,
+     "Massasoit": 125.0,
+     "MassBay": 132.0,
+     "North Shore": 133.0,
+     "Roxbury": 155.0
+    },
+    "UMass Boston": {
+     "Bristol": 146.0,
+     "Bunker Hill": 126.0,
+     "Massasoit": 141.0,
+     "MassBay": 127.0,
+     "Middlesex": 142.0,
+     "North Shore": 144.0,
+     "Northern Essex": 155.0,
+     "Roxbury": 159.0
+    },
+    "UMass Dartmouth": {
+     "Bristol": 132.0,
+     "Cape Cod": 136.0,
+     "Massasoit": 151.0
+    },
+    "Fitchburg": {
+     "Bunker Hill": 126.0,
+     "MassBay": 120.0,
+     "Middlesex": 120.0,
+     "Mount Wachusett": 125.0,
+     "Quinsigamond": 120.0,
+     "Roxbury": 150.0
+    },
+    "Framingham": {
+     "Bunker Hill": 155.0,
+     "Massasoit": 144.0,
+     "MassBay": 162.0,
+     "Middlesex": 159.0,
+     "Mount Wachusett": 153.0,
+     "North Shore": 154.0,
+     "Quinsigamond": 146.0,
+     "Roxbury": 158.0
+    },
+    "Salem": {
+     "Bunker Hill": 129.0,
+     "Massasoit": 127.0,
+     "MassBay": 125.0,
+     "Middlesex": 142.0,
+     "North Shore": 126.0,
+     "Northern Essex": 131.0,
+     "Roxbury": 152.0
+    },
+    "UMass Lowell": {
+     "Bunker Hill": 124.0,
+     "MassBay": 125.0,
+     "Middlesex": 122.0,
+     "North Shore": 126.0,
+     "Northern Essex": 142.0,
+     "Quinsigamond": 122.0,
+     "Roxbury": 152.0
+    },
+    "UMass Amherst": {
+     "Greenfield": 122.0,
+     "Holyoke": 125.0,
+     "Springfield Technical": 131.0
+    },
+    "Worcester": {
+     "MassBay": 128.0,
+     "Middlesex": 127.0,
+     "Mount Wachusett": 132.0,
+     "Quinsigamond": 120.0,
+     "Roxbury": 145.0,
+     "Springfield Technical": 132.0
+    }
+   },
+   "resident": {
+    "Bridgewater": 120.0,
+    "Fitchburg": 120.0,
+    "Framingham": 122.0,
+    "MCLA": 120.0,
+    "Salem": 121.0,
+    "UMass Amherst": 121.0,
+    "UMass Boston": 120.0,
+    "UMass Dartmouth": 120.0,
+    "UMass Lowell": 121.0,
+    "Westfield": 120.0,
+    "Worcester": 120.0
+   },
+   "stats": {
+    "n_cells": 61,
+    "mean_cells": 137.1967,
+    "median_cells": 133.0,
+    "mean_with_resident": 134.6389,
+    "mean_of_university_means": 136.9811,
+    "median_of_university_means": 136.4286,
+    "mean_delta_vs_resident": 16.6557,
+    "median_delta_vs_resident": 13.0
+   }
+  },
+  "complexity": {
+   "cells": {
+    "MCLA": {
+     "Berkshire": 210.0,
+     "Greenfield": 218.0
+    },
+    "Westfield": {
+     "Berkshire": 197.0,
+     "Greenfield": 154.0,
+     "Holyoke": 177.0,
+     "Springfield Technical": 180.0
+    },
+    "Bridgewater": {
+     "Bristol": 165.0,
+     "Bunker Hill": 180.0,
+     "Cape Cod": 113.0,
+     "MassBay": 108.0,
+     "North Shore": 129.0
+    },
+    "UMass Boston": {
+     "Bristol": 170.0,
+     "Bunker Hill": 192.0,
+     "MassBay": 181.0,
+     "Middlesex": 203.0,
+     "North Shore": 204.0,
+     "Northern Essex": 201.0
+    },
+    "UMass Dartmouth": {
+     "Bristol": 170.0,
+     "Cape Cod": 183.0
+    },
+    "Fitchburg": {
+     "Bunker Hill": 179.0,
+     "MassBay": 102.0,
+     "Middlesex": 122.0,
+     "Mount Wachusett": 119.0,
+     "Quinsigamond": 120.0
+    },
+    "Framingham": {
+     "Bunker Hill": 181.0,
+     "MassBay": 186.0,
+     "Middlesex": 196.0,
+     "Mount Wachusett": 182.0,
+     "North Shore": 186.0,
+     "Quinsigamond": 179.0
+    },
+    "Salem": {
+     "Bunker Hill": 164.0,
+     "MassBay": 140.0,
+     "Middlesex": 195.0,
+     "North Shore": 128.0,
+     "Northern Essex": 211.0
+    },
+    "UMass Lowell": {
+     "Bunker Hill": 169.0,
+     "MassBay": 157.0,
+     "Middlesex": 174.0,
+     "North Shore": 162.0,
+     "Northern Essex": 215.0,
+     "Quinsigamond": 159.0
+    },
+    "UMass Amherst": {
+     "Greenfield": 191.0,
+     "Holyoke": 210.0,
+     "Springfield Technical": 219.0
+    },
+    "Worcester": {
+     "MassBay": 104.0,
+     "Middlesex": 118.0,
+     "Mount Wachusett": 128.0,
+     "Quinsigamond": 96.0,
+     "Springfield Technical": 135.0
+    }
+   },
+   "resident": {
+    "Bridgewater": 160.0,
+    "Fitchburg": 138.0,
+    "Framingham": 139.0,
+    "MCLA": 160.0,
+    "Salem": 157.0,
+    "UMass Amherst": 185.0,
+    "UMass Boston": 169.0,
+    "UMass Dartmouth": 202.0,
+    "UMass Lowell": 143.0,
+    "Westfield": 150.0,
+    "Worcester": 105.0
+   },
+   "stats": {
+    "n_cells": 49,
+    "mean_cells": 166.5714,
+    "median_cells": 177.0,
+    "mean_with_resident": 164.5,
+    "mean_of_university_means": 170.4424,
+    "median_of_university_means": 176.5,
+    "mean_delta_vs_resident": 15.8571,
+    "median_delta_vs_resident": 23.0
+   }
+  },
+  "cost": {
+   "cells": {
+    "MCLA": {
+     "Berkshire": 13201.5,
+     "Greenfield": 13709.25
+    },
+    "Westfield": {
+     "Berkshire": 15970.16667,
+     "Greenfield": 7212.333333,
+     "Holyoke": 12364,
+     "Springfield Technical": 7212.333333
+    },
+    "Bridgewater": {
+     "Bristol": 4889.166667,
+     "Bunker Hill": 14178.58333,
+     "Cape Cod": 5378.083333,
+     "Massasoit": 2444.583333,
+     "MassBay": 5867,
+     "North Shore": 6355.916667,
+     "Roxbury": 17112.08333
+    },
+    "UMass Boston": {
+     "Bristol": 18085.16667,
+     "Bunker Hill": 4173.5,
+     "Massasoit": 14607.25,
+     "MassBay": 4869.083333,
+     "Middlesex": 15302.83333,
+     "North Shore": 16694,
+     "Northern Essex": 24345.41667,
+     "Roxbury": 27127.75
+    },
+    "UMass Dartmouth": {
+     "Bristol": 7806,
+     "Cape Cod": 10408,
+     "Massasoit": 20165.5
+    },
+    "Fitchburg": {
+     "Bunker Hill": 2836.5,
+     "MassBay": 0,
+     "Middlesex": 0,
+     "Mount Wachusett": 2363.75,
+     "Quinsigamond": 0,
+     "Roxbury": 14182.5
+    },
+    "Framingham": {
+     "Bunker Hill": 17383.33333,
+     "Massasoit": 11920,
+     "MassBay": 20860,
+     "Middlesex": 19370,
+     "Mount Wachusett": 16390,
+     "North Shore": 16886.66667,
+     "Quinsigamond": 12913.33333,
+     "Roxbury": 18873.33333
+    },
+    "Salem": {
+     "Bunker Hill": 4626.9,
+     "Massasoit": 3598.7,
+     "MassBay": 2570.5,
+     "Middlesex": 11310.2,
+     "North Shore": 3084.6,
+     "Northern Essex": 5655.1,
+     "Roxbury": 16451.2
+    },
+    "UMass Lowell": {
+     "Bunker Hill": 2827.666667,
+     "MassBay": 3534.583333,
+     "Middlesex": 1413.833333,
+     "North Shore": 4241.5,
+     "Northern Essex": 15552.16667,
+     "Quinsigamond": 1413.833333,
+     "Roxbury": 22621.33333
+    },
+    "UMass Amherst": {
+     "Greenfield": 1481,
+     "Holyoke": 3702.5,
+     "Springfield Technical": 8145.5
+    },
+    "Worcester": {
+     "MassBay": 3928.666667,
+     "Middlesex": 3437.583333,
+     "Mount Wachusett": 5893,
+     "Quinsigamond": 0,
+     "Roxbury": 12277.08333,
+     "Springfield Technical": 5893
+    }
+   },
+   "resident": {
+    "Bridgewater": 0,
+    "Fitchburg": 0,
+    "Framingham": 993.3333333,
+    "MCLA": 0,
+    "Salem": 514.1,
+    "UMass Amherst": 740.5,
+    "UMass Boston": 0,
+    "UMass Dartmouth": 0,
+    "UMass Lowell": 706.9166667,
+    "Westfield": 0,
+    "Worcester": 0
+   },
+   "stats": {
+    "n_cells": 61,
+    "mean_cells": 9624.9077,
+    "median_cells": 7212.3333,
+    "mean_with_resident": 8195.4752,
+    "mean_of_university_means": 9498.7468,
+    "median_of_university_means": 8032.2024,
+    "mean_delta_vs_resident": 9318.0997,
+    "median_delta_vs_resident": 7212.3333
    }
   }
  }

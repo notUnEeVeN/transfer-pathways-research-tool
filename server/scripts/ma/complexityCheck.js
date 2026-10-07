@@ -39,9 +39,17 @@ function complexityOf(rows, useCoreqs = true) {
   return maPathwayComplexity(rows, { coreqs: useCoreqs }).complexity;
 }
 
-const cells = theirMath?.currcomp?.complexity?.cells || {};
-const resident = theirMath?.currcomp?.complexity?.resident || {};
-const hours = theirMath?.currcomp?.credit_hours || {};
+// their-math.json's primary currcomp block now comes from the final paper
+// workbook. The historical reconciliation must explicitly select the older
+// block; otherwise regenerating this report silently replaces archive 777/49
+// with final 715/49 while continuing to label it "archived".
+if (theirMath.sources?.currcomp_archived !== 'recovered/CurrComp Master.xlsx'
+    || !theirMath.currcomp_archived) {
+  throw new Error('Missing archived workbook baseline; rerun theirMath.py before complexityCheck.js');
+}
+const cells = theirMath.currcomp_archived.complexity?.cells || {};
+const resident = theirMath.currcomp_archived.complexity?.resident || {};
+const hours = theirMath.currcomp_archived.credit_hours || {};
 const sumCredits = (rows) => rows.reduce((total, row) => total + (row.credits || 0), 0);
 
 /** Every pathway in the corpus, scored under one corequisite treatment. */
@@ -184,7 +192,8 @@ for (const [source, summary] of Object.entries(headlineMeans)) {
 }
 console.log(`  final PDF vs archive differences: ${artifactDifferences.length}`);
 
-fs.writeFileSync(path.resolve(__dirname, '../../data/ma/complexity-validation.json'), JSON.stringify({
+const outputPath = path.resolve(__dirname, '../../data/ma/complexity-validation.json');
+const rendered = JSON.stringify({
   artifact_version: 2,
   generated_by: 'server/scripts/ma/complexityCheck.js',
   method: "The archived README says complexity was computed with curricularanalytics.org. "
@@ -207,5 +216,13 @@ fs.writeFileSync(path.resolve(__dirname, '../../data/ma/complexity-validation.js
   artifact_differences: artifactDifferences,
   headline_means: headlineMeans,
   pathways: withCoreqs.map(({ rows, ...rest }) => rest),
-}, null, 1));
-console.log('\nwrote server/data/ma/complexity-validation.json');
+}, null, 1);
+if (process.argv.includes('--check')) {
+  if (!fs.existsSync(outputPath) || fs.readFileSync(outputPath, 'utf8') !== rendered) {
+    console.error('stale artifact: server/data/ma/complexity-validation.json');
+    process.exitCode = 1;
+  } else console.log('\ncomplexity-validation.json is current');
+} else {
+  fs.writeFileSync(outputPath, rendered);
+  console.log('\nwrote server/data/ma/complexity-validation.json');
+}
