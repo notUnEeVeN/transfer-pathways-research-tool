@@ -70,7 +70,8 @@ const coverageRow = (cell) => ({
   community_college: cell.collegeName,
   school_id: cell.guide,
   school: cell.guideTitle,
-  major: 'Computer Science, B.S.',
+  major: /\bBA or BS\b/i.test(cell.guideTitle) ? 'Computer Science, B.A. or B.S.'
+    : /\bBA\b/i.test(cell.guideTitle) ? 'Computer Science, B.A.' : 'Computer Science, B.S.',
   // The Massachusetts convention: required courses, binary, general education
   // excluded. Rows are converted to courses at the credits-per-course the guide
   // itself exhibits, so a 30-credit "Required Core Courses" row is ten.
@@ -98,6 +99,12 @@ const coverageRow = (cell) => ({
   va_ceiling_paper_pct: pct(cell.ceiling_paper),
   va_ceiling_courses_pct: cell.courses_total
     ? pct(round1(cell.pre_courses) / round1(cell.courses_total)) : null,
+  // The lower-division lens, under the field names the endpoint uses for
+  // California and Massachusetts, so one reader draws all three states.
+  named_requirement_units_lower_total: round1(cell.ld_units - cell.ld_ge_units),
+  named_requirement_units_lower_articulated: round1(cell.ld_covered - cell.ld_ge_covered),
+  named_requirement_units_lower_ge_total: round1(cell.ld_units),
+  named_requirement_units_lower_ge_articulated: round1(cell.ld_covered),
   // The intermediate reading: credits with general education off both sides.
   va_units_no_ge_pct: pct(cell.coverage_paper),
   va_units_no_ge_total: cell.denominator - cell.assumed,
@@ -110,6 +117,9 @@ const coverageRow = (cell) => ({
   va_assumed_units: cell.assumed,
   va_university_only_units: cell.universityOnly,
   va_missing: cell.missing,
+  va_source_warnings: cell.source_interpretation_warnings,
+  va_course_count_method: cell.course_count_method,
+  method_status: cell.method_status,
 });
 
 const rateRow = (cell) => ({
@@ -127,10 +137,12 @@ const rateRow = (cell) => ({
   as_total_units: cell.as_total_units,
   as_unit_system: 'semester',
   transferred_units: cell.as_applied_units,
-  known_nontransferable_units: cell.as_wasted_units,
+  known_nontransferable_units: cell.as_denied_units,
   prescribed_units: cell.as_total_units,
   degree_unit_system: 'semester',
   va_wasted_units: cell.as_wasted_units,
+  va_denied_units: cell.as_denied_units,
+  va_unavailable_units: cell.as_unavailable_applied_units,
   // Figure 4: hours the student takes that do no requirement work.
   //
   // The Massachusetts construct is "pathway hours above the 120-hour
@@ -149,8 +161,12 @@ const rateRow = (cell) => ({
   va_degree_units_over_benchmark: Math.max(0, cell.denominator - 120),
   degree_units_stated_minimum: cell.denominator,
   va_offers_cs: cell.collegeOffersCs,
-  va_wasted: cell.missing,
-  method_status: 'ok',
+  va_wasted: [...cell.missing.filter((row) => !cell.denied.some(
+    (denied) => denied.requirement === row.requirement,
+  )), ...cell.denied],
+  va_source_warnings: cell.source_interpretation_warnings,
+  method_status: cell.method_status,
+  method_warning: cell.source_interpretation_warnings.join(' '),
 });
 
 function main() {
@@ -217,6 +233,7 @@ function writeGuides(cells) {
         ge_units: cell.ge_units,
         university_only_units: cell.universityOnly,
         ceiling_pct: cell.ceiling == null ? null : Math.round(cell.ceiling * 1000) / 10,
+        source_warnings: cell.source_interpretation_warnings,
       });
     }
   }
@@ -228,6 +245,7 @@ function writeGuides(cells) {
       requirement: item.requirement_text,
       credits: item.credits ?? null,
       equivalent: item.equivalent ?? null,
+      notes: item.notes ?? null,
     });
     out.universities[institution] = {
       slug,

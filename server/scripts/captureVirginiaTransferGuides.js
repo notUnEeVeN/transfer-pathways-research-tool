@@ -67,7 +67,7 @@ const CATEGORY = new RegExp(
 // Structural rows: credit totals and "fill the rest with electives" padding.
 // These are not requirements and must not land in a denominator.
 const FILLER = new RegExp(
-  '^\\s*(pre-transfer|post-transfer|credits?\\s+pre-transfer|total'
+  '^\\s*(pre-transfer|post-transfer|credits?\\s+(pre|post)-transfer|total'
   + '|if needed|electives?( as needed| to reach|,)|select (from|course from) previous'
   + '|additional courses|prerequisites or electives|general electives)', 'i',
 );
@@ -214,10 +214,11 @@ function parseGuide(html, meta) {
     if (cells.length < 2) continue;
     const [text, credits] = cells;
     if (!text || FILLER.test(text) || /^credits$/i.test(credits || '')) continue;
-    // "General Electives", "Computer Science Electives — any courses CS 300+":
-    // free-elective padding, excluded from Figure 1 the same way the paper
-    // excludes it on the community-college side.
-    const elective = /^(general |free |unrestricted )?electives?\b|\belectives?$/i.test(text);
+    // An unrestricted elective is padding; an elective restricted to the major,
+    // a subject, or a course level is a named degree requirement. Matching every
+    // label ending in "Electives" hid real major requirements from both the
+    // count denominator and the university's displayed graduation plan.
+    const elective = /^(?:(?:upper[- ]level|lower[- ]level)\s+)?(?:general |free |unrestricted |university |open )?electives?\b/i.test(text);
     post.push({
       requirement_text: text,
       credits: credits || null,

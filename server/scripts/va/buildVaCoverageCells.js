@@ -4,43 +4,22 @@
  * university program, which is the grain the coverage heatmap already uses for
  * California and Massachusetts.
  *
- * Two sources, and the figure needs both. A transfer guide states what a course
- * BECOMES at the receiving institution, but a guide does not vary by college:
- * there is one UVA computer-science guide, not sixteen. Guide data alone would
- * therefore paint sixteen identical rows. The college dimension comes from the
- * VCCS catalogues instead — whether that college actually teaches the course
- * the guide asks for.
+ * A guide supplies the requirements and stated credit totals; each VCCS
+ * catalogue supplies the college-specific course set. Figure 1 measures guide
+ * preparation availability: stated pre-transfer credit less unavailable rows,
+ * divided by the stated pre- and post-transfer credit total. It is a supply
+ * estimate, not the canonical degree evaluator's proof of credit application.
  *
- * So a requirement is covered only when BOTH hold:
+ * Figures 3/4 retain the guide's stated pre-transfer credit as earned credit,
+ * then remove explicit no-credit rows and model unavailable rows as substituted
+ * credit that does no bachelor requirement work. Those two loss reasons are
+ * disjoint. Ordinary elective landings are retained as applied credit.
  *
- *   articulation  the guide says the course lands on a named course or a named
- *                 requirement, rather than elective space or no credit
- *   supply        the college's own catalogue carries at least one of the
- *                 course codes the requirement accepts
- *
- * Failing the second is `unavailable` — the credit would apply, but this
- * college does not teach the course. That is the only bucket that varies
- * across colleges, and it is what gives the heatmap its shape.
- *
- * Failing the FIRST is recorded as `denied` but is deliberately kept OUT of the
- * denominator. Those are community-college units that land in elective space —
- * a fact about wasted associate credit, which is Figure 3's subject. The
- * bachelor requirement they fail to satisfy is already counted here, as
- * university-only work; putting the CC-side units in as well would count the
- * same failure twice and drag every cell down by about two points.
- *
- * University-only work stays in every denominator. A Virginia guide splits the
- * degree evenly, so roughly half the named work sits after the transfer point
- * and is unreachable by construction; that is what puts the ceiling near 50%
- * rather than 100%, and dropping it would report a structural fact as success.
- *
- * General education is counted, as in `buildGuideFigures.js` — see that file
- * for why excluding it is one-sided against this data.
- *
- * Both bases are written in one artifact. Catalogue is the default because it
- * is the honest description of what a college publishes; scheduled is the
- * toggle, and the pair is itself the finding — the guides work at every college
- * on paper and only at the well-resourced ones in a given term.
+ * Catalogue and currently scheduled supply are both emitted, with and without
+ * colleges that lack a CS associate degree. Credit ranges use their upper
+ * bounds. Course totals are rounded credit-derived estimates. Source conditions
+ * that this join cannot prove travel with the cells as interpretation warnings;
+ * see docs/virginia-final-audit.md for the limits of these measures.
  *
  *   node scripts/va/buildVaCoverageCells.js            # report both
  *   node scripts/va/buildVaCoverageCells.js --write    # write both
@@ -48,24 +27,12 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { outcome, credits, maxCredits } = require('./buildGuideFigures');
+const { typeOfCourseCode } = require('../../services/courseTypes');
 
 const SERVER = path.resolve(__dirname, '..', '..');
 const GUIDES = path.join(SERVER, '.va-guides', 'guides.json');
 const CATALOG = path.join(SERVER, '.va-courses', 'catalog');
 const OUT = path.join(SERVER, '.va-courses', 'va-coverage-cells.json');
-
-// What a community-college course can discharge. Elective landings are
-// INCLUDED: "HSS Elective (2 of 5)", "Unrestricted Elective (1 of 4)",
-// "Advanced Natural Science Elective" name a slot the degree defines, and the
-// guide has already done the capacity accounting in writing them "n of m". A
-// course filling one is meeting a requirement, not wasting a credit. Counting
-// them as loss put UVA at 33.2% purely for describing its own elective
-// structure in detail — 20.5 units per cell — while a university that wrote
-// "Elective" once scored higher for saying less.
-//
-// Only an outright refusal is loss, and across the 23 computer-science guides
-// that is four rows: "Does not transfer", "No transfer credit".
-const APPLIED = new Set(['named_course', 'named_requirement', 'elective_only']);
 
 /**
  * Computer-science degrees only.
@@ -158,15 +125,14 @@ function loadColleges(scheduledOnly, includeNonCs = false) {
  * the requirement, so only `+` and the word `and` join courses.
  */
 /**
- * How many courses a requirement row stands for.
+ * Estimate the number of courses represented by a credit quantity.
  *
- * The Massachusetts paper counts required courses binary, and Virginia is held
- * to the same convention. It cannot be done by counting rows, because the two
- * halves of a guide are not typeset alike: the community-college half is
- * itemised course by course, while the university half collapses blocks into
- * single rows — Norfolk State's "Required Core Courses" is one row worth 30
- * credits. So every row on BOTH sides is converted by this one function, and a
- * row worth one course's credit is one course.
+ * The guide halves use different layouts: community-college work is usually
+ * itemized, while the university half can collapse many courses into one row.
+ * Both halves therefore use this credit conversion. These rounded estimates
+ * are not literal course counts or a reproduction of the Massachusetts paper's
+ * binary named-course measure. A zero-credit named requirement still occupies
+ * one estimated slot; it is not erased merely because it carries no credits.
  */
 function courseCount(units, rate) {
   const value = Number(units);
@@ -195,13 +161,24 @@ function courseSize(guide) {
 
 function alternatives(text, codes) {
   if (codes.length < 2) return [codes];
+  // Preserve the parser's sticky-prefix expansion inside the Boolean grammar.
+  // Otherwise "MTH 161 and 162" becomes two independent alternatives because
+  // the second code cannot be found by its full name in the original text.
+  let prefix = null;
+  const expanded = String(text).replace(
+    /([A-Z]{2,4})\s*-?\s*(\d{3})\b|(?<![A-Z0-9])(\d{3})(?![0-9])/g,
+    (match, namedPrefix, namedNumber, bareNumber) => {
+      if (namedPrefix) prefix = namedPrefix;
+      return prefix ? `${prefix} ${namedNumber || bareNumber}` : match;
+    },
+  );
   const appears = (code, part) => {
     const [, prefix, number] = /^([A-Z]+)(\d+)$/.exec(code) || [];
     return Boolean(prefix) && new RegExp(`${prefix}\\s*-?\\s*${number}\\b`, 'i').test(part);
   };
   const groups = [];
   const claimed = new Set();
-  for (const part of String(text).split(/\s+or\s+/i)) {
+  for (const part of expanded.split(/\s+or\s+/i)) {
     const inPart = codes.filter((code) => appears(code, part));
     if (!inPart.length) continue;
     // Only a conjunction binds courses together; anything else is a choice.
@@ -231,9 +208,198 @@ function alternatives(text, codes) {
  */
 function classify(item, college, universe) {
   if (!item.cc_codes.length || item.kind === 'gened_category') return 'assumed';
+  // A named-course alternative does not erase an unrestricted UCGS branch.
+  // NSU explicitly allows "Any UCGS course or PED 101 and HLT 110"; testing
+  // only the two named courses falsely charged colleges three missing credits.
+  const openUcgsAlternative = String(item.requirement_text).split(/\s+or\s+/i)
+    .some((part) => /^\s*any\s+ucgs\b/i.test(part)
+      && !/\d{3}|[:;\u2013\u2014]/.test(part));
+  if (openUcgsAlternative) return 'assumed';
   const groups = alternatives(item.requirement_text, item.cc_codes);
   const ok = groups.some((group) => group.every((code) => college.codes.has(resolveCode(code, universe))));
   return ok ? 'supplied' : 'missing';
+}
+
+// Older captures misclassified Radford's inline post-transfer total as a
+// named requirement. Keep structural totals out even before a source recapture.
+const countedRequirement = (item) => item.counts_toward_stats
+  && !/^\s*(?:credits?\s+(?:pre|post)[- ]transfer|(?:pre|post)[- ]transfer\s+credits?)\b/i
+    .test(item.requirement_text || '');
+
+/**
+ * The lower-division lens, read from the bachelor's side as it is in
+ * California and Massachusetts: the bachelor's lower-division credit, elective
+ * credit included, general education separable. Catalogue supply only — the
+ * other two states are measured on what a college publishes, not on what it
+ * happens to be running.
+ *
+ * The pre-transfer half is the guide's own stated credit, the convention every
+ * Virginia figure uses: its itemised rows overshoot it wherever a range is
+ * read at its top. Every pre-transfer row is lower division — a VCCS course is
+ * a 100- or 200-level course — and each is classified by what the UNIVERSITY
+ * grants for it:
+ *
+ *   no_credit  the university grants nothing ("Does not transfer"), so the
+ *              credit is not part of the bachelor's degree and comes off the
+ *              stated half.
+ *   elective   lands as general, free or unrestricted elective credit. Part of
+ *              the bachelor's degree and filled by any transferable course, so
+ *              covered whatever the college teaches — as is the elective credit
+ *              the stated half holds beyond its itemised rows.
+ *   ge         an open general-education category, or a named course with no
+ *              STEM alternative that the guide does not mark as major work.
+ *   major      everything else: a STEM row, or a row the guide maps to a
+ *              major requirement.
+ *
+ * Post-transfer rows are the work a guide says must be done at the university.
+ * Those whose every course number is below the 300 (or 3000) level are
+ * lower-division requirements, uncovered unless the row's own note names a
+ * VCCS course that satisfies it and the college teaches that course. Rows that
+ * name no course number, mix divisions, carry no credit, or only repeat a
+ * pre-transfer row ("if not completed at the community college", or a course
+ * the pre-transfer half already maps onto) are not lower-division requirements
+ * of their own.
+ */
+const ELECTIVE_EQUIVALENT = /\b(?:general|unrestricted|free)\s+elective\b|^\s*electives?(?:\s+credit)?\s*$|^\s*elective hours\b/i;
+// The shared classifier knows university prefixes; VCCS writes chemistry,
+// geology and environmental science differently, and CNU's computer
+// engineering prefix is a CS major subject.
+const VA_STEM_PREFIXES = new Set(['CHM', 'GOL', 'ENV', 'NAS', 'CPEN']);
+// Post-transfer rows are the guide's own program list, so they are major work
+// unless the guide labels them general education or they carry a
+// general-education subject. A closed list, so nothing is GE by default.
+const VA_GE_SUBJECTS = new Set(['COLL', 'COMM', 'STS', 'ENGL', 'WRIT', 'HIST', 'PHIL']);
+
+const splitCode = (code) => /^([A-Z]+)\s*-?\s*(\d.*)$/.exec(code)?.slice(1) || [];
+const isStemCode = (code) => {
+  const [prefix, number] = splitCode(code);
+  if (!prefix) return false;
+  return VA_STEM_PREFIXES.has(prefix) || typeOfCourseCode(prefix, number) !== 'non_stem';
+};
+
+function classifyPreTransferRow(row) {
+  const equivalent = String(row.equivalent || '');
+  if (row.kind === 'filler' || row.kind === 'unresolved') return 'elective';
+  if (outcome(equivalent) === 'no_credit') return 'no_credit';
+  if (ELECTIVE_EQUIVALENT.test(equivalent)) return 'elective';
+  if (row.kind === 'gened_category' || !row.cc_codes.length) return 'ge';
+  if (/(?<!non-)\bmajor\b/i.test(equivalent)) return 'major';
+  const stem = row.cc_codes.some(isStemCode) || universityCodes(equivalent).some(isStemCode);
+  return stem ? 'major' : 'ge';
+}
+
+/** University course codes in a post-transfer row, prefixes carried forward. */
+function universityCodes(text) {
+  const codes = [];
+  let prefix = null;
+  const pattern = /\b([A-Z]{2,5})\s*-?\s*(\d{3,4})[A-Z]?\b|(?<![A-Za-z0-9-])(\d{3,4})(?![0-9])/g;
+  for (const match of String(text || '').matchAll(pattern)) {
+    if (match[1]) prefix = match[1];
+    if (prefix) codes.push(`${prefix} ${match[2] || match[3]}`);
+  }
+  return codes;
+}
+
+const lowerDivisionNumber = (code) => {
+  const digits = /(\d{3,4})$/.exec(code)?.[1];
+  if (!digits) return false;
+  return digits.length === 4 ? Number(digits) < 3000 : Number(digits) < 300;
+};
+
+function classifyPostTransferRow(row) {
+  const units = maxCredits(row.credits) ?? 0;
+  if (units <= 0 || /^\s*0\s*-/.test(String(row.credits || ''))) return null;
+  if (/\bif\b[^.]*\bnot\b[^.]*\b(?:completed|taken)\b/i.test(String(row.notes || ''))) return null;
+  const codes = universityCodes(row.requirement_text);
+  if (!codes.length || !codes.every(lowerDivisionNumber)) return null;
+  if (/\bgen(?:eral)?\.?\s*ed/i.test(row.requirement_text)) return 'ge';
+  return codes.every((code) => VA_GE_SUBJECTS.has(splitCode(code)[0])) ? 'ge' : 'major';
+}
+
+/** Course codes with any letter suffix kept, so a lab (CSC 170L) is not its lecture. */
+const exactCodes = (text) => [...String(text || '')
+  .matchAll(/\b([A-Z]{2,5})\s*-?\s*(\d{3,4}[A-Z]?)\b/g)].map((m) => `${m[1]} ${m[2]}`);
+
+/**
+ * The VCCS courses a post-transfer row's own note says can satisfy it at the
+ * college ("Can be completed at VCCS through CSC 215", "MTH 266 can be taken at
+ * VCCS"). Such a row is lower-division work the college CAN reach.
+ */
+function vccsAlternatives(row) {
+  const notes = String(row.notes || '');
+  if (!/\bVCCS\b/.test(notes)) return [];
+  return exactCodes(notes).map((code) => code.replace(' ', ''));
+}
+
+/**
+ * One cell's lower-division credit: the whole lens (`total`, `covered`) and
+ * its general-education share, so the GE-excluded reading is the difference.
+ */
+function lowerDivisionCell(guide, college, universe) {
+  let noCredit = 0;
+  let itemised = 0;
+  let geTotal = 0;
+  let geMissing = 0;
+  let majorMissing = 0;
+  for (const row of guide.cc_items.filter(countedRequirement)) {
+    const units = maxCredits(row.credits) ?? 0;
+    const role = classifyPreTransferRow(row);
+    if (role === 'no_credit') { noCredit += units; continue; }
+    itemised += units;
+    if (role === 'elective') continue;
+    const missing = classify(row, college, universe) === 'missing';
+    if (role === 'ge') {
+      geTotal += units;
+      if (missing) geMissing += units;
+    } else if (missing) {
+      majorMissing += units;
+    }
+  }
+  const stated = maxCredits(guide.totals?.pre_transfer_raw);
+  const pre = stated != null ? Math.max(0, stated - noCredit) : itemised;
+  const out = {
+    total: pre,
+    covered: Math.max(0, pre - geMissing - majorMissing),
+    ge_total: geTotal,
+    ge_covered: geTotal - geMissing,
+  };
+  // A university course the pre-transfer half already maps onto (UVA's CS 2130
+  // from CSC 215) is that requirement listed twice, and counts once.
+  const mappedBeforeTransfer = new Set(guide.cc_items.flatMap((row) => exactCodes(row.equivalent)));
+  for (const row of (guide.post_items || []).filter(countedRequirement)) {
+    const role = classifyPostTransferRow(row);
+    if (!role) continue;
+    if (exactCodes(row.requirement_text).some((code) => mappedBeforeTransfer.has(code))) continue;
+    const units = maxCredits(row.credits) ?? 0;
+    out.total += units;
+    if (role === 'ge') out.ge_total += units;
+    const reachable = vccsAlternatives(row)
+      .some((code) => college.codes.has(resolveCode(code, universe)));
+    if (reachable) {
+      out.covered += units;
+      if (role === 'ge') out.ge_covered += units;
+    }
+  }
+  return out;
+}
+
+function sourceInterpretationWarnings(guide) {
+  const rows = [...guide.cc_items, ...(guide.post_items || [])].filter(countedRequirement);
+  const warnings = [];
+  if (rows.some((row) => /\d\s*-\s*\d/.test(row.credits || ''))) {
+    warnings.push('Credit ranges use their upper bounds; choices are not checked against one complete degree plan.');
+  }
+  const unresolved = rows.filter((row) => maxCredits(row.credits) == null);
+  if (unresolved.length) warnings.push(`Unresolved credit quantities: ${unresolved.map(
+    (row) => `${row.requirement_text} (${row.credits || 'unstated'})`,
+  ).join('; ')}. Stated totals retain the credit, but its requirement allocation is uncertain.`);
+  for (const row of rows) {
+    const notes = String(row.notes || '').trim();
+    if (/\bmust\b|\brequired\b|\bsequence\b|\bboth\b|\bdifferent\b|\bonly if\b|\bJava\b|C\+\+/i.test(notes)) {
+      warnings.push(`Source condition not evaluated for ${row.requirement_text}: ${notes}`);
+    }
+  }
+  return [...new Set(warnings)];
 }
 
 function build({ scheduledOnly, includeNonCs = false }) {
@@ -256,8 +422,9 @@ function build({ scheduledOnly, includeNonCs = false }) {
     catalog_courses: universe.size,
   };
   for (const guide of programs) {
+    const guideWarnings = sourceInterpretationWarnings(guide);
     const rows = guide.cc_items
-      .filter((i) => i.counts_toward_stats)
+      .filter(countedRequirement)
       // The TOP of a stated range, not its midpoint. A guide writes "3-4
       // credits" because the student picks an option, and the guide's own
       // stated maximum is what keeps the sum honest — Bridgewater's rows reach
@@ -265,8 +432,6 @@ function build({ scheduledOnly, includeNonCs = false }) {
       // midpoint instead summed to 60, so the ceiling never bound and every
       // cell came in a point and a half under the pathway the guide describes.
       .map((i) => ({ ...i, outcome: outcome(i.equivalent), units: maxCredits(i.credits) ?? 0 }));
-    // Rows whose outcome the guide never states are held out of the figure
-    // entirely rather than counted as failures; see buildGuideFigures.js.
     // EVERY itemised pre-transfer row is scored. The `outcome` column says what
     // the UNIVERSITY grants for a course; this figure asks what the COLLEGE can
     // teach, and `classify` answers that from the row's course codes alone. So
@@ -275,7 +440,6 @@ function build({ scheduledOnly, includeNonCs = false }) {
     // real requirements, and dropping them took 6.5 of 60 pre-transfer credits
     // out of the figure without anyone deciding they should go.
     const scored = rows;
-    const unstatedUnits = 0;
     // ALL post-transfer units, free electives included. Excluding the
     // university's elective space shrinks the denominator without shrinking the
     // numerator, and coverage then exceeds the degree's own transfer ceiling:
@@ -285,10 +449,8 @@ function build({ scheduledOnly, includeNonCs = false }) {
     // degree, where that space is real units a transfer student cannot bring.
     const universityOnly = (guide.post_items || [])
       .reduce((n, p) => n + (maxCredits(p.credits) ?? 0), 0);
-    // The bachelor side's NAMED work only, with free-elective padding dropped.
-    // The Massachusetts paper's Figure 1 counts named course requirements and
-    // excludes general education and elective padding from both halves; this is
-    // that half of the exclusion.
+    // The bachelor side's named work, with unrestricted padding dropped.
+    // This source classification does not exclude every GE requirement.
     const universityOnlyNamed = (guide.post_items || [])
       .filter((p) => p.counts_toward_stats)
       .reduce((n, p) => n + (maxCredits(p.credits) ?? 0), 0);
@@ -306,20 +468,34 @@ function build({ scheduledOnly, includeNonCs = false }) {
     if (!scored.some((r) => r.outcome === 'named_course')) continue; // no course-level detail
 
     for (const college of colleges) {
+      const sourceWarnings = [...guideWarnings];
       // Three verdicts per requirement row, and they sum to the transferable
       // half: courses this college teaches, courses it does not, and rows that
       // name no course at all and are satisfiable anywhere.
       const tally = { supplied: 0, missing: 0, assumed: 0 };
-      // The same three buckets counted the paper's way, binary per course.
+      // The same buckets converted to estimated course counts.
       const count = { supplied: 0, missing: 0, assumed: 0 };
       const rate = courseSize(guide);
       const missing = [];
+      const denied = [];
+      let unavailableAppliedUnits = 0;
       for (const row of scored) {
         const verdict = classify(row, college, universe);
+        if (verdict === 'supplied' && /must take two of the courses/i.test(row.notes || '')) {
+          const available = row.cc_codes.filter((code) => college.codes.has(resolveCode(code, universe)));
+          if (available.length < 2) sourceWarnings.push(
+            `Insufficient distinct choices for ${row.requirement_text}: ${college.name} supplies ${available.length} of the two required courses. The row's full credit is an unverified estimate, not demonstrated coverage.`,
+          );
+        }
         tally[verdict] += row.units;
         count[verdict] += courseCount(row.units, rate);
         if (verdict === 'missing') {
           missing.push({ requirement: row.requirement_text, codes: row.cc_codes, units: row.units });
+          if (row.outcome !== 'no_credit') unavailableAppliedUnits += row.units;
+        }
+        if (row.outcome === 'no_credit') {
+          denied.push({ requirement: row.requirement_text, codes: row.cc_codes,
+            units: row.units, equivalent: row.equivalent });
         }
       }
       // Figure 3 reads the same three buckets from the associate degree's side.
@@ -328,7 +504,6 @@ function build({ scheduledOnly, includeNonCs = false }) {
       // not what the guide asked for, so those units arrive as elective credit
       // and do no requirement work. Applied units are what lands on something
       // named; everything else is the loss.
-      const asTotal = tally.supplied + tally.missing + tally.assumed;
       // The denominator is the guide's OWN stated size, not our itemised sum.
       // Summing the rows we could parse made the denominator a measure of
       // parsing completeness: it ran from 78.5 units at William & Mary to 157
@@ -354,18 +529,18 @@ function build({ scheduledOnly, includeNonCs = false }) {
       // So each half is scaled to the credit the guide itself states for it,
       // which is the same refusal to trust a row sum that the credit
       // denominator already makes.
-      const postItems = (guide.post_items || []).filter((p) => p.counts_toward_stats);
+      const postItems = (guide.post_items || []).filter(countedRequirement);
       const postUnits = postItems.reduce((n, p) => n + (maxCredits(p.credits) ?? 0), 0);
       const itemisedPre = tally.supplied + tally.missing + tally.assumed;
       const statedPost = statedTotal != null && statedPre != null
         ? Math.max(0, statedTotal - statedPre) : null;
-      /** Row-counted courses, held to the credit their own half claims. */
+      /** Estimated courses, held to the credit their own half claims. */
       const held = (courses, itemised, claimed) => (
         claimed != null && itemised > claimed && itemised > 0
           ? courses * (claimed / itemised)
           : courses);
-      // Courses are counted, so every term is rounded to a whole course. A
-      // denominator reading 37.4552 courses is not a quantity anyone holds.
+      // Round the credit-derived estimates to whole course slots. Rounding
+      // removes fractional displays; it does not establish an enrollment count.
       const postCourses = Math.round(held(
         postItems.reduce((n, p) => n + courseCount(maxCredits(p.credits) ?? 0, rate), 0),
         postUnits, statedPost));
@@ -376,15 +551,8 @@ function build({ scheduledOnly, includeNonCs = false }) {
       const coveredCourses = count.supplied + sparePre;
       const preCourses = count.supplied + count.missing + sparePre;
       const courseTotal = preCourses + postCourses + sparePost;
-      // What this college can actually put on the degree, counted the way
-      // California counts it: the itemised requirements it can supply, not the
-      // guide's stated half less what it cannot. The two differ whenever the
-      // rows do not sum to the stated total, and the old form credited that
-      // difference to every college for free.
-      //
-      // The guide's stated maximum is then respected as a ceiling. A student
-      // cannot carry more preparation than the guide says the pathway holds,
-      // however many heavy options the rows offer.
+      // The guide's stated pre-transfer maximum is the supply ceiling even
+      // when the maxima of its itemized credit ranges sum to a larger amount.
       const transferable = statedPre ?? (tally.supplied + tally.missing + tally.assumed);
       const ceilingPre = statedPreMax ?? transferable;
       // The guide's stated half, less the credit this college cannot teach.
@@ -401,10 +569,20 @@ function build({ scheduledOnly, includeNonCs = false }) {
       // missing after `alternatives()` has failed to find any satisfiable
       // option group, so there is no substitute left to fall back on.
       const covered = Math.max(0, ceilingPre - tally.missing);
+      // Figure 3/4 asks which earned credits apply after transfer. A guide's
+      // explicit refusal is loss even when the college supplies that course.
+      // Keep it disjoint from unavailable rows so a missing denied course is
+      // charged once. The Figure 1 supply numerator remains a separate fact.
+      const deniedUnits = denied.reduce((sum, row) => sum + row.units, 0);
+      const wastedUnits = Math.min(transferable, deniedUnits + unavailableAppliedUnits);
+      const lower = lowerDivisionCell(guide, college, universe);
       cells.push({
         college: college.slug,
         collegeName: college.name,
         collegeOffersCs: college.offersCs,
+        method_status: sourceWarnings.length ? 'estimated' : 'ok',
+        source_interpretation_warnings: sourceWarnings,
+        course_count_method: 'estimated_from_credits',
         guide: guide.slug,
         guideTitle: guide.title.replace(/ Transfer Guide$/, ''),
         supplied: tally.supplied,
@@ -413,14 +591,10 @@ function build({ scheduledOnly, includeNonCs = false }) {
         universityOnly,
         denominator,
         coverage: denominator ? covered / denominator : null,
-        // Paper-equivalent lens: general education out of BOTH sides, the same
-        // number of units from each. The degree is lower division plus upper
-        // division, so removing N units of general education leaves
-        // (covered - N) over (total - N) — it does not touch the university's
-        // half at all. An earlier version dropped the university's free
-        // electives from the denominator instead, which shrank the bottom
-        // without shrinking the top and pushed 137 of 240 cells above the
-        // degree's own ceiling, one to 61.9% where nothing can exceed ~52%.
+        // Historical `_paper` fields remove assumed-category credits from
+        // numerator and denominator equally. The bucket includes open-category
+        // assumptions and is not a complete GE taxonomy: enumerated GE courses
+        // can remain. This is not literal Massachusetts paper equivalence.
         coverage_paper: (denominator - tally.assumed) > 0
           ? Math.max(0, covered - tally.assumed) / (denominator - tally.assumed) : null,
         ceiling_paper: (denominator - tally.assumed) > 0
@@ -435,23 +609,20 @@ function build({ scheduledOnly, includeNonCs = false }) {
         covered_units_no_ge: Math.max(0, covered - tally.assumed),
         covered_courses: coveredCourses,
         pre_courses: preCourses,
-        // The Massachusetts convention: required courses, binary, general
-        // education excluded — which the count does by construction, since a
-        // general-education row names no course to require.
+        // Estimated course coverage with the assumed-category bucket excluded.
         coverage_courses: courseTotal ? Math.min(1, coveredCourses / courseTotal) : null,
         ceiling_courses: courseTotal ? Math.min(1, preCourses / courseTotal) : null,
         courses_supplied: count.supplied,
         courses_missing: count.missing,
         courses_total: courseTotal,
         course_size: Math.round(rate * 100) / 100,
-        // MA-paper preset: required courses, general education excluded — which
-        // the count does by construction, since a general-education row names
-        // no course to require.
+        // Historical named-work fields retain the source's supplied-row and
+        // named post-transfer buckets; neither is a complete GE classification.
         supplied_named: tally.supplied,
         university_only_named: universityOnlyNamed,
         stated_pre_units: statedPre,
         stated_total_units: statedTotal,
-        itemised_units: tally.covered + tally.denied + tally.unavailable + universityOnly,
+        itemised_units: itemisedPre + universityOnly,
         // Figure 3 — associate-degree credit utilization.
         //
         // A college that does not teach a course the guide names does not stop
@@ -462,10 +633,13 @@ function build({ scheduledOnly, includeNonCs = false }) {
         // transferable half less the units this college forces a student to
         // substitute, over that half.
         as_total_units: transferable,
-        as_applied_units: Math.max(0, transferable - tally.missing),
-        as_wasted_units: tally.missing,
+        as_applied_units: transferable - wastedUnits,
+        as_wasted_units: wastedUnits,
+        as_denied_units: deniedUnits,
+        as_unavailable_applied_units: unavailableAppliedUnits,
+        denied,
         utilization: transferable
-          ? Math.max(0, transferable - tally.missing) / transferable : null,
+          ? (transferable - wastedUnits) / transferable : null,
         // Best case for this college: what coverage would be if nothing were
         // denied and nothing were missing from its catalogue.
         // The whole transferable half: what this college would reach if its
@@ -475,6 +649,13 @@ function build({ scheduledOnly, includeNonCs = false }) {
         // stated maximum. It must be built from the same numerator the value
         // is, or a cell can sit above its own ceiling.
         ceiling: denominator ? ceilingPre / denominator : null,
+        // The lower-division lens (see lowerDivisionCell): the bachelor's
+        // lower-division requirement credits, free electives excluded, with
+        // general education first excluded and then included.
+        ld_units: lower.total,
+        ld_covered: lower.covered,
+        ld_ge_units: lower.ge_total,
+        ld_ge_covered: lower.ge_covered,
         missing,
       });
     }
@@ -506,14 +687,12 @@ function report(basis, cells) {
   const asum = cells.reduce((n, c) => n + c.assumed, 0);
   const asT = cells.reduce((n, c) => n + c.as_total_units, 0);
   const asA = cells.reduce((n, c) => n + c.as_applied_units, 0);
-  const asU = cells.reduce((n, c) => n + c.as_unstated_units, 0);
   console.log(`\nFigure 1 coverage    ${pct(cov)} · missing ${una} units · assumed ${asum} units`);
-  console.log(`Figure 3 utilization ${pct(asA / asT)} of itemised associate units`);
+  console.log(`Figure 3 utilization ${pct(asA / asT)} of stated pre-transfer units`);
   console.log(`spread across colleges: ${pct(ranked[0].cov)} (${ranked[0].name}) to `
     + `${pct(ranked[ranked.length - 1].cov)} (${ranked[ranked.length - 1].name})`);
   return { coverage: cov, missing_units: una, assumed_units: asum };
 
-  return { coverage: cov / den, covered: cov, denied: den2, unavailable: una, denominator: den };
 }
 
 function main() {
@@ -549,4 +728,7 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { build, classify };
+module.exports = {
+  build, classify, classifyPreTransferRow, classifyPostTransferRow, lowerDivisionCell, universityCodes,
+  vccsAlternatives,
+};

@@ -779,7 +779,10 @@ function GuideHalf({ title, note, rows, showEquivalent = false }) {
             {rows.map((r, i) => (
               <tr key={i} className='border-t border-border align-top'>
                 <td className='py-1.5 pr-3 tabular-nums text-ink-muted whitespace-nowrap'>{r.credits ?? '—'}</td>
-                <td className='py-1.5 pr-3 text-ink'>{r.requirement || '—'}</td>
+                <td className='py-1.5 pr-3 text-ink'>
+                  {r.requirement || '—'}
+                  {r.notes && <p className='mt-1 text-caption ink-subtle'>{r.notes}</p>}
+                </td>
                 {showEquivalent && (
                   <td className='py-1.5 ink-subtle'>{r.equivalent || '—'}</td>
                 )}

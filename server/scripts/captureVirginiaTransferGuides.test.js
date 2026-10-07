@@ -99,4 +99,35 @@ describe('parseGuide', () => {
     const [item] = guide([['SDV 100 College Success Skills', '1', 'No Transfer Credit', '']]).cc_items;
     expect(item).toMatchObject({ kind: 'course', equivalent: 'No Transfer Credit' });
   });
+
+  it('reads inline totals without counting the post-transfer total as a course', () => {
+    const parsed = guide([
+      ['CSC 221', '3', 'CS 101', ''],
+      ['Credits Pre-Transfer: 60', '', '', ''],
+      ['Complete at Radford University', 'Credits', 'Notes', ''],
+      ['CS 300', '3', '', ''],
+      ['Credits Post-Transfer: 60', '', '', ''],
+    ]);
+    expect(parsed.totals).toEqual({ pre_transfer_raw: '60', post_transfer_raw: '60' });
+    expect(parsed.post_items.map((row) => row.requirement_text)).toEqual(['CS 300']);
+  });
+
+  it('preserves subject-restricted electives as named graduation requirements', () => {
+    const parsed = guide([
+      ['CSC 221', '3', 'CS 101', ''],
+      ['Complete at University', 'Credits', 'Notes', ''],
+      ['Senior Major Electives', '9', '', ''],
+      ['CMSC upper-level electives', '12', '', ''],
+      ['Restricted CMSC electives', '12-13', '', ''],
+      ['Statistics Elective', '3', '', ''],
+      ['Upper-Level General Elective', '0-2', '', ''],
+      ['Unrestricted Elective (4 of 4)', '3', '', ''],
+      ['Elective Courses', '14', '', ''],
+    ]);
+    expect(parsed.post_items.filter((row) => row.counts_toward_stats)
+      .map((row) => row.requirement_text)).toEqual([
+      'Senior Major Electives', 'CMSC upper-level electives',
+      'Restricted CMSC electives', 'Statistics Elective',
+    ]);
+  });
 });

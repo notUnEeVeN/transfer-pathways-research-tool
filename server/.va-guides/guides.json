@@ -1044,8 +1044,8 @@
      "requirement_text": "Senior Major Electives",
      "credits": "9",
      "notes": "See catalog for full list of options.",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "Computer Science-Related Courses",
@@ -2454,8 +2454,8 @@
      "requirement_text": "Senior IT 400-level Electives",
      "credits": "9",
      "notes": "Complete three IT Senior Electives from the following list: IT 460 (Advanced Cybersecurity), IT 461 (Internetworking), IT 462 (Network Applications Development), IT 465 (Wireless Networking and Security), IT 334 (Computer Cyber Crime, Forensics and Auditing), IT 341 (Mobile Applications), IT 342 (Web Server Administration), IT 435 (Cryptography for Information Technology), and IT 443 (Cloud Computing and IoT Networks).",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "University Electives",
@@ -2778,8 +2778,8 @@
      "requirement_text": "CMSC upper-level electives",
      "credits": "12",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     }
    ]
   },
@@ -3109,8 +3109,8 @@
      "requirement_text": "Information Technology Electives",
      "credits": "6",
      "notes": "Credits may vary if additional Information Technology electives are completed at VCCS school.",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "An approved minor or five (5) upper-level IT or DATA courses",
@@ -3859,8 +3859,8 @@
      "requirement_text": "Major Electives",
      "credits": "15",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     }
    ]
   },
@@ -4206,22 +4206,22 @@
      "requirement_text": "CS Elective",
      "credits": "9",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "300-400 Level Non-CS Elective",
      "credits": "6",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "Technical Elective",
      "credits": "3-4",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     }
    ]
   },
@@ -4578,8 +4578,8 @@
      "requirement_text": "Economics Electives",
      "credits": "6",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "Additional Coursework at either RU or VCCS to reach 120 credit hours total",
@@ -4925,26 +4925,19 @@
      "requirement_text": "CS 300/400 Elective",
      "credits": "3",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "CS 300/400 Elective",
      "credits": "3",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
-    },
-    {
-     "requirement_text": "Additional Coursework at either RU or VCCS to reach 120 credit hours total",
-     "credits": "23",
-     "notes": null,
      "kind": "named",
      "counts_toward_stats": true
     },
     {
-     "requirement_text": "Credits Post-Transfer: 60",
-     "credits": null,
+     "requirement_text": "Additional Coursework at either RU or VCCS to reach 120 credit hours total",
+     "credits": "23",
      "notes": null,
      "kind": "named",
      "counts_toward_stats": true
@@ -5279,8 +5272,8 @@
      "requirement_text": "CS 300/400 Elective",
      "credits": "3",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "CS 390",
@@ -5292,13 +5285,6 @@
     {
      "requirement_text": "Additional Coursework at either RU or VCCS to reach 120 credit hours total",
      "credits": "26",
-     "notes": null,
-     "kind": "named",
-     "counts_toward_stats": true
-    },
-    {
-     "requirement_text": "Credits Post-Transfer: 60",
-     "credits": null,
      "notes": null,
      "kind": "named",
      "counts_toward_stats": true
@@ -5640,33 +5626,26 @@
      "requirement_text": "CS 300/400 Elective",
      "credits": "3",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "CS 300/400 Elective",
      "credits": "3",
-     "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
-    },
-    {
-     "requirement_text": "CS 300/400 Elective",
-     "credits": "3",
-     "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
-    },
-    {
-     "requirement_text": "Additional Coursework at either RU or VCCS to reach 120 credit hours total",
-     "credits": "26",
      "notes": null,
      "kind": "named",
      "counts_toward_stats": true
     },
     {
-     "requirement_text": "Credits Post-Transfer: 60",
-     "credits": null,
+     "requirement_text": "CS 300/400 Elective",
+     "credits": "3",
+     "notes": null,
+     "kind": "named",
+     "counts_toward_stats": true
+    },
+    {
+     "requirement_text": "Additional Coursework at either RU or VCCS to reach 120 credit hours total",
+     "credits": "26",
      "notes": null,
      "kind": "named",
      "counts_toward_stats": true
@@ -6038,13 +6017,6 @@
      "notes": null,
      "kind": "named",
      "counts_toward_stats": true
-    },
-    {
-     "requirement_text": "Credits Post-Transfer: 60",
-     "credits": null,
-     "notes": null,
-     "kind": "named",
-     "counts_toward_stats": true
     }
    ]
   },
@@ -6335,8 +6307,8 @@
      "requirement_text": "Computer Science Electives",
      "credits": "9",
      "notes": "Meet with advisor to select from upper-level CSCI courses",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "Other Electives to reach a total of 120 credits.",
@@ -6650,8 +6622,8 @@
      "requirement_text": "Cybersecurity Electives",
      "credits": "9-10",
      "notes": "Meet with advisor to select from upper-level CSEC/CSCI courses",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "Other Electives to reach a total of 120 credits.",
@@ -6958,8 +6930,8 @@
      "requirement_text": "Computer Science Electives",
      "credits": "12",
      "notes": "Any courses CS 300+",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "Computer Science Writing Enriched",
@@ -7574,8 +7546,8 @@
      "requirement_text": "Math and Science Elective",
      "credits": "3",
      "notes": "Semester 1",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "HSS Elective (4 of 5)",
@@ -8267,8 +8239,8 @@
      "requirement_text": "Restricted CMSC electives",
      "credits": "12-13",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "IDST 301",
@@ -9564,8 +9536,8 @@
      "requirement_text": "CMSC upper-level electives",
      "credits": "9",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "ENGR 395",
@@ -9882,15 +9854,15 @@
      "requirement_text": "Prof. Writing Elective",
      "credits": "3",
      "notes": "choose from list",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "Statistics Elective",
      "credits": "3",
      "notes": "choose from list",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "CS 3214 Computer Systems",
@@ -9910,8 +9882,8 @@
      "requirement_text": "CS 3/4/5XXX Elective",
      "credits": "3",
      "notes": "choose from list",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "CS 3304 Comparative Languages",
@@ -9924,8 +9896,8 @@
      "requirement_text": "CS Theory Elective",
      "credits": "3",
      "notes": "choose from list",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "CS 4944 Seminar",
@@ -9945,22 +9917,22 @@
      "requirement_text": "CS 4/5XXX Elective",
      "credits": "3",
      "notes": "choose from list",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "CS Technical Elective",
      "credits": "3",
      "notes": null,
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "Natural Science Elective",
      "credits": "4",
      "notes": "First semester of Biology or Chemistry or Physics that wasn’t previously taken at VCCS",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "Free Electives as necessary",
@@ -10604,8 +10576,8 @@
      "requirement_text": "Major Electives",
      "credits": "15",
      "notes": "Minimum of 6 credits with the CSCI Prefix",
-     "kind": "free_elective",
-     "counts_toward_stats": false
+     "kind": "named",
+     "counts_toward_stats": true
     },
     {
      "requirement_text": "COLL 150",
